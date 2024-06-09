@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
+import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -105,13 +106,13 @@ class _LoginScreen extends State<LoginScreen> {
         Utils.isNetworkAvailable().then((isNetworkAvailable) async {
           if (isNetworkAvailable) {
             Utils.showProgressDialog1(context);
-            ApiController.registerApiRequest(userData,referralCode)
+           /* ApiController.registerApiRequest(userData,referralCode)
                 .then((response) async {
               Utils.hideProgressDialog(context);
               if (response != null && response.success) {
                 Navigator.pop(context);
               }
-            });
+            });*/)
           } else {
             Utils.showToast(AppConstant.noInternet, true);
           }
