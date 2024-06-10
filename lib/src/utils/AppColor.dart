@@ -26,7 +26,7 @@ Color dotIncreasedColor = Color(0xff777A18);
 //=================new added==========
 Color bottomBarBackgroundColor = Color(0xffffffff);
 Color gridBackgroundCOlor = Color(0xffECECEC);
-Color appThemeSecondary = Color(0xffFF5400);
+Color appThemeSecondary = Color(0xff3CA8FF);
 Color orangeColor = Color(0xffFF5400);
 Color grayColor = Color(0xffd3d3d3);
 Color favGrayColor = Color(0xfff3f3f3);

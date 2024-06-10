@@ -13,7 +13,8 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 
 class Utils {
-  static ProgressDialog pr;
+  //static ProgressDialog pr ;
+
 
   static void showToast(String msg, bool shortLength) {
     try {
@@ -99,25 +100,26 @@ class Utils {
 
   static void showProgressDialog1(BuildContext context) {
     //For normal dialog
-    if (pr != null && pr.isShowing()) {
+    //pr=new ProgressDialog(context);
+   /* if (pr != null && pr.isShowing()) {
       pr.hide();
     }
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-    pr.show();
+    pr.show();*/
   }
 
   static void hideProgressDialog1(BuildContext context) {
     //For normal dialog
     try {
-      if (pr != null && pr.isShowing()) {
+    /*  if (pr != null && pr.isShowing()) {
         pr.hide();
         pr = null;
       } else {
         if (pr != null) {
           pr.hide();
         }
-      }
+      }*/
     } catch (e) {
       print(e);
     }
