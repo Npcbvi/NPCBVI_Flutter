@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -177,19 +178,18 @@ class _LoginScreen extends State<LoginScreen> {
               ),
               InkWell(
                 onTap: () {
-                  /* Navigator.push(
+                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => RegisterUser()),*/
-                  // );
+                        builder: (context) => RegisterScreen()),
+                   );
                 },
                 child: addSignUpButton(),
               ),
               MaterialButton(
                 onPressed: () {
-                  print('@@ForgotPassword--clcik');
                    Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ForgotPasswordScreen(menu)),
+                    MaterialPageRoute(builder: (context) => RegisterScreen()),
                   );
                 },
                 textColor: Colors.white,
@@ -245,11 +245,11 @@ class _LoginScreen extends State<LoginScreen> {
                       color: appThemeSecondary),
                   recognizer: (TapGestureRecognizer()
                     ..onTap = () {
-                      /* Navigator.push(
+                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => RegisterUser()),
-                      );*/
+                            builder: (context) => RegisterScreen()),
+                      );
                     })),
             ],
           ),
