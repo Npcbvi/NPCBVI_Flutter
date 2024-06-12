@@ -1,0 +1,92 @@
+
+import 'dart:convert';
+class LoginModel {
+  String token;
+  Result result;
+
+  LoginModel({this.token, this.result});
+
+  LoginModel.fromJson(Map<String, dynamic> json) {
+    token = json['token'];
+    result =
+    json['result'] != null ? new Result.fromJson(json['result']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['token'] = this.token;
+    if (this.result != null) {
+      data['result'] = this.result.toJson();
+    }
+    return data;
+  }
+}
+
+class Result {
+  String message;
+  bool status;
+  Data data;
+
+  Result({this.message, this.status, this.data});
+
+  Result.fromJson(Map<String, dynamic> json) {
+    message = json['message'];
+    status = json['status'];
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['message'] = this.message;
+    data['status'] = this.status;
+    if (this.data != null) {
+      data['data'] = this.data.toJson();
+    }
+    return data;
+  }
+}
+
+class Data {
+  String newPwd;
+  int status;
+  String userId;
+  String roleId;
+  String name;
+  String emailId;
+  String districtName;
+  String stateName;
+
+  Data(
+      {this.newPwd,
+        this.status,
+        this.userId,
+        this.roleId,
+        this.name,
+        this.emailId,
+        this.districtName,
+        this.stateName});
+
+  Data.fromJson(Map<String, dynamic> json) {
+    newPwd = json['new_pwd'];
+    status = json['status'];
+    userId = json['user_id'];
+    roleId = json['role_id'];
+    name = json['name'];
+    emailId = json['email_id'];
+    districtName = json['district_name'];
+    stateName = json['state_name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['new_pwd'] = this.newPwd;
+    data['status'] = this.status;
+    data['user_id'] = this.userId;
+    data['role_id'] = this.roleId;
+    data['name'] = this.name;
+    data['email_id'] = this.emailId;
+    data['district_name'] = this.districtName;
+    data['state_name'] = this.stateName;
+    return data;
+  }
+}

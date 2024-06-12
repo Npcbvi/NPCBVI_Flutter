@@ -3,7 +3,7 @@ import 'dart:core';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_share/flutter_share.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -13,7 +13,7 @@ import 'package:progress_dialog/progress_dialog.dart';
 
 
 class Utils {
-  //static ProgressDialog pr ;
+  static ProgressDialog pr ;
 
 
   static void showToast(String msg, bool shortLength) {
@@ -70,20 +70,17 @@ class Utils {
     FocusScope.of(context).requestFocus(FocusNode());
   }
 
-/*
   static bool validateEmail(String value) {
     Pattern pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
     RegExp regex = new RegExp(pattern);
-    */
-/*if (!regex.hasMatch(value))
+if (!regex.hasMatch(value))
       return true;
     else
-      return false;*//*
+      return false;
 
     return regex.hasMatch(value);
   }
-*/
 
   static Future<bool> isNetworkAvailable() async {
     bool isNetworkAvailable = false;
@@ -100,26 +97,26 @@ class Utils {
 
   static void showProgressDialog1(BuildContext context) {
     //For normal dialog
-    //pr=new ProgressDialog(context);
-   /* if (pr != null && pr.isShowing()) {
+    pr=new ProgressDialog(context);
+    if (pr != null && pr.isShowing()) {
       pr.hide();
     }
     pr = new ProgressDialog(context,
         type: ProgressDialogType.Normal, isDismissible: false, showLogs: false);
-    pr.show();*/
+    pr.show();
   }
 
   static void hideProgressDialog1(BuildContext context) {
     //For normal dialog
     try {
-    /*  if (pr != null && pr.isShowing()) {
+      if (pr != null && pr.isShowing()) {
         pr.hide();
         pr = null;
       } else {
         if (pr != null) {
           pr.hide();
         }
-      }*/
+      }
     } catch (e) {
       print(e);
     }
