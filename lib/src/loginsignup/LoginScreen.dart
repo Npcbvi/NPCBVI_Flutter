@@ -3,12 +3,13 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:marquee_text/marquee_text.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
+import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
-
+import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 
 class LoginScreen extends StatefulWidget {
 //no build method
@@ -16,17 +17,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreen extends State<LoginScreen> {
+  String menu;
+
   // present buld method
   //create two class
-  UserData userData = new UserData();
+  UserData userData = new UserData(); // dat aget in  edittext and send apis
+
   String randomString = "";
   bool isVerified = false;
   TextEditingController controller = TextEditingController();
   TextEditingController _loginIdController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _captchaController = new TextEditingController();
-  void buildCaptcha() {
 
+  void buildCaptcha() {
     const letters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
     const length = 6;
@@ -38,6 +42,7 @@ class _LoginScreen extends State<LoginScreen> {
     setState(() {});
     print("t@@he random string is $randomString");
   }
+
   // Primary Marquee text
 
   @override
@@ -47,7 +52,6 @@ class _LoginScreen extends State<LoginScreen> {
     // To generate number on loading of page
     buildCaptcha();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +65,6 @@ class _LoginScreen extends State<LoginScreen> {
             'Login',
             style: new TextStyle(color: Colors.white),
           )),
-
-
       body: Center(
         child: Container(
           margin: EdgeInsets.all(10),
@@ -70,52 +72,44 @@ class _LoginScreen extends State<LoginScreen> {
           child: ListView(
             shrinkWrap: true,
             children: [
-
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,10,20.0,0),
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: new TextField(
                   controller: _loginIdController,
                   decoration: InputDecoration(
                       label: Text('Login ID'),
                       hintText: 'Enter Login Id',
-                      prefixIcon: Icon(Icons.person, color: Colors.black,), //prefixIcon
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Colors.black,
+                      ),
+                      //prefixIcon
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0))),
-
                 ),
               ),
 
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,10,20.0,0),
-
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: new TextField(
                   controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
                       label: Text('Password'),
                       hintText: 'Enter Password',
-                      prefixIcon: Icon(Icons.password, color: Colors.black,), //prefixIcon
+                      prefixIcon: Icon(
+                        Icons.password,
+                        color: Colors.black,
+                      ),
+                      //prefixIcon
 
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5.0))),
                 ),
               ),
-              /*Center(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(20,5,20.0,0),
 
-                  child: const Text(
-                    "Enter Captacha Value",
-                    style: TextStyle(color:Colors.white,fontSize: 14, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),*/
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,10,20.0,0),
-
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -123,11 +117,11 @@ class _LoginScreen extends State<LoginScreen> {
                     Container(
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                            border: Border.all(width: 2),
-                            borderRadius: BorderRadius.circular(8)),
+                            border: Border.all(width: 2, color: red1)),
                         child: Text(
                           randomString,
-                          style: const TextStyle(fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                              color: red1, fontWeight: FontWeight.w500),
                         )),
                     const SizedBox(
                       width: 10,
@@ -147,7 +141,7 @@ class _LoginScreen extends State<LoginScreen> {
               ),
               // TextFormField to enter captcha value
               Padding(
-                padding: const EdgeInsets.fromLTRB(20.0,10,20.0,0),
+                padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                 child: TextFormField(
                   onChanged: (value) {
                     setState(() {
@@ -165,7 +159,7 @@ class _LoginScreen extends State<LoginScreen> {
                 height: 10,
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20.0,10,20.0,0),
+                padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                 child: ElevatedButton(
                   child: Text('Sign In'),
                   style: ElevatedButton.styleFrom(
@@ -173,40 +167,41 @@ class _LoginScreen extends State<LoginScreen> {
                   ),
                   onPressed: () {
                     isVerified = controller.text == randomString;
-                    print('@@isVerified'+isVerified.toString());
-                    print('@@controller.text'+controller.text.toString());
-                    print('@@randomString'+randomString.toString());
+                    print('@@isVerified' + isVerified.toString());
+                    print('@@controller.text' + controller.text.toString());
+                    print('@@randomString' + randomString.toString());
                     setState(() {});
                     _submitForm();
-
                   },
                 ),
               ),
               InkWell(
                 onTap: () {
-                 /* Navigator.push(
+                  /* Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => RegisterUser()),*/
-                 // );
+                  // );
                 },
                 child: addSignUpButton(),
-
               ),
               MaterialButton(
                 onPressed: () {
                   print('@@ForgotPassword--clcik');
-                 /* Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ForgotPasswordScreen(menu)),*/
-                  //);
+                   Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ForgotPasswordScreen(menu)),
+                  );
                 },
                 textColor: Colors.white,
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text('Forgot password?',
+                  child: Text(
+                    'Forgot password?',
                     style: TextStyle(
-                      fontFamily: 'Medium',fontSize: 14,color: appThemeSecondary,),
-
+                      fontFamily: 'Medium',
+                      fontSize: 14,
+                      color: appThemeSecondary,
+                    ),
                   ),
                 ),
               ),
@@ -218,7 +213,7 @@ class _LoginScreen extends State<LoginScreen> {
                     children: [Icon(Icons.verified), Text("Verified")],
                   ),
                 )
-             /* else
+              /* else
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: const Text("Please enter value you see on screen"),
@@ -229,16 +224,17 @@ class _LoginScreen extends State<LoginScreen> {
       ),
     );
   }
+
   Widget addSignUpButton() {
     return Padding(
-      padding: const EdgeInsets.only(top:20 ,bottom: 5),
+      padding: const EdgeInsets.only(top: 20, bottom: 5),
       child: Align(
         alignment: Alignment.bottomCenter,
         child: RichText(
           text: TextSpan(
             text: 'Don\'t have an account?',
             style: const TextStyle(
-                fontFamily: 'Medium', fontSize: 16, color:Colors.black),
+                fontFamily: 'Medium', fontSize: 16, color: Colors.black),
             children: [
               TextSpan(
                   text: ' Sign Up',
@@ -249,7 +245,7 @@ class _LoginScreen extends State<LoginScreen> {
                       color: appThemeSecondary),
                   recognizer: (TapGestureRecognizer()
                     ..onTap = () {
-                     /* Navigator.push(
+                      /* Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => RegisterUser()),
@@ -263,53 +259,45 @@ class _LoginScreen extends State<LoginScreen> {
   }
 
   Future<void> _submitForm() async {
-
-
-
     userData.loginId = _loginIdController.text.toString().trim();
     userData.password = _passwordController.text.toString().trim();
-    userData.enterCptcha=_captchaController.text.toString().trim();
+    userData.enterCptcha = _captchaController.text.toString().trim();
 
-    if(userData.loginId.isEmpty){
+    if (userData.loginId.isEmpty) {
       Utils.showToast("Please enter loginId !", false);
       return;
     }
-    if(userData.password.isEmpty){
+    if (userData.password.isEmpty) {
       Utils.showToast("Please enter password !", false);
       return;
     }
-    if(userData.enterCptcha.isEmpty){
+    if (userData.enterCptcha.isEmpty) {
       Utils.showToast("Please enter Matched Captcha !", false);
       return;
-    }
+    } else {
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog1(context);
+          ApiController.loginAPiRequest(userData).then((response) async {
+            Utils.hideProgressDialog1(context);
 
-   else{
-        Utils.isNetworkAvailable().then((isNetworkAvailable) async {
-          if (isNetworkAvailable) {
-            Utils.showProgressDialog1(context);
-            ApiController.loginAPiRequest(userData)
-                .then((response) async {
-              Utils.hideProgressDialog1(context);
-
-              print('@@response_loginScreen ---'+response.toString());
-              if (response != null && response.result.status) {
-                Navigator.pop(context);
-              }
+            print('@@response_loginScreen ---' + response.toString());
+            if (response != null && response.result.status) {
+              Navigator.pop(context);
             }
-           );
-          } else {
-            Utils.showToast(AppConstant.noInternet, true);
-          }
-        });
-      }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
     }
-
+  }
 }
-class UserData {
-   String  loginId;
-   String password;
-   String enterCptcha;
 
+class UserData {
+  String loginId;
+  String password;
+  String enterCptcha;
 }
 //Note for generate CapchtaCode
 //https://www.geeksforgeeks.org/flutter-implement-captcha-verification/
