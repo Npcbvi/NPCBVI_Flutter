@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
+import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class RegisterScreen extends StatefulWidget {
+
   @override
   _RegisterScreen createState() => _RegisterScreen();
 }
@@ -19,6 +21,8 @@ class _RegisterScreen extends State<RegisterScreen> {
   bool showNGOResgistration = false;
   bool showSPORegistration = false;
   bool isLoadingApi = true;
+  DashboardStateModel dashboardStateModel;
+  Data data;
   void buildCaptcha() {
     const letters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -125,7 +129,17 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   setState(() {
                                     print('@@getSatatAPi--1' + _chosenValue);
                                     isLoadingApi = false;
+                                    if (value != null && value.status) {
+                                      dashboardStateModel = value;
+                                        if (dashboardStateModel.data.isNotEmpty) {
+                                          for (int i = 0; i < dashboardStateModel.data.length; i++) {
+                                              data = dashboardStateModel.data[i] ;
+                                              print('@@data--1' +    data.stateName.toString());
 
+                                              break;
+                                          }
+                                        }
+                                    }
 
                                   });
                                 });

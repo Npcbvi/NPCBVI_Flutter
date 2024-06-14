@@ -76,8 +76,8 @@ class ApiController {
       dashboardStateModel = DashboardStateModel.fromJson(json.decode(response1.data));
       print("@@token" + dashboardStateModel.message);
       print("@@Result message----" + dashboardStateModel.message);
-      if (dashboardStateModel.status) {
-      }
+      print("@@Result message----" + dashboardStateModel.data.toString());
+
       Utils.showToast(dashboardStateModel.message, true);
       return dashboardStateModel;
     } catch (e) {
