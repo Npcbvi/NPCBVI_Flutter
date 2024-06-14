@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -17,7 +18,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   String randomString = "";
   bool showNGOResgistration = false;
   bool showSPORegistration = false;
-
+  bool isLoadingApi = true;
   void buildCaptcha() {
     const letters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -39,6 +40,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     super.initState();
     // To generate number on loading of page
     buildCaptcha();
+
   }
 
   @override
@@ -74,10 +76,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                        'Home',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w800),
-                      )),
+                            'Home',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -118,10 +121,19 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 showNGOResgistration = true;
                                 showSPORegistration = false;
                               } else if (_chosenValue == "SPO") {
+                                ApiController.getSatatAPi().then((value) {
+                                  setState(() {
+                                    print('@@getSatatAPi--1' + _chosenValue);
+                                    isLoadingApi = false;
+
+
+                                  });
+                                });
                                 print(
                                     '@@showSPORegistration--2' + _chosenValue);
                                 showNGOResgistration = false;
                                 showSPORegistration = true;
+
                               }
                             });
                           },
@@ -138,10 +150,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                         },
                         child: Container(
                             child: Text(
-                          'Login',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w800),
-                        )),
+                              'Login',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800),
+                            )),
                       ),
                     ],
                   ),
