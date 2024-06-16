@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -9,10 +10,17 @@ import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 
 import '../utils/Utils.dart';
+import 'dart:developer';
+import 'package:mohfw_npcbvi/src/model/cities_model.dart';
+import 'package:mohfw_npcbvi/src/model/country_state_model.dart';
+import 'package:http/http.dart' as http;
 
 class ApiController {
   static final int timeout = 18;
-
+  static const countriesStateURL =
+      'https://countriesnow.space/api/v0.1/countries/states';
+  static const cityURL =
+      'https://countriesnow.space/api/v0.1/countries/state/cities/q?country';
   static Future<LoginModel> loginAPiRequest(UserData user) async {
     LoginModel loginModel = LoginModel();
     Response response1;
@@ -86,5 +94,26 @@ class ApiController {
     }
     //Way to send url with methodname
   }
+  Future<CountryStateModel> getCountriesStates() async {
+    try {
+      var url = Uri.parse(countriesStateURL);
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        final CountryStateModel responseModel =
+        countryStateModelFromJson(response.body);
+        return responseModel;
+      } else {
+        return CountryStateModel(
+            error: true,
+            msg: 'Something went wrong: ${response.statusCode}',
+            data: []);
+      }
+    } catch (e) {
+      log('Exception: ${e.toString()}');
+      throw Exception(e.toString());
+    }
+  }
+
+
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

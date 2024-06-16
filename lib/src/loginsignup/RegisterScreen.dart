@@ -22,6 +22,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   bool showSPORegistration = false;
   bool isLoadingApi = true;
   DashboardStateModel dashboardStateModel;
+  String selectedCountry = 'Select Country';
   Data data;
   void buildCaptcha() {
     const letters =
