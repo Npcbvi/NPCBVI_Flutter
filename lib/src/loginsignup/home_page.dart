@@ -6,18 +6,11 @@ import 'package:mohfw_npcbvi/src/model/country_state_model.dart';
 import 'package:mohfw_npcbvi/src/repositories/country_state_city_repo.dart';
 
 class HomePage extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    throw _HomePageState();
-  }
-
-
-
-
+//no build method
+  _HomePage createState() => _HomePage(); // connect using createState
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePage extends State<HomePage> {
   final CountryStateCityRepo _countryStateCityRepo = CountryStateCityRepo();
 
   List<String> countries = [];

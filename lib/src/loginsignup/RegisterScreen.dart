@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
+import 'package:mohfw_npcbvi/src/model/country_state_model.dart';
+import 'package:mohfw_npcbvi/src/repositories/country_state_city_repo.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
@@ -24,6 +26,25 @@ class _RegisterScreen extends State<RegisterScreen> {
   DashboardStateModel dashboardStateModel;
   String selectedCountry = 'Select Country';
   Data data;
+  final CountryStateCityRepo _countryStateCityRepo = CountryStateCityRepo();
+  List<String> countries = [];
+  CountryStateModel countryStateModel =
+  CountryStateModel(error: false, msg: '', data: []);
+  bool isDataLoaded = false;
+
+  getCountries() async {
+    //
+    countryStateModel = await _countryStateCityRepo.getCountriesStates();
+    countries.add('Select Country');
+   // states.add('Select State');
+    //cities.add('Select City');
+    for (var element in countryStateModel.data) {
+      countries.add(element.name);
+    }
+    isDataLoaded = true;
+    setState(() {});
+    //
+  }
   void buildCaptcha() {
     const letters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -123,9 +144,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                               //  print('@@spinnerChooseValue--' + _chosenValue);
                               if (_chosenValue == "NGO") {
                                 print('@@NGO--1' + _chosenValue);
+
                                 showNGOResgistration = true;
                                 showSPORegistration = false;
                               } else if (_chosenValue == "SPO") {
+                                getCountries();
                                 ApiController.getSatatAPi().then((value) {
                                   setState(() {
                                     print('@@getSatatAPi--1' + _chosenValue);
@@ -262,6 +285,30 @@ class _RegisterScreen extends State<RegisterScreen> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: DropdownButton(
+                          isExpanded: true,
+                          value: selectedCountry,
+                          items: countries
+                              .map((String country) => DropdownMenuItem(
+                              value: country, child: Text(country)))
+                              .toList(),
+                          onChanged: (selectedValue) {
+                            //
+                            setState(() {
+                              selectedCountry = selectedValue;
+                            });
+                            // In Video we have used getStates();
+                            // getStates();
+                            // But for improvement we can use one extra check
+                          /*  if (selectedCountry != 'Select Country') {
+                              getStates();
+                            }*/
+                            //
+                          }),
+                    ),
+                    const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
