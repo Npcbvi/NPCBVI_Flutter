@@ -1,3 +1,4 @@
+/*
 
 
 import 'package:flutter/material.dart';
@@ -30,7 +31,6 @@ class _HomePage extends State<HomePage> {
 
   getCountries() async {
     //
-    countryStateModel = await _countryStateCityRepo.getCountriesStates();
     countries.add('Select Country');
     states.add('Select State');
     cities.add('Select City');
@@ -178,3 +178,4 @@ class _HomePage extends State<HomePage> {
     );
   }
 }
+*/

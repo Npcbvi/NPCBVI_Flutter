@@ -1,4 +1,14 @@
-class DashboardStateModel {
+// To parse this JSON data, do
+//
+//     final countryStateModel = countryStateModelFromJson(jsonString);
+
+import 'dart:convert';
+
+DashboardStateModel countryStateModelFromJson(String str) =>
+    DashboardStateModel.fromJson(json.decode(str));
+
+String countryStateModelToJson(DashboardStateModel data) =>
+    json.encode(data.toJson());class DashboardStateModel {
   String message;
   bool status;
   List<Data> data;

@@ -16,9 +16,9 @@ class CountryStateModel {
   List<Datum> data;
 
   CountryStateModel({
-   this.error,
-     this.msg,
-     this.data,
+    this.error,
+    this.msg,
+    this.data,
   });
 
   factory CountryStateModel.fromJson(Map<String, dynamic> json) =>
@@ -42,17 +42,18 @@ class Datum {
   List<States> states;
 
   Datum({
-     this.name,
-     this.iso3,
-     this.iso2,
-     this.states,
+    this.name,
+    this.iso3,
+    this.iso2,
+    this.states,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
         name: json["name"],
         iso3: json["iso3"],
         iso2: json["iso2"],
-        states: List<States>.from(json["states"].map((x) => States.fromJson(x))),
+        states:
+            List<States>.from(json["states"].map((x) => States.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,8 +69,8 @@ class States {
   String stateCode;
 
   States({
-     this.name,
-     this.stateCode,
+    this.name,
+    this.stateCode,
   });
 
   factory States.fromJson(Map<String, dynamic> json) => States(

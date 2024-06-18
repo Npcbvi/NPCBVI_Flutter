@@ -18,6 +18,8 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreen extends State<RegisterScreen> {
+  final _formKey = GlobalKey<FormState>();
+  bool _autovalidate = false;
   String _chosenValue;
   String randomString = "";
   bool showNGOResgistration = false;
@@ -25,21 +27,32 @@ class _RegisterScreen extends State<RegisterScreen> {
   bool isLoadingApi = true;
   DashboardStateModel dashboardStateModel;
   String selectedCountry = 'Select Country';
-  Data data;
   final CountryStateCityRepo _countryStateCityRepo = CountryStateCityRepo();
-  List<String> countries = [];
-  CountryStateModel countryStateModel =
-  CountryStateModel(error: false, msg: '', data: []);
+  List<String> statesName = [];
+  List<String> staCode = [];
+  List<int> state_code = [];
+
+  SPODataFields spoDataFields=new SPODataFields();
+
+  DashboardStateModel countryStateModel =
+  DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
+
+
 
   getCountries() async {
     //
     countryStateModel = await _countryStateCityRepo.getCountriesStates();
-    countries.add('Select Country');
-   // states.add('Select State');
+    statesName.add('Select Country');
+    // states.add('Select State');
     //cities.add('Select City');
     for (var element in countryStateModel.data) {
-      countries.add(element.name);
+      statesName.add(element.stateName);
+      staCode.add(element.code);
+      state_code.add(element.stateCode);
+      print("@@statesName"  +element.stateName);
+      print("@@statesCode"  +element.code);
+      print("@@state_code"  +element.stateCode.toString());
     }
     isDataLoaded = true;
     setState(() {});
@@ -55,7 +68,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     randomString = String.fromCharCodes(List.generate(
         length, (index) => letters.codeUnitAt(random.nextInt(letters.length))));
     setState(() {});
-    print("t@@he random string is $randomString");
+    print("@@ random string is $randomString");
   }
 
   // Primary Marquee text
@@ -149,7 +162,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 showSPORegistration = false;
                               } else if (_chosenValue == "SPO") {
                                 getCountries();
-                                ApiController.getSatatAPi().then((value) {
+                                /*        ApiController.getSatatAPi().then((value) {
                                   setState(() {
                                     print('@@getSatatAPi--1' + _chosenValue);
                                     isLoadingApi = false;
@@ -166,7 +179,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     }
 
                                   });
-                                });
+                                });*/
                                 print(
                                     '@@showSPORegistration--2' + _chosenValue);
                                 showNGOResgistration = false;
@@ -287,10 +300,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: DropdownButton(
+                      child: DropdownButtonFormField(
                           isExpanded: true,
                           value: selectedCountry,
-                          items: countries
+                          validator: (value) =>  value.isEmpty ? 'field required' : null,
+                          items: statesName
                               .map((String country) => DropdownMenuItem(
                               value: country, child: Text(country)))
                               .toList(),
@@ -302,12 +316,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                             // In Video we have used getStates();
                             // getStates();
                             // But for improvement we can use one extra check
-                          /*  if (selectedCountry != 'Select Country') {
+                            /*  if (selectedCountry != 'Select Country') {
                               getStates();
                             }*/
                             //
                           }),
                     ),
+
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
@@ -435,11 +450,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                       child: ElevatedButton(
-                        child: Text('Submit'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                        ),
-                        onPressed: () {},
+                          child: Text('Submit'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                          ),
+                          onPressed: () {
+                            print('@@Spo Submit Button');
+                            _spoRegistrationSubmit();
+                          }
                       ),
                     ),
                     Padding(
@@ -461,8 +479,89 @@ class _RegisterScreen extends State<RegisterScreen> {
       ),
     );
   }
+  Future<void> _spoRegistrationSubmit() async {
+    TextEditingController _spoNAme = new TextEditingController();
+    TextEditingController _spoMobile = new TextEditingController();
+    TextEditingController _spoEmailId = new TextEditingController();
+    TextEditingController _spoDestination = new TextEditingController();
+    TextEditingController _spoPhoneNumber = new TextEditingController();
+    TextEditingController _spoOfficeAddress = new TextEditingController();
+    TextEditingController _spoPinCode = new TextEditingController();
+    TextEditingController _spoCaptchaCodeEnter= new TextEditingController();
+  //  spoDataFields.state = _spoNAme.text.toString().trim();
+    spoDataFields.Name = _spoNAme.text.toString().trim();
+    spoDataFields.mobileNumber = _spoMobile.text.toString().trim();
+    spoDataFields.emailId = _spoEmailId.text.toString().trim();
+    spoDataFields.designation = _spoDestination.text.toString().trim();
+    spoDataFields.PhoneNumber = _spoPhoneNumber.text.toString().trim();
+    spoDataFields.OfficeAddress = _spoOfficeAddress.text.toString().trim();
+    spoDataFields.PinCode = _spoPinCode.text.toString().trim();
+    spoDataFields.CaptchaCodeEnter = _spoCaptchaCodeEnter.text.toString().trim();
+
+    if (spoDataFields.Name.isEmpty) {
+      Utils.showToast("Please enter Name !", false);
+      return;
+    }
+    if (spoDataFields.mobileNumber.isEmpty) {
+      Utils.showToast("Please enter Mobile number !", false);
+      return;
+    }
+    if (spoDataFields.emailId.isEmpty) {
+      Utils.showToast("Please enter EmailId !", false);
+      return;
+    } if (spoDataFields.designation.isEmpty) {
+      Utils.showToast("Please enter Destination !", false);
+      return;
+    }
+    if (spoDataFields.PhoneNumber.isEmpty) {
+      Utils.showToast("Please enter PhoneNumber !", false);
+      return;
+    }
+    if (spoDataFields.OfficeAddress.isEmpty) {
+      Utils.showToast("Please enter Office Address !", false);
+      return;
+    }
+    if (spoDataFields.PinCode.isEmpty) {
+      Utils.showToast("Please enter PinCode !", false);
+      return;
+    }
+    if (spoDataFields.CaptchaCodeEnter.isEmpty) {
+      Utils.showToast("Please enter Matched Captcha !", false);
+      return;
+    }
+    else {
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog1(context);
+          ApiController.spoAPiRquest(spoDataFields).then((response) async {
+            Utils.hideProgressDialog1(context);
+
+            print('@@spoAPiRquest ---' + response.toString());
+            if (response != null && response.status) {
+              Navigator.pop(context);
+            }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
+    }
+  }
+
 }
 
+class SPODataFields {
+  String state;
+  String Name ;
+  String mobileNumber;
+  String emailId;
+  String designation ;
+  String std ;
+  String PhoneNumber ;
+  String OfficeAddress;
+  String PinCode ;
+  String CaptchaCodeEnter;
+}
 //NGO Registration view
 
 //https://medium.flutterdevs.com/dropdown-in-flutter-324ae9caa743

@@ -6,8 +6,10 @@ import 'package:http/http.dart' as http;
 import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 
 import '../utils/Utils.dart';
 import 'dart:developer';
@@ -17,8 +19,7 @@ import 'package:http/http.dart' as http;
 
 class ApiController {
   static final int timeout = 18;
-  static const countriesStateURL =
-      'https://countriesnow.space/api/v0.1/countries/states';
+
   static const cityURL =
       'https://countriesnow.space/api/v0.1/countries/state/cities/q?country';
   static Future<LoginModel> loginAPiRequest(UserData user) async {
@@ -60,60 +61,48 @@ class ApiController {
     }
     //Way to send url with methodname
   }
-  static Future<DashboardStateModel> getSatatAPi() async {
-    DashboardStateModel dashboardStateModel = DashboardStateModel();
+
+  static Future<SPORegisterModel> spoAPiRquest(SPODataFields spoDataFields) async {
+    SPORegisterModel spoRegisterModel = SPORegisterModel();
     Response response1;
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.State;
+      var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
       //Way to send headers
-     /* Map<String, String> headers = {
+      Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
         "apipassword": "PWD123",
-      };*/
+      };
       //Way to send params
-
+      var body =
+      json.encode({"state_code": spoDataFields.state, "name":spoDataFields.Name,"mobile":spoDataFields.mobileNumber,
+        "email_id":spoDataFields.emailId,"designation":spoDataFields.designation,"std":spoDataFields.std,"phone_no":spoDataFields.PhoneNumber,
+        "office_address":spoDataFields.OfficeAddress,  "pincode":spoDataFields.PinCode,  "user_id":"",
+      });
       //Way to send network calls
       Dio dio = new Dio();
-      response1 = await dio.get(url,
+      response1 = await dio.post(url,
+          data: body,
           options: new Options(
+              headers: headers,
               contentType: "application/json",
               responseType: ResponseType.plain));
-      print("@@Response--Api" + response1.toString());
-      dashboardStateModel = DashboardStateModel.fromJson(json.decode(response1.data));
-      print("@@token" + dashboardStateModel.message);
-      print("@@Result message----" + dashboardStateModel.message);
-      print("@@Result message----" + dashboardStateModel.data.toString());
-
-      Utils.showToast(dashboardStateModel.message, true);
-      return dashboardStateModel;
+      print("@@SPOURL" + url+body);
+      print("@@SPOURL--Api" + response1.toString());
+      spoRegisterModel = SPORegisterModel.fromJson(json.decode(response1.data));
+      print("@@token" + spoRegisterModel.message);
+    //  Result result = loginModel.result;
+    //  print("@@Result message----" + result.message);
+      if (spoRegisterModel.status) {
+      }
+      Utils.showToast(spoRegisterModel.message, true);
+      return spoRegisterModel;
     } catch (e) {
       Utils.showToast(e.toString(), true);
       return null;
     }
     //Way to send url with methodname
   }
-  Future<CountryStateModel> getCountriesStates() async {
-    try {
-      var url = Uri.parse(countriesStateURL);
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        final CountryStateModel responseModel =
-        countryStateModelFromJson(response.body);
-        return responseModel;
-      } else {
-        return CountryStateModel(
-            error: true,
-            msg: 'Something went wrong: ${response.statusCode}',
-            data: []);
-      }
-    } catch (e) {
-      log('Exception: ${e.toString()}');
-      throw Exception(e.toString());
-    }
-  }
-
-
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

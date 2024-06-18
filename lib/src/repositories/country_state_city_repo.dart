@@ -1,27 +1,29 @@
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
+import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/cities_model.dart';
-import 'package:mohfw_npcbvi/src/model/country_state_model.dart';
 
 class CountryStateCityRepo {
   static const countriesStateURL =
-      'https://countriesnow.space/api/v0.1/countries/states';
+      'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State';
   static const cityURL =
       'https://countriesnow.space/api/v0.1/countries/state/cities/q?country';
 
-  Future<CountryStateModel> getCountriesStates() async {
+  Future<DashboardStateModel> getCountriesStates() async {
     try {
       var url = Uri.parse(countriesStateURL);
+      print('@@State_url_1'+url.toString());
       var response = await http.get(url);
+      print('@@State_response_1'+response.toString());
       if (response.statusCode == 200) {
-        final CountryStateModel responseModel =
+        final DashboardStateModel responseModel =
             countryStateModelFromJson(response.body);
         return responseModel;
       } else {
-        return CountryStateModel(
-            error: true,
-            msg: 'Something went wrong: ${response.statusCode}',
+        return DashboardStateModel(
+            status: false,
+            message: 'Something went wrong: ${response.statusCode}',
             data: []);
       }
     } catch (e) {
