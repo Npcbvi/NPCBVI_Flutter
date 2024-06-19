@@ -8,7 +8,8 @@ DashboardStateModel countryStateModelFromJson(String str) =>
     DashboardStateModel.fromJson(json.decode(str));
 
 String countryStateModelToJson(DashboardStateModel data) =>
-    json.encode(data.toJson());class DashboardStateModel {
+    json.encode(data.toJson());
+class DashboardStateModel {
   String message;
   bool status;
   List<Data> data;

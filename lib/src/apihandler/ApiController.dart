@@ -76,10 +76,11 @@ class ApiController {
       };
       //Way to send params
       var body =
-      json.encode({"state_code": spoDataFields.state, "name":spoDataFields.Name,"mobile":spoDataFields.mobileNumber,
+      json.encode({"state_code":spoDataFields.state, "name":spoDataFields.Name,"mobile":spoDataFields.mobileNumber,
         "email_id":spoDataFields.emailId,"designation":spoDataFields.designation,"std":spoDataFields.std,"phone_no":spoDataFields.PhoneNumber,
-        "office_address":spoDataFields.OfficeAddress,  "pincode":spoDataFields.PinCode,  "user_id":"",
+        "office_address":spoDataFields.OfficeAddress,  "pincode":spoDataFields.PinCode,  "user_id":"NPCB" +spoDataFields.codeSPOs ,
       });
+      print("@@SPOURL" + url+body);
       //Way to send network calls
       Dio dio = new Dio();
       response1 = await dio.post(url,

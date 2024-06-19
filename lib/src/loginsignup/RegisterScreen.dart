@@ -1,5 +1,6 @@
+import 'dart:convert';
 import 'dart:math';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
@@ -10,9 +11,9 @@ import 'package:mohfw_npcbvi/src/repositories/country_state_city_repo.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterScreen extends StatefulWidget {
-
   @override
   _RegisterScreen createState() => _RegisterScreen();
 }
@@ -20,6 +21,8 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreen extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
+  Future<List<Data>> _future;
+  Data _selectedUser;
   String _chosenValue;
   String randomString = "";
   bool showNGOResgistration = false;
@@ -31,33 +34,47 @@ class _RegisterScreen extends State<RegisterScreen> {
   List<String> statesName = [];
   List<String> staCode = [];
   List<int> state_code = [];
-
-  SPODataFields spoDataFields=new SPODataFields();
+  TextEditingController _spoNAmeController = new TextEditingController();
+  TextEditingController _spoMobileController = new TextEditingController();
+  TextEditingController _spoEmailIdController = new TextEditingController();
+  TextEditingController _spoDestinationController = new TextEditingController();
+  TextEditingController _spoPhoneNumberController = new TextEditingController();
+  TextEditingController _spoOfficeAddressController =
+      new TextEditingController();
+  TextEditingController _spoPinCodeController = new TextEditingController();
+  TextEditingController _spoCaptchaCodeEnterController =
+      new TextEditingController();
+  SPODataFields spoDataFields = new SPODataFields();
 
   DashboardStateModel countryStateModel =
-  DashboardStateModel(status: false, message: '', data: []);
+      DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
+  int stateCodeSPO;
+  String CodeSPO;
 
-
-
-  getCountries() async {
+  /*getCountries() async {
     //
+    isDataLoaded = false;
     countryStateModel = await _countryStateCityRepo.getCountriesStates();
     statesName.add('Select Country');
-    // states.add('Select State');
-    //cities.add('Select City');
     for (var element in countryStateModel.data) {
       statesName.add(element.stateName);
       staCode.add(element.code);
       state_code.add(element.stateCode);
-      print("@@statesName"  +element.stateName);
-      print("@@statesCode"  +element.code);
-      print("@@state_code"  +element.stateCode.toString());
     }
     isDataLoaded = true;
     setState(() {});
     //
+  }*/
+  Future<List<Data>> _getUsers() async {
+    final response = await http
+        .get(Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
+    Map<String, dynamic> json = jsonDecode(response.body);
+    final DashboardStateModel dashboardStateModel =
+        DashboardStateModel.fromJson(json);
+    return dashboardStateModel.data;
   }
+
   void buildCaptcha() {
     const letters =
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
@@ -79,7 +96,6 @@ class _RegisterScreen extends State<RegisterScreen> {
     super.initState();
     // To generate number on loading of page
     buildCaptcha();
-
   }
 
   @override
@@ -115,11 +131,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                            'Home',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800),
-                          )),
+                        'Home',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -161,30 +176,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 showNGOResgistration = true;
                                 showSPORegistration = false;
                               } else if (_chosenValue == "SPO") {
-                                getCountries();
-                                /*        ApiController.getSatatAPi().then((value) {
-                                  setState(() {
-                                    print('@@getSatatAPi--1' + _chosenValue);
-                                    isLoadingApi = false;
-                                    if (value != null && value.status) {
-                                      dashboardStateModel = value;
-                                        if (dashboardStateModel.data.isNotEmpty) {
-                                          for (int i = 0; i < dashboardStateModel.data.length; i++) {
-                                              data = dashboardStateModel.data[i] ;
-                                              print('@@data--1' +    data.stateName.toString());
-
-                                              break;
-                                          }
-                                        }
-                                    }
-
-                                  });
-                                });*/
+                                //getCountries();
+                                _future = _getUsers();
                                 print(
                                     '@@showSPORegistration--2' + _chosenValue);
                                 showNGOResgistration = false;
                                 showSPORegistration = true;
-
                               }
                             });
                           },
@@ -201,11 +198,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                         },
                         child: Container(
                             child: Text(
-                              'Login',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800),
-                            )),
+                          'Login',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w800),
+                        )),
                       ),
                     ],
                   ),
@@ -298,15 +294,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    Padding(
+                    /*     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: DropdownButtonFormField(
                           isExpanded: true,
                           value: selectedCountry,
-                          validator: (value) =>  value.isEmpty ? 'field required' : null,
+                          validator: (value) =>
+                              value.isEmpty ? 'field required' : null,
                           items: statesName
-                              .map((String country) => DropdownMenuItem(
-                              value: country, child: Text(country)))
+                              .map((country) => DropdownMenuItem(
+                                  value: country, child: Text(country)))
                               .toList(),
                           onChanged: (selectedValue) {
                             //
@@ -316,17 +313,61 @@ class _RegisterScreen extends State<RegisterScreen> {
                             // In Video we have used getStates();
                             // getStates();
                             // But for improvement we can use one extra check
-                            /*  if (selectedCountry != 'Select Country') {
-                              getStates();
-                            }*/
+
                             //
                           }),
-                    ),
+                    ),*/
+                    Center(
+                      child: FutureBuilder<List<Data>>(
+                          future: _future,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
 
-                    const SizedBox(height: 20),
+                            if (snapshot.data == null) {
+                              return const CircularProgressIndicator();
+                            }
+
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text(
+                                    'Select State:',
+                                  ),
+                                  DropdownButtonFormField<Data>(
+                                    onChanged: (user) => setState(() {
+                                      _selectedUser = user;
+                                      stateCodeSPO = int.parse(
+                                          (user.stateCode).toString());
+                                      print('@@statenameSPO' +
+                                          stateCodeSPO.toString());
+                                      CodeSPO = user.code;
+                                      print('@@CodeSPO___1' +
+                                          stateCodeSPO.toString());
+                                    }),
+                                    value: _selectedUser,
+                                    items: [
+                                      ...snapshot.data.map(
+                                        (user) => DropdownMenuItem(
+                                          value: user,
+                                          child: Text('${user.stateName}'),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
+                        controller: _spoNAmeController,
                         decoration: InputDecoration(
                             label: Text('Name'),
                             hintText: 'Name',
@@ -340,7 +381,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
-                        obscureText: true,
+                        keyboardType: TextInputType.number,
+                        controller: _spoMobileController,
                         decoration: InputDecoration(
                             label: Text('Mobile Number'),
                             hintText: 'Mobile Number',
@@ -351,6 +393,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
+                        controller: _spoEmailIdController,
                         decoration: InputDecoration(
                             label: Text('EmailID'),
                             hintText: 'EmailID',
@@ -361,6 +404,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
+                        controller: _spoDestinationController,
                         decoration: InputDecoration(
                             label: Text('Destination'),
                             hintText: 'Destination',
@@ -371,6 +415,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _spoPhoneNumberController,
                         decoration: InputDecoration(
                             label: Text('Phone Number'),
                             hintText: 'Phone Number',
@@ -381,6 +427,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
+                        controller: _spoOfficeAddressController,
                         decoration: InputDecoration(
                             label: Text('Office Address'),
                             hintText: 'Office Address',
@@ -391,6 +438,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
+                        controller: _spoPinCodeController,
                         decoration: InputDecoration(
                             label: Text('Pin Code'),
                             hintText: 'Pin Code',
@@ -409,7 +457,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                               decoration: BoxDecoration(
                                   border: Border.all(width: 2, color: red1)),
                               child: Text(
-                                "randomString",
+                                '${randomString}',
                                 style: TextStyle(
                                     color: red1, fontWeight: FontWeight.w500),
                               )),
@@ -433,6 +481,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                       child: TextFormField(
+                        controller: _spoCaptchaCodeEnterController,
+
                         /*  onChanged: (value) {
                         setState(() {
                           isVerified = false;
@@ -457,8 +507,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                           onPressed: () {
                             print('@@Spo Submit Button');
                             _spoRegistrationSubmit();
-                          }
-                      ),
+                          }),
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
@@ -467,7 +516,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          _spoNAmeController.clear();
+                          _spoMobileController.clear();
+                          _spoPinCodeController.clear();
+                          _spoOfficeAddressController.clear();
+                          _spoEmailIdController.clear();
+                          _spoPhoneNumberController.clear();
+                          _spoCaptchaCodeEnterController.clear();
+                          _spoDestinationController.clear();
+                        },
                       ),
                     ),
                   ],
@@ -479,25 +537,24 @@ class _RegisterScreen extends State<RegisterScreen> {
       ),
     );
   }
-  Future<void> _spoRegistrationSubmit() async {
-    TextEditingController _spoNAme = new TextEditingController();
-    TextEditingController _spoMobile = new TextEditingController();
-    TextEditingController _spoEmailId = new TextEditingController();
-    TextEditingController _spoDestination = new TextEditingController();
-    TextEditingController _spoPhoneNumber = new TextEditingController();
-    TextEditingController _spoOfficeAddress = new TextEditingController();
-    TextEditingController _spoPinCode = new TextEditingController();
-    TextEditingController _spoCaptchaCodeEnter= new TextEditingController();
-  //  spoDataFields.state = _spoNAme.text.toString().trim();
-    spoDataFields.Name = _spoNAme.text.toString().trim();
-    spoDataFields.mobileNumber = _spoMobile.text.toString().trim();
-    spoDataFields.emailId = _spoEmailId.text.toString().trim();
-    spoDataFields.designation = _spoDestination.text.toString().trim();
-    spoDataFields.PhoneNumber = _spoPhoneNumber.text.toString().trim();
-    spoDataFields.OfficeAddress = _spoOfficeAddress.text.toString().trim();
-    spoDataFields.PinCode = _spoPinCode.text.toString().trim();
-    spoDataFields.CaptchaCodeEnter = _spoCaptchaCodeEnter.text.toString().trim();
 
+  Future<void> _spoRegistrationSubmit() async {
+    spoDataFields.state = stateCodeSPO;
+    spoDataFields.codeSPOs = CodeSPO;
+    spoDataFields.Name = _spoNAmeController.text.toString().trim();
+    spoDataFields.mobileNumber = _spoMobileController.text.toString().trim();
+    spoDataFields.emailId = _spoEmailIdController.text.toString().trim();
+    spoDataFields.designation =
+        _spoDestinationController.text.toString().trim();
+    spoDataFields.PhoneNumber =
+        _spoPhoneNumberController.text.toString().trim();
+    spoDataFields.OfficeAddress =
+        _spoOfficeAddressController.text.toString().trim();
+    spoDataFields.PinCode = _spoPinCodeController.text.toString().trim();
+    spoDataFields.CaptchaCodeEnter =
+        _spoCaptchaCodeEnterController.text.toString().trim();
+    print('@@stateCodeSPO.state' + stateCodeSPO.toString());
+    print('@@spoDataFields.spoDataFields' + spoDataFields.codeSPOs);
     if (spoDataFields.Name.isEmpty) {
       Utils.showToast("Please enter Name !", false);
       return;
@@ -506,10 +563,12 @@ class _RegisterScreen extends State<RegisterScreen> {
       Utils.showToast("Please enter Mobile number !", false);
       return;
     }
-    if (spoDataFields.emailId.isEmpty) {
-      Utils.showToast("Please enter EmailId !", false);
+    if (spoDataFields.emailId.isNotEmpty &&
+        !isValidEmail(_spoEmailIdController.text.toString().trim())) {
+      Utils.showToast("Please enter valid email", false);
       return;
-    } if (spoDataFields.designation.isEmpty) {
+    }
+    if (spoDataFields.designation.isEmpty) {
       Utils.showToast("Please enter Destination !", false);
       return;
     }
@@ -528,8 +587,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     if (spoDataFields.CaptchaCodeEnter.isEmpty) {
       Utils.showToast("Please enter Matched Captcha !", false);
       return;
-    }
-    else {
+    } else {
       Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
           Utils.showProgressDialog1(context);
@@ -548,18 +606,28 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
+  bool isValidEmail(String input) {
+    //Email is opation
+    if (input.trim().isEmpty) return true;
+    final RegExp regex = new RegExp(
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+    bool isMatch = regex.hasMatch(input);
+    if (!isMatch) Utils.showToast("Please enter valid email", false);
+    return isMatch;
+  }
 }
 
 class SPODataFields {
-  String state;
-  String Name ;
+  int state;
+  String Name;
   String mobileNumber;
   String emailId;
-  String designation ;
-  String std ;
-  String PhoneNumber ;
+  String designation;
+  String std;
+  String PhoneNumber;
   String OfficeAddress;
-  String PinCode ;
+  String PinCode;
+  String codeSPOs;
   String CaptchaCodeEnter;
 }
 //NGO Registration view
