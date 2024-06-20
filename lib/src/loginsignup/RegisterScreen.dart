@@ -73,7 +73,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
   int stateCodeSPO, disrtcCode,stateCodeDPM;
-  String CodeSPO;
+  String CodeSPO,codeDPM;
 
   /*getCountries() async {
     //
@@ -684,13 +684,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                                           (user.stateCode).toString());
                                       print('@@statenameSPO' +
                                           stateCodeDPM.toString());
-                                      CodeSPO = user.code;
+                                      codeDPM = user.code;
                                       print('@@CodeSPO___1' +
                                           stateCodeDPM.toString());
 
-                                      if (CodeSPO != null) {
+                                      if (codeDPM != null) {
                                         print('@@CodeSPO___66' +
-                                            stateCodeDPM.toString());
+                                            codeDPM.toString());
 
                                         SharedPrefs.storeSharedValue(
                                             AppConstant.txtStateDPmValue, stateCodeDPM);
@@ -748,9 +748,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                                               .toString());
                                       print('@@disrtcCode' +
                                           disrtcCode.toString());
-                                      //  CodeSPO = Districtuser.districtCode;
-                                      *//* print('@@CodeSPO___1' +
-                                          disrtcCode.toString());*//*
+                                      //  CodeDPM = Districtuser.districtCode;
+                                      *//* print('@@CodeDPM' +
+                                          CodeDPM.toString());*//*
                                     }),
                                     value: _selectedUserDistrict,
                                     items: [
@@ -785,7 +785,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
                         keyboardType: TextInputType.number,
-                        controller: _spoMobileController,
+                        controller: _dpmMobileController,
                         decoration: InputDecoration(
                             label: Text('Mobile Number'),
                             hintText: 'Mobile Number',
@@ -942,22 +942,23 @@ class _RegisterScreen extends State<RegisterScreen> {
   }
 
   Future<void> _DPMRegistrationSubmit() async {
+
     dpmDataFields.stateDPM = stateCodeDPM;
-    dpmDataFields.codeSPOsDPM = CodeSPO;
-    dpmDataFields.NameDPM = _spoNAmeController.text.toString().trim();
-    dpmDataFields.mobileNumberDPM = _spoMobileController.text.toString().trim();
-    dpmDataFields.emailIdDPM = _spoEmailIdController.text.toString().trim();
+    dpmDataFields.distCodeDPM =18; //CodeDPM; testing purpose
+    dpmDataFields.NameDPM = _dpmNAmeController.text.toString().trim();
+    dpmDataFields.mobileNumberDPM = _dpmMobileController.text.toString().trim();
+    dpmDataFields.emailIdDPM = _dpmEmailIdController.text.toString().trim();
     dpmDataFields.designationDPM =
-        _spoDestinationController.text.toString().trim();
+        _dpmDestinationController.text.toString().trim();
     dpmDataFields.PhoneNumberDPM =
-        _spoPhoneNumberController.text.toString().trim();
+        _dpmPhoneNumberController.text.toString().trim();
     dpmDataFields.OfficeAddressDPM =
-        _spoOfficeAddressController.text.toString().trim();
-    dpmDataFields.PinCodeDPM = _spoPinCodeController.text.toString().trim();
+        _dpmOfficeAddressController.text.toString().trim();
+    dpmDataFields.PinCodeDPM = _dpmPinCodeController.text.toString().trim();
     dpmDataFields.CaptchaCodeEnterDPM =
-        _spoCaptchaCodeEnterController.text.toString().trim();
+        _dpmCaptchaCodeEnterController.text.toString().trim();
+    dpmDataFields.codeSPOsDPM=codeDPM;
     print('@@stateCodeSPO.state' + dpmDataFields.toString());
-    print('@@spoDataFields.spoDataFields' + dpmDataFields.codeSPOsDPM);
     if (dpmDataFields.NameDPM.isEmpty) {
       Utils.showToast("Please enter Name !", false);
       return;

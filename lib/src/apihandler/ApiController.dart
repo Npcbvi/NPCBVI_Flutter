@@ -112,7 +112,7 @@ class ApiController {
     Response response1;
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
+      var url = ApiConstants.baseUrl + ApiConstants.DpmRegistration;
       //Way to send headers
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -141,8 +141,9 @@ class ApiController {
       //  Result result = loginModel.result;
       //  print("@@Result message----" + result.message);
       if (dpmRegistartionModel.status) {
+        Utils.showToast(dpmRegistartionModel.message, true);
+
       }
-      Utils.showToast(dpmRegistartionModel.message, true);
       return dpmRegistartionModel;
     } catch (e) {
       Utils.showToast(e.toString(), true);

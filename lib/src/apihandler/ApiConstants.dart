@@ -6,6 +6,8 @@ class ApiConstants {
   static String State = 'State';
 
   static String spoRegistration = 'SpoRegistration';
+  static String DpmRegistration = 'DpmRegistration';
+
   static final String noInternet = "No intenet connection";
 
 // used url
