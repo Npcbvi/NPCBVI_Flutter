@@ -9,6 +9,7 @@ import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 
 import '../utils/Utils.dart';
@@ -62,7 +63,7 @@ class ApiController {
     //Way to send url with methodname
   }
 
-  static Future<SPORegisterModel> spoAPiRquest(SPODataFields spoDataFields) async {
+  static Future<SPORegisterModel> spoRegistrationAPiRquest(SPODataFields spoDataFields) async {
     SPORegisterModel spoRegisterModel = SPORegisterModel();
     Response response1;
 
@@ -99,6 +100,50 @@ class ApiController {
       }
       Utils.showToast(spoRegisterModel.message, true);
       return spoRegisterModel;
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return null;
+    }
+    //Way to send url with methodname
+  }
+
+  static Future<DPMRegistartionModel> DPMRegistrationAPiRquest(DPMDataFields dpmDataFields) async {
+    DPMRegistartionModel dpmRegistartionModel = DPMRegistartionModel();
+    Response response1;
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
+      //Way to send headers
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+      //Way to send params
+      var body =
+      json.encode({"state_code":dpmDataFields.stateDPM,"district_code":dpmDataFields.distCodeDPM, "name":dpmDataFields.NameDPM,"mobile":dpmDataFields.mobileNumberDPM,
+        "email_id":dpmDataFields.emailIdDPM,"designation":dpmDataFields.designationDPM,"std":dpmDataFields.stdDPM,"phone_no":dpmDataFields.PhoneNumberDPM,
+        "office_address":dpmDataFields.OfficeAddressDPM,  "pincode":dpmDataFields.PinCodeDPM,  "user_id":"NPCB" +dpmDataFields.codeSPOsDPM ,
+      });
+      print("@@SPOURL" + url+body);
+      //Way to send network calls
+      Dio dio = new Dio();
+      response1 = await dio.post(url,
+          data: body,
+          options: new Options(
+              headers: headers,
+              contentType: "application/json",
+              responseType: ResponseType.plain));
+      print("@@SPOURL" + url+body);
+      print("@@SPOURL--Api" + response1.toString());
+      dpmRegistartionModel = DPMRegistartionModel.fromJson(json.decode(response1.data));
+      print("@@token" + dpmRegistartionModel.message);
+      //  Result result = loginModel.result;
+      //  print("@@Result message----" + result.message);
+      if (dpmRegistartionModel.status) {
+      }
+      Utils.showToast(dpmRegistartionModel.message, true);
+      return dpmRegistartionModel;
     } catch (e) {
       Utils.showToast(e.toString(), true);
       return null;

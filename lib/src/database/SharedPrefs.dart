@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,5 +19,13 @@ class SharedPrefs{
     var user = LoginModel.fromJson(userMap);
     return user;
   }
+  static Future storeSharedValue(String key, int value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(key, value);
+  }
 
+  static Future getStoreSharedValue(String key) async {
+    SharedPreferences sharedUser = await SharedPreferences.getInstance();
+    return sharedUser.getInt(key);
+  }
 }
