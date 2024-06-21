@@ -20,8 +20,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreen extends State<LoginScreen> {
   String menu;
-  TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 20.0);
-  TextStyle linkStyle = TextStyle(color: Colors.blue);
+  TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 16.0);
+  TextStyle linkStyle = TextStyle(color: Colors.blue,fontSize: 14.0);
   // present buld method
   //create two class
   UserData userData = new UserData(); // dat aget in  edittext and send apis
@@ -101,10 +101,20 @@ class _LoginScreen extends State<LoginScreen> {
                           TextSpan(text:    'In order to login for the first time into the new web application it is necessary to'
                               ' register and upload certain documents and information as detailed below. Hence keep'
                               ' the scanned copy of these documents handy before starting the process of registration.'
-                             ),
+                              +'\n'+ ' CHECKLIST FOR REGISTRATION'
+                              +'\n'+ ' For NGOs'
+                              +'\n'+  ' Darpan Number is must for registration. If you havent registered on Darpan portal'
 
+                             ),
                           TextSpan(
-                              text: 'Click here.',
+                              text: '  Click here.',
+                              style: linkStyle,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                print("@@Darpan link webview here");
+                                }),
+                          TextSpan(
+                              text: '\n Read more.',
                               style: linkStyle,
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
