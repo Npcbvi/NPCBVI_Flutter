@@ -113,6 +113,7 @@ class _LoginScreen extends State<LoginScreen> {
                                 ..onTap = () {
                                 print("@@Darpan link webview here");
                                 }),
+
                           TextSpan(
                               text: '\n Read more.',
                               style: linkStyle,
@@ -126,26 +127,6 @@ class _LoginScreen extends State<LoginScreen> {
                 ),
               ),
 
-            /*  Container(
-                  width: double.infinity,
-                  height: 220,
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      showDataAlert();
-                    },
-
-                    child: Text(
-                      'In order to login for the first time into the new web application it is necessary to'
-                      'register and upload certain documents and information as detailed below. Hence keep'
-                          'the scanned copy of these documents handy before starting the process of registration.'
-                      '\n' 'CHECKLIST FOR REGISTRATION'
-                          '\n''For NGOs'
-                          '\n''Darpan Number is must for registration. If you havent registered on Darpan portal'
-                          '\n''Click here.',
-                    ),
-                  ),
-              ),*/
 
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
