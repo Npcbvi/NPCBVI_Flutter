@@ -97,8 +97,9 @@ class ApiController {
     //  Result result = loginModel.result;
     //  print("@@Result message----" + result.message);
       if (spoRegisterModel.status) {
+        Utils.showToast(spoRegisterModel.message, true);
+
       }
-      Utils.showToast(spoRegisterModel.message, true);
       return spoRegisterModel;
     } catch (e) {
       Utils.showToast(e.toString(), true);

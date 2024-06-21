@@ -165,6 +165,7 @@ class _RegisterScreen extends State<RegisterScreen> {
               margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
               child: Container(
                 color: Colors.blue,
+
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
@@ -11,7 +12,7 @@ import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
-
+import 'package:flutter/gestures.dart';
 class LoginScreen extends StatefulWidget {
 //no build method
   _LoginScreen createState() => _LoginScreen(); // connect using createState
@@ -19,7 +20,8 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreen extends State<LoginScreen> {
   String menu;
-
+  TextStyle defaultStyle = TextStyle(color: Colors.grey, fontSize: 20.0);
+  TextStyle linkStyle = TextStyle(color: Colors.blue);
   // present buld method
   //create two class
   UserData userData = new UserData(); // dat aget in  edittext and send apis
@@ -66,13 +68,75 @@ class _LoginScreen extends State<LoginScreen> {
             'Login',
             style: new TextStyle(color: Colors.white),
           )),
-      body: Center(
-        child: Container(
-          margin: EdgeInsets.all(10),
-          alignment: Alignment.center,
-          child: ListView(
-            shrinkWrap: true,
+
+
+      body:SingleChildScrollView(
+        child: SizedBox(
+          height: MediaQuery.of(context).size.height - MediaQuery.of(context).padding.top,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Expanded(
+                  child: Marquee(
+                    text: 'NGO Darpan number is mandatory for registration.',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize:20,color: Colors.red),
+                    velocity: 50.0, //speed
+                    pauseAfterRound: Duration(seconds: 1),
+                    startPadding: 10.0,
+                    accelerationDuration: Duration(seconds: 1),
+                    accelerationCurve: Curves.linear,
+                    decelerationDuration: Duration(milliseconds: 500),
+                    decelerationCurve: Curves.easeOut,
+                  )
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),
+                child: Container(
+                  width: double.infinity,
+                  height: 220,
+                  child: RichText(
+                      text: TextSpan(
+                        style: defaultStyle,
+                        children: <TextSpan>[
+                          TextSpan(text:    'In order to login for the first time into the new web application it is necessary to'
+                              ' register and upload certain documents and information as detailed below. Hence keep'
+                              ' the scanned copy of these documents handy before starting the process of registration.'
+                             ),
+
+                          TextSpan(
+                              text: 'Click here.',
+                              style: linkStyle,
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                 showDataAlert();
+                                }),
+                        ],
+                      ),
+                  ),
+                ),
+              ),
+
+            /*  Container(
+                  width: double.infinity,
+                  height: 220,
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      showDataAlert();
+                    },
+
+                    child: Text(
+                      'In order to login for the first time into the new web application it is necessary to'
+                      'register and upload certain documents and information as detailed below. Hence keep'
+                          'the scanned copy of these documents handy before starting the process of registration.'
+                      '\n' 'CHECKLIST FOR REGISTRATION'
+                          '\n''For NGOs'
+                          '\n''Darpan Number is must for registration. If you havent registered on Darpan portal'
+                          '\n''Click here.',
+                    ),
+                  ),
+              ),*/
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: new TextField(
@@ -178,17 +242,17 @@ class _LoginScreen extends State<LoginScreen> {
               ),
               InkWell(
                 onTap: () {
-                   Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => RegisterScreen()),
-                   );
+                  );
                 },
                 child: addSignUpButton(),
               ),
               MaterialButton(
                 onPressed: () {
-                   Navigator.push(context,
+                  Navigator.push(context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()),
                   );
                 },
@@ -213,11 +277,6 @@ class _LoginScreen extends State<LoginScreen> {
                     children: [Icon(Icons.verified), Text("Verified")],
                   ),
                 )
-              /* else
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: const Text("Please enter value you see on screen"),
-                ),*/
             ],
           ),
         ),
@@ -292,7 +351,75 @@ class _LoginScreen extends State<LoginScreen> {
       });
     }
   }
+  showDataAlert() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(
+                  20.0,
+                ),
+              ),
+            ),
+            contentPadding: EdgeInsets.only(
+              top: 10.0,
+            ),
+            title: Text(
+              "Full-Description",
+              style: TextStyle(fontSize: 24.0),
+            ),
+            content: Container(
+              height: 400,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        'In order to login for the first time into the new web application it is necessary to'
+                            ' register and upload certain documents and information as detailed below. Hence keep'
+                            ' the scanned copy of these documents handy before starting the process of registration.'
+                            +'\n'+
+                            ' CHECKLIST FOR REGISTRATION'
+                            +'\n'+
+                            ' For NGOs'
+                            ' Darpan Number is must for registration. If you havent registered on Darpan portal'
+                            +'\n'+
+                            'Click here.'
+                            +'\n'+
+                            ' Equipment details of your hospital is to be filled once you login.'
+                            ' Documents Check list : Scanned copies of following documents needs to be uploaded:'
+                            ' Society/Charitable public trust registration certificate'
+                            ' Minimum 3 years of experience certificate'
+                            ' Bank Details like Account No. , Bank IFSC Code and Bank Name.'
+                            +'\n'+
+
+
+                            ' For Private Prac./ Private Medical Colleges/ Others:'
+                            ' Equipment details of your hospital is to be filled.'
+                            ' Documents Check list : Scanned copies of following documents needs to be uploaded:'
+                            ' MS Opthalmology Degree'
+                            ' Two years Experience post PG'
+                            +'\n'+
+                            ' If there is any problem in the registration please contact :helpdesk[dot]npcb[at]nic[dot]in.',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        });
+  }
 }
+
 
 class UserData {
   String loginId;
