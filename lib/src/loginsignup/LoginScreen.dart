@@ -13,6 +13,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:flutter/gestures.dart';
+import 'package:mohfw_npcbvi/src/widgets/web_view/DarpanWebview.dart';
 class LoginScreen extends StatefulWidget {
 //no build method
   _LoginScreen createState() => _LoginScreen(); // connect using createState
@@ -112,6 +113,11 @@ class _LoginScreen extends State<LoginScreen> {
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
                                 print("@@Darpan link webview here");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DarpanWebview()),
+                                );
                                 }),
 
                           TextSpan(
