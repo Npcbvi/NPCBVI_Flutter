@@ -152,5 +152,49 @@ class ApiController {
     }
     //Way to send url with methodname
   }
+  static Future<SPORegisterModel> ngoRegistrationAPiRquest(SPODataFields spoDataFields) async {
+    SPORegisterModel spoRegisterModel = SPORegisterModel();
+    Response response1;
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
+      //Way to send headers
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+      //Way to send params
+      var body =
+      json.encode({"state_code":spoDataFields.state, "name":spoDataFields.Name,"mobile":spoDataFields.mobileNumber,
+        "email_id":spoDataFields.emailId,"designation":spoDataFields.designation,"std":spoDataFields.std,"phone_no":spoDataFields.PhoneNumber,
+        "office_address":spoDataFields.OfficeAddress,  "pincode":spoDataFields.PinCode,  "user_id":"NPCB" +spoDataFields.codeSPOs ,
+      });
+      print("@@SPOURL" + url+body);
+      //Way to send network calls
+      Dio dio = new Dio();
+      response1 = await dio.post(url,
+          data: body,
+          options: new Options(
+              headers: headers,
+              contentType: "application/json",
+              responseType: ResponseType.plain));
+      print("@@SPOURL" + url+body);
+      print("@@SPOURL--Api" + response1.toString());
+      spoRegisterModel = SPORegisterModel.fromJson(json.decode(response1.data));
+      print("@@token" + spoRegisterModel.message);
+      //  Result result = loginModel.result;
+      //  print("@@Result message----" + result.message);
+      if (spoRegisterModel.status) {
+        Utils.showToast(spoRegisterModel.message, true);
+
+      }
+      return spoRegisterModel;
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return null;
+    }
+    //Way to send url with methodname
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

@@ -16,6 +16,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -33,9 +34,12 @@ class _RegisterScreen extends State<RegisterScreen> {
 
   String _chosenValue;
   String randomString = "";
+  bool showGOVTPrivate = false;
   bool showNGOResgistration = false;
   bool showSPORegistration = false;
   bool showDPMRegistration = false;
+  bool registeredUSerGovtPrivateRegsiterations=false;
+  bool newUSerGovtPrivateRegisterRadios=false;
   bool isVisibleDitrict = false;
   bool isLoadingApi = true;
   DashboardStateModel dashboardStateModel;
@@ -62,33 +66,24 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _dpmDestinationController = new TextEditingController();
   TextEditingController _dpmPhoneNumberController = new TextEditingController();
   TextEditingController _dpmOfficeAddressController =
-  new TextEditingController();
+      new TextEditingController();
   TextEditingController _dpmPinCodeController = new TextEditingController();
   TextEditingController _dpmCaptchaCodeEnterController =
-  new TextEditingController();
+      new TextEditingController();
 
+  final _ngoDarpanNumberController = new TextEditingController();
+  final _ngoPANNumberController = new TextEditingController();
   SPODataFields spoDataFields = new SPODataFields();
-  DPMDataFields dpmDataFields=new DPMDataFields();
+  NGODDataFields ngodDataFields = new NGODDataFields();
+  DPMDataFields dpmDataFields = new DPMDataFields();
   DashboardStateModel countryStateModel =
       DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
-  int stateCodeSPO, disrtcCode,stateCodeDPM;
-  String CodeSPO,codeDPM;
-
-  /*getCountries() async {
-    //
-    isDataLoaded = false;
-    countryStateModel = await _countryStateCityRepo.getCountriesStates();
-    statesName.add('Select Country');
-    for (var element in countryStateModel.data) {
-      statesName.add(element.stateName);
-      staCode.add(element.code);
-      state_code.add(element.stateCode);
-    }
-    isDataLoaded = true;
-    setState(() {});
-    //
-  }*/
+  int stateCodeSPO, disrtcCode, stateCodeDPM;
+  String CodeSPO, codeDPM;
+  int _value = 1; // int型の変数.
+  String _text = ''; // String型の変数.
+  final _registeredUSerID = new TextEditingController();
   Future<List<Data>> _getStatesDAta() async {
     final response = await http
         .get(Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
@@ -111,7 +106,8 @@ class _RegisterScreen extends State<RegisterScreen> {
         data: body,
         options: new Options(responseType: ResponseType.plain));
     print("@@Response--Api" + response1.toString());
-    dashboardDistrictModel = DashboardDistrictModel.fromJson(json.decode(response1.data));
+    dashboardDistrictModel =
+        DashboardDistrictModel.fromJson(json.decode(response1.data));
     print("@@dashboardDistrictModel" + dashboardDistrictModel.toString());
 
     return dashboardDistrictModel;
@@ -165,7 +161,6 @@ class _RegisterScreen extends State<RegisterScreen> {
               margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
               child: Container(
                 color: Colors.blue,
-
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -210,7 +205,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 fontWeight: FontWeight.w500),
                           ),
                           onChanged: (String value) {
-                            setState(()  {
+                            setState(() {
                               _chosenValue = value;
                               //  print('@@spinnerChooseValue--' + _chosenValue);
                               if (_chosenValue == "NGO") {
@@ -219,6 +214,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 showNGOResgistration = true;
                                 showSPORegistration = false;
                                 showDPMRegistration = false;
+                                showGOVTPrivate=false;
+                                newUSerGovtPrivateRegisterRadios=false;
+                                 registeredUSerGovtPrivateRegsiterations=false;
                               } else if (_chosenValue == "SPO") {
                                 //getCountries();
                                 _future = _getStatesDAta();
@@ -227,17 +225,30 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 showNGOResgistration = false;
                                 showSPORegistration = true;
                                 showDPMRegistration = false;
+                                showGOVTPrivate=false;
+                                newUSerGovtPrivateRegisterRadios=false;
+                                registeredUSerGovtPrivateRegsiterations=false;
                               } else if (_chosenValue == "DPM") {
                                 //getCountries();
                                 _future = _getStatesDAta();
 
-                               // _getDistrictData(18);
+                                // _getDistrictData(18);
 
-                                print(
-                                    '@@showSPORegistration--3' + _chosenValue+value.toString());
+                                print('@@showSPORegistration--3' +
+                                    _chosenValue +
+                                    value.toString());
                                 showNGOResgistration = false;
                                 showSPORegistration = false;
                                 showDPMRegistration = true;
+                                showGOVTPrivate=false;
+                                newUSerGovtPrivateRegisterRadios=false;
+                                registeredUSerGovtPrivateRegsiterations=false;
+                              }
+                              else if(_chosenValue=="Govt./Private /Other"){
+                                showNGOResgistration = false;
+                                showSPORegistration = false;
+                                showDPMRegistration = false;
+                                showGOVTPrivate=true;
                               }
                             });
                           },
@@ -265,17 +276,181 @@ class _RegisterScreen extends State<RegisterScreen> {
               ),
             ),
             NGORegistration(),
+            GovtRAdioGroups(),
             SPORegistration(),
             DPMRegistration(),
+            newUSerGovtPrivateRegisterRadio(),
+            registeredUSerGovtPrivateRegsiteration()
           ],
         ),
       ),
     );
   }
 
+  Widget GovtRAdioGroups() {
+    return Column(
+      children: [
+        Visibility(
+          visible: showGOVTPrivate,
+          child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+
+                    Radio(
+                        value: 1,
+                        groupValue: _value,
+                        onChanged: (value) {
+                          setState(() {
+                            _value = value;
+                            print('@@radio--'+_value.toString());
+                            newUSerGovtPrivateRegisterRadios=true;
+                            registeredUSerGovtPrivateRegsiterations=false;
+
+                          });
+                        }),
+                    SizedBox(width: 10.0),
+                    Text('New User'),
+                    Radio(
+                        value: 2,
+                        groupValue: _value,
+                        onChanged: (value) {
+                          setState(() {
+                            _value = value;
+                            print('@@radio--'+_value.toString());
+                            newUSerGovtPrivateRegisterRadios=false;
+                            registeredUSerGovtPrivateRegsiterations=true;
+
+                          });
+                        }),
+                    SizedBox(width: 10.0),
+                    Text('Registered User'),
+                  ],
+                )
+              ]),
+        ),
+      ],
+    );
+  }
+  Widget registeredUSerGovtPrivateRegsiteration(){
+    return Column(
+      children: [
+        Visibility(
+          visible: registeredUSerGovtPrivateRegsiterations,
+          child: Center(
+            child: Container(
+              margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+              alignment: Alignment.center,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _registeredUSerID,
+                      decoration: InputDecoration(
+                          label: Text('Registered User Id'),
+                          hintText: 'Registered User Id',
+
+                          //prefixIcon
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+
+
+
+                  // TextFormField to enter captcha value
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                    child: ElevatedButton(
+                      child: Text('Verify'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                      ),
+                      onPressed: () {
+                        print('@@GOVTPRivate  Button click__work prnding');
+                        _NGORegistrationSubmit();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  Widget newUSerGovtPrivateRegisterRadio() {
+    return Column(
+      children: [
+        Visibility(
+          visible: newUSerGovtPrivateRegisterRadios,
+          child: Center(
+            child: Container(
+              margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+              alignment: Alignment.center,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _ngoDarpanNumberController,
+                      decoration: InputDecoration(
+                          label: Text('NGO '),
+                          hintText: 'NGO ',
+
+                          //prefixIcon
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _ngoPANNumberController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          label: Text('NGO '),
+                          hintText: 'NGO',
+
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+
+                  // TextFormField to enter captcha value
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                    child: ElevatedButton(
+                      child: Text('Verify'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                      ),
+                      onPressed: () {
+                        print('@@NGO Button click__work prnding');
+                        _NGORegistrationSubmit();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
   Widget NGORegistration() {
-    final _ngoDarpanNumberController = new TextEditingController();
-    final _ngoPANNumberController = new TextEditingController();
     return Column(
       children: [
         Visibility(
@@ -326,7 +501,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blue,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        print('@@NGO Button click__work prnding');
+                        _NGORegistrationSubmit();
+                      },
                     ),
                   ),
                 ],
@@ -642,6 +820,42 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
+  Future<void> _NGORegistrationSubmit() async {
+    ngodDataFields.ngoDarpanNumber =
+        _ngoDarpanNumberController.text.toString().trim();
+    ;
+    ngodDataFields.ngoPANNumber =
+        _ngoPANNumberController.text.toString().trim();
+
+    print('@@ngoDarpanNumber' + stateCodeSPO.toString());
+    print('@@ngodDataFields' + spoDataFields.codeSPOs);
+    if (ngodDataFields.ngoDarpanNumber.isEmpty) {
+      Utils.showToast("Please enter Name !", false);
+      return;
+    }
+    if (ngodDataFields.ngoPANNumber.isEmpty) {
+      Utils.showToast("Please enter Mobile number !", false);
+      return;
+    } else {
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog1(context);
+          ApiController.ngoRegistrationAPiRquest(spoDataFields)
+              .then((response) async {
+            Utils.hideProgressDialog1(context);
+
+            print('@@spoAPiRquest ---' + response.toString());
+            if (response != null && response.status) {
+              Navigator.pop(context);
+            }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
+    }
+  }
+
 //SPo Registration work h
   //DPM Work Here
   Widget DPMRegistration() {
@@ -694,7 +908,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                             codeDPM.toString());
 
                                         SharedPrefs.storeSharedValue(
-                                            AppConstant.txtStateDPmValue, stateCodeDPM);
+                                            AppConstant.txtStateDPmValue,
+                                            stateCodeDPM);
                                         // setState(() {
                                         //   //    isVisibleDitrict = true;
                                         //   _getDistrictData(stateCodeSPO);
@@ -717,58 +932,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                           }),
                     ),
 
-                    /*Visibility(
-                        visible:  isVisibleDitrict,*/
-                 /*   Center(
-                      child: FutureBuilder<List<DataDsirict>>(
-                          future: _futureDataDsirict,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
 
-                            if (snapshot.data == null) {
-                              return const CircularProgressIndicator();
-                            }
-
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  const Text(
-                                    'Select District:',
-                                  ),
-                                  DropdownButtonFormField<DataDsirict>(
-                                    onChanged: (Districtuser) => setState(() {
-                                      _selectedUserDistrict = Districtuser;
-                                      print('@@@Districtuser'+Districtuser.toString());
-                                      disrtcCode = int.parse(
-                                          (Districtuser.districtCode)
-                                              .toString());
-                                      print('@@disrtcCode' +
-                                          disrtcCode.toString());
-                                      //  CodeDPM = Districtuser.districtCode;
-                                      *//* print('@@CodeDPM' +
-                                          CodeDPM.toString());*//*
-                                    }),
-                                    value: _selectedUserDistrict,
-                                    items: [
-                                      ...snapshot.data.map(
-                                        (userDistrict) => DropdownMenuItem(
-                                          value: userDistrict,
-                                          child: Text(
-                                              '${userDistrict.districtName}'),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                    ),*/
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
@@ -808,7 +972,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
-                        controller:_dpmDestinationController,
+                        controller: _dpmDestinationController,
                         decoration: InputDecoration(
                             label: Text('Designation'),
                             hintText: 'Designation',
@@ -885,7 +1049,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                       child: TextFormField(
-                        controller:_dpmCaptchaCodeEnterController,
+                        controller: _dpmCaptchaCodeEnterController,
 
                         /*  onChanged: (value) {
                         setState(() {
@@ -943,9 +1107,8 @@ class _RegisterScreen extends State<RegisterScreen> {
   }
 
   Future<void> _DPMRegistrationSubmit() async {
-
     dpmDataFields.stateDPM = stateCodeDPM;
-    dpmDataFields.distCodeDPM =18; //CodeDPM; testing purpose
+    dpmDataFields.distCodeDPM = 18; //CodeDPM; testing purpose
     dpmDataFields.NameDPM = _dpmNAmeController.text.toString().trim();
     dpmDataFields.mobileNumberDPM = _dpmMobileController.text.toString().trim();
     dpmDataFields.emailIdDPM = _dpmEmailIdController.text.toString().trim();
@@ -958,7 +1121,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     dpmDataFields.PinCodeDPM = _dpmPinCodeController.text.toString().trim();
     dpmDataFields.CaptchaCodeEnterDPM =
         _dpmCaptchaCodeEnterController.text.toString().trim();
-    dpmDataFields.codeSPOsDPM=codeDPM;
+    dpmDataFields.codeSPOsDPM = codeDPM;
     print('@@stateCodeSPO.state' + dpmDataFields.toString());
     if (dpmDataFields.NameDPM.isEmpty) {
       Utils.showToast("Please enter Name !", false);
@@ -1052,6 +1215,10 @@ class DPMDataFields {
   String CaptchaCodeEnterDPM;
 }
 
+class NGODDataFields {
+  String ngoDarpanNumber;
+  String ngoPANNumber;
+}
 //NGO Registration view
 
 //https://medium.flutterdevs.com/dropdown-in-flutter-324ae9caa743

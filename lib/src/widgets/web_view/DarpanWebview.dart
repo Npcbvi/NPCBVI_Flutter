@@ -7,7 +7,6 @@ class DarpanWebview extends StatelessWidget {
   Completer<WebViewController> _controller = Completer<WebViewController>();
   bool isUrlLoadFinished = false;
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,7 +40,6 @@ class DarpanWebview extends StatelessWidget {
           },
           onPageFinished: (String url) {
             print('==2====onLoadStop======: $url');
-            //https://devmarketplace.restroapp.com/2/v1/5/phonepe/phonepeResUrl?payment_request_id=TXN_phonepe_456911632473278&TransId=T2109241419501796650551&Status=PAYMENT_SUCCESS
 
 
           },
