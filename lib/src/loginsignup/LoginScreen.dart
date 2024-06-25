@@ -77,18 +77,22 @@ class _LoginScreen extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Expanded(
-                  child: Marquee(
-                    text: 'NGO Darpan number is mandatory for registration.',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize:20,color: Colors.red),
-                    velocity: 50.0, //speed
-                    pauseAfterRound: Duration(seconds: 1),
-                    startPadding: 10.0,
-                    accelerationDuration: Duration(seconds: 1),
-                    accelerationCurve: Curves.linear,
-                    decelerationDuration: Duration(milliseconds: 500),
-                    decelerationCurve: Curves.easeOut,
-                  )
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: Expanded(
+                    child: Marquee(
+                      text: 'NGO Darpan number is mandatory for registration.',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize:20,color: Colors.red),
+                      velocity: 50.0, //speed
+                      pauseAfterRound: Duration(seconds: 1),
+                      startPadding: 10.0,
+                      accelerationDuration: Duration(seconds: 1),
+                      accelerationCurve: Curves.linear,
+                      decelerationDuration: Duration(milliseconds: 500),
+                      decelerationCurve: Curves.easeOut,
+                    )
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 5, 10, 0),

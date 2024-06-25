@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
@@ -32,7 +33,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   Data _selectedUser;
   DataDsirict _selectedUserDistrict;
 
-  String _chosenValue;
+  String _chosenValue,oganisationTypeGovtPrivateDRopDown;
   String randomString = "";
   bool showGOVTPrivate = false;
   bool showNGOResgistration = false;
@@ -44,11 +45,6 @@ class _RegisterScreen extends State<RegisterScreen> {
   bool isLoadingApi = true;
   DashboardStateModel dashboardStateModel;
 
-  //String selectedCountry = 'Select Country';
-  //final CountryStateCityRepo _countryStateCityRepo = CountryStateCityRepo();
-  /*List<String> statesName = [];
-  List<String> staCode = [];
-  List<int> state_code = [];*/
   TextEditingController _spoNAmeController = new TextEditingController();
   TextEditingController _spoMobileController = new TextEditingController();
   TextEditingController _spoEmailIdController = new TextEditingController();
@@ -79,11 +75,18 @@ class _RegisterScreen extends State<RegisterScreen> {
   DashboardStateModel countryStateModel =
       DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
-  int stateCodeSPO, disrtcCode, stateCodeDPM;
-  String CodeSPO, codeDPM;
+  int stateCodeSPO, disrtcCode, stateCodeDPM,stateCodeGovtPrivate;
+  String CodeSPO, codeDPM,CodeGovtPrivate;
   int _value = 1; // int型の変数.
   String _text = ''; // String型の変数.
   final _registeredUSerID = new TextEditingController();
+
+  final _organisationNameGovtPrivate = new TextEditingController();
+  final _mobileGovtPRivate = new TextEditingController();
+  final _emailIDGovtPRivate = new TextEditingController();
+  final _addressGovtPRivate = new TextEditingController();
+  final _pinbCodeGovtPRivate = new TextEditingController();
+  final _officerNAmeGovtPRivate = new TextEditingController();
   Future<List<Data>> _getStatesDAta() async {
     final response = await http
         .get(Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
@@ -275,6 +278,23 @@ class _RegisterScreen extends State<RegisterScreen> {
                 ),
               ),
             ),
+            SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: Expanded(
+                  child: Marquee(
+                    text: 'NGO Darpan number is mandatory for registration.',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize:20,color: Colors.red),
+                    velocity: 50.0, //speed
+                    pauseAfterRound: Duration(seconds: 1),
+                    startPadding: 10.0,
+                    accelerationDuration: Duration(seconds: 1),
+                    accelerationCurve: Curves.linear,
+                    decelerationDuration: Duration(milliseconds: 500),
+                    decelerationCurve: Curves.easeOut,
+                  )
+              ),
+            ),
             NGORegistration(),
             GovtRAdioGroups(),
             SPORegistration(),
@@ -308,7 +328,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                             print('@@radio--'+_value.toString());
                             newUSerGovtPrivateRegisterRadios=true;
                             registeredUSerGovtPrivateRegsiterations=false;
-
+                            _future = _getStatesDAta();
+                            print(
+                                '@@radioAPi hoit state--2');
                           });
                         }),
                     SizedBox(width: 10.0),
@@ -399,11 +421,58 @@ class _RegisterScreen extends State<RegisterScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey, borderRadius: BorderRadius.circular(10)),
+
+                      child: new DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          focusColor: Colors.white,
+                          value: oganisationTypeGovtPrivateDRopDown,
+                          //elevation: 5,
+                          style: TextStyle(color: Colors.white),
+                          iconEnabledColor: Colors.white,
+                          items: <String>[
+                            'Govt. District Hospital/Govt.MEdical College',
+                            'CHC/Govt. Sub-Dist. Hospital',
+                            'Private Practitioner',
+                            'Private Medical College',
+                            'Other(Institution not claiming fund from NPCBVI)',
+                          ].map<DropdownMenuItem<String>>((String oganisationTypeGovtPrivateDRopDowns) {
+                            return DropdownMenuItem<String>(
+                              value: oganisationTypeGovtPrivateDRopDowns,
+                              child: Text(
+                                oganisationTypeGovtPrivateDRopDowns,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                          hint: Text(
+                            "Select",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          onChanged: (String oganisationTypeGovtPrivateDRopDownss) {
+                            setState(() {
+                              oganisationTypeGovtPrivateDRopDown = oganisationTypeGovtPrivateDRopDownss;
+                                print('@@oganisationTypeGovtPrivateDRopDown--' + oganisationTypeGovtPrivateDRopDown);
+
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: new TextField(
-                      controller: _ngoDarpanNumberController,
+                      controller: _organisationNameGovtPrivate,
                       decoration: InputDecoration(
-                          label: Text('NGO '),
-                          hintText: 'NGO ',
+                          label: Text('Organisation Name * '),
+                          hintText: 'Organisation Name * ',
 
                           //prefixIcon
                           border: OutlineInputBorder(
@@ -414,11 +483,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: new TextField(
-                      controller: _ngoPANNumberController,
+                      controller: _mobileGovtPRivate,
                       obscureText: true,
                       decoration: InputDecoration(
-                          label: Text('NGO '),
-                          hintText: 'NGO',
+                          label: Text('Mobile No. * '),
+                          hintText: 'Mobile No. *',
 
                           //prefixIcon
 
@@ -426,9 +495,69 @@ class _RegisterScreen extends State<RegisterScreen> {
                               borderRadius: BorderRadius.circular(5.0))),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _emailIDGovtPRivate,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          label: Text('Email ID *'),
+                          hintText: 'Email ID *',
 
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
                   // TextFormField to enter captcha value
+                  Center(
+                    child: FutureBuilder<List<Data>>(
+                        future: _future,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
 
+                          if (snapshot.data == null) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          return Padding(
+                            padding:
+                            const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'Select State:',
+                                ),
+                                DropdownButtonFormField<Data>(
+                                  onChanged: (user) => setState(() {
+                                    _selectedUser = user;
+                                    stateCodeGovtPrivate = int.parse(
+                                        (user.stateCode).toString());
+                                    print('@@statenameSPO' +
+                                        stateCodeGovtPrivate.toString());
+                                    CodeGovtPrivate = user.code;
+                                    print('@@CodeSPO___1' +
+                                        CodeGovtPrivate.toString());
+                                  }),
+                                  value: _selectedUser,
+                                  items: [
+                                    ...snapshot.data.map(
+                                          (user) => DropdownMenuItem(
+                                        value: user,
+                                        child: Text('${user.stateName}'),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                     child: ElevatedButton(
@@ -931,7 +1060,58 @@ class _RegisterScreen extends State<RegisterScreen> {
                             );
                           }),
                     ),
+                    /*Visibility(
+                        visible:  isVisibleDitrict,*/
+                    /*   Center(
+                      child: FutureBuilder<List<DataDsirict>>(
+                          future: _futureDataDsirict,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
 
+                            if (snapshot.data == null) {
+                              return const CircularProgressIndicator();
+                            }
+
+                            return Padding(
+                              padding:
+                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text(
+                                    'Select District:',
+                                  ),
+                                  DropdownButtonFormField<DataDsirict>(
+                                    onChanged: (Districtuser) => setState(() {
+                                      _selectedUserDistrict = Districtuser;
+                                      print('@@@Districtuser'+Districtuser.toString());
+                                      disrtcCode = int.parse(
+                                          (Districtuser.districtCode)
+                                              .toString());
+                                      print('@@disrtcCode' +
+                                          disrtcCode.toString());
+                                      //  CodeDPM = Districtuser.districtCode;
+                                      *//* print('@@CodeDPM' +
+                                          CodeDPM.toString());*//*
+                                    }),
+                                    value: _selectedUserDistrict,
+                                    items: [
+                                      ...snapshot.data.map(
+                                        (userDistrict) => DropdownMenuItem(
+                                          value: userDistrict,
+                                          child: Text(
+                                              '${userDistrict.districtName}'),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
+                    ),*/
 
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
