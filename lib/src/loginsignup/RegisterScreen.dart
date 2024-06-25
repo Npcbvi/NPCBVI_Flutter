@@ -87,6 +87,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _addressGovtPRivate = new TextEditingController();
   final _pinbCodeGovtPRivate = new TextEditingController();
   final _officerNAmeGovtPRivate = new TextEditingController();
+
   Future<List<Data>> _getStatesDAta() async {
     final response = await http
         .get(Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
