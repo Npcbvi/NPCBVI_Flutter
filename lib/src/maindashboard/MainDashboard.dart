@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
+import 'package:mohfw_npcbvi/src/widgets/web_view/ContactusHtmlDisplayScreen.dart';
 import 'package:mohfw_npcbvi/src/widgets/web_view/DarpanWebview.dart';
 
 
@@ -40,7 +41,7 @@ class _MainDashboard extends State<MainDashboard> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DarpanWebview()),
+                    builder: (context) => ContactusHtmlDisplayScreen()),
               );
               // do something
             },

@@ -147,7 +147,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       backgroundColor: Colors.white,
       appBar: new AppBar(
           backgroundColor: Colors.blue,
-          title: new Text('Registeration',
+          title: new Text('Registration ',
               style: new TextStyle(
                 color: Colors.white,
               )),
