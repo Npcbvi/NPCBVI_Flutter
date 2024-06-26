@@ -187,6 +187,7 @@ class _MainDashboard extends State<MainDashboard> {
                     onTap: () {
 
                     },
+
                     child: Stack(
                       children: <Widget>[
 
