@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:mohfw_npcbvi/src/widgets/web_view/ContactusHtmlDisplayScreen.dart';
@@ -11,6 +12,38 @@ class MainDashboard extends StatefulWidget {
 }
 
 class _MainDashboard extends State<MainDashboard> {
+  bool isLoadingApi = true;
+
+  String ngoCount,gH_CHC_Count,ppCount,campCount,satellitecentreCount,patientCount,dpm,
+      pmcCount,totalEB,totalEd,spo;
+
+
+  @override
+  void initState() {
+    super.initState();
+    ApiController.getDashbaord().then((value) {
+      setState(() {
+        isLoadingApi = false;
+        print('@@MainDashboard--' + value.message);
+        if (value.status) {
+          print('@@MainDashboard--' + value.status.toString());
+          ngoCount=value.data.ngoCount;
+          gH_CHC_Count=value.data.gHCHCCount;
+          ppCount=value.data.ppCount;
+          campCount=value.data.campCount;
+          satellitecentreCount=value.data.satellitecentreCount;
+          patientCount=value.data.patientCount;
+          dpm=value.data.dpm;
+          pmcCount=value.data.pmcCount;
+          totalEB=value.data.totalEB;
+          totalEd=value.data.totalEd;
+          spo=value.data.spo;
+            print('@@ngoCount--' + ngoCount);
+          print('@@spo--' + spo);
+        }
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -108,7 +141,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                      '${ngoCount}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -191,7 +224,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                        '${ngoCount}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,

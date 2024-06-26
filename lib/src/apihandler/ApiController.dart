@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
+import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -224,33 +225,6 @@ class ApiController {
     //Way to send url with methodname
   }
 
-  /* static Future<ContactUS> getHtmlForOptions() async {
-    bool isNetworkAvailable = await Utils.isNetworkAvailable();
-    try {
-      if (isNetworkAvailable) {
-        var url = ApiConstants.baseUrl + ApiConstants.GetContacts;
-
-        var request = new http.MultipartRequest("POST", Uri.parse(url));
-
-        print("@@getHtmlForOptions--"+"${url}");
-        final response =
-        await request.send().timeout(Duration(seconds: timeout));
-        final respStr = await response.stream.bytesToString();
-        print("@@getHtmlForOptions-respStr-"+"${respStr}");
-        final parsed = json.decode(respStr);
-        ContactUS contactUS=ContactUS.fromJson(json.decode(parsed.data));
-        print("@@getHtmlForOptions-respStr-"+"${contactUS.data}");
-
-
-        return contactUS;
-      } else {
-        Utils.showToast(AppConstant.noInternet, true);
-      }
-    } catch (e) {
-      print(e);
-    }
-    return null;
-  }*/
   static Future<ContactUS> getHtmlForOptions() async {
     final response = await http.get(Uri.parse(
         'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetContacts'));
@@ -258,6 +232,18 @@ class ApiController {
     ContactUS contactUS = ContactUS.fromJson(json);
     if (contactUS.status) {
      // Utils.showToast(contactUS.message, true);
+    }
+    print('@@contactUS--' + contactUS.message);
+
+    return contactUS;
+  }
+  static Future<GetDashboardModel> getDashbaord() async {
+    final response = await http.get(Uri.parse(
+        'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetDashboard'));
+    Map<String, dynamic> json = jsonDecode(response.body);
+    GetDashboardModel contactUS = GetDashboardModel.fromJson(json);
+    if (contactUS.status) {
+      // Utils.showToast(contactUS.message, true);
     }
     print('@@contactUS--' + contactUS.message);
 
