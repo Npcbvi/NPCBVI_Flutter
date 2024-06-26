@@ -7,6 +7,7 @@ import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -69,6 +70,22 @@ class _LoginScreen extends State<LoginScreen> {
             'Login',
             style: new TextStyle(color: Colors.white),
           ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.dashboard,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MainDashboard()),
+              );
+              // do something
+            },
+          )
+        ],
       ),
 
 
