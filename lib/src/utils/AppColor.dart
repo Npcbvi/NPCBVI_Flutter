@@ -68,4 +68,17 @@ Color blue3 = Color(0xFF00bfcf);
 
 Color blue4 = Color(0xFF41cdc9);
 
+Color govtgch = Color(0xFF0634CB);
+Color medicalcollege = Color(0xFFA944C4);
+Color privatepractitioner = Color(0xFFE35040);
+Color satellitecentre = Color(0xFFFFB64D);
+Color patient = Color(0xFFE35040);
+Color screeningcamp = Color(0xFF1DAB72);
+Color dpms = Color(0xFFC50306);
+Color spos = Color(0xFFE35040);
+Color eybanks = Color(0xFFA944C4);
+Color donationcentres = Color(0xFFD92550);
+
+
+
 

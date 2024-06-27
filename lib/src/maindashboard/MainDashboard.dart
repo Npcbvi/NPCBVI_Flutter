@@ -216,7 +216,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'Goverment / CHC /RIO',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: govtgch,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -299,7 +299,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'Medical College(s)',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: medicalcollege,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -382,7 +382,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'Private Practitioner(s)',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: privatepractitioner,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -465,7 +465,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'Patient(s)',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: patient,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -548,7 +548,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'Satellite Centre(s)',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: satellitecentre,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -631,7 +631,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'Screening Camp(s)',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: screeningcamp,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -714,7 +714,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'DPM(s)',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: dpms,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -797,7 +797,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'SPO(s)',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: spos,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -880,7 +880,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'Eye Banks(s)',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: eybanks,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
@@ -963,7 +963,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       child: Text(
                                         'Donation Centres(s)',
                                         style: TextStyle(
-                                            color: green2,
+                                            color: donationcentres,
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold),
                                       ),
