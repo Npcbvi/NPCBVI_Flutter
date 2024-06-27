@@ -27,7 +27,9 @@ class _ContactusHtmlDisplayScreen extends State<ContactusHtmlDisplayScreen> {
   void initState() {
     super.initState();
     ApiController.getHtmlForOptions().then((value) {
+      Utils.showProgressDialog(context);
       setState(() {
+        Utils.hideProgressDialog(context);
         isLoadingApi = false;
         print('@@htmlDatya--' + value.message);
         if (value.status) {

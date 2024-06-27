@@ -89,32 +89,47 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _officerNAmeGovtPRivate = new TextEditingController();
 
   Future<List<Data>> _getStatesDAta() async {
-    final response = await http
-        .get(Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
-    Map<String, dynamic> json = jsonDecode(response.body);
-    final DashboardStateModel dashboardStateModel =
-        DashboardStateModel.fromJson(json);
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      final response = await http
+          .get(Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final DashboardStateModel dashboardStateModel =
+      DashboardStateModel.fromJson(json);
 
-    return dashboardStateModel.data;
+      return dashboardStateModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+
   }
 
   Future<DashboardDistrictModel> _getDistrictData(int stateCode) async {
     DashboardDistrictModel dashboardDistrictModel;
     Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      var body = json.encode({"state_code": stateCode});
+      //Way to send network calls
+      Dio dio = new Dio();
+      response1 = await dio.post(
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
+          data: body,
+          options: new Options(responseType: ResponseType.plain));
+      print("@@Response--Api" + response1.toString());
+      dashboardDistrictModel =
+          DashboardDistrictModel.fromJson(json.decode(response1.data));
+      print("@@dashboardDistrictModel" + dashboardDistrictModel.toString());
 
-    var body = json.encode({"state_code": stateCode});
-    //Way to send network calls
-    Dio dio = new Dio();
-    response1 = await dio.post(
-        "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
-        data: body,
-        options: new Options(responseType: ResponseType.plain));
-    print("@@Response--Api" + response1.toString());
-    dashboardDistrictModel =
-        DashboardDistrictModel.fromJson(json.decode(response1.data));
-    print("@@dashboardDistrictModel" + dashboardDistrictModel.toString());
+      return dashboardDistrictModel;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
 
-    return dashboardDistrictModel;
+
   }
 
   void buildCaptcha() {

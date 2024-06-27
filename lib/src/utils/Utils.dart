@@ -5,6 +5,7 @@ import 'dart:math';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 // import 'package:flutter_share/flutter_share.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
@@ -242,7 +243,20 @@ if (!regex.hasMatch(value))
   }
 
 
+  static void showProgressDialog(BuildContext context) {
+    Loader.show(context,
+        isAppbarOverlay: true,
+        isBottomBarOverlay: true,
+        progressIndicator: CircularProgressIndicator(
+          backgroundColor: Color(0xFFFF7443),
+        ),
+        themeData: Theme.of(context).copyWith(accentColor: Colors.black38),
+        overlayColor: Color(0x99E8EAF6));
+  }
 
+  static void hideProgressDialog(BuildContext context) {
+    Loader.hide();
+  }
 
 
 

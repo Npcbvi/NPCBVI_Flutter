@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
+import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:mohfw_npcbvi/src/widgets/web_view/ContactusHtmlDisplayScreen.dart';
 import 'package:mohfw_npcbvi/src/widgets/web_view/DarpanWebview.dart';
@@ -19,30 +20,39 @@ class _MainDashboard extends State<MainDashboard> {
 
 
   @override
-  void initState() {
+  Future<void> initState()  {
     super.initState();
-    ApiController.getDashbaord().then((value) {
-      setState(() {
-        isLoadingApi = false;
-        print('@@MainDashboard--' + value.message);
-        if (value.status) {
-          print('@@MainDashboard--' + value.status.toString());
-          ngoCount=value.data.ngoCount;
-          gH_CHC_Count=value.data.gHCHCCount;
-          ppCount=value.data.ppCount;
-          campCount=value.data.campCount;
-          satellitecentreCount=value.data.satellitecentreCount;
-          patientCount=value.data.patientCount;
-          dpm=value.data.dpm;
-          pmcCount=value.data.pmcCount;
-          totalEB=value.data.totalEB;
-          totalEd=value.data.totalEd;
-          spo=value.data.spo;
+    Future<bool> isNetworkAvailable =  Utils.isNetworkAvailable();
+    if (isNetworkAvailable != null) {
+      ApiController.getDashbaord().then((value) {
+
+        setState(() {
+          isLoadingApi = false;
+          print('@@MainDashboard--' + value.message);
+          if (value.status) {
+            print('@@MainDashboard--' + value.status.toString());
+            ngoCount=value.data.ngoCount;
+            gH_CHC_Count=value.data.gHCHCCount;
+            ppCount=value.data.ppCount;
+            campCount=value.data.campCount;
+            satellitecentreCount=value.data.satellitecentreCount;
+            patientCount=value.data.patientCount;
+            dpm=value.data.dpm;
+            pmcCount=value.data.pmcCount;
+            totalEB=value.data.totalEB;
+            totalEd=value.data.totalEd;
+            spo=value.data.spo;
             print('@@ngoCount--' + ngoCount);
-          print('@@spo--' + spo);
-        }
+            print('@@spo--' + spo);
+          }
+        });
       });
-    });
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+
   }
   @override
   Widget build(BuildContext context) {
@@ -204,7 +214,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'Goverment / CHC /RIO',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -225,7 +235,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                        '${ngoCount}',
+                                        '${gH_CHC_Count}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -287,7 +297,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'Medical College(s)',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -308,7 +318,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                      '${pmcCount}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -370,7 +380,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'Private Practitioner(s)',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -391,7 +401,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                      '${ppCount}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -453,7 +463,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'Patient(s)',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -474,7 +484,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                      '${patientCount}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -536,7 +546,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'Satellite Centre(s)',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -557,7 +567,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                      '${satellitecentreCount}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -619,7 +629,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'Screening Camp(s)',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -640,7 +650,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                      '${campCount}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -702,7 +712,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'DPM(s)',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -723,7 +733,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                     '${dpm}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -785,7 +795,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'SPO(s)',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -806,7 +816,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                     '${spo}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -868,7 +878,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'Eye Banks(s)',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -889,7 +899,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                    '${totalEB}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -951,7 +961,7 @@ class _MainDashboard extends State<MainDashboard> {
                                     alignment: Alignment.topRight,
                                     child:Container(
                                       child: Text(
-                                        'NGO(s)',
+                                        'Donation Centres(s)',
                                         style: TextStyle(
                                             color: green2,
                                             fontSize: 18,
@@ -973,7 +983,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   alignment: Alignment.center,
                                   child:Container(
                                     child: Text(
-                                      "  title",
+                                     '${totalEd}',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
