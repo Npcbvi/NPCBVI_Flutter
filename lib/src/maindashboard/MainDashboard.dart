@@ -127,7 +127,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'NGO(s)',
@@ -147,15 +147,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                      '${ngoCount}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                        '${ngoCount}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -211,7 +214,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'Goverment / CHC /RIO',
@@ -231,15 +234,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                        '${gH_CHC_Count}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                          '${gH_CHC_Count}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -294,7 +300,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'Medical College(s)',
@@ -314,15 +320,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                      '${pmcCount}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                        '${pmcCount}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -377,7 +386,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'Private Practitioner(s)',
@@ -397,15 +406,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                      '${ppCount}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                        '${ppCount}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -460,7 +472,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'Patient(s)',
@@ -480,15 +492,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                      '${patientCount}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                        '${patientCount}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -543,7 +558,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'Satellite Centre(s)',
@@ -563,15 +578,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                      '${satellitecentreCount}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                        '${satellitecentreCount}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -626,7 +644,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'Screening Camp(s)',
@@ -646,15 +664,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                      '${campCount}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                        '${campCount}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -709,7 +730,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'DPM(s)',
@@ -729,15 +750,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                     '${dpm}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                       '${dpm}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -792,7 +816,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'SPO(s)',
@@ -812,15 +836,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                     '${spo}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                       '${spo}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -875,7 +902,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'Eye Banks(s)',
@@ -895,15 +922,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                    '${totalEB}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                      '${totalEB}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -958,7 +988,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(6,4,6,4),
                                   child: Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.topLeft,
                                     child:Container(
                                       child: Text(
                                         'Donation Centres(s)',
@@ -979,15 +1009,18 @@ class _MainDashboard extends State<MainDashboard> {
                                       'images/close.png', fit: BoxFit.fitWidth,),
                                   ),
                                 ),*/
-                                Align(
-                                  alignment: Alignment.center,
-                                  child:Container(
-                                    child: Text(
-                                     '${totalEd}',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600),
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(6,4,6,4),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child:Container(
+                                      child: Text(
+                                       '${totalEd}',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600),
+                                      ),
                                     ),
                                   ),
                                 ),
