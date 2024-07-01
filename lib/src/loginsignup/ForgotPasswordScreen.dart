@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -56,6 +57,23 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
         reverse: true,
         child: Column(
           children: <Widget>[
+            SizedBox(
+              width: double.infinity,
+              height: 40,
+              child: Expanded(
+                  child: Marquee(
+                    text: 'NGO Darpan number is mandatory for registration.',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize:20,color: Colors.red),
+                    velocity: 50.0, //speed
+                    pauseAfterRound: Duration(seconds: 1),
+                    startPadding: 10.0,
+                    accelerationDuration: Duration(seconds: 1),
+                    accelerationCurve: Curves.linear,
+                    decelerationDuration: Duration(milliseconds: 500),
+                    decelerationCurve: Curves.easeOut,
+                  )
+              ),
+            ),
             Container(
               margin: EdgeInsets.fromLTRB(100, 20, 100, 20),
               child: Container(
@@ -175,8 +193,6 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                 Text('Send OTP',style: new TextStyle(color: Colors.black),),
                 Row(
                   children: [
-
-
                     Radio(
                         value: 1,
                         groupValue: _value,
