@@ -268,7 +268,7 @@ class _LoginScreen extends State<LoginScreen> {
               MaterialButton(
                 onPressed: () {
                   Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => RegisterScreen()),
+                    MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
                   );
                 },
                 textColor: Colors.white,

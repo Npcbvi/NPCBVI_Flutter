@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
@@ -12,6 +13,7 @@ import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
+import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 
@@ -292,6 +294,57 @@ class ApiController {
     }
 
 
+  }
+  static Future<ForgotPasswordModel> forgotPasswordApiRequest(
+      ForgotPasswordDatas forgotPasswordData) async {
+    ForgotPasswordModel forgotPasswordDatas = ForgotPasswordModel();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+        //Way to send params
+        var body = json.encode({
+          "mobileorEmail": forgotPasswordData.RadioOptionSelectMobileEmail,
+          "userId": forgotPasswordData.userID,
+
+        });
+        print("@@forgotPasswordApiRequest" + url + body);
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                headers: headers,
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@SPOURL" + url + body);
+        print("@@SPOURL--Api" + response1.toString());
+      //  spoRegisterModel = SPORegisterModel.fromJson(json.decode(response1.data));
+       // print("@@token" + spoRegisterModel.message);
+        //  Result result = loginModel.result;
+        //  print("@@Result message----" + result.message);
+       /* if (spoRegisterModel.status) {
+          Utils.showToast(spoRegisterModel.message, true);
+        }*/
+        return forgotPasswordDatas;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+    //Way to send url with methodname
   }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/
