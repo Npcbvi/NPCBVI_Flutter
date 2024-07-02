@@ -59,9 +59,10 @@ class ApiController {
         Result result = loginModel.result;
         print("@@Result message----" + result.message);
         if (result.status) {
-          SharedPrefs.saveUser(loginModel.result);
+          SharedPrefs.saveUser(loginModel.result.data);
+          Utils.showToast(result.message, true);
+
         }
-        Utils.showToast(result.message, true);
         return loginModel;
       } catch (e) {
         Utils.showToast(e.toString(), true);

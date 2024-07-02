@@ -10,24 +10,24 @@ class CampDashboard extends StatefulWidget {
 
 class _CampDashboard extends State<CampDashboard> {
   TextEditingController fullnameController = new TextEditingController();
-  String _chosenValue;
+  String _chosenValue,districtNames,userId,stateNames;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // To generate number on loading of page
- //   getUserData();
+    getUserData();
   }
   void getUserData() {
     try {
       SharedPrefs.getUser().then((user) {
         setState(() {
-          fullnameController.text = user.result.data.name;
-          user.result.data.districtName;
-          user.result.data.stateName;
-          user.result.data.userId;
-          print('@@-0----'+user.result.data.name);
-
+          fullnameController.text = user.name;
+          districtNames= user.districtName;
+          stateNames=user.stateName;
+          userId= user.userId;
+          print('@@-0----2'+user.name);
+          print('@@-0----3'+fullnameController.text);
         });
       });
     } catch (e) {
@@ -40,10 +40,12 @@ class _CampDashboard extends State<CampDashboard> {
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: new AppBar(
+        resizeToAvoidBottomInset: false,
+
+        appBar: new AppBar(
           backgroundColor: Colors.blue,
           title: new Text(
-              'Welcome',
+         'welcome +${fullnameController}',
               style: new TextStyle(
                 color: Colors.black,
               )),
@@ -114,6 +116,112 @@ class _CampDashboard extends State<CampDashboard> {
                             });
                           },
                         ),
+                      ),
+                      //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: Container(
+                color: Colors.grey,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // Shown Captcha value to user
+                      Container(
+                          child: Text(
+                            'Login Type:',
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w800),
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          child: Text(
+                            'Camp Manager',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w800),
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+
+                      Container(
+                          child: Text(
+                            'Login Id:',
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w800),
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          child: Text(
+                            '${userId}',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w800),
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: Container(
+                color: Colors.grey,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      // Shown Captcha value to user
+                      Container(
+                          child: Text(
+                            'District:',
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w800),
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          child: Text(
+                            '${districtNames}',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w800),
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+
+                      Container(
+                          child: Text(
+                            'State :',
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w800),
+                          )),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Container(
+                          child: Text(
+                            '${stateNames}',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w800),
+                          )),
+                      const SizedBox(
+                        width: 10,
                       ),
                       //widgets that follow the Material Design guidelines display a ripple animation when tapped.
                     ],

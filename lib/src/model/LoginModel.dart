@@ -25,14 +25,14 @@ class LoginModel {
 class Result {
   String message;
   bool status;
-  Data data;
+  LoginData data;
 
   Result({this.message, this.status, this.data});
 
   Result.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? new LoginData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -46,7 +46,7 @@ class Result {
   }
 }
 
-class Data {
+class LoginData {
   String newPwd;
   int status;
   String userId;
@@ -56,7 +56,7 @@ class Data {
   String districtName;
   String stateName;
 
-  Data(
+  LoginData(
       {this.newPwd,
         this.status,
         this.userId,
@@ -66,7 +66,7 @@ class Data {
         this.districtName,
         this.stateName});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  LoginData.fromJson(Map<String, dynamic> json) {
     newPwd = json['new_pwd'];
     status = json['status'];
     userId = json['user_id'];
