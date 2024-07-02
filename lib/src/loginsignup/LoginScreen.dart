@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/campdashboard/CampDashboard.dart';
+import 'package:mohfw_npcbvi/src/hospitaldashboard/HospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
@@ -363,6 +364,12 @@ class _LoginScreen extends State<LoginScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => CampDashboard()),
+                );
+              }else if(response.result.data.roleId=='6'){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => HospitalDashboard()),
                 );
               }
               //Navigator.pop(context);

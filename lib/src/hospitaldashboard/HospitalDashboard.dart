@@ -3,12 +3,12 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class CampDashboard extends StatefulWidget {
+class HospitalDashboard extends StatefulWidget {
   @override
-  _CampDashboard createState() => _CampDashboard();
+  _HospitalDashboard createState() => _HospitalDashboard();
 }
 
-class _CampDashboard extends State<CampDashboard> {
+class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController fullnameController = new TextEditingController();
   String _chosenValue,districtNames,userId,stateNames;
   @override
@@ -69,7 +69,9 @@ class _CampDashboard extends State<CampDashboard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       // Shown Captcha value to user
+
                       Container(
+
                           child: Text(
                         'Dashboard',
                         style: TextStyle(
@@ -144,7 +146,7 @@ class _CampDashboard extends State<CampDashboard> {
                       ),
                       Container(
                           child: Text(
-                            'Camp Manager',
+                            'Hospital',
                             style: TextStyle(
                                 color: Colors.red, fontWeight: FontWeight.w800),
                           )),
@@ -152,15 +154,6 @@ class _CampDashboard extends State<CampDashboard> {
                         width: 10,
                       ),
 
-                      Container(
-                          child: Text(
-                            'Login Id:',
-                            style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.w800),
-                          )),
-                      const SizedBox(
-                        width: 10,
-                      ),
                       Flexible(
                         child: Container(
                             child: Text(
@@ -170,7 +163,6 @@ class _CampDashboard extends State<CampDashboard> {
                             )),
 
                       ),
-
 
                       //widgets that follow the Material Design guidelines display a ripple animation when tapped.
                     ],
