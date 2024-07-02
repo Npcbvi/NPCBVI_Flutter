@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
+import 'package:mohfw_npcbvi/src/campdashboard/CampDashboard.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
@@ -357,7 +358,14 @@ class _LoginScreen extends State<LoginScreen> {
 
             print('@@response_loginScreen ---' + response.toString());
             if (response != null && response.result.status) {
-              Navigator.pop(context);
+              if(response.result.data.roleId=='9'){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CampDashboard()),
+                );
+              }
+              //Navigator.pop(context);
             }
           });
         } else {
@@ -443,3 +451,4 @@ class UserData {
 }
 //Note for generate CapchtaCode
 //https://www.geeksforgeeks.org/flutter-implement-captcha-verification/
+//Api{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImNhbXA5OTcxODUzNDc5IiwibmJmIjoxNzE5ODk1MDE4LCJleHAiOjE3MTk4OTg2MTgsImlhdCI6MTcxOTg5NTAxOH0.rCgA8HPiXzOy2OQT0uataWwQ2gxBvNUdE2fFQVDyBkI","result":{"message":"Login Successfully.","status":true,"data":{"new_pwd":"EBF8338E23213132F5CCAC6B6D6F1A4F9AC2FDE3CF5EF4934A8B2AFA51FCF929C11674A0C0EEDB3B7AA0D5CCFB7AB6A55037B6C053870280AA84B08AD44253D3","status":2,"user_id":"Camp9971853479","role_id":"9","name":"fgfhs","email_id":"reshmahayat991@gmail.com","district_name":"TEST1","state_name":"TEST"},"list":null}}
