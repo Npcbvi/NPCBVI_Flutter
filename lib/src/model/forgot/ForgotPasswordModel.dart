@@ -1,19 +1,16 @@
 class ForgotPasswordModel {
   String message;
   bool status;
-  List<ForgotPasswordData> data;
+  DataForgotPasswordModel data;
+  Null list;
 
-  ForgotPasswordModel({this.message, this.status, this.data});
+  ForgotPasswordModel({this.message, this.status, this.data, this.list});
 
   ForgotPasswordModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    if (json['data'] != null) {
-      data = <ForgotPasswordData>[];
-      json['data'].forEach((v) {
-        data.add(new ForgotPasswordData.fromJson(v));
-      });
-    }
+    data = json['data'] != null ? new DataForgotPasswordModel.fromJson(json['data']) : null;
+    list = json['list'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,27 +18,75 @@ class ForgotPasswordModel {
     data['message'] = this.message;
     data['status'] = this.status;
     if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+      data['data'] = this.data.toJson();
+    }
+    data['list'] = this.list;
+    return data;
+  }
+}
+
+class DataForgotPasswordModel {
+  String otp;
+  GetUserDetails getUserDetails;
+
+  DataForgotPasswordModel({this.otp, this.getUserDetails});
+
+  DataForgotPasswordModel.fromJson(Map<String, dynamic> json) {
+    otp = json['otp'];
+    getUserDetails = json['getUserDetails'] != null
+        ? new GetUserDetails.fromJson(json['getUserDetails'])
+        : null;
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['otp'] = this.otp;
+    if (this.getUserDetails != null) {
+      data['getUserDetails'] = this.getUserDetails.toJson();
     }
     return data;
   }
 }
 
-class ForgotPasswordData {
-  String link;
-  String detail;
+class GetUserDetails {
+  String userId;
+  String emailId;
+  String mobile;
+  String srNo;
+  String name;
+  String roleId;
+  int status;
 
-  ForgotPasswordData({this.link, this.detail});
+  GetUserDetails(
+      {this.userId,
+        this.emailId,
+        this.mobile,
+        this.srNo,
+        this.name,
+        this.roleId,
+        this.status});
 
-  ForgotPasswordData.fromJson(Map<String, dynamic> json) {
-    link = json['link'];
-    detail = json['detail'];
+  GetUserDetails.fromJson(Map<String, dynamic> json) {
+    userId = json['user_id'];
+    emailId = json['email_id'];
+    mobile = json['mobile'];
+    srNo = json['sr_no'];
+    name = json['name'];
+    roleId = json['role_id'];
+    status = json['status'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['link'] = this.link;
-    data['detail'] = this.detail;
+    data['user_id'] = this.userId;
+    data['email_id'] = this.emailId;
+    data['mobile'] = this.mobile;
+    data['sr_no'] = this.srNo;
+    data['name'] = this.name;
+    data['role_id'] = this.roleId;
+    data['status'] = this.status;
     return data;
   }
 }
+
+

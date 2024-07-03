@@ -304,7 +304,7 @@ class ApiController {
     if (isNetworkAvailable) {
 
       try {
-        var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
+        var url = ApiConstants.baseUrl + ApiConstants.SendOTPForForgotPassword;
         //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
@@ -326,15 +326,15 @@ class ApiController {
                 headers: headers,
                 contentType: "application/json",
                 responseType: ResponseType.plain));
-        print("@@SPOURL" + url + body);
-        print("@@SPOURL--Api" + response1.toString());
-      //  spoRegisterModel = SPORegisterModel.fromJson(json.decode(response1.data));
+        print("@@forgotPasswordApiRequest___2" + url + body);
+        print("@@forgotPasswordApiRequest--Api" + response1.toString());
+        forgotPasswordDatas = ForgotPasswordModel.fromJson(json.decode(response1.data));
        // print("@@token" + spoRegisterModel.message);
         //  Result result = loginModel.result;
         //  print("@@Result message----" + result.message);
-       /* if (spoRegisterModel.status) {
-          Utils.showToast(spoRegisterModel.message, true);
-        }*/
+        if (forgotPasswordDatas.status) {
+          Utils.showToast(forgotPasswordDatas.message, true);
+        }
         return forgotPasswordDatas;
       } catch (e) {
         Utils.showToast(e.toString(), true);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
@@ -22,7 +23,7 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
   ForgotPasswordDatas forgotPwddData =
       new ForgotPasswordDatas(); // dat aget in  edittext and send apis
-  final emailController = new TextEditingController();
+  final userIDController = new TextEditingController();
   int _value = 1;
 
   @override
@@ -137,6 +138,7 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                           ),
                         )),
                     TextFormField(
+                      controller: userIDController,
                       decoration: const InputDecoration(
                         hintText: 'User Id',
                         labelText: 'User Id',
@@ -178,7 +180,7 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                                             color: Colors.white,
                                           ),
                                         ),
-                                         //   onPressed: _forgotPassword,
+                                            onPressed: _forgotPassword,
                                       )),
                                 ],
                               ),
@@ -242,11 +244,16 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
       ],
     );
   }
-/*void _forgotPassword() {
-    print('@@_forgotPassword');
-
+void _forgotPassword() {
+forgotPwddData.userID=userIDController.text.toString().trim();
+forgotPwddData.RadioOptionSelectMobileEmail=_value.toString();
+    print('@@@@_forgotPassword--valuePArams-----'+forgotPwddData.userID+forgotPwddData.RadioOptionSelectMobileEmail.toString());
     final FormState form = _formKey.currentState;
     if (form.validate()) {
+      if (forgotPwddData.userID.isEmpty) {
+        Utils.showToast("Please enter loginId !", false);
+        return;
+      }
       form.save(); //This invokes each onSaved event
       Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
@@ -254,13 +261,13 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
           ApiController.forgotPasswordApiRequest(forgotPwddData)
               .then((response) {
             Utils.hideProgressDialog(context);
-            ForgotPasswordModel userResponse = response;
-            if (response != null && response.success) {
-              print('@@----forgotPasswordApiRequest+'+response.success.toString());
+         ///   ForgotPasswordModel userResponse = response;
+            if (response != null && response.status) {
+              print('@@----forgotPasswordApiRequest+111---'+response.status.toString());
              // Utils.showToast(response.message, true);
               sowDialogForForgot(response.message);
             }else{
-              Utils.showToast(userResponse.message, true);
+              Utils.showToast(response.message, true);
             }
           });
         } else {
@@ -270,21 +277,48 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
     }else {
       Utils.showToast("Please enter a valid email", true);
     }
-  }*/
+  }
 
 
   void sowDialogForForgot(String message) {
-    showDialog(
+/*    showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: new Text("Success"),
-          content: new Text(message),
+          content: new Html( data:  message,),
+
           actions: <Widget>[
             new TextButton(
               child: new Text("OK"),
               onPressed: () {
                 Navigator.of(context).pop();
+              },
+            ),
+          ],
+
+        );
+      },
+    );*/
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title:  new Html( data:  message,),
+          content: TextField(
+            decoration: InputDecoration(hintText: "Enter Otp"),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('Submit'),
+              onPressed: () {
+                // Handle the submit action
               },
             ),
           ],
