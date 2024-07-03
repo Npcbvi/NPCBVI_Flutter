@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/campdashboard/CampDashboard.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DPMDashboard.dart';
 import 'package:mohfw_npcbvi/src/hospitaldashboard/HospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
@@ -32,7 +33,7 @@ class _LoginScreen extends State<LoginScreen> {
 
   String randomString = "";
   bool isVerified = false;
-  TextEditingController controller = TextEditingController();
+ // TextEditingController controllers = TextEditingController();
   TextEditingController _loginIdController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _captchaController = new TextEditingController();
@@ -248,11 +249,13 @@ class _LoginScreen extends State<LoginScreen> {
                     primary: Colors.blue,
                   ),
                   onPressed: () {
-                    isVerified = controller.text == randomString;
+                    isVerified = _captchaController.text == randomString;
                     print('@@isVerified' + isVerified.toString());
-                    print('@@controller.text' + controller.text.toString());
+                    print('@@controller.text' + _captchaController.text.toString());
                     print('@@randomString' + randomString.toString());
-                    setState(() {});
+                    setState(() {
+
+                    });
                     _submitForm();
                   },
                 ),
@@ -350,6 +353,7 @@ class _LoginScreen extends State<LoginScreen> {
     if (userData.enterCptcha.isEmpty) {
       Utils.showToast("Please enter Matched Captcha !", false);
       return;
+
     } else {
       Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
@@ -370,6 +374,13 @@ class _LoginScreen extends State<LoginScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => HospitalDashboard()),
+                );
+              }
+              else if(response.result.data.roleId=='3'){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DPMDashboard()),
                 );
               }
               //Navigator.pop(context);

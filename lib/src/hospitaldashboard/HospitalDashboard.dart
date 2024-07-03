@@ -10,7 +10,8 @@ class HospitalDashboard extends StatefulWidget {
 
 class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController fullnameController = new TextEditingController();
-  String _chosenValue,districtNames,userId,stateNames;
+  String _chosenValue, districtNames, userId, stateNames;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -18,16 +19,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     // To generate number on loading of page
     getUserData();
   }
+
   void getUserData() {
     try {
       SharedPrefs.getUser().then((user) {
         setState(() {
           fullnameController.text = user.name;
-          districtNames= user.districtName;
-          stateNames=user.stateName;
-          userId= user.userId;
-          print('@@-0----2'+user.name);
-          print('@@-0----3'+fullnameController.text);
+          districtNames = user.districtName;
+          stateNames = user.stateName;
+          userId = user.userId;
+          print('@@-0----2' + user.name);
+          print('@@-0----3' + fullnameController.text);
         });
       });
     } catch (e) {
@@ -40,12 +42,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-
-        appBar: new AppBar(
+      resizeToAvoidBottomInset: false,
+      appBar: new AppBar(
           backgroundColor: Colors.blue,
-          title: new Text(
-         'welcome +${fullnameController}',
+          title: new Text('welcome +${fullnameController}',
               style: new TextStyle(
                 color: Colors.black,
               )),
@@ -69,17 +69,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       // Shown Captcha value to user
-
-                      Container(
-
-                          child: Text(
-                        'Dashboard',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
+                      Flexible(
+                        child: Container(
+                            child: Text(
+                          'Dashboard',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w800),
+                        )),
                       ),
+
                       new DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           focusColor: Colors.white,
@@ -120,6 +118,98 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       ),
                       //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                      Flexible(
+                        child: Container(
+                            child: Text(
+                          'Add PNJA',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w800),
+                        )),
+                      ),
+                      Flexible(child: new DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          focusColor: Colors.white,
+                          value: _chosenValue,
+                          //elevation: 5,
+                          style: TextStyle(color: Colors.white),
+                          iconEnabledColor: Colors.white,
+                          items: <String>[
+                            'Catract',
+                            'Diabetic',
+                            'Glaucoma',
+                            'Corneal Blindness',
+                            'VR Surgery',
+                            'Childhood Blindness',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                          hint: Text(
+                            "Low Vision Register",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          onChanged: (String value) {
+                            setState(() {
+                              _chosenValue = value;
+                              //  print('@@spinnerChooseValue--' + _chosenValue);
+                              if (_chosenValue == "Add Patient") {
+                                print('@@NGO--1' + _chosenValue);
+                              } else if (_chosenValue == "Update Patient") {
+                              } else if (_chosenValue == "Screening Entry") {}
+                            });
+                          },
+                        ),
+                      ),),
+                      Flexible(child: new DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          focusColor: Colors.white,
+                          value: _chosenValue,
+                          //elevation: 5,
+                          style: TextStyle(color: Colors.white),
+                          iconEnabledColor: Colors.white,
+                          items: <String>[
+                            'Catract',
+                            'Diabetic',
+                            'Glaucoma',
+                            'Corneal Blindness',
+                            'VR Surgery',
+                            'Childhood Blindness',
+                          ].map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(
+                                value,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                          hint: Text(
+                            "Send To DPM",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          onChanged: (String value) {
+                            setState(() {
+                              _chosenValue = value;
+                              //  print('@@spinnerChooseValue--' + _chosenValue);
+                              if (_chosenValue == "Add Patient") {
+                                print('@@NGO--1' + _chosenValue);
+                              } else if (_chosenValue == "Update Patient") {
+                              } else if (_chosenValue == "Screening Entry") {}
+                            });
+                          },
+                        ),
+                      )),
                     ],
                   ),
                 ),
@@ -137,19 +227,19 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                            'Login Type:',
-                            style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.w800),
-                          )),
+                        'Login Type:',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
                       Container(
                           child: Text(
-                            'Hospital',
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w800),
-                          )),
+                        'Hospital',
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -157,11 +247,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       Flexible(
                         child: Container(
                             child: Text(
-                              '${userId}',
-                              style: TextStyle(
-                                  color: Colors.red, fontWeight: FontWeight.w800),
-                            )),
-
+                          '${userId}',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w800),
+                        )),
                       ),
 
                       //widgets that follow the Material Design guidelines display a ripple animation when tapped.
@@ -182,38 +271,38 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                            'District:',
-                            style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.w800),
-                          )),
+                        'District:',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
                       Container(
                           child: Text(
-                            '${districtNames}',
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w800),
-                          )),
+                        '${districtNames}',
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
 
                       Container(
                           child: Text(
-                            'State :',
-                            style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.w800),
-                          )),
+                        'State :',
+                        style: TextStyle(
+                            color: Colors.black, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
                       Container(
                           child: Text(
-                            '${stateNames}',
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w800),
-                          )),
+                        '${stateNames}',
+                        style: TextStyle(
+                            color: Colors.red, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),

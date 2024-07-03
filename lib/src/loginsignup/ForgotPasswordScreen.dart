@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
@@ -51,6 +52,22 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
             // To go to a new screen, use the Navigator.push()
           },
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.dashboard,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => MainDashboard()),
+              );
+              // do something
+            },
+          )
+        ],
       ),
       body: SafeArea(
           child: SingleChildScrollView(
