@@ -12,7 +12,8 @@ String countryStateModelToJson(DashboardStateModel data) =>
 class DashboardStateModel {
   String message;
   bool status;
-  List<Data> data;
+  List<StateData> data;
+
 
   DashboardStateModel({this.message, this.status, this.data});
 
@@ -20,9 +21,9 @@ class DashboardStateModel {
     message = json['message'];
     status = json['status'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <StateData>[];
       json['data'].forEach((v) {
-        data.add(new Data.fromJson(v));
+        data.add(new StateData.fromJson(v));
       });
     }
   }
@@ -38,14 +39,14 @@ class DashboardStateModel {
   }
 }
 
-class Data {
+class StateData {
   int stateCode;
   String stateName;
   String code;
 
-  Data({this.stateCode, this.stateName, this.code});
+  StateData({this.stateCode, this.stateName, this.code});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  StateData.fromJson(Map<String, dynamic> json) {
     stateCode = json['state_code'];
     stateName = json['state_name'];
     code = json['code'];

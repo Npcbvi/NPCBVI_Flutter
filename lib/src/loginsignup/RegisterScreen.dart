@@ -27,10 +27,10 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreen extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
-  Future<List<Data>> _future;
+  Future<List<StateData>> _future;
   Future<List<DataDsirict>> _futureDataDsirict;
 
-  Data _selectedUser;
+  StateData _selectedUser;
   DataDsirict _selectedUserDistrict;
 
   String _chosenValue,oganisationTypeGovtPrivateDRopDown;
@@ -88,7 +88,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _pinbCodeGovtPRivate = new TextEditingController();
   final _officerNAmeGovtPRivate = new TextEditingController();
 
-  Future<List<Data>> _getStatesDAta() async {
+  Future<List<StateData>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
       final response = await http
@@ -250,9 +250,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                               } else if (_chosenValue == "DPM") {
                                 //getCountries();
                                 _future = _getStatesDAta();
-
                                 // _getDistrictData(18);
-
                                 print('@@showSPORegistration--3' +
                                     _chosenValue +
                                     value.toString());
@@ -411,7 +409,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ),
                       onPressed: () {
                         print('@@GOVTPRivate  Button click__work prnding');
-                        _NGORegistrationSubmit();
+
+
                       },
                     ),
                   ),
@@ -528,7 +527,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   ),
                   // TextFormField to enter captcha value
                   Center(
-                    child: FutureBuilder<List<Data>>(
+                    child: FutureBuilder<List<StateData>>(
                         future: _future,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
@@ -540,39 +539,92 @@ class _RegisterScreen extends State<RegisterScreen> {
                           }
 
                           return Padding(
-                            padding:
-                            const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                const Text(
-                                  'Select State:',
-                                ),
-                                DropdownButtonFormField<Data>(
-                                  onChanged: (user) => setState(() {
-                                    _selectedUser = user;
-                                    stateCodeGovtPrivate = int.parse(
-                                        (user.stateCode).toString());
-                                    print('@@statenameSPO' +
-                                        stateCodeGovtPrivate.toString());
-                                    CodeGovtPrivate = user.code;
-                                    print('@@CodeSPO___1' +
-                                        CodeGovtPrivate.toString());
-                                  }),
-                                  value: _selectedUser,
-                                  items: [
-                                    ...snapshot.data.map(
-                                          (user) => DropdownMenuItem(
-                                        value: user,
-                                        child: Text('${user.stateName}'),
-                                      ),
-                                    )
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: Container(
+                                decoration: BoxDecoration(
+                                color: Colors.grey, borderRadius: BorderRadius.circular(10)),
+
+                            child: Padding(
+                                padding:
+                                const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    const Text(
+                                      'Select State:',
+                                    ),
+                                    DropdownButtonFormField<StateData>(
+                                      onChanged: (usernewUSerGovtPriVaT) => setState(() {
+                                        _selectedUser = usernewUSerGovtPriVaT;
+                                        stateCodeGovtPrivate = int.parse(
+                                            (usernewUSerGovtPriVaT.stateCode).toString());
+                                        print('@@statenameSPO' +
+                                            stateCodeGovtPrivate.toString());
+                                        CodeGovtPrivate = usernewUSerGovtPriVaT.code;
+                                        print('@@CodeSPO___1' +
+                                            CodeGovtPrivate.toString());
+                                      }),
+                                      value: _selectedUser,
+                                      items: [
+                                        ...snapshot.data.map(
+                                              (usernewUSerGovtPriVaTs) => DropdownMenuItem(
+                                            value: usernewUSerGovtPriVaTs,
+                                            child: Text('${usernewUSerGovtPriVaTs.stateName}'),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
                           );
                         }),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _addressGovtPRivate,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          label: Text('Address  *'),
+                          hintText: 'Address  *',
+
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _pinbCodeGovtPRivate,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          label: Text('Pin Code *'),
+                          hintText: 'Pin Code *',
+
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _officerNAmeGovtPRivate,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          label: Text('Officer Name *'),
+                          hintText: 'Officer Name *',
+
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
@@ -676,7 +728,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   shrinkWrap: true,
                   children: [
                     Center(
-                      child: FutureBuilder<List<Data>>(
+                      child: FutureBuilder<List<StateData>>(
                           future: _future,
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
@@ -696,14 +748,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   const Text(
                                     'Select State:',
                                   ),
-                                  DropdownButtonFormField<Data>(
-                                    onChanged: (user) => setState(() {
-                                      _selectedUser = user;
+                                  DropdownButtonFormField<StateData>(
+                                    onChanged: (userSPo) => setState(() {
+                                      _selectedUser = userSPo;
                                       stateCodeSPO = int.parse(
-                                          (user.stateCode).toString());
+                                          (userSPo.stateCode).toString());
                                       print('@@statenameSPO' +
                                           stateCodeSPO.toString());
-                                      CodeSPO = user.code;
+                                      CodeSPO = userSPo.code;
                                       print('@@CodeSPO___1' +
                                           stateCodeSPO.toString());
                                     }),
@@ -1017,7 +1069,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   shrinkWrap: true,
                   children: [
                     Center(
-                      child: FutureBuilder<List<Data>>(
+                      child: FutureBuilder<List<StateData>>(
                           future: _future,
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
@@ -1037,14 +1089,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   const Text(
                                     'Select State:',
                                   ),
-                                  DropdownButtonFormField<Data>(
-                                    onChanged: (user) => setState(() {
-                                      _selectedUser = user;
+                                  DropdownButtonFormField<StateData>(
+                                    onChanged: (userDPM) => setState(() {
+                                      _selectedUser = userDPM;
                                       stateCodeDPM = int.parse(
-                                          (user.stateCode).toString());
+                                          (userDPM.stateCode).toString());
                                       print('@@statenameSPO' +
                                           stateCodeDPM.toString());
-                                      codeDPM = user.code;
+                                      codeDPM = userDPM.code;
                                       print('@@CodeSPO___1' +
                                           stateCodeDPM.toString());
 

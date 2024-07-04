@@ -333,3 +333,4 @@ class ForgotPasswordDatas {
   String RadioOptionSelectMobileEmail;
 }
 
+//"message":"<b>Password Reset Request Confirmation Code (OTP) has been sent to your <br> registered Email address</b>  <b>*************</b><b>tkmr@gmail.com</b>  .<br /> <b><BR> Enter OTP  below. Click on [Send Password]  .","status":true,"data":{"otp":"448481","getUserDetails":{"user_id":"TTTEST11001","email_id":"hementkmr@gmail.com","mobile":"9971436869","sr_no":"31901","name":"test dist","role_id":"3","status":2}},"list":null}
