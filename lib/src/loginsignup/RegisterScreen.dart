@@ -11,6 +11,7 @@ import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/country_state_model.dart';
+import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/repositories/country_state_city_repo.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -27,20 +28,20 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreen extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
-  Future<List<StateData>> _future;
+  Future<List<Data>> _future;
   Future<List<DataDsirict>> _futureDataDsirict;
 
-  StateData _selectedUser;
+  Data _selectedUser;
   DataDsirict _selectedUserDistrict;
 
-  String _chosenValue,oganisationTypeGovtPrivateDRopDown;
+  String _chosenValue, oganisationTypeGovtPrivateDRopDown;
   String randomString = "";
   bool showGOVTPrivate = false;
   bool showNGOResgistration = false;
   bool showSPORegistration = false;
   bool showDPMRegistration = false;
-  bool registeredUSerGovtPrivateRegsiterations=false;
-  bool newUSerGovtPrivateRegisterRadios=false;
+  bool registeredUSerGovtPrivateRegsiterations = false;
+  bool newUSerGovtPrivateRegisterRadios = false;
   bool isVisibleDitrict = false;
   bool isLoadingApi = true;
   DashboardStateModel dashboardStateModel;
@@ -51,10 +52,10 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _spoDestinationController = new TextEditingController();
   TextEditingController _spoPhoneNumberController = new TextEditingController();
   TextEditingController _spoOfficeAddressController =
-      new TextEditingController();
+  new TextEditingController();
   TextEditingController _spoPinCodeController = new TextEditingController();
   TextEditingController _spoCaptchaCodeEnterController =
-      new TextEditingController();
+  new TextEditingController();
 
   TextEditingController _dpmNAmeController = new TextEditingController();
   TextEditingController _dpmMobileController = new TextEditingController();
@@ -62,10 +63,10 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _dpmDestinationController = new TextEditingController();
   TextEditingController _dpmPhoneNumberController = new TextEditingController();
   TextEditingController _dpmOfficeAddressController =
-      new TextEditingController();
+  new TextEditingController();
   TextEditingController _dpmPinCodeController = new TextEditingController();
   TextEditingController _dpmCaptchaCodeEnterController =
-      new TextEditingController();
+  new TextEditingController();
 
   final _ngoDarpanNumberController = new TextEditingController();
   final _ngoPANNumberController = new TextEditingController();
@@ -73,10 +74,10 @@ class _RegisterScreen extends State<RegisterScreen> {
   NGODDataFields ngodDataFields = new NGODDataFields();
   DPMDataFields dpmDataFields = new DPMDataFields();
   DashboardStateModel countryStateModel =
-      DashboardStateModel(status: false, message: '', data: []);
+  DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
-  int stateCodeSPO, disrtcCode, stateCodeDPM,stateCodeGovtPrivate;
-  String CodeSPO, codeDPM,CodeGovtPrivate;
+  int stateCodeSPO, disrtcCode, stateCodeDPM, stateCodeGovtPrivate;
+  String CodeSPO, codeDPM, CodeGovtPrivate;
   int _value = 1; // int型の変数.
   String _text = ''; // String型の変数.
   final _registeredUSerID = new TextEditingController();
@@ -88,11 +89,12 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _pinbCodeGovtPRivate = new TextEditingController();
   final _officerNAmeGovtPRivate = new TextEditingController();
 
-  Future<List<StateData>> _getStatesDAta() async {
+  Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
       final response = await http
-          .get(Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
+          .get(
+          Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final DashboardStateModel dashboardStateModel =
       DashboardStateModel.fromJson(json);
@@ -102,8 +104,6 @@ class _RegisterScreen extends State<RegisterScreen> {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-
   }
 
   Future<DashboardDistrictModel> _getDistrictData(int stateCode) async {
@@ -128,8 +128,6 @@ class _RegisterScreen extends State<RegisterScreen> {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-
   }
 
   void buildCaptcha() {
@@ -188,10 +186,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                        'Home',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w800),
-                      )),
+                            'Home',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -233,9 +232,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 showNGOResgistration = true;
                                 showSPORegistration = false;
                                 showDPMRegistration = false;
-                                showGOVTPrivate=false;
-                                newUSerGovtPrivateRegisterRadios=false;
-                                 registeredUSerGovtPrivateRegsiterations=false;
+                                showGOVTPrivate = false;
+                                newUSerGovtPrivateRegisterRadios = false;
+                                registeredUSerGovtPrivateRegsiterations = false;
                               } else if (_chosenValue == "SPO") {
                                 //getCountries();
                                 _future = _getStatesDAta();
@@ -244,28 +243,30 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 showNGOResgistration = false;
                                 showSPORegistration = true;
                                 showDPMRegistration = false;
-                                showGOVTPrivate=false;
-                                newUSerGovtPrivateRegisterRadios=false;
-                                registeredUSerGovtPrivateRegsiterations=false;
+                                showGOVTPrivate = false;
+                                newUSerGovtPrivateRegisterRadios = false;
+                                registeredUSerGovtPrivateRegsiterations = false;
                               } else if (_chosenValue == "DPM") {
                                 //getCountries();
                                 _future = _getStatesDAta();
+
                                 // _getDistrictData(18);
+
                                 print('@@showSPORegistration--3' +
                                     _chosenValue +
                                     value.toString());
                                 showNGOResgistration = false;
                                 showSPORegistration = false;
                                 showDPMRegistration = true;
-                                showGOVTPrivate=false;
-                                newUSerGovtPrivateRegisterRadios=false;
-                                registeredUSerGovtPrivateRegsiterations=false;
+                                showGOVTPrivate = false;
+                                newUSerGovtPrivateRegisterRadios = false;
+                                registeredUSerGovtPrivateRegsiterations = false;
                               }
-                              else if(_chosenValue=="Govt./Private /Other"){
+                              else if (_chosenValue == "Govt./Private /Other") {
                                 showNGOResgistration = false;
                                 showSPORegistration = false;
                                 showDPMRegistration = false;
-                                showGOVTPrivate=true;
+                                showGOVTPrivate = true;
                               }
                             });
                           },
@@ -282,10 +283,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                         },
                         child: Container(
                             child: Text(
-                          'Login',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w800),
-                        )),
+                              'Login',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800),
+                            )),
                       ),
                     ],
                   ),
@@ -298,8 +300,11 @@ class _RegisterScreen extends State<RegisterScreen> {
               child: Expanded(
                   child: Marquee(
                     text: 'NGO Darpan number is mandatory for registration.',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize:20,color: Colors.red),
-                    velocity: 50.0, //speed
+                    style: TextStyle(fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        color: Colors.red),
+                    velocity: 50.0,
+                    //speed
                     pauseAfterRound: Duration(seconds: 1),
                     startPadding: 10.0,
                     accelerationDuration: Duration(seconds: 1),
@@ -313,10 +318,99 @@ class _RegisterScreen extends State<RegisterScreen> {
             GovtRAdioGroups(),
             SPORegistration(),
             DPMRegistration(),
+           // getEquipmentsDetails(),
             newUSerGovtPrivateRegisterRadio(),
             registeredUSerGovtPrivateRegsiteration()
           ],
         ),
+      ),
+    );
+  }
+
+  Widget getEquipmentsDetails() {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          FutureBuilder(
+            future: ApiController.getEquipmentGovtPRivateModel(),
+            builder: (context, projectSnap) {
+              if (projectSnap.connectionState == ConnectionState.none &&
+                  projectSnap.hasData == null) {
+                return Container();
+              } else {
+                if (projectSnap.hasData) {
+                  GovtPRivateModel response = projectSnap.data;
+                  print(
+                      '@@GovtPRivateModel__1'+response.status.toString());
+                  if (response.status = false) {
+                    print(
+                        '@@GovtPRivateModel__2');
+                    List<ListGovtPRivateModel> offerList = response.data;
+                    if(offerList.isEmpty){
+
+                      return Utils.getEmptyView("No data found");
+                    }else{
+                      print('@@GovtPRivateModel__3'+response.status.toString());
+                      return Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: offerList.length,
+
+                          itemBuilder: (context, index) {
+                            ListGovtPRivateModel offer = offerList[index];
+                            print('@@GovtPRivateModel__4'+offer.toString());
+                            return ListTile(
+                              title: Text(
+                                offer.id.toString(),
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black),
+                              ),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                      offer.name.toString(), style: TextStyle(color: Colors.black
+                                  )),
+                                ],
+                              ),
+                              trailing: Wrap(
+                                spacing: 12, // space between two icons
+                                children: <Widget>[
+                                  Icon(Icons.arrow_right), // icon-2
+                                ],
+                              ),
+
+                              onTap: () {
+
+                              },
+
+                            );
+                          },
+
+                        ),
+
+                      );
+                    }
+
+                  } else {
+
+                    return Utils.getEmptyView("No data found");
+                  }
+                } else {
+                  return Center(
+                    child: CircularProgressIndicator(
+                        backgroundColor: Colors.black26,
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Colors.black26)),
+                  );
+                }
+              }
+            },
+          ),
+
+        ],
       ),
     );
   }
@@ -343,9 +437,31 @@ class _RegisterScreen extends State<RegisterScreen> {
                             newUSerGovtPrivateRegisterRadios=true;
                             registeredUSerGovtPrivateRegsiterations=false;
                             _future = _getStatesDAta();
-                            print(
-                                '@@radioAPi hoit state--2');
+
+                            print('@@radioAPi hoit state--2');
                           });
+                          getEquipmentsDetails();
+                         /* Future<bool> isNetworkAvailable = Utils.isNetworkAvailable();
+                          if (isNetworkAvailable != null) {
+                            print('@@getEquipmentGovtPRivateModel--' );
+
+                            ApiController.getEquipmentGovtPRivateModel().then((value) {
+                              setState(() {
+                                isLoadingApi = false;
+                                print('@@getEquipmentGovtPRivateModel--' + value.status.toString());
+                                if (value.status) {
+                                  print('@@getEquipmentGovtPRivateModel--' + value.status.toString());
+
+                                }else{
+                                  print('@@getEquipmentGovtPRivateModel--' + value.status.toString());
+
+                                }
+                              });
+                            });
+                          } else {
+                            Utils.showToast(AppConstant.noInternet, true);
+                            return null;
+                          }*/
                         }),
                     SizedBox(width: 10.0),
                     Text('New User'),
@@ -396,7 +512,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ),
                   ),
 
-
+                  //getEquipmentsDetails(),
 
                   // TextFormField to enter captcha value
 
@@ -409,8 +525,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ),
                       onPressed: () {
                         print('@@GOVTPRivate  Button click__work prnding');
-
-
+                        _NGORegistrationSubmit();
                       },
                     ),
                   ),
@@ -526,25 +641,31 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ),
                   ),
                   // TextFormField to enter captcha value
-                  Center(
-                    child: FutureBuilder<List<StateData>>(
-                        future: _future,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          }
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                      ),
+                    ),
+                    child: Center(
+                      child: FutureBuilder<List<Data>>(
+                          future: _future,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
 
-                          if (snapshot.data == null) {
-                            return const CircularProgressIndicator();
-                          }
+                            if (snapshot.data == null) {
+                              return const CircularProgressIndicator();
+                            }
 
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: Container(
-                                decoration: BoxDecoration(
-                                color: Colors.grey, borderRadius: BorderRadius.circular(10)),
-
-                            child: Padding(
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                                ),
+                              ),
+                              child: Padding(
                                 padding:
                                 const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                                 child: Column(
@@ -553,23 +674,23 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     const Text(
                                       'Select State:',
                                     ),
-                                    DropdownButtonFormField<StateData>(
-                                      onChanged: (usernewUSerGovtPriVaT) => setState(() {
-                                        _selectedUser = usernewUSerGovtPriVaT;
+                                    DropdownButtonFormField<Data>(
+                                      onChanged: (user) => setState(() {
+                                        _selectedUser = user;
                                         stateCodeGovtPrivate = int.parse(
-                                            (usernewUSerGovtPriVaT.stateCode).toString());
+                                            (user.stateCode).toString());
                                         print('@@statenameSPO' +
                                             stateCodeGovtPrivate.toString());
-                                        CodeGovtPrivate = usernewUSerGovtPriVaT.code;
+                                        CodeGovtPrivate = user.code;
                                         print('@@CodeSPO___1' +
                                             CodeGovtPrivate.toString());
                                       }),
                                       value: _selectedUser,
                                       items: [
                                         ...snapshot.data.map(
-                                              (usernewUSerGovtPriVaTs) => DropdownMenuItem(
-                                            value: usernewUSerGovtPriVaTs,
-                                            child: Text('${usernewUSerGovtPriVaTs.stateName}'),
+                                              (user) => DropdownMenuItem(
+                                            value: user,
+                                            child: Text('${user.stateName}'),
                                           ),
                                         )
                                       ],
@@ -577,9 +698,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   ],
                                 ),
                               ),
-                            ),
-                          );
-                        }),
+                            );
+                          }),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
@@ -625,6 +746,16 @@ class _RegisterScreen extends State<RegisterScreen> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0))),
                     ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(5.0, 10, 5.0, 10),
+                    child: Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                          ),
+                        ),
+                        child: Text('Equipment Details *')),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
@@ -728,7 +859,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   shrinkWrap: true,
                   children: [
                     Center(
-                      child: FutureBuilder<List<StateData>>(
+                      child: FutureBuilder<List<Data>>(
                           future: _future,
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
@@ -748,14 +879,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   const Text(
                                     'Select State:',
                                   ),
-                                  DropdownButtonFormField<StateData>(
-                                    onChanged: (userSPo) => setState(() {
-                                      _selectedUser = userSPo;
+                                  DropdownButtonFormField<Data>(
+                                    onChanged: (user) => setState(() {
+                                      _selectedUser = user;
                                       stateCodeSPO = int.parse(
-                                          (userSPo.stateCode).toString());
+                                          (user.stateCode).toString());
                                       print('@@statenameSPO' +
                                           stateCodeSPO.toString());
-                                      CodeSPO = userSPo.code;
+                                      CodeSPO = user.code;
                                       print('@@CodeSPO___1' +
                                           stateCodeSPO.toString());
                                     }),
@@ -1069,7 +1200,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   shrinkWrap: true,
                   children: [
                     Center(
-                      child: FutureBuilder<List<StateData>>(
+                      child: FutureBuilder<List<Data>>(
                           future: _future,
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
@@ -1089,14 +1220,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   const Text(
                                     'Select State:',
                                   ),
-                                  DropdownButtonFormField<StateData>(
-                                    onChanged: (userDPM) => setState(() {
-                                      _selectedUser = userDPM;
+                                  DropdownButtonFormField<Data>(
+                                    onChanged: (user) => setState(() {
+                                      _selectedUser = user;
                                       stateCodeDPM = int.parse(
-                                          (userDPM.stateCode).toString());
+                                          (user.stateCode).toString());
                                       print('@@statenameSPO' +
                                           stateCodeDPM.toString());
-                                      codeDPM = userDPM.code;
+                                      codeDPM = user.code;
                                       print('@@CodeSPO___1' +
                                           stateCodeDPM.toString());
 

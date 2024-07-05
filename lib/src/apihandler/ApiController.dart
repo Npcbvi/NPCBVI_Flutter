@@ -14,6 +14,7 @@ import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
+import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 
@@ -346,6 +347,33 @@ class ApiController {
     }
 
     //Way to send url with methodname
+  }
+
+  static Future<GovtPRivateModel> getEquipmentGovtPRivateModel() async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      final response = await http.get(Uri.parse(
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetEquipment'));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      print('@@getGovtPRivateModel--' + json.toString());
+      GovtPRivateModel govtPRivateModel = GovtPRivateModel.fromJson(json);
+      if (govtPRivateModel.status) {
+        Utils.showToast(govtPRivateModel.message, true);
+        print('@@getGovtPRivateModel--' + govtPRivateModel.message);
+
+      }else{
+        Utils.showToast(govtPRivateModel.message, true);
+        print('@@esleConfiti--' + govtPRivateModel.status.toString());
+
+      }
+
+      return govtPRivateModel;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+
   }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/
