@@ -1244,6 +1244,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         // });
                                       }
                                     }),
+
                                     value: _selectedUser,
                                     items: [
                                       ...snapshot.data.map(
