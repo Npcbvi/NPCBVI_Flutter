@@ -109,7 +109,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
-  Future<DashboardDistrictModel> _getDistrictData(int stateCode) async {
+  Future<List<DataDsirict>> _getDistrictData(int stateCode) async {
     DashboardDistrictModel dashboardDistrictModel;
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -121,12 +121,13 @@ class _RegisterScreen extends State<RegisterScreen> {
           "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
           data: body,
           options: new Options(responseType: ResponseType.plain));
+      print("@@Response--Api" + body.toString());
       print("@@Response--Api" + response1.toString());
       dashboardDistrictModel =
           DashboardDistrictModel.fromJson(json.decode(response1.data));
-      print("@@dashboardDistrictModel" + dashboardDistrictModel.toString());
+      print("@@dashboardDistrictModel----getting of size --" + dashboardDistrictModel.data.length.toString());
 
-      return dashboardDistrictModel;
+      return dashboardDistrictModel.data;
     } else {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
@@ -684,9 +685,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                       decoration: InputDecoration(
                           label: Text('Address  *'),
                           hintText: 'Address  *',
-
-                          //prefixIcon
-
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(5.0))),
                     ),
@@ -879,19 +877,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  /*    Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                    child: ElevatedButton(
-                      child: Text('Verify'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                      ),
-                      onPressed: () {
-                        print('@@NGO Button click__work prnding');
-                        _NGORegistrationSubmit();
-                      },
-                    ),
-                  ),*/
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -1394,6 +1380,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   DropdownButtonFormField<Data>(
                                     onChanged: (user) => setState(() {
                                       _selectedUser = user;
+
                                       stateCodeDPM = int.parse(
                                           (user.stateCode).toString());
                                       print('@@statenameSPO' +
@@ -1409,10 +1396,19 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         SharedPrefs.storeSharedValue(
                                             AppConstant.txtStateDPmValue,
                                             stateCodeDPM);
-                                        // setState(() {
+                                         setState(() {
                                         //   //    isVisibleDitrict = true;
-                                        //   _getDistrictData(stateCodeSPO);
-                                        // });
+                                        if(stateCodeDPM!=null){
+                                          print('@@chakValue---' +
+                                              codeDPM.toString());
+                                          isVisibleDitrict = true;
+                                          _getDistrictData(stateCodeDPM);
+                                        }else{
+                                          isVisibleDitrict = false;
+
+                                        }
+
+                                         });
                                       }
                                     }),
                                     value: _selectedUser,
@@ -1430,58 +1426,66 @@ class _RegisterScreen extends State<RegisterScreen> {
                             );
                           }),
                     ),
-                    /*Visibility(
-                        visible:  isVisibleDitrict,*/
-                    /*   Center(
-                      child: FutureBuilder<List<DataDsirict>>(
-                          future: _futureDataDsirict,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
 
-                            if (snapshot.data == null) {
-                              return const CircularProgressIndicator();
-                            }
+                    Visibility(
+                        visible:  isVisibleDitrict,
 
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  const Text(
-                                    'Select District:',
-                                  ),
-                                  DropdownButtonFormField<DataDsirict>(
-                                    onChanged: (Districtuser) => setState(() {
-                                      _selectedUserDistrict = Districtuser;
-                                      print('@@@Districtuser'+Districtuser.toString());
-                                      disrtcCode = int.parse(
-                                          (Districtuser.districtCode)
-                                              .toString());
-                                      print('@@disrtcCode' +
-                                          disrtcCode.toString());
-                                      //  CodeDPM = Districtuser.districtCode;
-                                      */ /* print('@@CodeDPM' +
-                                          CodeDPM.toString());*/ /*
-                                    }),
-                                    value: _selectedUserDistrict,
-                                    items: [
-                                      ...snapshot.data.map(
-                                        (userDistrict) => DropdownMenuItem(
-                                          value: userDistrict,
-                                          child: Text(
-                                              '${userDistrict.districtName}'),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                    ),*/
+                        child:    Column(
+                          children: [
+                            Center(
+                              child: FutureBuilder<List<DataDsirict>>(
+                                  future: _futureDataDsirict,
+
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    }
+
+                                    if (snapshot.data == null) {
+                                      return const CircularProgressIndicator();
+                                    }
+
+                                    return Padding(
+                                      padding:
+                                      const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          const Text(
+                                            'Select District:',
+                                          ),
+                                          DropdownButtonFormField<DataDsirict>(
+                                            onChanged: (Districtuser) => setState(() {
+                                              _selectedUserDistrict = Districtuser;
+                                              print('@@@Districtuser'+Districtuser.toString());
+                                              disrtcCode = int.parse(
+                                                  (Districtuser.districtCode)
+                                                      .toString());
+                                              print('@@disrtcCode' +
+                                                  disrtcCode.toString());
+                                              //  CodeDPM = Districtuser.districtCode;
+                                              print('@@CodeDPM' +
+                                                  disrtcCode.toString());
+                                            }),
+                                            value: _selectedUserDistrict,
+                                            items: [
+                                              ...snapshot.data.map(
+                                                    (userDistrict) => DropdownMenuItem(
+                                                  value: userDistrict,
+                                                  child: Text(
+                                                      '${userDistrict.districtName}'),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),),
+
 
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
