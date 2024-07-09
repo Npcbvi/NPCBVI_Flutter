@@ -1,5 +1,5 @@
 class GovtPRivateModel {
-  Null message;
+  String message;
   bool status;
   Null data;
   List<ListGovtPRivateModel> list;

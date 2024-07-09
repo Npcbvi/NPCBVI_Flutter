@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/CardEquipmentListScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
@@ -52,10 +53,10 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _spoDestinationController = new TextEditingController();
   TextEditingController _spoPhoneNumberController = new TextEditingController();
   TextEditingController _spoOfficeAddressController =
-  new TextEditingController();
+      new TextEditingController();
   TextEditingController _spoPinCodeController = new TextEditingController();
   TextEditingController _spoCaptchaCodeEnterController =
-  new TextEditingController();
+      new TextEditingController();
 
   TextEditingController _dpmNAmeController = new TextEditingController();
   TextEditingController _dpmMobileController = new TextEditingController();
@@ -63,10 +64,10 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _dpmDestinationController = new TextEditingController();
   TextEditingController _dpmPhoneNumberController = new TextEditingController();
   TextEditingController _dpmOfficeAddressController =
-  new TextEditingController();
+      new TextEditingController();
   TextEditingController _dpmPinCodeController = new TextEditingController();
   TextEditingController _dpmCaptchaCodeEnterController =
-  new TextEditingController();
+      new TextEditingController();
 
   final _ngoDarpanNumberController = new TextEditingController();
   final _ngoPANNumberController = new TextEditingController();
@@ -74,7 +75,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   NGODDataFields ngodDataFields = new NGODDataFields();
   DPMDataFields dpmDataFields = new DPMDataFields();
   DashboardStateModel countryStateModel =
-  DashboardStateModel(status: false, message: '', data: []);
+      DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
   int stateCodeSPO, disrtcCode, stateCodeDPM, stateCodeGovtPrivate;
   String CodeSPO, codeDPM, CodeGovtPrivate;
@@ -92,12 +93,11 @@ class _RegisterScreen extends State<RegisterScreen> {
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
-      final response = await http
-          .get(
+      final response = await http.get(
           Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final DashboardStateModel dashboardStateModel =
-      DashboardStateModel.fromJson(json);
+          DashboardStateModel.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -186,11 +186,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                            'Home',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800),
-                          )),
+                        'Home',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -261,8 +260,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 showGOVTPrivate = false;
                                 newUSerGovtPrivateRegisterRadios = false;
                                 registeredUSerGovtPrivateRegsiterations = false;
-                              }
-                              else if (_chosenValue == "Govt./Private /Other") {
+                              } else if (_chosenValue ==
+                                  "Govt./Private /Other") {
                                 showNGOResgistration = false;
                                 showSPORegistration = false;
                                 showDPMRegistration = false;
@@ -283,11 +282,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                         },
                         child: Container(
                             child: Text(
-                              'Login',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800),
-                            )),
+                          'Login',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w800),
+                        )),
                       ),
                     ],
                   ),
@@ -299,26 +297,25 @@ class _RegisterScreen extends State<RegisterScreen> {
               height: 40,
               child: Expanded(
                   child: Marquee(
-                    text: 'NGO Darpan number is mandatory for registration.',
-                    style: TextStyle(fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.red),
-                    velocity: 50.0,
-                    //speed
-                    pauseAfterRound: Duration(seconds: 1),
-                    startPadding: 10.0,
-                    accelerationDuration: Duration(seconds: 1),
-                    accelerationCurve: Curves.linear,
-                    decelerationDuration: Duration(milliseconds: 500),
-                    decelerationCurve: Curves.easeOut,
-                  )
-              ),
+                text: 'NGO Darpan number is mandatory for registration.',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.red),
+                velocity: 50.0,
+                //speed
+                pauseAfterRound: Duration(seconds: 1),
+                startPadding: 10.0,
+                accelerationDuration: Duration(seconds: 1),
+                accelerationCurve: Curves.linear,
+                decelerationDuration: Duration(milliseconds: 500),
+                decelerationCurve: Curves.easeOut,
+              )),
             ),
             NGORegistration(),
             GovtRAdioGroups(),
             SPORegistration(),
             DPMRegistration(),
-           // getEquipmentsDetails(),
             newUSerGovtPrivateRegisterRadio(),
             registeredUSerGovtPrivateRegsiteration()
           ],
@@ -329,7 +326,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
   Widget getEquipmentsDetails() {
     return Container(
-      child: Column(
+      child: Row(
         children: <Widget>[
           FutureBuilder(
             future: ApiController.getEquipmentGovtPRivateModel(),
@@ -340,25 +337,27 @@ class _RegisterScreen extends State<RegisterScreen> {
               } else {
                 if (projectSnap.hasData) {
                   GovtPRivateModel response = projectSnap.data;
-                  print(
-                      '@@GovtPRivateModel__1'+response.status.toString());
-                  if (response.status = false) {
-                    print(
-                        '@@GovtPRivateModel__2');
-                    List<ListGovtPRivateModel> offerList = response.data;
-                    if(offerList.isEmpty){
-
+                  print('@@GovtPRivateModel__1' + response.status.toString());
+                  List<ListGovtPRivateModel> offerList = response.list;
+                  print('@@GovtPRivateModel__1--length' +
+                      offerList.length.toString());
+                  if (response.status) {
+                    List<ListGovtPRivateModel> offerList = response.list;
+                    if (offerList.isEmpty) {
                       return Utils.getEmptyView("No data found");
-                    }else{
-                      print('@@GovtPRivateModel__3'+response.status.toString());
+                    } else {
+                      print(
+                          '@@GovtPRivateModel__3' + response.status.toString());
+                      print('@@GovtPRivateModel__length' +
+                          offerList.length.toString());
                       return Expanded(
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: offerList.length,
-
                           itemBuilder: (context, index) {
                             ListGovtPRivateModel offer = offerList[index];
-                            print('@@GovtPRivateModel__4'+offer.toString());
+
+                            print('@@GovtPRivateModel__4' + offer.toString());
                             return ListTile(
                               title: Text(
                                 offer.id.toString(),
@@ -370,9 +369,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                               subtitle: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  Text(
-                                      offer.name.toString(), style: TextStyle(color: Colors.black
-                                  )),
+                                  Text(offer.name.toString(),
+                                      style: TextStyle(color: Colors.black)),
                                 ],
                               ),
                               trailing: Wrap(
@@ -381,21 +379,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   Icon(Icons.arrow_right), // icon-2
                                 ],
                               ),
-
-                              onTap: () {
-
-                              },
-
+                              onTap: () {},
                             );
                           },
-
                         ),
-
                       );
                     }
-
                   } else {
-
                     return Utils.getEmptyView("No data found");
                   }
                 } else {
@@ -403,13 +393,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                     child: CircularProgressIndicator(
                         backgroundColor: Colors.black26,
                         valueColor:
-                        AlwaysStoppedAnimation<Color>(Colors.black26)),
+                            AlwaysStoppedAnimation<Color>(Colors.black26)),
                   );
                 }
               }
             },
           ),
-
         ],
       ),
     );
@@ -426,42 +415,20 @@ class _RegisterScreen extends State<RegisterScreen> {
               children: [
                 Row(
                   children: [
-
                     Radio(
                         value: 1,
                         groupValue: _value,
                         onChanged: (value) {
                           setState(() {
                             _value = value;
-                            print('@@radio--'+_value.toString());
-                            newUSerGovtPrivateRegisterRadios=true;
-                            registeredUSerGovtPrivateRegsiterations=false;
+                            print('@@radio--' + _value.toString());
+                            newUSerGovtPrivateRegisterRadios = true;
+                            registeredUSerGovtPrivateRegsiterations = false;
                             _future = _getStatesDAta();
 
-                            print('@@radioAPi hoit state--2');
+                            print('@@radioAPi Select get value======' +
+                                value.toString());
                           });
-                          getEquipmentsDetails();
-                         /* Future<bool> isNetworkAvailable = Utils.isNetworkAvailable();
-                          if (isNetworkAvailable != null) {
-                            print('@@getEquipmentGovtPRivateModel--' );
-
-                            ApiController.getEquipmentGovtPRivateModel().then((value) {
-                              setState(() {
-                                isLoadingApi = false;
-                                print('@@getEquipmentGovtPRivateModel--' + value.status.toString());
-                                if (value.status) {
-                                  print('@@getEquipmentGovtPRivateModel--' + value.status.toString());
-
-                                }else{
-                                  print('@@getEquipmentGovtPRivateModel--' + value.status.toString());
-
-                                }
-                              });
-                            });
-                          } else {
-                            Utils.showToast(AppConstant.noInternet, true);
-                            return null;
-                          }*/
                         }),
                     SizedBox(width: 10.0),
                     Text('New User'),
@@ -471,10 +438,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                         onChanged: (value) {
                           setState(() {
                             _value = value;
-                            print('@@radio--'+_value.toString());
-                            newUSerGovtPrivateRegisterRadios=false;
-                            registeredUSerGovtPrivateRegsiterations=true;
-
+                            print('@@radio--' + _value.toString());
+                            newUSerGovtPrivateRegisterRadios = false;
+                            registeredUSerGovtPrivateRegsiterations = true;
                           });
                         }),
                     SizedBox(width: 10.0),
@@ -486,7 +452,8 @@ class _RegisterScreen extends State<RegisterScreen> {
       ],
     );
   }
-  Widget registeredUSerGovtPrivateRegsiteration(){
+
+  Widget registeredUSerGovtPrivateRegsiteration() {
     return Column(
       children: [
         Visibility(
@@ -512,8 +479,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ),
                   ),
 
-                  //getEquipmentsDetails(),
-
                   // TextFormField to enter captcha value
 
                   Padding(
@@ -537,6 +502,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       ],
     );
   }
+
   Widget newUSerGovtPrivateRegisterRadio() {
     return Column(
       children: [
@@ -553,8 +519,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: Container(
                       decoration: BoxDecoration(
-                          color: Colors.grey, borderRadius: BorderRadius.circular(10)),
-
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(10)),
                       child: new DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           isExpanded: true,
@@ -569,7 +535,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                             'Private Practitioner',
                             'Private Medical College',
                             'Other(Institution not claiming fund from NPCBVI)',
-                          ].map<DropdownMenuItem<String>>((String oganisationTypeGovtPrivateDRopDowns) {
+                          ].map<DropdownMenuItem<String>>(
+                              (String oganisationTypeGovtPrivateDRopDowns) {
                             return DropdownMenuItem<String>(
                               value: oganisationTypeGovtPrivateDRopDowns,
                               child: Text(
@@ -585,11 +552,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500),
                           ),
-                          onChanged: (String oganisationTypeGovtPrivateDRopDownss) {
+                          onChanged:
+                              (String oganisationTypeGovtPrivateDRopDownss) {
                             setState(() {
-                              oganisationTypeGovtPrivateDRopDown = oganisationTypeGovtPrivateDRopDownss;
-                                print('@@oganisationTypeGovtPrivateDRopDown--' + oganisationTypeGovtPrivateDRopDown);
-
+                              oganisationTypeGovtPrivateDRopDown =
+                                  oganisationTypeGovtPrivateDRopDownss;
+                              print('@@oganisationTypeGovtPrivateDRopDown--' +
+                                  oganisationTypeGovtPrivateDRopDown);
                             });
                           },
                         ),
@@ -662,12 +631,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                             return Container(
                               decoration: BoxDecoration(
                                 border: Border(
-                                  bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                                  bottom: BorderSide(
+                                      width: 1.5, color: Colors.grey[300]),
                                 ),
                               ),
                               child: Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                    const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
@@ -688,7 +658,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                       value: _selectedUser,
                                       items: [
                                         ...snapshot.data.map(
-                                              (user) => DropdownMenuItem(
+                                          (user) => DropdownMenuItem(
                                             value: user,
                                             child: Text('${user.stateName}'),
                                           ),
@@ -748,14 +718,110 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(5.0, 10, 5.0, 10),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
-                          ),
+//                alignment: Alignment.bottomRight,
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                      ),
+                      child: Text(
+                        'Equipment Details *',
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 22),
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        FutureBuilder(
+                          future: ApiController.getEquipmentGovtPRivateModel(),
+                          builder: (context, projectSnap) {
+                            if (projectSnap.connectionState ==
+                                    ConnectionState.none &&
+                                projectSnap.hasData == null) {
+                              return Container();
+                            } else {
+                              if (projectSnap.hasData) {
+                                GovtPRivateModel response = projectSnap.data;
+                                print('@@GovtPRivateModel__1' +
+                                    response.status.toString());
+                                /*   List<ListGovtPRivateModel> offerList = response.list;
+                  print('@@GovtPRivateModel__1--length'+offerList.length.toString());*/
+                                if (response.status) {
+                                  List<ListGovtPRivateModel> offerList =
+                                      response.list;
+                                  if (offerList.isEmpty) {
+                                    return Utils.getEmptyView("No data found");
+                                  } else {
+                                    print('@@GovtPRivateModel__3' +
+                                        response.status.toString());
+                                    print('@@GovtPRivateModel__length' +
+                                        offerList.length.toString());
+
+                                    return Expanded(
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: offerList.length,
+                                        itemBuilder: (context, index) {
+                                          ListGovtPRivateModel offer =
+                                              offerList[index];
+
+                                          print('@@GovtPRivateModel__4' +
+                                              offer.toString());
+                                          return CardEquipmentListScreen(offer);
+                                                  /*   return ListTile(
+
+                                            title: Text(
+                                              offer.id.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                            subtitle: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                    offer.name.toString(), style: TextStyle(color: Colors.black
+                                                )),
+                                              ],
+                                            ),
+                                     trailing: Wrap(
+                                              spacing: 12, // space between two icons
+                                              children: <Widget>[
+                                                Icon(Icons.arrow_right), // icon-2
+                                              ],
+                                            ),
+
+                                            onTap: () {
+
+                                            },
+
+                                          );*/
+                                        },
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  return Utils.getEmptyView("No data found");
+                                }
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                      backgroundColor: Colors.black26,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.black26)),
+                                );
+                              }
+                            }
+                          },
                         ),
-                        child: Text('Equipment Details *')),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
@@ -778,6 +844,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       ],
     );
   }
+
   Widget NGORegistration() {
     return Column(
       children: [
@@ -1244,7 +1311,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         // });
                                       }
                                     }),
-
                                     value: _selectedUser,
                                     items: [
                                       ...snapshot.data.map(
@@ -1293,8 +1359,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                       print('@@disrtcCode' +
                                           disrtcCode.toString());
                                       //  CodeDPM = Districtuser.districtCode;
-                                      *//* print('@@CodeDPM' +
-                                          CodeDPM.toString());*//*
+                                      */ /* print('@@CodeDPM' +
+                                          CodeDPM.toString());*/ /*
                                     }),
                                     value: _selectedUserDistrict,
                                     items: [

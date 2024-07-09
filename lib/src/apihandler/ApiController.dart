@@ -359,8 +359,8 @@ class ApiController {
       GovtPRivateModel govtPRivateModel = GovtPRivateModel.fromJson(json);
       if (govtPRivateModel.status) {
         Utils.showToast(govtPRivateModel.message, true);
-        print('@@getGovtPRivateModel--' + govtPRivateModel.message);
-
+        print('@@getGovtPRivateModel--get messqagehere--' + govtPRivateModel.message);
+        return govtPRivateModel;
       }else{
         Utils.showToast(govtPRivateModel.message, true);
         print('@@esleConfiti--' + govtPRivateModel.status.toString());
