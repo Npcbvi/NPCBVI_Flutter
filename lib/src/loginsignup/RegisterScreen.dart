@@ -46,6 +46,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   bool isVisibleDitrict = false;
   bool isLoadingApi = true;
   DashboardStateModel dashboardStateModel;
+  bool isVerified = false;
 
   TextEditingController _spoNAmeController = new TextEditingController();
   TextEditingController _spoMobileController = new TextEditingController();
@@ -89,6 +90,8 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _addressGovtPRivate = new TextEditingController();
   final _pinbCodeGovtPRivate = new TextEditingController();
   final _officerNAmeGovtPRivate = new TextEditingController();
+  TextEditingController _captchaControllerGovtPrivateScreen =
+      new TextEditingController();
 
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -424,6 +427,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                             print('@@radio--' + _value.toString());
                             newUSerGovtPrivateRegisterRadios = true;
                             registeredUSerGovtPrivateRegsiterations = false;
+                            buildCaptcha();
                             _future = _getStatesDAta();
 
                             print('@@radioAPi Select get value======' +
@@ -773,7 +777,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                           print('@@GovtPRivateModel__4' +
                                               offer.toString());
                                           return CardEquipmentListScreen(offer);
-                                                  /*   return ListTile(
+                                          /*   return ListTile(
 
                                             title: Text(
                                               offer.id.toString(),
@@ -823,7 +827,59 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ],
                     ),
                   ),
+
                   Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Shown Captcha value to user
+                        Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 2, color: red1)),
+                            child: Text(
+                              '${randomString}',
+                              style: TextStyle(
+                                  color: red1, fontWeight: FontWeight.w500),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+
+                        // Regenerate captcha value
+                        IconButton(
+                            onPressed: () {
+                              print(
+                                  '@@OnGovtPrivatScreenCap[tcha__note here check');
+                              buildCaptcha();
+                            },
+                            icon: const Icon(Icons.refresh)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          isVerified = false;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Enter Captcha Value",
+                          labelText: "Enter Captcha Value"),
+                      controller: _captchaControllerGovtPrivateScreen,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  /*    Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                     child: ElevatedButton(
                       child: Text('Verify'),
@@ -835,6 +891,54 @@ class _RegisterScreen extends State<RegisterScreen> {
                         _NGORegistrationSubmit();
                       },
                     ),
+                  ),*/
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: ElevatedButton(
+                            child: Text('Save'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue,
+                            ),
+                            onPressed: () {
+                              isVerified =
+                                  _captchaControllerGovtPrivateScreen.text ==
+                                      randomString;
+                              print('@@isVerified' + isVerified.toString());
+                              print('@@controller.text' +
+                                  _captchaControllerGovtPrivateScreen.text
+                                      .toString());
+                              print('@@randomString' + randomString.toString());
+                              setState(() {});
+
+                              print('@@saveGovtPrivateButtonClick__here');
+                              //   _submitForm();
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: ElevatedButton(
+                            child: Text('Add Doctors'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue,
+                            ),
+                            onPressed: () {
+
+                              print('@@AddDoctors click__here');
+                              //   _submitForm();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
