@@ -1,7 +1,7 @@
 class DashboardDistrictModel {
   String message;
   bool status;
-  List<DataDsirict> data;
+  List<DataDsiricst> data;
 
   DashboardDistrictModel({this.message, this.status, this.data});
 
@@ -9,9 +9,9 @@ class DashboardDistrictModel {
     message = json['message'];
     status = json['status'];
     if (json['data'] != null) {
-      data = <DataDsirict>[];
+      data = <DataDsiricst>[];
       json['data'].forEach((v) {
-        data.add(new DataDsirict.fromJson(v));
+        data.add(new DataDsiricst.fromJson(v));
       });
     }
   }
@@ -27,14 +27,14 @@ class DashboardDistrictModel {
   }
 }
 
-class DataDsirict {
+class DataDsiricst {
   int districtCode;
   String districtName;
   int stateCode;
 
-  DataDsirict({this.districtCode, this.districtName, this.stateCode});
+  DataDsiricst({this.districtCode, this.districtName, this.stateCode});
 
-  DataDsirict.fromJson(Map<String, dynamic> json) {
+  DataDsiricst.fromJson(Map<String, dynamic> json) {
     districtCode = json['district_code'];
     districtName = json['district_name'];
     stateCode = json['state_code'];

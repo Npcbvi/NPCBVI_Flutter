@@ -334,7 +334,9 @@ class ApiController {
         //  Result result = loginModel.result;
         //  print("@@Result message----" + result.message);
         if (forgotPasswordDatas.status) {
-          Utils.showToast(forgotPasswordDatas.message, true);
+          //Utils.showToast(forgotPasswordDatas.message, true);
+          SharedPrefs.saveForgotPasswordData(forgotPasswordDatas);
+
         }
         return forgotPasswordDatas;
       } catch (e) {
@@ -368,6 +370,66 @@ class ApiController {
       }
 
       return govtPRivateModel;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+
+  }
+  static Future<ForgotPasswordModel> forgotPasswordOTPApiRequest(
+      ForgotPasswordDatasOTPData forgotPasswordDatasOTPData) async {
+    ForgotPasswordModel forgotPasswordDatas = ForgotPasswordModel(); // add here
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.UserForgotPassword;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+        //Way to send params
+        var body = json.encode({
+          "userId": forgotPasswordDatasOTPData.user_id,
+          "role_id": forgotPasswordDatasOTPData.role_id,
+          "status": forgotPasswordDatasOTPData.status,
+          "mobile": forgotPasswordDatasOTPData.mobile,
+          "sr_no": forgotPasswordDatasOTPData.sr_no,
+          "user_id": forgotPasswordDatasOTPData.user_id,
+          "email_id":forgotPasswordDatasOTPData.email_id,
+          "name": forgotPasswordDatasOTPData.name,
+          "mobileorEmail": "",
+          "otp": forgotPasswordDatasOTPData.opts,
+        });
+        print("@@forgotPasswordOTPApiRequest" + url + body);
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                headers: headers,
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@forgotPasswordOTPApiRequest" + url + body);
+        print("@@forgotPasswordOTPApiRequest--Api" + response1.toString());
+        forgotPasswordDatas = ForgotPasswordModel.fromJson(json.decode(response1.data));
+        // print("@@token" + spoRegisterModel.message);
+        //  Result result = loginModel.result;
+        //  print("@@Result message----" + result.message);
+        if (forgotPasswordDatas.status) {
+          //Utils.showToast(forgotPasswordDatas.message, true);
+         // SharedPrefs.saveForgotPasswordData(forgotPasswordDatas);
+
+        }
+        return forgotPasswordDatas;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
     } else {
       Utils.showToast(AppConstant.noInternet, true);
       return null;

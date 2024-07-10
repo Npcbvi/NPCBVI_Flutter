@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
+import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -21,10 +22,14 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
   bool showGOVTPrivate = true;
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
-  ForgotPasswordDatas forgotPwddData =
-      new ForgotPasswordDatas(); // dat aget in  edittext and send apis
+  ForgotPasswordDatas forgotPwddData = new ForgotPasswordDatas();
+  ForgotPasswordDatasOTPData forgotPasswordDatasOTPData =
+      new ForgotPasswordDatasOTPData(); // dat aget in  edittext and send apis
   final userIDController = new TextEditingController();
   int _value = 1;
+  TextEditingController getForgotroleOTP = new TextEditingController();
+  String user_id, email_id, mobile, name, sr_no, Otp, roleId;
+  int status;
 
   @override
   void initState() {
@@ -62,8 +67,7 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => MainDashboard()),
+                MaterialPageRoute(builder: (context) => MainDashboard()),
               );
               // do something
             },
@@ -80,17 +84,20 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
               height: 40,
               child: Expanded(
                   child: Marquee(
-                    text: 'NGO Darpan number is mandatory for registration.',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize:20,color: Colors.red),
-                    velocity: 50.0, //speed
-                    pauseAfterRound: Duration(seconds: 1),
-                    startPadding: 10.0,
-                    accelerationDuration: Duration(seconds: 1),
-                    accelerationCurve: Curves.linear,
-                    decelerationDuration: Duration(milliseconds: 500),
-                    decelerationCurve: Curves.easeOut,
-                  )
-              ),
+                text: 'NGO Darpan number is mandatory for registration.',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.red),
+                velocity: 50.0,
+                //speed
+                pauseAfterRound: Duration(seconds: 1),
+                startPadding: 10.0,
+                accelerationDuration: Duration(seconds: 1),
+                accelerationCurve: Curves.linear,
+                decelerationDuration: Duration(milliseconds: 500),
+                decelerationCurve: Curves.easeOut,
+              )),
             ),
             Container(
               margin: EdgeInsets.fromLTRB(100, 20, 100, 20),
@@ -104,10 +111,10 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                            'Reset Password',
-                            style: TextStyle(
-                                color: Colors.white, fontWeight: FontWeight.w800),
-                          )),
+                        'Reset Password',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -143,7 +150,6 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                         hintText: 'User Id',
                         labelText: 'User Id',
                       ),
-
                     ),
                     GestureDetector(
                       child: new Container(
@@ -173,14 +179,13 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                                                 BorderRadius.circular(5.0),
                                           ),
                                         ),
-
                                         child: Text(
                                           AppConstant.txtSendEmail,
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
                                         ),
-                                            onPressed: _forgotPassword,
+                                        onPressed: _forgotPassword,
                                       )),
                                 ],
                               ),
@@ -209,7 +214,10 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SizedBox(width: 10.0),
-                Text('Send OTP',style: new TextStyle(color: Colors.black),),
+                Text(
+                  'Send OTP',
+                  style: new TextStyle(color: Colors.black),
+                ),
                 Row(
                   children: [
                     Radio(
@@ -244,10 +252,13 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
       ],
     );
   }
-void _forgotPassword() {
-forgotPwddData.userID=userIDController.text.toString().trim();
-forgotPwddData.RadioOptionSelectMobileEmail=_value.toString();
-    print('@@@@_forgotPassword--valuePArams-----'+forgotPwddData.userID+forgotPwddData.RadioOptionSelectMobileEmail.toString());
+
+  void _forgotPassword() {
+    forgotPwddData.userID = userIDController.text.toString().trim();
+    forgotPwddData.RadioOptionSelectMobileEmail = _value.toString();
+    print('@@@@_forgotPassword--valuePArams-----' +
+        forgotPwddData.userID +
+        forgotPwddData.RadioOptionSelectMobileEmail.toString());
     final FormState form = _formKey.currentState;
     if (form.validate()) {
       if (forgotPwddData.userID.isEmpty) {
@@ -261,12 +272,14 @@ forgotPwddData.RadioOptionSelectMobileEmail=_value.toString();
           ApiController.forgotPasswordApiRequest(forgotPwddData)
               .then((response) {
             Utils.hideProgressDialog(context);
-         ///   ForgotPasswordModel userResponse = response;
+
+            ///   ForgotPasswordModel userResponse = response;
             if (response != null && response.status) {
-              print('@@----forgotPasswordApiRequest+111---'+response.status.toString());
-             // Utils.showToast(response.message, true);
+              print('@@----forgotPasswordApiRequest+111---' +
+                  response.status.toString());
+              // Utils.showToast(response.message, true);
               sowDialogForForgot(response.message);
-            }else{
+            } else {
               Utils.showToast(response.message, true);
             }
           });
@@ -274,10 +287,78 @@ forgotPwddData.RadioOptionSelectMobileEmail=_value.toString();
           Utils.showToast(AppConstant.noInternet, true);
         }
       });
-    }else {
+    } else {
       Utils.showToast("Please enter a valid email", true);
     }
   }
+  void getForgotPasswordDetails() {
+    try {
+      SharedPrefs.getForgotPasswordData().then((user) {
+        setState(() {
+          user_id = user.data.getUserDetails.userId;
+          email_id = user.data.getUserDetails.emailId;
+          status = user.data.getUserDetails.status;
+          mobile = user.data.getUserDetails.mobile;
+          sr_no = user.data.getUserDetails.srNo;
+          name = user.data.getUserDetails.name;
+          roleId = user.data.getUserDetails.roleId;
+          print(
+              '@@getForgotPasswordDetails-=' + user.data.getUserDetails.roleId);
+          print('@@getForgotPasswordDetails==' + roleId);
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+  void _forgotPasswordOTP() {
+    getForgotPasswordDetails();
+
+    print('@@GorgotDialog ___click here++++2');
+    forgotPasswordDatasOTPData.opts=getForgotroleOTP.text.toString();
+    forgotPasswordDatasOTPData.user_id = user_id;
+    forgotPasswordDatasOTPData.role_id = roleId;
+    forgotPasswordDatasOTPData.email_id = email_id;
+    forgotPasswordDatasOTPData.mobile = mobile;
+    forgotPasswordDatasOTPData.sr_no = sr_no;
+    forgotPasswordDatasOTPData.status = status;
+    forgotPasswordDatasOTPData.name = name;
+    print('@@@@_forgotPasswordOTP--valuePArams-----' +
+        forgotPasswordDatasOTPData.user_id +
+        forgotPasswordDatasOTPData.role_id.toString() +
+        forgotPasswordDatasOTPData.email_id.toString());
+    final FormState form = _formKey.currentState;
+    if (form.validate()) {
+      if (forgotPasswordDatasOTPData.opts.isEmpty) {
+        Utils.showToast("Please enter OTP !", false);
+        return;
+      }
+      form.save(); //This invokes each onSaved event
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog(context);
+          ApiController.forgotPasswordOTPApiRequest(forgotPasswordDatasOTPData)
+              .then((response) {
+            Utils.hideProgressDialog(context);
+            print('@@GorgotDialog ___click here++++3');
+            ///   ForgotPasswordModel userResponse = response;
+            if (response != null && response.status) {
+              print('@@----forgotPasswordDatasOTPData+111---' +
+                  response.status.toString());
+               Utils.showToast(response.message, true);
+            } else {
+              Utils.showToast(response.message, true);
+            }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
+    } else {
+      Utils.showToast("Please enter a valid email", true);
+    }
+  }
+
 
 
   void sowDialogForForgot(String message) {
@@ -304,8 +385,11 @@ forgotPwddData.RadioOptionSelectMobileEmail=_value.toString();
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title:  new Html( data:  message,),
-          content: TextField(
+          title: new Html(
+            data: message,
+          ),
+          content: TextFormField(
+            controller: getForgotroleOTP,
             decoration: InputDecoration(hintText: "Enter Otp"),
           ),
           actions: <Widget>[
@@ -318,6 +402,8 @@ forgotPwddData.RadioOptionSelectMobileEmail=_value.toString();
             TextButton(
               child: const Text('Submit'),
               onPressed: () {
+                print('@@GorgotDialog ___click here');
+                _forgotPasswordOTP();
                 // Handle the submit action
               },
             ),
@@ -326,11 +412,15 @@ forgotPwddData.RadioOptionSelectMobileEmail=_value.toString();
       },
     );
   }
-
 }
+
 class ForgotPasswordDatas {
   String userID;
   String RadioOptionSelectMobileEmail;
 }
 
+class ForgotPasswordDatasOTPData {
+  String opts, user_id, email_id, mobile, sr_no, name, role_id;
+  int status;
+}
 //"message":"<b>Password Reset Request Confirmation Code (OTP) has been sent to your <br> registered Email address</b>  <b>*************</b><b>tkmr@gmail.com</b>  .<br /> <b><BR> Enter OTP  below. Click on [Send Password]  .","status":true,"data":{"otp":"448481","getUserDetails":{"user_id":"TTTEST11001","email_id":"hementkmr@gmail.com","mobile":"9971436869","sr_no":"31901","name":"test dist","role_id":"3","status":2}},"list":null}

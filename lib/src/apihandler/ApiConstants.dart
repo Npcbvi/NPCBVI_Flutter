@@ -8,6 +8,8 @@ class ApiConstants {
   static String spoRegistration = 'SpoRegistration';
   static String DpmRegistration = 'DpmRegistration';
   static String SendOTPForForgotPassword = 'SendOTPForForgotPassword';
+  static String UserForgotPassword = 'UserForgotPassword';
+
   static String GetDashboard = 'GetDashboard';
   static String GetContacts = 'GetContacts';
   static final String noInternet = "No intenet connection";

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs{
@@ -27,5 +28,17 @@ class SharedPrefs{
   static Future getStoreSharedValue(String key) async {
     SharedPreferences sharedUser = await SharedPreferences.getInstance();
     return sharedUser.getInt(key);
+  }
+  static void saveForgotPasswordData(ForgotPasswordModel model) async {
+    SharedPreferences sharedUser = await SharedPreferences.getInstance();
+    dynamic storeResponse = model.toJson();
+    String jsonString = jsonEncode(storeResponse);
+    sharedUser.setString('user_forget', jsonString);
+  }
+  static Future<ForgotPasswordModel> getForgotPasswordData() async {
+    SharedPreferences sharedUser = await SharedPreferences.getInstance();
+    Map<String, dynamic> storeMap = json.decode(sharedUser.getString('user_forget'));
+    var user = ForgotPasswordModel.fromJson(storeMap);
+    return user;
   }
 }

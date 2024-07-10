@@ -30,10 +30,10 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
   Future<List<Data>> _future;
-  Future<List<DataDsirict>> _futureDataDsirict;
+  Future<List<DataDsiricst>> _futureDataDsirict;
 
   Data _selectedUser;
-  DataDsirict _selectedUserDistrict;
+  DataDsiricst _selectedUserDistrict;
 
   String _chosenValue, oganisationTypeGovtPrivateDRopDown;
   String randomString = "";
@@ -45,7 +45,6 @@ class _RegisterScreen extends State<RegisterScreen> {
   bool newUSerGovtPrivateRegisterRadios = false;
   bool isVisibleDitrict = false;
   bool isLoadingApi = true;
-  DashboardStateModel dashboardStateModel;
   bool isVerified = false;
 
   TextEditingController _spoNAmeController = new TextEditingController();
@@ -109,8 +108,8 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
-  Future<List<DataDsirict>> _getDistrictData(int stateCode) async {
-    DashboardDistrictModel dashboardDistrictModel;
+  Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
+    DashboardDistrictModel dashboardDistrictModel=DashboardDistrictModel();;
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -120,13 +119,20 @@ class _RegisterScreen extends State<RegisterScreen> {
       response1 = await dio.post(
           "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
           data: body,
-          options: new Options(responseType: ResponseType.plain));
+          options: new Options(
+              contentType: "application/json",
+              responseType: ResponseType.plain));
       print("@@Response--Api" + body.toString());
-      print("@@Response--Api" + response1.toString());
+      print("@@Response--Api=====" + response1.toString());
       dashboardDistrictModel =
           DashboardDistrictModel.fromJson(json.decode(response1.data));
-      print("@@dashboardDistrictModel----getting of size --" + dashboardDistrictModel.data.length.toString());
+      if(dashboardDistrictModel.status){
+        print("@@dashboardDistrictModel----getting of size +++--" + dashboardDistrictModel.data.length.toString());
 
+      }else{
+        print("@@no data---" + dashboardDistrictModel.data.length.toString());
+
+      }
       return dashboardDistrictModel.data;
     } else {
       Utils.showToast(AppConstant.noInternet, true);
@@ -1396,8 +1402,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         SharedPrefs.storeSharedValue(
                                             AppConstant.txtStateDPmValue,
                                             stateCodeDPM);
-                                         setState(() {
-                                        //   //    isVisibleDitrict = true;
                                         if(stateCodeDPM!=null){
                                           print('@@chakValue---' +
                                               codeDPM.toString());
@@ -1407,6 +1411,17 @@ class _RegisterScreen extends State<RegisterScreen> {
                                           isVisibleDitrict = false;
 
                                         }
+                                         setState(() {
+                                        //   //    isVisibleDitrict = true;
+                                      /*  if(stateCodeDPM!=null){
+                                          print('@@chakValue---' +
+                                              codeDPM.toString());
+                                          isVisibleDitrict = true;
+                                          _getDistrictData(stateCodeDPM);
+                                        }else{
+                                          isVisibleDitrict = false;
+
+                                        }*/
 
                                          });
                                       }
@@ -1433,7 +1448,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                         child:    Column(
                           children: [
                             Center(
-                              child: FutureBuilder<List<DataDsirict>>(
+                              child: FutureBuilder<List<DataDsiricst>>(
                                   future: _futureDataDsirict,
 
                                   builder: (context, snapshot) {
@@ -1454,7 +1469,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                           const Text(
                                             'Select District:',
                                           ),
-                                          DropdownButtonFormField<DataDsirict>(
+                                          DropdownButtonFormField<DataDsiricst>(
                                             onChanged: (Districtuser) => setState(() {
                                               _selectedUserDistrict = Districtuser;
                                               print('@@@Districtuser'+Districtuser.toString());
