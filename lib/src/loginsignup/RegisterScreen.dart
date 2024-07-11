@@ -119,6 +119,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       response1 = await dio.post(
           "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
           data: body,
+
           options: new Options(
               contentType: "application/json",
               responseType: ResponseType.plain));
