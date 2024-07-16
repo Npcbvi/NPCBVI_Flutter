@@ -91,7 +91,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _officerNAmeGovtPRivate = new TextEditingController();
   TextEditingController _captchaControllerGovtPrivateScreen =
       new TextEditingController();
-
+  List<String> products = [];
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -107,8 +107,43 @@ class _RegisterScreen extends State<RegisterScreen> {
       return null;
     }
   }
+  Future<List<String>> _getDistrictData(int stateCode) async {
+    DashboardDistrictModel dashboardDistrictModel;
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      var body = json.encode({"state_code": stateCode});
+      //Way to send network calls
+      Dio dio = new Dio();
+      response1 = await dio.post(
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
+          data: body,
 
-  Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
+          options: new Options(
+              contentType: "application/json",
+              responseType: ResponseType.plain));
+      print("@@Response--Api" + body.toString());
+      print("@@Response--Api=====" + response1.toString());
+      dashboardDistrictModel =
+          DashboardDistrictModel.fromJson(json.decode(response1.data));
+      if(dashboardDistrictModel.status){
+        print("@@dashboardDistrictModel----getting of size +++--" + dashboardDistrictModel.data.length.toString());
+        print("@@dashboardDistrictModel----getting of size +++--" + dashboardDistrictModel.data.toString());
+        for(int i=0; i< dashboardDistrictModel.data.length; i++) {
+          print('@@@--- ${dashboardDistrictModel.data[i].districtName} ');
+          products.add(dashboardDistrictModel.data[i].districtName);
+          return products;
+        }
+      }else{
+        print("@@no data---" + dashboardDistrictModel.data.length.toString());
+
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+ /* Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
     DashboardDistrictModel dashboardDistrictModel=DashboardDistrictModel();;
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -139,7 +174,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-  }
+  }*/
 
   void buildCaptcha() {
     const letters =
@@ -1448,6 +1483,84 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                         child:    Column(
                           children: [
+                            new DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                focusColor: Colors.white,
+                                value: _chosenValue,
+                                //elevation: 5,
+                                style: TextStyle(color: Colors.white),
+                                iconEnabledColor: Colors.white,
+                                items: <String>[
+                                  'NGO',
+                                  'Govt./Private /Other',
+                                  'SPO',
+                                  'DPM',
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(
+                                      value,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  );
+                                }).toList(),
+                                hint: Text(
+                                  "Registration",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                onChanged: (String value) {
+                                  setState(() {
+                                    _chosenValue = value;
+                                    //  print('@@spinnerChooseValue--' + _chosenValue);
+                                    if (_chosenValue == "NGO") {
+                                      print('@@NGO--1' + _chosenValue);
+
+                                      showNGOResgistration = true;
+                                      showSPORegistration = false;
+                                      showDPMRegistration = false;
+                                      showGOVTPrivate = false;
+                                      newUSerGovtPrivateRegisterRadios = false;
+                                      registeredUSerGovtPrivateRegsiterations = false;
+                                    } else if (_chosenValue == "SPO") {
+                                      //getCountries();
+                                      _future = _getStatesDAta();
+                                      print(
+                                          '@@showSPORegistration--2' + _chosenValue);
+                                      showNGOResgistration = false;
+                                      showSPORegistration = true;
+                                      showDPMRegistration = false;
+                                      showGOVTPrivate = false;
+                                      newUSerGovtPrivateRegisterRadios = false;
+                                      registeredUSerGovtPrivateRegsiterations = false;
+                                    } else if (_chosenValue == "DPM") {
+                                      //getCountries();
+                                      _future = _getStatesDAta();
+
+                                      // _getDistrictData(18);
+
+                                      print('@@showSPORegistration--3' +
+                                          _chosenValue +
+                                          value.toString());
+                                      showNGOResgistration = false;
+                                      showSPORegistration = false;
+                                      showDPMRegistration = true;
+                                      showGOVTPrivate = false;
+                                      newUSerGovtPrivateRegisterRadios = false;
+                                      registeredUSerGovtPrivateRegsiterations = false;
+                                    } else if (_chosenValue ==
+                                        "Govt./Private /Other") {
+                                      showNGOResgistration = false;
+                                      showSPORegistration = false;
+                                      showDPMRegistration = false;
+                                      showGOVTPrivate = true;
+                                    }
+                                  });
+                                },
+                              ),
+                            ),
                             Center(
                               child: FutureBuilder<List<DataDsiricst>>(
                                   future: _futureDataDsirict,
