@@ -106,7 +106,26 @@ class _RegisterScreen extends State<RegisterScreen> {
       return null;
     }
   }
+  /*Future< List<DataDsiricst>> _getDistrictData(int stateCode) async {
+    DashboardDistrictModel dashboardDistrictModel
+    =DashboardDistrictModel();;
+    var response = await http.post("https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "state_code": stateCode,
+        }));
 
+    if (response.statusCode == 200) {
+      dashboardDistrictModel =
+          DashboardDistrictModel.fromJson(json.decode(response.body));
+      List<DataDsiricst> list=dashboardDistrictModel.data;
+      return list;
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text("Failed to create post!"),
+      ));
+    }
+  }*/
   Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
     DashboardDistrictModel dashboardDistrictModel
     =DashboardDistrictModel();;
