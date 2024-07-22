@@ -20,6 +20,7 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer'as developer;
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -91,6 +92,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _captchaControllerGovtPrivateScreen =
       new TextEditingController();
   List<String> products = [];
+
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -106,6 +108,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       return null;
     }
   }
+
   /*Future< List<DataDsiricst>> _getDistrictData(int stateCode) async {
     DashboardDistrictModel dashboardDistrictModel
     =DashboardDistrictModel();;
@@ -127,8 +130,8 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }*/
   Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
-    DashboardDistrictModel dashboardDistrictModel
-    =DashboardDistrictModel();;
+    DashboardDistrictModel dashboardDistrictModel = DashboardDistrictModel();
+    ;
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -138,7 +141,6 @@ class _RegisterScreen extends State<RegisterScreen> {
       response1 = await dio.post(
           "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
           data: body,
-
           options: new Options(
               contentType: "application/json",
               responseType: ResponseType.plain));
@@ -146,12 +148,11 @@ class _RegisterScreen extends State<RegisterScreen> {
       print("@@Response--Api=====" + response1.toString());
       dashboardDistrictModel =
           DashboardDistrictModel.fromJson(json.decode(response1.data));
-      if(dashboardDistrictModel.status){
-        print("@@dashboardDistrictModel----getting of size +++--" + dashboardDistrictModel.data.length.toString());
-
-      }else{
+      if (dashboardDistrictModel.status) {
+        print("@@dashboardDistrictModel----getting of size +++--" +
+            dashboardDistrictModel.data.length.toString());
+      } else {
         print("@@no data---" + dashboardDistrictModel.data.length.toString());
-
       }
       return dashboardDistrictModel.data;
     } else {
@@ -943,7 +944,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                               primary: Colors.blue,
                             ),
                             onPressed: () {
-
                               print('@@AddDoctors click__here');
                               //   _submitForm();
                             },
@@ -1422,18 +1422,15 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         SharedPrefs.storeSharedValue(
                                             AppConstant.txtStateDPmValue,
                                             stateCodeDPM);
-                                        if(stateCodeDPM!=null){
+                                        if (stateCodeDPM != null) {
                                           print('@@chakValue---' +
                                               codeDPM.toString());
                                           isVisibleDitrict = true;
                                           _getDistrictData(stateCodeDPM);
-                                        }else{
+                                        } else {
                                           isVisibleDitrict = false;
-
                                         }
-                                         setState(() {
-
-                                         });
+                                        setState(() {});
                                       }
                                     }),
                                     value: _selectedUser,
@@ -1453,62 +1450,75 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ),
 
                     Visibility(
-                        visible:  isVisibleDitrict,
+                      visible: isVisibleDitrict,
+                      child: Column(
+                        children: [
+                          Center(
+                            child: FutureBuilder<List<DataDsiricst>>(
+                                future: _getDistrictData(stateCodeDPM),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  }
+                                  if (snapshot.data == null) {
+                                    return const CircularProgressIndicator();
+                                  }
+                                  developer.log('@@snapshot' + snapshot.data.toString());
 
-                        child:    Column(
-                          children: [
-                            Center(
-                              child: FutureBuilder<List<DataDsiricst>>(
-                                  future: _getDistrictData(stateCodeDPM),
-
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasError) {
-                                      return Text('Error: ${snapshot.error}');
-                                    }
-
-                                    if (snapshot.data == null) {
-                                      return const CircularProgressIndicator();
-                                    }
-
+                                   List list= snapshot.data.map<DataDsiricst>(( district) {
+                                    return district;
+                                  }).toList();
+                                   if(   _selectedUserDistrict==null || list.contains(_selectedUserDistrict)==false) {
+                                     _selectedUserDistrict = list.first;
+                                   }
                                     return Padding(
-                                      padding:
-                                      const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          const Text(
-                                            'Select District:',
-                                          ),
-                                          DropdownButtonFormField<DataDsiricst>(
-
-                                            onChanged: (Districtuser) => setState(() {
-
-                                              _selectedUserDistrict = Districtuser;
-                                              print('@@@Districtuser'+Districtuser.districtName.toString());
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 10, 20.0, 0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        const Text(
+                                          'Select District:',
+                                        ),
+                                        DropdownButtonFormField<DataDsiricst>(
+                                          onChanged: (districtUser) =>
                                               setState(() {
-                                              }
-                                              );
-                                            }),
-                                            value: _selectedUserDistrict,
-
-                                            items: [
-                                              ...snapshot.data.map(
-                                                    (userDistricts) => DropdownMenuItem(
-                                                  value: userDistricts,
-                                                  child: Text(
-                                                      userDistricts.districtName),
-                                                ),
-                                              ).toList()
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                            ),
-                          ],
-                        ),),
-
+                                            _selectedUserDistrict =
+                                                districtUser;
+                                            print('@@@Districtuser' +
+                                                districtUser.districtName
+                                                    .toString());
+                                            setState(() {});
+                                          }),
+                                          value: _selectedUserDistrict,
+                                          items: snapshot.data.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                            return DropdownMenuItem<DataDsiricst>(
+                                              value: district,
+                                              child: Text(district.districtName),
+                                            );
+                                          }).toList(),
+                                    /*      items: [
+                                            ...snapshot.data
+                                                .map(
+                                                  (userDistricts) =>
+                                                      DropdownMenuItem(
+                                                    value: userDistricts,
+                                                    child: Text(userDistricts
+                                                        .districtName),
+                                                  ),
+                                                )
+                                                .toList()
+                                          ],*/
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                          ),
+                        ],
+                      ),
+                    ),
 
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),

@@ -47,4 +47,22 @@ class DataDsiricst {
     data['state_code'] = this.stateCode;
     return data;
   }
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true; // Check if both objects are identical
+    return other is DataDsiricst &&
+        other.districtCode == districtCode &&
+        other.districtName == districtName &&
+        other.stateCode == stateCode;
+  }
+
+  @override
+  int get hashCode {
+    // Generate hash code based on fields that are used in equals comparison
+    return districtCode.hashCode ^ districtName.hashCode ^ stateCode.hashCode;
+  }
+  @override
+  String toString() {
+    return 'DataDsiricst{districtCode: $districtCode, districtName: $districtName, stateCode: $stateCode}';
+  }
 }
