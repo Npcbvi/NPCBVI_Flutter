@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
@@ -20,7 +21,7 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer'as developer;
+import 'dart:developer' as developer;
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -44,6 +45,9 @@ class _RegisterScreen extends State<RegisterScreen> {
   bool registeredUSerGovtPrivateRegsiterations = false;
   bool newUSerGovtPrivateRegisterRadios = false;
   bool isVisibleDitrict = false;
+  bool isVisibleDitrictGovt = false;
+  bool isVisibleHostpiatnNinitrictGovt = false;
+
   bool isLoadingApi = true;
   bool isVerified = false;
 
@@ -74,10 +78,12 @@ class _RegisterScreen extends State<RegisterScreen> {
   SPODataFields spoDataFields = new SPODataFields();
   NGODDataFields ngodDataFields = new NGODDataFields();
   DPMDataFields dpmDataFields = new DPMDataFields();
+  GovtPrivateRegistatrionDataFields govtPrivateRegistatrionDataFields =
+      new GovtPrivateRegistatrionDataFields();
   DashboardStateModel countryStateModel =
       DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
-  int stateCodeSPO, disrtcCode, stateCodeDPM, stateCodeGovtPrivate;
+  int stateCodeSPO, disrtcCode, stateCodeDPM, stateCodeGovtPrivate, distCodeDPM;
   String CodeSPO, codeDPM, CodeGovtPrivate;
   int _value = 1; // int型の変数.
   String _text = ''; // String型の変数.
@@ -92,6 +98,19 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _captchaControllerGovtPrivateScreen =
       new TextEditingController();
   List<String> products = [];
+  int dropDownvalueOrgnbaistaionType = 0;
+
+  final _HospitalNINnoGovtController = new TextEditingController();
+
+  /* final _organisationNameGovtContoller = new TextEditingController();
+  final _MobileGovtContoller = new TextEditingController();
+  final _EmailGovtContoller = new TextEditingController();
+
+  final _AddressGovtContoller = new TextEditingController();
+
+  final _PincodeGovtContoller = new TextEditingController();
+
+  final _officerNameGovtContoller = new TextEditingController();*/
 
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -535,432 +554,6 @@ class _RegisterScreen extends State<RegisterScreen> {
     );
   }
 
-  Widget newUSerGovtPrivateRegisterRadio() {
-    return Column(
-      children: [
-        Visibility(
-          visible: newUSerGovtPrivateRegisterRadios,
-          child: Center(
-            child: Container(
-              margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
-              alignment: Alignment.center,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: new DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          focusColor: Colors.white,
-                          value: oganisationTypeGovtPrivateDRopDown,
-                          //elevation: 5,
-                          style: TextStyle(color: Colors.white),
-                          iconEnabledColor: Colors.white,
-                          items: <String>[
-                            'Govt. District Hospital/Govt.MEdical College',
-                            'CHC/Govt. Sub-Dist. Hospital',
-                            'Private Practitioner',
-                            'Private Medical College',
-                            'Other(Institution not claiming fund from NPCBVI)',
-                          ].map<DropdownMenuItem<String>>(
-                              (String oganisationTypeGovtPrivateDRopDowns) {
-                            return DropdownMenuItem<String>(
-                              value: oganisationTypeGovtPrivateDRopDowns,
-                              child: Text(
-                                oganisationTypeGovtPrivateDRopDowns,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            );
-                          }).toList(),
-                          hint: Text(
-                            "Select",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          onChanged:
-                              (String oganisationTypeGovtPrivateDRopDownss) {
-                            setState(() {
-                              oganisationTypeGovtPrivateDRopDown =
-                                  oganisationTypeGovtPrivateDRopDownss;
-                              print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                  oganisationTypeGovtPrivateDRopDown);
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _organisationNameGovtPrivate,
-                      decoration: InputDecoration(
-                          label: Text('Organisation Name * '),
-                          hintText: 'Organisation Name * ',
-
-                          //prefixIcon
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _mobileGovtPRivate,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          label: Text('Mobile No. * '),
-                          hintText: 'Mobile No. *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _emailIDGovtPRivate,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          label: Text('Email ID *'),
-                          hintText: 'Email ID *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  // TextFormField to enter captcha value
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
-                      ),
-                    ),
-                    child: Center(
-                      child: FutureBuilder<List<Data>>(
-                          future: _future,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
-
-                            if (snapshot.data == null) {
-                              return const CircularProgressIndicator();
-                            }
-
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      width: 1.5, color: Colors.grey[300]),
-                                ),
-                              ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    const Text(
-                                      'Select State:',
-                                    ),
-                                    DropdownButtonFormField<Data>(
-                                      onChanged: (user) => setState(() {
-                                        _selectedUser = user;
-                                        stateCodeGovtPrivate = int.parse(
-                                            (user.stateCode).toString());
-                                        print('@@statenameSPO' +
-                                            stateCodeGovtPrivate.toString());
-                                        CodeGovtPrivate = user.code;
-                                        print('@@CodeSPO___1' +
-                                            CodeGovtPrivate.toString());
-                                      }),
-                                      value: _selectedUser,
-                                      items: [
-                                        ...snapshot.data.map(
-                                          (user) => DropdownMenuItem(
-                                            value: user,
-                                            child: Text('${user.stateName}'),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _addressGovtPRivate,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          label: Text('Address  *'),
-                          hintText: 'Address  *',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _pinbCodeGovtPRivate,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          label: Text('Pin Code *'),
-                          hintText: 'Pin Code *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _officerNAmeGovtPRivate,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          label: Text('Officer Name *'),
-                          hintText: 'Officer Name *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: Container(
-//                alignment: Alignment.bottomRight,
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                      ),
-                      child: Text(
-                        'Equipment Details *',
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 22),
-                      ),
-                    ),
-                  ),
-
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        FutureBuilder(
-                          future: ApiController.getEquipmentGovtPRivateModel(),
-                          builder: (context, projectSnap) {
-                            if (projectSnap.connectionState ==
-                                    ConnectionState.none &&
-                                projectSnap.hasData == null) {
-                              return Container();
-                            } else {
-                              if (projectSnap.hasData) {
-                                GovtPRivateModel response = projectSnap.data;
-                                print('@@GovtPRivateModel__1' +
-                                    response.status.toString());
-                                /*   List<ListGovtPRivateModel> offerList = response.list;
-                  print('@@GovtPRivateModel__1--length'+offerList.length.toString());*/
-                                if (response.status) {
-                                  List<ListGovtPRivateModel> offerList =
-                                      response.list;
-                                  if (offerList.isEmpty) {
-                                    return Utils.getEmptyView("No data found");
-                                  } else {
-                                    print('@@GovtPRivateModel__3' +
-                                        response.status.toString());
-                                    print('@@GovtPRivateModel__length' +
-                                        offerList.length.toString());
-
-                                    return Expanded(
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: offerList.length,
-                                        itemBuilder: (context, index) {
-                                          ListGovtPRivateModel offer =
-                                              offerList[index];
-
-                                          print('@@GovtPRivateModel__4' +
-                                              offer.toString());
-                                          return CardEquipmentListScreen(offer);
-                                          /*   return ListTile(
-
-                                            title: Text(
-                                              offer.id.toString(),
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black),
-                                            ),
-                                            subtitle: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                    offer.name.toString(), style: TextStyle(color: Colors.black
-                                                )),
-                                              ],
-                                            ),
-                                     trailing: Wrap(
-                                              spacing: 12, // space between two icons
-                                              children: <Widget>[
-                                                Icon(Icons.arrow_right), // icon-2
-                                              ],
-                                            ),
-
-                                            onTap: () {
-
-                                            },
-
-                                          );*/
-                                        },
-                                      ),
-                                    );
-                                  }
-                                } else {
-                                  return Utils.getEmptyView("No data found");
-                                }
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                      backgroundColor: Colors.black26,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.black26)),
-                                );
-                              }
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Shown Captcha value to user
-                        Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                                border: Border.all(width: 2, color: red1)),
-                            child: Text(
-                              '${randomString}',
-                              style: TextStyle(
-                                  color: red1, fontWeight: FontWeight.w500),
-                            )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-
-                        // Regenerate captcha value
-                        IconButton(
-                            onPressed: () {
-                              print(
-                                  '@@OnGovtPrivatScreenCap[tcha__note here check');
-                              buildCaptcha();
-                            },
-                            icon: const Icon(Icons.refresh)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        setState(() {
-                          isVerified = false;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Enter Captcha Value",
-                          labelText: "Enter Captcha Value"),
-                      controller: _captchaControllerGovtPrivateScreen,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: ElevatedButton(
-                            child: Text('Save'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
-                            ),
-                            onPressed: () {
-                              isVerified =
-                                  _captchaControllerGovtPrivateScreen.text ==
-                                      randomString;
-                              print('@@isVerified' + isVerified.toString());
-                              print('@@controller.text' +
-                                  _captchaControllerGovtPrivateScreen.text
-                                      .toString());
-                              print('@@randomString' + randomString.toString());
-                              setState(() {});
-
-                              print('@@saveGovtPrivateButtonClick__here');
-                              //   _submitForm();
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: ElevatedButton(
-                            child: Text('Add Doctors'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
-                            ),
-                            onPressed: () {
-                              print('@@AddDoctors click__here');
-                              //   _submitForm();
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   Widget NGORegistration() {
     return Column(
       children: [
@@ -1262,6 +855,607 @@ class _RegisterScreen extends State<RegisterScreen> {
     );
   }
 
+  Widget newUSerGovtPrivateRegisterRadio() {
+    return Column(
+      children: [
+        Visibility(
+          visible: newUSerGovtPrivateRegisterRadios,
+          child: Center(
+            child: Container(
+              margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+              alignment: Alignment.center,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: new DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          isExpanded: true,
+                          focusColor: Colors.white,
+                          value: oganisationTypeGovtPrivateDRopDown,
+                          //elevation: 5,
+                          style: TextStyle(color: Colors.white),
+                          iconEnabledColor: Colors.white,
+                          items: <String>[
+                            'Govt. District Hospital/Govt.MEdical College',
+                            'CHC/Govt. Sub-Dist. Hospital',
+                            'Private Practitioner',
+                            'Private Medical College',
+                            'Other(Institution not claiming fund from NPCBVI)',
+                          ].map<DropdownMenuItem<String>>(
+                              (String oganisationTypeGovtPrivateDRopDowns) {
+                            return DropdownMenuItem<String>(
+                              value: oganisationTypeGovtPrivateDRopDowns,
+                              child: Text(
+                                oganisationTypeGovtPrivateDRopDowns,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                          hint: Text(
+                            "Select",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          onChanged:
+                              (String oganisationTypeGovtPrivateDRopDownss) {
+                            setState(() {
+                              oganisationTypeGovtPrivateDRopDown =
+                                  oganisationTypeGovtPrivateDRopDownss;
+                              print('@@oganisationTypeGovtPrivateDRopDown--' +
+                                  oganisationTypeGovtPrivateDRopDown);
+                              if (oganisationTypeGovtPrivateDRopDown ==
+                                  "Govt. District Hospital/Govt.MEdical College") {
+                                isVisibleHostpiatnNinitrictGovt = true;
+
+                                dropDownvalueOrgnbaistaionType = 10;
+                                print('@@oganisationTypeGovtPrivateDRopDown--' +
+                                    oganisationTypeGovtPrivateDRopDown +
+                                    "-----" +
+                                    dropDownvalueOrgnbaistaionType.toString());
+                              } else if (oganisationTypeGovtPrivateDRopDown ==
+                                  "CHC/Govt. Sub-Dist. Hospital") {
+                                dropDownvalueOrgnbaistaionType = 11;
+                                print('@@oganisationTypeGovtPrivateDRopDown--' +
+                                    oganisationTypeGovtPrivateDRopDown +
+                                    "-----" +
+                                    dropDownvalueOrgnbaistaionType.toString());
+                                isVisibleHostpiatnNinitrictGovt = false;
+                              } else if (oganisationTypeGovtPrivateDRopDown ==
+                                  "Private Practitioner") {
+                                dropDownvalueOrgnbaistaionType = 12;
+                                print('@@oganisationTypeGovtPrivateDRopDown--' +
+                                    oganisationTypeGovtPrivateDRopDown +
+                                    "-----" +
+                                    dropDownvalueOrgnbaistaionType.toString());
+                                isVisibleHostpiatnNinitrictGovt = true;
+                              } else if (oganisationTypeGovtPrivateDRopDown ==
+                                  "Private Medical College") {
+                                dropDownvalueOrgnbaistaionType = 13;
+                                print('@@oganisationTypeGovtPrivateDRopDown--' +
+                                    oganisationTypeGovtPrivateDRopDown +
+                                    "-----" +
+                                    dropDownvalueOrgnbaistaionType.toString());
+                                isVisibleHostpiatnNinitrictGovt = false;
+                              } else if (oganisationTypeGovtPrivateDRopDown ==
+                                  "Other(Institution not claiming fund from NPCBVI)") {
+                                dropDownvalueOrgnbaistaionType = 14;
+                                print('@@oganisationTypeGovtPrivateDRopDown--' +
+                                    oganisationTypeGovtPrivateDRopDown +
+                                    "-----" +
+                                    dropDownvalueOrgnbaistaionType.toString());
+                                isVisibleHostpiatnNinitrictGovt = false;
+                              }
+                            });
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _organisationNameGovtPrivate,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                          label: Text('Organisation Name * '),
+                          hintText: 'Organisation Name * ',
+                          //prefixIcon
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+              Visibility(
+                visible: isVisibleHostpiatnNinitrictGovt,
+
+                child: Row(
+                  children: [
+
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: new TextFormField(
+                          controller: _HospitalNINnoGovtController,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          maxLength: 10,
+                          decoration: InputDecoration(
+                              label: Text('Hospital NIN no '),
+                              hintText: 'Hospital NIN no',
+
+                              //prefixIcon
+
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0))),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: ElevatedButton(
+                          child: Text('Verify'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                          ),
+                          onPressed: () {
+                            print('@@HNNNumberAPi---');
+                            //   _submitForm();
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+                  /*Visibility(
+                      visible: isVisibleHostpiatnNinitrictGovt,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: new TextFormField(
+                          controller: _HospitalNINnoGovtController,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: <TextInputFormatter>[
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          maxLength: 10,
+                          decoration: InputDecoration(
+                              label: Text('Hospital NIN no '),
+                              hintText: 'Hospital NIN no',
+
+                              //prefixIcon
+
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(5.0))),
+                        ),
+                      )),*/
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _mobileGovtPRivate,
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                          label: Text('Mobile No. * '),
+                          hintText: 'Mobile No. *',
+
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _emailIDGovtPRivate,
+                      decoration: InputDecoration(
+                          label: Text('Email ID *'),
+                          hintText: 'Email ID *',
+
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+                  // TextFormField to enter captcha value
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                      ),
+                    ),
+                    child: Center(
+                      child: FutureBuilder<List<Data>>(
+                          future: _future,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+
+                            if (snapshot.data == null) {
+                              return const CircularProgressIndicator();
+                            }
+
+                            return Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(
+                                      width: 1.5, color: Colors.grey[300]),
+                                ),
+                              ),
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    const Text(
+                                      'Select State:',
+                                    ),
+                                    DropdownButtonFormField<Data>(
+                                      onChanged: (user) => setState(() {
+                                        _selectedUser = user;
+                                        stateCodeGovtPrivate = int.parse(
+                                            (user.stateCode).toString());
+                                        print('@@statenameSPO' +
+                                            stateCodeGovtPrivate.toString());
+                                        CodeGovtPrivate = user.code;
+                                        print('@@CodeSPO___1' +
+                                            CodeGovtPrivate.toString());
+                                        if (stateCodeGovtPrivate != null) {
+                                          print('@@chakValue---' +
+                                              codeDPM.toString());
+                                          isVisibleDitrictGovt = true;
+                                          _getDistrictData(
+                                              stateCodeGovtPrivate);
+                                        } else {
+                                          isVisibleDitrictGovt = false;
+                                        }
+                                      }),
+                                      value: _selectedUser,
+                                      items: [
+                                        ...snapshot.data.map(
+                                          (user) => DropdownMenuItem(
+                                            value: user,
+                                            child: Text('${user.stateName}'),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+                  Visibility(
+                    visible: isVisibleDitrictGovt,
+                    child: Column(
+                      children: [
+                        Center(
+                          child: FutureBuilder<List<DataDsiricst>>(
+                              future: _getDistrictData(stateCodeGovtPrivate),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+                                if (snapshot.data == null) {
+                                  return const CircularProgressIndicator();
+                                }
+                                developer.log(
+                                    '@@snapshot' + snapshot.data.toString());
+
+                                List list =
+                                    snapshot.data.map<DataDsiricst>((district) {
+                                  return district;
+                                }).toList();
+                                if (_selectedUserDistrict == null ||
+                                    list.contains(_selectedUserDistrict) ==
+                                        false) {
+                                  _selectedUserDistrict = list.first;
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      20, 10, 20.0, 0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      const Text(
+                                        'Select District:',
+                                      ),
+                                      DropdownButtonFormField<DataDsiricst>(
+                                        onChanged: (districtUser) =>
+                                            setState(() {
+                                          _selectedUserDistrict = districtUser;
+                                          distCodeDPM = int.parse((districtUser
+                                              .districtCode
+                                              .toString()));
+                                          print('@@@Districtuser' +
+                                              districtUser.districtName
+                                                  .toString());
+                                          setState(() {});
+                                        }),
+                                        value: _selectedUserDistrict,
+                                        items: snapshot.data.map<
+                                                DropdownMenuItem<DataDsiricst>>(
+                                            (DataDsiricst district) {
+                                          return DropdownMenuItem<DataDsiricst>(
+                                            value: district,
+                                            child: Text(district.districtName),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _addressGovtPRivate,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          label: Text('Address  *'),
+                          hintText: 'Address  *',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _pinbCodeGovtPRivate,
+                      decoration: InputDecoration(
+                          label: Text('Pin Code *'),
+                          hintText: 'Pin Code *',
+
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: _officerNAmeGovtPRivate,
+                      decoration: InputDecoration(
+                          label: Text('Officer Name *'),
+                          hintText: 'Officer Name *',
+
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: Container(
+//                alignment: Alignment.bottomRight,
+                      decoration: BoxDecoration(
+                        border: Border.all(),
+                      ),
+                      child: Text(
+                        'Equipment Details *',
+                        textDirection: TextDirection.ltr,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 22),
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    child: Row(
+                      children: <Widget>[
+                        FutureBuilder(
+                          future: ApiController.getEquipmentGovtPRivateModel(),
+                          builder: (context, projectSnap) {
+                            if (projectSnap.connectionState ==
+                                    ConnectionState.none &&
+                                projectSnap.hasData == null) {
+                              return Container();
+                            } else {
+                              if (projectSnap.hasData) {
+                                GovtPRivateModel response = projectSnap.data;
+                                print('@@GovtPRivateModel__1' +
+                                    response.status.toString());
+                                if (response.status) {
+                                  List<ListGovtPRivateModel> offerList =
+                                      response.list;
+                                  if (offerList.isEmpty) {
+                                    return Utils.getEmptyView("No data found");
+                                  } else {
+                                    return Expanded(
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: offerList.length,
+                                        itemBuilder: (context, index) {
+                                          ListGovtPRivateModel offer =
+                                              offerList[index];
+
+                                          print('@@GovtPRivateModel__4' +
+                                              offer.toString());
+                                          return CardEquipmentListScreen(offer);
+                                          /*   return ListTile(
+
+                                            title: Text(
+                                              offer.id.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black),
+                                            ),
+                                            subtitle: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                    offer.name.toString(), style: TextStyle(color: Colors.black
+                                                )),
+                                              ],
+                                            ),
+                                     trailing: Wrap(
+                                              spacing: 12, // space between two icons
+                                              children: <Widget>[
+                                                Icon(Icons.arrow_right), // icon-2
+                                              ],
+                                            ),
+
+                                            onTap: () {
+
+                                            },
+
+                                          );*/
+                                        },
+                                      ),
+                                    );
+                                  }
+                                } else {
+                                  return Utils.getEmptyView("No data found");
+                                }
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                      backgroundColor: Colors.black26,
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.black26)),
+                                );
+                              }
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Shown Captcha value to user
+                        Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                                border: Border.all(width: 2, color: red1)),
+                            child: Text(
+                              '${randomString}',
+                              style: TextStyle(
+                                  color: red1, fontWeight: FontWeight.w500),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+
+                        // Regenerate captcha value
+                        IconButton(
+                            onPressed: () {
+                              print(
+                                  '@@OnGovtPrivatScreenCap[tcha__note here check');
+                              buildCaptcha();
+                            },
+                            icon: const Icon(Icons.refresh)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                    child: TextFormField(
+                      onChanged: (value) {
+                        setState(() {
+                          isVerified = false;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: "Enter Captcha Value",
+                          labelText: "Enter Captcha Value"),
+                      controller: _captchaControllerGovtPrivateScreen,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: ElevatedButton(
+                            child: Text('Save'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue,
+                            ),
+                            onPressed: () {
+                              isVerified =
+                                  _captchaControllerGovtPrivateScreen.text ==
+                                      randomString;
+                              print('@@isVerified' + isVerified.toString());
+                              print('@@controller.text' +
+                                  _captchaControllerGovtPrivateScreen.text
+                                      .toString());
+                              print('@@randomString' + randomString.toString());
+                              setState(() {});
+
+                              print(
+                                  '@@_NewUSerGovtPrivateRegisterSubmit----Wait here---Pending');
+                              _NewUSerGovtPrivateRegisterSubmit();
+                              //   _submitForm();
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: ElevatedButton(
+                            child: Text('Add Doctors'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue,
+                            ),
+                            onPressed: () {
+                              print('@@AddDoctors click__here');
+                              //   _submitForm();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   Future<void> _spoRegistrationSubmit() async {
     spoDataFields.state = stateCodeSPO;
     spoDataFields.codeSPOs = CodeSPO;
@@ -1463,15 +1657,19 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   if (snapshot.data == null) {
                                     return const CircularProgressIndicator();
                                   }
-                                  developer.log('@@snapshot' + snapshot.data.toString());
+                                  developer.log(
+                                      '@@snapshot' + snapshot.data.toString());
 
-                                   List list= snapshot.data.map<DataDsiricst>(( district) {
+                                  List list = snapshot.data
+                                      .map<DataDsiricst>((district) {
                                     return district;
                                   }).toList();
-                                   if(   _selectedUserDistrict==null || list.contains(_selectedUserDistrict)==false) {
-                                     _selectedUserDistrict = list.first;
-                                   }
-                                    return Padding(
+                                  if (_selectedUserDistrict == null ||
+                                      list.contains(_selectedUserDistrict) ==
+                                          false) {
+                                    _selectedUserDistrict = list.first;
+                                  }
+                                  return Padding(
                                     padding: const EdgeInsets.fromLTRB(
                                         20, 10, 20.0, 0),
                                     child: Column(
@@ -1486,19 +1684,27 @@ class _RegisterScreen extends State<RegisterScreen> {
                                               setState(() {
                                             _selectedUserDistrict =
                                                 districtUser;
+                                            distCodeDPM = int.parse(
+                                                (districtUser.districtCode
+                                                    .toString()));
                                             print('@@@Districtuser' +
                                                 districtUser.districtName
                                                     .toString());
                                             setState(() {});
                                           }),
                                           value: _selectedUserDistrict,
-                                          items: snapshot.data.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
-                                            return DropdownMenuItem<DataDsiricst>(
+                                          items: snapshot.data.map<
+                                                  DropdownMenuItem<
+                                                      DataDsiricst>>(
+                                              (DataDsiricst district) {
+                                            return DropdownMenuItem<
+                                                DataDsiricst>(
                                               value: district,
-                                              child: Text(district.districtName),
+                                              child:
+                                                  Text(district.districtName),
                                             );
                                           }).toList(),
-                                    /*      items: [
+                                          /*      items: [
                                             ...snapshot.data
                                                 .map(
                                                   (userDistricts) =>
@@ -1695,7 +1901,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
   Future<void> _DPMRegistrationSubmit() async {
     dpmDataFields.stateDPM = stateCodeDPM;
-    dpmDataFields.distCodeDPM = 18; //CodeDPM; testing purpose
+    dpmDataFields.distCodeDPM = distCodeDPM; //CodeDPM; testing purpose
     dpmDataFields.NameDPM = _dpmNAmeController.text.toString().trim();
     dpmDataFields.mobileNumberDPM = _dpmMobileController.text.toString().trim();
     dpmDataFields.emailIdDPM = _dpmEmailIdController.text.toString().trim();
@@ -1762,6 +1968,76 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
+  Future<void> _NewUSerGovtPrivateRegisterSubmit() async {
+    govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes =
+        dropDownvalueOrgnbaistaionType;
+    govtPrivateRegistatrionDataFields.HospitalNinNumber =
+        _HospitalNINnoGovtController.text.toString().trim();
+    govtPrivateRegistatrionDataFields.organisationNameGovt =
+        _organisationNameGovtPrivate.text.toString().trim();
+    govtPrivateRegistatrionDataFields.MobileNoGovt =
+        _mobileGovtPRivate.text.toString().trim(); //CodeDPM; testing purpose
+    govtPrivateRegistatrionDataFields.EmailIDGovt =
+        _emailIDGovtPRivate.text.toString().trim();
+    govtPrivateRegistatrionDataFields.AddressGovt =
+        _addressGovtPRivate.text.toString().trim();
+    govtPrivateRegistatrionDataFields.pinCodeGovt =
+        _pinbCodeGovtPRivate.text.toString().trim();
+    govtPrivateRegistatrionDataFields.OfficernameGovt =
+        _officerNAmeGovtPRivate.text.toString().trim();
+
+    govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt =
+        _captchaControllerGovtPrivateScreen.text.toString().trim();
+    print('@@stateCodeSPO.state' + dpmDataFields.toString());
+    if (govtPrivateRegistatrionDataFields.organisationNameGovt.isEmpty) {
+      Utils.showToast("Please enter Organisatioon Name !", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.MobileNoGovt.isEmpty) {
+      Utils.showToast("Please enter Mobile number !", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.EmailIDGovt.isNotEmpty &&
+        !isValidEmail(_spoEmailIdController.text.toString().trim())) {
+      Utils.showToast("Please enter valid email", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.AddressGovt.isEmpty) {
+      Utils.showToast("Please enter Address !", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.pinCodeGovt.isEmpty) {
+      Utils.showToast("Please enter PhoneNumber !", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.OfficernameGovt.isEmpty) {
+      Utils.showToast("Please enter Office Address !", false);
+      return;
+    }
+
+    if (govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt.isEmpty) {
+      Utils.showToast("Please enter Matched Captcha !", false);
+      return;
+    } else {
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog1(context);
+          ApiController.DPMRegistrationAPiRquest(dpmDataFields)
+              .then((response) async {
+            Utils.hideProgressDialog1(context);
+
+            print('@@dpmDataFields ---' + response.toString());
+            if (response != null && response.status) {
+              Navigator.pop(context);
+            }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
+    }
+  }
+
   bool isValidEmail(String input) {
     //Email is opation
     if (input.trim().isEmpty) return true;
@@ -1805,6 +2081,20 @@ class DPMDataFields {
 class NGODDataFields {
   String ngoDarpanNumber;
   String ngoPANNumber;
+}
+
+class GovtPrivateRegistatrionDataFields {
+  int dropDownvalueOrgnbaistaionTypes;
+  String organisationNameGovt,
+      MobileNoGovt,
+      EmailIDGovt,
+      StateGovt,
+      DistrictGovt,
+      AddressGovt,
+      pinCodeGovt,
+      OfficernameGovt,
+      CapchaCodeGovtPvt,
+      HospitalNinNumber;
 }
 //NGO Registration view
 

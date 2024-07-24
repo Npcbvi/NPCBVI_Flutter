@@ -15,6 +15,7 @@ import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
+import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 
@@ -131,8 +132,6 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-
     //Way to send url with methodname
   }
 
@@ -164,7 +163,7 @@ class ApiController {
           "pincode": dpmDataFields.PinCodeDPM,
           "user_id": "NPCB" + dpmDataFields.codeSPOsDPM,
         });
-        print("@@SPOURL" + url + body);
+        print("@@SPOURL-------" + url + body);
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -426,6 +425,67 @@ class ApiController {
 
         }
         return forgotPasswordDatas;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+
+  }
+
+
+
+  static Future<Registration_of_Govt_Private_Other_Hospital_model> registration_of_Govt_Private_Other_Hospital(
+      GovtPrivateRegistatrionDataFields govtPrivateRegistatrionDataFields) async {
+    Registration_of_Govt_Private_Other_Hospital_model registration_of_govt_private_other_hospital_models = Registration_of_Govt_Private_Other_Hospital_model(); // add here
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.registration_of_Govt_Private_Other_Hospital;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+        //Way to send params
+        var body = json.encode({
+          "h_roleid":govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes,
+          "h_Name": govtPrivateRegistatrionDataFields.organisationNameGovt,
+          "h_MobileNo": govtPrivateRegistatrionDataFields.MobileNoGovt,
+          "h_EmailID": govtPrivateRegistatrionDataFields.EmailIDGovt,
+          "h_Address": govtPrivateRegistatrionDataFields.AddressGovt,
+          "h_PinCode": govtPrivateRegistatrionDataFields.pinCodeGovt,
+          "h_Officer_Name": govtPrivateRegistatrionDataFields.OfficernameGovt,
+          "mode":"",
+          "inserttype": 0, //for insert data  and 1 for update data
+          "h_NIN_no": govtPrivateRegistatrionDataFields.HospitalNinNumber,
+          "npcbnumber": "",
+        });
+        print("@@registration_of_Govt_Private_Other_Hospital---" + url + body);
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                headers: headers,
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@registration_of_Govt_Private_Other_Hospital---" + url + body);
+        print("@@registration_of_Govt_Private_Other_Hospital--Api" + response1.toString());
+
+        if (registration_of_govt_private_other_hospital_models.status) {
+          Utils.showToast(registration_of_govt_private_other_hospital_models.message, true);
+          // SharedPrefs.saveForgotPasswordData(forgotPasswordDatas);
+
+        }
+        return registration_of_govt_private_other_hospital_models;
       } catch (e) {
         Utils.showToast(e.toString(), true);
         return null;

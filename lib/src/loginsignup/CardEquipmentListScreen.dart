@@ -15,6 +15,7 @@ class CardEquipmentListScreen extends StatefulWidget {
 
 class _CardEquipmentListScreen extends State<CardEquipmentListScreen> {
   ListGovtPRivateModel orderHistoryData;
+  final _equipmentDetailQtyController = new TextEditingController();
 
   _CardEquipmentListScreen(this.orderHistoryData);
 
@@ -69,6 +70,7 @@ class _CardEquipmentListScreen extends State<CardEquipmentListScreen> {
                   ),
                   alignment: Alignment.centerLeft,
                   child: TextField(
+                    controller: _equipmentDetailQtyController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                     ),
