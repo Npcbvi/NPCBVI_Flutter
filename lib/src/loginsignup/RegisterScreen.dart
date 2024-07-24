@@ -28,11 +28,12 @@ class RegisterScreen extends StatefulWidget {
   _RegisterScreen createState() => _RegisterScreen();
 }
 
+
+
 class _RegisterScreen extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
   Future<List<Data>> _future;
-
   Data _selectedUser;
   DataDsiricst _selectedUserDistrict;
 
@@ -2100,3 +2101,4 @@ class GovtPrivateRegistatrionDataFields {
 
 //https://medium.flutterdevs.com/dropdown-in-flutter-324ae9caa743
 //https://flutterexperts.com/dropdown-in-flutter/
+//Save
