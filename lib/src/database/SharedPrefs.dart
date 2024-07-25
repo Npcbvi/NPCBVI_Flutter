@@ -24,7 +24,10 @@ class SharedPrefs{
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt(key, value);
   }
-
+  static Future storeSharedValues(String key, String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(key, value);
+  }
   static Future getStoreSharedValue(String key) async {
     SharedPreferences sharedUser = await SharedPreferences.getInstance();
     return sharedUser.getInt(key);

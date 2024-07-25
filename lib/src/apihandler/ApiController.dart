@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -46,7 +47,8 @@ class ApiController {
         };
         //Way to send params
         var body =
-        json.encode({"username": user.loginId, "password": user.password});
+        json.encode({"username": user.loginId, "password": user.password, "platformName": Platform.isIOS ? "IOS" : "Android"});
+        print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -55,6 +57,7 @@ class ApiController {
                 headers: headers,
                 contentType: "application/json",
                 responseType: ResponseType.plain));
+       // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
         print("@@Response--Api" + response1.toString());
         loginModel = LoginModel.fromJson(json.decode(response1.data));
         print("@@token" + loginModel.token);

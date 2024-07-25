@@ -117,7 +117,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
       final response = await http.get(
-          Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/State'));
+          Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/State'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final DashboardStateModel dashboardStateModel =
           DashboardStateModel.fromJson(json);
@@ -159,7 +159,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       //Way to send network calls
       Dio dio = new Dio();
       response1 = await dio.post(
-          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/ListDistrict",
           data: body,
           options: new Options(
               contentType: "application/json",

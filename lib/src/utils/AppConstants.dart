@@ -4,4 +4,6 @@ class AppConstant {
   static final String enterEmailAddress = "Please enter a valid Email address";
   static final String txtSendEmail = "Get OTP";
   static final String txtStateDPmValue = "txtStateDPmValue";
+  static final String deviceId = "DEVICE_ID";
+
 }
