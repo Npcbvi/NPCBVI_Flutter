@@ -372,8 +372,10 @@ class _LoginScreen extends State<LoginScreen> {
               }else if(response.result.data.roleId=='6'){
                 Navigator.push(
                   context,
+                 /* MaterialPageRoute(
+                      builder: (context) => HospitalDashboard()),*/
                   MaterialPageRoute(
-                      builder: (context) => HospitalDashboard()),
+                      builder: (context) => DPMDashboard()),
                 );
               }
               else if(response.result.data.roleId=='3'){
