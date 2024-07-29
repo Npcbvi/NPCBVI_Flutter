@@ -102,6 +102,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       new TextEditingController();
   List<String> products = [];
   int dropDownvalueOrgnbaistaionType = 0;
+  final _equipmentDetailQtyController = new TextEditingController();
 
   final _HospitalNINnoGovtController = new TextEditingController();
 
@@ -1048,6 +1049,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     child: new TextField(
                       controller: _mobileGovtPRivate,
                       keyboardType: TextInputType.number,
+                      maxLength: 10,
                       decoration: InputDecoration(
                           label: Text('Mobile No. * '),
                           hintText: 'Mobile No. *',
@@ -1119,7 +1121,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                             CodeGovtPrivate.toString());
                                         if (stateCodeGovtPrivate != null) {
                                           print('@@chakValue---' +
-                                              codeDPM.toString());
+                                              stateCodeGovtPrivate.toString());
                                           isVisibleDitrictGovt = true;
                                           _getDistrictData(
                                               stateCodeGovtPrivate);
@@ -1215,7 +1217,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: new TextField(
                       controller: _addressGovtPRivate,
-                      obscureText: true,
                       decoration: InputDecoration(
                           label: Text('Address  *'),
                           hintText: 'Address  *',
@@ -1227,6 +1228,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: new TextField(
                       controller: _pinbCodeGovtPRivate,
+                      keyboardType: TextInputType.number,
+
                       decoration: InputDecoration(
                           label: Text('Pin Code *'),
                           hintText: 'Pin Code *',
@@ -1299,6 +1302,59 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                                           print('@@GovtPRivateModel__4' +
                                               offer.toString());
+                                         /* return Column(
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                            color: Colors.white,
+                                                            //                   <--- border color
+                                                            width: 1.0,
+                                                          ),
+                                                        ),
+                                                        alignment: Alignment.centerLeft,
+                                                        child: Text(
+                                                          offer.name,
+                                                          textDirection: TextDirection.ltr,
+                                                          textAlign: TextAlign.left,
+                                                          style: TextStyle(fontSize: 15),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.fromLTRB(4, 10, 4.0, 0),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                            color: Colors.black, //
+                                                            width: 0.4,
+                                                          ),
+                                                        ),
+                                                        alignment: Alignment.centerLeft,
+                                                        child: TextField(
+                                                          controller: _equipmentDetailQtyController,
+                                                          decoration: InputDecoration(
+                                                            border: OutlineInputBorder(),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );*/
+
                                           return CardEquipmentListScreen(offer);
                                           /*   return ListTile(
 
@@ -2037,6 +2093,8 @@ class _RegisterScreen extends State<RegisterScreen> {
   }
 
   Future<void> _NewUSerGovtPrivateRegisterSubmit() async {
+    //govtPrivateRegistatrionDataFields.equipeDestailsID=1;
+   // govtPrivateRegistatrionDataFields.equipDetailsQty=int.parse(_equipmentDetailQtyController.text.toString());
     govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes =
         dropDownvalueOrgnbaistaionType;
     govtPrivateRegistatrionDataFields.HospitalNinNumber =
@@ -2094,7 +2152,7 @@ class _RegisterScreen extends State<RegisterScreen> {
               .then((response) async {
             Utils.hideProgressDialog1(context);
 
-            print('@@dpmDataFields ---' + response.status.toString());
+            print('@@registration_of_Govt_Private_Other_Hospital ---' + response.status.toString());
             if (response != null && response.status) {
               Navigator.pop(context);
             }
@@ -2164,6 +2222,7 @@ class GovtPrivateRegistatrionDataFields {
       OfficernameGovt,
       CapchaCodeGovtPvt,
       HospitalNinNumber;
+  int equipeDestailsID,equipDetailsQty;
 }
 //NGO Registration view
 

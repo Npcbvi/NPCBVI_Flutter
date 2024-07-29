@@ -359,7 +359,7 @@ class ApiController {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
       final response = await http.get(Uri.parse(
-          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetEquipment'));
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/GetEquipment'));
       Map<String, dynamic> json = jsonDecode(response.body);
       print('@@getGovtPRivateModel--' + json.toString());
       GovtPRivateModel govtPRivateModel = GovtPRivateModel.fromJson(json);
