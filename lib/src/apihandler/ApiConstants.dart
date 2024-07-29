@@ -6,7 +6,7 @@ class ApiConstants {
   static String State = 'State';
 
   static String spoRegistration = 'SpoRegistration';
-  static String DpmRegistration = 'DpmRegistration';
+  static String DpmRegistration = 'Registration/api/DpmRegistration';
   static String SendOTPForForgotPassword = 'SendOTPForForgotPassword';
   static String UserForgotPassword = 'UserForgotPassword';
 

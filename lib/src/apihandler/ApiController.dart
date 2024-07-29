@@ -164,7 +164,9 @@ class ApiController {
           "phone_no": dpmDataFields.PhoneNumberDPM,
           "office_address": dpmDataFields.OfficeAddressDPM,
           "pincode": dpmDataFields.PinCodeDPM,
-          "user_id": "NPCB" + dpmDataFields.codeSPOsDPM,
+          //"user_id": "NPCB" + dpmDataFields.codeSPOsDPM,
+          "user_id": dpmDataFields.codeSPOsDPM+ "DPM"+dpmDataFields.distNameDPMs,
+
         });
         print("@@SPOURL-------" + url + body);
         //Way to send network calls

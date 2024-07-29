@@ -68,6 +68,8 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _dpmEmailIdController = new TextEditingController();
   TextEditingController _dpmDestinationController = new TextEditingController();
   TextEditingController _dpmPhoneNumberController = new TextEditingController();
+
+  TextEditingController stdControllerDPM = new TextEditingController();
   TextEditingController _dpmOfficeAddressController =
       new TextEditingController();
   TextEditingController _dpmPinCodeController = new TextEditingController();
@@ -85,7 +87,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
   int stateCodeSPO, disrtcCode, stateCodeDPM, stateCodeGovtPrivate, distCodeDPM;
-  String CodeSPO, codeDPM, CodeGovtPrivate;
+  String CodeSPO, codeDPM, CodeGovtPrivate,distNameDPM;
   int _value = 1; // int型の変数.
   String _text = ''; // String型の変数.
   final _registeredUSerID = new TextEditingController();
@@ -1184,9 +1186,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                                           distCodeDPM = int.parse((districtUser
                                               .districtCode
                                               .toString()));
+                                        /*  distNameDPM= districtUser.districtName
+                                              .toString();*/
                                           print('@@@Districtuser' +
                                               districtUser.districtName
-                                                  .toString());
+                                                  .toString()/*+"-00000"+distNameDPM*/);
                                           setState(() {});
                                         }),
                                         value: _selectedUserDistrict,
@@ -1609,10 +1613,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                                       codeDPM = user.code;
                                       print('@@CodeSPO___1' +
                                           stateCodeDPM.toString());
-
+                                      distNameDPM= user.stateName;
                                       if (codeDPM != null) {
                                         print('@@CodeSPO___66' +
-                                            codeDPM.toString());
+                                            codeDPM.toString()+"statename -----"+distNameDPM);
 
                                         SharedPrefs.storeSharedValue(
                                             AppConstant.txtStateDPmValue,
@@ -1745,6 +1749,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       child: new TextField(
                         keyboardType: TextInputType.number,
                         controller: _dpmMobileController,
+                        maxLength: 10,
                         decoration: InputDecoration(
                             label: Text('Mobile Number'),
                             hintText: 'Mobile Number',
@@ -1774,18 +1779,63 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
-                    Padding(
+
+                     Row(
+                      children: [
+
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextFormField(
+                              controller: stdControllerDPM,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              maxLength: 10,
+                              decoration: InputDecoration(
+                                  label: Text('Std'),
+                                  hintText: 'Std',
+
+                                  //prefixIcon
+
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0))),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child:     Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextField(
+                              keyboardType: TextInputType.number,
+                              controller: _dpmPhoneNumberController,
+                              maxLength: 10,
+                              decoration: InputDecoration(
+                                  label: Text('Phone Number'),
+                                  hintText: 'Phone Number',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0))),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                /*    Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
                         keyboardType: TextInputType.number,
                         controller: _dpmPhoneNumberController,
+                        maxLength: 10,
                         decoration: InputDecoration(
                             label: Text('Phone Number'),
                             hintText: 'Phone Number',
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5.0))),
                       ),
-                    ),
+                    ),*/
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
@@ -1801,6 +1851,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
                         controller: _dpmPinCodeController,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             label: Text('Pin Code'),
                             hintText: 'Pin Code',
@@ -1867,7 +1918,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                             primary: Colors.blue,
                           ),
                           onPressed: () {
-                            print('@@DPMMMM  Button');
+                            print('@@DPMMMM Hit here-----Api---------');
                             _DPMRegistrationSubmit();
                           }),
                     ),
@@ -1887,6 +1938,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                           _dpmPhoneNumberController.clear();
                           _dpmCaptchaCodeEnterController.clear();
                           _dpmDestinationController.clear();
+                          stdControllerDPM.clear();
                         },
                       ),
                     ),
@@ -1916,7 +1968,10 @@ class _RegisterScreen extends State<RegisterScreen> {
     dpmDataFields.CaptchaCodeEnterDPM =
         _dpmCaptchaCodeEnterController.text.toString().trim();
     dpmDataFields.codeSPOsDPM = codeDPM;
-    print('@@stateCodeSPO.state' + dpmDataFields.toString());
+    dpmDataFields.distNameDPMs=distNameDPM;
+    print('@@codeDPM.state__Dist_name---1' + dpmDataFields.distNameDPMs.toString());
+    print('@@codeDPM.state__1' + codeDPM.toString());
+    print('@@codeDPM.state___2' + dpmDataFields.codeSPOsDPM.toString());
     if (dpmDataFields.NameDPM.isEmpty) {
       Utils.showToast("Please enter Name !", false);
       return;
@@ -1957,9 +2012,21 @@ class _RegisterScreen extends State<RegisterScreen> {
               .then((response) async {
             Utils.hideProgressDialog1(context);
 
-            print('@@dpmDataFields ---' + response.toString());
-            if (response != null && response.status) {
-              Navigator.pop(context);
+            print('@@dpmDataFields ---1' + response.toString());
+            print('@@dpmDataFields ---2' + response.status.toString());
+            if (response.status) {
+              Utils.showToast(response.message, true);
+              _dpmNAmeController.clear();
+              _dpmMobileController.clear();
+              _dpmPinCodeController.clear();
+              _dpmOfficeAddressController.clear();
+              _dpmEmailIdController.clear();
+              _dpmPhoneNumberController.clear();
+              _dpmCaptchaCodeEnterController.clear();
+              _dpmDestinationController.clear();
+              stdControllerDPM.clear();
+            }else{
+              Utils.showToast(response.message, true);
             }
           });
         } else {
@@ -2023,11 +2090,11 @@ class _RegisterScreen extends State<RegisterScreen> {
       Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
           Utils.showProgressDialog1(context);
-          ApiController.DPMRegistrationAPiRquest(dpmDataFields)
+          ApiController.registration_of_Govt_Private_Other_Hospital(govtPrivateRegistatrionDataFields)
               .then((response) async {
             Utils.hideProgressDialog1(context);
 
-            print('@@dpmDataFields ---' + response.toString());
+            print('@@dpmDataFields ---' + response.status.toString());
             if (response != null && response.status) {
               Navigator.pop(context);
             }
@@ -2077,6 +2144,7 @@ class DPMDataFields {
   String PinCodeDPM;
   String codeSPOsDPM;
   String CaptchaCodeEnterDPM;
+  String distNameDPMs;
 }
 
 class NGODDataFields {
