@@ -70,6 +70,8 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _dpmPhoneNumberController = new TextEditingController();
 
   TextEditingController stdControllerDPM = new TextEditingController();
+  TextEditingController stdControllerSpo = new TextEditingController();
+
   TextEditingController _dpmOfficeAddressController =
       new TextEditingController();
   TextEditingController _dpmPinCodeController = new TextEditingController();
@@ -704,6 +706,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       child: new TextField(
                         keyboardType: TextInputType.number,
                         controller: _spoMobileController,
+                        maxLength: 10,
                         decoration: InputDecoration(
                             label: Text('Mobile Number'),
                             hintText: 'Mobile Number',
@@ -733,18 +736,51 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        keyboardType: TextInputType.number,
-                        controller: _spoPhoneNumberController,
-                        decoration: InputDecoration(
-                            label: Text('Phone Number'),
-                            hintText: 'Phone Number',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
+                    Row(
+                      children: [
+
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextFormField(
+                              controller: stdControllerSpo,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              maxLength: 10,
+                              decoration: InputDecoration(
+                                  label: Text('Std'),
+                                  hintText: 'Std',
+
+                                  //prefixIcon
+
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0))),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child:       Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextField(
+                              keyboardType: TextInputType.number,
+                              controller: _spoPhoneNumberController,
+                              maxLength: 10,
+                              decoration: InputDecoration(
+                                  label: Text('Phone Number'),
+
+                                  hintText: 'Phone Number',
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0))),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
@@ -760,6 +796,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
                         controller: _spoPinCodeController,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             label: Text('Pin Code'),
                             hintText: 'Pin Code',
@@ -846,6 +883,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                           _spoPhoneNumberController.clear();
                           _spoCaptchaCodeEnterController.clear();
                           _spoDestinationController.clear();
+                          stdControllerSpo.clear();
                         },
                       ),
                     ),
@@ -1518,6 +1556,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   }
 
   Future<void> _spoRegistrationSubmit() async {
+    spoDataFields.stdSPO=int.parse(stdControllerSpo.text.toString().trim());
     spoDataFields.state = stateCodeSPO;
     spoDataFields.codeSPOs = CodeSPO;
     spoDataFields.Name = _spoNAmeController.text.toString().trim();
@@ -1574,9 +1613,21 @@ class _RegisterScreen extends State<RegisterScreen> {
               .then((response) async {
             Utils.hideProgressDialog1(context);
 
-            print('@@spoAPiRquest ---' + response.toString());
-            if (response != null && response.status) {
-              Navigator.pop(context);
+            print('@@spoAPiRquest ---' + response.status.toString());
+            if (response.status) {
+          //    Navigator.pop(context);
+              Utils.showToast(response.message, true);
+              _spoNAmeController.clear();
+              _spoMobileController.clear();
+              _spoPinCodeController.clear();
+              _spoOfficeAddressController.clear();
+              _spoEmailIdController.clear();
+              _spoPhoneNumberController.clear();
+              _spoCaptchaCodeEnterController.clear();
+              _spoDestinationController.clear();
+              stdControllerSpo.clear();
+            }else{
+              Utils.showToast(response.message, true);
             }
           });
         } else {
@@ -2009,6 +2060,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   }
 
   Future<void> _DPMRegistrationSubmit() async {
+    dpmDataFields.stdDPMs=int.parse(stdControllerDPM.text.toString().trim());
     dpmDataFields.stateDPM = stateCodeDPM;
     dpmDataFields.distCodeDPM = distCodeDPM; //CodeDPM; testing purpose
     dpmDataFields.NameDPM = _dpmNAmeController.text.toString().trim();
@@ -2181,12 +2233,12 @@ class SPODataFields {
   String mobileNumber;
   String emailId;
   String designation;
-  String std;
   String PhoneNumber;
   String OfficeAddress;
   String PinCode;
   String codeSPOs;
   String CaptchaCodeEnter;
+  int stdSPO;
 }
 
 class DPMDataFields {
@@ -2196,13 +2248,13 @@ class DPMDataFields {
   String mobileNumberDPM;
   String emailIdDPM;
   String designationDPM;
-  String stdDPM;
   String PhoneNumberDPM;
   String OfficeAddressDPM;
   String PinCodeDPM;
   String codeSPOsDPM;
   String CaptchaCodeEnterDPM;
   String distNameDPMs;
+  int stdDPMs;
 }
 
 class NGODDataFields {

@@ -102,13 +102,13 @@ class ApiController {
           "mobile": spoDataFields.mobileNumber,
           "email_id": spoDataFields.emailId,
           "designation": spoDataFields.designation,
-          "std": spoDataFields.std,
+          "std": spoDataFields.stdSPO,
           "phone_no": spoDataFields.PhoneNumber,
           "office_address": spoDataFields.OfficeAddress,
           "pincode": spoDataFields.PinCode,
           "user_id": "NPCB" + spoDataFields.codeSPOs,
         });
-        print("@@SPOURL" + url + body);
+        print("@@spoRegistrationAPiRquest" + url + body);
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -117,13 +117,14 @@ class ApiController {
                 headers: headers,
                 contentType: "application/json",
                 responseType: ResponseType.plain));
-        print("@@SPOURL" + url + body);
-        print("@@SPOURL--Api" + response1.toString());
+        print("@@spoRegistrationAPiRquest" + url + body);
+        print("@@spoRegistrationAPiRquest--Api" + response1.toString());
         spoRegisterModel = SPORegisterModel.fromJson(json.decode(response1.data));
-        print("@@token" + spoRegisterModel.message);
         //  Result result = loginModel.result;
         //  print("@@Result message----" + result.message);
         if (spoRegisterModel.status) {
+          Utils.showToast(spoRegisterModel.message, true);
+        }else{
           Utils.showToast(spoRegisterModel.message, true);
         }
         return spoRegisterModel;
@@ -160,10 +161,11 @@ class ApiController {
           "mobile": dpmDataFields.mobileNumberDPM,
           "email_id": dpmDataFields.emailIdDPM,
           "designation": dpmDataFields.designationDPM,
-          "std": dpmDataFields.stdDPM,
+          "std": dpmDataFields.stdDPMs,
           "phone_no": dpmDataFields.PhoneNumberDPM,
           "office_address": dpmDataFields.OfficeAddressDPM,
           "pincode": dpmDataFields.PinCodeDPM,
+          "std": dpmDataFields.stdDPMs,
           //"user_id": "NPCB" + dpmDataFields.codeSPOsDPM,
           "user_id": dpmDataFields.codeSPOsDPM+ "DPM"+dpmDataFields.distNameDPMs,
 
@@ -223,7 +225,7 @@ class ApiController {
           "mobile": spoDataFields.mobileNumber,
           "email_id": spoDataFields.emailId,
           "designation": spoDataFields.designation,
-          "std": spoDataFields.std,
+          "std": spoDataFields.stdSPO,
           "phone_no": spoDataFields.PhoneNumber,
           "office_address": spoDataFields.OfficeAddress,
           "pincode": spoDataFields.PinCode,
