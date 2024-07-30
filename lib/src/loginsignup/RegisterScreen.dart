@@ -1467,8 +1467,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                         // Regenerate captcha value
                         IconButton(
                             onPressed: () {
-                              print(
-                                  '@@OnGovtPrivatScreenCap[tcha__note here check');
                               buildCaptcha();
                             },
                             icon: const Icon(Icons.refresh)),

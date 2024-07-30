@@ -474,6 +474,7 @@ class ApiController {
           "inserttype": 0, //for insert data  and 1 for update data
           "h_NIN_no": govtPrivateRegistatrionDataFields.HospitalNinNumber,
           "npcbnumber": "",
+          "equipmentName":"",
         });
         print("@@registration_of_Govt_Private_Other_Hospital---" + url + body);
         //Way to send network calls

@@ -71,6 +71,7 @@ class _CardEquipmentListScreen extends State<CardEquipmentListScreen> {
                   alignment: Alignment.centerLeft,
                   child: TextField(
                     controller: _equipmentDetailQtyController,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
                     ),
@@ -80,6 +81,7 @@ class _CardEquipmentListScreen extends State<CardEquipmentListScreen> {
             ),
           ],
         ),
+        Divider(color: Colors.white, height: 1.0),
       ],
     );
   }
