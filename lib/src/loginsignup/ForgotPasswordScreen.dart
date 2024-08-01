@@ -313,8 +313,6 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
   }
   void _forgotPasswordOTP() {
     getForgotPasswordDetails();
-
-    print('@@GorgotDialog ___click here++++2');
     forgotPasswordDatasOTPData.opts=getForgotroleOTP.text.toString();
     forgotPasswordDatasOTPData.user_id = user_id;
     forgotPasswordDatasOTPData.role_id = roleId;

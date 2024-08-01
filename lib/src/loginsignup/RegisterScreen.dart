@@ -1394,6 +1394,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                           );*/
 
                                           return CardEquipmentListScreen(offer);
+
                                           /*   return ListTile(
 
                                             title: Text(
@@ -1508,19 +1509,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                               primary: Colors.blue,
                             ),
                             onPressed: () {
-                              isVerified =
-                                  _captchaControllerGovtPrivateScreen.text ==
-                                      randomString;
-                              print('@@isVerified' + isVerified.toString());
-                              print('@@controller.text' +
-                                  _captchaControllerGovtPrivateScreen.text
-                                      .toString());
-                              print('@@randomString' + randomString.toString());
+                              isVerified = _captchaControllerGovtPrivateScreen.text == randomString;
+
                               setState(() {});
 
-                              print(
-                                  '@@_NewUSerGovtPrivateRegisterSubmit----Wait here---Pending');
-                              _NewUSerGovtPrivateRegisterSubmit();
+                              print('@@_NewUSerGovtPrivateRegisterSubmit----Wait here---Pending');
+                               _NewUSerGovtPrivateRegisterSubmit();
+                              //_NewUSerGovtPrivateRegisterSubmit();
                               //   _submitForm();
                             },
                           ),
@@ -1552,7 +1547,77 @@ class _RegisterScreen extends State<RegisterScreen> {
       ],
     );
   }
+  Future<void> _NewUSerGovtPrivateRegisterSubmit() async {
+    //govtPrivateRegistatrionDataFields.equipeDestailsID=1;
+    // govtPrivateRegistatrionDataFields.equipDetailsQty=int.parse(_equipmentDetailQtyController.text.toString());
+    govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes =
+        dropDownvalueOrgnbaistaionType;
+    govtPrivateRegistatrionDataFields.HospitalNinNumber =
+        _HospitalNINnoGovtController.text.toString().trim();
+    govtPrivateRegistatrionDataFields.organisationNameGovt =
+        _organisationNameGovtPrivate.text.toString().trim();
+    govtPrivateRegistatrionDataFields.MobileNoGovt =
+        _mobileGovtPRivate.text.toString().trim(); //CodeDPM; testing purpose
+    govtPrivateRegistatrionDataFields.EmailIDGovt =
+        _emailIDGovtPRivate.text.toString().trim();
+    govtPrivateRegistatrionDataFields.AddressGovt =
+        _addressGovtPRivate.text.toString().trim();
+    govtPrivateRegistatrionDataFields.pinCodeGovt =
+        _pinbCodeGovtPRivate.text.toString().trim();
+    govtPrivateRegistatrionDataFields.OfficernameGovt =
+        _officerNAmeGovtPRivate.text.toString().trim();
 
+    govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt =
+        _captchaControllerGovtPrivateScreen.text.toString().trim();
+    print('@@stateCodeSPO.state' + dpmDataFields.toString());
+    if (govtPrivateRegistatrionDataFields.organisationNameGovt.isEmpty) {
+      Utils.showToast("Please enter Organisatioon Name !", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.MobileNoGovt.isEmpty) {
+      Utils.showToast("Please enter Mobile number !", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.EmailIDGovt.isNotEmpty &&
+        !isValidEmail(_spoEmailIdController.text.toString().trim())) {
+      Utils.showToast("Please enter valid email", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.AddressGovt.isEmpty) {
+      Utils.showToast("Please enter Address !", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.pinCodeGovt.isEmpty) {
+      Utils.showToast("Please enter PhoneNumber !", false);
+      return;
+    }
+    if (govtPrivateRegistatrionDataFields.OfficernameGovt.isEmpty) {
+      Utils.showToast("Please enter Office Address !", false);
+      return;
+    }
+
+    if (govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt.isEmpty) {
+      Utils.showToast("Please enter Matched Captcha !", false);
+      return;
+    } else {
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog1(context);
+          ApiController.registration_of_Govt_Private_Other_Hospital(govtPrivateRegistatrionDataFields)
+              .then((response) async {
+            Utils.hideProgressDialog1(context);
+
+            print('@@registration_of_Govt_Private_Other_Hospital ---' + response.status.toString());
+            if (response != null && response.status) {
+              Navigator.pop(context);
+            }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
+    }
+  }
   Future<void> _spoRegistrationSubmit() async {
     spoDataFields.stdSPO=int.parse(stdControllerSpo.text.toString().trim());
     spoDataFields.state = stateCodeSPO;
@@ -2142,77 +2207,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
-  Future<void> _NewUSerGovtPrivateRegisterSubmit() async {
-    //govtPrivateRegistatrionDataFields.equipeDestailsID=1;
-   // govtPrivateRegistatrionDataFields.equipDetailsQty=int.parse(_equipmentDetailQtyController.text.toString());
-    govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes =
-        dropDownvalueOrgnbaistaionType;
-    govtPrivateRegistatrionDataFields.HospitalNinNumber =
-        _HospitalNINnoGovtController.text.toString().trim();
-    govtPrivateRegistatrionDataFields.organisationNameGovt =
-        _organisationNameGovtPrivate.text.toString().trim();
-    govtPrivateRegistatrionDataFields.MobileNoGovt =
-        _mobileGovtPRivate.text.toString().trim(); //CodeDPM; testing purpose
-    govtPrivateRegistatrionDataFields.EmailIDGovt =
-        _emailIDGovtPRivate.text.toString().trim();
-    govtPrivateRegistatrionDataFields.AddressGovt =
-        _addressGovtPRivate.text.toString().trim();
-    govtPrivateRegistatrionDataFields.pinCodeGovt =
-        _pinbCodeGovtPRivate.text.toString().trim();
-    govtPrivateRegistatrionDataFields.OfficernameGovt =
-        _officerNAmeGovtPRivate.text.toString().trim();
 
-    govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt =
-        _captchaControllerGovtPrivateScreen.text.toString().trim();
-    print('@@stateCodeSPO.state' + dpmDataFields.toString());
-    if (govtPrivateRegistatrionDataFields.organisationNameGovt.isEmpty) {
-      Utils.showToast("Please enter Organisatioon Name !", false);
-      return;
-    }
-    if (govtPrivateRegistatrionDataFields.MobileNoGovt.isEmpty) {
-      Utils.showToast("Please enter Mobile number !", false);
-      return;
-    }
-    if (govtPrivateRegistatrionDataFields.EmailIDGovt.isNotEmpty &&
-        !isValidEmail(_spoEmailIdController.text.toString().trim())) {
-      Utils.showToast("Please enter valid email", false);
-      return;
-    }
-    if (govtPrivateRegistatrionDataFields.AddressGovt.isEmpty) {
-      Utils.showToast("Please enter Address !", false);
-      return;
-    }
-    if (govtPrivateRegistatrionDataFields.pinCodeGovt.isEmpty) {
-      Utils.showToast("Please enter PhoneNumber !", false);
-      return;
-    }
-    if (govtPrivateRegistatrionDataFields.OfficernameGovt.isEmpty) {
-      Utils.showToast("Please enter Office Address !", false);
-      return;
-    }
-
-    if (govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt.isEmpty) {
-      Utils.showToast("Please enter Matched Captcha !", false);
-      return;
-    } else {
-      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
-        if (isNetworkAvailable) {
-          Utils.showProgressDialog1(context);
-          ApiController.registration_of_Govt_Private_Other_Hospital(govtPrivateRegistatrionDataFields)
-              .then((response) async {
-            Utils.hideProgressDialog1(context);
-
-            print('@@registration_of_Govt_Private_Other_Hospital ---' + response.status.toString());
-            if (response != null && response.status) {
-              Navigator.pop(context);
-            }
-          });
-        } else {
-          Utils.showToast(AppConstant.noInternet, true);
-        }
-      });
-    }
-  }
 
   bool isValidEmail(String input) {
     //Email is opation

@@ -386,6 +386,15 @@ class _LoginScreen extends State<LoginScreen> {
                 );
               }
               //Navigator.pop(context);
+            }else{
+              Utils.showToast(response.result.message, true);
+
+              //Delete from here testing purpose used.
+           /*   Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DPMDashboard()),
+              );*/
             }
           });
         } else {

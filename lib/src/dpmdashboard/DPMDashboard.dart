@@ -77,13 +77,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Container(
                                     width: 80.0,
                                     child: Text(
-                                  'Dashboard',
-                                        overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.white, fontWeight: FontWeight.w300),
-                                )),
+                                      'Dashboard',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w300),
+                                    )),
                               ),
-
 
                               Container(
                                 width: 80.0,
@@ -99,7 +99,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       'New  Hospital',
                                       'Govt/private/Other',
                                       'Approve Renew MOU',
-                                    ].map<DropdownMenuItem<String>>((String value) {
+                                    ].map<DropdownMenuItem<String>>(
+                                        (String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(
@@ -123,8 +124,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  print('@@spinnerChooseValue--' + _chosenValue);
                                         if (_chosenValue == "Add Patient") {
                                           print('@@NGO--1' + _chosenValue);
-                                        } else if (_chosenValue == "Update Patient") {
-                                        } else if (_chosenValue == "Screening Entry") {}
+                                        } else if (_chosenValue ==
+                                            "Update Patient") {
+                                        } else if (_chosenValue ==
+                                            "Screening Entry") {}
                                       });
                                     },
                                   ),
@@ -136,50 +139,55 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Container(
                                   width: 80.0,
                                   child: new DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    focusColor: Colors.white,
-                                    value: _chosenValue,
+                                    child: DropdownButton<String>(
+                                      focusColor: Colors.white,
+                                      value: _chosenValue,
 
-                                    //elevation: 5,
-                                    style: TextStyle(color: Colors.white),
-                                    iconEnabledColor: Colors.white,
-                                    items: <String>[
-                                      'Catract',
-                                      'Diabetic',
-                                      'Glaucoma',
-                                      'Corneal Blindness',
-                                      'VR Surgery',
-                                      'Childhood Blindness',
-                                    ].map<DropdownMenuItem<String>>((String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    hint: Text(
-                                      "Low Vision Register",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w300),
+                                      //elevation: 5,
+                                      style: TextStyle(color: Colors.white),
+                                      iconEnabledColor: Colors.white,
+                                      items: <String>[
+                                        'Catract',
+                                        'Diabetic',
+                                        'Glaucoma',
+                                        'Corneal Blindness',
+                                        'VR Surgery',
+                                        'Childhood Blindness',
+                                      ].map<DropdownMenuItem<String>>(
+                                          (String value) {
+                                        return DropdownMenuItem<String>(
+                                          value: value,
+                                          child: Text(
+                                            value,
+                                            overflow: TextOverflow.ellipsis,
+                                            style:
+                                                TextStyle(color: Colors.black),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      hint: Text(
+                                        "Low Vision Register",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                      onChanged: (String value) {
+                                        setState(() {
+                                          _chosenValue = value;
+                                          //  print('@@spinnerChooseValue--' + _chosenValue);
+                                          if (_chosenValue == "Add Patient") {
+                                            print('@@NGO--1' + _chosenValue);
+                                          } else if (_chosenValue ==
+                                              "Update Patient") {
+                                          } else if (_chosenValue ==
+                                              "Screening Entry") {}
+                                        });
+                                      },
                                     ),
-                                    onChanged: (String value) {
-                                      setState(() {
-                                        _chosenValue = value;
-                                        //  print('@@spinnerChooseValue--' + _chosenValue);
-                                        if (_chosenValue == "Add Patient") {
-                                          print('@@NGO--1' + _chosenValue);
-                                        } else if (_chosenValue == "Update Patient") {
-                                        } else if (_chosenValue == "Screening Entry") {}
-                                      });
-                                    },
                                   ),
+                                ),
                               ),
-                                ),),
                               Flexible(
                                 child: Container(
                                     width: 80.0,
@@ -187,10 +195,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       'Eye Screening',
                                       overflow: TextOverflow.ellipsis,
                                       style: TextStyle(
-                                          color: Colors.white, fontWeight: FontWeight.w300),
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w300),
                                     )),
                               ),
-                              Flexible(child: Container(
+                              Flexible(
+                                  child: Container(
                                 width: 80.0,
                                 child: new DropdownButtonHideUnderline(
                                   child: DropdownButton<String>(
@@ -204,8 +214,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       'Eye Donation',
                                       'Eyeball Collection Via Eye Bank',
                                       'Eyeball Collection Via Eye Donation Center',
-
-                                    ].map<DropdownMenuItem<String>>((String value) {
+                                    ].map<DropdownMenuItem<String>>(
+                                        (String value) {
                                       return DropdownMenuItem<String>(
                                         value: value,
                                         child: Text(
@@ -228,8 +238,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  print('@@spinnerChooseValue--' + _chosenValue);
                                         if (_chosenValue == "Add Patient") {
                                           print('@@NGO--1' + _chosenValue);
-                                        } else if (_chosenValue == "Update Patient") {
-                                        } else if (_chosenValue == "Screening Entry") {}
+                                        } else if (_chosenValue ==
+                                            "Update Patient") {
+                                        } else if (_chosenValue ==
+                                            "Screening Entry") {}
                                       });
                                     },
                                   ),
@@ -247,7 +259,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             Container(
               margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: Container(
-                color: Colors.grey,
+                color: Colors.white70,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -258,7 +270,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           child: Text(
                         'Login Type:',
                         style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
+                            color: Colors.black, fontWeight: FontWeight.w500),
                       )),
                       const SizedBox(
                         width: 10,
@@ -267,13 +279,69 @@ class _DPMDashboard extends State<DPMDashboard> {
                           child: Text(
                         'DPM',
                         style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
+                            color: Colors.red, fontWeight: FontWeight.w600),
                       )),
                       const SizedBox(
                         width: 10,
                       ),
 
+                      Container(
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        child: Container(
+                          color: Colors.white70,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                // Shown Captcha value to user
+                                Container(
+                                    child: Text(
+                                  'District:',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                    child: Text(
+                                  '${districtNames}',
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w600),
+                                )),
+                                const SizedBox(
+                                  width: 10,
+                                ),
 
+                                Container(
+                                    child: Text(
+                                  'State :',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500),
+                                )),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                    child: Text(
+                                  '${stateNames}',
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w600),
+                                )),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
 
                       //widgets that follow the Material Design guidelines display a ripple animation when tapped.
                     ],
@@ -282,58 +350,767 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
             ),
             Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Container(
-                color: Colors.grey,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Shown Captcha value to user
-                      Container(
-                          child: Text(
-                        'District:',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          child: Text(
-                        '${districtNames}',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
+              color: Colors.grey,
+              child: Column(
+                children: [
+                  Container(
+                      margin: EdgeInsets.fromLTRB(10, 10, 10,10),
 
-                      Container(
-                          child: Text(
-                        'State :',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          child: Text(
-                        '${stateNames}',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                    ],
+                      child: Container(
+                          height: 160,
+                          width: double.infinity,
+                          decoration: new BoxDecoration(
+                              gradient: new LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Color.fromARGB(255, 25,178,238),
+                                  Color.fromARGB(255, 21,236,229)
+                                ],
+                              )),
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text('Patient(s) (2024-2025)',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white)),
+                              ),
+                              Divider(color: Colors.grey, height: 1.0),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 30, 20.0, 0),
+                                      child: new Text('Approved',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 30, 20.0, 0),
+                                      child: new Text('Pending',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20.0, 0),
+                                      child: new Text('0',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20.0, 0),
+                                      child: new Text('1',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ))),
+                  Container(
+                    color: Colors.grey,
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(10, 10, 10,10),
+                            child: Container(
+                                height: 160,
+                                width: double.infinity,
+                                decoration: new BoxDecoration(
+                                    gradient: new LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color.fromARGB(255, 25,178,238),
+                                        Color.fromARGB(255, 21,236,229)
+                                      ],
+                                    )),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text('NGO(s)',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                    Divider(color: Colors.grey, height: 1.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Approved',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Pending',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('0',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('1',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))),
+                      ],
+                    ),
                   ),
-                ),
+                  Container(
+                    color: Colors.grey,
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(10, 10, 10,10),
+                            child: Container(
+                                height: 160,
+                                width: double.infinity,
+                                decoration: new BoxDecoration(
+                                    gradient: new LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color.fromARGB(255, 25,178,238),
+                                        Color.fromARGB(255, 21,236,229)
+                                      ],
+                                    )),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text('Government Hospital(s)/CHC(s)/Other',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                    Divider(color: Colors.grey, height: 1.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Approved',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Pending',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('0',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('1',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: Colors.grey,
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(10, 10, 10,10),
+                            child: Container(
+                                height: 160,
+                                width: double.infinity,
+                                decoration: new BoxDecoration(
+                                    gradient: new LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color.fromARGB(255, 25,178,238),
+                                        Color.fromARGB(255, 21,236,229)
+                                      ],
+                                    )),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text('Private Practitioner(s)',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                    Divider(color: Colors.grey, height: 1.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Approved',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Pending',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('0',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('1',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: Colors.grey,
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(10, 10, 10,10),
+                            child: Container(
+                                height: 160,
+                                width: double.infinity,
+                                decoration: new BoxDecoration(
+                                    gradient: new LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color.fromARGB(255, 25,178,238),
+                                        Color.fromARGB(255, 21,236,229)
+                                      ],
+                                    )),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text('Private Medical College(s)',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                    Divider(color: Colors.grey, height: 1.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Approved',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Pending',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('0',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('1',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: Colors.grey,
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(10, 10, 10,10),
+                            child: Container(
+                                height: 160,
+                                width: double.infinity,
+                                decoration: new BoxDecoration(
+                                    gradient: new LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color.fromARGB(255, 25,178,238),
+                                        Color.fromARGB(255, 21,236,229)
+                                      ],
+                                    )),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text('Screening Camp(s)',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                    Divider(color: Colors.grey, height: 1.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Approved',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Pending',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('0',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('1',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: Colors.grey,
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(10, 10, 10,10),
+                            child: Container(
+                                height: 160,
+                                width: double.infinity,
+                                decoration: new BoxDecoration(
+                                    gradient: new LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color.fromARGB(255, 25,178,238),
+                                        Color.fromARGB(255, 21,236,229)
+                                      ],
+                                    )),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text('Satellite Centre(s)',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                    Divider(color: Colors.grey, height: 1.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Approved',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Pending',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('0',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('1',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    color: Colors.grey,
+                    child: Column(
+                      children: [
+                        Container(
+                            margin: EdgeInsets.fromLTRB(10, 10, 10,10),
+                            child: Container(
+                                height: 160,
+                                width: double.infinity,
+                                decoration: new BoxDecoration(
+                                    gradient: new LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color.fromARGB(255, 25,178,238),
+                                        Color.fromARGB(255, 21,236,229)
+                                      ],
+                                    )),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(10.0),
+                                      child: Text('Total Patient(s)',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white)),
+                                    ),
+                                    Divider(color: Colors.grey, height: 1.0),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Approved',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Pending',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('0',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('1',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
+
           ],
         ),
       ),
