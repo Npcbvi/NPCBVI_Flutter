@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DPMDashboard.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
@@ -14,6 +15,7 @@ import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMDashboardData.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
@@ -505,5 +507,63 @@ class ApiController {
 
 
   }
-}
+  static Future<GetDPMDashboardData> getDPM_Dashboard(DPMDashboardParamsData dpmDashboardParamsData) async {
+    GetDPMDashboardData getDPMDashboardData = GetDPMDashboardData();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Dashboard;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+
+        };
+        //Way to send params
+        //Way to send params
+        var body = json.encode({
+          "districtid":547,
+          "stateid":29,
+          "old_districtid": 569,
+          "userid":"",
+          "roleid": "",
+          "status":5,
+          "financialYear": "2024-2025",
+
+        });
+        print("@@getDPM_Dashboard---" + url+body.toString());
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                headers: headers,
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
+        print("@@Response--Api" + response1.toString());
+        getDPMDashboardData = GetDPMDashboardData.fromJson(json.decode(response1.data));
+        print("@@getDPM_Dashboard====+ " + getDPMDashboardData.data.toString());
+
+        print("@@Result_getDPM_Dashboard----" + getDPMDashboardData.message);
+        if (getDPMDashboardData.status) {
+          Utils.showToast(getDPMDashboardData.message, true);
+
+        }else{
+          Utils.showToast(getDPMDashboardData.message, true);
+
+        }
+        return getDPMDashboardData;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+    }
+    //Way to send url with methodname
+  }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

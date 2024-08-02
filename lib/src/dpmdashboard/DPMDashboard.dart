@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class DPMDashboard extends StatefulWidget {
@@ -11,15 +13,22 @@ class DPMDashboard extends StatefulWidget {
 class _DPMDashboard extends State<DPMDashboard> {
   TextEditingController fullnameController = new TextEditingController();
   String _chosenValue, districtNames, userId, stateNames;
+  int status;
+  String role_id;
+  bool isLoadingApi = true;
+  DPMDashboardParamsData dpmDashboardParamsDatass =
+  new DPMDashboardParamsData();
+  String ngoCountApproved,ngoCountPending,totalPatientApproved,totalPatientPending,gH_CHC_Count,gH_CHC_Count_Pending,
+      ppCount,ppCount_pending,pmcCount,pmcCountPending,campCompletedCount,campongoingCount,campCommingCount,campCount
+  ,satellitecentreCount,patientCount;
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // To generate number on loading of page
-    getUserData();
+    _getDPMDashbnoardData();
   }
-
   void getUserData() {
     try {
       SharedPrefs.getUser().then((user) {
@@ -28,13 +37,69 @@ class _DPMDashboard extends State<DPMDashboard> {
           districtNames = user.districtName;
           stateNames = user.stateName;
           userId = user.userId;
-          print('@@-0----2' + user.name);
-          print('@@-0----3' + fullnameController.text);
+          status=user.status;
+          role_id=user.roleId;
+          print('@@2' + user.name);
+          print('@@fullnameController_1' + fullnameController.text);
+          print('@@3' + user.stateName);
+          print('@@4' + user.roleId);
+          print('@@5' + user.userId);
+          print('@@6' + user.districtName);
         });
       });
     } catch (e) {
       print(e);
     }
+  }
+
+  Future<void> _getDPMDashbnoardData() async {
+    getUserData();
+    dpmDashboardParamsDatass.districtidDPM=547;
+    dpmDashboardParamsDatass.stateidDPM = 29;
+    dpmDashboardParamsDatass.old_districtidDPM = 569;
+    dpmDashboardParamsDatass.useridDPM = userId;
+    dpmDashboardParamsDatass.roleidDPM = role_id;
+    dpmDashboardParamsDatass.statusDPM = status;
+    dpmDashboardParamsDatass.financialYearDPM = "2024-2025";
+
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog(context);
+          ApiController.getDPM_Dashboard(dpmDashboardParamsDatass)
+              .then((response) {
+            Utils.hideProgressDialog(context);
+            print('@@dpmDashboardParamsDatass ___click dpmDashboardParamsDatass++++3');
+            ///   ForgotPasswordModel userResponse = response;
+            if (response.status) {
+              print('@@----dpmDashboardParamsDatass+111---' +
+                  response.status.toString());
+
+               ngoCountApproved=response.data.ngoCount;
+               ngoCountPending=response.data.ngoPendingCount;
+              totalPatientApproved=response.data.totalPatientApproved;
+            totalPatientPending=response.data.totalPatientPending;
+            gH_CHC_Count=response.data.gHCHCCount;
+            gH_CHC_Count_Pending=response.data.gHCHCCountPending;
+            ppCount=response.data.ppCount;
+            ppCount_pending=response.data.ppCountPending;
+            pmcCount=response.data.pmcCount;
+            pmcCountPending=response.data.pmcCountPending;
+            campCompletedCount=response.data.campCompletedCount;
+            campongoingCount=response.data.campongoingCount;
+            campCommingCount=response.data.campCommingCount;
+            campCount=response.data.campCount;
+            satellitecentreCount=response.data.satellitecentreCount;
+            patientCount=response.data.patientCount;
+              print('@@After Api hit===' + ngoCountApproved+"===="+ngoCountPending);
+            } else {
+              Utils.showToast(response.message, true);
+            }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
+
   }
 
   @override
@@ -84,55 +149,55 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           fontWeight: FontWeight.w300),
                                     )),
                               ),
-
-                              Container(
-                                width: 80.0,
-                                child: new DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    focusColor: Colors.white,
-                                    value: _chosenValue,
-                                    //elevation: 5,
-                                    style: TextStyle(color: Colors.white),
-                                    iconEnabledColor: Colors.white,
-                                    items: <String>[
-                                      'Approve Application',
-                                      'New  Hospital',
-                                      'Govt/private/Other',
-                                      'Approve Renew MOU',
-                                    ].map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    hint: Text(
-                                      "Approve Application",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                    onChanged: (String value) {
-                                      setState(() {
-                                        _chosenValue = value;
-                                        //  print('@@spinnerChooseValue--' + _chosenValue);
-                                        if (_chosenValue == "Add Patient") {
-                                          print('@@NGO--1' + _chosenValue);
-                                        } else if (_chosenValue ==
-                                            "Update Patient") {
-                                        } else if (_chosenValue ==
-                                            "Screening Entry") {}
-                                      });
-                                    },
+                    Flexible(child:Container(
+                      width: 80.0,
+                      child: new DropdownButtonHideUnderline(
+                        child: DropdownButton<String>(
+                          focusColor: Colors.white,
+                          value: _chosenValue,
+                          //elevation: 5,
+                          style: TextStyle(color: Colors.white),
+                          iconEnabledColor: Colors.white,
+                          items: <String>[
+                            'Approve Application',
+                            'New  Hospital',
+                            'Govt/private/Other',
+                            'Approve Renew MOU',
+                          ].map<DropdownMenuItem<String>>(
+                                  (String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: Colors.black),
                                   ),
-                                ),
-                              ),
+                                );
+                              }).toList(),
+                          hint: Text(
+                            "Approve Application",
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w300),
+                          ),
+                          onChanged: (String value) {
+                            setState(() {
+                              _chosenValue = value;
+                              //  print('@@spinnerChooseValue--' + _chosenValue);
+                              if (_chosenValue == "Add Patient") {
+                                print('@@NGO--1' + _chosenValue);
+                              } else if (_chosenValue ==
+                                  "Update Patient") {
+                              } else if (_chosenValue ==
+                                  "Screening Entry") {}
+                            });
+                          },
+                        ),
+                      ),
+                    ),),
+
                               //widgets that follow the Material Design guidelines display a ripple animation when tapped.
 
                               Flexible(
@@ -154,17 +219,17 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         'VR Surgery',
                                         'Childhood Blindness',
                                       ].map<DropdownMenuItem<String>>(
-                                          (String value) {
-                                        return DropdownMenuItem<String>(
-                                          value: value,
-                                          child: Text(
-                                            value,
-                                            overflow: TextOverflow.ellipsis,
-                                            style:
+                                              (String value) {
+                                            return DropdownMenuItem<String>(
+                                              value: value,
+                                              child: Text(
+                                                value,
+                                                overflow: TextOverflow.ellipsis,
+                                                style:
                                                 TextStyle(color: Colors.black),
-                                          ),
-                                        );
-                                      }).toList(),
+                                              ),
+                                            );
+                                          }).toList(),
                                       hint: Text(
                                         "Low Vision Register",
                                         style: TextStyle(
@@ -201,52 +266,52 @@ class _DPMDashboard extends State<DPMDashboard> {
                               ),
                               Flexible(
                                   child: Container(
-                                width: 80.0,
-                                child: new DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    focusColor: Colors.white,
-                                    value: _chosenValue,
-                                    //elevation: 5,
-                                    style: TextStyle(color: Colors.white),
-                                    iconEnabledColor: Colors.white,
-                                    items: <String>[
-                                      'Eye Bank Collection',
-                                      'Eye Donation',
-                                      'Eyeball Collection Via Eye Bank',
-                                      'Eyeball Collection Via Eye Donation Center',
-                                    ].map<DropdownMenuItem<String>>(
-                                        (String value) {
-                                      return DropdownMenuItem<String>(
-                                        value: value,
-                                        child: Text(
-                                          value,
-                                          style: TextStyle(color: Colors.black),
+                                    width: 80.0,
+                                    child: new DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        focusColor: Colors.white,
+                                        value: _chosenValue,
+                                        //elevation: 5,
+                                        style: TextStyle(color: Colors.white),
+                                        iconEnabledColor: Colors.white,
+                                        items: <String>[
+                                          'Eye Bank Collection',
+                                          'Eye Donation',
+                                          'Eyeball Collection Via Eye Bank',
+                                          'Eyeball Collection Via Eye Donation Center',
+                                        ].map<DropdownMenuItem<String>>(
+                                                (String value) {
+                                              return DropdownMenuItem<String>(
+                                                value: value,
+                                                child: Text(
+                                                  value,
+                                                  style: TextStyle(color: Colors.black),
+                                                ),
+                                              );
+                                            }).toList(),
+                                        hint: Text(
+                                          "Eye Blink",
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w300),
                                         ),
-                                      );
-                                    }).toList(),
-                                    hint: Text(
-                                      "Eye Blink",
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w300),
+                                        onChanged: (String value) {
+                                          setState(() {
+                                            _chosenValue = value;
+                                            //  print('@@spinnerChooseValue--' + _chosenValue);
+                                            if (_chosenValue == "Add Patient") {
+                                              print('@@NGO--1' + _chosenValue);
+                                            } else if (_chosenValue ==
+                                                "Update Patient") {
+                                            } else if (_chosenValue ==
+                                                "Screening Entry") {}
+                                          });
+                                        },
+                                      ),
                                     ),
-                                    onChanged: (String value) {
-                                      setState(() {
-                                        _chosenValue = value;
-                                        //  print('@@spinnerChooseValue--' + _chosenValue);
-                                        if (_chosenValue == "Add Patient") {
-                                          print('@@NGO--1' + _chosenValue);
-                                        } else if (_chosenValue ==
-                                            "Update Patient") {
-                                        } else if (_chosenValue ==
-                                            "Screening Entry") {}
-                                      });
-                                    },
-                                  ),
-                                ),
-                              )),
+                                  )),
                             ],
                           ),
                         ),
@@ -268,19 +333,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                        'Login Type:',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w500),
-                      )),
+                            'Login Type:',
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w500),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
                       Container(
                           child: Text(
-                        'DPM',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w600),
-                      )),
+                            'DPM',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w600),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -297,42 +362,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Shown Captcha value to user
                                 Container(
                                     child: Text(
-                                  'District:',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
-                                )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Container(
                                     child: Text(
-                                  '${districtNames}',
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w600),
-                                )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w600),
+                                    )),
                                 const SizedBox(
                                   width: 10,
                                 ),
 
                                 Container(
                                     child: Text(
-                                  'State :',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500),
-                                )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                 const SizedBox(
                                   width: 10,
                                 ),
                                 Container(
                                     child: Text(
-                                  '${stateNames}',
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w600),
-                                )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w600),
+                                    )),
                                 const SizedBox(
                                   width: 10,
                                 ),
@@ -417,7 +482,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           20, 10, 20.0, 0),
-                                      child: new Text('0',
+                                      child: new Text('$totalPatientApproved}',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 17,
@@ -430,7 +495,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     child: Padding(
                                       padding: const EdgeInsets.fromLTRB(
                                           20, 10, 20.0, 0),
-                                      child: new Text('1',
+                                      child: new Text( '${totalPatientPending}',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 17,
@@ -509,7 +574,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('0',
+                                            child: new Text(  '${ngoCountApproved}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -522,7 +587,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('1',
+                                            child: new Text( '${ngoCountPending}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -604,7 +669,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('0',
+                                            child: new Text( '${gH_CHC_Count}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -617,7 +682,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('1',
+                                            child: new Text( '${gH_CHC_Count_Pending}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -699,7 +764,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('0',
+                                            child: new Text('${ppCount}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -712,7 +777,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('1',
+                                            child: new Text('${ppCount_pending}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -794,7 +859,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('0',
+                                            child: new Text('${pmcCount}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -807,7 +872,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('1',
+                                            child: new Text('${ppCount_pending}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -859,7 +924,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 30, 20.0, 0),
-                                            child: new Text('Approved',
+                                            child: new Text('Completed',
+
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -872,7 +938,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 30, 20.0, 0),
-                                            child: new Text('Pending',
+                                            child: new Text('Ongoing',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 30, 20.0, 0),
+                                            child: new Text('Coming',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -889,7 +968,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('0',
+                                            child: new Text('${campCompletedCount}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -902,7 +981,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('1',
+                                            child: new Text('${campongoingCount}',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 17,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Colors.white)),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Padding(
+                                            padding: const EdgeInsets.fromLTRB(
+                                                20, 10, 20.0, 0),
+                                            child: new Text('${campCommingCount}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -947,7 +1039,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               color: Colors.white)),
                                     ),
                                     Divider(color: Colors.grey, height: 1.0),
-                                    Row(
+                                   /* Row(
                                       children: [
                                         Expanded(
                                           flex: 1,
@@ -976,7 +1068,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ),
                                         ),
                                       ],
-                                    ),
+                                    ),*/
                                     Row(
                                       children: [
                                         Expanded(
@@ -984,7 +1076,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('0',
+                                            child: new Text('${satellitecentreCount}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -997,7 +1089,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('1',
+                                            child: new Text('more..',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -1042,7 +1134,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               color: Colors.white)),
                                     ),
                                     Divider(color: Colors.grey, height: 1.0),
-                                    Row(
+                                   /* Row(
                                       children: [
                                         Expanded(
                                           flex: 1,
@@ -1071,15 +1163,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ),
                                         ),
                                       ],
-                                    ),
+                                    ),*/
                                     Row(
+
                                       children: [
                                         Expanded(
                                           flex: 1,
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('0',
+                                            child: new Text('${patientCount}',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -1092,7 +1185,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           child: Padding(
                                             padding: const EdgeInsets.fromLTRB(
                                                 20, 10, 20.0, 0),
-                                            child: new Text('1',
+                                            child: new Text('more..',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
                                                     fontSize: 17,
@@ -1117,3 +1210,22 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 }
+
+class DPMDashboardParamsData {
+  int districtidDPM;
+  int stateidDPM;
+  int old_districtidDPM;
+  String useridDPM;
+  String roleidDPM;
+  int statusDPM;
+  String financialYearDPM;
+}
+//{
+//   "districtid": 547,
+//   "stateid": 29,
+//   "old_districtid": 569,
+//   "userid": "string",
+//   "roleid": "string",
+//   "status": 5,
+//   "financialYear": "2024-2025"
+// }

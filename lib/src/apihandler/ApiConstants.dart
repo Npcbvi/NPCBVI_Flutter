@@ -15,5 +15,5 @@ class ApiConstants {
   static final String noInternet = "No intenet connection";
 
   static final String registration_of_Govt_Private_Other_Hospital = "Registration/api/Registration_of_Govt_Private_Other_Hospital";
-
+  static String GetDPM_Dashboard = 'DpmDashboard/api/GetDPM_Dashboard';
 }
