@@ -25,8 +25,7 @@ class _MainDashboard extends State<MainDashboard> {
       totalEd,
       spo;
 
-  @override
-  Future<void> initState() {
+/*  Future<void> initState() {
     super.initState();
     Future<bool> isNetworkAvailable = Utils.isNetworkAvailable();
     if (isNetworkAvailable != null) {
@@ -35,7 +34,47 @@ class _MainDashboard extends State<MainDashboard> {
           isLoadingApi = false;
           print('@@MainDashboard--' + value.message);
           if (value.status) {
-            print('@@MainDashboard--' + value.status.toString());
+            setState(() {
+              print('@@MainDashboard--' + value.status.toString());
+              ngoCount = value.data.ngoCount;
+              gH_CHC_Count = value.data.gHCHCCount;
+              ppCount = value.data.ppCount;
+              campCount = value.data.campCount;
+              satellitecentreCount = value.data.satellitecentreCount;
+              patientCount = value.data.patientCount;
+              dpm = value.data.dpm;
+              pmcCount = value.data.pmcCount;
+              totalEB = value.data.totalEB;
+              totalEd = value.data.totalEd;
+              spo = value.data.spo;
+              print('@@ngoCount--' + ngoCount);
+              print('@@spo--' + spo);
+            });
+
+
+          }
+        });
+      });
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }*/
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+  Future<void> fetchData() async {
+
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      Utils.showProgressDialog1(context);
+      try {
+        final value = await ApiController.getDashbaord();
+        Utils.hideProgressDialog1(context);
+        if (value.status) {
+          setState(() {
             ngoCount = value.data.ngoCount;
             gH_CHC_Count = value.data.gHCHCCount;
             ppCount = value.data.ppCount;
@@ -47,17 +86,20 @@ class _MainDashboard extends State<MainDashboard> {
             totalEB = value.data.totalEB;
             totalEd = value.data.totalEd;
             spo = value.data.spo;
-            print('@@ngoCount--' + ngoCount);
-            print('@@spo--' + spo);
-          }
+          });
+        }
+    //    Utils.showToast(value.message, !value.status);
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+      } finally {
+        setState(() {
+          isLoadingApi = false;
         });
-      });
+      }
     } else {
       Utils.showToast(AppConstant.noInternet, true);
-      return null;
     }
   }
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -120,7 +162,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -144,7 +186,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -160,7 +202,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -199,7 +241,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -223,7 +265,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -239,7 +281,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -278,7 +320,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -302,7 +344,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -318,7 +360,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -357,7 +399,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -381,7 +423,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -397,7 +439,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -436,7 +478,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -460,7 +502,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -476,7 +518,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -515,7 +557,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -539,7 +581,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -555,7 +597,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -594,7 +636,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -618,7 +660,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -634,7 +676,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -673,7 +715,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -697,7 +739,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -713,7 +755,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -752,7 +794,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -776,7 +818,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -792,7 +834,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -831,7 +873,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -855,7 +897,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -871,7 +913,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(
@@ -910,7 +952,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 children: <Widget>[
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -934,7 +976,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 ),*/
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.topLeft,
                                       child: Container(
@@ -950,7 +992,7 @@ class _MainDashboard extends State<MainDashboard> {
                                   ),
                                   Padding(
                                     padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
                                       child: Container(

@@ -374,15 +374,14 @@ class _LoginScreen extends State<LoginScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => HospitalDashboard()),
-                 /* MaterialPageRoute(
-                      builder: (context) => DPMDashboard()),*/
+
                 );
               }
               else if(response.result.data.roleId=='3'){
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DPMDashboard()),
+                    builder: (context) => DPMDashboard()),
                 );
               }
               //Navigator.pop(context);

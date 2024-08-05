@@ -294,8 +294,9 @@ class ApiController {
       GetDashboardModel contactUS = GetDashboardModel.fromJson(json);
       if (contactUS.status) {
         // Utils.showToast(contactUS.message, true);
+        print('@@contactUS--' + contactUS.message);
+
       }
-      print('@@contactUS--' + contactUS.message);
 
       return contactUS;
     } else {
