@@ -12,7 +12,14 @@ class DPMDashboard extends StatefulWidget {
 
 class _DPMDashboard extends State<DPMDashboard> {
   //TextEditingController fullnameController = new TextEditingController();
-  String _chosenValue, districtNames, userId, stateNames, fullnameController,_chosenValueLOWVision,_chosenEyeBank;
+  String _chosenValue,
+      districtNames,
+      userId,
+      stateNames,
+      fullnameController,
+      _chosenValueLOWVision,
+      _chosenEyeBank,
+      _chosenValueLgoutOption;
   int status;
   String role_id;
   bool isLoadingApi = true;
@@ -142,18 +149,84 @@ class _DPMDashboard extends State<DPMDashboard> {
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
       appBar: new AppBar(
-          backgroundColor: Colors.blue,
-          title: new Text('Welcome ' + '${fullnameController}',
-              style: new TextStyle(
-                color: Colors.white,
-              )),
-          centerTitle: true,
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios),
-              onPressed: () {
-                Utils.hideKeyboard(context);
-                Navigator.of(context).pop(context);
-              })),
+        backgroundColor: Colors.blue,
+        title: new Text('Welcome ' + '${fullnameController}',
+            style: new TextStyle(
+              color: Colors.white,
+            )),
+        centerTitle: true,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Utils.hideKeyboard(context);
+              Navigator.of(context).pop(context);
+            }),
+        actions: [
+
+          PopupMenuButton<int>(
+
+            itemBuilder: (context) => [
+              // PopupMenuItem 1
+               PopupMenuItem(
+                value: 1,
+                // row with 2 children
+                child: Row(
+                  children: [
+                    Icon(Icons.lock),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Change Password")
+                  ],
+                ),
+              ),
+              // PopupMenuItem 2
+               PopupMenuItem(
+                value: 2,
+                // row with two children
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("User Manual")
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 3,
+                // row with two children
+                child: Row(
+                  children: [
+                    Icon(Icons.logout),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text("Logout")
+                  ],
+                ),
+              ),
+            ],
+            offset: const Offset(0, 50),
+            color: Colors.white,
+            elevation: 2,
+            // on selected we show the dialog box
+            onSelected: (value) {
+              // if value 1 show dialog
+              if (value == 1) {
+                print('@@value is 1----');
+                // if value 2 show dialog
+
+              } else if (value == 2) {
+                print('@@value is 2----');
+              }
+              else if (value == 3) {
+                print('@@value is 3----');
+              }
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -181,7 +254,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                         width: 170.0,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
-
                             focusColor: Colors.white,
                             value: _chosenValue,
                             style: TextStyle(color: Colors.white),
@@ -217,15 +289,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 if (_chosenValue == "Approve Application") {
                                   print('@@NGO--1' + _chosenValue);
                                 } else if (_chosenValue == "New Hospital") {
-                                } else if (_chosenValue == "Govt/private/Other") {
-
-                                }
+                                } else if (_chosenValue ==
+                                    "Govt/private/Other") {}
                               });
                             },
                           ),
                         ),
                       ),
-                  SizedBox(width: 8.0),
+                      SizedBox(width: 8.0),
                       Container(
                         width: 170.0,
                         child: DropdownButtonHideUnderline(
@@ -265,8 +336,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 //  print('@@spinnerChooseValue--' + _chosenValue);
                                 if (_chosenValueLOWVision == "Cataract") {
                                   print('@@NGO--1' + _chosenValueLOWVision);
-                                } else if (_chosenValueLOWVision == "Diabetic") {
-                                } else if (_chosenValueLOWVision == "Glaucoma") {}
+                                } else if (_chosenValueLOWVision ==
+                                    "Diabetic") {
+                                } else if (_chosenValueLOWVision ==
+                                    "Glaucoma") {}
                               });
                             },
                           ),
@@ -286,8 +359,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         ),
                       ),
                       SizedBox(width: 8.0),
-                          Container(
-                        width:300,
+                      Container(
+                        width: 300,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             focusColor: Colors.white,
@@ -324,7 +397,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 if (_chosenEyeBank == "Eye Bank Collection") {
                                   print('@@NGO--1' + _chosenEyeBank);
                                 } else if (_chosenEyeBank == "Eye Donation") {
-                                } else if (_chosenEyeBank == "Eyeball Collection Via Eye Bank") {}
+                                } else if (_chosenEyeBank ==
+                                    "Eyeball Collection Via Eye Bank") {}
                               });
                             },
                           ),
@@ -335,8 +409,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 ),
               ),
             ),
-
-             SingleChildScrollView(
+            SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
