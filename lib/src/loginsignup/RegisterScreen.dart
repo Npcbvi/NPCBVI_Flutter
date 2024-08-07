@@ -8,7 +8,6 @@ import 'package:flutter/services.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
-import 'package:mohfw_npcbvi/src/loginsignup/CardEquipmentListScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
@@ -105,9 +104,9 @@ class _RegisterScreen extends State<RegisterScreen> {
   List<String> products = [];
   int dropDownvalueOrgnbaistaionType = 0;
   final _equipmentDetailQtyController = new TextEditingController();
-
+  List<TextEditingController> _controllers = [];
+  List<ListGovtPRivateModel> offerList = [];
   final _HospitalNINnoGovtController = new TextEditingController();
-
   /* final _organisationNameGovtContoller = new TextEditingController();
   final _MobileGovtContoller = new TextEditingController();
   final _EmailGovtContoller = new TextEditingController();
@@ -134,26 +133,6 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
-  /*Future< List<DataDsiricst>> _getDistrictData(int stateCode) async {
-    DashboardDistrictModel dashboardDistrictModel
-    =DashboardDistrictModel();;
-    var response = await http.post("https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/ListDistrict",
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "state_code": stateCode,
-        }));
-
-    if (response.statusCode == 200) {
-      dashboardDistrictModel =
-          DashboardDistrictModel.fromJson(json.decode(response.body));
-      List<DataDsiricst> list=dashboardDistrictModel.data;
-      return list;
-    } else {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text("Failed to create post!"),
-      ));
-    }
-  }*/
   Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
     DashboardDistrictModel dashboardDistrictModel = DashboardDistrictModel();
     ;
@@ -380,7 +359,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     );
   }
 
-  Widget getEquipmentsDetails() {
+ /* Widget getEquipmentsDetails() {
     return Container(
       child: Row(
         children: <Widget>[
@@ -394,11 +373,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                 if (projectSnap.hasData) {
                   GovtPRivateModel response = projectSnap.data;
                   print('@@GovtPRivateModel__1' + response.status.toString());
-                  List<ListGovtPRivateModel> offerList = response.list;
+                  //List<ListGovtPRivateModel> offerList = response.list;
+                  offerList = response.list;
                   print('@@GovtPRivateModel__1--length' +
                       offerList.length.toString());
                   if (response.status) {
-                    List<ListGovtPRivateModel> offerList = response.list;
+                    offerList = response.list;
                     if (offerList.isEmpty) {
                       return Utils.getEmptyView("No data found");
                     } else {
@@ -458,7 +438,7 @@ class _RegisterScreen extends State<RegisterScreen> {
         ],
       ),
     );
-  }
+  }*/
 
   Widget GovtRAdioGroups() {
     return Column(
@@ -1315,32 +1295,27 @@ class _RegisterScreen extends State<RegisterScreen> {
                         FutureBuilder(
                           future: ApiController.getEquipmentGovtPRivateModel(),
                           builder: (context, projectSnap) {
-                            if (projectSnap.connectionState ==
-                                    ConnectionState.none &&
+                            if (projectSnap.connectionState == ConnectionState.none &&
                                 projectSnap.hasData == null) {
                               return Container();
                             } else {
                               if (projectSnap.hasData) {
                                 GovtPRivateModel response = projectSnap.data;
-                                print('@@GovtPRivateModel__1' +
-                                    response.status.toString());
                                 if (response.status) {
-                                  List<ListGovtPRivateModel> offerList =
-                                      response.list;
+                                  offerList = response.list;
                                   if (offerList.isEmpty) {
                                     return Utils.getEmptyView("No data found");
                                   } else {
+                                    _controllers = List.generate(offerList.length, (index) => TextEditingController());
                                     return Expanded(
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: offerList.length,
                                         itemBuilder: (context, index) {
-                                          ListGovtPRivateModel offer =
-                                              offerList[index];
+                                          ListGovtPRivateModel offer = offerList[index];
+                                          TextEditingController _controllerqty = TextEditingController();
 
-                                          print('@@GovtPRivateModel__4' +
-                                              offer.toString());
-                                         /* return Column(
+                                          return Column(
                                             children: <Widget>[
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1353,7 +1328,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                         decoration: BoxDecoration(
                                                           border: Border.all(
                                                             color: Colors.white,
-                                                            //                   <--- border color
                                                             width: 1.0,
                                                           ),
                                                         ),
@@ -1367,6 +1341,30 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                       ),
                                                     ),
                                                   ),
+                                            /*      Expanded(
+                                                    flex: 1,
+                                                    child: Padding(
+                                                      padding: const EdgeInsets.fromLTRB(4, 10, 4.0, 0),
+                                                      child: Container(
+                                                        decoration: BoxDecoration(
+                                                          border: Border.all(
+                                                            color: Colors.black,
+                                                            width: 0.4,
+                                                          ),
+                                                        ),
+                                                        alignment: Alignment.centerLeft,
+                                                        child: TextField(
+                                                          controller: _controller,
+                                                          onChanged: (value) {
+                                                            offerList[index].id = value;
+                                                          },
+                                                          decoration: InputDecoration(
+                                                            border: OutlineInputBorder(),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),*/
                                                   Expanded(
                                                     flex: 1,
                                                     child: Padding(
@@ -1380,7 +1378,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                         ),
                                                         alignment: Alignment.centerLeft,
                                                         child: TextField(
-                                                          controller: _equipmentDetailQtyController,
+                                                          controller: _controllers[index],
+                                                          keyboardType: TextInputType.number,
+                                                          onChanged: (value) {
+                                                            offerList[index].quantity = value;
+                                                          },
                                                           decoration: InputDecoration(
                                                             border: OutlineInputBorder(),
                                                           ),
@@ -1391,39 +1393,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                 ],
                                               ),
                                             ],
-                                          );*/
-
-                                          return CardEquipmentListScreen(offer);
-
-                                          /*   return ListTile(
-
-                                            title: Text(
-                                              offer.id.toString(),
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.black),
-                                            ),
-                                            subtitle: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                    offer.name.toString(), style: TextStyle(color: Colors.black
-                                                )),
-                                              ],
-                                            ),
-                                     trailing: Wrap(
-                                              spacing: 12, // space between two icons
-                                              children: <Widget>[
-                                                Icon(Icons.arrow_right), // icon-2
-                                              ],
-                                            ),
-
-                                            onTap: () {
-
-                                            },
-
-                                          );*/
+                                          );
                                         },
                                       ),
                                     );
@@ -1548,28 +1518,48 @@ class _RegisterScreen extends State<RegisterScreen> {
     );
   }
   Future<void> _NewUSerGovtPrivateRegisterSubmit() async {
-    //govtPrivateRegistatrionDataFields.equipeDestailsID=1;
-    // govtPrivateRegistatrionDataFields.equipDetailsQty=int.parse(_equipmentDetailQtyController.text.toString());
+    List<Map<String, dynamic>> equipmentData = [];
+
+    for (int i = 0; i < offerList.length; i++) {
+      equipmentData.add({
+        'equCat_ID': offerList[i].id,
+        'equCat_Quantity': int.tryParse(_controllers[i].text) ?? 0,
+      });
+    }
+    print('@@equipmentData' + equipmentData.toString());
     govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes =
         dropDownvalueOrgnbaistaionType;
+    print('@@1' + govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes.toString());
     govtPrivateRegistatrionDataFields.HospitalNinNumber =
         _HospitalNINnoGovtController.text.toString().trim();
+    print('@@2' + govtPrivateRegistatrionDataFields.HospitalNinNumber.toString());
     govtPrivateRegistatrionDataFields.organisationNameGovt =
         _organisationNameGovtPrivate.text.toString().trim();
+    print('@@3' + govtPrivateRegistatrionDataFields.organisationNameGovt.toString());
     govtPrivateRegistatrionDataFields.MobileNoGovt =
         _mobileGovtPRivate.text.toString().trim(); //CodeDPM; testing purpose
+    print('@@4' + govtPrivateRegistatrionDataFields.MobileNoGovt.toString());
     govtPrivateRegistatrionDataFields.EmailIDGovt =
         _emailIDGovtPRivate.text.toString().trim();
+    print('@@5' + govtPrivateRegistatrionDataFields.EmailIDGovt.toString());
     govtPrivateRegistatrionDataFields.AddressGovt =
         _addressGovtPRivate.text.toString().trim();
+    print('@@6' + govtPrivateRegistatrionDataFields.AddressGovt.toString());
     govtPrivateRegistatrionDataFields.pinCodeGovt =
         _pinbCodeGovtPRivate.text.toString().trim();
+    print('@@7' + govtPrivateRegistatrionDataFields.pinCodeGovt.toString());
     govtPrivateRegistatrionDataFields.OfficernameGovt =
         _officerNAmeGovtPRivate.text.toString().trim();
+    print('@@8' + govtPrivateRegistatrionDataFields.OfficernameGovt.toString());
 
     govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt =
         _captchaControllerGovtPrivateScreen.text.toString().trim();
-    print('@@stateCodeSPO.state' + dpmDataFields.toString());
+    print('@@9' + govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt.toString());
+   /* List<Map<String, dynamic>> equipmentData = govtPrivateRegistatrionDataFields.equipmentList.map((item) => {
+      'equCat_ID': item.id,
+      'equCat_Quantity': int.tryParse(item.quantity) ?? 0,
+    }).toList();
+    print("@@equipmentData---" +  equipmentData.toString());*/
     if (govtPrivateRegistatrionDataFields.organisationNameGovt.isEmpty) {
       Utils.showToast("Please enter Organisatioon Name !", false);
       return;
@@ -1600,16 +1590,21 @@ class _RegisterScreen extends State<RegisterScreen> {
       Utils.showToast("Please enter Matched Captcha !", false);
       return;
     } else {
+      print('@@registration_of_Govt_Private_Other_Hospital ---34' );
+
       Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
-          Utils.showProgressDialog1(context);
+
+          print('@@registration_of_Govt_Private_Other_Hospital ---32' );
+
+         // Utils.showProgressDialog1(context);
           ApiController.registration_of_Govt_Private_Other_Hospital(govtPrivateRegistatrionDataFields)
               .then((response) async {
             Utils.hideProgressDialog1(context);
 
             print('@@registration_of_Govt_Private_Other_Hospital ---' + response.status.toString());
-            if (response != null && response.status) {
-              Navigator.pop(context);
+            if (response.status) {
+            //  Navigator.pop(context);
             }
           });
         } else {
@@ -1699,7 +1694,6 @@ class _RegisterScreen extends State<RegisterScreen> {
       });
     }
   }
-
   Future<void> _NGORegistrationSubmit() async {
     ngodDataFields.ngoDarpanNumber =
         _ngoDarpanNumberController.text.toString().trim();
@@ -1735,9 +1729,6 @@ class _RegisterScreen extends State<RegisterScreen> {
       });
     }
   }
-
-//SPo Registration work h
-  //DPM Work Here
   Widget DPMRegistration() {
     return SingleChildScrollView(
       child: Column(
@@ -2121,7 +2112,6 @@ class _RegisterScreen extends State<RegisterScreen> {
       ),
     );
   }
-
   Future<void> _DPMRegistrationSubmit() async {
     dpmDataFields.stdDPMs=int.parse(stdControllerDPM.text.toString().trim());
     dpmDataFields.stateDPM = stateCodeDPM;
@@ -2206,9 +2196,6 @@ class _RegisterScreen extends State<RegisterScreen> {
       });
     }
   }
-
-
-
   bool isValidEmail(String input) {
     //Email is opation
     if (input.trim().isEmpty) return true;
@@ -2219,7 +2206,40 @@ class _RegisterScreen extends State<RegisterScreen> {
     return isMatch;
   }
 }
+///////////////////////////////////////Outside the class declare heloper classes.
 
+class GovtPrivateRegistatrionDataFields {
+  int dropDownvalueOrgnbaistaionTypes;
+  String HospitalNinNumber;
+  String organisationNameGovt;
+  String MobileNoGovt;
+  String EmailIDGovt;
+  String AddressGovt;
+  String pinCodeGovt;
+  String OfficernameGovt;
+  String CapchaCodeGovtPvt;
+  List<offerLists> equipmentList;
+/*
+  GovtPrivateRegistatrionDataFields({
+     this.dropDownvalueOrgnbaistaionTypes,
+     this.HospitalNinNumber,
+     this.organisationNameGovt,
+     this.MobileNoGovt,
+     this.EmailIDGovt,
+     this.AddressGovt,
+     this.pinCodeGovt,
+     this.OfficernameGovt,
+     this.CapchaCodeGovtPvt,
+     this.equipmentList,
+  });*/
+}
+
+class offerLists {
+   int id;
+  String quantity;
+
+  offerLists({ this.id, this.quantity = ''});
+}
 class SPODataFields {
   int state;
   String Name;
@@ -2233,7 +2253,6 @@ class SPODataFields {
   String CaptchaCodeEnter;
   int stdSPO;
 }
-
 class DPMDataFields {
   int stateDPM;
   int distCodeDPM;
@@ -2249,25 +2268,9 @@ class DPMDataFields {
   String distNameDPMs;
   int stdDPMs;
 }
-
 class NGODDataFields {
   String ngoDarpanNumber;
   String ngoPANNumber;
-}
-
-class GovtPrivateRegistatrionDataFields {
-  int dropDownvalueOrgnbaistaionTypes;
-  String organisationNameGovt,
-      MobileNoGovt,
-      EmailIDGovt,
-      StateGovt,
-      DistrictGovt,
-      AddressGovt,
-      pinCodeGovt,
-      OfficernameGovt,
-      CapchaCodeGovtPvt,
-      HospitalNinNumber;
-  int equipeDestailsID,equipDetailsQty;
 }
 //NGO Registration view
 

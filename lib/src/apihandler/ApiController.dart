@@ -457,15 +457,20 @@ class ApiController {
     if (isNetworkAvailable) {
 
       try {
+        List<Map<String, dynamic>> equipmentData = govtPrivateRegistatrionDataFields.equipmentList.map((item) => {
+          'equCat_ID': item.id,
+          'equCat_Quantity': int.tryParse(item.quantity) ?? 0,
+        }).toList();
         var url = ApiConstants.baseUrl + ApiConstants.registration_of_Govt_Private_Other_Hospital;
+        print("@@equipmentData---" + url + equipmentData.toString());
         //Way to send headers
-        Map<String, String> headers = {
+       /* Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
-        };
+        };*/
         //Way to send params
-        var body = json.encode({
+     /*   var body = json.encode({
           "h_roleid":govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes,
           "h_Name": govtPrivateRegistatrionDataFields.organisationNameGovt,
           "h_MobileNo": govtPrivateRegistatrionDataFields.MobileNoGovt,
@@ -478,17 +483,35 @@ class ApiController {
           "h_NIN_no": govtPrivateRegistatrionDataFields.HospitalNinNumber,
           "npcbnumber": "",
           "equipmentName":"",
-        });
-        print("@@registration_of_Govt_Private_Other_Hospital---" + url + body);
+        });*/
+
+
+        print("@@equipmentData---" + url + equipmentData.toString());
+        Map<String, dynamic> payload = {
+          "h_roleid":govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes,
+          "h_Name": govtPrivateRegistatrionDataFields.organisationNameGovt,
+          "h_MobileNo": govtPrivateRegistatrionDataFields.MobileNoGovt,
+          "h_EmailID": govtPrivateRegistatrionDataFields.EmailIDGovt,
+          "h_Address": govtPrivateRegistatrionDataFields.AddressGovt,
+          "h_PinCode": govtPrivateRegistatrionDataFields.pinCodeGovt,
+          "h_Officer_Name": govtPrivateRegistatrionDataFields.OfficernameGovt,
+          "mode":"",
+          "inserttype": 0, //for insert data  and 1 for update data
+          "h_NIN_no": govtPrivateRegistatrionDataFields.HospitalNinNumber,
+          "npcbnumber": "",
+          "equipmentName":equipmentData,
+        };
+        print("@@registration_of_Govt_Private_Other_Hospital---" + url + payload.toString());
+
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
-            data: body,
+            data: payload,
             options: new Options(
-                headers: headers,
+             //   headers: headers,
                 contentType: "application/json",
                 responseType: ResponseType.plain));
-        print("@@registration_of_Govt_Private_Other_Hospital---" + url + body);
+        print("@@registration_of_Govt_Private_Other_Hospital---" + url + payload.toString());
         print("@@registration_of_Govt_Private_Other_Hospital--Api" + response1.toString());
 
         if (registration_of_govt_private_other_hospital_models.status) {

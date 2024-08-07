@@ -33,8 +33,8 @@ class GovtPRivateModel {
 class ListGovtPRivateModel {
   int id;
   String name;
-
-  ListGovtPRivateModel({this.id, this.name});
+  String quantity;
+  ListGovtPRivateModel({this.id, this.name,this.quantity = ''});
 
   ListGovtPRivateModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
