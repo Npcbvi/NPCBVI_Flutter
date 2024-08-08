@@ -16,4 +16,6 @@ class ApiConstants {
 
   static final String registration_of_Govt_Private_Other_Hospital = "Registration/api/Registration_of_Govt_Private_Other_Hospital";
   static String GetDPM_Dashboard = 'DpmDashboard/api/GetDPM_Dashboard';
+
+  static String GetDPM_NGOApplication = 'DpmDashboard/api/GetDPM_NGOApplication';
 }

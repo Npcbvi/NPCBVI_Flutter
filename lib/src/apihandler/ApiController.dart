@@ -16,6 +16,7 @@ import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMDashboardData.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
@@ -588,6 +589,50 @@ class ApiController {
     }
 
     }
+
+
+  static Future<NGOAPPlicationDropDownDPm> getDPM_NGOApplication(GetDPM_NGOApplication getDPM_NGOApplications) async {
+    NGOAPPlicationDropDownDPm ngoapPlicationDropDownDPm = NGOAPPlicationDropDownDPm();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.GetDPM_NGOApplication;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+        //Way to send params
+        var body =
+        json.encode({"district_code": 536, "state_code": 29});
+        print("getDPM_NGOApplication---URL with params--" + url+body.toString());
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
+        print("@@getDPM_NGOApplication--Api--respnse--" + response1.toString());
+        ngoapPlicationDropDownDPm = NGOAPPlicationDropDownDPm.fromJson(json.decode(response1.data));
+        if (ngoapPlicationDropDownDPm.status) {
+          print("@@getDPM_NGOApplication++++" + ngoapPlicationDropDownDPm.message);
+
+        }
+        return ngoapPlicationDropDownDPm;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
     //Way to send url with methodname
+  }
   }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

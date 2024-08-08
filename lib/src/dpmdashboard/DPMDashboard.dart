@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
@@ -28,6 +31,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool isLoadingApi = true;
   DPMDashboardParamsData dpmDashboardParamsDatass =
       new DPMDashboardParamsData();
+  GetDPM_NGOApplication getDPM_NGOApplications=new GetDPM_NGOApplication();
   String ngoCountApproved,
       ngoCountPending,
       totalPatientApproved,
@@ -44,6 +48,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       campCount,
       satellitecentreCount,
       patientCount;
+  String ngo_application_name;
   bool _isLoading = true;
   bool _hasError = false;
   String _errorMessage = '';
@@ -147,7 +152,47 @@ class _DPMDashboard extends State<DPMDashboard> {
       }
     });
   }
+  void _getDPM_NGOApplicationDropDown() {
 
+
+    Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+      if (isNetworkAvailable) {
+        Utils.showProgressDialog(context);
+        try {
+          final response =
+          await ApiController.getDPM_NGOApplication(getDPM_NGOApplications);
+          Utils.hideProgressDialog(context);
+          if (response.status) {
+            print('@@ngo_application_name-------4'+ngo_application_name);
+            _isLoading = false;
+
+
+
+          } else {
+            setState(() {
+              _isLoading = false;
+              _hasError = true;
+              _errorMessage = response.message;
+            });
+            Utils.showToast(response.message, true);
+          }
+        } catch (e) {
+          setState(() {
+            _isLoading = false;
+            _hasError = true;
+            _errorMessage = e.toString();
+          });
+        }
+      } else {
+        setState(() {
+          _isLoading = false;
+          _hasError = true;
+          _errorMessage = AppConstant.noInternet;
+        });
+        Utils.showToast(AppConstant.noInternet, true);
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -296,6 +341,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   print('@@NGO--1' + _chosenValue);
                                   dashboardviewReplace=false;
                                   NGOlistAprrovalDisplayDatas=true;
+                                  _getDPM_NGOApplicationDropDown();
+
                                 } else if (_chosenValue == "New Hospital") {
                                   dashboardviewReplace=true;
                                 } else if (_chosenValue ==
@@ -557,6 +604,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       onTap: () {
                                         print('@@---Cleci APproved for Dialog');
                                         showDiseaseDialog();
+
                                       },
                                       child: new Text('Approved',
                                         textAlign: TextAlign.center,
@@ -1448,27 +1496,87 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: NGOlistAprrovalDisplayDatas,
           child:Container(
             margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Container(
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Shown Captcha value to user
-                    Container(
-                        child: Text(
-                          'NGO list for Approval',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w800),
-                        )),
-                    const SizedBox(
-                      width: 10,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Shown Captcha value to user
+                        Container(
+                            child: Text(
+                              'NGO list for Approval',
+                              style: TextStyle(
+                                  color: Colors.white, fontWeight: FontWeight.w800),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+
+                      ],
                     ),
 
+                  ),
+
+                ),
+                Table(
+                  border: TableBorder.all(),
+                  columnWidths: {
+                    0: FixedColumnWidth(50),
+                    1: FlexColumnWidth(),
+                    2: FlexColumnWidth(),
+                    3: FixedColumnWidth(50),
+                  },
+                  children: [
+                    TableRow(
+                      decoration: BoxDecoration(color: Colors.grey[200]),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('S.No.', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Disease', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Total', style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                    ...diseaseList.map((disease) {
+                      return TableRow(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(ngo_application_name.toString()),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(disease.diseaseName),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(disease.name),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(disease.total.toString()),
+                          ),
+                        ],
+                      );
+                    }).toList(),
                   ],
                 ),
-              ),
+              ],
             ),
           ),
         ),
@@ -1485,6 +1593,11 @@ class DPMDashboardParamsData {
   String roleidDPM;
   int statusDPM;
   String financialYearDPM;
+}
+class GetDPM_NGOApplication {
+  int district_code;
+  int state_code;
+
 }
 //{
 //   "districtid": 547,
