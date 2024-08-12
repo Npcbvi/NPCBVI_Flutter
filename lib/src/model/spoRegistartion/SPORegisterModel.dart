@@ -1,36 +1,36 @@
 class SPORegisterModel {
   String message;
   bool status;
-  List<SPOData> data;
-  Null list;
+ /* List<SPOData> data;
+  Null list;*/
 
-  SPORegisterModel({this.message, this.status, this.data, this.list});
+  SPORegisterModel({this.message, this.status/*, this.data, this.list*/});
 
   SPORegisterModel.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    if (json['data'] != null) {
+   /* if (json['data'] != null) {
       data = <SPOData>[];
       json['data'].forEach((v) {
         data.add(new SPOData.fromJson(v));
       });
     }
-    list = json['list'];
+    list = json['list'];*/
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['message'] = this.message;
     data['status'] = this.status;
-    if (this.data != null) {
+  /*  if (this.data != null) {
       data['data'] = this.data.map((v) => v.toJson()).toList();
     }
-    data['list'] = this.list;
+    data['list'] = this.list;*/
     return data;
   }
 }
 
-class SPOData {
+/*class SPOData {
   int srNo;
 
   SPOData({this.srNo});
@@ -44,7 +44,7 @@ class SPOData {
     data['sr_no'] = this.srNo;
     return data;
   }
-}
+}*/
 
 
 

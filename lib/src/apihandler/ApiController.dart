@@ -49,9 +49,13 @@ class ApiController {
           "apipassword": "PWD123",
         };
         //Way to send params
-        var body =
-        json.encode({"username": user.loginId, "password": user.password, "platformName": Platform.isIOS ? "IOS" : "Android"});
-        print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
+        var body = json.encode({
+          "username": user.loginId,
+          "password": user.password,
+          "platformName": Platform.isIOS ? "IOS" : "Android"
+        });
+        print(
+            "@@Response--ParamsCheck with plattfor---" + url + body.toString());
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -60,7 +64,7 @@ class ApiController {
                 headers: headers,
                 contentType: "application/json",
                 responseType: ResponseType.plain));
-       // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
+        // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
         print("@@Response--Api" + response1.toString());
         loginModel = LoginModel.fromJson(json.decode(response1.data));
         print("@@token" + loginModel.token);
@@ -69,7 +73,6 @@ class ApiController {
         if (result.status) {
           SharedPrefs.saveUser(loginModel.result.data);
           Utils.showToast(result.message, true);
-
         }
         return loginModel;
       } catch (e) {
@@ -122,12 +125,13 @@ class ApiController {
                 responseType: ResponseType.plain));
         print("@@spoRegistrationAPiRquest" + url + body);
         print("@@spoRegistrationAPiRquest--Api" + response1.toString());
-        spoRegisterModel = SPORegisterModel.fromJson(json.decode(response1.data));
+        spoRegisterModel =
+            SPORegisterModel.fromJson(json.decode(response1.data));
         //  Result result = loginModel.result;
         //  print("@@Result message----" + result.message);
         if (spoRegisterModel.status) {
           Utils.showToast(spoRegisterModel.message, true);
-        }else{
+        } else {
           Utils.showToast(spoRegisterModel.message, true);
         }
         return spoRegisterModel;
@@ -170,10 +174,12 @@ class ApiController {
           "pincode": dpmDataFields.PinCodeDPM,
           "std": dpmDataFields.stdDPMs,
           //"user_id": "NPCB" + dpmDataFields.codeSPOsDPM,
-          "user_id": dpmDataFields.codeSPOsDPM+ "DPM"+dpmDataFields.distNameDPMs,
-
+          "user_id":
+              dpmDataFields.codeSPOsDPM + "DPM" + dpmDataFields.distNameDPMs,
+          "stateName": dpmDataFields.distNameDPMs,
+          "districtName": dpmDataFields.distNameDPMs_distictValue,
         });
-        print("@@SPOURL-------" + url + body);
+        print("@@DPMRegistrationAPiRquest-------" + url + body);
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -182,14 +188,15 @@ class ApiController {
                 headers: headers,
                 contentType: "application/json",
                 responseType: ResponseType.plain));
-        print("@@SPOURL" + url + body);
-        print("@@SPOURL--Api" + response1.toString());
+        print("@@DPMRegistrationAPiRquest" + url + body);
+        print("@@DPMRegistrationAPiRquest--Api" + response1.toString());
         dpmRegistartionModel =
             DPMRegistartionModel.fromJson(json.decode(response1.data));
         print("@@token" + dpmRegistartionModel.message);
-        //  Result result = loginModel.result;
-        //  print("@@Result message----" + result.message);
+
         if (dpmRegistartionModel.status) {
+          Utils.showToast(dpmRegistartionModel.message, true);
+        } else {
           Utils.showToast(dpmRegistartionModel.message, true);
         }
         return dpmRegistartionModel;
@@ -202,7 +209,6 @@ class ApiController {
       return null;
     }
 
-
     //Way to send url with methodname
   }
 
@@ -212,7 +218,6 @@ class ApiController {
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
-
       try {
         var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
         //Way to send headers
@@ -245,7 +250,8 @@ class ApiController {
                 responseType: ResponseType.plain));
         print("@@SPOURL" + url + body);
         print("@@SPOURL--Api" + response1.toString());
-        spoRegisterModel = SPORegisterModel.fromJson(json.decode(response1.data));
+        spoRegisterModel =
+            SPORegisterModel.fromJson(json.decode(response1.data));
         print("@@token" + spoRegisterModel.message);
         //  Result result = loginModel.result;
         //  print("@@Result message----" + result.message);
@@ -279,13 +285,11 @@ class ApiController {
 
       return contactUS;
     } else {
-
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-
   }
+
   static Future<GetDashboardModel> getDashbaord() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -296,7 +300,6 @@ class ApiController {
       if (contactUS.status) {
         // Utils.showToast(contactUS.message, true);
         print('@@contactUS--' + contactUS.message);
-
       }
 
       return contactUS;
@@ -304,16 +307,14 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-
   }
+
   static Future<ForgotPasswordModel> forgotPasswordApiRequest(
       ForgotPasswordDatas forgotPasswordData) async {
     ForgotPasswordModel forgotPasswordDatas = ForgotPasswordModel();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
-
       try {
         var url = ApiConstants.baseUrl + ApiConstants.SendOTPForForgotPassword;
         //Way to send headers
@@ -326,7 +327,6 @@ class ApiController {
         var body = json.encode({
           "mobileorEmail": forgotPasswordData.RadioOptionSelectMobileEmail,
           "userId": forgotPasswordData.userID,
-
         });
         print("@@forgotPasswordApiRequest" + url + body);
         //Way to send network calls
@@ -339,14 +339,14 @@ class ApiController {
                 responseType: ResponseType.plain));
         print("@@forgotPasswordApiRequest___2" + url + body);
         print("@@forgotPasswordApiRequest--Api" + response1.toString());
-        forgotPasswordDatas = ForgotPasswordModel.fromJson(json.decode(response1.data));
-       // print("@@token" + spoRegisterModel.message);
+        forgotPasswordDatas =
+            ForgotPasswordModel.fromJson(json.decode(response1.data));
+        // print("@@token" + spoRegisterModel.message);
         //  Result result = loginModel.result;
         //  print("@@Result message----" + result.message);
         if (forgotPasswordDatas.status) {
           //Utils.showToast(forgotPasswordDatas.message, true);
           SharedPrefs.saveForgotPasswordData(forgotPasswordDatas);
-
         }
         return forgotPasswordDatas;
       } catch (e) {
@@ -370,13 +370,11 @@ class ApiController {
       print('@@getGovtPRivateModel--' + json.toString());
       GovtPRivateModel govtPRivateModel = GovtPRivateModel.fromJson(json);
       if (govtPRivateModel.status) {
-     //   Utils.showToast(govtPRivateModel.message, true);
-        print('@@getGovtPRivateModel--get messqagehere--' + govtPRivateModel.message);
+        //   Utils.showToast(govtPRivateModel.message, true);
         return govtPRivateModel;
-      }else{
+      } else {
         Utils.showToast(govtPRivateModel.message, true);
         print('@@esleConfiti--' + govtPRivateModel.status.toString());
-
       }
 
       return govtPRivateModel;
@@ -384,16 +382,14 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-
   }
+
   static Future<ForgotPasswordModel> forgotPasswordOTPApiRequest(
       ForgotPasswordDatasOTPData forgotPasswordDatasOTPData) async {
     ForgotPasswordModel forgotPasswordDatas = ForgotPasswordModel(); // add here
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
-
       try {
         var url = ApiConstants.baseUrl + ApiConstants.UserForgotPassword;
         //Way to send headers
@@ -410,7 +406,7 @@ class ApiController {
           "mobile": forgotPasswordDatasOTPData.mobile,
           "sr_no": forgotPasswordDatasOTPData.sr_no,
           "user_id": forgotPasswordDatasOTPData.user_id,
-          "email_id":forgotPasswordDatasOTPData.email_id,
+          "email_id": forgotPasswordDatasOTPData.email_id,
           "name": forgotPasswordDatasOTPData.name,
           "mobileorEmail": "",
           "otp": forgotPasswordDatasOTPData.opts,
@@ -426,13 +422,14 @@ class ApiController {
                 responseType: ResponseType.plain));
         print("@@forgotPasswordOTPApiRequest" + url + body);
         print("@@forgotPasswordOTPApiRequest--Api" + response1.toString());
-        forgotPasswordDatas = ForgotPasswordModel.fromJson(json.decode(response1.data));
+        forgotPasswordDatas =
+            ForgotPasswordModel.fromJson(json.decode(response1.data));
         // print("@@token" + spoRegisterModel.message);
         //  Result result = loginModel.result;
         //  print("@@Result message----" + result.message);
         if (forgotPasswordDatas.status) {
           //Utils.showToast(forgotPasswordDatas.message, true);
-         // SharedPrefs.saveForgotPasswordData(forgotPasswordDatas);
+          // SharedPrefs.saveForgotPasswordData(forgotPasswordDatas);
 
         }
         return forgotPasswordDatas;
@@ -444,83 +441,70 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-
   }
 
-
-
-  static Future<Registration_of_Govt_Private_Other_Hospital_model> registration_of_Govt_Private_Other_Hospital(
-      GovtPrivateRegistatrionDataFields govtPrivateRegistatrionDataFields) async {
-    Registration_of_Govt_Private_Other_Hospital_model registration_of_govt_private_other_hospital_models = Registration_of_Govt_Private_Other_Hospital_model(); // add here
+  static Future<Registration_of_Govt_Private_Other_Hospital_model>
+      registration_of_Govt_Private_Other_Hospital(
+          GovtPrivateRegistatrionDataFields
+              govtPrivateRegistatrionDataFields) async {
+    Registration_of_Govt_Private_Other_Hospital_model registrationModel =
+        Registration_of_Govt_Private_Other_Hospital_model();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
+
     if (isNetworkAvailable) {
-
       try {
-        List<Map<String, dynamic>> equipmentData = govtPrivateRegistatrionDataFields.equipmentList.map((item) => {
-          'equCat_ID': item.id,
-          'equCat_Quantity': int.tryParse(item.quantity) ?? 0,
-        }).toList();
-        var url = ApiConstants.baseUrl + ApiConstants.registration_of_Govt_Private_Other_Hospital;
-        print("@@equipmentData---" + url + equipmentData.toString());
-        //Way to send headers
-       /* Map<String, String> headers = {
-          "Content-Type": "application/json",
-          "apikey": "Key123",
-          "apipassword": "PWD123",
-        };*/
-        //Way to send params
-     /*   var body = json.encode({
-          "h_roleid":govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes,
-          "h_Name": govtPrivateRegistatrionDataFields.organisationNameGovt,
-          "h_MobileNo": govtPrivateRegistatrionDataFields.MobileNoGovt,
-          "h_EmailID": govtPrivateRegistatrionDataFields.EmailIDGovt,
-          "h_Address": govtPrivateRegistatrionDataFields.AddressGovt,
-          "h_PinCode": govtPrivateRegistatrionDataFields.pinCodeGovt,
-          "h_Officer_Name": govtPrivateRegistatrionDataFields.OfficernameGovt,
-          "mode":"",
-          "inserttype": 0, //for insert data  and 1 for update data
-          "h_NIN_no": govtPrivateRegistatrionDataFields.HospitalNinNumber,
-          "npcbnumber": "",
-          "equipmentName":"",
-        });*/
+        // Directly use the existing equipmentList from govtPrivateRegistatrionDataFields
+        List<EquipmentName> equipmentList =
+            govtPrivateRegistatrionDataFields.equipmentList ?? [];
 
+        // Logging the equipmentList for debugging
+        print("@@equipmentData---apicontroller" + equipmentList.toString());
 
-        print("@@equipmentData---" + url + equipmentData.toString());
+        var url = ApiConstants.baseUrl +
+            ApiConstants.registration_of_Govt_Private_Other_Hospital;
+
         Map<String, dynamic> payload = {
-          "h_roleid":govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes,
+          "h_roleid":
+              govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes,
           "h_Name": govtPrivateRegistatrionDataFields.organisationNameGovt,
           "h_MobileNo": govtPrivateRegistatrionDataFields.MobileNoGovt,
           "h_EmailID": govtPrivateRegistatrionDataFields.EmailIDGovt,
           "h_Address": govtPrivateRegistatrionDataFields.AddressGovt,
           "h_PinCode": govtPrivateRegistatrionDataFields.pinCodeGovt,
           "h_Officer_Name": govtPrivateRegistatrionDataFields.OfficernameGovt,
-          "mode":"",
-          "inserttype": 0, //for insert data  and 1 for update data
+          "mode": "",
+          "h_stateid": govtPrivateRegistatrionDataFields.hStateid,
+          "h_districtid": govtPrivateRegistatrionDataFields.hDistrictid,
+          "inserttype": 0, // for insert data and 1 for update data
           "h_NIN_no": govtPrivateRegistatrionDataFields.HospitalNinNumber,
           "npcbnumber": "",
-          "equipmentName":equipmentData,
+          "equipmentName": equipmentList,
         };
-        print("@@registration_of_Govt_Private_Other_Hospital---" + url + payload.toString());
 
-        //Way to send network calls
+        print("@@registration_of_Govt_Private_Other_Hospital---" +
+            url +
+            payload.toString());
+
         Dio dio = new Dio();
         response1 = await dio.post(url,
             data: payload,
             options: new Options(
-             //   headers: headers,
                 contentType: "application/json",
                 responseType: ResponseType.plain));
-        print("@@registration_of_Govt_Private_Other_Hospital---" + url + payload.toString());
-        print("@@registration_of_Govt_Private_Other_Hospital--Api" + response1.toString());
-
-        if (registration_of_govt_private_other_hospital_models.status) {
-          Utils.showToast(registration_of_govt_private_other_hospital_models.message, true);
-          // SharedPrefs.saveForgotPasswordData(forgotPasswordDatas);
-
+        print("@@registration_of_Govt_Private_Other_Hospital--Api" +
+            response1.toString());
+        // Assuming the API returns a status and message in response
+        // Parse the response1 to update registrationModel accordingly
+        registrationModel =
+            Registration_of_Govt_Private_Other_Hospital_model.fromJson(
+                jsonDecode(response1.data));
+        if (registrationModel.status) {
+          Utils.showToast(registrationModel.message, true);
+        } else {
+          Utils.showToast(registrationModel.message, true);
         }
-        return registration_of_govt_private_other_hospital_models;
+        return registrationModel;
       } catch (e) {
         Utils.showToast(e.toString(), true);
         return null;
@@ -529,10 +513,10 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-
   }
-  static Future<GetDPMDashboardData> getDPM_Dashboard(DPMDashboardParamsData dpmDashboardParamsData) async {
+
+  static Future<GetDPMDashboardData> getDPM_Dashboard(
+      DPMDashboardParamsData dpmDashboardParamsData) async {
     GetDPMDashboardData getDPMDashboardData = GetDPMDashboardData();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -542,21 +526,19 @@ class ApiController {
         //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
-
         };
         //Way to send params
         //Way to send params
         var body = json.encode({
-          "districtid":547,
-          "stateid":29,
+          "districtid": 547,
+          "stateid": 29,
           "old_districtid": 569,
-          "userid":"",
+          "userid": "",
           "roleid": "",
-          "status":5,
+          "status": 5,
           "financialYear": "2024-2025",
-
         });
-        print("@@getDPM_Dashboard---" + url+body.toString());
+        print("@@getDPM_Dashboard---" + url + body.toString());
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -567,16 +549,15 @@ class ApiController {
                 responseType: ResponseType.plain));
         // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
         print("@@Response--Api" + response1.toString());
-        getDPMDashboardData = GetDPMDashboardData.fromJson(json.decode(response1.data));
+        getDPMDashboardData =
+            GetDPMDashboardData.fromJson(json.decode(response1.data));
         print("@@getDPM_Dashboard====+ " + getDPMDashboardData.data.toString());
 
         print("@@Result_getDPM_Dashboard----" + getDPMDashboardData.message);
         if (getDPMDashboardData.status) {
           Utils.showToast(getDPMDashboardData.message, true);
-
-        }else{
+        } else {
           Utils.showToast(getDPMDashboardData.message, true);
-
         }
         return getDPMDashboardData;
       } catch (e) {
@@ -587,12 +568,12 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
+  }
 
-    }
-
-
-  static Future<NGOAPPlicationDropDownDPm> getDPM_NGOApplication(GetDPM_NGOApplication getDPM_NGOApplications) async {
-    NGOAPPlicationDropDownDPm ngoapPlicationDropDownDPm = NGOAPPlicationDropDownDPm();
+  static Future<NGOAPPlicationDropDownDPm> getDPM_NGOApplication(
+      GetDPM_NGOApplication getDPM_NGOApplications) async {
+    NGOAPPlicationDropDownDPm ngoapPlicationDropDownDPm =
+        NGOAPPlicationDropDownDPm();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -605,9 +586,10 @@ class ApiController {
           "apipassword": "PWD123",
         };
         //Way to send params
-        var body =
-        json.encode({"district_code": 536, "state_code": 29});
-        print("getDPM_NGOApplication---URL with params--" + url+body.toString());
+        var body = json.encode({"district_code": 536, "state_code": 29});
+        print("getDPM_NGOApplication---URL with params--" +
+            url +
+            body.toString());
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -617,10 +599,13 @@ class ApiController {
                 responseType: ResponseType.plain));
         // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
         print("@@getDPM_NGOApplication--Api--respnse--" + response1.toString());
-        ngoapPlicationDropDownDPm = NGOAPPlicationDropDownDPm.fromJson(json.decode(response1.data));
+        ngoapPlicationDropDownDPm =
+            NGOAPPlicationDropDownDPm.fromJson(json.decode(response1.data));
         if (ngoapPlicationDropDownDPm.status) {
-          print("@@getDPM_NGOApplication++++" + ngoapPlicationDropDownDPm.message);
-
+          print("@@getDPM_NGOApplication++++" +
+              ngoapPlicationDropDownDPm.message);
+        } else {
+          Utils.showToast(ngoapPlicationDropDownDPm.message, true);
         }
         return ngoapPlicationDropDownDPm;
       } catch (e) {
@@ -634,5 +619,5 @@ class ApiController {
 
     //Way to send url with methodname
   }
-  }
+}
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

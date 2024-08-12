@@ -1,11 +1,9 @@
 class NGOAPPlicationDropDownDPm {
-
   String message;
   bool status;
   List<DataNGOAPPlicationDropDownDPm> data;
-  Null list;
 
-  NGOAPPlicationDropDownDPm({this.message, this.status, this.data, this.list});
+  NGOAPPlicationDropDownDPm({this.message, this.status, this.data});
 
   NGOAPPlicationDropDownDPm.fromJson(Map<String, dynamic> json) {
     message = json['message'];
@@ -16,7 +14,6 @@ class NGOAPPlicationDropDownDPm {
         data.add(new DataNGOAPPlicationDropDownDPm.fromJson(v));
       });
     }
-    list = json['list'];
   }
 
   Map<String, dynamic> toJson() {
@@ -26,7 +23,6 @@ class NGOAPPlicationDropDownDPm {
     if (this.data != null) {
       data['data'] = this.data.map((v) => v.toJson()).toList();
     }
-    data['list'] = this.list;
     return data;
   }
 }
@@ -38,8 +34,13 @@ class DataNGOAPPlicationDropDownDPm {
   String memberName;
   String emailid;
 
-  DataNGOAPPlicationDropDownDPm(
-      {this.npcbNo, this.darpanNo, this.name, this.memberName, this.emailid});
+  DataNGOAPPlicationDropDownDPm({
+    this.npcbNo,
+    this.darpanNo,
+    this.name,
+    this.memberName,
+    this.emailid
+  });
 
   DataNGOAPPlicationDropDownDPm.fromJson(Map<String, dynamic> json) {
     npcbNo = json['npcbNo'];
