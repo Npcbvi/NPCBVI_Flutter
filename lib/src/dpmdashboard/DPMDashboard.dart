@@ -1785,12 +1785,25 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             ),
                                           ),
                                           alignment: Alignment.center,
-                                          child: Text(
-                                            'View',
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(color:Colors.blue,fontSize: 15),
+                                         child: InkWell(
+                                            onTap: () {
+                                              print('@@View----display---');
+                                              //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                              setState(() {
 
+                                              });
+                                            },
+                                            child: Container(
+                                              width: 80.0,
+                                              child: Text(
+                                                'View',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(color:Colors.blue,fontSize: 15),
+
+                                              ),
+                                            ),
                                           ),
+
                                         ),
                                       ),
                                     ),
