@@ -27,8 +27,6 @@ class RegisterScreen extends StatefulWidget {
   _RegisterScreen createState() => _RegisterScreen();
 }
 
-
-
 class _RegisterScreen extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
@@ -57,10 +55,10 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _spoDestinationController = new TextEditingController();
   TextEditingController _spoPhoneNumberController = new TextEditingController();
   TextEditingController _spoOfficeAddressController =
-  new TextEditingController();
+      new TextEditingController();
   TextEditingController _spoPinCodeController = new TextEditingController();
   TextEditingController _spoCaptchaCodeEnterController =
-  new TextEditingController();
+      new TextEditingController();
 
   TextEditingController _dpmNAmeController = new TextEditingController();
   TextEditingController _dpmMobileController = new TextEditingController();
@@ -72,10 +70,10 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController stdControllerSpo = new TextEditingController();
 
   TextEditingController _dpmOfficeAddressController =
-  new TextEditingController();
+      new TextEditingController();
   TextEditingController _dpmPinCodeController = new TextEditingController();
   TextEditingController _dpmCaptchaCodeEnterController =
-  new TextEditingController();
+      new TextEditingController();
 
   final _ngoDarpanNumberController = new TextEditingController();
   final _ngoPANNumberController = new TextEditingController();
@@ -83,12 +81,21 @@ class _RegisterScreen extends State<RegisterScreen> {
   NGODDataFields ngodDataFields = new NGODDataFields();
   DPMDataFields dpmDataFields = new DPMDataFields();
   GovtPrivateRegistatrionDataFields govtPrivateRegistatrionDataFields =
-  new GovtPrivateRegistatrionDataFields();
+      new GovtPrivateRegistatrionDataFields();
   DashboardStateModel countryStateModel =
-  DashboardStateModel(status: false, message: '', data: []);
+      DashboardStateModel(status: false, message: '', data: []);
   bool isDataLoaded = false;
-  int stateCodeSPO, disrtcCode, stateCodeDPM, stateCodeGovtPrivate, distCodeDPM,distCodeGovtPrivate;
-  String CodeSPO, codeDPM, CodeGovtPrivate,distNameDPM,distNameDPMs_distictValues;
+  int stateCodeSPO,
+      disrtcCode,
+      stateCodeDPM,
+      stateCodeGovtPrivate,
+      distCodeDPM,
+      distCodeGovtPrivate;
+  String CodeSPO,
+      codeDPM,
+      CodeGovtPrivate,
+      distNameDPM,
+      distNameDPMs_distictValues;
   int _value = 1; // int型の変数.
   String _text = ''; // String型の変数.
   final _registeredUSerID = new TextEditingController();
@@ -100,22 +107,23 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _pinbCodeGovtPRivate = new TextEditingController();
   final _officerNAmeGovtPRivate = new TextEditingController();
   TextEditingController _captchaControllerGovtPrivateScreen =
-  new TextEditingController();
+      new TextEditingController();
   List<String> products = [];
   int dropDownvalueOrgnbaistaionType = 0;
   final _equipmentDetailQtyController = new TextEditingController();
   List<TextEditingController> _controllers = [];
   List<ListGovtPRivateModel> offerList = [];
   final _HospitalNINnoGovtController = new TextEditingController();
-
+  int counterSaveGovtButtonValue = 1;
+  String textValueAddDoctors = 'Add Doctors';
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
-      final response = await http.get(
-          Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/State'));
+      final response = await http.get(Uri.parse(
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/State'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final DashboardStateModel dashboardStateModel =
-      DashboardStateModel.fromJson(json);
+          DashboardStateModel.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -212,10 +220,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                            'Home',
-                            style: TextStyle(
-                                color: Colors.white, fontWeight: FontWeight.w800),
-                          )),
+                        'Home',
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w800),
+                      )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -308,10 +316,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                         },
                         child: Container(
                             child: Text(
-                              'Login',
-                              style: TextStyle(
-                                  color: Colors.white, fontWeight: FontWeight.w800),
-                            )),
+                          'Login',
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.w800),
+                        )),
                       ),
                     ],
                   ),
@@ -323,20 +331,20 @@ class _RegisterScreen extends State<RegisterScreen> {
               height: 40,
               child: Expanded(
                   child: Marquee(
-                    text: 'NGO Darpan number is mandatory for registration.',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Colors.red),
-                    velocity: 50.0,
-                    //speed
-                    pauseAfterRound: Duration(seconds: 1),
-                    startPadding: 10.0,
-                    accelerationDuration: Duration(seconds: 1),
-                    accelerationCurve: Curves.linear,
-                    decelerationDuration: Duration(milliseconds: 500),
-                    decelerationCurve: Curves.easeOut,
-                  )),
+                text: 'NGO Darpan number is mandatory for registration.',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                    color: Colors.red),
+                velocity: 50.0,
+                //speed
+                pauseAfterRound: Duration(seconds: 1),
+                startPadding: 10.0,
+                accelerationDuration: Duration(seconds: 1),
+                accelerationCurve: Curves.linear,
+                decelerationDuration: Duration(milliseconds: 500),
+                decelerationCurve: Curves.easeOut,
+              )),
             ),
             NGORegistration(),
             GovtRAdioGroups(),
@@ -349,7 +357,6 @@ class _RegisterScreen extends State<RegisterScreen> {
       ),
     );
   }
-
 
   Widget GovtRAdioGroups() {
     return Column(
@@ -545,7 +552,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                             return Padding(
                               padding:
-                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
@@ -566,7 +573,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     value: _selectedUser,
                                     items: [
                                       ...snapshot.data.map(
-                                            (user) => DropdownMenuItem(
+                                        (user) => DropdownMenuItem(
                                           value: user,
                                           child: Text('${user.stateName}'),
                                         ),
@@ -629,7 +636,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ),
                     Row(
                       children: [
-
                         Expanded(
                           flex: 1,
                           child: Padding(
@@ -648,13 +654,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   //prefixIcon
 
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0))),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
                             ),
                           ),
                         ),
                         Expanded(
                           flex: 2,
-                          child:       Padding(
+                          child: Padding(
                             padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                             child: new TextField(
                               keyboardType: TextInputType.number,
@@ -662,10 +669,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                               maxLength: 10,
                               decoration: InputDecoration(
                                   label: Text('Phone Number'),
-
                                   hintText: 'Phone Number',
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0))),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
                             ),
                           ),
                         ),
@@ -821,15 +828,15 @@ class _RegisterScreen extends State<RegisterScreen> {
                             'Private Medical College',
                             'Other(Institution not claiming fund from NPCBVI)',
                           ].map<DropdownMenuItem<String>>(
-                                  (String oganisationTypeGovtPrivateDRopDowns) {
-                                return DropdownMenuItem<String>(
-                                  value: oganisationTypeGovtPrivateDRopDowns,
-                                  child: Text(
-                                    oganisationTypeGovtPrivateDRopDowns,
-                                    style: TextStyle(color: Colors.black),
-                                  ),
-                                );
-                              }).toList(),
+                              (String oganisationTypeGovtPrivateDRopDowns) {
+                            return DropdownMenuItem<String>(
+                              value: oganisationTypeGovtPrivateDRopDowns,
+                              child: Text(
+                                oganisationTypeGovtPrivateDRopDowns,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
                           hint: Text(
                             "Select",
                             style: TextStyle(
@@ -907,10 +914,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                   ),
                   Visibility(
                     visible: isVisibleHostpiatnNinitrictGovt,
-
                     child: Row(
                       children: [
-
                         Expanded(
                           flex: 1,
                           child: Padding(
@@ -929,7 +934,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   //prefixIcon
 
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0))),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
                             ),
                           ),
                         ),
@@ -1031,7 +1037,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                               ),
                               child: Padding(
                                 padding:
-                                const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                    const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
@@ -1061,7 +1067,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                       value: _selectedUser,
                                       items: [
                                         ...snapshot.data.map(
-                                              (user) => DropdownMenuItem(
+                                          (user) => DropdownMenuItem(
                                             value: user,
                                             child: Text('${user.stateName}'),
                                           ),
@@ -1093,7 +1099,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     '@@snapshot' + snapshot.data.toString());
 
                                 List list =
-                                snapshot.data.map<DataDsiricst>((district) {
+                                    snapshot.data.map<DataDsiricst>((district) {
                                   return district;
                                 }).toList();
                                 if (_selectedUserDistrict == null ||
@@ -1113,26 +1119,26 @@ class _RegisterScreen extends State<RegisterScreen> {
                                       DropdownButtonFormField<DataDsiricst>(
                                         onChanged: (districtUser) =>
                                             setState(() {
-                                              _selectedUserDistrict = districtUser;
-                                              distCodeGovtPrivate = int.parse((districtUser
-                                                  .districtCode
+                                          _selectedUserDistrict = districtUser;
+                                          distCodeGovtPrivate = int.parse(
+                                              (districtUser.districtCode
                                                   .toString()));
-                                              /*  distNameDPM= districtUser.districtName
+                                          /*  distNameDPM= districtUser.districtName
                                               .toString();*/
-                                              print('@@@Districtuser' +
-                                                  districtUser.districtName
-                                                      .toString()/*+"-00000"+distNameDPM*/);
-                                              setState(() {});
-                                            }),
+                                          print('@@@Districtuser' +
+                                              districtUser.districtName
+                                                  .toString() /*+"-00000"+distNameDPM*/);
+                                          setState(() {});
+                                        }),
                                         value: _selectedUserDistrict,
                                         items: snapshot.data.map<
-                                            DropdownMenuItem<DataDsiricst>>(
-                                                (DataDsiricst district) {
-                                              return DropdownMenuItem<DataDsiricst>(
-                                                value: district,
-                                                child: Text(district.districtName),
-                                              );
-                                            }).toList(),
+                                                DropdownMenuItem<DataDsiricst>>(
+                                            (DataDsiricst district) {
+                                          return DropdownMenuItem<DataDsiricst>(
+                                            value: district,
+                                            child: Text(district.districtName),
+                                          );
+                                        }).toList(),
                                       ),
                                     ],
                                   ),
@@ -1158,7 +1164,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                     child: new TextField(
                       controller: _pinbCodeGovtPRivate,
                       keyboardType: TextInputType.number,
-
                       decoration: InputDecoration(
                           label: Text('Pin Code *'),
                           hintText: 'Pin Code *',
@@ -1206,7 +1211,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                         FutureBuilder(
                           future: ApiController.getEquipmentGovtPRivateModel(),
                           builder: (context, projectSnap) {
-                            if (projectSnap.connectionState == ConnectionState.none &&
+                            if (projectSnap.connectionState ==
+                                    ConnectionState.none &&
                                 projectSnap.hasData == null) {
                               return Container();
                             } else {
@@ -1217,37 +1223,48 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   if (offerList.isEmpty) {
                                     return Utils.getEmptyView("No data found");
                                   } else {
-                                    _controllers = List.generate(offerList.length, (index) => TextEditingController());
+                                    _controllers = List.generate(
+                                        offerList.length,
+                                        (index) => TextEditingController());
                                     return Expanded(
                                       child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: offerList.length,
                                         itemBuilder: (context, index) {
-                                          ListGovtPRivateModel offer = offerList[index];
+                                          ListGovtPRivateModel offer =
+                                              offerList[index];
 
                                           return Column(
                                             children: <Widget>[
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
                                                   Expanded(
                                                     flex: 1,
                                                     child: Padding(
-                                                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          20, 10, 20.0, 0),
                                                       child: Container(
-                                                        decoration: BoxDecoration(
+                                                        decoration:
+                                                            BoxDecoration(
                                                           border: Border.all(
                                                             color: Colors.white,
                                                             width: 1.0,
                                                           ),
                                                         ),
-                                                        alignment: Alignment.centerLeft,
+                                                        alignment: Alignment
+                                                            .centerLeft,
                                                         child: Text(
                                                           offer.name,
-                                                          textDirection: TextDirection.ltr,
-                                                          textAlign: TextAlign.left,
-                                                          style: TextStyle(fontSize: 15),
-
+                                                          textDirection:
+                                                              TextDirection.ltr,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              fontSize: 15),
                                                         ),
                                                       ),
                                                     ),
@@ -1255,32 +1272,53 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                   Expanded(
                                                     flex: 1,
                                                     child: Padding(
-                                                      padding: const EdgeInsets.fromLTRB(4, 10, 4.0, 0),
+                                                      padding: const EdgeInsets
+                                                              .fromLTRB(
+                                                          4, 10, 4.0, 0),
                                                       child: Container(
-                                                        decoration: BoxDecoration(
+                                                        decoration:
+                                                            BoxDecoration(
                                                           border: Border.all(
-                                                            color: Colors.black, //
+                                                            color: Colors.black,
+                                                            //
                                                             width: 0.4,
                                                           ),
                                                         ),
-                                                        alignment: Alignment.centerLeft,
+                                                        alignment: Alignment
+                                                            .centerLeft,
                                                         child: TextField(
-                                                          controller: _controllers[index],
-                                                          keyboardType: TextInputType.number,
+                                                          controller:
+                                                              _controllers[
+                                                                  index],
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
                                                           onChanged: (value) {
                                                             //  offerList[index].quantity = value;
                                                             // Optionally, parse the value to an integer if you need it as such
-                                                            int parsedValue = int.tryParse(value);
+                                                            int parsedValue =
+                                                                int.tryParse(
+                                                                    value);
 
                                                             // Update the offerList with the parsed value or keep it as a string
-                                                            offerList[index].quantity = parsedValue != null ? parsedValue.toString() : value;
+                                                            offerList[index]
+                                                                    .quantity =
+                                                                parsedValue !=
+                                                                        null
+                                                                    ? parsedValue
+                                                                        .toString()
+                                                                    : value;
 
                                                             // Debug output
-                                                            print('@@equpimentList__id----${offerList[index].quantity}');
-                                                            print('@@equpimentList__value-----$value');
+                                                            print(
+                                                                '@@equpimentList__id----${offerList[index].quantity}');
+                                                            print(
+                                                                '@@equpimentList__value-----$value');
                                                           },
-                                                          decoration: InputDecoration(
-                                                            border: OutlineInputBorder(),
+                                                          decoration:
+                                                              InputDecoration(
+                                                            border:
+                                                                OutlineInputBorder(),
                                                           ),
                                                         ),
                                                       ),
@@ -1341,8 +1379,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ),
                   ),
                   const SizedBox(
-                    height: 10,
-                  ),
+                    height: 10,),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                     child: TextFormField(
@@ -1375,12 +1412,17 @@ class _RegisterScreen extends State<RegisterScreen> {
                               primary: Colors.blue,
                             ),
                             onPressed: () {
-                              isVerified = _captchaControllerGovtPrivateScreen.text == randomString;
+                              isVerified =
+                                  _captchaControllerGovtPrivateScreen.text ==
+                                      randomString;
 
                               setState(() {});
 
-                              print('@@_NewUSerGovtPrivateRegisterSubmit----Wait here---Pending');
-                              _NewUSerGovtPrivateRegisterSubmit();
+                              print(
+                                  '@@_NewUSerGovtPrivateRegisterSubmit----Wait here---Pending');
+                              if (counterSaveGovtButtonValue == 1) {
+                                _NewUSerGovtPrivateRegisterSubmit();
+                              }
                               //_NewUSerGovtPrivateRegisterSubmit();
                               //   _submitForm();
                             },
@@ -1392,12 +1434,24 @@ class _RegisterScreen extends State<RegisterScreen> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                           child: ElevatedButton(
-                            child: Text('Add Doctors'),
+                            child: Text(textValueAddDoctors),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.blue,
                             ),
                             onPressed: () {
-                              print('@@AddDoctors click__here');
+
+                              if (counterSaveGovtButtonValue == 1) {
+                                print('@@counterSaveGovtButtonValue--'+counterSaveGovtButtonValue.toString());
+                                Utils.showToast("you need to save the data  First", true);
+                              } else {
+                                setState(() {
+                                  textValueAddDoctors = 'Doctors Added';  // Update the text value
+                                });
+                                print('@@counterSaveGovtButtonValue--Else--'+counterSaveGovtButtonValue.toString());
+                                print('@@AddDoctors click__here');
+
+                              }
+
                               //   _submitForm();
                             },
                           ),
@@ -1413,44 +1467,50 @@ class _RegisterScreen extends State<RegisterScreen> {
       ],
     );
   }
+
   Future<void> _NewUSerGovtPrivateRegisterSubmit() async {
-    print('@@registration_of_Govt_Private_Other_Hospital ---34' );
-    List<EquipmentName> equipmentList = govtPrivateRegistatrionDataFields.equipmentList ?? [];
+    print('@@registration_of_Govt_Private_Other_Hospital ---34');
+    List<EquipmentName> equipmentList =
+        govtPrivateRegistatrionDataFields.equipmentList ?? [];
 
     print('@@91--Length--' + offerList.length.toString());
     for (int i = 0; i < offerList.length; i++) {
-
       print('@@911--id:' + offerList[i].id.toString());
       // Add a new EquipmentName to the equipmentList
       int quantity = int.tryParse(_controllers[i].text) ?? 0;
       print('@@911--quantity:' + quantity.toString());
-      equipmentList.add(EquipmentName(equCatId: offerList[i].id,
-          equCatQuantity: quantity));
-      print('@@equipmentData---Screenclass--' + EquipmentName(equCatId: offerList[i].id).toString());
-
+      equipmentList.add(
+          EquipmentName(equCatId: offerList[i].id, equCatQuantity: quantity));
+      print('@@equipmentData---Screenclass--' +
+          EquipmentName(equCatId: offerList[i].id).toString());
     }
-    govtPrivateRegistatrionDataFields.equipmentList=equipmentList;
+    govtPrivateRegistatrionDataFields.equipmentList = equipmentList;
     govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes =
         dropDownvalueOrgnbaistaionType;
-    print('@@1' + govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes.toString());
+    print('@@1' +
+        govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes
+            .toString());
     govtPrivateRegistatrionDataFields.HospitalNinNumber =
         _HospitalNINnoGovtController.text.toString().trim();
-    print('@@2' + govtPrivateRegistatrionDataFields.HospitalNinNumber.toString());
+    print(
+        '@@2' + govtPrivateRegistatrionDataFields.HospitalNinNumber.toString());
     govtPrivateRegistatrionDataFields.organisationNameGovt =
         _organisationNameGovtPrivate.text.toString().trim();
-    print('@@3' + govtPrivateRegistatrionDataFields.organisationNameGovt.toString());
+    print('@@3' +
+        govtPrivateRegistatrionDataFields.organisationNameGovt.toString());
     govtPrivateRegistatrionDataFields.MobileNoGovt =
         _mobileGovtPRivate.text.toString().trim(); //CodeDPM; testing purpose
     print('@@4' + govtPrivateRegistatrionDataFields.MobileNoGovt.toString());
     govtPrivateRegistatrionDataFields.EmailIDGovt =
         _emailIDGovtPRivate.text.toString().trim();
     print('@@5' + govtPrivateRegistatrionDataFields.EmailIDGovt.toString());
-    govtPrivateRegistatrionDataFields.hStateid =
-        stateCodeGovtPrivate;
+    govtPrivateRegistatrionDataFields.hStateid = stateCodeGovtPrivate;
 
-    govtPrivateRegistatrionDataFields.hDistrictid =
-        distCodeGovtPrivate;
-    print('@@1001--' + govtPrivateRegistatrionDataFields.hStateid.toString()+"----"+ govtPrivateRegistatrionDataFields.hDistrictid.toString());
+    govtPrivateRegistatrionDataFields.hDistrictid = distCodeGovtPrivate;
+    print('@@1001--' +
+        govtPrivateRegistatrionDataFields.hStateid.toString() +
+        "----" +
+        govtPrivateRegistatrionDataFields.hDistrictid.toString());
     govtPrivateRegistatrionDataFields.AddressGovt =
         _addressGovtPRivate.text.toString().trim();
     print('@@6' + govtPrivateRegistatrionDataFields.AddressGovt.toString());
@@ -1463,7 +1523,8 @@ class _RegisterScreen extends State<RegisterScreen> {
 
     govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt =
         _captchaControllerGovtPrivateScreen.text.toString().trim();
-    print('@@9' + govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt.toString());
+    print(
+        '@@9' + govtPrivateRegistatrionDataFields.CapchaCodeGovtPvt.toString());
     // List<EquipmentName> equipmentList;
     // List<EquipmentName> equipmentList;
 
@@ -1497,22 +1558,25 @@ class _RegisterScreen extends State<RegisterScreen> {
       Utils.showToast("Please enter Matched Captcha !", false);
       return;
     } else {
-      print('@@registration_of_Govt_Private_Other_Hospital ---34' );
+      print('@@registration_of_Govt_Private_Other_Hospital ---34');
 
       Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
-
-          print('@@registration_of_Govt_Private_Other_Hospital ---32' );
+          print('@@registration_of_Govt_Private_Other_Hospital ---32');
 
           // Utils.showProgressDialog1(context);
-          ApiController.registration_of_Govt_Private_Other_Hospital(govtPrivateRegistatrionDataFields)
+          ApiController.registration_of_Govt_Private_Other_Hospital(
+                  govtPrivateRegistatrionDataFields)
               .then((response) async {
             Utils.hideProgressDialog1(context);
 
-            if (response.message.contains("Hospital Registered Successfully.")) {
+            if (response.message
+                .contains("Hospital Registered Successfully.")) {
               //  Navigator.pop(context);
-              print('@@registration_of_Govt_Private_Other_Hospital ---3211' );
-
+              print('@@registration_of_Govt_Private_Other_Hospital ---3211');
+              Utils.showToast("Record Saved successfully!", true);
+              counterSaveGovtButtonValue = counterSaveGovtButtonValue + 1;
+              _captchaControllerGovtPrivateScreen.clear();
             }
           });
         } else {
@@ -1521,8 +1585,9 @@ class _RegisterScreen extends State<RegisterScreen> {
       });
     }
   }
+
   Future<void> _spoRegistrationSubmit() async {
-    spoDataFields.stdSPO=int.parse(stdControllerSpo.text.toString().trim());
+    spoDataFields.stdSPO = int.parse(stdControllerSpo.text.toString().trim());
     spoDataFields.state = stateCodeSPO;
     spoDataFields.codeSPOs = CodeSPO;
     spoDataFields.Name = _spoNAmeController.text.toString().trim();
@@ -1592,7 +1657,7 @@ class _RegisterScreen extends State<RegisterScreen> {
               _spoCaptchaCodeEnterController.clear();
               _spoDestinationController.clear();
               stdControllerSpo.clear();
-            }else{
+            } else {
               Utils.showToast(response.message, true);
             }
           });
@@ -1602,6 +1667,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       });
     }
   }
+
   Future<void> _NGORegistrationSubmit() async {
     ngodDataFields.ngoDarpanNumber =
         _ngoDarpanNumberController.text.toString().trim();
@@ -1637,6 +1703,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       });
     }
   }
+
   Widget DPMRegistration() {
     return SingleChildScrollView(
       child: Column(
@@ -1664,7 +1731,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                             return Padding(
                               padding:
-                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: <Widget>[
@@ -1682,10 +1749,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                                       codeDPM = user.code;
                                       print('@@CodeSPO___1' +
                                           stateCodeDPM.toString());
-                                      distNameDPM= user.stateName;
+                                      distNameDPM = user.stateName;
                                       if (codeDPM != null) {
                                         print('@@CodeSPO___66' +
-                                            codeDPM.toString()+"statename -----"+distNameDPM);
+                                            codeDPM.toString() +
+                                            "statename -----" +
+                                            distNameDPM);
 
                                         SharedPrefs.storeSharedValue(
                                             AppConstant.txtStateDPmValue,
@@ -1704,7 +1773,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                     value: _selectedUser,
                                     items: [
                                       ...snapshot.data.map(
-                                            (user) => DropdownMenuItem(
+                                        (user) => DropdownMenuItem(
                                           value: user,
                                           child: Text('${user.stateName}'),
                                         ),
@@ -1748,7 +1817,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         20, 10, 20.0, 0),
                                     child: Column(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                       children: <Widget>[
                                         const Text(
                                           'Select District:',
@@ -1756,29 +1825,30 @@ class _RegisterScreen extends State<RegisterScreen> {
                                         DropdownButtonFormField<DataDsiricst>(
                                           onChanged: (districtUser) =>
                                               setState(() {
-                                                _selectedUserDistrict =
-                                                    districtUser;
-                                                distCodeDPM = int.parse(
-                                                    (districtUser.districtCode
-                                                        .toString()));
-                                                distNameDPMs_distictValues= districtUser.districtName;
-                                                print('@@@Districtuser' +
-                                                    districtUser.districtName
-                                                        .toString());
-                                                setState(() {});
-                                              }),
+                                            _selectedUserDistrict =
+                                                districtUser;
+                                            distCodeDPM = int.parse(
+                                                (districtUser.districtCode
+                                                    .toString()));
+                                            distNameDPMs_distictValues =
+                                                districtUser.districtName;
+                                            print('@@@Districtuser' +
+                                                districtUser.districtName
+                                                    .toString());
+                                            setState(() {});
+                                          }),
                                           value: _selectedUserDistrict,
                                           items: snapshot.data.map<
-                                              DropdownMenuItem<
-                                                  DataDsiricst>>(
-                                                  (DataDsiricst district) {
-                                                return DropdownMenuItem<
-                                                    DataDsiricst>(
-                                                  value: district,
-                                                  child:
+                                                  DropdownMenuItem<
+                                                      DataDsiricst>>(
+                                              (DataDsiricst district) {
+                                            return DropdownMenuItem<
+                                                DataDsiricst>(
+                                              value: district,
+                                              child:
                                                   Text(district.districtName),
-                                                );
-                                              }).toList(),
+                                            );
+                                          }).toList(),
                                           /*      items: [
                                             ...snapshot.data
                                                 .map(
@@ -1852,7 +1922,6 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                     Row(
                       children: [
-
                         Expanded(
                           flex: 1,
                           child: Padding(
@@ -1871,13 +1940,14 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   //prefixIcon
 
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0))),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
                             ),
                           ),
                         ),
                         Expanded(
                           flex: 2,
-                          child:     Padding(
+                          child: Padding(
                             padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                             child: new TextField(
                               keyboardType: TextInputType.number,
@@ -1887,7 +1957,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   label: Text('Phone Number'),
                                   hintText: 'Phone Number',
                                   border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5.0))),
+                                      borderRadius:
+                                          BorderRadius.circular(5.0))),
                             ),
                           ),
                         ),
@@ -2022,8 +2093,9 @@ class _RegisterScreen extends State<RegisterScreen> {
       ),
     );
   }
+
   Future<void> _DPMRegistrationSubmit() async {
-    dpmDataFields.stdDPMs=int.parse(stdControllerDPM.text.toString().trim());
+    dpmDataFields.stdDPMs = int.parse(stdControllerDPM.text.toString().trim());
     dpmDataFields.stateDPM = stateCodeDPM;
     dpmDataFields.distCodeDPM = distCodeDPM; //CodeDPM; testing purpose
     dpmDataFields.NameDPM = _dpmNAmeController.text.toString().trim();
@@ -2039,9 +2111,10 @@ class _RegisterScreen extends State<RegisterScreen> {
     dpmDataFields.CaptchaCodeEnterDPM =
         _dpmCaptchaCodeEnterController.text.toString().trim();
     dpmDataFields.codeSPOsDPM = codeDPM;
-    dpmDataFields.distNameDPMs=distNameDPM;
-    dpmDataFields.distNameDPMs_distictValue=distNameDPMs_distictValues ;
-    print('@@codeDPM.state__Dist_name---1' + dpmDataFields.distNameDPMs.toString());
+    dpmDataFields.distNameDPMs = distNameDPM;
+    dpmDataFields.distNameDPMs_distictValue = distNameDPMs_distictValues;
+    print('@@codeDPM.state__Dist_name---1' +
+        dpmDataFields.distNameDPMs.toString());
     print('@@codeDPM.state__1' + codeDPM.toString());
     print('@@codeDPM.state___2' + dpmDataFields.codeSPOsDPM.toString());
     if (dpmDataFields.NameDPM.isEmpty) {
@@ -2076,12 +2149,11 @@ class _RegisterScreen extends State<RegisterScreen> {
     if (dpmDataFields.CaptchaCodeEnterDPM.isEmpty) {
       Utils.showToast("Please enter Matched Captcha !", false);
       return;
-    }   if (dpmDataFields.stdDPMs == null || dpmDataFields.stdDPMs == 0) {
+    }
+    if (dpmDataFields.stdDPMs == null || dpmDataFields.stdDPMs == 0) {
       Utils.showToast("Please enter std !", false);
       return;
-    }
-
-    else {
+    } else {
       Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
           Utils.showProgressDialog1(context);
@@ -2102,7 +2174,7 @@ class _RegisterScreen extends State<RegisterScreen> {
               _dpmCaptchaCodeEnterController.clear();
               _dpmDestinationController.clear();
               stdControllerDPM.clear();
-            }else{
+            } else {
               Utils.showToast(response.message, true);
             }
           });
@@ -2112,6 +2184,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       });
     }
   }
+
   bool isValidEmail(String input) {
     //Email is opation
     if (input.trim().isEmpty) return true;
@@ -2156,8 +2229,9 @@ class offerLists {
   int id;
   String quantity;
 
-  offerLists({ this.id, this.quantity = ''});
+  offerLists({this.id, this.quantity = ''});
 }
+
 class SPODataFields {
   int state;
   String Name;
@@ -2171,6 +2245,7 @@ class SPODataFields {
   String CaptchaCodeEnter;
   int stdSPO;
 }
+
 class DPMDataFields {
   int stateDPM;
   int distCodeDPM;
@@ -2187,6 +2262,7 @@ class DPMDataFields {
   String distNameDPMs_distictValue;
   int stdDPMs;
 }
+
 class NGODDataFields {
   String ngoDarpanNumber;
   String ngoPANNumber;
@@ -2194,7 +2270,6 @@ class NGODDataFields {
 // To parse this JSON data, do
 //
 //     final welcome = welcomeFromJson(jsonString);
-
 
 Welcome welcomeFromJson(String str) => Welcome.fromJson(json.decode(str));
 
@@ -2234,38 +2309,40 @@ class Welcome {
   });
 
   factory Welcome.fromJson(Map<String, dynamic> json) => Welcome(
-    hRoleid: json["h_roleid"],
-    hName: json["h_Name"],
-    hMobileNo: json["h_MobileNo"],
-    hEmailId: json["h_EmailID"],
-    hStateid: json["h_stateid"],
-    hDistrictid: json["h_districtid"],
-    hAddress: json["h_Address"],
-    hPinCode: json["h_PinCode"],
-    hOfficerName: json["h_Officer_Name"],
-    hNinNo: json["h_NIN_no"],
-    inserttype: json["inserttype"],
-    mode: json["mode"],
-    npcbnumber: json["npcbnumber"],
-    equipmentName: List<EquipmentName>.from(json["equipmentName"].map((x) => EquipmentName.fromJson(x))),
-  );
+        hRoleid: json["h_roleid"],
+        hName: json["h_Name"],
+        hMobileNo: json["h_MobileNo"],
+        hEmailId: json["h_EmailID"],
+        hStateid: json["h_stateid"],
+        hDistrictid: json["h_districtid"],
+        hAddress: json["h_Address"],
+        hPinCode: json["h_PinCode"],
+        hOfficerName: json["h_Officer_Name"],
+        hNinNo: json["h_NIN_no"],
+        inserttype: json["inserttype"],
+        mode: json["mode"],
+        npcbnumber: json["npcbnumber"],
+        equipmentName: List<EquipmentName>.from(
+            json["equipmentName"].map((x) => EquipmentName.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "h_roleid": hRoleid,
-    "h_Name": hName,
-    "h_MobileNo": hMobileNo,
-    "h_EmailID": hEmailId,
-    "h_stateid": hStateid,
-    "h_districtid": hDistrictid,
-    "h_Address": hAddress,
-    "h_PinCode": hPinCode,
-    "h_Officer_Name": hOfficerName,
-    "h_NIN_no": hNinNo,
-    "inserttype": inserttype,
-    "mode": mode,
-    "npcbnumber": npcbnumber,
-    "equipmentName": List<dynamic>.from(equipmentName.map((x) => x.toJson())),
-  };
+        "h_roleid": hRoleid,
+        "h_Name": hName,
+        "h_MobileNo": hMobileNo,
+        "h_EmailID": hEmailId,
+        "h_stateid": hStateid,
+        "h_districtid": hDistrictid,
+        "h_Address": hAddress,
+        "h_PinCode": hPinCode,
+        "h_Officer_Name": hOfficerName,
+        "h_NIN_no": hNinNo,
+        "inserttype": inserttype,
+        "mode": mode,
+        "npcbnumber": npcbnumber,
+        "equipmentName":
+            List<dynamic>.from(equipmentName.map((x) => x.toJson())),
+      };
 }
 
 class EquipmentName {
@@ -2278,14 +2355,14 @@ class EquipmentName {
   });
 
   factory EquipmentName.fromJson(Map<String, dynamic> json) => EquipmentName(
-    equCatId: json["equCat_ID"],
-    equCatQuantity: json["equCat_Quantity"],
-  );
+        equCatId: json["equCat_ID"],
+        equCatQuantity: json["equCat_Quantity"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "equCat_ID": equCatId,
-    "equCat_Quantity": equCatQuantity,
-  };
+        "equCat_ID": equCatId,
+        "equCat_Quantity": equCatQuantity,
+      };
 }
 
 //NGO Registration view
