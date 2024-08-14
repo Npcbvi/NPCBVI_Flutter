@@ -5,5 +5,6 @@ class AppConstant {
   static final String txtSendEmail = "Get OTP";
   static final String txtStateDPmValue = "txtStateDPmValue";
   static final String deviceId = "DEVICE_ID";
-
+  static final String distritcCode = "district_code_logins";
+  static final String state_code = "state_code_logins";
 }

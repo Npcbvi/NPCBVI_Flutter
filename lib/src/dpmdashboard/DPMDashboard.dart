@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 import '../model/dpmRegistration/DiseaseData/GetDiseaseData.dart';
+import '../model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
 
 class DPMDashboard extends StatefulWidget {
   @override
@@ -27,12 +28,14 @@ class _DPMDashboard extends State<DPMDashboard> {
       _chosenValueLOWVision,
       _chosenEyeBank,
       _chosenValueLgoutOption;
-  int status;
+  int status, district_code_login, state_code_login;
   String role_id;
   bool isLoadingApi = true;
   DPMDashboardParamsData dpmDashboardParamsDatass =
       new DPMDashboardParamsData();
   GetDPM_NGOApplication getDPM_NGOApplications = new GetDPM_NGOApplication();
+  GetDPM_NGOApprovedPendingFields getDPM_NGOApprovedPendingFields =
+      new GetDPM_NGOApprovedPendingFields();
   String ngoCountApproved,
       ngoCountPending,
       totalPatientApproved,
@@ -56,6 +59,9 @@ class _DPMDashboard extends State<DPMDashboard> {
   List<GetDiseaseData> diseaseList = [];
   bool NGOlistAprrovalDisplayDatas = false;
   List<DataNGOAPPlicationDropDownDPm> ddataNGOAPPlicationDropDownDPm = [];
+  int dpmAPPRoved_valueSendinAPi = 2; // for approved
+  int dpmPending_valueSendinAPi = 1; //for Penfing
+  bool NGO_APPorovedClickShowData = false;
 
   @override
   void initState() {
@@ -75,12 +81,16 @@ class _DPMDashboard extends State<DPMDashboard> {
           userId = user.userId;
           status = user.status;
           role_id = user.roleId;
+          state_code_login = user.state_code;
+          district_code_login = user.district_code;
           print('@@2' + user.name);
           //print('@@fullnameController_1' + fullnameController.text);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
           print('@@5' + user.userId);
           print('@@6' + user.districtName);
+          print('@@7' + state_code_login.toString());
+          print('@@8' + district_code_login.toString());
         });
       });
     } catch (e) {
@@ -155,47 +165,6 @@ class _DPMDashboard extends State<DPMDashboard> {
     });
   }
 
-/*  void _getDPM_NGOApplicationDropDown() {
-
-
-    Utils.isNetworkAvailable().then((isNetworkAvailable) async {
-      if (isNetworkAvailable) {
-        Utils.showProgressDialog(context);
-        try {
-          final response =
-          await ApiController.getDPM_NGOApplication(getDPM_NGOApplications);
-          Utils.hideProgressDialog(context);
-          if (response.status) {
-            print('@@ngo_application_name-------4'+ngo_application_name);
-            _isLoading = false;
-
-
-
-          } else {
-            setState(() {
-              _isLoading = false;
-              _hasError = true;
-              _errorMessage = response.message;
-            });
-            Utils.showToast(response.message, true);
-          }
-        } catch (e) {
-          setState(() {
-            _isLoading = false;
-            _hasError = true;
-            _errorMessage = e.toString();
-          });
-        }
-      } else {
-        setState(() {
-          _isLoading = false;
-          _hasError = true;
-          _errorMessage = AppConstant.noInternet;
-        });
-        Utils.showToast(AppConstant.noInternet, true);
-      }
-    });
-  }*/
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -715,13 +684,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 30, 20.0, 0),
-                                              child: new Text('Approved',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---NGOsAPProved--1');
+
+                                                  setState(() {
+                                                    dashboardviewReplace =
+                                                        false;
+                                                    NGO_APPorovedClickShowData =
+                                                        true;
+                                                  });
+
+                                                  // GetDPM_NGOApprovedPending();
+                                                },
+                                                child: new Text('Approved',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
                                           ),
                                           Expanded(
@@ -1470,7 +1453,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                 ),
               ),
             ),
-            NGOlistAprrovalDisplayData(),
+            NGOlistApplicationDropdownData(),
+            NGOClickAprrovalDisplayDatas(),
           ],
         ),
       ),
@@ -1563,7 +1547,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  Widget NGOlistAprrovalDisplayData() {
+  Widget NGOlistApplicationDropdownData() {
     return Column(
       children: [
         Visibility(
@@ -1594,9 +1578,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                   border: TableBorder.all(),
                   columnWidths: {
                     0: FixedColumnWidth(50),
-                    1: FlexColumnWidth(),
-                    2: FlexColumnWidth(),
+                    1: FlexColumnWidth(50),
+                    2: FlexColumnWidth(50),
                     3: FixedColumnWidth(50),
+                    4: FixedColumnWidth(50),
+                    5: FixedColumnWidth(50),
                   },
                   children: [
                     TableRow(
@@ -1604,7 +1590,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text('S.No.',
+                          child: Text('S.No',
                               style: TextStyle(fontWeight: FontWeight.bold)),
                         ),
                         Padding(
@@ -1637,7 +1623,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ],
                 ),
                 FutureBuilder<NGOAPPlicationDropDownDPm>(
-                  future: ApiController.getDPM_NGOApplication(getDPM_NGOApplications),
+                  future: ApiController.getDPM_NGOApplication(
+                      getDPM_NGOApplications),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
@@ -1645,28 +1632,33 @@ class _DPMDashboard extends State<DPMDashboard> {
                       );
                     } else if (snapshot.hasError) {
                       return Utils.getEmptyView("Error: ${snapshot.error}");
-                    } else if (!snapshot.hasData || snapshot.data.data == null || snapshot.data.data.isEmpty) {
+                    } else if (!snapshot.hasData ||
+                        snapshot.data.data == null ||
+                        snapshot.data.data.isEmpty) {
                       return Utils.getEmptyView("No data found");
                     } else {
                       NGOAPPlicationDropDownDPm response = snapshot.data;
                       List<DataNGOAPPlicationDropDownDPm> ddata = response.data;
 
                       return Container(
-                        height: MediaQuery.of(context).size.height * 0.5, // Adjust height as needed
+                        height: MediaQuery.of(context).size.height *
+                            0.5, // Adjust height as needed
                         child: ListView.builder(
                           itemCount: ddata.length,
                           itemBuilder: (context, index) {
                             DataNGOAPPlicationDropDownDPm offer = ddata[index];
 
-                                return Column(
+                            return Column(
                               children: <Widget>[
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Expanded(
                                       flex: 1,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(4, 4, 4.0, 4),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 4, 4.0, 4),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
@@ -1680,7 +1672,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             textDirection: TextDirection.ltr,
                                             textAlign: TextAlign.left,
                                             style: TextStyle(fontSize: 15),
-
                                           ),
                                         ),
                                       ),
@@ -1688,7 +1679,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     Expanded(
                                       flex: 1,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(4, 10, 4.0, 0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
@@ -1702,7 +1694,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             textDirection: TextDirection.ltr,
                                             textAlign: TextAlign.left,
                                             style: TextStyle(fontSize: 15),
-
                                           ),
                                         ),
                                       ),
@@ -1710,7 +1701,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     Expanded(
                                       flex: 1,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(4, 10, 4.0, 0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
@@ -1724,7 +1716,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             textDirection: TextDirection.ltr,
                                             textAlign: TextAlign.left,
                                             style: TextStyle(fontSize: 15),
-
                                           ),
                                         ),
                                       ),
@@ -1732,7 +1723,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     Expanded(
                                       flex: 1,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(4, 10, 4.0, 0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
@@ -1746,7 +1738,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             textDirection: TextDirection.ltr,
                                             textAlign: TextAlign.left,
                                             style: TextStyle(fontSize: 15),
-
                                           ),
                                         ),
                                       ),
@@ -1754,7 +1745,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     Expanded(
                                       flex: 1,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(4, 10, 4.0, 0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
@@ -1768,7 +1760,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             textDirection: TextDirection.ltr,
                                             textAlign: TextAlign.left,
                                             style: TextStyle(fontSize: 15),
-
                                           ),
                                         ),
                                       ),
@@ -1776,7 +1767,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     Expanded(
                                       flex: 1,
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(4, 10, 4.0, 0),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
                                         child: Container(
                                           decoration: BoxDecoration(
                                             border: Border.all(
@@ -1785,36 +1777,32 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             ),
                                           ),
                                           alignment: Alignment.center,
-                                         child: InkWell(
+                                          child: InkWell(
                                             onTap: () {
-                                              print('@@View----Pending work here--display---');
+                                              print(
+                                                  '@@View----Pending work here--display---');
                                               //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                                              setState(() {
-
-                                              });
+                                              setState(() {});
                                             },
                                             child: Container(
                                               width: 80.0,
                                               child: Text(
                                                 'View',
                                                 textAlign: TextAlign.left,
-                                                style: TextStyle(color:Colors.blue,fontSize: 15),
-
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 15),
                                               ),
                                             ),
                                           ),
-
                                         ),
                                       ),
                                     ),
                                   ],
                                 ),
                                 Divider(color: Colors.blue, height: 1.0),
-
                               ],
-
                             );
-
                           },
                         ),
                       );
@@ -1828,7 +1816,233 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+  ///Working code is in commit
+/*  Widget NGOClickAprrovalDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: NGO_APPorovedClickShowData,
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: Column(
+              children: [
+                // Header Container
+                Container(
+                  color: Colors.blue,
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Text(
+                      'NGO list for Approval',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ),
 
+
+                Row(
+                  children: [
+                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCell('NGO Name'),
+                    _buildHeaderCell('Member Name'),
+                    _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Address'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    _buildHeaderCell('Mobile No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+
+                Divider(color: Colors.blue, height: 1.0),
+                // Data Rows
+                FutureBuilder<GetDPM_NGOAPProved_pending>(
+                  future: ApiController.getDPM_NGOAPProved_pendings(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Utils.getEmptyView("Error: ${snapshot.error}");
+                    } else if (!snapshot.hasData ||
+                        snapshot.data?.data == null ||
+                        snapshot.data.data.isEmpty) {
+                      return Utils.getEmptyView("No data found");
+                    } else {
+                      List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data.data;
+
+                      return Container(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: ListView.builder(
+                          itemCount: ddata.length,
+                          itemBuilder: (context, index) {
+                            DataGetDPM_NGOAPProved_pending offer = ddata[index];
+
+                            return Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildDataCell((index + 1).toString()),
+                                    _buildDataCell(offer.name),
+                                    _buildDataCell(offer.memberName),
+                                    _buildDataCell(offer.hName),
+                                    _buildDataCell(offer.address),
+                                    _buildDataCell(offer.nodalOfficerName),
+                                    _buildDataCell(offer.mobile.toString()),
+                                    _buildDataCell(offer.emailid.toString()),
+                                  ],
+                                ),
+                                Divider(color: Colors.blue, height: 1.0),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }*/
+  /* Widget _buildHeaderCell(String text) {
+    return Expanded(
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for header cells
+          border: Border.all(
+            width: 0.5,
+          ),
+        ),
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          text,
+          textAlign: TextAlign.center, // Centering text in the cell
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }*/
+
+  ///Working code is in commit
+  Widget NGOClickAprrovalDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: NGO_APPorovedClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCell('NGO Name'),
+                    _buildHeaderCell('Member Name'),
+                    _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Address'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    _buildHeaderCell('Mobile No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+            FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
+            future: ApiController.getDPM_NGOAPProved_pendings(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Utils.getEmptyView("Error: ${snapshot.error}");
+              } else if (!snapshot.hasData ||
+                  snapshot.data == null ||
+                  snapshot.data.isEmpty) {
+                return Utils.getEmptyView("No data found");
+              } else {
+                List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
+                print('@@---ddata' + ddata.length.toString());
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    children: ddata.map((offer) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          _buildDataCell(
+                              (ddata.indexOf(offer) + 1).toString()),
+                          _buildDataCell(offer.name),
+                          _buildDataCell(offer.memberName),
+                          _buildDataCell(offer.hName),
+                          _buildDataCell(offer.address),
+                          _buildDataCell(offer.nodalOfficerName),
+                          _buildDataCell(offer.mobile.toString()),
+                          _buildDataCell(offer.emailid.toString()),
+                        ],
+                      );
+                    }).toList(),
+                  ),
+                );
+              }
+            },
+          ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeaderCell(String text) {
+    return Container(
+      width: 150, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCell(String text) {
+    return Container(
+      width: 150, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      padding: const EdgeInsets.all(8.0),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class DPMDashboardParamsData {
@@ -1845,12 +2059,9 @@ class GetDPM_NGOApplication {
   int district_code;
   int state_code;
 }
-//{
-//   "districtid": 547,
-//   "stateid": 29,
-//   "old_districtid": 569,
-//   "userid": "string",
-//   "roleid": "string",
-//   "status": 5,
-//   "financialYear": "2024-2025"
-// }
+
+class GetDPM_NGOApprovedPendingFields {
+  int district_code;
+  int state_code;
+  int status;
+}

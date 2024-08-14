@@ -17,11 +17,13 @@ import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMDashboardData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/Utils.dart';
 import 'dart:developer';
@@ -618,6 +620,125 @@ class ApiController {
     }
 
     //Way to send url with methodname
+  }
+  /*static Future<GetDPM_NGOAPProved_pending> getDPM_NGOAPProved_pendings(
+      ) async {
+    print("@@getDPM_NGOAPProved_pending"+"1");
+    GetDPM_NGOAPProved_pending getDPM_NGOAPProved_pendings = GetDPM_NGOAPProved_pending(); // add here
+    Response response1;
+   *//* SharedPreferences prefs = await SharedPreferences.getInstance();
+    String districtCode_loginFetch = prefs.getString(AppConstant.distritcCode);
+    String stateCode_loginFetch = prefs.getString(AppConstant.state_code);
+    int dpmAPPRoved_valueSendinAPi=2; // for approved
+    int dpmPending_valueSendinAPi=1;
+    print("@@districtCode_loginFetch"+"1--"+districtCode_loginFetch);
+    print("@@stateCode_loginFetch"+"1"+stateCode_loginFetch);*//*
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.GetDPM_NGOApprovedPending;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+        //Way to send params
+        var body = json.encode({
+
+          "district_code":1001 ,
+          "state_code":  100,
+          "status":  2, //for approved
+
+        });
+        print("@@getDPM_NGOAPProved_pending"+"1");
+        print("@@getDPM_NGOAPProved_pending" + url + body);
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                headers: headers,
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@getDPM_NGOAPProved_pending" + url + body);
+        print("@@getDPM_NGOAPProved_pending--Api" + response1.toString());
+        getDPM_NGOAPProved_pendings =
+            GetDPM_NGOAPProved_pending.fromJson(json.decode(response1.data));
+
+        if (getDPM_NGOAPProved_pendings.status) {
+          Utils.showToast(getDPM_NGOAPProved_pendings.message, true);
+          // SharedPrefs.saveForgotPasswordData(forgotPasswordDatas);
+
+        }else{
+          Utils.showToast(getDPM_NGOAPProved_pendings.message, true);
+        }
+        return getDPM_NGOAPProved_pendings;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }*/
+  static Future<List<DataGetDPM_NGOAPProved_pending>> getDPM_NGOAPProved_pendings() async {
+    print("@@getDPM_NGOAPProved_pendings");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_NGOApprovedPending;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": 1001,
+        "state_code": 100,
+        "status": 2, // for approved
+      });
+
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_NGOAPProved_pendings--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetDPM_NGOAPProved_pending data = GetDPM_NGOAPProved_pending.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
   }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

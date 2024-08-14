@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/campdashboard/CampDashboard.dart';
+import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMDashboard.dart';
 import 'package:mohfw_npcbvi/src/hospitaldashboard/HospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
@@ -363,6 +364,10 @@ class _LoginScreen extends State<LoginScreen> {
 
             print('@@response_loginScreen ---' + response.toString());
             if (response != null && response.result.status) {
+              SharedPrefs.storeSharedValue(
+                  AppConstant.distritcCode, response.result.data.district_code);
+              SharedPrefs.storeSharedValue(
+                  AppConstant.state_code, response.result.data.state_code);
               if(response.result.data.roleId=='9'){
                 Navigator.push(
                   context,

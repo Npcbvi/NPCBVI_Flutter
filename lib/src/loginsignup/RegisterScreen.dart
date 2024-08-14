@@ -116,6 +116,21 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _HospitalNINnoGovtController = new TextEditingController();
   int counterSaveGovtButtonValue = 1;
   String textValueAddDoctors = 'Add Doctors';
+
+  bool _isVisibleADDDoctorsDetails = false;
+
+  final _doctorMCIReg = new TextEditingController();
+  final _doctorDOB = new TextEditingController();
+  final _doctorName  = new TextEditingController();
+  final _doctorMobileNumber  = new TextEditingController();
+  final _doctorEmailId  = new TextEditingController();
+  final _doctorPinCode  = new TextEditingController();
+  final _doctorMCICErtification  = new TextEditingController();
+  void _toggleVisibility() {
+    setState(() {
+      _isVisibleADDDoctorsDetails = !_isVisibleADDDoctorsDetails;
+    });
+  }
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -1398,7 +1413,98 @@ class _RegisterScreen extends State<RegisterScreen> {
                   const SizedBox(
                     height: 10,
                   ),
+                  if (_isVisibleADDDoctorsDetails)
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: Container(
+//                alignment: Alignment.bottomRight,
+                            decoration: BoxDecoration(
+                              border: Border.all(),
+                            ),
+                            child: Text(
+                              'Doctor Registration',
+                              textDirection: TextDirection.ltr,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 22),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: new TextField(
+                            controller: _doctorMCIReg,
+                            decoration: InputDecoration(
+                                label: Text('MCI Reg. No.*'),
+                                hintText: 'MCI Reg. No.*',
 
+                                //prefixIcon
+
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0))),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: new TextField(
+                            controller: _doctorName,
+                            decoration: InputDecoration(
+                                label: Text('Name'),
+                                hintText: 'Name *',
+
+                                //prefixIcon
+
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0))),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: new TextField(
+                            controller: _doctorMobileNumber,
+                            decoration: InputDecoration(
+                                label: Text('Mobile No. *'),
+                                hintText: 'Mobile No. *',
+
+                                //prefixIcon
+
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0))),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: new TextField(
+                            controller: _doctorEmailId,
+                            decoration: InputDecoration(
+                                label: Text('Email ID *'),
+                                hintText: 'Email ID. *',
+
+                                //prefixIcon
+
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0))),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: new TextField(
+                            controller: _doctorPinCode,
+                            decoration: InputDecoration(
+                                label: Text('Pin Code *'),
+                                hintText: 'Pin Code *',
+
+                                //prefixIcon
+
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5.0))),
+                          ),
+                        ),
+                      ],
+
+                    ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -1445,10 +1551,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                                 Utils.showToast("you need to save the data  First", true);
                               } else {
                                 setState(() {
-                                  textValueAddDoctors = 'Doctors Added';  // Update the text value
+                                  print('@@counterSaveGovtButtonValue--Else--'+counterSaveGovtButtonValue.toString());
+                                  print('@@AddDoctors click__here');
+                                  textValueAddDoctors = 'Doctors Added';
+                                 _toggleVisibility();
+
                                 });
-                                print('@@counterSaveGovtButtonValue--Else--'+counterSaveGovtButtonValue.toString());
-                                print('@@AddDoctors click__here');
+
 
                               }
 

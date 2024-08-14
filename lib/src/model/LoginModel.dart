@@ -55,6 +55,8 @@ class LoginData {
   String emailId;
   String districtName;
   String stateName;
+  int district_code;
+  int state_code;
 
   LoginData(
       {this.newPwd,
@@ -64,7 +66,10 @@ class LoginData {
         this.name,
         this.emailId,
         this.districtName,
-        this.stateName});
+        this.stateName,
+        this.district_code,
+        this.state_code
+      });
 
   LoginData.fromJson(Map<String, dynamic> json) {
     newPwd = json['new_pwd'];
@@ -75,6 +80,8 @@ class LoginData {
     emailId = json['email_id'];
     districtName = json['district_name'];
     stateName = json['state_name'];
+    district_code = json['district_code'];
+    state_code = json['state_code'];
   }
 
   Map<String, dynamic> toJson() {
@@ -87,6 +94,8 @@ class LoginData {
     data['email_id'] = this.emailId;
     data['district_name'] = this.districtName;
     data['state_name'] = this.stateName;
+    data['district_code'] = this.district_code;
+    data['state_code'] = this.state_code;
     return data;
   }
 }
