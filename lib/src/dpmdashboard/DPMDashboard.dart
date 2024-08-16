@@ -1007,7 +1007,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     true;*/
                                                   });
 
-                                                  // GetDPM_NGOApprovedPending();
+
+
                                                 },
 
                                                 child: new Text('Pending',

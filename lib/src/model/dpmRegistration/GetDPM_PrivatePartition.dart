@@ -32,6 +32,7 @@ class GetDPM_PrivatePartition {
 
 class DataGetDPM_PrivatePartition {
   int districtCode;
+
   String nodalOfficerName;
   String oName;
   int mobile;
