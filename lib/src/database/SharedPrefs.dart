@@ -30,7 +30,7 @@ class SharedPrefs{
   }
   static Future getStoreSharedValue(String key) async {
     SharedPreferences sharedUser = await SharedPreferences.getInstance();
-    return sharedUser.getInt(key);
+    return sharedUser.get(key);
   }
   static void saveForgotPasswordData(ForgotPasswordModel model) async {
     SharedPreferences sharedUser = await SharedPreferences.getInstance();

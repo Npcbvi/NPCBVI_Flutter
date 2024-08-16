@@ -368,6 +368,7 @@ class _LoginScreen extends State<LoginScreen> {
                   AppConstant.distritcCode, response.result.data.district_code);
               SharedPrefs.storeSharedValue(
                   AppConstant.state_code, response.result.data.state_code);
+              print('@@response_loginScreen ---' + response.result.data.state_code.toString());
               if(response.result.data.roleId=='9'){
                 Navigator.push(
                   context,

@@ -62,6 +62,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   int dpmAPPRoved_valueSendinAPi = 2; // for approved
   int dpmPending_valueSendinAPi = 1; //for Penfing
   bool NGO_APPorovedClickShowData = false;
+  bool NGO_PendingClickShowData = false;
 
   @override
   void initState() {
@@ -689,6 +690,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   print('@@---NGOsAPProved--1');
 
                                                   setState(() {
+
                                                     dashboardviewReplace =
                                                         false;
                                                     NGO_APPorovedClickShowData =
@@ -697,6 +699,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   // GetDPM_NGOApprovedPending();
                                                 },
+
                                                 child: new Text('Approved',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
@@ -713,13 +716,28 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 30, 20.0, 0),
-                                              child: new Text('Pending',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---ngo_PendingTask--1');
+
+                                                  setState(() {
+                                                    dashboardviewReplace =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    true;
+                                                  });
+
+                                                  // GetDPM_NGOApprovedPending();
+                                                },
+                                                child: new Text('Pending',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+
                                             ),
                                           ),
                                         ],
@@ -1245,36 +1263,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                 color: Colors.white)),
                                       ),
                                       Divider(color: Colors.grey, height: 1.0),
-                                      /* Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 30, 20.0, 0),
-                                            child: new Text('Approved',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white)),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 30, 20.0, 0),
-                                            child: new Text('Pending',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white)),
-                                          ),
-                                        ),
-                                      ],
-                                    ),*/
                                       Row(
                                         children: [
                                           Expanded(
@@ -1455,6 +1443,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             ),
             NGOlistApplicationDropdownData(),
             NGOClickAprrovalDisplayDatas(),
+            NGOClickPendingDisplayDatas(),
           ],
         ),
       ),
@@ -1816,121 +1805,6 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
-  ///Working code is in commit
-/*  Widget NGOClickAprrovalDisplayDatas() {
-    return Column(
-      children: [
-        Visibility(
-          visible: NGO_APPorovedClickShowData,
-          child: Container(
-            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Column(
-              children: [
-                // Header Container
-                Container(
-                  color: Colors.blue,
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Text(
-                      'NGO list for Approval',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ),
-                ),
-
-
-                Row(
-                  children: [
-                    _buildHeaderCell('S.No.'),
-                    _buildHeaderCell('NGO Name'),
-                    _buildHeaderCell('Member Name'),
-                    _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Address'),
-                    _buildHeaderCell('Nodal Officer Name'),
-                    _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),
-                  ],
-                ),
-
-                Divider(color: Colors.blue, height: 1.0),
-                // Data Rows
-                FutureBuilder<GetDPM_NGOAPProved_pending>(
-                  future: ApiController.getDPM_NGOAPProved_pendings(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    } else if (snapshot.hasError) {
-                      return Utils.getEmptyView("Error: ${snapshot.error}");
-                    } else if (!snapshot.hasData ||
-                        snapshot.data?.data == null ||
-                        snapshot.data.data.isEmpty) {
-                      return Utils.getEmptyView("No data found");
-                    } else {
-                      List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data.data;
-
-                      return Container(
-                        height: MediaQuery.of(context).size.height * 0.5,
-                        child: ListView.builder(
-                          itemCount: ddata.length,
-                          itemBuilder: (context, index) {
-                            DataGetDPM_NGOAPProved_pending offer = ddata[index];
-
-                            return Column(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    _buildDataCell((index + 1).toString()),
-                                    _buildDataCell(offer.name),
-                                    _buildDataCell(offer.memberName),
-                                    _buildDataCell(offer.hName),
-                                    _buildDataCell(offer.address),
-                                    _buildDataCell(offer.nodalOfficerName),
-                                    _buildDataCell(offer.mobile.toString()),
-                                    _buildDataCell(offer.emailid.toString()),
-                                  ],
-                                ),
-                                Divider(color: Colors.blue, height: 1.0),
-                              ],
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }*/
-  /* Widget _buildHeaderCell(String text) {
-    return Expanded(
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white, // Background color for header cells
-          border: Border.all(
-            width: 0.5,
-          ),
-        ),
-        padding: const EdgeInsets.all(8.0),
-        child: Text(
-          text,
-          textAlign: TextAlign.center, // Centering text in the cell
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }*/
-
-  ///Working code is in commit
   Widget NGOClickAprrovalDisplayDatas() {
     return Column(
       children: [
@@ -2073,7 +1947,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
             FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
-            future: ApiController.getDPM_NGOAPProved_pendings(),
+            future: ApiController.getDPM_NGOAPProved_pendings(district_code_login,state_code_login,dpmAPPRoved_valueSendinAPi),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
@@ -2117,7 +1991,192 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+  Widget NGOClickPendingDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: NGO_PendingClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
 
+
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'NGO(s) (Approved)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace=true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCell('NGO Name'),
+                    _buildHeaderCell('Member Name'),
+                    _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Address'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    _buildHeaderCell('Mobile No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
+                future: ApiController.getDPM_NGOAPProved_pendings(district_code_login,state_code_login,dpmPending_valueSendinAPi),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
+                    print('@@---ddata---' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCell(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.name),
+                              _buildDataCell(offer.memberName),
+                              _buildDataCell(offer.hName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.nodalOfficerName),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailid.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
   Widget _buildHeaderCell(String text) {
     return Container(
 

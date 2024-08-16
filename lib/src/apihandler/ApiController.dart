@@ -683,9 +683,17 @@ class ApiController {
       return null;
     }
   }*/
-  static Future<List<DataGetDPM_NGOAPProved_pending>> getDPM_NGOAPProved_pendings() async {
-    print("@@getDPM_NGOAPProved_pendings");
-
+  static Future<List<DataGetDPM_NGOAPProved_pending>> getDPM_NGOAPProved_pendings(int district_code,int state_code,int status ) async {
+    print("@@getDPM_NGOAPProved_pending"+"1");
+    Response response1;
+   /* SharedPreferences prefs = await SharedPreferences.getInstance();
+    String districtCode_loginFetch = prefs.get(AppConstant.distritcCode);
+    String stateCode_loginFetch = prefs.get(AppConstant.state_code);
+    int dpmAPPRoved_valueSendinAPi=2; // for approved
+    int dpmPending_valueSendinAPi=1;
+    print("@@districtCode_loginFetch"+"1--"+districtCode_loginFetch);
+    print("@@stateCode_loginFetch"+"1"+stateCode_loginFetch);
+*/
     // Check network availability
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (!isNetworkAvailable) {
@@ -704,11 +712,11 @@ class ApiController {
 
       // Define the request body
       var body = json.encode({
-        "district_code": 1001,
-        "state_code": 100,
-        "status": 2, // for approved
+        "district_code": district_code,
+        "state_code": state_code,
+        "status": status, // for approved
       });
-
+      print("@@getDPM_NGOAPProved_pendings--bodyprint--: ${body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
