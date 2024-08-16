@@ -6,6 +6,7 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
@@ -63,7 +64,10 @@ class _DPMDashboard extends State<DPMDashboard> {
   int dpmPending_valueSendinAPi = 1; //for Penfing
   bool NGO_APPorovedClickShowData = false;
   bool NGO_PendingClickShowData = false;
-
+  bool GetDPM_GH_APPorovedClickShowData = false;
+  bool GetDPM_GH_PendingClickShowData = false;
+  int GetDPM_GH_APPoroved_valueSendinAPi = 2; // for approved
+  int GetDPM_GH_Pending_valueSendinAPi = 1;
   @override
   void initState() {
     // TODO: implement initState
@@ -822,6 +826,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---Government_approved--1');
+
+                                                  setState(() {
+
+                                                    dashboardviewReplace =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=
+                                                    true;
+                                                  });
+
+                                                },
                                               child: new Text('Approved',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
@@ -831,12 +848,26 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       color: Colors.white)),
                                             ),
                                           ),
+                                          ),
                                           Expanded(
                                             flex: 1,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---Government_Pending--1');
+
+                                                  setState(() {
+
+                                                    dashboardviewReplace =
+                                                    false;
+                                                    GetDPM_GH_PendingClickShowData=
+                                                    true;
+                                                  });
+
+                                                },
                                               child: new Text('Pending',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
@@ -845,6 +876,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                           FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
+                                          ),
                                           ),
                                         ],
                                       ),
@@ -1444,6 +1476,8 @@ class _DPMDashboard extends State<DPMDashboard> {
             NGOlistApplicationDropdownData(),
             NGOClickAprrovalDisplayDatas(),
             NGOClickPendingDisplayDatas(),
+            DPMGetDPM_GHA_Click_prrovalDisplayDatas(),
+            DPMGetDPM_GHA_Click_PendingDisplayDatas(),
           ],
         ),
       ),
@@ -1535,7 +1569,6 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
-
   Widget NGOlistApplicationDropdownData() {
     return Column(
       children: [
@@ -2177,6 +2210,381 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+
+  Widget DPMGetDPM_GHA_Click_prrovalDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: GetDPM_GH_APPorovedClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'NGO(s) (Approved)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace=true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCell('NGO Name'),
+                    _buildHeaderCell('Member Name'),
+                  //  _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Address'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    _buildHeaderCell('Mobile No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DatagetDPMGH_clickAPProved>>(
+                future: ApiController.getDPM_GetDPM_GHAPProved_pendings(district_code_login,state_code_login,GetDPM_GH_APPoroved_valueSendinAPi),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DatagetDPMGH_clickAPProved> ddata = snapshot.data;
+                    print('@@---getDPM_GetDPM_GHAPProved_pendings' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCell(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.oName),
+                              _buildDataCell(offer.ngoName),
+                             // _buildDataCell(offer.hName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.nodalOfficerName),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailId.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  Widget DPMGetDPM_GHA_Click_PendingDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: GetDPM_GH_PendingClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'NGO(s) (Approved)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace=true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCell('NGO Name'),
+                    _buildHeaderCell('Member Name'),
+                   // _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Address'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    _buildHeaderCell('Mobile No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DatagetDPMGH_clickAPProved>>(
+                future: ApiController.getDPM_GetDPM_GHAPProved_pendings(district_code_login,state_code_login,GetDPM_GH_Pending_valueSendinAPi),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DatagetDPMGH_clickAPProved> ddata = snapshot.data;
+                    print('@@---getDPM_GetDPM_GHAPProved_pendings' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCell(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.oName),
+                              _buildDataCell(offer.ngoName),
+                              //_buildDataCell(offer.hName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.nodalOfficerName),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailId.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildHeaderCell(String text) {
     return Container(
 
@@ -2199,7 +2607,6 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
-
   Widget _buildDataCell(String text) {
     return Container(
       height: 80,

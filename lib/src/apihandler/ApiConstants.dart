@@ -20,4 +20,6 @@ class ApiConstants {
   static String GetDPM_NGOApplication = 'DpmDashboard/api/GetDPM_NGOApplication';
 
   static String GetDPM_NGOApprovedPending = 'DpmDashboard/api/GetDPM_NGOApprovedPending';
+
+  static String GetDPM_GH = 'DpmDashboard/api/GetDPM_GH';
 }
