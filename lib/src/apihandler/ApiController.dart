@@ -15,6 +15,9 @@ import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMDashboardData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
@@ -520,8 +523,9 @@ class ApiController {
   }
 
   static Future<GetDPMDashboardData> getDPM_Dashboard(
-      DPMDashboardParamsData dpmDashboardParamsData) async {
+      int districtidDPM,  int stateidDPM,  int old_districtidDPM, String useridDPM,String roleidDPM, int statusDPM,String financialYearDPM) async {
     GetDPMDashboardData getDPMDashboardData = GetDPMDashboardData();
+
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -534,15 +538,15 @@ class ApiController {
         //Way to send params
         //Way to send params
         var body = json.encode({
-          "districtid": 547,
-          "stateid": 29,
+          "districtid": districtidDPM,
+          "stateid": stateidDPM,
           "old_districtid": 569,
-          "userid": "",
-          "roleid": "",
-          "status": 5,
+          "userid": useridDPM,
+          "roleid":roleidDPM,
+          "status": statusDPM,
           "financialYear": "2024-2025",
         });
-        print("@@getDPM_Dashboard---" + url + body.toString());
+        print("@@getDPM_Dashboard---api check parmeters--" + url + body.toString());
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -751,7 +755,7 @@ class ApiController {
     }
   }
   static Future<List<DatagetDPMGH_clickAPProved>> getDPM_GetDPM_GHAPProved_pendings(int district_code,int state_code,int status ) async {
-    print("@@DataGetDPM_NGOAPProved_pending"+"1");
+    print("@@DatagetDPMGH_clickAPProved--APProvedWala--"+"1");
     Response response1;
 
     // Check network availability
@@ -809,6 +813,245 @@ class ApiController {
     }
   }
   static Future<List<DataGetDPM_PrivatePartition>> getDPM_PrivatePartition(int district_code,int state_code,int status ) async {
+    print("@@getDPM_PrivatePartition"+"1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_PrivatePartition;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "status": status, // for approved
+      });
+      print("@@DataGetDPM_PrivatePartition--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@DataGetDPM_PrivatePartition--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetDPM_PrivatePartition data = GetDPM_PrivatePartition.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<List<DataDPMRivateMEdicalColleges>> GetDPM_PrivateMedicalColleges(int district_code,int state_code,int status ) async {
+    print("@@DataDPMRivateMEdicalColleges"+"1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_PrivateMedicalCollege;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "status": status, // for approved
+      });
+      print("@@DataDPMRivateMEdicalColleges--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@DataDPMRivateMEdicalColleges--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      DPMRivateMEdicalColleges data = DPMRivateMEdicalColleges.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<DataDPMsatteliteCenter>> GetDPM_SatelliteCentre(int district_code,int state_code ) async {
+    print("@@DPMsatteliteCenter"+"1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_SatelliteCentre;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+      });
+      print("@@DPMsatteliteCenter--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetDPM_SatelliteCentre--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      DPMsatteliteCenter data = DPMsatteliteCenter.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+  static Future<List<DataDPMScreeningCamp>> GetDPM_ScreeningCamp(int district_code,int state_code,String financialYear,String mode,String campType ) async {
+    print("@@GetDPM_ScreeningCamp"+"1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_ScreeningCamp;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "financialYear": financialYear,
+        "mode": mode,
+        "campType": campType
+      });
+      print("@@DPMScreeningCamp--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetDPM_SatelliteCentre--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      DPMScreeningCamp data = DPMScreeningCamp.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.dataw;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+  ///Pending work here
+  static Future<List<DataGetDPM_PrivatePartition>> getPatiientApprovedPendingclick(int district_code,int state_code,int status ) async {
     print("@@getDPM_PrivatePartition"+"1");
     Response response1;
 

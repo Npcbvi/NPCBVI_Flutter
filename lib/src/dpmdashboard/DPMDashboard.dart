@@ -5,6 +5,9 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
@@ -74,6 +77,26 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool DPM_PrivatePartitionP_PendingClickShowData = false;
   int DPM_PrivatePartitionP_APPoroved_valueSendinAPi = 2; // for approved
   int DPM_PrivatePartitionP_Pending_valueSendinAPi = 1;
+
+
+  bool DPM_privateMEdicalCollegeApprovedData = false;
+  bool DPM_privateMEdicalCollegePendingData = false;
+  int DPM_privateMEdicalCollegeApprovedData_valueSendinAPi = 2; // for approved
+  int DPM_privateMEdicalCollegePendingData_valueSendinAPi = 1;
+
+  bool satelliteCentreShowData=false;
+
+  bool ScreeningCamp=false;
+
+  //Badh main use this
+  bool PatientsAPProvedClickData = false;
+  bool PatientsPendingClickData = false;
+  int PatientsAPProvedClickData_valueSendinAPi = 2; // for approved
+  int PatientsPendingClickData_valueSendinAPi = 1;
+
+  String resultScreeningCampsCompleted = "Completed";
+  String resultScreeningCampsOngoing = "Ongoing";
+  String resultScreeningCampsComing = "Coming";
   @override
   void initState() {
     // TODO: implement initState
@@ -111,20 +134,20 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   void _getDPMDashbnoardData() {
     getUserData();
-    dpmDashboardParamsDatass.districtidDPM = 547;
-    dpmDashboardParamsDatass.stateidDPM = 29;
+   /* dpmDashboardParamsDatass.districtidDPM = district_code_login;
+    dpmDashboardParamsDatass.stateidDPM = state_code_login;
     dpmDashboardParamsDatass.old_districtidDPM = 569;
     dpmDashboardParamsDatass.useridDPM = userId;
     dpmDashboardParamsDatass.roleidDPM = role_id;
     dpmDashboardParamsDatass.statusDPM = status;
-    dpmDashboardParamsDatass.financialYearDPM = "2024-2025";
+    dpmDashboardParamsDatass.financialYearDPM = "2024-2025";*/
 
     Utils.isNetworkAvailable().then((isNetworkAvailable) async {
       if (isNetworkAvailable) {
         Utils.showProgressDialog(context);
         try {
           final response =
-              await ApiController.getDPM_Dashboard(dpmDashboardParamsDatass);
+              await ApiController.getDPM_Dashboard(district_code_login,state_code_login,569,userId,role_id,status,"2024-2025");
           Utils.hideProgressDialog(context);
           if (response.status) {
             setState(() {
@@ -189,12 +212,12 @@ class _DPMDashboard extends State<DPMDashboard> {
               color: Colors.white,
             )),
         centerTitle: true,
-        leading: IconButton(
+       /* leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               Utils.hideKeyboard(context);
               Navigator.of(context).pop(context);
-            }),
+            }),*/
         actions: [
           PopupMenuButton<int>(
             itemBuilder: (context) => [
@@ -1000,11 +1023,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   print('@@---Pending here work----1');
 
                                                   setState(() {
-/*
-                                                    dashboardviewReplace =
+                                                  dashboardviewReplace =
                                                     false;
-                                                    NGO_APPorovedClickShowData =
-                                                    true;*/
+                                                  DPM_PrivatePartitionP_PendingClickShowData =
+                                                    true;
                                                   });
 
 
@@ -1102,6 +1124,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---APProved here work----1');
+
+                                                  setState(() {
+                                                    dashboardviewReplace =
+                                                    false;
+                                                    DPM_privateMEdicalCollegeApprovedData =
+                                                    true;
+                                                  });
+
+
+
+                                                },
                                               child: new Text('Approved',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
@@ -1111,12 +1147,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       color: Colors.white)),
                                             ),
                                           ),
+                                          ),
                                           Expanded(
                                             flex: 1,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---DPM_privateMEdicalCollegePendingData here work----1');
+
+                                                  setState(() {
+                                                    dashboardviewReplace =
+                                                    false;
+                                                    DPM_privateMEdicalCollegePendingData =
+                                                    true;
+                                                  });
+
+
+
+                                                },
                                               child: new Text('Pending',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
@@ -1125,6 +1176,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                           FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
+                                          ),
                                           ),
                                         ],
                                       ),
@@ -1206,6 +1258,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---Screening here work----1');
+
+                                                  setState(() {
+                                                    dashboardviewReplace =
+                                                    false;
+                                                    ScreeningCamp =
+                                                    true;
+                                                  });
+
+
+
+                                                },
                                               child: new Text('Completed',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
@@ -1215,12 +1281,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       color: Colors.white)),
                                             ),
                                           ),
+                                          ),
                                           Expanded(
                                             flex: 1,
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---Screening here work----1');
+
+                                                  setState(() {
+                                                    dashboardviewReplace =
+                                                    false;
+                                                    ScreeningCamp =
+                                                    true;
+                                                  });
+
+
+
+                                                },
                                               child: new Text('Ongoing',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
@@ -1229,6 +1310,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                           FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
+                                          ),
+
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -1342,6 +1425,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---satelliteCentreShowData here work----1');
+
+                                                  setState(() {
+                                                    dashboardviewReplace =
+                                                    false;
+                                                   satelliteCentreShowData =
+                                                    true;
+                                                  });
+
+
+
+                                                },
                                               child: new Text(
                                                   '${satellitecentreCount}',
                                                   textAlign: TextAlign.center,
@@ -1351,6 +1448,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                           FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
+                                          ),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -1518,95 +1616,14 @@ class _DPMDashboard extends State<DPMDashboard> {
             DPMGetDPM_GHA_Click_prrovalDisplayDatas(),
             DPMGetDPM_GHA_Click_PendingDisplayDatas(),
             DPMGetDPM_PrivatePartitionAPProvalDisplayDatas(),
+            DPM_PrivatePartitionPEndingDisplayDatas(),
+            DPM_PrivateMedicalAPProvedDisplayDatas(),
+            DPM_PrivateMedicalPendingDisplayDatas(),
+            DPM_SatelliteCentreDisplayDatas(),
+            DPM_GetDPM_ScreeningCampDisplayDatasCompleted(),
           ],
         ),
       ),
-    );
-  }
-
-  void showDiseaseDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Disease Data'),
-          content: Container(
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Table(
-                    border: TableBorder.all(),
-                    columnWidths: {
-                      0: FixedColumnWidth(50),
-                      1: FlexColumnWidth(),
-                      2: FlexColumnWidth(),
-                      3: FixedColumnWidth(50),
-                    },
-                    children: [
-                      TableRow(
-                        decoration: BoxDecoration(color: Colors.grey[200]),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('S.No.',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Disease',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Name',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Total',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                        ],
-                      ),
-                      ...diseaseList.map((disease) {
-                        return TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(disease.serialNo.toString()),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(disease.diseaseName),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(disease.name),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(disease.total.toString()),
-                            ),
-                          ],
-                        );
-                      }).toList(),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
   Widget NGOlistApplicationDropdownData() {
@@ -1714,7 +1731,334 @@ class _DPMDashboard extends State<DPMDashboard> {
                               children: <Widget>[
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 4, 4.0, 4),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.white,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            ((index + 1).toString()),
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            offer.darpanNo,
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            offer.name,
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            offer.memberName,
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            offer.emailid,
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: InkWell(
+                                            onTap: () {
+                                              print(
+                                                  '@@View----Pending work here--display---');
+                                              //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                              width: 80.0,
+                                              child: Text(
+                                                'View',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 15),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(color: Colors.blue, height: 1.0),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  void showDiseaseDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Disease Data'),
+          content: Container(
+            width: double.maxFinite,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Table(
+                    border: TableBorder.all(),
+                    columnWidths: {
+                      0: FixedColumnWidth(50),
+                      1: FlexColumnWidth(),
+                      2: FlexColumnWidth(),
+                      3: FixedColumnWidth(50),
+                    },
+                    children: [
+                      TableRow(
+                        decoration: BoxDecoration(color: Colors.grey[200]),
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('S.No.',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Disease',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Name',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Total',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                        ],
+                      ),
+                      ...diseaseList.map((disease) {
+                        return TableRow(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(disease.serialNo.toString()),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(disease.diseaseName),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(disease.name),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(disease.total.toString()),
+                            ),
+                          ],
+                        );
+                      }).toList(),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  Widget PatientApprovedClickDisplayData() {
+    return Column(
+      children: [
+        Visibility(
+          visible: PatientsAPProvedClickData,
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: Column(
+              children: [
+                Table(
+                  border: TableBorder.all(),
+                  columnWidths: {
+                    0: FixedColumnWidth(50),
+                    1: FlexColumnWidth(50),
+                    2: FlexColumnWidth(50),
+                    3: FixedColumnWidth(50),
+
+                  },
+                  children: [
+                    TableRow(
+                      decoration: BoxDecoration(color: Colors.grey[200]),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('S.No',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Disease Name',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+
+
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Total',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Action',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                FutureBuilder<NGOAPPlicationDropDownDPm>(
+                  future: ApiController.getDPM_NGOApplication(
+                      getDPM_NGOApplications),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Utils.getEmptyView("Error: ${snapshot.error}");
+                    } else if (!snapshot.hasData ||
+                        snapshot.data.data == null ||
+                        snapshot.data.data.isEmpty) {
+                      return Utils.getEmptyView("No data found");
+                    } else {
+                      NGOAPPlicationDropDownDPm response = snapshot.data;
+                      List<DataNGOAPPlicationDropDownDPm> ddata = response.data;
+
+                      return Container(
+                        height: MediaQuery.of(context).size.height *
+                            0.5, // Adjust height as needed
+                        child: ListView.builder(
+                          itemCount: ddata.length,
+                          itemBuilder: (context, index) {
+                            DataNGOAPPlicationDropDownDPm offer = ddata[index];
+
+                            return Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Expanded(
                                       flex: 1,
@@ -1879,6 +2223,8 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
+
+
   Widget NGOClickAprrovalDisplayDatas() {
     return Column(
       children: [
@@ -2007,7 +2353,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
                     _buildHeaderCell('Member Name'),
                     _buildHeaderCell('Hospital Name'),
@@ -2041,7 +2387,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          _buildDataCell(
+                          _buildDataCellSrNo(
                               (ddata.indexOf(offer) + 1).toString()),
                           _buildDataCell(offer.name),
                           _buildDataCell(offer.memberName),
@@ -2193,7 +2539,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
                     _buildHeaderCell('Member Name'),
                     _buildHeaderCell('Hospital Name'),
@@ -2227,7 +2573,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              _buildDataCell(
+                              _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.name),
                               _buildDataCell(offer.memberName),
@@ -2381,7 +2727,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
                     _buildHeaderCell('Member Name'),
                   //  _buildHeaderCell('Hospital Name'),
@@ -2415,7 +2761,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              _buildDataCell(
+                              _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.oName),
                               _buildDataCell(offer.ngoName),
@@ -2567,7 +2913,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
                     _buildHeaderCell('Member Name'),
                    // _buildHeaderCell('Hospital Name'),
@@ -2601,7 +2947,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              _buildDataCell(
+                              _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.oName),
                               _buildDataCell(offer.ngoName),
@@ -2625,6 +2971,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
 
 
   Widget DPMGetDPM_PrivatePartitionAPProvalDisplayDatas() {
@@ -2755,7 +3102,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    _buildHeaderCell('S.No.'),
+                    _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
                     _buildHeaderCell('Member Name'),
                     //  _buildHeaderCell('Hospital Name'),
@@ -2789,7 +3136,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              _buildDataCell(
+                              _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.oName),
                               _buildDataCell(offer.ngoName),
@@ -2813,7 +3160,950 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+  Widget DPM_PrivatePartitionPEndingDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: DPM_PrivatePartitionP_PendingClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
 
+
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'Private Practitioner(s) (Pending)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace=true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('Organisation Name'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    // _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Hospital Address'),
+                    _buildHeaderCell('Contact No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataGetDPM_PrivatePartition>>(
+                future: ApiController.getDPM_PrivatePartition(district_code_login,state_code_login,DPM_PrivatePartitionP_Pending_valueSendinAPi),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataGetDPM_PrivatePartition> ddata = snapshot.data;
+                    print('@@---DataGetDPM_PrivatePartition' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.oName),
+                              _buildDataCell(offer.nodalOfficerName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailId.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget DPM_PrivateMedicalAPProvedDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: DPM_privateMEdicalCollegeApprovedData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'NGO(s) (Approved)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace=true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('Organisation Name'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    // _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Hospital Address'),
+                    _buildHeaderCell('Contact No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataDPMRivateMEdicalColleges>>(
+                future: ApiController.GetDPM_PrivateMedicalColleges(district_code_login,state_code_login,DPM_privateMEdicalCollegeApprovedData_valueSendinAPi),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataDPMRivateMEdicalColleges> ddata = snapshot.data;
+                    print('@@---DataDPMRivateMEdicalColleges' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.oName),
+                              _buildDataCell(offer.nodalOfficerName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailId.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  Widget DPM_PrivateMedicalPendingDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: DPM_privateMEdicalCollegePendingData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'Private Medical College(s) (Pending)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace=true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('Organisation Name'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    // _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Hospital Address'),
+                    _buildHeaderCell('Contact No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataDPMRivateMEdicalColleges>>(
+                future: ApiController.GetDPM_PrivateMedicalColleges(district_code_login,state_code_login,DPM_privateMEdicalCollegePendingData_valueSendinAPi),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataDPMRivateMEdicalColleges> ddata = snapshot.data;
+                    print('@@---DataDPMRivateMEdicalColleges--' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.oName),
+                              _buildDataCell(offer.nodalOfficerName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailId.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget DPM_GetDPM_ScreeningCampDisplayDatasCompleted() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ScreeningCamp,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'Screening Camp(s)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace=true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('Organisation Name'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    // _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Hospital Address'),
+                    _buildHeaderCell('Contact No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataDPMScreeningCamp>>(
+                future: ApiController.GetDPM_ScreeningCamp(1001,100,"2019-2020","",resultScreeningCampsCompleted),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataDPMScreeningCamp> ddata = snapshot.data;
+                    print('@@---DataDPMScreeningCamp--' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.campname),
+                              _buildDataCell(offer.ngoName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailId.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
+  Widget DPM_SatelliteCentreDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: satelliteCentreShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+
+
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'Satellite Centre',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace=true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('Organisation Name'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    // _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Hospital Address'),
+                    _buildHeaderCell('Contact No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataDPMsatteliteCenter>>(
+                future: ApiController.GetDPM_SatelliteCentre(district_code_login,state_code_login),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataDPMsatteliteCenter> ddata = snapshot.data;
+                    print('@@---DataDPMsatteliteCenter--' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.name),
+                              _buildDataCell(offer.smanagername),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailId.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeaderCellSrNo(String text) {
+    return Container(
+
+      height: 40,
+      width: 80, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+   //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
   Widget _buildHeaderCell(String text) {
     return Container(
 
@@ -2825,7 +4115,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           width: 0.5,
         ),
       ),
-   //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
       child: Center(
         child: Text(
           text,
@@ -2848,6 +4138,28 @@ class _DPMDashboard extends State<DPMDashboard> {
         ),
       ),
      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellSrNo(String text) {
+    return Container(
+      height: 80,
+      width: 80, //
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
       child: Center(
         child: Text(
           text,

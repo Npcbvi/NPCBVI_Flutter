@@ -119,13 +119,15 @@ class _LoginScreen extends State<LoginScreen> {
                   height: 220,
                   child: RichText(
                       text: TextSpan(
-                        style: defaultStyle,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.black),
                         children: <TextSpan>[
-                          TextSpan(text:    'In order to login for the first time into the new web application it is necessary to'
+                          TextSpan(text:  'In order to login for the first time into the new web application it is necessary to'
                               ' register and upload certain documents and information as detailed below. Hence keep'
-                              ' the scanned copy of these documents handy before starting the process of registration.'
-                              +'\n'+ ' CHECKLIST FOR REGISTRATION'
-                              +'\n'+ ' For NGOs'
+                              ' the scanned copy of these documents handy before starting the process of registration. '
+                              +'\n'+'\n'+ ' CHECKLIST FOR REGISTRATION'
+                              +'\n'+'\n'+ ' For NGOs'
                               +'\n'+  ' Darpan Number is must for registration. If you havent registered on Darpan portal'
 
                              ),

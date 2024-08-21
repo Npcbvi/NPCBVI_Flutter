@@ -22,4 +22,10 @@ class ApiConstants {
   static String GetDPM_NGOApprovedPending = 'DpmDashboard/api/GetDPM_NGOApprovedPending';
 
   static String GetDPM_GH = 'DpmDashboard/api/GetDPM_GH';
+  static String GetDPM_PrivatePartition = 'DpmDashboard/api/GetDPM_PrivatePartition';
+
+  static String GetDPM_PrivateMedicalCollege = 'DpmDashboard/api/GetDPM_PrivateMedicalCollege';
+  static String GetDPM_SatelliteCentre = 'DpmDashboard/api/GetDPM_SatelliteCentre';
+  static String GetDPM_ScreeningCamp = 'DpmDashboard/api/GetDPM_ScreeningCamp';
+
 }
