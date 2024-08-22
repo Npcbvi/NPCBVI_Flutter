@@ -3,17 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
-import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
-import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
-
 import '../model/dpmRegistration/DiseaseData/GetDiseaseData.dart';
 import '../model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
 
@@ -62,7 +60,8 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool _hasError = false;
   String _errorMessage = '';
   List<GetDiseaseData> diseaseList = [];
-  bool NGOlistAprrovalDisplayDatas = false;
+  bool NGOlistDropDownDisplayDatas = false;
+    bool ngolistNewHosdpitalDropDown = false;
   List<DataNGOAPPlicationDropDownDPm> ddataNGOAPPlicationDropDownDPm = [];
   int dpmAPPRoved_valueSendinAPi = 2; // for approved
   int dpmPending_valueSendinAPi = 1; //for Penfing
@@ -78,15 +77,16 @@ class _DPMDashboard extends State<DPMDashboard> {
   int DPM_PrivatePartitionP_APPoroved_valueSendinAPi = 2; // for approved
   int DPM_PrivatePartitionP_Pending_valueSendinAPi = 1;
 
-
   bool DPM_privateMEdicalCollegeApprovedData = false;
   bool DPM_privateMEdicalCollegePendingData = false;
   int DPM_privateMEdicalCollegeApprovedData_valueSendinAPi = 2; // for approved
   int DPM_privateMEdicalCollegePendingData_valueSendinAPi = 1;
 
-  bool satelliteCentreShowData=false;
+  bool satelliteCentreShowData = false;
 
-  bool ScreeningCamp=false;
+  bool ScreeningCamp = false;
+  bool ScreeningCampOngoing = false;
+  bool ScreeningCampComing = false;
 
   //Badh main use this
   bool PatientsAPProvedClickData = false;
@@ -97,6 +97,12 @@ class _DPMDashboard extends State<DPMDashboard> {
   String resultScreeningCampsCompleted = "Completed";
   String resultScreeningCampsOngoing = "Ongoing";
   String resultScreeningCampsComing = "Coming";
+
+  bool chnagePAsswordView = false;
+  TextEditingController oldPassword = new TextEditingController();
+  TextEditingController newPassword = new TextEditingController();
+  TextEditingController confirmnPassword = new TextEditingController();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -134,7 +140,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   void _getDPMDashbnoardData() {
     getUserData();
-   /* dpmDashboardParamsDatass.districtidDPM = district_code_login;
+    /* dpmDashboardParamsDatass.districtidDPM = district_code_login;
     dpmDashboardParamsDatass.stateidDPM = state_code_login;
     dpmDashboardParamsDatass.old_districtidDPM = 569;
     dpmDashboardParamsDatass.useridDPM = userId;
@@ -146,8 +152,14 @@ class _DPMDashboard extends State<DPMDashboard> {
       if (isNetworkAvailable) {
         Utils.showProgressDialog(context);
         try {
-          final response =
-              await ApiController.getDPM_Dashboard(district_code_login,state_code_login,569,userId,role_id,status,"2024-2025");
+          final response = await ApiController.getDPM_Dashboard(
+              district_code_login,
+              state_code_login,
+              569,
+              userId,
+              role_id,
+              status,
+              "2024-2025");
           Utils.hideProgressDialog(context);
           if (response.status) {
             setState(() {
@@ -212,51 +224,109 @@ class _DPMDashboard extends State<DPMDashboard> {
               color: Colors.white,
             )),
         centerTitle: true,
-       /* leading: IconButton(
+        /* leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               Utils.hideKeyboard(context);
               Navigator.of(context).pop(context);
             }),*/
-        actions: [
+    /*    actions: [
+        PopupMenuButton<int>(
+          itemBuilder: (context) => [
+            // PopupMenuItem 1
+            PopupMenuItem(
+              value: 1,
+              // row with 2 children
+              child: Row(
+                children: [
+                  Icon(Icons.lock),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Change Password")
+                ],
+              ),
+            ),
+            // PopupMenuItem 2
+            PopupMenuItem(
+              value: 2,
+              // row with two children
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("User Manual")
+                ],
+              ),
+            ),
+            PopupMenuItem(
+              value: 3,
+              // row with two children
+              child: Row(
+                children: [
+                  Icon(Icons.logout),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text("Logout")
+                ],
+              ),
+            ),
+          ],
+          offset: const Offset(0, 50),
+          color: Colors.white,
+          elevation: 2,
+          // on selected we show the dialog box
+          onSelected: (value) {
+            // if value 1 show dialog
+            if (value == 1) {
+              print('@@value is 1----');
+              // if value 2 show dialog
+
+            } else if (value == 2) {
+              print('@@value is 2----');
+            } else if (value == 3) {
+              print('@@value is 3----');
+              setState(() {
+                dashboardviewReplace = false;
+
+                chnagePAsswordView = true;
+              });
+
+            }
+          },
+        ),
+      ],*/
+          actions: [
           PopupMenuButton<int>(
             itemBuilder: (context) => [
-              // PopupMenuItem 1
               PopupMenuItem(
                 value: 1,
-                // row with 2 children
                 child: Row(
                   children: [
                     Icon(Icons.lock),
-                    SizedBox(
-                      width: 10,
-                    ),
+                    SizedBox(width: 10),
                     Text("Change Password")
                   ],
                 ),
               ),
-              // PopupMenuItem 2
               PopupMenuItem(
                 value: 2,
-                // row with two children
                 child: Row(
                   children: [
-                    SizedBox(
-                      width: 10,
-                    ),
+                    Icon(Icons.book),
+                    SizedBox(width: 10),
                     Text("User Manual")
                   ],
                 ),
               ),
               PopupMenuItem(
                 value: 3,
-                // row with two children
                 child: Row(
                   children: [
                     Icon(Icons.logout),
-                    SizedBox(
-                      width: 10,
-                    ),
+                    SizedBox(width: 10),
                     Text("Logout")
                   ],
                 ),
@@ -265,17 +335,16 @@ class _DPMDashboard extends State<DPMDashboard> {
             offset: const Offset(0, 50),
             color: Colors.white,
             elevation: 2,
-            // on selected we show the dialog box
             onSelected: (value) {
-              // if value 1 show dialog
               if (value == 1) {
-                print('@@value is 1----');
-                // if value 2 show dialog
-
+                _showChangePasswordDialog();
               } else if (value == 2) {
-                print('@@value is 2----');
+                // Implement User Manual action
               } else if (value == 3) {
-                print('@@value is 3----');
+                setState(() {
+                 /* dashboardviewReplace = false;
+                  chnagePAsswordView = true;*/
+                });
               }
             },
           ),
@@ -297,7 +366,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           print('@@dashboardviewReplace----display---');
                           //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                           setState(() {
-                            NGOlistAprrovalDisplayDatas = false;
+                            NGOlistDropDownDisplayDatas = false;
 
                             dashboardviewReplace = true;
                           });
@@ -355,11 +424,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 if (_chosenValue == "NGO Application") {
                                   print('@@NGO--1' + _chosenValue);
                                   dashboardviewReplace = false;
-                                  NGOlistAprrovalDisplayDatas = true;
+                                  NGOlistDropDownDisplayDatas = true;
                                   //      _getDPM_NGOApplicationDropDown();
 
                                 } else if (_chosenValue == "New Hospital") {
-                                  dashboardviewReplace = true;
+                                  dashboardviewReplace = false;
+                                  ngolistNewHosdpitalDropDown=true;
                                 } else if (_chosenValue ==
                                     "Govt/private/Other") {}
                               });
@@ -618,7 +688,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         child: GestureDetector(
                                           onTap: () {
                                             print(
-                                                '@@---Cleci APproved for Dialog');
+                                                '@@---Patient(s) (2024-2025) APproved for Dialog');
                                             showDiseaseDialog();
                                           },
                                           child: new Text(
@@ -637,12 +707,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             20, 30, 20.0, 0),
-                                        child: new Text('Pending',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 17,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white)),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            print(
+                                                '@@---Patient(s) (2024-2025) Pending for Dialog');
+                                            showDiseaseDialog();
+                                          },
+                                          child: new Text('Pending',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white)),
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -723,7 +800,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   print('@@---NGOsAPProved--1');
 
                                                   setState(() {
-
                                                     dashboardviewReplace =
                                                         false;
                                                     NGO_APPorovedClickShowData =
@@ -732,7 +808,6 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   // GetDPM_NGOApprovedPending();
                                                 },
-
                                                 child: new Text('Approved',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
@@ -751,13 +826,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---ngo_PendingTask--1');
+                                                  print(
+                                                      '@@---ngo_PendingTask--1');
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     NGO_PendingClickShowData =
-                                                    true;
+                                                        true;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -767,10 +843,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
-
                                             ),
                                           ),
                                         ],
@@ -857,26 +932,25 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---Government_approved--1');
+                                                  print(
+                                                      '@@---Government_approved--1');
 
                                                   setState(() {
-
                                                     dashboardviewReplace =
-                                                    false;
-                                                    GetDPM_GH_APPorovedClickShowData=
-                                                    true;
+                                                        false;
+                                                    GetDPM_GH_APPorovedClickShowData =
+                                                        true;
                                                   });
-
                                                 },
-                                              child: new Text('Approved',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                                child: new Text('Approved',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
-                                          ),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -886,26 +960,25 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---Government_Pending--1');
+                                                  print(
+                                                      '@@---Government_Pending--1');
 
                                                   setState(() {
-
                                                     dashboardviewReplace =
-                                                    false;
-                                                    GetDPM_GH_PendingClickShowData=
-                                                    true;
+                                                        false;
+                                                    GetDPM_GH_PendingClickShowData =
+                                                        true;
                                                   });
-
                                                 },
-                                              child: new Text('Pending',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                                child: new Text('Pending',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
-                                          ),
                                           ),
                                         ],
                                       ),
@@ -989,28 +1062,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---GetDPM_PrivatePartitionPorovedClickShowData--1');
+                                                  print(
+                                                      '@@---GetDPM_PrivatePartitionPorovedClickShowData--1');
 
                                                   setState(() {
-
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     GetDPM_PrivatePartitionPorovedClickShowData =
-                                                    true;
+                                                        true;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
                                                 },
-
                                                 child: new Text('Approved',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
-                                          ),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -1020,26 +1092,23 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---Pending here work----1');
+                                                  print(
+                                                      '@@---Pending here work----1');
 
                                                   setState(() {
-                                                  dashboardviewReplace =
-                                                    false;
-                                                  DPM_PrivatePartitionP_PendingClickShowData =
-                                                    true;
+                                                    dashboardviewReplace =
+                                                        false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData =
+                                                        true;
                                                   });
-
-
-
                                                 },
-
                                                 child: new Text('Pending',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
                                               ),
                                             ),
                                           ),
@@ -1126,27 +1195,25 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---APProved here work----1');
+                                                  print(
+                                                      '@@---APProved here work----1');
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     DPM_privateMEdicalCollegeApprovedData =
-                                                    true;
+                                                        true;
                                                   });
-
-
-
                                                 },
-                                              child: new Text('Approved',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                                child: new Text('Approved',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
-                                          ),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -1156,27 +1223,25 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---DPM_privateMEdicalCollegePendingData here work----1');
+                                                  print(
+                                                      '@@---DPM_privateMEdicalCollegePendingData here work----1');
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     DPM_privateMEdicalCollegePendingData =
-                                                    true;
+                                                        true;
                                                   });
-
-
-
                                                 },
-                                              child: new Text('Pending',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                                child: new Text('Pending',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
-                                          ),
                                           ),
                                         ],
                                       ),
@@ -1260,27 +1325,24 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---Screening here work----1');
+                                                  print(
+                                                      '@@---Screening here work----1');
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
-                                                    ScreeningCamp =
-                                                    true;
+                                                        false;
+                                                    ScreeningCamp = true;
                                                   });
-
-
-
                                                 },
-                                              child: new Text('Completed',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                                child: new Text('Completed',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
-                                          ),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -1290,28 +1352,24 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---Screening here work----1');
+                                                  print(
+                                                      '@@---Screening here work----1');
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
-                                                    ScreeningCamp =
-                                                    true;
+                                                        false;
+                                                    ScreeningCampOngoing = true;
                                                   });
-
-
-
                                                 },
-                                              child: new Text('Ongoing',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                                child: new Text('Ongoing',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
-                                          ),
-
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -1319,13 +1377,25 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 30, 20.0, 0),
-                                              child: new Text('Coming',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---Screening here work----1');
+
+                                                  setState(() {
+                                                    dashboardviewReplace =
+                                                        false;
+                                                    ScreeningCampComing = true;
+                                                  });
+                                                },
+                                                child: new Text('Coming',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -1427,28 +1497,26 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       20, 10, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  print('@@---satelliteCentreShowData here work----1');
+                                                  print(
+                                                      '@@---satelliteCentreShowData here work----1');
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
-                                                   satelliteCentreShowData =
-                                                    true;
+                                                        false;
+                                                    satelliteCentreShowData =
+                                                        true;
                                                   });
-
-
-
                                                 },
-                                              child: new Text(
-                                                  '${satellitecentreCount}',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                                child: new Text(
+                                                    '${satellitecentreCount}',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
-                                          ),
                                           ),
                                           Expanded(
                                             flex: 1,
@@ -1456,13 +1524,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
-                                              child: new Text('more..',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Utils.showToast(
+                                                      "Due to large amount of data",
+                                                      true);
+                                                },
+                                                child: new Text('more..',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -1540,13 +1615,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
-                                              child: new Text('${patientCount}',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Utils.showToast(
+                                                      "Due to large amount of data",
+                                                      true);
+                                                },
+                                                child: new Text(
+                                                    '${patientCount}',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
                                           ),
                                           Expanded(
@@ -1555,13 +1638,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
-                                              child: new Text('more..',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontSize: 17,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white)),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Utils.showToast(
+                                                      "Due to large amount of data",
+                                                      true);
+                                                },
+                                                child: new Text('more..',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
                                             ),
                                           ),
                                         ],
@@ -1621,617 +1711,121 @@ class _DPMDashboard extends State<DPMDashboard> {
             DPM_PrivateMedicalPendingDisplayDatas(),
             DPM_SatelliteCentreDisplayDatas(),
             DPM_GetDPM_ScreeningCampDisplayDatasCompleted(),
+            DPM_GetDPM_ScreeningCampDisplayDatasOngoing(),
+            DPM_GetDPM_ScreeningCampDisplayDatasComing(),
+            chnagePAsswordViews(),
+            NGOlistnewHospitalDropdownData(),
           ],
         ),
       ),
     );
   }
-  Widget NGOlistApplicationDropdownData() {
+
+  Widget chnagePAsswordViews() {
     return Column(
       children: [
         Visibility(
-          visible: NGOlistAprrovalDisplayDatas,
-          child: Container(
-            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Column(
-              children: [
-                Container(
-                  color: Colors.blue,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'NGO list for Approval',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
+          visible: chnagePAsswordView,
+          child: Center(
+            child: Container(
+              margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+              alignment: Alignment.center,
+              child: ListView(
+                shrinkWrap: true,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: oldPassword,
+                      decoration: InputDecoration(
+                          label: Text('Old Password*'),
+                          hintText: 'Old Password*',
+
+                          //prefixIcon
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
                     ),
                   ),
-                ),
-                Table(
-                  border: TableBorder.all(),
-                  columnWidths: {
-                    0: FixedColumnWidth(50),
-                    1: FlexColumnWidth(50),
-                    2: FlexColumnWidth(50),
-                    3: FixedColumnWidth(50),
-                    4: FixedColumnWidth(50),
-                    5: FixedColumnWidth(50),
-                  },
-                  children: [
-                    TableRow(
-                      decoration: BoxDecoration(color: Colors.grey[200]),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('S.No',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('NGO Darpan No',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('NGO Name',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Member Name',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Email',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Action',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ],
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: newPassword,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          label: Text('New Password *'),
+                          hintText: 'New Password *',
+
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
                     ),
-                  ],
-                ),
-                FutureBuilder<NGOAPPlicationDropDownDPm>(
-                  future: ApiController.getDPM_NGOApplication(
-                      getDPM_NGOApplications),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Utils.getEmptyView("Error: ${snapshot.error}");
-                    } else if (!snapshot.hasData ||
-                        snapshot.data.data == null ||
-                        snapshot.data.data.isEmpty) {
-                      return Utils.getEmptyView("No data found");
-                    } else {
-                      NGOAPPlicationDropDownDPm response = snapshot.data;
-                      List<DataNGOAPPlicationDropDownDPm> ddata = response.data;
+                  ),
 
-                      return Container(
-                        height: MediaQuery.of(context).size.height *
-                            0.5, // Adjust height as needed
-                        child: ListView.builder(
-                          itemCount: ddata.length,
-                          itemBuilder: (context, index) {
-                            DataNGOAPPlicationDropDownDPm offer = ddata[index];
+                  // TextFormField to enter captcha value
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: new TextField(
+                      controller: confirmnPassword,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                          label: Text('Confirm Password *'),
+                          hintText: 'Confirm Password *',
 
-                            return Column(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 4, 4.0, 4),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.white,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            ((index + 1).toString()),
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.darpanNo,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.name,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.memberName,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.emailid,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              print(
-                                                  '@@View----Pending work here--display---');
-                                              //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                              width: 80.0,
-                                              child: Text(
-                                                'View',
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontSize: 15),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(color: Colors.blue, height: 1.0),
-                              ],
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-  void showDiseaseDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Disease Data'),
-          content: Container(
-            width: double.maxFinite,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Table(
-                    border: TableBorder.all(),
-                    columnWidths: {
-                      0: FixedColumnWidth(50),
-                      1: FlexColumnWidth(),
-                      2: FlexColumnWidth(),
-                      3: FixedColumnWidth(50),
-                    },
-                    children: [
-                      TableRow(
-                        decoration: BoxDecoration(color: Colors.grey[200]),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('S.No.',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Disease',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Name',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text('Total',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ),
-                        ],
+                          //prefixIcon
+
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(5.0))),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                    child: ElevatedButton(
+                      child: Text('Change Password'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
                       ),
-                      ...diseaseList.map((disease) {
-                        return TableRow(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(disease.serialNo.toString()),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(disease.diseaseName),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(disease.name),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(disease.total.toString()),
-                            ),
-                          ],
-                        );
-                      }).toList(),
-                    ],
+                      onPressed: () {
+                        print('@@changePAssword Click----here');
+                       // _NGORegistrationSubmit();
+                      },
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Close'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-  Widget PatientApprovedClickDisplayData() {
-    return Column(
-      children: [
-        Visibility(
-          visible: PatientsAPProvedClickData,
-          child: Container(
-            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Column(
-              children: [
-                Table(
-                  border: TableBorder.all(),
-                  columnWidths: {
-                    0: FixedColumnWidth(50),
-                    1: FlexColumnWidth(50),
-                    2: FlexColumnWidth(50),
-                    3: FixedColumnWidth(50),
-
-                  },
-                  children: [
-                    TableRow(
-                      decoration: BoxDecoration(color: Colors.grey[200]),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('S.No',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Disease Name',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-
-
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Total',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Action',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                FutureBuilder<NGOAPPlicationDropDownDPm>(
-                  future: ApiController.getDPM_NGOApplication(
-                      getDPM_NGOApplications),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Utils.getEmptyView("Error: ${snapshot.error}");
-                    } else if (!snapshot.hasData ||
-                        snapshot.data.data == null ||
-                        snapshot.data.data.isEmpty) {
-                      return Utils.getEmptyView("No data found");
-                    } else {
-                      NGOAPPlicationDropDownDPm response = snapshot.data;
-                      List<DataNGOAPPlicationDropDownDPm> ddata = response.data;
-
-                      return Container(
-                        height: MediaQuery.of(context).size.height *
-                            0.5, // Adjust height as needed
-                        child: ListView.builder(
-                          itemCount: ddata.length,
-                          itemBuilder: (context, index) {
-                            DataNGOAPPlicationDropDownDPm offer = ddata[index];
-
-                            return Column(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 4, 4.0, 4),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.white,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            ((index + 1).toString()),
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.darpanNo,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.name,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.memberName,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.emailid,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              print(
-                                                  '@@View----Pending work here--display---');
-                                              //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                              width: 80.0,
-                                              child: Text(
-                                                'View',
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontSize: 15),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(color: Colors.blue, height: 1.0),
-                              ],
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
-                )
-              ],
-            ),
-          ),
         ),
       ],
     );
   }
 
-
-
-  Widget NGOClickAprrovalDisplayDatas() {
+  Widget NGOlistApplicationDropdownData() {
     return Column(
       children: [
         Visibility(
-          visible: NGO_APPorovedClickShowData,
+          visible: NGOlistDropDownDisplayDatas,
           child: Column(
             children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'NGO list for Approval',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
               // Horizontal Scrolling Header Row
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -2244,8 +1838,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -2258,42 +1850,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -2301,7 +1893,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       width: 150.0,
                                       child: Text(
-                                        'NGO(s) (Approved)',
+                                        'NGO Application)',
                                         style: TextStyle(
                                           color: Colors.red,
                                           fontWeight: FontWeight.w500,
@@ -2316,7 +1908,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                         dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -2354,68 +1946,483 @@ class _DPMDashboard extends State<DPMDashboard> {
                 child: Row(
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('NGO Name'),
+                    _buildHeaderCell('NGO Dapan No.'),
                     _buildHeaderCell('Member Name'),
-                    _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Address'),
-                    _buildHeaderCell('Nodal Officer Name'),
-                    _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),
+                    _buildHeaderCell('Email'),
+                    _buildHeaderCell('Action'),
                   ],
                 ),
               ),
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
-            FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
-            future: ApiController.getDPM_NGOAPProved_pendings(district_code_login,state_code_login,dpmAPPRoved_valueSendinAPi),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Utils.getEmptyView("Error: ${snapshot.error}");
-              } else if (!snapshot.hasData ||
-                  snapshot.data == null ||
-                  snapshot.data.isEmpty) {
-                return Utils.getEmptyView("No data found");
-              } else {
-                List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
-                print('@@---ddata' + ddata.length.toString());
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                    children: ddata.map((offer) {
-                      return Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          _buildDataCellSrNo(
-                              (ddata.indexOf(offer) + 1).toString()),
-                          _buildDataCell(offer.name),
-                          _buildDataCell(offer.memberName),
-                          _buildDataCell(offer.hName),
-                          _buildDataCell(offer.address),
-                          _buildDataCell(offer.nodalOfficerName),
-                          _buildDataCell(offer.mobile.toString()),
-                          _buildDataCell(offer.emailid.toString()),
-                        ],
-                      );
-                    }).toList(),
-                  ),
-                );
-              }
-            },
-          ),
-
+              FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
+                future: ApiController.getDPM_NGOApplicationDropDown(
+                    district_code_login, state_code_login),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataNGOAPPlicationDropDownDPm> ddata = snapshot.data;
+                    print('@@---ddata' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.name),
+                              _buildDataCell(offer.darpanNo),
+                              _buildDataCell(offer.memberName),
+                              _buildDataCell(offer.emailid),
+                              _buildDataCellViewBlue("View"),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),
       ],
     );
   }
-  Widget NGOClickPendingDisplayDatas() {
+
+  Widget NGOlistnewHospitalDropdownData() {
     return Column(
       children: [
         Visibility(
-          visible: NGO_PendingClickShowData,
+          visible: ngolistNewHosdpitalDropDown,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Hospital list for Approval',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Horizontal Scrolling Header Row
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('NGO Dapan No.'),
+                    _buildHeaderCell('Ngo  Name'),
+                    _buildHeaderCell('Hospital ID'),
+                    _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataGetNewHospitalData>>(
+                future: ApiController.getDPM_HospitalApproval(
+                    district_code_login, state_code_login),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataGetNewHospitalData> ddata = snapshot.data;
+                    print('@@---ddata' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+
+                              _buildDataCell(offer.darpanNo),
+                              _buildDataCell(offer.name),
+                              _buildDataCell(offer.hRegID),
+                              _buildDataCell(offer.hName),
+                              _buildDataCellViewBlue("View"),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  void showDiseaseDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Disease Data'),
+          content: Container(
+            width: double.maxFinite,
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Container(
+                    color: Colors.blue,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'NGO list for Approval',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  // Horizontal Scrolling Header Row
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Diseases Name'),
+                        _buildHeaderCell('Total'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                  ),
+                  Divider(color: Colors.blue, height: 1.0),
+                  // Data Rows
+                  FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
+                    future: ApiController.getDPM_NGOApplicationDropDown(
+                        district_code_login, state_code_login),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData || snapshot.data == null) {
+                        return Utils.getEmptyView("No data found");
+                      } else {
+                        List<DataNGOAPPlicationDropDownDPm> ddata =
+                            snapshot.data;
+                        print('@@---ddata' + ddata.length.toString());
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.name),
+                                  _buildDataCell(offer.memberName),
+                                  _buildDataCell("View"),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// here we are showing the PatientApproved Data aon DPm Dashboard.
+  Widget PatientApprovedClickDisplayData() {
+    return Column(
+      children: [
+        Visibility(
+          visible: PatientsAPProvedClickData,
+          child: Container(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child: Column(
+              children: [
+                Table(
+                  border: TableBorder.all(),
+                  columnWidths: {
+                    0: FixedColumnWidth(50),
+                    1: FlexColumnWidth(50),
+                    2: FlexColumnWidth(50),
+                    3: FixedColumnWidth(50),
+                  },
+                  children: [
+                    TableRow(
+                      decoration: BoxDecoration(color: Colors.grey[200]),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('S.No',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Disease Name',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Total',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text('Action',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
+                  future: ApiController.getDPM_NGOApplicationDropDown(
+                      district_code_login, state_code_login),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else if (snapshot.hasError) {
+                      return Utils.getEmptyView("Error: ${snapshot.error}");
+                    } else if (!snapshot.hasData ||
+                        snapshot.data == null ||
+                        snapshot.data.isEmpty) {
+                      return Utils.getEmptyView("No data found");
+                    } else {
+                      List<DataNGOAPPlicationDropDownDPm> ddata = snapshot.data;
+
+                      return Container(
+                        height: MediaQuery.of(context).size.height *
+                            0.5, // Adjust height as needed
+                        child: ListView.builder(
+                          itemCount: ddata.length,
+                          itemBuilder: (context, index) {
+                            DataNGOAPPlicationDropDownDPm offer = ddata[index];
+
+                            return Column(
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 4, 4.0, 4),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.white,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            ((index + 1).toString()),
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            offer.darpanNo,
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            offer.name,
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            offer.memberName,
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.centerLeft,
+                                          child: Text(
+                                            offer.emailid,
+                                            textDirection: TextDirection.ltr,
+                                            textAlign: TextAlign.left,
+                                            style: TextStyle(fontSize: 15),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            4, 10, 4.0, 0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.black, //
+                                              width: 0.4,
+                                            ),
+                                          ),
+                                          alignment: Alignment.center,
+                                          child: InkWell(
+                                            onTap: () {
+                                              print(
+                                                  '@@View----Pending work here--display---');
+                                              //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                              setState(() {});
+                                            },
+                                            child: Container(
+                                              width: 80.0,
+                                              child: Text(
+                                                'View',
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontSize: 15),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Divider(color: Colors.blue, height: 1.0),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                    }
+                  },
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// here we are showing the NGO Data on DPm Dashboard.
+  Widget NGOClickAprrovalDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: NGO_APPorovedClickShowData,
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
@@ -2430,8 +2437,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -2444,42 +2449,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -2502,7 +2507,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                          dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -2553,7 +2558,197 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
-                future: ApiController.getDPM_NGOAPProved_pendings(district_code_login,state_code_login,dpmPending_valueSendinAPi),
+                future: ApiController.getDPM_NGOAPProved_pendings(
+                    district_code_login,
+                    state_code_login,
+                    dpmAPPRoved_valueSendinAPi),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
+                    print('@@---ddata' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.name),
+                              _buildDataCell(offer.memberName),
+                              _buildDataCell(offer.hName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.nodalOfficerName),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailid.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget NGOClickPendingDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: NGO_PendingClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'NGO(s) (Approved)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace = true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('NGO Name'),
+                    _buildHeaderCell('Member Name'),
+                    _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Address'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    _buildHeaderCell('Mobile No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
+                future: ApiController.getDPM_NGOAPProved_pendings(
+                    district_code_login,
+                    state_code_login,
+                    dpmPending_valueSendinAPi),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -2590,7 +2785,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                   }
                 },
               ),
-
             ],
           ),
         ),
@@ -2598,7 +2792,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-
+  /// here we are showing the GovtPrivateHospital Dat aon DPm Dashboard.
   Widget DPMGetDPM_GHA_Click_prrovalDisplayDatas() {
     return Column(
       children: [
@@ -2618,8 +2812,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -2632,42 +2824,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -2690,7 +2882,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                          dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -2730,7 +2922,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
                     _buildHeaderCell('Member Name'),
-                  //  _buildHeaderCell('Hospital Name'),
+                    //  _buildHeaderCell('Hospital Name'),
                     _buildHeaderCell('Address'),
                     _buildHeaderCell('Nodal Officer Name'),
                     _buildHeaderCell('Mobile No'),
@@ -2741,7 +2933,10 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DatagetDPMGH_clickAPProved>>(
-                future: ApiController.getDPM_GetDPM_GHAPProved_pendings(district_code_login,state_code_login,GetDPM_GH_APPoroved_valueSendinAPi),
+                future: ApiController.getDPM_GetDPM_GHAPProved_pendings(
+                    district_code_login,
+                    state_code_login,
+                    GetDPM_GH_APPoroved_valueSendinAPi),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -2753,7 +2948,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Utils.getEmptyView("No data found");
                   } else {
                     List<DatagetDPMGH_clickAPProved> ddata = snapshot.data;
-                    print('@@---getDPM_GetDPM_GHAPProved_pendings' + ddata.length.toString());
+                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
+                        ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -2765,7 +2961,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.oName),
                               _buildDataCell(offer.ngoName),
-                             // _buildDataCell(offer.hName),
+                              // _buildDataCell(offer.hName),
                               _buildDataCell(offer.address),
                               _buildDataCell(offer.nodalOfficerName),
                               _buildDataCell(offer.mobile.toString()),
@@ -2778,13 +2974,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                   }
                 },
               ),
-
             ],
           ),
         ),
       ],
     );
   }
+
   Widget DPMGetDPM_GHA_Click_PendingDisplayDatas() {
     return Column(
       children: [
@@ -2804,8 +3000,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -2818,42 +3012,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -2876,7 +3070,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                          dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -2916,7 +3110,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
                     _buildHeaderCell('Member Name'),
-                   // _buildHeaderCell('Hospital Name'),
+                    // _buildHeaderCell('Hospital Name'),
                     _buildHeaderCell('Address'),
                     _buildHeaderCell('Nodal Officer Name'),
                     _buildHeaderCell('Mobile No'),
@@ -2927,7 +3121,10 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DatagetDPMGH_clickAPProved>>(
-                future: ApiController.getDPM_GetDPM_GHAPProved_pendings(district_code_login,state_code_login,GetDPM_GH_Pending_valueSendinAPi),
+                future: ApiController.getDPM_GetDPM_GHAPProved_pendings(
+                    district_code_login,
+                    state_code_login,
+                    GetDPM_GH_Pending_valueSendinAPi),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -2939,7 +3136,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Utils.getEmptyView("No data found");
                   } else {
                     List<DatagetDPMGH_clickAPProved> ddata = snapshot.data;
-                    print('@@---getDPM_GetDPM_GHAPProved_pendings' + ddata.length.toString());
+                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
+                        ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -2964,7 +3162,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                   }
                 },
               ),
-
             ],
           ),
         ),
@@ -2972,7 +3169,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-
+  /// here we are showing the PrivatePartition Dat aon DPm Dashboard.
 
   Widget DPMGetDPM_PrivatePartitionAPProvalDisplayDatas() {
     return Column(
@@ -2993,8 +3190,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -3007,42 +3202,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3065,7 +3260,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                          dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -3116,7 +3311,10 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DataGetDPM_PrivatePartition>>(
-                future: ApiController.getDPM_PrivatePartition(district_code_login,state_code_login,DPM_PrivatePartitionP_APPoroved_valueSendinAPi),
+                future: ApiController.getDPM_PrivatePartition(
+                    district_code_login,
+                    state_code_login,
+                    DPM_PrivatePartitionP_APPoroved_valueSendinAPi),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -3128,7 +3326,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Utils.getEmptyView("No data found");
                   } else {
                     List<DataGetDPM_PrivatePartition> ddata = snapshot.data;
-                    print('@@---getDPM_GetDPM_GHAPProved_pendings' + ddata.length.toString());
+                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
+                        ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -3153,13 +3352,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                   }
                 },
               ),
-
             ],
           ),
         ),
       ],
     );
   }
+
   Widget DPM_PrivatePartitionPEndingDisplayDatas() {
     return Column(
       children: [
@@ -3179,8 +3378,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -3193,42 +3390,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3251,7 +3448,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                          dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -3301,7 +3498,10 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DataGetDPM_PrivatePartition>>(
-                future: ApiController.getDPM_PrivatePartition(district_code_login,state_code_login,DPM_PrivatePartitionP_Pending_valueSendinAPi),
+                future: ApiController.getDPM_PrivatePartition(
+                    district_code_login,
+                    state_code_login,
+                    DPM_PrivatePartitionP_Pending_valueSendinAPi),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -3313,7 +3513,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Utils.getEmptyView("No data found");
                   } else {
                     List<DataGetDPM_PrivatePartition> ddata = snapshot.data;
-                    print('@@---DataGetDPM_PrivatePartition' + ddata.length.toString());
+                    print('@@---DataGetDPM_PrivatePartition' +
+                        ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -3336,7 +3537,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                   }
                 },
               ),
-
             ],
           ),
         ),
@@ -3344,6 +3544,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
+  /// here we are showing the PrivateMedical Datq aon DPm Dashboard.
   Widget DPM_PrivateMedicalAPProvedDisplayDatas() {
     return Column(
       children: [
@@ -3363,8 +3564,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -3377,42 +3576,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3435,7 +3634,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                          dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -3485,7 +3684,10 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DataDPMRivateMEdicalColleges>>(
-                future: ApiController.GetDPM_PrivateMedicalColleges(district_code_login,state_code_login,DPM_privateMEdicalCollegeApprovedData_valueSendinAPi),
+                future: ApiController.GetDPM_PrivateMedicalColleges(
+                    district_code_login,
+                    state_code_login,
+                    DPM_privateMEdicalCollegeApprovedData_valueSendinAPi),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -3497,7 +3699,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Utils.getEmptyView("No data found");
                   } else {
                     List<DataDPMRivateMEdicalColleges> ddata = snapshot.data;
-                    print('@@---DataDPMRivateMEdicalColleges' + ddata.length.toString());
+                    print('@@---DataDPMRivateMEdicalColleges' +
+                        ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -3520,13 +3723,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                   }
                 },
               ),
-
             ],
           ),
         ),
       ],
     );
   }
+
   Widget DPM_PrivateMedicalPendingDisplayDatas() {
     return Column(
       children: [
@@ -3546,8 +3749,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -3560,42 +3761,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3618,7 +3819,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                          dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -3668,7 +3869,10 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DataDPMRivateMEdicalColleges>>(
-                future: ApiController.GetDPM_PrivateMedicalColleges(district_code_login,state_code_login,DPM_privateMEdicalCollegePendingData_valueSendinAPi),
+                future: ApiController.GetDPM_PrivateMedicalColleges(
+                    district_code_login,
+                    state_code_login,
+                    DPM_privateMEdicalCollegePendingData_valueSendinAPi),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -3680,7 +3884,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Utils.getEmptyView("No data found");
                   } else {
                     List<DataDPMRivateMEdicalColleges> ddata = snapshot.data;
-                    print('@@---DataDPMRivateMEdicalColleges--' + ddata.length.toString());
+                    print('@@---DataDPMRivateMEdicalColleges--' +
+                        ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -3703,7 +3908,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                   }
                 },
               ),
-
             ],
           ),
         ),
@@ -3711,7 +3915,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-
+  /// here we are showing the ScreeningCampDisplay Data aon DPm Dashboard.
   Widget DPM_GetDPM_ScreeningCampDisplayDatasCompleted() {
     return Column(
       children: [
@@ -3731,8 +3935,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -3745,42 +3947,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3803,7 +4005,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                          dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -3853,7 +4055,8 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DataDPMScreeningCamp>>(
-                future: ApiController.GetDPM_ScreeningCamp(1001,100,"2019-2020","",resultScreeningCampsCompleted),
+                future: ApiController.GetDPM_ScreeningCamp(
+                    1001, 100, "2019-2020", "", resultScreeningCampsCompleted),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -3865,7 +4068,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Utils.getEmptyView("No data found");
                   } else {
                     List<DataDPMScreeningCamp> ddata = snapshot.data;
-                    print('@@---DataDPMScreeningCamp--' + ddata.length.toString());
+                    print('@@---DataDPMScreeningCamp--' +
+                        ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -3888,7 +4092,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                   }
                 },
               ),
-
             ],
           ),
         ),
@@ -3896,8 +4099,381 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
+  Widget DPM_GetDPM_ScreeningCampDisplayDatasOngoing() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ScreeningCampOngoing,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
 
+                                    Container(
+                                        child: Text(
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'Screening Camp(s)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace = true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
 
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('Organisation Name'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    // _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Hospital Address'),
+                    _buildHeaderCell('Contact No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataDPMScreeningCamp>>(
+                future: ApiController.GetDPM_ScreeningCamp(
+                    district_code_login,
+                    state_code_login,
+                    "2019-2020",
+                    "",
+                    resultScreeningCampsOngoing),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataDPMScreeningCamp> ddata = snapshot.data;
+                    print('@@---DataDPMScreeningCamp--' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.campname),
+                              _buildDataCell(offer.ngoName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailId.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget DPM_GetDPM_ScreeningCampDisplayDatasComing() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ScreeningCampComing,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    // Shown Captcha value to user
+                                    Container(
+                                        child: Text(
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+
+                                    Container(
+                                        child: Text(
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                        child: Text(
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      width: 150.0,
+                                      child: Text(
+                                        'Screening Camp(s)',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        setState(() {
+                                          dashboardviewReplace = true;
+                                        });
+                                      },
+                                      child: Container(
+                                        width: 80.0,
+                                        child: Text(
+                                          'Back',
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('Organisation Name'),
+                    _buildHeaderCell('Nodal Officer Name'),
+                    // _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Hospital Address'),
+                    _buildHeaderCell('Contact No'),
+                    _buildHeaderCell('Email Id'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataDPMScreeningCamp>>(
+                future: ApiController.GetDPM_ScreeningCamp(
+                    district_code_login,
+                    state_code_login,
+                    "2019-2020",
+                    "",
+                    resultScreeningCampsComing),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataDPMScreeningCamp> ddata = snapshot.data;
+                    print('@@---DataDPMScreeningCamp--' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.campname),
+                              _buildDataCell(offer.ngoName),
+                              _buildDataCell(offer.address),
+                              _buildDataCell(offer.mobile.toString()),
+                              _buildDataCell(offer.emailId.toString()),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  /// here we are showing the SatelliteCentre Data aon DPm Dashboard.
   Widget DPM_SatelliteCentreDisplayDatas() {
     return Column(
       children: [
@@ -3917,8 +4493,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-
-
                           Container(
                             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                             child: Container(
@@ -3931,42 +4505,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3989,7 +4563,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         print('@@back Pressed----display---');
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
-                                          dashboardviewReplace=true;
+                                          dashboardviewReplace = true;
                                         });
                                       },
                                       child: Container(
@@ -4039,7 +4613,8 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DataDPMsatteliteCenter>>(
-                future: ApiController.GetDPM_SatelliteCentre(district_code_login,state_code_login),
+                future: ApiController.GetDPM_SatelliteCentre(
+                    district_code_login, state_code_login),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -4051,7 +4626,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Utils.getEmptyView("No data found");
                   } else {
                     List<DataDPMsatteliteCenter> ddata = snapshot.data;
-                    print('@@---DataDPMsatteliteCenter--' + ddata.length.toString());
+                    print('@@---DataDPMsatteliteCenter--' +
+                        ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -4074,7 +4650,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                   }
                 },
               ),
-
             ],
           ),
         ),
@@ -4084,7 +4659,6 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   Widget _buildHeaderCellSrNo(String text) {
     return Container(
-
       height: 40,
       width: 80, // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
@@ -4093,7 +4667,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           width: 0.5,
         ),
       ),
-   //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
       child: Center(
         child: Text(
           text,
@@ -4104,9 +4678,9 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+
   Widget _buildHeaderCell(String text) {
     return Container(
-
       height: 40,
       width: 150, // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
@@ -4126,6 +4700,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+
   Widget _buildDataCell(String text) {
     return Container(
       height: 80,
@@ -4137,12 +4712,35 @@ class _DPMDashboard extends State<DPMDashboard> {
           width: 0.1,
         ),
       ),
-     // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
       child: Center(
         child: Text(
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellViewBlue(String text) {
+    return Container(
+      height: 80,
+      width: 150,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Colors.blue,
           ),
         ),
       ),
@@ -4170,7 +4768,56 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+  void _showChangePasswordDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Change Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Current Password',
+                ),
+                obscureText: true,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'New Password',
+                ),
+                obscureText: true,
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: 'Confirm New Password',
+                ),
+                obscureText: true,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Implement your password change logic here
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
+
 
 class DPMDashboardParamsData {
   int districtidDPM;

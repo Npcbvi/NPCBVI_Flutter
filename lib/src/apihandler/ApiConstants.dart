@@ -27,5 +27,7 @@ class ApiConstants {
   static String GetDPM_PrivateMedicalCollege = 'DpmDashboard/api/GetDPM_PrivateMedicalCollege';
   static String GetDPM_SatelliteCentre = 'DpmDashboard/api/GetDPM_SatelliteCentre';
   static String GetDPM_ScreeningCamp = 'DpmDashboard/api/GetDPM_ScreeningCamp';
+  static String ChangePassword = 'ChangePassword';
 
+  static String GetDPM_HospitalApproval = 'DpmDashboard/api/GetDPM_HospitalApproval';
 }

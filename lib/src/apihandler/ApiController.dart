@@ -20,6 +20,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMDashboardData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
@@ -578,117 +579,123 @@ class ApiController {
     }
   }
 
-  static Future<NGOAPPlicationDropDownDPm> getDPM_NGOApplication(
-      GetDPM_NGOApplication getDPM_NGOApplications) async {
-    NGOAPPlicationDropDownDPm ngoapPlicationDropDownDPm =
-        NGOAPPlicationDropDownDPm();
+
+  static Future<List<DataNGOAPPlicationDropDownDPm>> getDPM_NGOApplicationDropDown(int district_code,int state_code ) async {
+    print("@@getDPM_NGOApplicationDropDown"+"1");
     Response response1;
+
+    // Check network availability
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
-    if (isNetworkAvailable) {
-      try {
-        var url = ApiConstants.baseUrl + ApiConstants.GetDPM_NGOApplication;
-        //Way to send headers
-        Map<String, String> headers = {
-          "Content-Type": "application/json",
-          "apikey": "Key123",
-          "apipassword": "PWD123",
-        };
-        //Way to send params
-        var body = json.encode({"district_code": 536, "state_code": 29});
-        print("getDPM_NGOApplication---URL with params--" +
-            url +
-            body.toString());
-        //Way to send network calls
-        Dio dio = new Dio();
-        response1 = await dio.post(url,
-            data: body,
-            options: new Options(
-                contentType: "application/json",
-                responseType: ResponseType.plain));
-        // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
-        print("@@getDPM_NGOApplication--Api--respnse--" + response1.toString());
-        ngoapPlicationDropDownDPm =
-            NGOAPPlicationDropDownDPm.fromJson(json.decode(response1.data));
-        if (ngoapPlicationDropDownDPm.status) {
-          print("@@getDPM_NGOApplication++++" +
-              ngoapPlicationDropDownDPm.message);
-        } else {
-          Utils.showToast(ngoapPlicationDropDownDPm.message, true);
-        }
-        return ngoapPlicationDropDownDPm;
-      } catch (e) {
-        Utils.showToast(e.toString(), true);
-        return null;
-      }
-    } else {
+    if (!isNetworkAvailable) {
       Utils.showToast(AppConstant.noInternet, true);
-      return null;
+      return [];
     }
 
-    //Way to send url with methodname
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_NGOApplication;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": 536,
+        "state_code": 29,
+
+      });
+      print("@@getDPM_NGOApplicationDropDown--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_NGOApplicationDropDown--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      NGOAPPlicationDropDownDPm data = NGOAPPlicationDropDownDPm.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
   }
-  /*static Future<GetDPM_NGOAPProved_pending> getDPM_NGOAPProved_pendings(
-      ) async {
-    print("@@getDPM_NGOAPProved_pending"+"1");
-    GetDPM_NGOAPProved_pending getDPM_NGOAPProved_pendings = GetDPM_NGOAPProved_pending(); // add here
+  static Future<List<DataGetNewHospitalData>> getDPM_HospitalApproval(int district_code,int state_code ) async {
+    print("@@getDPM_HospitalApproval"+"1");
     Response response1;
-   *//* SharedPreferences prefs = await SharedPreferences.getInstance();
-    String districtCode_loginFetch = prefs.getString(AppConstant.distritcCode);
-    String stateCode_loginFetch = prefs.getString(AppConstant.state_code);
-    int dpmAPPRoved_valueSendinAPi=2; // for approved
-    int dpmPending_valueSendinAPi=1;
-    print("@@districtCode_loginFetch"+"1--"+districtCode_loginFetch);
-    print("@@stateCode_loginFetch"+"1"+stateCode_loginFetch);*//*
+
+    // Check network availability
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
-    if (isNetworkAvailable) {
-      try {
-        var url = ApiConstants.baseUrl + ApiConstants.GetDPM_NGOApprovedPending;
-        //Way to send headers
-        Map<String, String> headers = {
-          "Content-Type": "application/json",
-          "apikey": "Key123",
-          "apipassword": "PWD123",
-        };
-        //Way to send params
-        var body = json.encode({
-
-          "district_code":1001 ,
-          "state_code":  100,
-          "status":  2, //for approved
-
-        });
-        print("@@getDPM_NGOAPProved_pending"+"1");
-        print("@@getDPM_NGOAPProved_pending" + url + body);
-        //Way to send network calls
-        Dio dio = new Dio();
-        response1 = await dio.post(url,
-            data: body,
-            options: new Options(
-                headers: headers,
-                contentType: "application/json",
-                responseType: ResponseType.plain));
-        print("@@getDPM_NGOAPProved_pending" + url + body);
-        print("@@getDPM_NGOAPProved_pending--Api" + response1.toString());
-        getDPM_NGOAPProved_pendings =
-            GetDPM_NGOAPProved_pending.fromJson(json.decode(response1.data));
-
-        if (getDPM_NGOAPProved_pendings.status) {
-          Utils.showToast(getDPM_NGOAPProved_pendings.message, true);
-          // SharedPrefs.saveForgotPasswordData(forgotPasswordDatas);
-
-        }else{
-          Utils.showToast(getDPM_NGOAPProved_pendings.message, true);
-        }
-        return getDPM_NGOAPProved_pendings;
-      } catch (e) {
-        Utils.showToast(e.toString(), true);
-        return null;
-      }
-    } else {
+    if (!isNetworkAvailable) {
       Utils.showToast(AppConstant.noInternet, true);
-      return null;
+      return [];
     }
-  }*/
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_HospitalApproval;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+
+      });
+      print("@@getDPM_HospitalApproval--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_HospitalApproval--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetNewHospitalData data = GetNewHospitalData.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
   static Future<List<DataGetDPM_NGOAPProved_pending>> getDPM_NGOAPProved_pendings(int district_code,int state_code,int status ) async {
     print("@@getDPM_NGOAPProved_pending"+"1");
     Response response1;
