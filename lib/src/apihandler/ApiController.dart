@@ -14,6 +14,7 @@ import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMGovtPrivateOrganisationTypeData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
@@ -682,6 +683,65 @@ class ApiController {
       // Parse the response
       var responseData = json.decode(response.data);
       GetNewHospitalData data = GetNewHospitalData.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<DataDPMGovtPrivateOrganisationTypeData>> getDPM_GovtPvtOther(int district_code,int state_code,int organisationroleId ) async {
+    print("@@getDPM_GovtPvtOther"+"1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_GovtPvtOther;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "roleId":organisationroleId
+
+      });
+      print("@@getDPM_GovtPvtOther--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_HospitalApproval--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      DPMGovtPrivateOrganisationTypeData data = DPMGovtPrivateOrganisationTypeData.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);

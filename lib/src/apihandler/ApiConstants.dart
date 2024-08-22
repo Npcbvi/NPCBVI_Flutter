@@ -30,4 +30,6 @@ class ApiConstants {
   static String ChangePassword = 'ChangePassword';
 
   static String GetDPM_HospitalApproval = 'DpmDashboard/api/GetDPM_HospitalApproval';
+
+  static String GetDPM_GovtPvtOther = 'DpmDashboard/api/GetDPM_GovtPvtOther';
 }
