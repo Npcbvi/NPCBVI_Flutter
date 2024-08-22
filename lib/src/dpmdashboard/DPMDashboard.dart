@@ -365,13 +365,22 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   print('@@NGO--1' + _chosenValue);
                                   dashboardviewReplace = false;
                                   NGOlistDropDownDisplayDatas = true;
-                                  //      _getDPM_NGOApplicationDropDown();
+                                  ngolistNewHosdpitalDropDown = false;
+                                  ngoGovtPrivateOthereHosdpitalDataShow = false;
 
                                 } else if (_chosenValue == "New Hospital") {
                                   dashboardviewReplace = false;
+
+                                  NGOlistDropDownDisplayDatas = false;
+                                  ngoGovtPrivateOthereHosdpitalDataShow = false;
                                   ngolistNewHosdpitalDropDown = true;
                                 } else
                                 if (_chosenValue == "Govt/private/Other") {
+                                  dashboardviewReplace = false;
+                                  ngolistNewHosdpitalDropDown=false;
+                                  NGOlistDropDownDisplayDatas = false;
+                                  ngoGovtPrivateOthereHosdpitalDataShow = true;
+                                }if(_chosenValue=="Approve Renew MOU"){
                                   dashboardviewReplace = false;
                                   ngoGovtPrivateOthereHosdpitalDataShow = true;
                                 }
@@ -5008,10 +5017,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             if (response != null && response.status) {
               Utils.showToast(response.message, true);
               Navigator.of(context).pop(); // Close the dialog
-
             }
-
-
             else {
               Utils.showToast(response.message, true);
             }
