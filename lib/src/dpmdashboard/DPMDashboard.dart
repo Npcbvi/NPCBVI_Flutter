@@ -22,7 +22,7 @@ class DPMDashboard extends StatefulWidget {
 }
 
 class _DPMDashboard extends State<DPMDashboard> {
-  String  oganisationTypeGovtPrivateDRopDown;
+  String oganisationTypeGovtPrivateDRopDown;
   int dropDownvalueOrgnbaistaionType = 0;
 
   bool dashboardviewReplace = false;
@@ -38,10 +38,11 @@ class _DPMDashboard extends State<DPMDashboard> {
   String role_id;
   bool isLoadingApi = true;
   DPMDashboardParamsData dpmDashboardParamsDatass =
-      new DPMDashboardParamsData();
+  new DPMDashboardParamsData();
   GetDPM_NGOApplication getDPM_NGOApplications = new GetDPM_NGOApplication();
   GetDPM_NGOApprovedPendingFields getDPM_NGOApprovedPendingFields =
-      new GetDPM_NGOApprovedPendingFields();
+  new GetDPM_NGOApprovedPendingFields();
+  GetChangeAPsswordFields getchangePwd = new GetChangeAPsswordFields();
   String ngoCountApproved,
       ngoCountPending,
       totalPatientApproved,
@@ -64,9 +65,9 @@ class _DPMDashboard extends State<DPMDashboard> {
   String _errorMessage = '';
   List<GetDiseaseData> diseaseList = [];
   bool NGOlistDropDownDisplayDatas = false;
-    bool ngolistNewHosdpitalDropDown = false;
-    bool ngoGovtPrivateOthereHosdpitalDataShow=false;
-    bool organisationGovtPrivateSelectionAfter=false;
+  bool ngolistNewHosdpitalDropDown = false;
+  bool ngoGovtPrivateOthereHosdpitalDataShow = false;
+  bool organisationGovtPrivateSelectionAfter = false;
   List<DataNGOAPPlicationDropDownDPm> ddataNGOAPPlicationDropDownDPm = [];
   int dpmAPPRoved_valueSendinAPi = 2; // for approved
   int dpmPending_valueSendinAPi = 1; //for Penfing
@@ -104,9 +105,9 @@ class _DPMDashboard extends State<DPMDashboard> {
   String resultScreeningCampsComing = "Coming";
 
   bool chnagePAsswordView = false;
-  TextEditingController oldPassword = new TextEditingController();
-  TextEditingController newPassword = new TextEditingController();
-  TextEditingController confirmnPassword = new TextEditingController();
+  TextEditingController _oldPasswordControllere = new TextEditingController();
+  TextEditingController _newPasswordontrollere = new TextEditingController();
+  TextEditingController _confirmnPasswordontrollere = new TextEditingController();
 
   @override
   void initState() {
@@ -235,9 +236,10 @@ class _DPMDashboard extends State<DPMDashboard> {
               Utils.hideKeyboard(context);
               Navigator.of(context).pop(context);
             }),*/
-          actions: [
+        actions: [
           PopupMenuButton<int>(
-            itemBuilder: (context) => [
+            itemBuilder: (context) =>
+            [
               PopupMenuItem(
                 value: 1,
                 child: Row(
@@ -276,10 +278,11 @@ class _DPMDashboard extends State<DPMDashboard> {
               if (value == 1) {
                 _showChangePasswordDialog();
               } else if (value == 2) {
+
                 // Implement User Manual action
               } else if (value == 3) {
                 setState(() {
-                 /* dashboardviewReplace = false;
+                  /* dashboardviewReplace = false;
                   chnagePAsswordView = true;*/
                 });
               }
@@ -346,7 +349,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               );
                             }).toList(),
                             hint: Text(
-                              "Select Organisation Type",
+                              "Approve Application",
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 color: Colors.white,
@@ -366,11 +369,11 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                 } else if (_chosenValue == "New Hospital") {
                                   dashboardviewReplace = false;
-                                  ngolistNewHosdpitalDropDown=true;
-                                } else if (_chosenValue == "Govt/private/Other") {
+                                  ngolistNewHosdpitalDropDown = true;
+                                } else
+                                if (_chosenValue == "Govt/private/Other") {
                                   dashboardviewReplace = false;
-                                  ngoGovtPrivateOthereHosdpitalDataShow=true;
-
+                                  ngoGovtPrivateOthereHosdpitalDataShow = true;
                                 }
                               });
                             },
@@ -418,8 +421,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 if (_chosenValueLOWVision == "Cataract") {
                                   print('@@NGO--1' + _chosenValueLOWVision);
                                 } else if (_chosenValueLOWVision ==
-                                    "Diabetic") {
-                                } else if (_chosenValueLOWVision ==
+                                    "Diabetic") {} else
+                                if (_chosenValueLOWVision ==
                                     "Glaucoma") {}
                               });
                             },
@@ -477,8 +480,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 //  print('@@spinnerChooseValue--' + _chosenValue);
                                 if (_chosenEyeBank == "Eye Bank Collection") {
                                   print('@@NGO--1' + _chosenEyeBank);
-                                } else if (_chosenEyeBank == "Eye Donation") {
-                                } else if (_chosenEyeBank ==
+                                } else
+                                if (_chosenEyeBank == "Eye Donation") {} else
+                                if (_chosenEyeBank ==
                                     "Eyeball Collection Via Eye Bank") {}
                               });
                             },
@@ -504,19 +508,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                         // Shown Captcha value to user
                         Container(
                             child: Text(
-                          'Login Type:',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w500),
-                        )),
+                              'Login Type:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                            )),
                         const SizedBox(
                           width: 10,
                         ),
                         Container(
                             child: Text(
-                          'DPM',
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w500),
-                        )),
+                              'DPM',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500),
+                            )),
                         const SizedBox(
                           width: 10,
                         ),
@@ -533,42 +539,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   // Shown Captcha value to user
                                   Container(
                                       child: Text(
-                                    'District:',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500),
-                                  )),
+                                        'District:',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      )),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Container(
                                       child: Text(
-                                    '${districtNames}',
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.w500),
-                                  )),
+                                        '${districtNames}',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500),
+                                      )),
                                   const SizedBox(
                                     width: 10,
                                   ),
 
                                   Container(
                                       child: Text(
-                                    'State :',
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500),
-                                  )),
+                                        'State :',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      )),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Container(
                                       child: Text(
-                                    '${stateNames}',
-                                    style: TextStyle(
-                                        color: Colors.red,
-                                        fontWeight: FontWeight.w500),
-                                  )),
+                                        '${stateNames}',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500),
+                                      )),
                                   const SizedBox(
                                     width: 10,
                                   ),
@@ -599,13 +605,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                             width: double.infinity,
                             decoration: new BoxDecoration(
                                 gradient: new LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color.fromARGB(255, 25, 178, 238),
-                                Color.fromARGB(255, 21, 236, 229)
-                              ],
-                            )),
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Color.fromARGB(255, 25, 178, 238),
+                                    Color.fromARGB(255, 21, 236, 229)
+                                  ],
+                                )),
                             child: Column(
                               children: [
                                 Padding(
@@ -708,13 +714,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
-                                  )),
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color.fromARGB(255, 25, 178, 238),
+                                          Color.fromARGB(255, 21, 236, 229)
+                                        ],
+                                      )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -733,17 +739,17 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print('@@---NGOsAPProved--1');
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     NGO_APPorovedClickShowData =
-                                                        true;
+                                                    true;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -753,7 +759,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -762,8 +768,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -771,9 +777,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     NGO_PendingClickShowData =
-                                                        true;
+                                                    true;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -783,7 +789,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -796,15 +802,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ngoCountApproved}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -812,15 +818,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ngoCountPending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -842,13 +848,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
-                                  )),
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color.fromARGB(255, 25, 178, 238),
+                                          Color.fromARGB(255, 21, 236, 229)
+                                        ],
+                                      )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -868,8 +874,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -877,9 +883,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     GetDPM_GH_APPorovedClickShowData =
-                                                        true;
+                                                    true;
                                                   });
                                                 },
                                                 child: new Text('Approved',
@@ -887,7 +893,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -896,8 +902,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -905,9 +911,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     GetDPM_GH_PendingClickShowData =
-                                                        true;
+                                                    true;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -915,7 +921,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -928,14 +934,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text('${gH_CHC_Count}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -943,15 +949,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${gH_CHC_Count_Pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -973,13 +979,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
-                                  )),
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color.fromARGB(255, 25, 178, 238),
+                                          Color.fromARGB(255, 21, 236, 229)
+                                        ],
+                                      )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -998,8 +1004,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1007,9 +1013,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     GetDPM_PrivatePartitionPorovedClickShowData =
-                                                        true;
+                                                    true;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -1019,7 +1025,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1028,8 +1034,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1037,9 +1043,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     DPM_PrivatePartitionP_PendingClickShowData =
-                                                        true;
+                                                    true;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -1047,7 +1053,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1060,14 +1066,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text('${ppCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1075,15 +1081,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1105,13 +1111,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
-                                  )),
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color.fromARGB(255, 25, 178, 238),
+                                          Color.fromARGB(255, 21, 236, 229)
+                                        ],
+                                      )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1131,8 +1137,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1140,9 +1146,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     DPM_privateMEdicalCollegeApprovedData =
-                                                        true;
+                                                    true;
                                                   });
                                                 },
                                                 child: new Text('Approved',
@@ -1150,7 +1156,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1159,8 +1165,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1168,9 +1174,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     DPM_privateMEdicalCollegePendingData =
-                                                        true;
+                                                    true;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -1178,7 +1184,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1191,14 +1197,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text('${pmcCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1206,15 +1212,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1236,13 +1242,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
-                                  )),
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color.fromARGB(255, 25, 178, 238),
+                                          Color.fromARGB(255, 21, 236, 229)
+                                        ],
+                                      )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1261,8 +1267,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1270,7 +1276,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     ScreeningCamp = true;
                                                   });
                                                 },
@@ -1279,7 +1285,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1288,8 +1294,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1297,7 +1303,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     ScreeningCampOngoing = true;
                                                   });
                                                 },
@@ -1306,7 +1312,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1315,8 +1321,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1324,7 +1330,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     ScreeningCampComing = true;
                                                   });
                                                 },
@@ -1333,7 +1339,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1346,15 +1352,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${campCompletedCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1362,15 +1368,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${campongoingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1378,15 +1384,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${campCommingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                          FontWeight.bold,
+                                                      FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1408,13 +1414,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
-                                  )),
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color.fromARGB(255, 25, 178, 238),
+                                          Color.fromARGB(255, 21, 236, 229)
+                                        ],
+                                      )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1433,8 +1439,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1442,9 +1448,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                        false;
+                                                    false;
                                                     satelliteCentreShowData =
-                                                        true;
+                                                    true;
                                                   });
                                                 },
                                                 child: new Text(
@@ -1453,7 +1459,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1462,8 +1468,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -1475,7 +1481,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1498,13 +1504,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
-                                  )),
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Color.fromARGB(255, 25, 178, 238),
+                                          Color.fromARGB(255, 21, 236, 229)
+                                        ],
+                                      )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1553,8 +1559,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -1567,7 +1573,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1576,8 +1582,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -1589,7 +1595,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                            FontWeight.bold,
+                                                        FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1609,7 +1615,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             flex: 1,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: new Text(
                                   'Disease-wise Patient Statistics( Since FY: 2024-2025 )',
                                   textAlign: TextAlign.center,
@@ -1623,7 +1629,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             flex: 1,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: new Text(
                                   'Disease-wise Registered Patient(Since FY: 2024-2025',
                                   textAlign: TextAlign.center,
@@ -1653,7 +1659,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             DPM_GetDPM_ScreeningCampDisplayDatasCompleted(),
             DPM_GetDPM_ScreeningCampDisplayDatasOngoing(),
             DPM_GetDPM_ScreeningCampDisplayDatasComing(),
-            chnagePAsswordViews(),
+           // chnagePAsswordViews(),
             NGOlistnewHospitalDropdownData(),
             NGOlistgovtPvtotherHospitalDropdownData(),
           ],
@@ -1662,7 +1668,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  Widget chnagePAsswordViews() {
+  /*Widget chnagePAsswordViews() {
     return Column(
       children: [
         Visibility(
@@ -1677,7 +1683,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: new TextField(
-                      controller: oldPassword,
+                      controller: _oldPasswordControllere,
                       decoration: InputDecoration(
                           label: Text('Old Password*'),
                           hintText: 'Old Password*',
@@ -1691,7 +1697,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: new TextField(
-                      controller: newPassword,
+                      controller: _newPasswordontrollere,
                       obscureText: true,
                       decoration: InputDecoration(
                           label: Text('New Password *'),
@@ -1708,7 +1714,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: new TextField(
-                      controller: confirmnPassword,
+                      controller: _confirmnPasswordontrollere,
                       obscureText: true,
                       decoration: InputDecoration(
                           label: Text('Confirm Password *'),
@@ -1729,7 +1735,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       ),
                       onPressed: () {
                         print('@@changePAssword Click----here');
-                       // _NGORegistrationSubmit();
+                        // _NGORegistrationSubmit();
                       },
                     ),
                   ),
@@ -1740,7 +1746,7 @@ class _DPMDashboard extends State<DPMDashboard> {
         ),
       ],
     );
-  }
+  }*/
 
   Widget NGOlistApplicationDropdownData() {
     return Column(
@@ -1791,42 +1797,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -2081,7 +2087,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             );
                           }).toList(),
                       hint: Text(
-                        "Select",
+                        "Select Organisation Type",
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
@@ -2096,7 +2102,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                               oganisationTypeGovtPrivateDRopDown);
                           if (oganisationTypeGovtPrivateDRopDown ==
                               "Govt. District Hospital/Govt.MEdical College") {
-
                             dropDownvalueOrgnbaistaionType = 10;
                             print('@@oganisationTypeGovtPrivateDRopDown--' +
                                 oganisationTypeGovtPrivateDRopDown +
@@ -2127,8 +2132,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               "Other(Institution not claiming fund from NPCBVI)") {
                             dropDownvalueOrgnbaistaionType = 14;
                             print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                oganisationTypeGovtPrivateDRopDown +
-                                "-----" +
+                                oganisationTypeGovtPrivateDRopDown + "-----" +
                                 dropDownvalueOrgnbaistaionType.toString());
                           }
                         });
@@ -2148,10 +2152,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                         primary: Colors.blue,
                       ),
                       onPressed: () {
-                      print('@@GovtPvtSubmit clkick------');
-
+                        print('@@GovtPvtSubmit clkick------');
                         setState(() {
-                          organisationGovtPrivateSelectionAfter=true;
+                          organisationGovtPrivateSelectionAfter = true;
                         });
                       },
                     ),
@@ -2178,23 +2181,28 @@ class _DPMDashboard extends State<DPMDashboard> {
                     Divider(color: Colors.blue, height: 1.0),
                     FutureBuilder<List<DataDPMGovtPrivateOrganisationTypeData>>(
                       future: ApiController.getDPM_GovtPvtOther(
-                          district_code_login, state_code_login,dropDownvalueOrgnbaistaionType),
+                          district_code_login, state_code_login,
+                          dropDownvalueOrgnbaistaionType),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data == null) {
                           return Utils.getEmptyView("No data found");
                         } else {
-                          List<DataDPMGovtPrivateOrganisationTypeData> ddata = snapshot.data;
+                          List<
+                              DataDPMGovtPrivateOrganisationTypeData> ddata = snapshot
+                              .data;
                           print('@@---ddata' + ddata.length.toString());
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Column(
                               children: ddata.map((offer) {
                                 return Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment
+                                      .spaceEvenly,
                                   children: [
                                     _buildDataCellSrNo(
                                         (ddata.indexOf(offer) + 1).toString()),
@@ -2287,7 +2295,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             children: ddata.map((offer) {
                               return Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                MainAxisAlignment.spaceEvenly,
                                 children: [
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
@@ -2383,7 +2391,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                       List<DataNGOAPPlicationDropDownDPm> ddata = snapshot.data;
 
                       return Container(
-                        height: MediaQuery.of(context).size.height *
+                        height: MediaQuery
+                            .of(context)
+                            .size
+                            .height *
                             0.5, // Adjust height as needed
                         child: ListView.builder(
                           itemCount: ddata.length,
@@ -2394,7 +2405,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               children: <Widget>[
                                 Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Expanded(
                                       flex: 1,
@@ -2591,42 +2602,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -2778,42 +2789,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -2966,42 +2977,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3154,42 +3165,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3344,42 +3355,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3532,42 +3543,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3718,42 +3729,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3903,42 +3914,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4089,42 +4100,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4272,42 +4283,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4459,42 +4470,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4647,42 +4658,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'District:',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${districtNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          'State :',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
+                                          '${stateNames}',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4865,6 +4876,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+
   Widget _buildDataCellViewBlue(String text) {
     return Container(
       height: 80,
@@ -4888,6 +4900,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+
   Widget _buildDataCellSrNo(String text) {
     return Container(
       height: 80,
@@ -4910,6 +4923,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+
   void _showChangePasswordDialog() {
     showDialog(
       context: context,
@@ -4921,17 +4935,20 @@ class _DPMDashboard extends State<DPMDashboard> {
             children: [
               TextField(
                 decoration: InputDecoration(
-                  labelText: 'Current Password',
+                  labelText: 'Old Password',
                 ),
+                controller: _oldPasswordControllere,
                 obscureText: true,
               ),
               TextField(
+                controller: _newPasswordontrollere,
                 decoration: InputDecoration(
                   labelText: 'New Password',
                 ),
                 obscureText: true,
               ),
               TextField(
+                controller: _confirmnPasswordontrollere,
                 decoration: InputDecoration(
                   labelText: 'Confirm New Password',
                 ),
@@ -4948,8 +4965,8 @@ class _DPMDashboard extends State<DPMDashboard> {
             ),
             ElevatedButton(
               onPressed: () {
+                _submitchangePAsswordApi();
                 // Implement your password change logic here
-                Navigator.of(context).pop(); // Close the dialog
               },
               child: Text('Submit'),
             ),
@@ -4957,6 +4974,53 @@ class _DPMDashboard extends State<DPMDashboard> {
         );
       },
     );
+  }
+
+  Future<void> _submitchangePAsswordApi() async {
+    print('@@EntryPoimt heres');
+    getchangePwd.userid = userId;
+    getchangePwd.oldPassword = _oldPasswordControllere.text.toString().trim();
+    getchangePwd.newPassword = _newPasswordontrollere.text.toString().trim();
+    getchangePwd.confirmPassword =
+        _confirmnPasswordontrollere.text.toString().trim();
+    print('@@EntryPoimt heres---22'+ getchangePwd.oldPassword+ getchangePwd.confirmPassword);
+
+    print('@@EntryPoimt heres---2'+  getchangePwd.userid+ getchangePwd.oldPassword+getchangePwd.newPassword+ getchangePwd.confirmPassword);
+    if (getchangePwd.oldPassword.isEmpty) {
+      Utils.showToast("Please enter old Password !", false);
+      return;
+    }
+    if (getchangePwd.newPassword.isEmpty) {
+      Utils.showToast("Please enter new Password !", false);
+      return;
+    }
+    if (getchangePwd.confirmPassword.isEmpty) {
+      Utils.showToast("Please enter confirm Password !", false);
+      return;
+    } else {
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog1(context);
+          ApiController.changePAssword(getchangePwd).then((response) async {
+            Utils.hideProgressDialog1(context);
+
+            print('@@response_loginScreen ---' + response.toString());
+            if (response != null && response.status) {
+              Utils.showToast(response.message, true);
+              Navigator.of(context).pop(); // Close the dialog
+
+            }
+
+
+            else {
+              Utils.showToast(response.message, true);
+            }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
+    }
   }
 }
 
@@ -4980,4 +5044,11 @@ class GetDPM_NGOApprovedPendingFields {
   int district_code;
   int state_code;
   int status;
+}
+
+class GetChangeAPsswordFields {
+  String userid;
+  String oldPassword;
+  String newPassword;
+  String confirmPassword;
 }
