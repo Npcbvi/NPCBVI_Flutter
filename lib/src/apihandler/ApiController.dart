@@ -23,6 +23,8 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMDashboardData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientAPprovedwithFinanceYear.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientPendingwithFinance.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreening.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
@@ -1235,6 +1237,124 @@ class ApiController {
       return [];
     }
   }
+
+  static Future<List<DataGetPatientAPprovedwithFinanceYear>> GetDPM_Patients_Approved_finacne(int district_code,int state_code,String financialYear ) async {
+    print("@@GetDPM_Patients_Approved_finacne"+"1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Patients_Approved;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "financialYear": financialYear, // for approved
+      });
+      print("@@DataGetDPM_PrivatePartition--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetDPM_Patients_Approved_finacne--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetPatientAPprovedwithFinanceYear data = GetPatientAPprovedwithFinanceYear.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<DataGetPatientPendingwithFinance>> GetDPM_Patients_Pending_finacne(int district_code,int state_code,String financialYear ) async {
+    print("@@GetDPM_Patients_Pending_finacne"+"1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Patients_Pending;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "financialYear": financialYear, // for approved
+      });
+      print("@@GetDPM_Patients_Pending_finacne--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetDPM_Patients_Approved_finacne--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetPatientPendingwithFinance data = GetPatientPendingwithFinance.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
   static Future<List<DataGetEyeScreening>> GetDPM_EyeScreening(int district_code,int state_code,String userid ) async {
     print("@@GetDPM_EyeScreening"+"1");
     Response response1;

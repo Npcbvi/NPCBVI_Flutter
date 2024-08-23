@@ -9,6 +9,8 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientAPprovedwithFinanceYear.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientPendingwithFinance.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreening.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
@@ -102,9 +104,9 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool ScreeningCampComing = false;
 
   //Badh main use this
-  bool PatientsAPProvedClickData = false;
+  bool PatientsAPProvedClickDataFinance = false;
   bool PatientsPendingClickData = false;
-  int PatientsAPProvedClickData_valueSendinAPi = 2; // for approved
+  int PatientsAPProvedClickDataFinance_valueSendinAPi = 2; // for approved
   int PatientsPendingClickData_valueSendinAPi = 1;
 
   String resultScreeningCampsCompleted = "Completed";
@@ -665,7 +667,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           onTap: () {
                                             print(
                                                 '@@---Patient(s) (2024-2025) APproved for Dialog');
-                                            showDiseaseDialog();
+                                            showDiseaseDialogApprovedPatintFinance();
                                           },
                                           child: new Text(
                                             'Approved',
@@ -687,7 +689,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           onTap: () {
                                             print(
                                                 '@@---Patient(s) (2024-2025) Pending for Dialog');
-                                            showDiseaseDialog();
+                                            showDiseaseDialogPendingPatintFinance();
                                           },
                                           child: new Text('Pending',
                                               textAlign: TextAlign.center,
@@ -1694,91 +1696,13 @@ class _DPMDashboard extends State<DPMDashboard> {
             NGOlistgovtPvtotherHospitalDropdownData(),
             NGOlistApproveRevenuMOUDataShow(),
             ngolistEyeScreeningShowData(),
+        //    PatientApprovedFinancneClickDisplayData(),
           ],
         ),
       ),
     );
   }
 
-  /*Widget chnagePAsswordViews() {
-    return Column(
-      children: [
-        Visibility(
-          visible: chnagePAsswordView,
-          child: Center(
-            child: Container(
-              margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
-              alignment: Alignment.center,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _oldPasswordControllere,
-                      decoration: InputDecoration(
-                          label: Text('Old Password*'),
-                          hintText: 'Old Password*',
-
-                          //prefixIcon
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _newPasswordontrollere,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          label: Text('New Password *'),
-                          hintText: 'New Password *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-
-                  // TextFormField to enter captcha value
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _confirmnPasswordontrollere,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                          label: Text('Confirm Password *'),
-                          hintText: 'Confirm Password *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                    child: ElevatedButton(
-                      child: Text('Change Password'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                      ),
-                      onPressed: () {
-                        print('@@changePAssword Click----here');
-                        // _NGORegistrationSubmit();
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }*/
 
   Widget NGOlistApplicationDropdownData() {
     return Column(
@@ -1983,7 +1907,6 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
-
   Widget NGOlistnewHospitalDropdownData() {
     return Column(
       children: [
@@ -2075,7 +1998,6 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
-
   Widget NGOlistgovtPvtotherHospitalDropdownData() {
     return Column(
       children: [
@@ -2283,7 +2205,6 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
-
   Widget NGOlistApproveRevenuMOUDataShow() {
     return Column(
       children: [
@@ -2648,42 +2569,30 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  void showDiseaseDialog() {
+  void showDiseaseDialogApprovedPatintFinance() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+
+        double screenHeight = MediaQuery.of(context).size.height;
+
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: double.maxFinite,
+            width: screenWidth * 0.9,  // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Container(
-                    color: Colors.blue,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'NGO list for Approval',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
                   // Horizontal Scrolling Header Row
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
                         _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('Diseases Name'),
+                        _buildHeaderCell('Disease Name'),
                         _buildHeaderCell('Total'),
                         _buildHeaderCell('Action'),
                       ],
@@ -2691,33 +2600,135 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                   Divider(color: Colors.blue, height: 1.0),
                   // Data Rows
-                  FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
-                    future: ApiController.getDPM_NGOApplicationDropDown(
-                        district_code_login, state_code_login),
+                  FutureBuilder<List<DataGetPatientAPprovedwithFinanceYear>>(
+                    future: ApiController.GetDPM_Patients_Approved_finacne(
+                        district_code_login,
+                        state_code_login,
+                        "2024-2025"),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
                         return Utils.getEmptyView("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData || snapshot.data == null) {
+                      } else if (!snapshot.hasData ||
+                          snapshot.data == null ||
+                          snapshot.data.isEmpty) {
                         return Utils.getEmptyView("No data found");
                       } else {
-                        List<DataNGOAPPlicationDropDownDPm> ddata =
-                            snapshot.data;
+                        List<DataGetPatientAPprovedwithFinanceYear> ddata = snapshot.data;
                         print('@@---ddata' + ddata.length.toString());
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Column(
                             children: ddata.map((offer) {
                               return Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.name),
-                                  _buildDataCell(offer.memberName),
-                                  _buildDataCell("View"),
+                                  _buildDataCell(offer.diseaseName),
+                                  _buildDataCell(offer.totalApproPending.toString()),
+                                  _buildDataCellViewBlue("View", () {
+                                    // Handle the edit action here
+                                    // For example, navigate to an edit screen or show a dialog
+                                    print('@@Edit clicked for item: ${offer.diseaseName}');
+                                    //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+
+                                    // Example: Navigate to an edit page with the selected item
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void showDiseaseDialogPendingPatintFinance() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Text('Disease Data'),
+          content: Container(
+            width: screenWidth * 0.9,  // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Horizontal Scrolling Header Row
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Disease Name'),
+                        _buildHeaderCell('Total'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                  ),
+                  Divider(color: Colors.blue, height: 1.0),
+                  // Data Rows
+                  FutureBuilder<List<DataGetPatientPendingwithFinance>>(
+                    future: ApiController.GetDPM_Patients_Pending_finacne(
+                        district_code_login,
+                        state_code_login,
+                        "2024-2025"),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData ||
+                          snapshot.data == null ||
+                          snapshot.data.isEmpty) {
+                        return Utils.getEmptyView("No data found");
+                      } else {
+                        List<DataGetPatientPendingwithFinance> ddata = snapshot.data;
+                        print('@@---ddata' + ddata.length.toString());
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.diseaseName),
+                                  _buildDataCell(offer.totalApproPending.toString()),
+                                  _buildDataCellViewBlue("View", () {
+                                    // Handle the edit action here
+                                    // For example, navigate to an edit screen or show a dialog
+                                    print('@@Edit clicked for item: ${offer.diseaseName}');
+                                    //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+
+                                    // Example: Navigate to an edit page with the selected item
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                                  }),
                                 ],
                               );
                             }).toList(),
@@ -2743,248 +2754,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  /// here we are showing the PatientApproved Data aon DPm Dashboard.
-  Widget PatientApprovedClickDisplayData() {
-    return Column(
-      children: [
-        Visibility(
-          visible: PatientsAPProvedClickData,
-          child: Container(
-            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            child: Column(
-              children: [
-                Table(
-                  border: TableBorder.all(),
-                  columnWidths: {
-                    0: FixedColumnWidth(50),
-                    1: FlexColumnWidth(50),
-                    2: FlexColumnWidth(50),
-                    3: FixedColumnWidth(50),
-                  },
-                  children: [
-                    TableRow(
-                      decoration: BoxDecoration(color: Colors.grey[200]),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('S.No',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Disease Name',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Total',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text('Action',
-                              style: TextStyle(fontWeight: FontWeight.bold)),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
-                  future: ApiController.getDPM_NGOApplicationDropDown(
-                      district_code_login, state_code_login),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    } else if (snapshot.hasError) {
-                      return Utils.getEmptyView("Error: ${snapshot.error}");
-                    } else if (!snapshot.hasData ||
-                        snapshot.data == null ||
-                        snapshot.data.isEmpty) {
-                      return Utils.getEmptyView("No data found");
-                    } else {
-                      List<DataNGOAPPlicationDropDownDPm> ddata = snapshot.data;
 
-                      return Container(
-                        height: MediaQuery
-                            .of(context)
-                            .size
-                            .height *
-                            0.5, // Adjust height as needed
-                        child: ListView.builder(
-                          itemCount: ddata.length,
-                          itemBuilder: (context, index) {
-                            DataNGOAPPlicationDropDownDPm offer = ddata[index];
-
-                            return Column(
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 4, 4.0, 4),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.white,
-                                              width: 1.0,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            ((index + 1).toString()),
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.darpanNo,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.name,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.memberName,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            offer.emailid,
-                                            textDirection: TextDirection.ltr,
-                                            textAlign: TextAlign.left,
-                                            style: TextStyle(fontSize: 15),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(
-                                            4, 10, 4.0, 0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.black, //
-                                              width: 0.4,
-                                            ),
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: InkWell(
-                                            onTap: () {
-                                              print(
-                                                  '@@View----Pending work here--display---');
-                                              //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                                              setState(() {});
-                                            },
-                                            child: Container(
-                                              width: 80.0,
-                                              child: Text(
-                                                'View',
-                                                textAlign: TextAlign.left,
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontSize: 15),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Divider(color: Colors.blue, height: 1.0),
-                              ],
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  },
-                )
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   /// here we are showing the NGO Data on DPm Dashboard.
   Widget NGOClickAprrovalDisplayDatas() {
