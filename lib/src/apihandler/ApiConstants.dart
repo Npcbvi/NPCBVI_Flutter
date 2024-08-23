@@ -32,4 +32,6 @@ class ApiConstants {
   static String GetDPM_HospitalApproval = 'DpmDashboard/api/GetDPM_HospitalApproval';
 
   static String GetDPM_GovtPvtOther = 'DpmDashboard/api/GetDPM_GovtPvtOther';
+  static String GetDPM_EyeScreening = 'DpmDashboard/api/GetDPM_EyeScreening';
+
 }

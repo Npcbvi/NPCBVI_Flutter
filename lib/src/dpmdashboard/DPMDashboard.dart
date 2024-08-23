@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreening.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
@@ -23,8 +24,11 @@ class DPMDashboard extends StatefulWidget {
 
 class _DPMDashboard extends State<DPMDashboard> {
   String oganisationTypeGovtPrivateDRopDown;
+  String ngoApproveRevenuMOU;
+  String ngodependOrganbisatioSelectValue;
   int dropDownvalueOrgnbaistaionType = 0;
-
+  int ngoApproveRevenueMOUValue = 0;
+  int ngodependOrganbisatioSelectValuessss = 0;
   bool dashboardviewReplace = false;
   String _chosenValue,
       districtNames,
@@ -68,6 +72,9 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool ngolistNewHosdpitalDropDown = false;
   bool ngoGovtPrivateOthereHosdpitalDataShow = false;
   bool organisationGovtPrivateSelectionAfter = false;
+  bool ApproveRenveMOUDataShows = false;
+  bool ngoApproveRevenueMOU = false;
+  bool ngoEyeScreeningdataShow = false;
   List<DataNGOAPPlicationDropDownDPm> ddataNGOAPPlicationDropDownDPm = [];
   int dpmAPPRoved_valueSendinAPi = 2; // for approved
   int dpmPending_valueSendinAPi = 1; //for Penfing
@@ -107,7 +114,8 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool chnagePAsswordView = false;
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
-  TextEditingController _confirmnPasswordontrollere = new TextEditingController();
+  TextEditingController _confirmnPasswordontrollere =
+  new TextEditingController();
 
   @override
   void initState() {
@@ -278,7 +286,6 @@ class _DPMDashboard extends State<DPMDashboard> {
               if (value == 1) {
                 _showChangePasswordDialog();
               } else if (value == 2) {
-
                 // Implement User Manual action
               } else if (value == 3) {
                 setState(() {
@@ -367,22 +374,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   NGOlistDropDownDisplayDatas = true;
                                   ngolistNewHosdpitalDropDown = false;
                                   ngoGovtPrivateOthereHosdpitalDataShow = false;
-
+                                  ngoApproveRevenueMOU = false;
                                 } else if (_chosenValue == "New Hospital") {
                                   dashboardviewReplace = false;
-
+                                  ngoApproveRevenueMOU = false;
                                   NGOlistDropDownDisplayDatas = false;
                                   ngoGovtPrivateOthereHosdpitalDataShow = false;
                                   ngolistNewHosdpitalDropDown = true;
-                                } else
-                                if (_chosenValue == "Govt/private/Other") {
+                                } else if (_chosenValue ==
+                                    "Govt/private/Other") {
                                   dashboardviewReplace = false;
-                                  ngolistNewHosdpitalDropDown=false;
+                                  ngolistNewHosdpitalDropDown = false;
                                   NGOlistDropDownDisplayDatas = false;
+                                  ngoApproveRevenueMOU = false;
                                   ngoGovtPrivateOthereHosdpitalDataShow = true;
-                                }if(_chosenValue=="Approve Renew MOU"){
+                                }
+                                if (_chosenValue == "Approve Renew MOU") {
                                   dashboardviewReplace = false;
-                                  ngoGovtPrivateOthereHosdpitalDataShow = true;
+                                  ngolistNewHosdpitalDropDown = false;
+                                  NGOlistDropDownDisplayDatas = false;
+                                  ngoApproveRevenueMOU = true;
+                                  ngoGovtPrivateOthereHosdpitalDataShow = false;
                                 }
                               });
                             },
@@ -440,14 +452,23 @@ class _DPMDashboard extends State<DPMDashboard> {
                       ),
 
                       SizedBox(width: 8.0),
-                      Container(
-                        width: 100.0,
-                        child: Text(
-                          'Eye Screening',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
+                      InkWell(
+                        onTap: () {
+                          print('@@EyeScreening----click here---');
+                          setState(() {
+                            dashboardviewReplace = false;
+                            ngoEyeScreeningdataShow = true;
+                          });
+                        },
+                        child: Container(
+                          width: 100.0,
+                          child: Text(
+                            'Eye Screening',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ),
@@ -1668,9 +1689,11 @@ class _DPMDashboard extends State<DPMDashboard> {
             DPM_GetDPM_ScreeningCampDisplayDatasCompleted(),
             DPM_GetDPM_ScreeningCampDisplayDatasOngoing(),
             DPM_GetDPM_ScreeningCampDisplayDatasComing(),
-           // chnagePAsswordViews(),
+            // chnagePAsswordViews(),
             NGOlistnewHospitalDropdownData(),
             NGOlistgovtPvtotherHospitalDropdownData(),
+            NGOlistApproveRevenuMOUDataShow(),
+            ngolistEyeScreeningShowData(),
           ],
         ),
       ),
@@ -1937,7 +1960,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCell(offer.darpanNo),
                               _buildDataCell(offer.memberName),
                               _buildDataCell(offer.emailid),
-                              _buildDataCellViewBlue("View"),
+                              _buildDataCellViewBlue("Edit", () {
+                                // Handle the edit action here
+                                // For example, navigate to an edit screen or show a dialog
+                              //  print('Edit clicked for item: ${offer.schoolName}');
+                              //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+
+                                // Example: Navigate to an edit page with the selected item
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                              }),
                             ],
                           );
                         }).toList(),
@@ -2017,12 +2048,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                             children: [
                               _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
-
                               _buildDataCell(offer.darpanNo),
                               _buildDataCell(offer.name),
                               _buildDataCell(offer.hRegID),
                               _buildDataCell(offer.hName),
-                              _buildDataCellViewBlue("View"),
+                              _buildDataCellViewBlue("Edit", () {
+                                // Handle the edit action here
+                                // For example, navigate to an edit screen or show a dialog
+                                //  print('Edit clicked for item: ${offer.schoolName}');
+                                //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+
+                                // Example: Navigate to an edit page with the selected item
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                              }),
                             ],
                           );
                         }).toList(),
@@ -2102,8 +2140,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
                       ),
-                      onChanged:
-                          (String oganisationTypeGovtPrivateDRopDownss) {
+                      onChanged: (String oganisationTypeGovtPrivateDRopDownss) {
                         setState(() {
                           oganisationTypeGovtPrivateDRopDown =
                               oganisationTypeGovtPrivateDRopDownss;
@@ -2141,7 +2178,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                               "Other(Institution not claiming fund from NPCBVI)") {
                             dropDownvalueOrgnbaistaionType = 14;
                             print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                oganisationTypeGovtPrivateDRopDown + "-----" +
+                                oganisationTypeGovtPrivateDRopDown +
+                                "-----" +
                                 dropDownvalueOrgnbaistaionType.toString());
                           }
                         });
@@ -2190,7 +2228,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     Divider(color: Colors.blue, height: 1.0),
                     FutureBuilder<List<DataDPMGovtPrivateOrganisationTypeData>>(
                       future: ApiController.getDPM_GovtPvtOther(
-                          district_code_login, state_code_login,
+                          district_code_login,
+                          state_code_login,
                           dropDownvalueOrgnbaistaionType),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -2201,26 +2240,32 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (!snapshot.hasData || snapshot.data == null) {
                           return Utils.getEmptyView("No data found");
                         } else {
-                          List<
-                              DataDPMGovtPrivateOrganisationTypeData> ddata = snapshot
-                              .data;
+                          List<DataDPMGovtPrivateOrganisationTypeData> ddata =
+                              snapshot.data;
                           print('@@---ddata' + ddata.length.toString());
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Column(
                               children: ddata.map((offer) {
                                 return Row(
-                                  mainAxisAlignment: MainAxisAlignment
-                                      .spaceEvenly,
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
                                   children: [
                                     _buildDataCellSrNo(
                                         (ddata.indexOf(offer) + 1).toString()),
-
                                     _buildDataCell(offer.npcbNo),
                                     _buildDataCell(offer.oName),
                                     _buildDataCell(offer.nodalOfficerName),
                                     _buildDataCell(offer.emailId),
-                                    _buildDataCellViewBlue("View"),
+                                    _buildDataCellViewBlue("View", () {
+                                      // Handle the edit action here
+                                      // For example, navigate to an edit screen or show a dialog
+                                      //  print('Edit clicked for item: ${offer.schoolName}');
+                                      //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+
+                                      // Example: Navigate to an edit page with the selected item
+                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                                    }),
                                   ],
                                 );
                               }).toList(),
@@ -2229,11 +2274,373 @@ class _DPMDashboard extends State<DPMDashboard> {
                         }
                       },
                     ),
-
                   ],
                 ),
               ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
+  Widget NGOlistApproveRevenuMOUDataShow() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ngoApproveRevenueMOU,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          'NGO/Private Practitioner/Private Medical College MOU List',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Horizontal Scrolling Header Row
+              SizedBox(width: 8.0),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: new DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      focusColor: Colors.white,
+                      value: ngoApproveRevenuMOU,
+                      //elevation: 5,
+                      style: TextStyle(color: Colors.white),
+                      iconEnabledColor: Colors.white,
+                      items: <String>[
+                        'NGOs',
+                        'Private Practitioner',
+                        'Private Medical College',
+                        'Other(Institution not claiming fund from NPCBVI/GOVT/PRIVATE)',
+                      ].map<DropdownMenuItem<String>>(
+                              (String ngoApproveRevenueMOUs) {
+                            return DropdownMenuItem<String>(
+                              value: ngoApproveRevenueMOUs,
+                              child: Text(
+                                ngoApproveRevenueMOUs,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                      hint: Text(
+                        "Select Organisation Type",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onChanged: (String ngoApproveRevenueMOUss) {
+                        setState(() {
+                          ngoApproveRevenuMOU = ngoApproveRevenueMOUss;
+
+                          if (ngoApproveRevenuMOU == "NGOs") {
+                            ngoApproveRevenueMOUValue = 10;
+                          } else if (ngoApproveRevenuMOU ==
+                              "Private Practitioner") {
+                            ngoApproveRevenueMOUValue = 12;
+                          } else if (ngoApproveRevenuMOU ==
+                              "Private Medical College") {
+                            ngoApproveRevenueMOUValue = 13;
+                          } else if (ngoApproveRevenuMOU ==
+                              "Other(Institution not claiming fund from NPCBVI/GOVT/PRIVATE)") {
+                            ngoApproveRevenueMOUValue = 14;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: new DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      focusColor: Colors.white,
+                      value: ngodependOrganbisatioSelectValue,
+                      //elevation: 5,
+                      style: TextStyle(color: Colors.white),
+                      iconEnabledColor: Colors.white,
+                      items: <String>[
+                        'Pending for Renew',
+                        'Expired',
+                        'Renew Approve',
+                      ].map<DropdownMenuItem<String>>(
+                              (String ngoApproveRevenueMOUs) {
+                            return DropdownMenuItem<String>(
+                              value: ngoApproveRevenueMOUs,
+                              child: Text(
+                                ngoApproveRevenueMOUs,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                      hint: Text(
+                        "Pending for Renew",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onChanged: (String ngodependOrganbisatioSelectValuess) {
+                        setState(() {
+                          ngodependOrganbisatioSelectValue =
+                              ngodependOrganbisatioSelectValuess;
+
+                          if (ngodependOrganbisatioSelectValue ==
+                              "Pending for Renew") {
+                            ngodependOrganbisatioSelectValuessss = 10;
+                          } else if (ngodependOrganbisatioSelectValue ==
+                              "Expired") {
+                            ngodependOrganbisatioSelectValuessss = 12;
+                          } else if (ngodependOrganbisatioSelectValue ==
+                              "Renew Approve") {
+                            ngodependOrganbisatioSelectValuessss = 13;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: ElevatedButton(
+                      child: Text('Submit'),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                      ),
+                      onPressed: () {
+                        print('@@ApproveRevenueMOU-- clkick------');
+                        setState(() {
+                          ApproveRenveMOUDataShows = true;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Visibility(
+                visible: ApproveRenveMOUDataShows,
+                child: Column(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          _buildHeaderCellSrNo('S.No.'),
+                          _buildHeaderCell('Hospital Id'),
+                          _buildHeaderCell('Hospital Name'),
+                          _buildHeaderCell('Mobile'),
+                          _buildHeaderCell('Email'),
+                          _buildHeaderCell('From Date'),
+                          _buildHeaderCell('To Date'),
+                          _buildHeaderCell('Status'),
+                          _buildHeaderCell('MOU'),
+                          _buildHeaderCell('Action'),
+                        ],
+                      ),
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    FutureBuilder<List<DataDPMGovtPrivateOrganisationTypeData>>(
+                      future: ApiController.getDPM_GovtPvtOther(
+                          district_code_login,
+                          state_code_login,
+                          dropDownvalueOrgnbaistaionType),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataDPMGovtPrivateOrganisationTypeData> ddata =
+                              snapshot.data;
+                          print('@@---ddata' + ddata.length.toString());
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              children: ddata.map((offer) {
+                                return Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildDataCellSrNo(
+                                        (ddata.indexOf(offer) + 1).toString()),
+                                    _buildDataCell(offer.npcbNo),
+                                    _buildDataCell(offer.oName),
+                                    _buildDataCell(offer.nodalOfficerName),
+                                    _buildDataCell(offer.emailId),
+                                    _buildDataCellViewBlue("View", () {
+                                      // Handle the edit action here
+                                      // For example, navigate to an edit screen or show a dialog
+                                      //  print('Edit clicked for item: ${offer.schoolName}');
+                                      //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+
+                                      // Example: Navigate to an edit page with the selected item
+                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                                    }),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget ngolistEyeScreeningShowData() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ngoEyeScreeningdataShow,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'School Eye Screening',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: Text(
+                            'Add New Record',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Horizontal Scrolling Header Row
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('Year'),
+                    _buildHeaderCell('Month'),
+                    _buildHeaderCell('School name'),
+                    _buildHeaderCell('Teacher Trained'),
+                    _buildHeaderCell('Children screened'),
+                    _buildHeaderCell(
+                        'Children detected with Refractive Errors'),
+                    _buildHeaderCell('Free Glasses Provided by Organization'),
+                    _buildHeaderCell('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataGetEyeScreening>>(
+                future: ApiController.GetDPM_EyeScreening(
+                    district_code_login, state_code_login, userId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataGetEyeScreening> ddata = snapshot.data;
+                    print('@@---ddata' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.yearname),
+                              _buildDataCell(offer.monthname),
+                              _buildDataCell(offer.schoolName),
+                              _buildDataCell(offer.schoolAddress),
+                              _buildDataCell(offer.trainedTeacher.toString()),
+                              _buildDataCell(offer.childScreen.toString()),
+                              _buildDataCell(offer.childDetect.toString()),
+                              _buildDataCell(offer.freeglass.toString()),
+                              _buildDataCellViewBlue("Edit", () {
+                                // Handle the edit action here
+                                // For example, navigate to an edit screen or show a dialog
+                                 print('@@Edit clicked for item: ${offer.schoolName}');
+                               //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+
+                                // Example: Navigate to an edit page with the selected item
+                                // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -4886,29 +5293,32 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  Widget _buildDataCellViewBlue(String text) {
-    return Container(
-      height: 80,
-      width: 150,
-      // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+  Widget _buildDataCellViewBlue(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 80,
+        width: 150,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            width: 0.1,
+          ),
         ),
-      ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.blue,
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
           ),
         ),
       ),
     );
   }
+
+
 
   Widget _buildDataCellSrNo(String text) {
     return Container(
@@ -4992,9 +5402,15 @@ class _DPMDashboard extends State<DPMDashboard> {
     getchangePwd.newPassword = _newPasswordontrollere.text.toString().trim();
     getchangePwd.confirmPassword =
         _confirmnPasswordontrollere.text.toString().trim();
-    print('@@EntryPoimt heres---22'+ getchangePwd.oldPassword+ getchangePwd.confirmPassword);
+    print('@@EntryPoimt heres---22' +
+        getchangePwd.oldPassword +
+        getchangePwd.confirmPassword);
 
-    print('@@EntryPoimt heres---2'+  getchangePwd.userid+ getchangePwd.oldPassword+getchangePwd.newPassword+ getchangePwd.confirmPassword);
+    print('@@EntryPoimt heres---2' +
+        getchangePwd.userid +
+        getchangePwd.oldPassword +
+        getchangePwd.newPassword +
+        getchangePwd.confirmPassword);
     if (getchangePwd.oldPassword.isEmpty) {
       Utils.showToast("Please enter old Password !", false);
       return;
@@ -5017,8 +5433,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             if (response != null && response.status) {
               Utils.showToast(response.message, true);
               Navigator.of(context).pop(); // Close the dialog
-            }
-            else {
+            } else {
               Utils.showToast(response.message, true);
             }
           });
@@ -5029,7 +5444,6 @@ class _DPMDashboard extends State<DPMDashboard> {
     }
   }
 }
-
 
 class DPMDashboardParamsData {
   int districtidDPM;
