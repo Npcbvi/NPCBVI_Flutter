@@ -366,10 +366,10 @@ class _LoginScreen extends State<LoginScreen> {
 
             print('@@response_loginScreen ---' + response.toString());
             if (response != null && response.result.status) {
-              SharedPrefs.storeSharedValue(
-                  AppConstant.distritcCode, response.result.data.district_code);
-              SharedPrefs.storeSharedValue(
-                  AppConstant.state_code, response.result.data.state_code);
+              SharedPrefs.storeSharedValues(
+                  AppConstant.distritcCode, response.result.data.district_code.toString());
+              SharedPrefs.storeSharedValues(
+                  AppConstant.state_code, response.result.data.state_code.toString());
               print('@@response_loginScreen ---' + response.result.data.state_code.toString());
               if(response.result.data.roleId=='9'){
                 Navigator.push(

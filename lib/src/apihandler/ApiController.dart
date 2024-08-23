@@ -582,6 +582,15 @@ class ApiController {
   static Future<GetDPMDashboardData> getDPM_Dashboard(
       int districtidDPM,  int stateidDPM,  int old_districtidDPM, String useridDPM,String roleidDPM, int statusDPM,String financialYearDPM) async {
     GetDPMDashboardData getDPMDashboardData = GetDPMDashboardData();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String districtCode_loginFetch = prefs.getString(AppConstant.distritcCode) ?? "";
+    String stateCode_loginFetch = prefs.getString(AppConstant.state_code) ?? "";
+    print("@@districtCode_loginFetch__from login: $districtCode_loginFetch");
+    print("@@stateCode_loginFetch__from login: $stateCode_loginFetch");
+   /* if (districtCode_loginFetch.isEmpty || stateCode_loginFetch.isEmpty) {
+      Utils.showToast("District or State code is missing.", true);
+      return [];
+    }*/
 
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -814,14 +823,8 @@ class ApiController {
   static Future<List<DataGetDPM_NGOAPProved_pending>> getDPM_NGOAPProved_pendings(int district_code,int state_code,int status ) async {
     print("@@getDPM_NGOAPProved_pending"+"1");
     Response response1;
-   /* SharedPreferences prefs = await SharedPreferences.getInstance();
-    String districtCode_loginFetch = prefs.get(AppConstant.distritcCode);
-    String stateCode_loginFetch = prefs.get(AppConstant.state_code);
-    int dpmAPPRoved_valueSendinAPi=2; // for approved
-    int dpmPending_valueSendinAPi=1;
-    print("@@districtCode_loginFetch"+"1--"+districtCode_loginFetch);
-    print("@@stateCode_loginFetch"+"1"+stateCode_loginFetch);
-*/
+
+
     // Check network availability
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (!isNetworkAvailable) {
