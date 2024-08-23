@@ -32,6 +32,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   int ngoApproveRevenueMOUValue = 0;
   int ngodependOrganbisatioSelectValuessss = 0;
   bool dashboardviewReplace = false;
+  String currentFinancialYear;
   String _chosenValue,
       districtNames,
       userId,
@@ -44,6 +45,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   String role_id;
   bool isLoadingApi = true;
   DPMDashboardParamsData dpmDashboardParamsDatass =
+
   new DPMDashboardParamsData();
   GetDPM_NGOApplication getDPM_NGOApplications = new GetDPM_NGOApplication();
   GetDPM_NGOApprovedPendingFields getDPM_NGOApprovedPendingFields =
@@ -153,17 +155,23 @@ class _DPMDashboard extends State<DPMDashboard> {
       print(e);
     }
   }
+  String getCurrentFinancialYear() {
+    DateTime now = DateTime.now();
+    int currentYear = now.year;
+    int nextYear = currentYear + 1;
+    String financialYear;
+
+    if (now.month >= 4) { // Financial year starts in April
+      financialYear = '$currentYear-${nextYear.toString().substring(2)}';
+    } else {
+      financialYear = '${currentYear - 1}-${currentYear.toString().substring(2)}';
+    }
+
+    return financialYear;
+  }
 
   void _getDPMDashbnoardData() {
     getUserData();
-    /* dpmDashboardParamsDatass.districtidDPM = district_code_login;
-    dpmDashboardParamsDatass.stateidDPM = state_code_login;
-    dpmDashboardParamsDatass.old_districtidDPM = 569;
-    dpmDashboardParamsDatass.useridDPM = userId;
-    dpmDashboardParamsDatass.roleidDPM = role_id;
-    dpmDashboardParamsDatass.statusDPM = status;
-    dpmDashboardParamsDatass.financialYearDPM = "2024-2025";*/
-
     Utils.isNetworkAvailable().then((isNetworkAvailable) async {
       if (isNetworkAvailable) {
         Utils.showProgressDialog(context);
@@ -175,7 +183,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               userId,
               role_id,
               status,
-              "2024-2025");
+              currentFinancialYear);
           Utils.hideProgressDialog(context);
           if (response.status) {
             setState(() {
@@ -229,6 +237,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   @override
   Widget build(BuildContext context) {
+     currentFinancialYear = getCurrentFinancialYear();
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
@@ -299,6 +308,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           ),
         ],
       ),
+
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -648,7 +658,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
-                                  child: Text('Patient(s) (2024-2025)',
+                                  child: Text('Patient(s) ($currentFinancialYear)',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 16,
@@ -782,6 +792,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     false;
                                                     NGO_APPorovedClickShowData =
                                                     true;
+                                                    NGO_PendingClickShowData=false;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -810,6 +821,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   setState(() {
                                                     dashboardviewReplace =
                                                     false;
+                                                    NGO_APPorovedClickShowData=false;
                                                     NGO_PendingClickShowData =
                                                     true;
                                                   });
@@ -1555,36 +1567,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                 color: Colors.white)),
                                       ),
                                       Divider(color: Colors.grey, height: 1.0),
-                                      /* Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 30, 20.0, 0),
-                                            child: new Text('Approved',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white)),
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Padding(
-                                            padding: const EdgeInsets.fromLTRB(
-                                                20, 30, 20.0, 0),
-                                            child: new Text('Pending',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 17,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white)),
-                                          ),
-                                        ),
-                                      ],
-                                    ),*/
                                       Row(
                                         children: [
                                           Expanded(
@@ -1649,7 +1631,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               padding:
                               const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: new Text(
-                                  'Disease-wise Patient Statistics( Since FY: 2024-2025 )',
+                                  'Disease-wise Patient Statistics( Since FY: $currentFinancialYear )',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 17,
@@ -1663,7 +1645,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               padding:
                               const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: new Text(
-                                  'Disease-wise Registered Patient(Since FY: 2024-2025',
+                                  'Disease-wise Registered Patient(Since FY: $currentFinancialYear',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontSize: 17,
@@ -2604,7 +2586,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     future: ApiController.GetDPM_Patients_Approved_finacne(
                         district_code_login,
                         state_code_login,
-                        "2024-2025"),
+                        currentFinancialYear),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -2696,7 +2678,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     future: ApiController.GetDPM_Patients_Pending_finacne(
                         district_code_login,
                         state_code_login,
-                        "2024-2025"),
+                        currentFinancialYear),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());

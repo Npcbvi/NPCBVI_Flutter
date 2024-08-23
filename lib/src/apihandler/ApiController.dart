@@ -613,7 +613,7 @@ class ApiController {
           "userid": useridDPM,
           "roleid":roleidDPM,
           "status": statusDPM,
-          "financialYear": "2024-2025",
+          "financialYear": financialYearDPM,
         });
         print("@@getDPM_Dashboard---api check parmeters--" + url + body.toString());
         //Way to send network calls
