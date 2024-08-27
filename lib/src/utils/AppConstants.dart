@@ -7,4 +7,5 @@ class AppConstant {
   static final String deviceId = "DEVICE_ID";
   static final String distritcCode = "district_code_logins";
   static final String state_code = "state_code_logins";
+  static final String schoolid = "schoolid";
 }

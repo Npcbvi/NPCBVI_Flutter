@@ -27,6 +27,8 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientAPprovedwithFinanceYear.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientPendingwithFinance.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_EyeScreeningEdit.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_EyeScreeningEdit.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreening.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
@@ -999,7 +1001,6 @@ class ApiController {
       return [];
     }
   }
-
   static Future<List<DataDPMRivateMEdicalColleges>> GetDPM_PrivateMedicalColleges(int district_code,int state_code,int status ) async {
     print("@@DataDPMRivateMEdicalColleges"+"1");
     Response response1;
@@ -1442,7 +1443,7 @@ class ApiController {
         "state_code": state_code,
         "userid": userid, // for approved
       });
-      print("@@GetDPM_EyeScreening--bodyprint--: ${body.toString()}");
+      print("@@GetDPM_EyeScreening--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1460,6 +1461,67 @@ class ApiController {
       // Parse the response
       var responseData = json.decode(response.data);
       GetEyeScreening data = GetEyeScreening.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<DataGetDPM_EyeScreeningEdit>> getDPM_EyeScreeningEdit(int district_code,int state_code,String userid ) async {
+    print("@@GetDPM_EyeScreeningEdit"+"1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@schoolidSavedAfterclickEdit--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_EyeScreeningEdit;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "schoolid":schoolidSaved,
+        "district_code": district_code,
+        "state_code": state_code,
+        "userid": userid, // for approved
+      });
+      print("@@GetDPM_EyeScreeningEdit--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetDPM_EyeScreeningEdit--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetDPM_EyeScreeningEdit data = GetDPM_EyeScreeningEdit.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);

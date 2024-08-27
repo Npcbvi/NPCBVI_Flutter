@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DPMEyeSchoolScreens.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMGovtPrivateOrganisationTypeData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
@@ -80,6 +81,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool ApproveRenveMOUDataShows = false;
   bool ngoApproveRevenueMOU = false;
   bool ngoEyeScreeningdataShow = false;
+  bool dpmEyeScreeningSchoolDataShow=false;
   List<DataNGOAPPlicationDropDownDPm> ddataNGOAPPlicationDropDownDPm = [];
   int dpmAPPRoved_valueSendinAPi = 2; // for approved
   int dpmPending_valueSendinAPi = 1; //for Penfing
@@ -1679,6 +1681,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             NGOlistgovtPvtotherHospitalDropdownData(),
             NGOlistApproveRevenuMOUDataShow(),
             ngolistEyeScreeningShowData(),
+            DPMEyeScreenSchooRegisterData(),
         //    PatientApprovedFinancneClickDisplayData(),
           ],
         ),
@@ -2543,11 +2546,24 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCellViewBlue("Edit", () {
                                 // Handle the edit action here
                                 // For example, navigate to an edit screen or show a dialog
-                                 print('@@Edit clicked for item: ${offer.schoolName}');
+                                 print('@@Edit clicked for item: ${offer.schoolid}');
                                //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
 
-                                // Example: Navigate to an edit page with the selected item
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                                 SharedPrefs.storeSharedValues(
+                                     AppConstant.schoolid, offer.schoolid.toString());
+                                 setState(() {
+                                   ngoEyeScreeningdataShow=false;
+
+                                   dpmEyeScreeningSchoolDataShow=true;
+
+                                 });
+
+                               /*  Navigator.push(
+                                   context,
+                                   MaterialPageRoute(
+                                       builder: (context) => DPMEyeSchoolScreens()),
+
+                                 );*/
                               }),
                             ],
                           );
@@ -2563,6 +2579,42 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+
+  Widget DPMEyeScreenSchooRegisterData() {
+    return Column(
+      children: [
+        Visibility(
+          visible: dpmEyeScreeningSchoolDataShow,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'School Eye Screening',
+                        style: TextStyle(
+                          color: Colors.white, // Changed for better readability
+                          fontWeight: FontWeight.w800,
+                          fontSize: 18.0, // Added font size for emphasis
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Additional content can go here, such as a horizontal scrolling header row
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
 
   void showDiseaseDialogApprovedPatintFinance() {
     showDialog(
@@ -4410,7 +4462,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               // Data Rows
               FutureBuilder<List<DataDPMScreeningCamp>>(
                 future: ApiController.GetDPM_ScreeningCamp(
-                    1001, 100, "2019-2020", "", resultScreeningCampsCompleted),
+                    1001, 100, currentFinancialYear, "", resultScreeningCampsCompleted),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
