@@ -14,12 +14,17 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientAPprovedwithFinanceYear.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientPendingwithFinance.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_EyeScreeningEdit.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreening.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import '../model/dpmRegistration/DiseaseData/GetDiseaseData.dart';
 import '../model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
+import 'package:http/http.dart' as http;
 
 class DPMDashboard extends StatefulWidget {
   @override
@@ -123,13 +128,18 @@ class _DPMDashboard extends State<DPMDashboard> {
   TextEditingController _newPasswordontrollere = new TextEditingController();
   TextEditingController _confirmnPasswordontrollere =
   new TextEditingController();
-
+  Future<List<DataGetDPM_ScreeningYear>> _future;
+  DataGetDPM_ScreeningYear _selectedUser;
+  Future<List<DataGetDPM_ScreeningMonth>> _futureMonth;
+  DataGetDPM_ScreeningMonth _selectedUserMonth;
+  Future<List<DataGetDPM_EyeScreeningEdit>> _futureEyeScreeningEdit;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     dashboardviewReplace = true;
     _getDPMDashbnoardData();
+
   }
 
   void getUserData() {
@@ -2552,6 +2562,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                  SharedPrefs.storeSharedValues(
                                      AppConstant.schoolid, offer.schoolid.toString());
                                  setState(() {
+                                   _future = getDPM_ScreeningYear();
+                                   _futureMonth = getDPM_ScreeningMonth();
+                                   _futureEyeScreeningEdit = ApiController.getDPM_EyeScreeningEdit(district_code_login, state_code_login, userId);
                                    ngoEyeScreeningdataShow=false;
 
                                    dpmEyeScreeningSchoolDataShow=true;
@@ -2580,7 +2593,36 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
+  Future<List<DataGetDPM_ScreeningYear>> getDPM_ScreeningYear() async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      final response = await http.post(Uri.parse(
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final GetDPM_ScreeningYear dashboardStateModel =
+      GetDPM_ScreeningYear.fromJson(json);
 
+      return dashboardStateModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+  Future<List<DataGetDPM_ScreeningMonth>> getDPM_ScreeningMonth() async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      final response = await http.post(Uri.parse(
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningMonth'));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final GetDPM_ScreeningMonth getDPM_ScreeningMonth =
+      GetDPM_ScreeningMonth.fromJson(json);
+
+      return getDPM_ScreeningMonth.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
   Widget DPMEyeScreenSchooRegisterData() {
     return Column(
       children: [
@@ -2598,22 +2640,462 @@ class _DPMDashboard extends State<DPMDashboard> {
                       Text(
                         'School Eye Screening',
                         style: TextStyle(
-                          color: Colors.white, // Changed for better readability
+                          color: Colors.white,
                           fontWeight: FontWeight.w800,
-                          fontSize: 18.0, // Added font size for emphasis
+                          fontSize: 18.0,
                         ),
                       ),
                     ],
                   ),
                 ),
               ),
+              Center(
+                child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.data == null) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Select year:',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10), // Added space between label and dropdown
+                          DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                            onChanged: (user) => setState(() {
+                              _selectedUser = user;
+                              var getYear = int.parse((user.name).toString());
+                              print('@@getYear--' + getYear.toString());
+                            }),
+                            value: _selectedUser,
+                            items: [
+                              ...snapshot.data.map(
+                                    (user) => DropdownMenuItem(
+                                  value: user,
+                                  child: Text(
+                                    '${user.name}',
+                                    style: TextStyle(fontSize: 16), // Text style inside dropdown
+                                  ),
+                                ),
+                              ),
+                            ],
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.blue[50], // Background color of the dropdown box
+                            ),
+                            dropdownColor: Colors.blue[50], // Background color of the dropdown menu
+                            style: TextStyle(color: Colors.black), // Style of the selected item
+                            icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Dropdown icon style
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Center(
+                child: FutureBuilder<List<DataGetDPM_ScreeningMonth>>(
+                  future: _futureMonth,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.data == null) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Select Month:',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10), // Added space between label and dropdown
+                          DropdownButtonFormField<DataGetDPM_ScreeningMonth>(
+                            onChanged: (user) => setState(() {
+                              _selectedUserMonth = user;
+                              var getYear = ((user.monthname).toString());
+                              print('@@getYear--' + getYear.toString());
+                            }),
+                            value: _selectedUserMonth,
+                            items: [
+                              ...snapshot.data.map(
+                                    (user) => DropdownMenuItem(
+                                  value: user,
+                                  child: Text(
+                                    '${user.monthname}',
+                                    style: TextStyle(fontSize: 16), // Text style inside dropdown
+                                  ),
+                                ),
+                              ),
+                            ],
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.blue[50], // Background color of the dropdown box
+                            ),
+                            dropdownColor: Colors.blue[50], // Background color of the dropdown menu
+                            style: TextStyle(color: Colors.black), // Style of the selected item
+                            icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Dropdown icon style
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+          /*    FutureBuilder<List<DataGetDPM_EyeScreeningEdit>>(
+                future: ApiController.getDPM_EyeScreeningEdit(
+                    district_code_login,
+                    state_code_login,
+                    userId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData ||
+                      snapshot.data == null ||
+                      snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataGetDPM_EyeScreeningEdit> ddata = snapshot.data;
+                    print('@@---DataGetDPM_EyeScreeningEdit' + ddata.length.toString());
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: ddata.length,
+                      itemBuilder: (context, index) {
+                        DataGetDPM_EyeScreeningEdit offer = ddata[index];
+                        print('@@---DataGetDPM_EyeScreeningEdit--values' + offer.schoolName.toString());
+
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 1.0,
+                              ),
+                            ),
+                            alignment: Alignment.center,
+                            child:    Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: new TextField(
+                               // controller: _loginIdController,
+                                decoration: InputDecoration(
+                                    label: Text(offer.schoolName),
+                                    hintText: 'Name of School',
+
+                                    //prefixIcon
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(5.0))),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),*/
               // Additional content can go here, such as a horizontal scrolling header row
-            ],
+              FutureBuilder<List<DataGetDPM_EyeScreeningEdit>>(
+                future: _futureEyeScreeningEdit,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataGetDPM_EyeScreeningEdit> ddata = snapshot.data;
+                    print('@@---DataGetDPM_EyeScreeningEdit' + ddata.length.toString());
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: ddata.length,
+                      itemBuilder: (context, index) {
+                        DataGetDPM_EyeScreeningEdit offer = ddata[index];
+                        print('@@---DataGetDPM_EyeScreeningEdit--values' + offer.schoolName.toString());
+
+                        return Column(
+                          children: [
+                            Row(
+                              children: [
+                                // First TextField with flex: 1
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                    child:Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.blueGrey, width: 1.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      child: Text(
+                                        'School name *',
+                                        style: TextStyle(
+                                          color: Colors.blueGrey,
+                                          fontSize: 16.0, // Adjust font size as needed
+                                          fontWeight: FontWeight.bold, // Make the text bold if needed
+                                        ),
+                                      ),
+                                    )
+
+                                  ),
+                                ),
+                                // Second TextField with flex: 2
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white, // Background color of the container
+                                        borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            offset: Offset(0, 2),
+                                            blurRadius: 6.0,
+                                          ),
+                                        ],
+                                      ),
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                          labelText: offer.schoolName, // Assuming 'offer.schoolName' is a dynamic value
+                                          labelStyle: TextStyle(color: Colors.blueGrey), // Color of the label
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0), // Rounded border
+                                          ),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0), // Padding inside the TextField
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                // First TextField with flex: 1
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                      child:Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.blueGrey, width: 1.0),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                        child: Text(
+                                          'Address of School*',
+                                          style: TextStyle(
+                                            color: Colors.blueGrey,
+                                            fontSize: 16.0, // Adjust font size as needed
+                                            fontWeight: FontWeight.bold, // Make the text bold if needed
+                                          ),
+                                        ),
+                                      )
+
+                                  ),
+                                ),
+                                // Second TextField with flex: 2
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white, // Background color of the container
+                                        borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            offset: Offset(0, 2),
+                                            blurRadius: 6.0,
+                                          ),
+                                        ],
+                                      ),
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                          labelText: offer.schoolAddress, // Assuming 'offer.schoolName' is a dynamic value
+                                          labelStyle: TextStyle(color: Colors.blueGrey), // Color of the label
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0), // Rounded border
+                                          ),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0), // Padding inside the TextField
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                // First TextField with flex: 1
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                      child:Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.blueGrey, width: 1.0),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                        child: Text(
+                                          'Name of Principal*',
+                                          style: TextStyle(
+                                            color: Colors.blueGrey,
+                                            fontSize: 16.0, // Adjust font size as needed
+                                            fontWeight: FontWeight.bold, // Make the text bold if needed
+                                          ),
+                                        ),
+                                      )
+
+                                  ),
+                                ),
+                                // Second TextField with flex: 2
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white, // Background color of the container
+                                        borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            offset: Offset(0, 2),
+                                            blurRadius: 6.0,
+                                          ),
+                                        ],
+                                      ),
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                          labelText: offer.principal, // Assuming 'offer.schoolName' is a dynamic value
+                                          labelStyle: TextStyle(color: Colors.blueGrey), // Color of the label
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0), // Rounded border
+                                          ),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0), // Padding inside the TextField
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                // First TextField with flex: 1
+                                Expanded(
+                                  flex: 1,
+                                  child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                      child:Container(
+                                        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.blueGrey, width: 1.0),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                        child: Text(
+                                          'Teacher Trained in screening for refractive errors *',
+                                          style: TextStyle(
+                                            color: Colors.blueGrey,
+                                            fontSize: 16.0, // Adjust font size as needed
+                                            fontWeight: FontWeight.bold, // Make the text bold if needed
+                                          ),
+                                        ),
+                                      )
+
+                                  ),
+                                ),
+                                // Second TextField with flex: 2
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.white, // Background color of the container
+                                        borderRadius: BorderRadius.circular(10.0), // Rounded corners
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            offset: Offset(0, 2),
+                                            blurRadius: 6.0,
+                                          ),
+                                        ],
+                                      ),
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                          labelText: offer.trainedTeacher.toString(), // Assuming 'offer.schoolName' is a dynamic value
+                                          labelStyle: TextStyle(color: Colors.blueGrey), // Color of the label
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(10.0), // Rounded border
+                                          ),
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0), // Padding inside the TextField
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+          ],
           ),
         ),
       ],
     );
   }
+
 
 
   void showDiseaseDialogApprovedPatintFinance() {
