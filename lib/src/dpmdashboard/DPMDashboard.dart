@@ -2258,7 +2258,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ngoApproveRevenuMOU = ngoApproveRevenueMOUss;
 
                           if (ngoApproveRevenuMOU == "NGOs") {
-                            ngoApproveRevenueMOUValue = 10;
+                            ngoApproveRevenueMOUValue = 5;
                           } else if (ngoApproveRevenuMOU ==
                               "Private Practitioner") {
                             ngoApproveRevenueMOUValue = 12;
@@ -2317,13 +2317,13 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                           if (ngodependOrganbisatioSelectValue ==
                               "Pending for Renew") {
-                            ngodependOrganbisatioSelectValuessss = 10;
+                            ngodependOrganbisatioSelectValuessss = 1;
                           } else if (ngodependOrganbisatioSelectValue ==
                               "Expired") {
-                            ngodependOrganbisatioSelectValuessss = 12;
+                            ngodependOrganbisatioSelectValuessss = 3;
                           } else if (ngodependOrganbisatioSelectValue ==
                               "Renew Approve") {
-                            ngodependOrganbisatioSelectValuessss = 13;
+                            ngodependOrganbisatioSelectValuessss = 4;
                           }
                         });
                       },
@@ -2826,9 +2826,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     InkWell(
                                       onTap: () {
                                         print('@@back Pressed----display---');
-                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                        //
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          NGO_APPorovedClickShowData=false;
+                                          NGO_PendingClickShowData=false;
+                                         // Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         });
                                       },
                                       child: Container(
@@ -3016,6 +3019,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          NGO_PendingClickShowData=false;
+                                          NGO_APPorovedClickShowData=false;
                                         });
                                       },
                                       child: Container(
@@ -3204,6 +3209,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          GetDPM_GH_PendingClickShowData=false;
+                                          GetDPM_GH_APPorovedClickShowData=false;
                                         });
                                       },
                                       child: Container(
@@ -3392,6 +3399,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          GetDPM_GH_PendingClickShowData=false;
+                                          GetDPM_GH_APPorovedClickShowData=false;
                                         });
                                       },
                                       child: Container(
@@ -3566,7 +3575,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                                       width: 150.0,
                                       child: Text(
-                                        'NGO(s) (Approved)',
+                                        'Private Practitioners (Approved)',
                                         style: TextStyle(
                                           color: Colors.red,
                                           fontWeight: FontWeight.w500,
@@ -3582,6 +3591,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                          DPM_PrivatePartitionP_PendingClickShowData=false;
                                         });
                                       },
                                       child: Container(
@@ -3770,6 +3781,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                          DPM_PrivatePartitionP_PendingClickShowData=false;
                                         });
                                       },
                                       child: Container(
@@ -3956,6 +3969,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          DPM_privateMEdicalCollegeApprovedData=false;
+                                          DPM_privateMEdicalCollegePendingData=false;
                                         });
                                       },
                                       child: Container(
@@ -4141,6 +4156,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          DPM_privateMEdicalCollegeApprovedData=false;
+                                          DPM_privateMEdicalCollegePendingData=false;
                                         });
                                       },
                                       child: Container(
@@ -4327,6 +4344,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          ScreeningCamp=false;
+                                          ScreeningCampOngoing=false;
+                                          ScreeningCampComing=false;
                                         });
                                       },
                                       child: Container(
@@ -4510,6 +4530,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          ScreeningCamp=false;
+                                          ScreeningCampOngoing=false;
+                                          ScreeningCampComing=false;
                                         });
                                       },
                                       child: Container(
@@ -4697,6 +4720,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          ScreeningCamp=false;
+                                          ScreeningCampOngoing=false;
+                                          ScreeningCampComing=false;
                                         });
                                       },
                                       child: Container(
@@ -4885,6 +4911,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
+                                          satelliteCentreShowData=false;
                                         });
                                       },
                                       child: Container(
