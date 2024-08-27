@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
 // import 'package:flutter_share/flutter_share.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:progress_dialog/progress_dialog.dart';
 
@@ -100,7 +101,16 @@ if (!regex.hasMatch(value))
     return isNetworkAvailable;
   }
 
+// Function to format the date string
+  static String formatDateString(String dateString) {
+    // Convert the string to a DateTime object
+    DateTime dateTime = DateTime.parse(dateString);
 
+    // Define the desired format
+    String formattedDate = DateFormat('dd/MM/yyyy').format(dateTime);
+
+    return formattedDate;
+  }
 
   static void showProgressDialog1(BuildContext context) {
     //For normal dialog

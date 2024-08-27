@@ -7,6 +7,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMGovtPrivateOrganisatio
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_MOUApprove.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientAPprovedwithFinanceYear.dart';
@@ -2374,11 +2375,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                       ),
                     ),
                     Divider(color: Colors.blue, height: 1.0),
-                    FutureBuilder<List<DataDPMGovtPrivateOrganisationTypeData>>(
-                      future: ApiController.getDPM_GovtPvtOther(
+                    FutureBuilder<List<DataGetDPM_MOUApprove>>(
+                      future: ApiController.getDPM_MOUApprove(
                           district_code_login,
-                          state_code_login,
-                          dropDownvalueOrgnbaistaionType),
+                          ngoApproveRevenueMOUValue,
+                          ngodependOrganbisatioSelectValuessss),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -2388,7 +2389,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (!snapshot.hasData || snapshot.data == null) {
                           return Utils.getEmptyView("No data found");
                         } else {
-                          List<DataDPMGovtPrivateOrganisationTypeData> ddata =
+                          List<DataGetDPM_MOUApprove> ddata =
                               snapshot.data;
                           print('@@---ddata' + ddata.length.toString());
                           return SingleChildScrollView(
@@ -2401,11 +2402,23 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   children: [
                                     _buildDataCellSrNo(
                                         (ddata.indexOf(offer) + 1).toString()),
-                                    _buildDataCell(offer.npcbNo),
-                                    _buildDataCell(offer.oName),
-                                    _buildDataCell(offer.nodalOfficerName),
+                                    _buildDataCell(offer.hRegID),
+                                    _buildDataCell(offer.hName),
+                                    _buildDataCell(offer.mobile.toString()),
                                     _buildDataCell(offer.emailId),
-                                    _buildDataCellViewBlue("View", () {
+                                    _buildDataCell(Utils.formatDateString(offer.fromDate)),
+                                    _buildDataCell(Utils.formatDateString(offer.toDate)),
+                                    _buildDataCell(offer.vstatus.toString()),
+                                    _buildDataCellViewBlue(offer.file, () {
+                                      // Handle the edit action here
+                                      // For example, navigate to an edit screen or show a dialog
+                                      //  print('Edit clicked for item: ${offer.schoolName}');
+                                      //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+
+                                      // Example: Navigate to an edit page with the selected item
+                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                                    }),
+                                    _buildDataCellViewBlue(" ", () {
                                       // Handle the edit action here
                                       // For example, navigate to an edit screen or show a dialog
                                       //  print('Edit clicked for item: ${offer.schoolName}');
@@ -5041,6 +5054,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       child: Center(
         child: Text(
           text,
+          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
