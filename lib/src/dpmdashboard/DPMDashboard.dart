@@ -52,11 +52,10 @@ class _DPMDashboard extends State<DPMDashboard> {
   String role_id;
   bool isLoadingApi = true;
   DPMDashboardParamsData dpmDashboardParamsDatass =
-
-  new DPMDashboardParamsData();
+      new DPMDashboardParamsData();
   GetDPM_NGOApplication getDPM_NGOApplications = new GetDPM_NGOApplication();
   GetDPM_NGOApprovedPendingFields getDPM_NGOApprovedPendingFields =
-  new GetDPM_NGOApprovedPendingFields();
+      new GetDPM_NGOApprovedPendingFields();
   GetChangeAPsswordFields getchangePwd = new GetChangeAPsswordFields();
   String ngoCountApproved,
       ngoCountPending,
@@ -86,7 +85,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool ApproveRenveMOUDataShows = false;
   bool ngoApproveRevenueMOU = false;
   bool ngoEyeScreeningdataShow = false;
-  bool dpmEyeScreeningSchoolDataShow=false;
+  bool dpmEyeScreeningSchoolDataShow = false;
   List<DataNGOAPPlicationDropDownDPm> ddataNGOAPPlicationDropDownDPm = [];
   int dpmAPPRoved_valueSendinAPi = 2; // for approved
   int dpmPending_valueSendinAPi = 1; //for Penfing
@@ -127,19 +126,19 @@ class _DPMDashboard extends State<DPMDashboard> {
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
   TextEditingController _confirmnPasswordontrollere =
-  new TextEditingController();
+      new TextEditingController();
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
   Future<List<DataGetDPM_ScreeningMonth>> _futureMonth;
   DataGetDPM_ScreeningMonth _selectedUserMonth;
   Future<List<DataGetDPM_EyeScreeningEdit>> _futureEyeScreeningEdit;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     dashboardviewReplace = true;
     _getDPMDashbnoardData();
-
   }
 
   void getUserData() {
@@ -168,16 +167,19 @@ class _DPMDashboard extends State<DPMDashboard> {
       print(e);
     }
   }
+
   String getCurrentFinancialYear() {
     DateTime now = DateTime.now();
     int currentYear = now.year;
     int nextYear = currentYear + 1;
     String financialYear;
 
-    if (now.month >= 4) { // Financial year starts in April
+    if (now.month >= 4) {
+      // Financial year starts in April
       financialYear = '$currentYear-${nextYear.toString().substring(2)}';
     } else {
-      financialYear = '${currentYear - 1}-${currentYear.toString().substring(2)}';
+      financialYear =
+          '${currentYear - 1}-${currentYear.toString().substring(2)}';
     }
 
     return financialYear;
@@ -250,7 +252,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   @override
   Widget build(BuildContext context) {
-     currentFinancialYear = getCurrentFinancialYear();
+    currentFinancialYear = getCurrentFinancialYear();
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
@@ -270,8 +272,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             }),*/
         actions: [
           PopupMenuButton<int>(
-            itemBuilder: (context) =>
-            [
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: 1,
                 child: Row(
@@ -321,7 +322,6 @@ class _DPMDashboard extends State<DPMDashboard> {
           ),
         ],
       ),
-
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -467,8 +467,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 if (_chosenValueLOWVision == "Cataract") {
                                   print('@@NGO--1' + _chosenValueLOWVision);
                                 } else if (_chosenValueLOWVision ==
-                                    "Diabetic") {} else
-                                if (_chosenValueLOWVision ==
+                                    "Diabetic") {
+                                } else if (_chosenValueLOWVision ==
                                     "Glaucoma") {}
                               });
                             },
@@ -535,9 +535,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 //  print('@@spinnerChooseValue--' + _chosenValue);
                                 if (_chosenEyeBank == "Eye Bank Collection") {
                                   print('@@NGO--1' + _chosenEyeBank);
-                                } else
-                                if (_chosenEyeBank == "Eye Donation") {} else
-                                if (_chosenEyeBank ==
+                                } else if (_chosenEyeBank == "Eye Donation") {
+                                } else if (_chosenEyeBank ==
                                     "Eyeball Collection Via Eye Bank") {}
                               });
                             },
@@ -563,21 +562,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                         // Shown Captcha value to user
                         Container(
                             child: Text(
-                              'Login Type:',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            )),
+                          'Login Type:',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w500),
+                        )),
                         const SizedBox(
                           width: 10,
                         ),
                         Container(
                             child: Text(
-                              'DPM',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500),
-                            )),
+                          'DPM',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w500),
+                        )),
                         const SizedBox(
                           width: 10,
                         ),
@@ -594,42 +591,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   // Shown Captcha value to user
                                   Container(
                                       child: Text(
-                                        'District:',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500),
-                                      )),
+                                    'District:',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                  )),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Container(
                                       child: Text(
-                                        '${districtNames}',
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500),
-                                      )),
+                                    '${districtNames}',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500),
+                                  )),
                                   const SizedBox(
                                     width: 10,
                                   ),
 
                                   Container(
                                       child: Text(
-                                        'State :',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500),
-                                      )),
+                                    'State :',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                  )),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Container(
                                       child: Text(
-                                        '${stateNames}',
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500),
-                                      )),
+                                    '${stateNames}',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500),
+                                  )),
                                   const SizedBox(
                                     width: 10,
                                   ),
@@ -660,18 +657,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                             width: double.infinity,
                             decoration: new BoxDecoration(
                                 gradient: new LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Color.fromARGB(255, 25, 178, 238),
-                                    Color.fromARGB(255, 21, 236, 229)
-                                  ],
-                                )),
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                Color.fromARGB(255, 25, 178, 238),
+                                Color.fromARGB(255, 21, 236, 229)
+                              ],
+                            )),
                             child: Column(
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(10.0),
-                                  child: Text('Patient(s) ($currentFinancialYear)',
+                                  child: Text(
+                                      'Patient(s) ($currentFinancialYear)',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontSize: 16,
@@ -769,13 +767,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Color.fromARGB(255, 25, 178, 238),
-                                          Color.fromARGB(255, 21, 236, 229)
-                                        ],
-                                      )),
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color.fromARGB(255, 25, 178, 238),
+                                      Color.fromARGB(255, 21, 236, 229)
+                                    ],
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -794,18 +792,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print('@@---NGOsAPProved--1');
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     NGO_APPorovedClickShowData =
-                                                    true;
-                                                    NGO_PendingClickShowData=false;
+                                                        true;
+                                                    NGO_PendingClickShowData =
+                                                        false;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -815,7 +814,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -824,8 +823,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -833,10 +832,11 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
-                                                    NGO_APPorovedClickShowData=false;
+                                                        false;
+                                                    NGO_APPorovedClickShowData =
+                                                        false;
                                                     NGO_PendingClickShowData =
-                                                    true;
+                                                        true;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -846,7 +846,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -859,15 +859,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ngoCountApproved}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -875,15 +875,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ngoCountPending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -905,13 +905,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Color.fromARGB(255, 25, 178, 238),
-                                          Color.fromARGB(255, 21, 236, 229)
-                                        ],
-                                      )),
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color.fromARGB(255, 25, 178, 238),
+                                      Color.fromARGB(255, 21, 236, 229)
+                                    ],
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -931,8 +931,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -940,9 +940,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     GetDPM_GH_APPorovedClickShowData =
-                                                    true;
+                                                        true;
                                                   });
                                                 },
                                                 child: new Text('Approved',
@@ -950,7 +950,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -959,8 +959,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -968,9 +968,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     GetDPM_GH_PendingClickShowData =
-                                                    true;
+                                                        true;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -978,7 +978,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -991,14 +991,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text('${gH_CHC_Count}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1006,15 +1006,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${gH_CHC_Count_Pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1036,13 +1036,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Color.fromARGB(255, 25, 178, 238),
-                                          Color.fromARGB(255, 21, 236, 229)
-                                        ],
-                                      )),
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color.fromARGB(255, 25, 178, 238),
+                                      Color.fromARGB(255, 21, 236, 229)
+                                    ],
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1061,8 +1061,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1070,9 +1070,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     GetDPM_PrivatePartitionPorovedClickShowData =
-                                                    true;
+                                                        true;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -1082,7 +1082,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1091,8 +1091,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1100,9 +1100,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     DPM_PrivatePartitionP_PendingClickShowData =
-                                                    true;
+                                                        true;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -1110,7 +1110,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1123,14 +1123,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text('${ppCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1138,15 +1138,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1168,13 +1168,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Color.fromARGB(255, 25, 178, 238),
-                                          Color.fromARGB(255, 21, 236, 229)
-                                        ],
-                                      )),
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color.fromARGB(255, 25, 178, 238),
+                                      Color.fromARGB(255, 21, 236, 229)
+                                    ],
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1194,8 +1194,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1203,9 +1203,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     DPM_privateMEdicalCollegeApprovedData =
-                                                    true;
+                                                        true;
                                                   });
                                                 },
                                                 child: new Text('Approved',
@@ -1213,7 +1213,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1222,8 +1222,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1231,9 +1231,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     DPM_privateMEdicalCollegePendingData =
-                                                    true;
+                                                        true;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -1241,7 +1241,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1254,14 +1254,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text('${pmcCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1269,15 +1269,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1299,13 +1299,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Color.fromARGB(255, 25, 178, 238),
-                                          Color.fromARGB(255, 21, 236, 229)
-                                        ],
-                                      )),
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color.fromARGB(255, 25, 178, 238),
+                                      Color.fromARGB(255, 21, 236, 229)
+                                    ],
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1324,8 +1324,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1333,7 +1333,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     ScreeningCamp = true;
                                                   });
                                                 },
@@ -1342,7 +1342,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1351,8 +1351,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1360,7 +1360,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     ScreeningCampOngoing = true;
                                                   });
                                                 },
@@ -1369,7 +1369,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1378,8 +1378,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1387,7 +1387,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     ScreeningCampComing = true;
                                                   });
                                                 },
@@ -1396,7 +1396,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1409,15 +1409,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${campCompletedCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1425,15 +1425,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${campongoingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1441,15 +1441,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${campCommingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1471,13 +1471,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Color.fromARGB(255, 25, 178, 238),
-                                          Color.fromARGB(255, 21, 236, 229)
-                                        ],
-                                      )),
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color.fromARGB(255, 25, 178, 238),
+                                      Color.fromARGB(255, 21, 236, 229)
+                                    ],
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1496,8 +1496,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1505,9 +1505,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                                   setState(() {
                                                     dashboardviewReplace =
-                                                    false;
+                                                        false;
                                                     satelliteCentreShowData =
-                                                    true;
+                                                        true;
                                                   });
                                                 },
                                                 child: new Text(
@@ -1516,7 +1516,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1525,8 +1525,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -1538,7 +1538,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1561,13 +1561,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Color.fromARGB(255, 25, 178, 238),
-                                          Color.fromARGB(255, 21, 236, 229)
-                                        ],
-                                      )),
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color.fromARGB(255, 25, 178, 238),
+                                      Color.fromARGB(255, 21, 236, 229)
+                                    ],
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1586,8 +1586,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -1600,7 +1600,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1609,8 +1609,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -1622,7 +1622,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1642,7 +1642,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             flex: 1,
                             child: Padding(
                               padding:
-                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: new Text(
                                   'Disease-wise Patient Statistics( Since FY: $currentFinancialYear )',
                                   textAlign: TextAlign.center,
@@ -1656,7 +1656,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             flex: 1,
                             child: Padding(
                               padding:
-                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: new Text(
                                   'Disease-wise Registered Patient(Since FY: $currentFinancialYear',
                                   textAlign: TextAlign.center,
@@ -1692,13 +1692,12 @@ class _DPMDashboard extends State<DPMDashboard> {
             NGOlistApproveRevenuMOUDataShow(),
             ngolistEyeScreeningShowData(),
             DPMEyeScreenSchooRegisterData(),
-        //    PatientApprovedFinancneClickDisplayData(),
+            //    PatientApprovedFinancneClickDisplayData(),
           ],
         ),
       ),
     );
   }
-
 
   Widget NGOlistApplicationDropdownData() {
     return Column(
@@ -1749,42 +1748,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -1883,8 +1882,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCellViewBlue("Edit", () {
                                 // Handle the edit action here
                                 // For example, navigate to an edit screen or show a dialog
-                              //  print('Edit clicked for item: ${offer.schoolName}');
-                              //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+                                //  print('Edit clicked for item: ${offer.schoolName}');
+                                //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
 
                                 // Example: Navigate to an edit page with the selected item
                                 // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
@@ -1903,6 +1902,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
   Widget NGOlistnewHospitalDropdownData() {
     return Column(
       children: [
@@ -1994,6 +1994,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
   Widget NGOlistgovtPvtotherHospitalDropdownData() {
     return Column(
       children: [
@@ -2042,15 +2043,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                         'Private Medical College',
                         'Other(Institution not claiming fund from NPCBVI)',
                       ].map<DropdownMenuItem<String>>(
-                              (String oganisationTypeGovtPrivateDRopDowns) {
-                            return DropdownMenuItem<String>(
-                              value: oganisationTypeGovtPrivateDRopDowns,
-                              child: Text(
-                                oganisationTypeGovtPrivateDRopDowns,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            );
-                          }).toList(),
+                          (String oganisationTypeGovtPrivateDRopDowns) {
+                        return DropdownMenuItem<String>(
+                          value: oganisationTypeGovtPrivateDRopDowns,
+                          child: Text(
+                            oganisationTypeGovtPrivateDRopDowns,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
                       hint: Text(
                         "Select Organisation Type",
                         style: TextStyle(
@@ -2167,7 +2168,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               children: ddata.map((offer) {
                                 return Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     _buildDataCellSrNo(
                                         (ddata.indexOf(offer) + 1).toString()),
@@ -2201,6 +2202,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
   Widget NGOlistApproveRevenuMOUDataShow() {
     return Column(
       children: [
@@ -2251,15 +2253,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                         'Private Medical College',
                         'Other(Institution not claiming fund from NPCBVI/GOVT/PRIVATE)',
                       ].map<DropdownMenuItem<String>>(
-                              (String ngoApproveRevenueMOUs) {
-                            return DropdownMenuItem<String>(
-                              value: ngoApproveRevenueMOUs,
-                              child: Text(
-                                ngoApproveRevenueMOUs,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            );
-                          }).toList(),
+                          (String ngoApproveRevenueMOUs) {
+                        return DropdownMenuItem<String>(
+                          value: ngoApproveRevenueMOUs,
+                          child: Text(
+                            ngoApproveRevenueMOUs,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
                       hint: Text(
                         "Select Organisation Type",
                         style: TextStyle(
@@ -2308,15 +2310,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                         'Expired',
                         'Renew Approve',
                       ].map<DropdownMenuItem<String>>(
-                              (String ngoApproveRevenueMOUs) {
-                            return DropdownMenuItem<String>(
-                              value: ngoApproveRevenueMOUs,
-                              child: Text(
-                                ngoApproveRevenueMOUs,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            );
-                          }).toList(),
+                          (String ngoApproveRevenueMOUs) {
+                        return DropdownMenuItem<String>(
+                          value: ngoApproveRevenueMOUs,
+                          child: Text(
+                            ngoApproveRevenueMOUs,
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
                       hint: Text(
                         "Pending for Renew",
                         style: TextStyle(
@@ -2402,8 +2404,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (!snapshot.hasData || snapshot.data == null) {
                           return Utils.getEmptyView("No data found");
                         } else {
-                          List<DataGetDPM_MOUApprove> ddata =
-                              snapshot.data;
+                          List<DataGetDPM_MOUApprove> ddata = snapshot.data;
                           print('@@---ddata' + ddata.length.toString());
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -2411,7 +2412,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               children: ddata.map((offer) {
                                 return Row(
                                   mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceEvenly,
                                   children: [
                                     _buildDataCellSrNo(
                                         (ddata.indexOf(offer) + 1).toString()),
@@ -2419,8 +2420,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     _buildDataCell(offer.hName),
                                     _buildDataCell(offer.mobile.toString()),
                                     _buildDataCell(offer.emailId),
-                                    _buildDataCell(Utils.formatDateString(offer.fromDate)),
-                                    _buildDataCell(Utils.formatDateString(offer.toDate)),
+                                    _buildDataCell(
+                                        Utils.formatDateString(offer.fromDate)),
+                                    _buildDataCell(
+                                        Utils.formatDateString(offer.toDate)),
                                     _buildDataCell(offer.vstatus.toString()),
                                     _buildDataCellViewBlue(offer.file, () {
                                       // Handle the edit action here
@@ -2556,22 +2559,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCellViewBlue("Edit", () {
                                 // Handle the edit action here
                                 // For example, navigate to an edit screen or show a dialog
-                                 print('@@Edit clicked for item: ${offer.schoolid}');
-                               //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+                                print(
+                                    '@@Edit clicked for item: ${offer.schoolid}');
+                                //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
 
-                                 SharedPrefs.storeSharedValues(
-                                     AppConstant.schoolid, offer.schoolid.toString());
-                                 setState(() {
-                                   _future = getDPM_ScreeningYear();
-                                   _futureMonth = getDPM_ScreeningMonth();
-                                   _futureEyeScreeningEdit = ApiController.getDPM_EyeScreeningEdit(district_code_login, state_code_login, userId);
-                                   ngoEyeScreeningdataShow=false;
+                                SharedPrefs.storeSharedValues(
+                                    AppConstant.schoolid,
+                                    offer.schoolid.toString());
+                                setState(() {
+                                  _future = getDPM_ScreeningYear();
+                                  _futureMonth = getDPM_ScreeningMonth();
+                                  _futureEyeScreeningEdit =
+                                      ApiController.getDPM_EyeScreeningEdit(
+                                          district_code_login,
+                                          state_code_login,
+                                          userId);
+                                  ngoEyeScreeningdataShow = false;
 
-                                   dpmEyeScreeningSchoolDataShow=true;
+                                  dpmEyeScreeningSchoolDataShow = true;
+                                });
 
-                                 });
-
-                               /*  Navigator.push(
+                                /*  Navigator.push(
                                    context,
                                    MaterialPageRoute(
                                        builder: (context) => DPMEyeSchoolScreens()),
@@ -2600,7 +2608,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-      GetDPM_ScreeningYear.fromJson(json);
+          GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -2608,6 +2616,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       return null;
     }
   }
+
   Future<List<DataGetDPM_ScreeningMonth>> getDPM_ScreeningMonth() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -2615,7 +2624,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningMonth'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningMonth getDPM_ScreeningMonth =
-      GetDPM_ScreeningMonth.fromJson(json);
+          GetDPM_ScreeningMonth.fromJson(json);
 
       return getDPM_ScreeningMonth.data;
     } else {
@@ -2623,480 +2632,802 @@ class _DPMDashboard extends State<DPMDashboard> {
       return null;
     }
   }
+
   Widget DPMEyeScreenSchooRegisterData() {
     return Column(
       children: [
         Visibility(
           visible: dpmEyeScreeningSchoolDataShow,
-          child: Column(
-            children: [
-              Container(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'School Eye Screening',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                          fontSize: 18.0,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'School Eye Screening',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18.0,
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Center(
-                child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                  future: _future,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
+                Center(
+                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                    if (snapshot.data == null) {
-                      return const CircularProgressIndicator();
-                    }
+                      if (snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
 
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const Text(
-                            'Select year:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 10), // Added space between label and dropdown
-                          DropdownButtonFormField<DataGetDPM_ScreeningYear>(
-                            onChanged: (user) => setState(() {
-                              _selectedUser = user;
-                              var getYear = int.parse((user.name).toString());
-                              print('@@getYear--' + getYear.toString());
-                            }),
-                            value: _selectedUser,
-                            items: [
-                              ...snapshot.data.map(
-                                    (user) => DropdownMenuItem(
-                                  value: user,
-                                  child: Text(
-                                    '${user.name}',
-                                    style: TextStyle(fontSize: 16), // Text style inside dropdown
-                                  ),
-                                ),
-                              ),
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              filled: true,
-                              fillColor: Colors.blue[50], // Background color of the dropdown box
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const Text(
+                              'Select year:',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-                            dropdownColor: Colors.blue[50], // Background color of the dropdown menu
-                            style: TextStyle(color: Colors.black), // Style of the selected item
-                            icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Dropdown icon style
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-              Center(
-                child: FutureBuilder<List<DataGetDPM_ScreeningMonth>>(
-                  future: _futureMonth,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-
-                    if (snapshot.data == null) {
-                      return const CircularProgressIndicator();
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const Text(
-                            'Select Month:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 10), // Added space between label and dropdown
-                          DropdownButtonFormField<DataGetDPM_ScreeningMonth>(
-                            onChanged: (user) => setState(() {
-                              _selectedUserMonth = user;
-                              var getYear = ((user.monthname).toString());
-                              print('@@getYear--' + getYear.toString());
-                            }),
-                            value: _selectedUserMonth,
-                            items: [
-                              ...snapshot.data.map(
-                                    (user) => DropdownMenuItem(
-                                  value: user,
-                                  child: Text(
-                                    '${user.monthname}',
-                                    style: TextStyle(fontSize: 16), // Text style inside dropdown
-                                  ),
-                                ),
-                              ),
-                            ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              filled: true,
-                              fillColor: Colors.blue[50], // Background color of the dropdown box
-                            ),
-                            dropdownColor: Colors.blue[50], // Background color of the dropdown menu
-                            style: TextStyle(color: Colors.black), // Style of the selected item
-                            icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Dropdown icon style
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-          /*    FutureBuilder<List<DataGetDPM_EyeScreeningEdit>>(
-                future: ApiController.getDPM_EyeScreeningEdit(
-                    district_code_login,
-                    state_code_login,
-                    userId),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
-                    List<DataGetDPM_EyeScreeningEdit> ddata = snapshot.data;
-                    print('@@---DataGetDPM_EyeScreeningEdit' + ddata.length.toString());
-
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: ddata.length,
-                      itemBuilder: (context, index) {
-                        DataGetDPM_EyeScreeningEdit offer = ddata[index];
-                        print('@@---DataGetDPM_EyeScreeningEdit--values' + offer.schoolName.toString());
-
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 1.0,
-                              ),
-                            ),
-                            alignment: Alignment.center,
-                            child:    Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                              child: new TextField(
-                               // controller: _loginIdController,
-                                decoration: InputDecoration(
-                                    label: Text(offer.schoolName),
-                                    hintText: 'Name of School',
-
-                                    //prefixIcon
-                                    border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(5.0))),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
-              ),*/
-              // Additional content can go here, such as a horizontal scrolling header row
-              FutureBuilder<List<DataGetDPM_EyeScreeningEdit>>(
-                future: _futureEyeScreeningEdit,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
-                    List<DataGetDPM_EyeScreeningEdit> ddata = snapshot.data;
-                    print('@@---DataGetDPM_EyeScreeningEdit' + ddata.length.toString());
-
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: ddata.length,
-                      itemBuilder: (context, index) {
-                        DataGetDPM_EyeScreeningEdit offer = ddata[index];
-                        print('@@---DataGetDPM_EyeScreeningEdit--values' + offer.schoolName.toString());
-
-                        return Column(
-                          children: [
-                            Row(
-                              children: [
-                                // First TextField with flex: 1
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                    child:Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.blueGrey, width: 1.0),
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      child: Text(
-                                        'School name *',
-                                        style: TextStyle(
-                                          color: Colors.blueGrey,
-                                          fontSize: 16.0, // Adjust font size as needed
-                                          fontWeight: FontWeight.bold, // Make the text bold if needed
-                                        ),
-                                      ),
-                                    )
-
-                                  ),
-                                ),
-                                // Second TextField with flex: 2
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white, // Background color of the container
-                                        borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black26,
-                                            offset: Offset(0, 2),
-                                            blurRadius: 6.0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                          labelText: offer.schoolName, // Assuming 'offer.schoolName' is a dynamic value
-                                          labelStyle: TextStyle(color: Colors.blueGrey), // Color of the label
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10.0), // Rounded border
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0), // Padding inside the TextField
-                                        ),
-                                      ),
+                            SizedBox(height: 10),
+                            // Added space between label and dropdown
+                            DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                              onChanged: (user) => setState(() {
+                                _selectedUser = user;
+                                var getYear = int.parse((user.name).toString());
+                                print('@@getYear--' + getYear.toString());
+                              }),
+                              value: _selectedUser,
+                              items: [
+                                ...snapshot.data.map(
+                                  (user) => DropdownMenuItem(
+                                    value: user,
+                                    child: Text(
+                                      '${user.name}',
+                                      style: TextStyle(
+                                          fontSize:
+                                              16), // Text style inside dropdown
                                     ),
                                   ),
                                 ),
                               ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.blue, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.blueAccent, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.blue[
+                                    50], // Background color of the dropdown box
+                              ),
+                              dropdownColor: Colors.blue[50],
+                              // Background color of the dropdown menu
+                              style: TextStyle(color: Colors.black),
+                              // Style of the selected item
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.blue), // Dropdown icon style
                             ),
-                            Row(
-                              children: [
-                                // First TextField with flex: 1
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                      child:Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.blueGrey, width: 1.0),
-                                          borderRadius: BorderRadius.circular(10.0),
-                                        ),
-                                        child: Text(
-                                          'Address of School*',
-                                          style: TextStyle(
-                                            color: Colors.blueGrey,
-                                            fontSize: 16.0, // Adjust font size as needed
-                                            fontWeight: FontWeight.bold, // Make the text bold if needed
-                                          ),
-                                        ),
-                                      )
-
-                                  ),
-                                ),
-                                // Second TextField with flex: 2
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white, // Background color of the container
-                                        borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black26,
-                                            offset: Offset(0, 2),
-                                            blurRadius: 6.0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                          labelText: offer.schoolAddress, // Assuming 'offer.schoolName' is a dynamic value
-                                          labelStyle: TextStyle(color: Colors.blueGrey), // Color of the label
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10.0), // Rounded border
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0), // Padding inside the TextField
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                // First TextField with flex: 1
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                      child:Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.blueGrey, width: 1.0),
-                                          borderRadius: BorderRadius.circular(10.0),
-                                        ),
-                                        child: Text(
-                                          'Name of Principal*',
-                                          style: TextStyle(
-                                            color: Colors.blueGrey,
-                                            fontSize: 16.0, // Adjust font size as needed
-                                            fontWeight: FontWeight.bold, // Make the text bold if needed
-                                          ),
-                                        ),
-                                      )
-
-                                  ),
-                                ),
-                                // Second TextField with flex: 2
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white, // Background color of the container
-                                        borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black26,
-                                            offset: Offset(0, 2),
-                                            blurRadius: 6.0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                          labelText: offer.principal, // Assuming 'offer.schoolName' is a dynamic value
-                                          labelStyle: TextStyle(color: Colors.blueGrey), // Color of the label
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10.0), // Rounded border
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0), // Padding inside the TextField
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                // First TextField with flex: 1
-                                Expanded(
-                                  flex: 1,
-                                  child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                      child:Container(
-                                        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0),
-                                        decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.blueGrey, width: 1.0),
-                                          borderRadius: BorderRadius.circular(10.0),
-                                        ),
-                                        child: Text(
-                                          'Teacher Trained in screening for refractive errors *',
-                                          style: TextStyle(
-                                            color: Colors.blueGrey,
-                                            fontSize: 16.0, // Adjust font size as needed
-                                            fontWeight: FontWeight.bold, // Make the text bold if needed
-                                          ),
-                                        ),
-                                      )
-
-                                  ),
-                                ),
-                                // Second TextField with flex: 2
-                                Expanded(
-                                  flex: 2,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white, // Background color of the container
-                                        borderRadius: BorderRadius.circular(10.0), // Rounded corners
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black26,
-                                            offset: Offset(0, 2),
-                                            blurRadius: 6.0,
-                                          ),
-                                        ],
-                                      ),
-                                      child: TextField(
-                                        decoration: InputDecoration(
-                                          labelText: offer.trainedTeacher.toString(), // Assuming 'offer.schoolName' is a dynamic value
-                                          labelStyle: TextStyle(color: Colors.blueGrey), // Color of the label
-                                          border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10.0), // Rounded border
-                                          ),
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 12.0), // Padding inside the TextField
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )
-
                           ],
-                        );
-                      },
-                    );
-                  }
-                },
-              ),
-          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Center(
+                  child: FutureBuilder<List<DataGetDPM_ScreeningMonth>>(
+                    future: _futureMonth,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const Text(
+                              'Select Month:',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 10),
+                            // Added space between label and dropdown
+                            DropdownButtonFormField<DataGetDPM_ScreeningMonth>(
+                              onChanged: (user) => setState(() {
+                                _selectedUserMonth = user;
+                                var getYear = ((user.monthname).toString());
+                                print('@@getYear--' + getYear.toString());
+                              }),
+                              value: _selectedUserMonth,
+                              items: [
+                                ...snapshot.data.map(
+                                  (user) => DropdownMenuItem(
+                                    value: user,
+                                    child: Text(
+                                      '${user.monthname}',
+                                      style: TextStyle(
+                                          fontSize:
+                                              16), // Text style inside dropdown
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.blue, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.blueAccent, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.blue[
+                                    50], // Background color of the dropdown box
+                              ),
+                              dropdownColor: Colors.blue[50],
+                              // Background color of the dropdown menu
+                              style: TextStyle(color: Colors.black),
+                              // Style of the selected item
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.blue), // Dropdown icon style
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                // Additional content can go here, such as a horizontal scrolling header row
+                FutureBuilder<List<DataGetDPM_EyeScreeningEdit>>(
+                  future: _futureEyeScreeningEdit,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Utils.getEmptyView("Error: ${snapshot.error}");
+                    } else if (!snapshot.hasData ||
+                        snapshot.data == null ||
+                        snapshot.data.isEmpty) {
+                      return Utils.getEmptyView("No data found");
+                    } else {
+                      List<DataGetDPM_EyeScreeningEdit> ddata = snapshot.data;
+                      print('@@---DataGetDPM_EyeScreeningEdit' +
+                          ddata.length.toString());
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: ddata.length,
+                        itemBuilder: (context, index) {
+                          DataGetDPM_EyeScreeningEdit offer = ddata[index];
+                          print('@@---DataGetDPM_EyeScreeningEdit--values' +
+                              offer.schoolName.toString());
+
+                          return Column(
+                            children: [
+                              Row(
+                                children: [
+                                  // First TextField with flex: 1
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 10.0),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 12.0),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.blueGrey,
+                                                width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text(
+                                            'School name *',
+                                            style: TextStyle(
+                                              color: Colors.blueGrey,
+                                              fontSize: 16.0,
+                                              // Adjust font size as needed
+                                              fontWeight: FontWeight
+                                                  .bold, // Make the text bold if needed
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  // Second TextField with flex: 2
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          // Background color of the container
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          // Rounded corners
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              offset: Offset(0, 2),
+                                              blurRadius: 6.0,
+                                            ),
+                                          ],
+                                        ),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                            labelText: offer.schoolName,
+                                            // Assuming 'offer.schoolName' is a dynamic value
+                                            labelStyle: TextStyle(
+                                                color: Colors.blueGrey),
+                                            // Color of the label
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10.0), // Rounded border
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 15.0,
+                                                vertical:
+                                                    12.0), // Padding inside the TextField
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  // First TextField with flex: 1
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 10.0),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 12.0),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.blueGrey,
+                                                width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text(
+                                            'Address of School*',
+                                            style: TextStyle(
+                                              color: Colors.blueGrey,
+                                              fontSize: 16.0,
+                                              // Adjust font size as needed
+                                              fontWeight: FontWeight
+                                                  .bold, // Make the text bold if needed
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  // Second TextField with flex: 2
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          // Background color of the container
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          // Rounded corners
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              offset: Offset(0, 2),
+                                              blurRadius: 6.0,
+                                            ),
+                                          ],
+                                        ),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                            labelText: offer.schoolAddress,
+                                            // Assuming 'offer.schoolName' is a dynamic value
+                                            labelStyle: TextStyle(
+                                                color: Colors.blueGrey),
+                                            // Color of the label
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10.0), // Rounded border
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 15.0,
+                                                vertical:
+                                                    12.0), // Padding inside the TextField
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  // First TextField with flex: 1
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 10.0),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 12.0),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.blueGrey,
+                                                width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text(
+                                            'Name of Principal*',
+                                            style: TextStyle(
+                                              color: Colors.blueGrey,
+                                              fontSize: 16.0,
+                                              // Adjust font size as needed
+                                              fontWeight: FontWeight
+                                                  .bold, // Make the text bold if needed
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  // Second TextField with flex: 2
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          // Background color of the container
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          // Rounded corners
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              offset: Offset(0, 2),
+                                              blurRadius: 6.0,
+                                            ),
+                                          ],
+                                        ),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                            labelText: offer.principal,
+                                            // Assuming 'offer.schoolName' is a dynamic value
+                                            labelStyle: TextStyle(
+                                                color: Colors.blueGrey),
+                                            // Color of the label
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10.0), // Rounded border
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 15.0,
+                                                vertical:
+                                                    12.0), // Padding inside the TextField
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  // First TextField with flex: 1
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 10.0),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 12.0),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.blueGrey,
+                                                width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text(
+                                            'Teacher Trained in screening for refractive errors *',
+                                            style: TextStyle(
+                                              color: Colors.blueGrey,
+                                              fontSize: 16.0,
+                                              // Adjust font size as needed
+                                              fontWeight: FontWeight
+                                                  .bold, // Make the text bold if needed
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  // Second TextField with flex: 2
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          // Background color of the container
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          // Rounded corners
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              offset: Offset(0, 2),
+                                              blurRadius: 6.0,
+                                            ),
+                                          ],
+                                        ),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                            labelText:
+                                                offer.trainedTeacher.toString(),
+                                            // Assuming 'offer.schoolName' is a dynamic value
+                                            labelStyle: TextStyle(
+                                                color: Colors.blueGrey),
+                                            // Color of the label
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10.0), // Rounded border
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 15.0,
+                                                vertical:
+                                                    12.0), // Padding inside the TextField
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                color: Colors.blue,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'School Eye Screening',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 18.0,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  // First TextField with flex: 1
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 10.0),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 12.0),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.blueGrey,
+                                                width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text(
+                                            'Number of children screening *',
+                                            style: TextStyle(
+                                              color: Colors.blueGrey,
+                                              fontSize: 16.0,
+                                              // Adjust font size as needed
+                                              fontWeight: FontWeight
+                                                  .bold, // Make the text bold if needed
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  // Second TextField with flex: 2
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          // Background color of the container
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          // Rounded corners
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              offset: Offset(0, 2),
+                                              blurRadius: 6.0,
+                                            ),
+                                          ],
+                                        ),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                            labelText:
+                                                offer.childScreen.toString(),
+                                            // Assuming 'offer.schoolName' is a dynamic value
+                                            labelStyle: TextStyle(
+                                                color: Colors.blueGrey),
+                                            // Color of the label
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10.0), // Rounded border
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 15.0,
+                                                vertical:
+                                                    12.0), // Padding inside the TextField
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  // First TextField with flex: 1
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 10.0),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 12.0),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.blueGrey,
+                                                width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text(
+                                            'Children detected with Refractive Errors *',
+                                            style: TextStyle(
+                                              color: Colors.blueGrey,
+                                              fontSize: 16.0,
+                                              // Adjust font size as needed
+                                              fontWeight: FontWeight
+                                                  .bold, // Make the text bold if needed
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  // Second TextField with flex: 2
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          // Background color of the container
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          // Rounded corners
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              offset: Offset(0, 2),
+                                              blurRadius: 6.0,
+                                            ),
+                                          ],
+                                        ),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                            labelText:
+                                                offer.childDetect.toString(),
+                                            // Assuming 'offer.schoolName' is a dynamic value
+                                            labelStyle: TextStyle(
+                                                color: Colors.blueGrey),
+                                            // Color of the label
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10.0), // Rounded border
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 15.0,
+                                                vertical:
+                                                    12.0), // Padding inside the TextField
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  // First TextField with flex: 1
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 8.0, vertical: 10.0),
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 15.0, vertical: 12.0),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                color: Colors.blueGrey,
+                                                width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          child: Text(
+                                            'Number of free Glasses *',
+                                            style: TextStyle(
+                                              color: Colors.blueGrey,
+                                              fontSize: 16.0,
+                                              // Adjust font size as needed
+                                              fontWeight: FontWeight
+                                                  .bold, // Make the text bold if needed
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  // Second TextField with flex: 2
+                                  Expanded(
+                                    flex: 2,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 10.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          // Background color of the container
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                          // Rounded corners
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black26,
+                                              offset: Offset(0, 2),
+                                              blurRadius: 6.0,
+                                            ),
+                                          ],
+                                        ),
+                                        child: TextField(
+                                          decoration: InputDecoration(
+                                            labelText:
+                                                offer.freeglass.toString(),
+                                            // Assuming 'offer.schoolName' is a dynamic value
+                                            labelStyle: TextStyle(
+                                                color: Colors.blueGrey),
+                                            // Color of the label
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      10.0), // Rounded border
+                                            ),
+                                            contentPadding: EdgeInsets.symmetric(
+                                                horizontal: 15.0,
+                                                vertical:
+                                                    12.0), // Padding inside the TextField
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20.0, 0),
+                                      child: ElevatedButton(
+                                        child: Text('Update'),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blue,
+                                        ),
+                                        onPressed: () {},
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20.0, 0),
+                                      child: ElevatedButton(
+                                        child: Text('Reset'),
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Colors.blue,
+                                        ),
+                                        onPressed: () {
+                                          //   _submitForm();
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ],
     );
   }
-
-
 
   void showDiseaseDialogApprovedPatintFinance() {
     showDialog(
@@ -3110,7 +3441,7 @@ class _DPMDashboard extends State<DPMDashboard> {
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: screenWidth * 0.9,  // 90% of screen width
+            width: screenWidth * 0.9, // 90% of screen width
             height: screenHeight * 0.7, // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
@@ -3144,23 +3475,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                           snapshot.data.isEmpty) {
                         return Utils.getEmptyView("No data found");
                       } else {
-                        List<DataGetPatientAPprovedwithFinanceYear> ddata = snapshot.data;
+                        List<DataGetPatientAPprovedwithFinanceYear> ddata =
+                            snapshot.data;
                         print('@@---ddata' + ddata.length.toString());
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Column(
                             children: ddata.map((offer) {
                               return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.diseaseName),
-                                  _buildDataCell(offer.totalApproPending.toString()),
+                                  _buildDataCell(
+                                      offer.totalApproPending.toString()),
                                   _buildDataCellViewBlue("View", () {
                                     // Handle the edit action here
                                     // For example, navigate to an edit screen or show a dialog
-                                    print('@@Edit clicked for item: ${offer.diseaseName}');
+                                    print(
+                                        '@@Edit clicked for item: ${offer.diseaseName}');
                                     //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
 
                                     // Example: Navigate to an edit page with the selected item
@@ -3190,6 +3525,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
+
   void showDiseaseDialogPendingPatintFinance() {
     showDialog(
       context: context,
@@ -3202,7 +3538,7 @@ class _DPMDashboard extends State<DPMDashboard> {
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: screenWidth * 0.9,  // 90% of screen width
+            width: screenWidth * 0.9, // 90% of screen width
             height: screenHeight * 0.7, // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
@@ -3236,23 +3572,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                           snapshot.data.isEmpty) {
                         return Utils.getEmptyView("No data found");
                       } else {
-                        List<DataGetPatientPendingwithFinance> ddata = snapshot.data;
+                        List<DataGetPatientPendingwithFinance> ddata =
+                            snapshot.data;
                         print('@@---ddata' + ddata.length.toString());
                         return SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Column(
                             children: ddata.map((offer) {
                               return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.diseaseName),
-                                  _buildDataCell(offer.totalApproPending.toString()),
+                                  _buildDataCell(
+                                      offer.totalApproPending.toString()),
                                   _buildDataCellViewBlue("View", () {
                                     // Handle the edit action here
                                     // For example, navigate to an edit screen or show a dialog
-                                    print('@@Edit clicked for item: ${offer.diseaseName}');
+                                    print(
+                                        '@@Edit clicked for item: ${offer.diseaseName}');
                                     //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
 
                                     // Example: Navigate to an edit page with the selected item
@@ -3282,8 +3622,6 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
-
-
 
   /// here we are showing the NGO Data on DPm Dashboard.
   Widget NGOClickAprrovalDisplayDatas() {
@@ -3317,42 +3655,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3376,9 +3714,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          NGO_APPorovedClickShowData=false;
-                                          NGO_PendingClickShowData=false;
-                                         // Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                                          NGO_APPorovedClickShowData = false;
+                                          NGO_PendingClickShowData = false;
+                                          // Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         });
                                       },
                                       child: Container(
@@ -3507,42 +3845,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3566,8 +3904,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          NGO_PendingClickShowData=false;
-                                          NGO_APPorovedClickShowData=false;
+                                          NGO_PendingClickShowData = false;
+                                          NGO_APPorovedClickShowData = false;
                                         });
                                       },
                                       child: Container(
@@ -3697,42 +4035,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3756,8 +4094,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          GetDPM_GH_PendingClickShowData=false;
-                                          GetDPM_GH_APPorovedClickShowData=false;
+                                          GetDPM_GH_PendingClickShowData =
+                                              false;
+                                          GetDPM_GH_APPorovedClickShowData =
+                                              false;
                                         });
                                       },
                                       child: Container(
@@ -3887,42 +4227,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -3946,8 +4286,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          GetDPM_GH_PendingClickShowData=false;
-                                          GetDPM_GH_APPorovedClickShowData=false;
+                                          GetDPM_GH_PendingClickShowData =
+                                              false;
+                                          GetDPM_GH_APPorovedClickShowData =
+                                              false;
                                         });
                                       },
                                       child: Container(
@@ -4079,42 +4421,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4138,8 +4480,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          GetDPM_PrivatePartitionPorovedClickShowData=false;
-                                          DPM_PrivatePartitionP_PendingClickShowData=false;
+                                          GetDPM_PrivatePartitionPorovedClickShowData =
+                                              false;
+                                          DPM_PrivatePartitionP_PendingClickShowData =
+                                              false;
                                         });
                                       },
                                       child: Container(
@@ -4269,42 +4613,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4328,8 +4672,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          GetDPM_PrivatePartitionPorovedClickShowData=false;
-                                          DPM_PrivatePartitionP_PendingClickShowData=false;
+                                          GetDPM_PrivatePartitionPorovedClickShowData =
+                                              false;
+                                          DPM_PrivatePartitionP_PendingClickShowData =
+                                              false;
                                         });
                                       },
                                       child: Container(
@@ -4457,42 +4803,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4516,8 +4862,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          DPM_privateMEdicalCollegeApprovedData=false;
-                                          DPM_privateMEdicalCollegePendingData=false;
+                                          DPM_privateMEdicalCollegeApprovedData =
+                                              false;
+                                          DPM_privateMEdicalCollegePendingData =
+                                              false;
                                         });
                                       },
                                       child: Container(
@@ -4644,42 +4992,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4703,8 +5051,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          DPM_privateMEdicalCollegeApprovedData=false;
-                                          DPM_privateMEdicalCollegePendingData=false;
+                                          DPM_privateMEdicalCollegeApprovedData =
+                                              false;
+                                          DPM_privateMEdicalCollegePendingData =
+                                              false;
                                         });
                                       },
                                       child: Container(
@@ -4832,42 +5182,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -4891,9 +5241,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          ScreeningCamp=false;
-                                          ScreeningCampOngoing=false;
-                                          ScreeningCampComing=false;
+                                          ScreeningCamp = false;
+                                          ScreeningCampOngoing = false;
+                                          ScreeningCampComing = false;
                                         });
                                       },
                                       child: Container(
@@ -4943,8 +5293,8 @@ class _DPMDashboard extends State<DPMDashboard> {
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DataDPMScreeningCamp>>(
-                future: ApiController.GetDPM_ScreeningCamp(
-                    1001, 100, currentFinancialYear, "", resultScreeningCampsCompleted),
+                future: ApiController.GetDPM_ScreeningCamp(1001, 100,
+                    currentFinancialYear, "", resultScreeningCampsCompleted),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -5018,42 +5368,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -5077,9 +5427,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          ScreeningCamp=false;
-                                          ScreeningCampOngoing=false;
-                                          ScreeningCampComing=false;
+                                          ScreeningCamp = false;
+                                          ScreeningCampOngoing = false;
+                                          ScreeningCampComing = false;
                                         });
                                       },
                                       child: Container(
@@ -5208,42 +5558,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -5267,9 +5617,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          ScreeningCamp=false;
-                                          ScreeningCampOngoing=false;
-                                          ScreeningCampComing=false;
+                                          ScreeningCamp = false;
+                                          ScreeningCampOngoing = false;
+                                          ScreeningCampComing = false;
                                         });
                                       },
                                       child: Container(
@@ -5399,42 +5749,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Shown Captcha value to user
                                     Container(
                                         child: Text(
-                                          'District:',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'District:',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${districtNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${districtNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
 
                                     Container(
                                         child: Text(
-                                          'State :',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      'State :',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Container(
                                         child: Text(
-                                          '${stateNames}',
-                                          style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500),
-                                        )),
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500),
+                                    )),
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -5458,7 +5808,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          satelliteCentreShowData=false;
+                                          satelliteCentreShowData = false;
                                         });
                                       },
                                       child: Container(
@@ -5644,8 +5994,6 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
-
-
 
   Widget _buildDataCellSrNo(String text) {
     return Container(
