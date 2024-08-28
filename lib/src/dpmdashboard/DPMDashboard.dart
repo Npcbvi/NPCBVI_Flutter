@@ -22,6 +22,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreen
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../model/dpmRegistration/DiseaseData/GetDiseaseData.dart';
 import '../model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
 import 'package:http/http.dart' as http;
@@ -57,6 +58,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   GetDPM_NGOApprovedPendingFields getDPM_NGOApprovedPendingFields =
       new GetDPM_NGOApprovedPendingFields();
   GetChangeAPsswordFields getchangePwd = new GetChangeAPsswordFields();
+  GetSchoolEyeScreening_Registrations _getSchoolEyeScreening_Registrations=new GetSchoolEyeScreening_Registrations();
   String ngoCountApproved,
       ngoCountPending,
       totalPatientApproved,
@@ -133,6 +135,15 @@ class _DPMDashboard extends State<DPMDashboard> {
   DataGetDPM_ScreeningMonth _selectedUserMonth;
   Future<List<DataGetDPM_EyeScreeningEdit>> _futureEyeScreeningEdit;
 
+  TextEditingController _controllerNameofSchool = TextEditingController();
+  TextEditingController _controllerAddressofSchool = TextEditingController();
+  TextEditingController _controllerNameofPrincipal = TextEditingController();
+  TextEditingController _controllerTeacherTrained  = TextEditingController();
+  TextEditingController _controllerNumberofchildrenscreening = TextEditingController();
+  TextEditingController _controllerChildrendetectedwithRefractive  = TextEditingController();
+  TextEditingController _controllerNumberoffreeGlasses = TextEditingController();
+  String getfyid;
+  var month_id;
   @override
   void initState() {
     // TODO: implement initState
@@ -2686,10 +2697,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                             SizedBox(height: 10),
                             // Added space between label and dropdown
                             DropdownButtonFormField<DataGetDPM_ScreeningYear>(
-                              onChanged: (user) => setState(() {
-                                _selectedUser = user;
-                                var getYear = int.parse((user.name).toString());
+                              onChanged: (userc) => setState(() {
+                                _selectedUser = userc;
+                                var getYear = int.parse(userc.name.replaceAll(RegExp(r'\D'), ''));
+                                getfyid = userc.fyid;
                                 print('@@getYear--' + getYear.toString());
+                                print('@@getfyidSelected here----' + getfyid.toString());;
                               }),
                               value: _selectedUser,
                               items: [
@@ -2763,7 +2776,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                               onChanged: (user) => setState(() {
                                 _selectedUserMonth = user;
                                 var getYear = ((user.monthname).toString());
-                                print('@@getYear--' + getYear.toString());
+                                 month_id = ((user.monthId).toString());
+                                print('@@month_id--' + getYear.toString());
+                                print('@@month_id--' + month_id.toString());
                               }),
                               value: _selectedUserMonth,
                               items: [
@@ -2889,7 +2904,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ],
                                         ),
                                         child: TextField(
+                                  controller:_controllerNameofSchool,
                                           decoration: InputDecoration(
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
                                             labelText: offer.schoolName,
                                             // Assuming 'offer.schoolName' is a dynamic value
                                             labelStyle: TextStyle(
@@ -2963,7 +2980,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ],
                                         ),
                                         child: TextField(
+                                          controller:_controllerAddressofSchool,
                                           decoration: InputDecoration(
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
                                             labelText: offer.schoolAddress,
                                             // Assuming 'offer.schoolName' is a dynamic value
                                             labelStyle: TextStyle(
@@ -3037,7 +3056,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ],
                                         ),
                                         child: TextField(
+                                          controller:_controllerNameofPrincipal,
                                           decoration: InputDecoration(
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
                                             labelText: offer.principal,
                                             // Assuming 'offer.schoolName' is a dynamic value
                                             labelStyle: TextStyle(
@@ -3111,8 +3132,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ],
                                         ),
                                         child: TextField(
+                                          controller:_controllerTeacherTrained,
+                                          keyboardType: TextInputType.number,
                                           decoration: InputDecoration(
-                                            labelText:
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                                            hintText:
                                                 offer.trainedTeacher.toString(),
                                             // Assuming 'offer.schoolName' is a dynamic value
                                             labelStyle: TextStyle(
@@ -3129,6 +3153,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     12.0), // Padding inside the TextField
                                           ),
                                         ),
+
                                       ),
                                     ),
                                   ),
@@ -3205,8 +3230,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ],
                                         ),
                                         child: TextField(
+                                          controller:_controllerNumberofchildrenscreening,
+                                          keyboardType: TextInputType.number,
                                           decoration: InputDecoration(
-                                            labelText:
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                                            hintText:
                                                 offer.childScreen.toString(),
                                             // Assuming 'offer.schoolName' is a dynamic value
                                             labelStyle: TextStyle(
@@ -3280,8 +3308,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ],
                                         ),
                                         child: TextField(
+                                          controller:_controllerChildrendetectedwithRefractive,
+                                          keyboardType: TextInputType.number,
                                           decoration: InputDecoration(
-                                            labelText:
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                                            hintText:
                                                 offer.childDetect.toString(),
                                             // Assuming 'offer.schoolName' is a dynamic value
                                             labelStyle: TextStyle(
@@ -3355,8 +3386,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ],
                                         ),
                                         child: TextField(
+                                          controller:_controllerNumberoffreeGlasses,
+                                          keyboardType: TextInputType.number,
                                           decoration: InputDecoration(
-                                            labelText:
+                                            floatingLabelBehavior: FloatingLabelBehavior.never,
+                                            hintText:
                                                 offer.freeglass.toString(),
                                             // Assuming 'offer.schoolName' is a dynamic value
                                             labelStyle: TextStyle(
@@ -3392,7 +3426,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         style: ElevatedButton.styleFrom(
                                           primary: Colors.blue,
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          print('@@I am clicking here--');
+                                          _SchoolEyeScreening_Registration();
+
+                                        },
                                       ),
                                     ),
                                   ),
@@ -3407,7 +3445,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           primary: Colors.blue,
                                         ),
                                         onPressed: () {
-                                          //   _submitForm();
+                                          _controllerNameofSchool.clear();
+                                          _controllerAddressofSchool.clear();
+                                          _controllerNameofPrincipal.clear();
+                                          _controllerTeacherTrained.clear();
+                                          _controllerNumberofchildrenscreening.clear();
+                                          _controllerChildrendetectedwithRefractive.clear();
+                                          _controllerNumberoffreeGlasses.clear();
                                         },
                                       ),
                                     ),
@@ -6118,6 +6162,97 @@ class _DPMDashboard extends State<DPMDashboard> {
       });
     }
   }
+
+  Future<void> _SchoolEyeScreening_Registration() async {
+    print('@@I am clicking here--1');
+
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+
+    _getSchoolEyeScreening_Registrations.yearid = int.tryParse(getfyid) ?? 0;
+    _getSchoolEyeScreening_Registrations.monthid = int.tryParse(month_id) ?? 0;
+    _getSchoolEyeScreening_Registrations.entry_by = userId;
+    _getSchoolEyeScreening_Registrations.status = 1; // for update
+    _getSchoolEyeScreening_Registrations.school_name = _controllerNameofSchool.text.trim();
+    _getSchoolEyeScreening_Registrations.school_address = _controllerAddressofSchool.text.trim();
+    _getSchoolEyeScreening_Registrations.principal = _controllerNameofPrincipal.text.trim();
+
+    print('@@I am clicking here--3');
+
+    try {
+      _getSchoolEyeScreening_Registrations.trained_teacher = int.parse(_controllerTeacherTrained.text.trim());
+      _getSchoolEyeScreening_Registrations.child_screen = int.parse(_controllerNumberofchildrenscreening.text.trim());
+      _getSchoolEyeScreening_Registrations.child_detect = int.parse(_controllerChildrendetectedwithRefractive.text.trim());
+      _getSchoolEyeScreening_Registrations.freeglass = int.parse(_controllerNumberoffreeGlasses.text.trim());
+      _getSchoolEyeScreening_Registrations.schoolid = int.parse(schoolidSaved);
+      _getSchoolEyeScreening_Registrations.district_code = district_code_login;
+      _getSchoolEyeScreening_Registrations.state_code = state_code_login;
+      print('@@I am clicking here--20' + (_controllerTeacherTrained.text.toString()));
+    } catch (e) {
+      Utils.showToast("Please ensure all numerical inputs are valid numbers!", false);
+      return;
+    }
+
+    // Validation checks
+    if (_getSchoolEyeScreening_Registrations.school_name.isEmpty) {
+      Utils.showToast("Please enter School Name!", false);
+      return;
+    }
+    if (_getSchoolEyeScreening_Registrations.school_address.isEmpty) {
+      Utils.showToast("Please enter School Address!", false);
+      return;
+    }
+    if (_getSchoolEyeScreening_Registrations.principal.isEmpty) {
+      Utils.showToast("Please enter Name of Principal!", false);
+      return;
+    }
+
+    // Validation for numerical inputs
+    if (_getSchoolEyeScreening_Registrations.trained_teacher <= 0) {
+      Utils.showToast("Please enter a valid number for Trained teacher!", false);
+      return;
+    }
+    if (_getSchoolEyeScreening_Registrations.child_screen <= 0) {
+      Utils.showToast("Please enter a valid number for Number of children screening!", false);
+      return;
+    }
+    if (_getSchoolEyeScreening_Registrations.child_detect <= 0) {
+      Utils.showToast("Please enter a valid number for Children detected with Refractive Errors!", false);
+      return;
+    }
+    if (_getSchoolEyeScreening_Registrations.freeglass <= 0) {
+      Utils.showToast("Please enter a valid number for Number of free Glasses!", false);
+      return;
+    }
+
+    Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+      if (isNetworkAvailable) {
+        Utils.showProgressDialog1(context);
+        ApiController.getSchoolEyeScreening_Registration(_getSchoolEyeScreening_Registrations)
+            .then((response) async {
+          Utils.hideProgressDialog1(context);
+          print('@@I am clicking here--8' + response.toString());
+          if (response.status) {
+            Utils.showToast(response.message, true);
+            _controllerNameofSchool.clear();
+            _controllerAddressofSchool.clear();
+            _controllerNameofPrincipal.clear();
+            _controllerTeacherTrained.clear();
+            _controllerNumberofchildrenscreening.clear();
+            _controllerChildrendetectedwithRefractive.clear();
+            _controllerNumberoffreeGlasses.clear();
+          } else {
+            Utils.showToast(response.message, false);
+          }
+        });
+      } else {
+        Utils.showToast(AppConstant.noInternet, false);
+      }
+    });
+  }
+
+
 }
 
 class DPMDashboardParamsData {
@@ -6146,4 +6281,20 @@ class GetChangeAPsswordFields {
   String oldPassword;
   String newPassword;
   String confirmPassword;
+}
+class GetSchoolEyeScreening_Registrations {
+  int status;
+  String principal;
+  int monthid;
+  int yearid;
+  String entry_by;
+  int trained_teacher;
+  int child_screen;
+  int child_detect;
+  int freeglass;
+  String school_name;
+  String school_address;
+  int schoolid;
+  int district_code;
+  int state_code;
 }
