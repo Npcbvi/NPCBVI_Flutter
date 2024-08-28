@@ -40,5 +40,6 @@ class ApiConstants {
 
   static String GetDPM_ScreeningYear = 'DpmDashboard/api/GetDPM_ScreeningYear';
   static String GetSchoolEyeScreening_Registration = 'DpmDashboard/api/SchoolEyeScreening_Registration';
+  static String GetDPM_Glaucoma = 'DpmDashboard/api/GetDPM_Glaucoma';
 
 }

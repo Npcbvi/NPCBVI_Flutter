@@ -33,6 +33,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreen
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/SchoolEyeScreening_Registration.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvisionregister_Glaucoma.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
@@ -1607,6 +1608,68 @@ class ApiController {
       } catch (e) {
         Utils.showToast(e.toString(), true);
       }
+    }
+  }
+  static Future<List<Datalowvisionregister_Glaucoma>> getDPM_Glaucoma(int district_code,int state_code,int npcbno,String financialYear,int organisationtypeValue ) async {
+    print("@@getDPM_Glaucoma"+"1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@getDPM_Glaucoma--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Glaucoma;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationtypeValue
+      });
+      print("@@getDPM_Glaucoma--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_Glaucoma--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      lowvisionregister_Glaucoma data = lowvisionregister_Glaucoma.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
     }
   }
 
