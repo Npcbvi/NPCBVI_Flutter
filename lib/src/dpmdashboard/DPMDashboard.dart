@@ -22,6 +22,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_Scree
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreening.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_Glaucoma.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_cataract.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -157,9 +158,10 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool LowVisionRegisterGlaucoma = false;
   Future<List<DataBindOrgan>> _futureBindOrgan;
   DataBindOrgan _selectBindOrgniasation;
-  String bindOrganisationNAme, npcbNo,npcbNoGlucom;
+  String bindOrganisationNAme, npcbNoCatract,npcbNoGlucom;
   bool lowvisionGlucomaDataDispla=false;
-  String getYearGlucoma;
+  bool lowvisionCataractDataDispla=false;
+  String getYearGlucoma,getYearCatract;
   @override
   void initState() {
     // TODO: implement initState
@@ -7936,10 +7938,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                           DropdownButtonFormField<DataGetDPM_ScreeningYear>(
                             onChanged: (userc) => setState(() {
                               _selectedUser = userc;
-                              var getYear = int.parse(
-                                  userc.name.replaceAll(RegExp(r'\D'), ''));
+                              getYearCatract = userc.name;
                               getfyid = userc.fyid;
-                              print('@@getYear--' + getYear.toString());
+                              print('@@getYear--' + getYearCatract.toString());
                               print('@@getfyidSelected here----' +
                                   getfyid.toString());
                               ;
@@ -8080,7 +8081,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   _selectBindOrgniasation = userbindOrgan;
                                   bindOrganisationNAme =
                                       userbindOrgan?.name ?? '';
-                                  npcbNo = userbindOrgan?.npcbNo ?? '';
+                                  npcbNoCatract = userbindOrgan?.npcbNo ?? '';
                                 });
                               },
                               value: _selectBindOrgniasation,
@@ -8124,101 +8125,84 @@ class _DPMDashboard extends State<DPMDashboard> {
                   },
                 ),
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: ElevatedButton(
-                      child: Text('Submit'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                      ),
                       onPressed: () {
-                        print('@@LowVisionRegisterDataShow-- clkick------');
+                        print('@@lowvisionCataractDataDispla-- click------');
                         setState(() {
-                          //    ApproveRenveMOUDataShows = true;
+                          lowvisionCataractDataDispla = true;
                         });
                       },
+
+                      child: Text('Submit'),
                     ),
                   ),
                 ],
               ),
-              /* Visibility(
-                visible: ApproveRenveMOUDataShows,
-                child: Column(
+              if (lowvisionCataractDataDispla)
+                Column(
                   children: [
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: [
                           _buildHeaderCellSrNo('S.No.'),
-                          _buildHeaderCell('Hospital Id'),
-                          _buildHeaderCell('Hospital Name'),
-                          _buildHeaderCell('Mobile'),
-                          _buildHeaderCell('Email'),
-                          _buildHeaderCell('From Date'),
-                          _buildHeaderCell('To Date'),
-                          _buildHeaderCell('Status'),
-                          _buildHeaderCell('MOU'),
+                          _buildHeaderCell('Patient Id'),
+                          _buildHeaderCell('Name of Person'),
+                          _buildHeaderCell('Mobile No.'),
+                          _buildHeaderCell('DOB'),
+                          _buildHeaderCell('Gender'),
+                          _buildHeaderCell('Organisation Date'),
+                          _buildHeaderCell('Operated type'),
+                          _buildHeaderCell('NGO'),
+
                           _buildHeaderCell('Action'),
                         ],
                       ),
                     ),
                     Divider(color: Colors.blue, height: 1.0),
-                    FutureBuilder<List<DataGetDPM_MOUApprove>>(
-                      future: ApiController.getDPM_MOUApprove(
-                          district_code_login,
-                          ngoApproveRevenueMOUValue,
-                          ngodependOrganbisatioSelectValuessss),
+                    FutureBuilder<List<Datalowvisionregister_cataract>>(
+                      future: ApiController.getDPM_Cataract(
+                        district_code_login,
+                        state_code_login,
+                        npcbNoCatract,
+                        getYearCatract,
+                        lowVisionDataValue,
+                      ),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData || snapshot.data == null) {
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                           return Utils.getEmptyView("No data found");
                         } else {
-                          List<DataGetDPM_MOUApprove> ddata = snapshot.data;
-                          print('@@---ddata' + ddata.length.toString());
+                          List<Datalowvisionregister_cataract> ddata = snapshot.data;
+
+                          print('@@---ddata: '+lowVisionDataValue.toString());
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Column(
                               children: ddata.map((offer) {
                                 return Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    _buildDataCellSrNo(
-                                        (ddata.indexOf(offer) + 1).toString()),
-                                    _buildDataCell(offer.hRegID),
-                                    _buildDataCell(offer.hName),
+                                    _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                    _buildDataCell(offer.pUniqueID),
+                                    _buildDataCell(offer.name),
                                     _buildDataCell(offer.mobile.toString()),
-                                    _buildDataCell(offer.emailId),
-                                    _buildDataCell(
-                                        Utils.formatDateString(offer.fromDate)),
-                                    _buildDataCell(
-                                        Utils.formatDateString(offer.toDate)),
-                                    _buildDataCell(offer.vstatus.toString()),
-                                    _buildDataCellViewBlue(offer.file, () {
-                                      // Handle the edit action here
-                                      // For example, navigate to an edit screen or show a dialog
-                                      //  print('Edit clicked for item: ${offer.schoolName}');
-                                      //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-                                      // Example: Navigate to an edit page with the selected item
-                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
-                                    }),
-                                    _buildDataCellViewBlue(" ", () {
-                                      // Handle the edit action here
-                                      // For example, navigate to an edit screen or show a dialog
-                                      //  print('Edit clicked for item: ${offer.schoolName}');
-                                      //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-                                      // Example: Navigate to an edit page with the selected item
-                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                                    _buildDataCell(Utils.formatDateString(offer.dob)),
+                                    _buildDataCell((offer.gender)),
+                                    _buildDataCell((offer.addressLine1)),
+                                    _buildDataCell(Utils.formatDateString(offer.operatedOn)),
+                                    _buildDataCell(offer.ngoName.toString()),
+                                    _buildDataCellViewBlue("View", () {
+                                      // Handle the view action here
+                                      // Example: Navigate to a details page with the selected item
                                     }),
                                   ],
                                 );
@@ -8230,7 +8214,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ],
                 ),
-              ),*/
+
             ],
           ),
         ),

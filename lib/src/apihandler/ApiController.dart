@@ -1673,7 +1673,7 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<Datalowvisionregister_cataract>> getDPM_Cataract(int district_code,int state_code,int npcbno,String financialYear,int organisationtypeValue ) async {
+  static Future<List<Datalowvisionregister_cataract>> getDPM_Cataract(int district_code,int state_code,String npcbno,String financialYear,int organisationtypeValue  ) async {
     print("@@getDPM_Cataract"+"1");
     Response response1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -1688,7 +1688,7 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Glaucoma;
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Cataract;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
