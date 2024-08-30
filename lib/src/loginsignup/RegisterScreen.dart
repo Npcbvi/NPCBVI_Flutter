@@ -1958,18 +1958,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                                   Text(district.districtName),
                                             );
                                           }).toList(),
-                                          /*      items: [
-                                            ...snapshot.data
-                                                .map(
-                                                  (userDistricts) =>
-                                                      DropdownMenuItem(
-                                                    value: userDistricts,
-                                                    child: Text(userDistricts
-                                                        .districtName),
-                                                  ),
-                                                )
-                                                .toList()
-                                          ],*/
+
                                         ),
                                       ],
                                     ),
@@ -2073,19 +2062,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                         ),
                       ],
                     ),
-                    /*    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        keyboardType: TextInputType.number,
-                        controller: _dpmPhoneNumberController,
-                        maxLength: 10,
-                        decoration: InputDecoration(
-                            label: Text('Phone Number'),
-                            hintText: 'Phone Number',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),*/
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
