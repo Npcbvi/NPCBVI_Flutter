@@ -33,6 +33,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreen
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/SchoolEyeScreening_Registration.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionCornealBlindness.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_cataract.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_Glaucoma.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisonregister_diabitic.dart';
@@ -1784,6 +1785,68 @@ class ApiController {
       // Parse the response
       var responseData = json.decode(response.data);
       lowvisonregister_diabitic data = lowvisonregister_diabitic.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<DatalowvisionCornealBlindness>> getDPM_CornealBlindness(int district_code,int state_code,String npcbno,String financialYear,int organisationtypeValue  ) async {
+    print("@@getDPM_CornealBlindness"+"1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@getDPM_CornealBlindness--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_CornealBlindness;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationtypeValue
+      });
+      print("@@GetDPM_CornealBlindness--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_Daiabetic--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      lowvisionCornealBlindness data = lowvisionCornealBlindness.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);

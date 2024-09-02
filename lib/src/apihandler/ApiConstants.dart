@@ -43,4 +43,5 @@ class ApiConstants {
   static String GetDPM_Glaucoma = 'DpmDashboard/api/GetDPM_Glaucoma';
   static String GetDPM_Cataract = 'DpmDashboard/api/GetDPM_Cataract';
   static String GetDPM_Daiabetic = 'DpmDashboard/api/GetDPM_Daiabetic';
+  static String GetDPM_CornealBlindness = 'DpmDashboard/api/GetDPM_CornealBlindness';
 }
