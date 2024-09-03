@@ -441,6 +441,22 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 if (_chosenValue == "NGO Application") {
                                   print('@@NGO--1' + _chosenValue);
                                   dashboardviewReplace = false;
+                                  NGO_APPorovedClickShowData =
+                                  false;
+                                  NGO_PendingClickShowData =
+                                  false;
+                                  GetDPM_GH_APPorovedClickShowData=false;
+                                  GetDPM_GH_PendingClickShowData=false;
+                                  GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                  DPM_PrivatePartitionP_PendingClickShowData=false;
+                                  DPM_privateMEdicalCollegeApprovedData=false;
+                                  DPM_privateMEdicalCollegePendingData=false;
+                                  ScreeningCamp = false;
+                                  ScreeningCampOngoing = false;
+                                  ScreeningCampComing = false;
+                                  satelliteCentreShowData=false;
+                                  ngoApproveRevenueMOU = false;
+
                                   NGOlistDropDownDisplayDatas = true;
                                   ngolistNewHosdpitalDropDown = false;
                                   ngoGovtPrivateOthereHosdpitalDataShow = false;
@@ -454,7 +470,22 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   ngoEyeScreeningdataShow = false;
                                 } else if (_chosenValue == "New Hospital") {
                                   dashboardviewReplace = false;
+                                  NGO_APPorovedClickShowData =
+                                  false;
+                                  NGO_PendingClickShowData =
+                                  false;
+                                  GetDPM_GH_APPorovedClickShowData=false;
+                                  GetDPM_GH_PendingClickShowData=false;
+                                  GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                  DPM_PrivatePartitionP_PendingClickShowData=false;
+                                  DPM_privateMEdicalCollegeApprovedData=false;
+                                  DPM_privateMEdicalCollegePendingData=false;
+                                  ScreeningCamp = false;
+                                  ScreeningCampOngoing = false;
+                                  ScreeningCampComing = false;
+                                  satelliteCentreShowData=false;
                                   ngoApproveRevenueMOU = false;
+
                                   NGOlistDropDownDisplayDatas = false;
                                   ngoGovtPrivateOthereHosdpitalDataShow = false;
                                   ngolistNewHosdpitalDropDown = true;
@@ -467,6 +498,22 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 } else if (_chosenValue ==
                                     "Govt/private/Other") {
                                   dashboardviewReplace = false;
+                                  NGO_APPorovedClickShowData =
+                                  false;
+                                  NGO_PendingClickShowData =
+                                  false;
+                                  GetDPM_GH_APPorovedClickShowData=false;
+                                  GetDPM_GH_PendingClickShowData=false;
+                                  GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                  DPM_PrivatePartitionP_PendingClickShowData=false;
+                                  DPM_privateMEdicalCollegeApprovedData=false;
+                                  DPM_privateMEdicalCollegePendingData=false;
+                                  ScreeningCamp = false;
+                                  ScreeningCampOngoing = false;
+                                  ScreeningCampComing = false;
+                                  satelliteCentreShowData=false;
+                                  ngoApproveRevenueMOU = false;
+
                                   ngolistNewHosdpitalDropDown = false;
                                   NGOlistDropDownDisplayDatas = false;
                                   ngoApproveRevenueMOU = false;
@@ -480,6 +527,22 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 }
                                 if (_chosenValue == "Approve Renew MOU") {
                                   dashboardviewReplace = false;
+                                  NGO_APPorovedClickShowData =
+                                  false;
+                                  NGO_PendingClickShowData =
+                                  false;
+                                  GetDPM_GH_APPorovedClickShowData=false;
+                                  GetDPM_GH_PendingClickShowData=false;
+                                  GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                  DPM_PrivatePartitionP_PendingClickShowData=false;
+                                  DPM_privateMEdicalCollegeApprovedData=false;
+                                  DPM_privateMEdicalCollegePendingData=false;
+                                  ScreeningCamp = false;
+                                  ScreeningCampOngoing = false;
+                                  ScreeningCampComing = false;
+                                  satelliteCentreShowData=false;
+                                  ngoApproveRevenueMOU = false;
+
                                   ngolistNewHosdpitalDropDown = false;
                                   NGOlistDropDownDisplayDatas = false;
                                   ngoApproveRevenueMOU = true;
@@ -699,6 +762,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               'Eye Donation',
                               'Eyeball Collection Via Eye Bank',
                               'Eyeball Collection Via Eye Donation Center',
+
                             ].map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,
@@ -988,12 +1052,33 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   print('@@---NGOsAPProved--1');
 
                                                   setState(() {
+
                                                     dashboardviewReplace =
                                                         false;
                                                     NGO_APPorovedClickShowData =
                                                         true;
                                                     NGO_PendingClickShowData =
                                                         false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -1026,6 +1111,26 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                         false;
                                                     NGO_PendingClickShowData =
                                                         true;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -1132,6 +1237,29 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                         false;
                                                     GetDPM_GH_APPorovedClickShowData =
                                                         true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
                                                 },
                                                 child: new Text('Approved',
@@ -1160,6 +1288,30 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                         false;
                                                     GetDPM_GH_PendingClickShowData =
                                                         true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -1262,6 +1414,29 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                         false;
                                                     GetDPM_PrivatePartitionPorovedClickShowData =
                                                         true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -1292,6 +1467,29 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                         false;
                                                     DPM_PrivatePartitionP_PendingClickShowData =
                                                         true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -1395,6 +1593,29 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                         false;
                                                     DPM_privateMEdicalCollegeApprovedData =
                                                         true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
                                                 },
                                                 child: new Text('Approved',
@@ -1423,6 +1644,29 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                         false;
                                                     DPM_privateMEdicalCollegePendingData =
                                                         true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -1524,6 +1768,29 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     dashboardviewReplace =
                                                         false;
                                                     ScreeningCamp = true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
                                                 },
                                                 child: new Text('Completed',
@@ -1551,6 +1818,29 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     dashboardviewReplace =
                                                         false;
                                                     ScreeningCampOngoing = true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampComing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
                                                 },
                                                 child: new Text('Ongoing',
@@ -1578,6 +1868,29 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                     dashboardviewReplace =
                                                         false;
                                                     ScreeningCampComing = true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    satelliteCentreShowData=false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
                                                 },
                                                 child: new Text('Coming',
@@ -1697,6 +2010,29 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                         false;
                                                     satelliteCentreShowData =
                                                         true;
+                                                    NGO_APPorovedClickShowData =
+                                                    false;
+                                                    NGO_PendingClickShowData =
+                                                    false;
+                                                    GetDPM_GH_APPorovedClickShowData=false;
+                                                    GetDPM_GH_PendingClickShowData=false;
+                                                    GetDPM_PrivatePartitionPorovedClickShowData=false;
+                                                    DPM_PrivatePartitionP_PendingClickShowData=false;
+                                                    DPM_privateMEdicalCollegeApprovedData=false;
+                                                    DPM_privateMEdicalCollegePendingData=false;
+                                                    ScreeningCamp = false;
+                                                    ScreeningCampOngoing = false;
+                                                    ScreeningCampComing = false;
+                                                    ngoApproveRevenueMOU = false;
+                                                    NGOlistDropDownDisplayDatas = false;
+                                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                                    ngolistNewHosdpitalDropDown = false;
+                                                    LowVisionRegisterCatracts=false;
+                                                    LowVisionRegisterGlaucoma = false;
+                                                    LowVisionRegisterDiabitic=false;
+                                                    LowVisionRegisterCornealBlindness=false;
+                                                    LowVisionRegisterVRSurgery=false;
+                                                    ngoEyeScreeningdataShow = false;
                                                   });
                                                 },
                                                 child: new Text(
@@ -5561,6 +5897,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           dashboardviewReplace = true;
                                           NGO_PendingClickShowData = false;
                                           NGO_APPorovedClickShowData = false;
+
                                         });
                                       },
                                       child: Container(
