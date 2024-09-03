@@ -22,6 +22,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_Scree
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreening.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionCornealBlindness.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionVRSurgery.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_Glaucoma.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_cataract.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisonregister_diabitic.dart';
@@ -163,16 +164,17 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool LowVisionRegisterDiabitic=false;
   Future<List<DataBindOrgan>> _futureBindOrgan;
   DataBindOrgan _selectBindOrgniasation;
-  String bindOrganisationNAme, npcbNoCatract,npcbNoGlucom,npcbNoDiabitic,npcbNoCornealBlindness;
+  String bindOrganisationNAme, npcbNoCatract,npcbNoGlucom,npcbNoDiabitic,npcbNoCornealBlindness,npcbVRSurgery;
   bool lowvisionGlucomaDataDispla=false;
   bool lowvisionDiabiticDataDispla=false;
   bool lowvisionCataractDataDispla=false;
   bool lowvisionCornealBlindnessDataDispla=false;
-
+  bool lowvisionVRSurgeryDataDispla=false;
   bool LowVisionRegisterCornealBlindness=false;
-  String getYearGlucoma,getYearCatract,getYearDiabitic,getYearCornealBlindness;
-
-
+  bool LowVisionRegisterVRSurgery=false;
+  String getYearGlucoma,getYearCatract,getYearDiabitic,getYearCornealBlindness,gerYearVRsurgery;
+  bool showChildhoodBlindnessDropdown = false;
+  final GlobalKey _dropdownKey = GlobalKey();
   @override
   void initState() {
     // TODO: implement initState
@@ -194,7 +196,6 @@ class _DPMDashboard extends State<DPMDashboard> {
           state_code_login = user.state_code;
           district_code_login = user.district_code;
           print('@@2' + user.name);
-          //print('@@fullnameController_1' + fullnameController.text);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
           print('@@5' + user.userId);
@@ -399,6 +400,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                       SizedBox(width: 8.0), // Add spacing between widgets
                       Container(
                         width: 170.0,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             focusColor: Colors.white,
@@ -416,7 +421,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Text(
                                   value,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               );
                             }).toList(),
@@ -441,12 +446,24 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   ngoGovtPrivateOthereHosdpitalDataShow = false;
 
                                   ngoApproveRevenueMOU = false;
+                                  LowVisionRegisterCatracts=false;
+                                  LowVisionRegisterGlaucoma = false;
+                                  LowVisionRegisterDiabitic=false;
+                                  LowVisionRegisterCornealBlindness=false;
+                                  LowVisionRegisterVRSurgery=false;
+                                  ngoEyeScreeningdataShow = false;
                                 } else if (_chosenValue == "New Hospital") {
                                   dashboardviewReplace = false;
                                   ngoApproveRevenueMOU = false;
                                   NGOlistDropDownDisplayDatas = false;
                                   ngoGovtPrivateOthereHosdpitalDataShow = false;
                                   ngolistNewHosdpitalDropDown = true;
+                                  LowVisionRegisterCatracts=false;
+                                  LowVisionRegisterGlaucoma = false;
+                                  LowVisionRegisterDiabitic=false;
+                                  LowVisionRegisterCornealBlindness=false;
+                                  LowVisionRegisterVRSurgery=false;
+                                  ngoEyeScreeningdataShow = false;
                                 } else if (_chosenValue ==
                                     "Govt/private/Other") {
                                   dashboardviewReplace = false;
@@ -454,6 +471,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   NGOlistDropDownDisplayDatas = false;
                                   ngoApproveRevenueMOU = false;
                                   ngoGovtPrivateOthereHosdpitalDataShow = true;
+                                  LowVisionRegisterCatracts=false;
+                                  LowVisionRegisterGlaucoma = false;
+                                  LowVisionRegisterDiabitic=false;
+                                  LowVisionRegisterCornealBlindness=false;
+                                  LowVisionRegisterVRSurgery=false;
+                                  ngoEyeScreeningdataShow = false;
                                 }
                                 if (_chosenValue == "Approve Renew MOU") {
                                   dashboardviewReplace = false;
@@ -461,15 +484,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   NGOlistDropDownDisplayDatas = false;
                                   ngoApproveRevenueMOU = true;
                                   ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                  LowVisionRegisterCatracts=false;
+                                  LowVisionRegisterGlaucoma = false;
+                                  LowVisionRegisterDiabitic=false;
+                                  LowVisionRegisterCornealBlindness=false;
+                                  LowVisionRegisterVRSurgery=false;
+                                  ngoEyeScreeningdataShow = false;
                                 }
                               });
                             },
                           ),
                         ),
+                        ),
                       ),
                       SizedBox(width: 8.0),
                       Container(
                         width: 170.0,
+                        key: _dropdownKey,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             focusColor: Colors.white,
@@ -489,7 +524,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Text(
                                   value,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               );
                             }).toList(),
@@ -513,6 +548,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   LowVisionRegisterDiabitic = false;
                                   LowVisionRegisterGlaucoma = false;
                                   LowVisionRegisterCornealBlindness=false;
+                                  LowVisionRegisterVRSurgery=false;
+                                  ngolistNewHosdpitalDropDown = false;
+                                  NGOlistDropDownDisplayDatas = false;
+                                  ngoApproveRevenueMOU = false;
+                                  ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                  ngoEyeScreeningdataShow = false;
                                   print('@@NGO--1' + _chosenValueLOWVision);
                                 } else if (_chosenValueLOWVision ==
                                     "Diabetic") {
@@ -523,6 +564,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   LowVisionRegisterDiabitic = true;
                                   LowVisionRegisterGlaucoma = false;
                                   LowVisionRegisterCornealBlindness=false;
+                                  LowVisionRegisterVRSurgery=false;
+                                  ngolistNewHosdpitalDropDown = false;
+                                  NGOlistDropDownDisplayDatas = false;
+                                  ngoApproveRevenueMOU = false;
+                                  ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                  ngoEyeScreeningdataShow = false;
                                 } else if (_chosenValueLOWVision ==
                                     "Glaucoma") {
                                   _future = getDPM_ScreeningYear();
@@ -532,6 +579,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   LowVisionRegisterGlaucoma = true;
                                   LowVisionRegisterDiabitic=false;
                                   LowVisionRegisterCornealBlindness=false;
+                                  LowVisionRegisterVRSurgery=false;
+                                  ngolistNewHosdpitalDropDown = false;
+                                  NGOlistDropDownDisplayDatas = false;
+                                  ngoApproveRevenueMOU = false;
+                                  ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                  ngoEyeScreeningdataShow = false;
                                 }
                                 else if (_chosenValueLOWVision ==
                                     "Corneal Blindness") {
@@ -542,12 +595,60 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   LowVisionRegisterGlaucoma = false;
                                   LowVisionRegisterDiabitic=false;
                                   LowVisionRegisterCornealBlindness=true;
+                                  LowVisionRegisterVRSurgery=false;
+                                  ngolistNewHosdpitalDropDown = false;
+                                  NGOlistDropDownDisplayDatas = false;
+                                  ngoApproveRevenueMOU = false;
+                                  ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                  ngoEyeScreeningdataShow = false;
+                                }
+                                else if (_chosenValueLOWVision ==
+                                    "VR Surgery") {
+                                  print('@@Childhood--' + _chosenValueLOWVision);
+                                  _future = getDPM_ScreeningYear();
+                                  _futureBindOrgan = GetDPM_Bindorg();
+                                  dashboardviewReplace = false;
+                                  LowVisionRegisterCatracts=false;
+                                  LowVisionRegisterGlaucoma = false;
+                                  LowVisionRegisterDiabitic=false;
+                                  LowVisionRegisterCornealBlindness=false;
+                                  LowVisionRegisterVRSurgery=true;
+                                  ngolistNewHosdpitalDropDown = false;
+                                  NGOlistDropDownDisplayDatas = false;
+                                  ngoApproveRevenueMOU = false;
+                                  ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                  ngoEyeScreeningdataShow = false;
+                                }
+                                else if (_chosenValueLOWVision ==
+                                "Childhood Blindness") {
+                                  print('@@Childhood--' + _chosenValueLOWVision);
+                                  if (_chosenValueLOWVision == "Childhood Blindness") {
+                                    print('@@Childhood--1' + _chosenValueLOWVision);
+                                    dashboardviewReplace = false;
+                                    LowVisionRegisterCatracts=false;
+                                    LowVisionRegisterGlaucoma = false;
+                                    LowVisionRegisterDiabitic=false;
+                                    LowVisionRegisterCornealBlindness=false;
+                                    LowVisionRegisterVRSurgery=false;
+                                    ngolistNewHosdpitalDropDown = false;
+                                    NGOlistDropDownDisplayDatas = false;
+                                    ngoApproveRevenueMOU = false;
+                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    _showPopupMenuChildhoodBlindness();
+                                  } else {
+                                    print('@@Childhood--2' + _chosenValueLOWVision);
+
+                                  }
                                 }
                               });
                             },
                           ),
                         ),
+                        ),
                       ),
+
+
 
                       SizedBox(width: 8.0),
                       InkWell(
@@ -556,6 +657,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                           setState(() {
                             dashboardviewReplace = false;
                             ngoEyeScreeningdataShow = true;
+                            dashboardviewReplace = false;
+                            ngolistNewHosdpitalDropDown = false;
+                            NGOlistDropDownDisplayDatas = false;
+                            ngoApproveRevenueMOU = false;
+                            ngoGovtPrivateOthereHosdpitalDataShow = false;
+                            LowVisionRegisterCatracts=false;
+                            LowVisionRegisterGlaucoma = false;
+                            LowVisionRegisterDiabitic=false;
+                            LowVisionRegisterCornealBlindness=false;
+                            LowVisionRegisterVRSurgery=false;
                           });
                         },
                         child: Container(
@@ -573,6 +684,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                       SizedBox(width: 8.0),
                       Container(
                         width: 300,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             focusColor: Colors.white,
@@ -589,7 +704,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 value: value,
                                 child: Text(
                                   value,
-                                  style: TextStyle(color: Colors.black),
+                                  style: TextStyle(color: Colors.white),
                                 ),
                               );
                             }).toList(),
@@ -614,6 +729,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               });
                             },
                           ),
+                        ),
                         ),
                       ),
                     ],
@@ -1771,6 +1887,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             LowVisionRegisterDataShowGlaucoma(),
             LowVisionRegisterDataShowCornealBlindness(),
             //    PatientApprovedFinancneClickDisplayData(),
+            LowVisionRegisterDataShowVRSurgery(),
           ],
         ),
       ),
@@ -9507,6 +9624,420 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+  Widget LowVisionRegisterDataShowVRSurgery() {
+    return Column(
+      children: [
+        Visibility(
+          visible: LowVisionRegisterVRSurgery,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Handle approval action
+                            print('LowVisionRegisterVRSurgery Data for approval clicked');
+                            // You can also navigate or update some data here
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue, // Blue background color
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                              child: Text(
+                                'VR Surgery Data for approval Data for approval',
+                                style: TextStyle(
+                                    color: Colors.white), // White text color
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Handle approval action
+                            print('@@VR Surgery Data for approval Data for approval clicked');
+                            setState(() {
+                              dashboardviewReplace = true;
+
+                              LowVisionRegisterCatracts = false;
+                              LowVisionRegisterDiabitic=false;
+                              LowVisionRegisterGlaucoma=false;
+                              LowVisionRegisterCornealBlindness=false;
+                              LowVisionRegisterVRSurgery=false;
+                            });
+
+                            // You can also navigate or update some data here
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue, // Blue background color
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                              child: Text(
+                                'Back',
+                                style: TextStyle(
+                                    color: Colors.white), // White text color
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
+              // Horizontal Scrolling Header Row
+              SizedBox(width: 8.0),
+              Center(
+                child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.data == null) {
+                      return const CircularProgressIndicator();
+                    }
+
+
+                    developer.log(
+                        '@@snapshot' + snapshot.data.toString());
+
+                    List list =
+                    snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
+                      return district;
+                    }).toList();
+                    if (_selectedUser == null ||
+                        list.contains(_selectedUser) ==
+                            false) {
+                      _selectedUser = list.first;
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Select year:',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          // Added space between label and dropdown
+                          DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                            onChanged: (userc) => setState(() {
+                              _selectedUser = userc;
+                              gerYearVRsurgery = userc.name;
+                              getfyid = userc.fyid;
+                              print('@@gerYearVRsurgery--' + gerYearVRsurgery.toString());
+                              print('@@getfyidSelected here----' +
+                                  getfyid.toString());
+                              ;
+                            }),
+                            value: _selectedUser,
+                            items: [
+                              ...snapshot.data.map(
+                                    (user) => DropdownMenuItem(
+                                  value: user,
+                                  child: Text(
+                                    '${user.name}',
+                                    style: TextStyle(
+                                        fontSize:
+                                        16), // Text style inside dropdown
+                                  ),
+                                ),
+                              ),
+                            ],
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blueAccent, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.blue[
+                              50], // Background color of the dropdown box
+                            ),
+                            dropdownColor: Colors.blue[50],
+                            // Background color of the dropdown menu
+                            style: TextStyle(color: Colors.black),
+                            // Style of the selected item
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.blue), // Dropdown icon style
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: new DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      focusColor: Colors.white,
+                      value: lowVisionDatas,
+                      //elevation: 5,
+                      style: TextStyle(color: Colors.white),
+                      iconEnabledColor: Colors.white,
+                      items: <String>[
+                        'NGOs',
+                        'Private Practitioner',
+                        'Private Medical College',
+                      ].map<DropdownMenuItem<String>>(
+                              (String lowVisionRegistry) {
+                            return DropdownMenuItem<String>(
+                              value: lowVisionRegistry,
+                              child: Text(
+                                lowVisionRegistry,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                      hint: Text(
+                        "Select Type",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onChanged: (String lowVisionData) {
+                        setState(() {
+                          lowVisionDatas = lowVisionData;
+
+                          if (lowVisionDatas == "NGOs") {
+                            lowVisionDataValue = 5;
+                          } else if (lowVisionDatas == "Private Practitioner") {
+                            lowVisionDataValue = 12;
+                          } else if (lowVisionData ==
+                              "Private Medical College") {
+                            lowVisionDataValue = 13;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              Center(
+                child: FutureBuilder<List<DataBindOrgan>>(
+                  future: _futureBindOrgan,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (!snapshot.hasData || snapshot.data == null) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    List<DataBindOrgan> list = snapshot.data;
+                    developer.log('@@snapshot: $list');
+
+                    if (_selectBindOrgniasation == null ||
+                        !list.contains(_selectBindOrgniasation)) {
+                      _selectBindOrgniasation =
+                      list.isNotEmpty ? list.first : null;
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const Text(
+                              'Select:',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 10),
+                            DropdownButtonFormField<DataBindOrgan>(
+                              onChanged: (userbindOrgan) {
+                                setState(() {
+                                  _selectBindOrgniasation = userbindOrgan;
+                                  bindOrganisationNAme =
+                                      userbindOrgan?.name ?? '';
+                                  npcbVRSurgery= userbindOrgan?.npcbNo ?? '';
+                                  print('@@npcbNo-- click------'+npcbVRSurgery);
+                                });
+                              },
+                              value: _selectBindOrgniasation,
+                              items: list.map((userbindorgansa) {
+                                return DropdownMenuItem<DataBindOrgan>(
+                                  value: userbindorgansa,
+                                  child: Text(
+                                    userbindorgansa.name,
+
+                                    maxLines: 2,  // Set max lines to 2
+                                    overflow: TextOverflow.ellipsis,  // Handle overflow
+                                    style: TextStyle(fontSize: 16),
+                                  ),
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+
+                                  borderSide: BorderSide(
+                                      color: Colors.blue, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.blueAccent, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.blue[50],
+                              ),
+                              dropdownColor: Colors.blue[50],
+                              style: TextStyle(color: Colors.black),
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.blue),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print('@@lowvisionCornealBlindnessDataDispla-- click------');
+                        setState(() {
+                          lowvisionVRSurgeryDataDispla = true;
+                        });
+                      },
+
+                      child: Text('Submit'),
+                    ),
+                  ),
+                ],
+              ),
+              if (lowvisionVRSurgeryDataDispla)
+                Column(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          _buildHeaderCellSrNo('S.No.'),
+                          _buildHeaderCell('Patient Id'),
+                          _buildHeaderCell('Name of Person'),
+                          _buildHeaderCell('Mobile No.'),
+                          _buildHeaderCell('DOB'),
+                          _buildHeaderCell('Gender'),
+                          _buildHeaderCell('Organisation Date'),
+                          _buildHeaderCell('Operated type'),
+                          _buildHeaderCell('NGO'),
+
+                          _buildHeaderCell('Action'),
+                        ],
+                      ),
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    FutureBuilder<List<DatalowvisionVRSurgery>>(
+                      future: ApiController.getDPM_VRSurgery(
+                        district_code_login,
+                        state_code_login,
+                        npcbVRSurgery,
+                        gerYearVRsurgery,
+                        lowVisionDataValue,
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DatalowvisionVRSurgery> ddata = snapshot.data;
+
+                          print('@@---ddata: '+lowVisionDataValue.toString());
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              children: ddata.map((offer) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                    _buildDataCell(offer.pUniqueID),
+                                    _buildDataCell(offer.name),
+                                    _buildDataCell(offer.mobile.toString()),
+                                    _buildDataCell(Utils.formatDateString(offer.dob)),
+                                    _buildDataCell((offer.gender)),
+                                    _buildDataCell((offer.addressLine1)),
+                                    _buildDataCell(Utils.formatDateString(offer.operatedOn)),
+                                    _buildDataCell(offer.ngoName.toString()),
+                                    _buildDataCellViewBlue("View", () {
+                                      // Handle the view action here
+                                      // Example: Navigate to a details page with the selected item
+                                    }),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
   Future<List<DataBindOrgan>> GetDPM_Bindorg() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -9538,6 +10069,46 @@ class _DPMDashboard extends State<DPMDashboard> {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
+  }
+  void _showPopupMenuChildhoodBlindness() async {
+    final RenderBox dropdownRenderBox = _dropdownKey.currentContext.findRenderObject() as RenderBox;
+    final RenderBox overlayRenderBox = Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    final RelativeRect position = RelativeRect.fromRect(
+      dropdownRenderBox.localToGlobal(Offset.zero) & dropdownRenderBox.size,
+      Offset.zero & overlayRenderBox.size,
+    );
+    await showMenu(
+      context: context,
+      position: position,
+      items: [
+        PopupMenuItem<int>(
+          value: 1,
+          child: Text("Congenital Ptosis "),
+        ),
+        PopupMenuItem<int>(
+          value: 2,
+          child: Text("Intraocular Trauma in Children"),
+        ),
+        PopupMenuItem<int>(
+          value: 3,
+          child: Text("Retinoblasma "),
+        ),
+        PopupMenuItem<int>(
+          value: 3,
+          child: Text("Retinopathy of Prematurity "),
+        ),
+        PopupMenuItem<int>(
+          value: 3,
+          child: Text("Squint"),
+        ),
+      ],
+      elevation: 8.0,
+    ).then((value) {
+      if (value != null) {
+        print("Selected: $value");
+      }
+    });
   }
 }
 

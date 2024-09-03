@@ -34,6 +34,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/SchoolEyeScr
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPMGH_clickAPProved.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionCornealBlindness.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionVRSurgery.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_cataract.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_Glaucoma.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisonregister_diabitic.dart';
@@ -1847,6 +1848,68 @@ class ApiController {
       // Parse the response
       var responseData = json.decode(response.data);
       lowvisionCornealBlindness data = lowvisionCornealBlindness.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<DatalowvisionVRSurgery>> getDPM_VRSurgery(int district_code,int state_code,String npcbno,String financialYear,int organisationtypeValue  ) async {
+    print("@@GetDPM_VRSurgery"+"1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@GetDPM_VRSurgery--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_VRSurgery;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationtypeValue
+      });
+      print("@@GetDPM_VRSurgery--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetDPM_VRSurgery--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      lowvisionVRSurgery data = lowvisionVRSurgery.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
