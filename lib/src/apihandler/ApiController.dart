@@ -593,7 +593,7 @@ class ApiController {
   }
 
   static Future<govtPrivateRegisterUSerId>
-  GetRegisteredUserGvtprivate(
+  GetRegisteredUserGvtprivates(
       String registeredUserId/*,int stateid,int districtId*/) async {
     govtPrivateRegisterUSerId registrationModel =
     govtPrivateRegisterUSerId();
@@ -607,7 +607,7 @@ class ApiController {
 
         Map<String, dynamic> payload = {
           "registeredUserId": registeredUserId,
-        /*  "stateid": stateid,
+       /*   "stateid": stateid,
           "districtId": districtId,*/
 
         };
@@ -644,6 +644,68 @@ class ApiController {
       return null;
     }
   }
+
+  /*static Future<List<DatagovtPrivateRegisterUSerId>> GetRegisteredUserGvtprivate (String registeredUserId*//*,int stateid,int districtId*//*) async {
+    print("@@GetRegisteredUserGvtprivate"+"1");
+    govtPrivateRegisterUSerId registrationModel =
+    govtPrivateRegisterUSerId();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@GetRegisteredUserGvtprivate--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +  ApiConstants.GetRegisteredUser;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "registeredUserId": registeredUserId,
+
+      });
+      print("@@GetRegisteredUserGvtprivate--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetRegisteredUserGvtprivate--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      govtPrivateRegisterUSerId data = govtPrivateRegisterUSerId.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }*/
+
 
 
   static Future<GetDPMDashboardData> getDPM_Dashboard(
