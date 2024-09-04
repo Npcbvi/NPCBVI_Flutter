@@ -41,6 +41,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   bool showSPORegistration = false;
   bool showDPMRegistration = false;
   bool registeredUSerGovtPrivateRegsiterations = false;
+  bool submitButtonRegisteredUSerID=false;
   bool newUSerGovtPrivateRegisterRadios = false;
   bool isVisibleDitrict = false;
   bool isVisibleDitrictGovt = false;
@@ -200,6 +201,8 @@ class _RegisterScreen extends State<RegisterScreen> {
     super.initState();
     // To generate number on loading of page
     buildCaptcha();
+    submitButtonRegisteredUSerID = true; // or set based on some condition
+
   }
 
   @override
@@ -365,8 +368,9 @@ class _RegisterScreen extends State<RegisterScreen> {
             GovtRAdioGroups(),
             SPORegistration(),
             DPMRegistration(),
-            newUSerGovtPrivateRegisterRadio(),
-            registeredUSerGovtPrivateRegsiteration()
+            registeredUSerGovtPrivateRegsiteration(),
+            newUSerGovtPrivateRegisterRadio()
+
           ],
         ),
       ),
@@ -451,17 +455,20 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                   // TextFormField to enter captcha value
 
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                    child: ElevatedButton(
-                      child: Text('Verify'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                  Visibility(
+                    visible: submitButtonRegisteredUSerID,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                      child: ElevatedButton(
+                        child: Text('Verify'),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.blue,
+                        ),
+                        onPressed: () {
+                          print('@@GOVTPRivate-Click--Registered User Id');
+                          _RegistraterUserIDSubmit();
+                        },
                       ),
-                      onPressed: () {
-                        print('@@GOVTPRivate  Button click__work prnding');
-                        _NGORegistrationSubmit();
-                      },
                     ),
                   ),
                 ],
@@ -1803,6 +1810,7 @@ class _RegisterScreen extends State<RegisterScreen> {
 
             print('@@spoAPiRquest ---' + response.toString());
             if (response != null && response.status) {
+
               Navigator.pop(context);
             }
           });
@@ -1812,6 +1820,46 @@ class _RegisterScreen extends State<RegisterScreen> {
       });
     }
   }
+
+  Future<void> _RegistraterUserIDSubmit() async {
+    print("@@_RegistraterUserIDSubmit----");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String districtCode_loginFetch = prefs.getString(AppConstant.distritcCode) ?? "";
+    String stateCode_loginFetch = prefs.getString(AppConstant.state_code) ?? "";
+    print("@@districtCode_loginFetch__from login: $districtCode_loginFetch");
+    print("@@stateCode_loginFetch__from login: $stateCode_loginFetch");
+    String registeredUSerID=_registeredUSerID.text.toString().trim();
+    if (registeredUSerID.isEmpty) {
+      Utils.showToast("Please enter registered USerID !", false);
+      return;
+    }
+   else {
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog1(context);
+          ApiController.GetRegisteredUserGvtprivate(registeredUSerID/*stateCode_loginFetch,districtCode_loginFetch*/)
+              .then((response) async {
+            Utils.hideProgressDialog1(context);
+
+            print('@@spoAPiRquest ---' + response.toString());
+            if (response != null && response.status) {
+
+                setState(() {
+                  //registeredUSerGovtPrivateRegsiterations = true;
+                  submitButtonRegisteredUSerID=false;
+                  newUSerGovtPrivateRegisterRadios = true;
+
+                });
+            }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
+    }
+  }
+
+
 
   Widget DPMRegistration() {
     return SingleChildScrollView(

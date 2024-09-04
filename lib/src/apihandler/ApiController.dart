@@ -41,6 +41,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisonregiste
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
+import 'package:mohfw_npcbvi/src/model/govtprivate/govtPrivateRegisterUSerId.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -590,6 +591,60 @@ class ApiController {
       return null;
     }
   }
+
+  static Future<govtPrivateRegisterUSerId>
+  GetRegisteredUserGvtprivate(
+      String registeredUserId/*,int stateid,int districtId*/) async {
+    govtPrivateRegisterUSerId registrationModel =
+    govtPrivateRegisterUSerId();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl +
+            ApiConstants.GetRegisteredUser;
+
+        Map<String, dynamic> payload = {
+          "registeredUserId": registeredUserId,
+        /*  "stateid": stateid,
+          "districtId": districtId,*/
+
+        };
+
+        print("@@GetRegisteredUserGvtprivate---" +
+            url +
+            payload.toString());
+
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: payload,
+            options: new Options(
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@GetRegisteredUserGvtprivate--Api" +
+            response1.toString());
+        // Assuming the API returns a status and message in response
+        // Parse the response1 to update registrationModel accordingly
+        registrationModel =
+            govtPrivateRegisterUSerId.fromJson(
+                jsonDecode(response1.data));
+        if (registrationModel.status) {
+          Utils.showToast(registrationModel.message, true);
+        } else {
+          Utils.showToast(registrationModel.message, true);
+        }
+        return registrationModel;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+
 
   static Future<GetDPMDashboardData> getDPM_Dashboard(
       int districtidDPM,  int stateidDPM,  int old_districtidDPM, String useridDPM,String roleidDPM, int statusDPM,String financialYearDPM) async {
