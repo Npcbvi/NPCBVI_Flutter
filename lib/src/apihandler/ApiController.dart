@@ -632,7 +632,7 @@ class ApiController {
         if (registrationModel.status) {
           Utils.showToast(registrationModel.message, true);
         } else {
-          Utils.showToast(registrationModel.message, true);
+          Utils.showToast("Wrong registered use id !", true);
         }
         return registrationModel;
       } catch (e) {

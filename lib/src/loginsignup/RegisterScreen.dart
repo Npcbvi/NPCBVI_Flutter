@@ -130,7 +130,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   final _doctorPinCode  = new TextEditingController();
   final _doctorMCICErtification  = new TextEditingController();
 
-  String str_regdgovtpvtEmailId;
+  String str_regdgovtpvtEmailId,str_regdgovtpvtOrgType,str_regdgovtpvtstateName,str_regdgovtpvtdistrictName,str_regdgovtpvtOfficeName;
   void _toggleVisibility() {
     setState(() {
       _isVisibleADDDoctorsDetails = !_isVisibleADDDoctorsDetails;
@@ -1601,7 +1601,7 @@ class _RegisterScreen extends State<RegisterScreen> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
-                  Padding(
+                /*  Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: Container(
                       decoration: BoxDecoration(
@@ -1692,8 +1692,19 @@ class _RegisterScreen extends State<RegisterScreen> {
                         ),
                       ),
                     ),
+                  ),*/
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                    child: TextFormField(
+                      controller: _emailIDGovtPRivate,
+                      decoration: InputDecoration(
+                        labelText: str_regdgovtpvtOrgType, // Use labelText for dynamic text
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                    ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: new TextField(
@@ -1804,12 +1815,25 @@ class _RegisterScreen extends State<RegisterScreen> {
                   ),
 
                   // TextFormField to enter captcha value
-                  Container(
+                   Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                    child: TextFormField(
+                      // controller: _emailIDGovtPRivate,
+                      decoration: InputDecoration(
+                        labelText: str_regdgovtpvtstateName, // Use labelText for dynamic text
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                    ),
+                  ),
+               /*   Container(
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
                       ),
                     ),
+
                     child: Center(
                       child: FutureBuilder<List<Data>>(
                           future: _future,
@@ -1874,8 +1898,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                             );
                           }),
                     ),
-                  ),
-                  Visibility(
+                  ),*/
+                  /*Visibility(
                     visible: isVisibleDitrictGovt,
                     child: Column(
                       children: [
@@ -1917,11 +1941,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                                               distCodeGovtPrivate = int.parse(
                                                   (districtUser.districtCode
                                                       .toString()));
-                                              /*  distNameDPM= districtUser.districtName
-                                              .toString();*/
+                                              *//*  distNameDPM= districtUser.districtName
+                                              .toString();*//*
                                               print('@@@Districtuser' +
                                                   districtUser.districtName
-                                                      .toString() /*+"-00000"+distNameDPM*/);
+                                                      .toString() *//*+"-00000"+distNameDPM*//*);
                                               setState(() {});
                                             }),
                                         value: _selectedUserDistrict,
@@ -1940,6 +1964,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                               }),
                         ),
                       ],
+                    ),
+                  ),*/
+                   Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                    child: TextFormField(
+                      // controller: _emailIDGovtPRivate,
+                      decoration: InputDecoration(
+                        labelText: str_regdgovtpvtdistrictName, // Use labelText for dynamic text
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
@@ -1969,17 +2005,15 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _officerNAmeGovtPRivate,
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                    child: TextFormField(
+                      // controller: _emailIDGovtPRivate,
                       decoration: InputDecoration(
-                          label: Text('Officer Name *'),
-                          hintText: 'Officer Name *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
+                        labelText: str_regdgovtpvtOfficeName, // Use labelText for dynamic text
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
                     ),
                   ),
                   Padding(
@@ -2619,6 +2653,10 @@ class _RegisterScreen extends State<RegisterScreen> {
                 setState(() {
                   List<DatagovtPrivateRegisterUSerId> daatagovtPrivateRegisterUSerI=response.data;
                    str_regdgovtpvtEmailId = daatagovtPrivateRegisterUSerI[0].email;
+                  str_regdgovtpvtOrgType=daatagovtPrivateRegisterUSerI[0].name;
+                  str_regdgovtpvtstateName=daatagovtPrivateRegisterUSerI[0].stateName;
+                  str_regdgovtpvtdistrictName=daatagovtPrivateRegisterUSerI[0].districtName;
+                  str_regdgovtpvtOfficeName=daatagovtPrivateRegisterUSerI[0].orgName;
                   print('@@str_regdgovtpvtEmailId--'+str_regdgovtpvtEmailId);
                   //registeredUSerGovtPrivateRegsiterations = true;
                   submitButtonRegisteredUSerID=false;
