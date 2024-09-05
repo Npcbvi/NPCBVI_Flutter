@@ -465,7 +465,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                       child: ElevatedButton(
-                        child: Text('Verify'),
+                        child: Text('Submit'),
                         style: ElevatedButton.styleFrom(
                           primary: Colors.blue,
                         ),
