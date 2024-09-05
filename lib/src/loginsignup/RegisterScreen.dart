@@ -576,7 +576,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                             if (snapshot.data == null) {
                               return const CircularProgressIndicator();
                             }
+                            developer.log(
+                                '@@snapshot' + snapshot.data.toString());
 
+                            List list = snapshot.data
+                                .map<Data>((state) {
+                              return state;
+                            }).toList();
+                            if (_selectedUser == null ||
+                                list.contains(_selectedUser) ==
+                                    false) {
+                              _selectedUser = list.first;
+                            }
                             return Padding(
                               padding:
                                   const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
@@ -1054,7 +1065,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                             if (snapshot.data == null) {
                               return const CircularProgressIndicator();
                             }
+                            developer.log(
+                                '@@snapshot' + snapshot.data.toString());
 
+                            List list = snapshot.data
+                                .map<Data>((state) {
+                              return state;
+                            }).toList();
+                            if (_selectedUser == null ||
+                                list.contains(_selectedUser) ==
+                                    false) {
+                              _selectedUser = list.first;
+                            }
                             return Container(
                               decoration: BoxDecoration(
                                 border: Border(
@@ -2698,7 +2720,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                             if (snapshot.data == null) {
                               return const CircularProgressIndicator();
                             }
+                            developer.log(
+                                '@@snapshot' + snapshot.data.toString());
 
+                            List list = snapshot.data
+                                .map<Data>((state) {
+                              return state;
+                            }).toList();
+                            if (_selectedUser == null ||
+                                list.contains(_selectedUser) ==
+                                    false) {
+                              _selectedUser = list.first;
+                            }
                             return Padding(
                               padding:
                                   const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
