@@ -567,62 +567,73 @@ class _RegisterScreen extends State<RegisterScreen> {
                   children: [
                     Center(
                       child: FutureBuilder<List<Data>>(
-                          future: _future,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
+                        future: _future,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
 
-                            if (snapshot.data == null) {
-                              return const CircularProgressIndicator();
-                            }
-                            developer.log(
-                                '@@snapshot' + snapshot.data.toString());
+                          if (!snapshot.hasData) {
+                            return const CircularProgressIndicator();
+                          }
 
-                            List list = snapshot.data
-                                .map<Data>((state) {
-                              return state;
-                            }).toList();
-                            if (_selectedUser == null ||
-                                list.contains(_selectedUser) ==
-                                    false) {
-                              _selectedUser = list.first;
-                            }
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  const Text(
-                                    'Select State:',
+                          // Logging for debugging
+                          developer.log('@@snapshot: ${snapshot.data}');
+
+                          List<Data> stateList = snapshot.data;
+
+                          // Ensure selected state is in the list, otherwise select the first
+                          if (_selectedUser == null || !stateList.contains(_selectedUser)) {
+                            _selectedUser = stateList.first;
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'Select State:',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                DropdownButtonFormField<Data>(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
                                   ),
-                                  DropdownButtonFormField<Data>(
-                                    onChanged: (user) => setState(() {
+                                  onChanged: (user) {
+                                    setState(() {
                                       _selectedUser = user;
-                                      stateCodeSPO = int.parse(
-                                          (user.stateCode).toString());
-                                      print('@@statenameSPO' +
-                                          stateCodeSPO.toString());
+                                      stateCodeSPO = int.parse(user.stateCode.toString());
+                                      print('@@statenameSPO: $stateCodeSPO');
                                       CodeSPO = user.code;
-                                      print('@@CodeSPO___1' +
-                                          stateCodeSPO.toString());
-                                    }),
-                                    value: _selectedUser,
-                                    items: [
-                                      ...snapshot.data.map(
-                                        (user) => DropdownMenuItem(
-                                          value: user,
-                                          child: Text('${user.stateName}'),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                    ),
+                                      print('@@CodeSPO: $CodeSPO');
+                                    });
+                                  },
+                                  value: _selectedUser,
+                                  items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                                    return DropdownMenuItem<Data>(
+                                      value: user,
+                                      child: Text(user.stateName),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                    ,
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: new TextField(
@@ -1056,147 +1067,154 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ),
                     child: Center(
                       child: FutureBuilder<List<Data>>(
-                          future: _future,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
+                        future: _future, // Future to fetch the data
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
 
-                            if (snapshot.data == null) {
-                              return const CircularProgressIndicator();
-                            }
-                            developer.log(
-                                '@@snapshot' + snapshot.data.toString());
+                          if (!snapshot.hasData) {
+                            return const CircularProgressIndicator();
+                          }
 
-                            List list = snapshot.data
-                                .map<Data>((state) {
-                              return state;
-                            }).toList();
-                            if (_selectedUser == null ||
-                                list.contains(_selectedUser) ==
-                                    false) {
-                              _selectedUser = list.first;
-                            }
-                            return Container(
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(
-                                      width: 1.5, color: Colors.grey[300]),
-                                ),
+                          // Logging data for debugging
+                          developer.log('@@snapshot: ${snapshot.data}');
+
+                          List<Data> stateList = snapshot.data;
+
+                          // Ensure selected state is in the list, otherwise select the first
+                          if (_selectedUser == null || !stateList.contains(_selectedUser)) {
+                            _selectedUser = stateList.first;
+                          }
+
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
                               ),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    const Text(
-                                      'Select State:',
-                                    ),
-                                    DropdownButtonFormField<Data>(
-                                      onChanged: (user) => setState(() {
-                                        _selectedUser = user;
-                                        stateCodeGovtPrivate = int.parse(
-                                            (user.stateCode).toString());
-                                        print('@@statenameSPO' +
-                                            stateCodeGovtPrivate.toString());
-                                        CodeGovtPrivate = user.code;
-                                        print('@@CodeSPO___1' +
-                                            CodeGovtPrivate.toString());
-                                        if (stateCodeGovtPrivate != null) {
-                                          print('@@chakValue---' +
-                                              stateCodeGovtPrivate.toString());
-                                          isVisibleDitrictGovt = true;
-                                          _getDistrictData(
-                                              stateCodeGovtPrivate);
-                                        } else {
-                                          isVisibleDitrictGovt = false;
-                                        }
-                                      }),
-                                      value: _selectedUser,
-                                      items: [
-                                        ...snapshot.data.map(
-                                          (user) => DropdownMenuItem(
-                                            value: user,
-                                            child: Text('${user.stateName}'),
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                  ),
-                  Visibility(
-                    visible: isVisibleDitrictGovt,
-                    child: Column(
-                      children: [
-                        Center(
-                          child: FutureBuilder<List<DataDsiricst>>(
-                              future: _getDistrictData(stateCodeGovtPrivate),
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                }
-                                if (snapshot.data == null) {
-                                  return const CircularProgressIndicator();
-                                }
-                                developer.log(
-                                    '@@snapshot' + snapshot.data.toString());
-
-                                List list =
-                                    snapshot.data.map<DataDsiricst>((district) {
-                                  return district;
-                                }).toList();
-                                if (_selectedUserDistrict == null ||
-                                    list.contains(_selectedUserDistrict) ==
-                                        false) {
-                                  _selectedUserDistrict = list.first;
-                                }
-                                return Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      20, 10, 20.0, 0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: <Widget>[
-                                      const Text(
-                                        'Select District:',
-                                      ),
-                                      DropdownButtonFormField<DataDsiricst>(
-                                        onChanged: (districtUser) =>
-                                            setState(() {
-                                          _selectedUserDistrict = districtUser;
-                                          distCodeGovtPrivate = int.parse(
-                                              (districtUser.districtCode
-                                                  .toString()));
-                                          /*  distNameDPM= districtUser.districtName
-                                              .toString();*/
-                                          print('@@@Districtuser' +
-                                              districtUser.districtName
-                                                  .toString() /*+"-00000"+distNameDPM*/);
-                                          setState(() {});
-                                        }),
-                                        value: _selectedUserDistrict,
-                                        items: snapshot.data.map<
-                                                DropdownMenuItem<DataDsiricst>>(
-                                            (DataDsiricst district) {
-                                          return DropdownMenuItem<DataDsiricst>(
-                                            value: district,
-                                            child: Text(district.districtName),
-                                          );
-                                        }).toList(),
-                                      ),
-                                    ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text(
+                                    'Select State:',
                                   ),
-                                );
-                              }),
-                        ),
-                      ],
+                                  DropdownButtonFormField<Data>(
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                      EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: Colors.blueAccent, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    onChanged: (user) => setState(() {
+                                      _selectedUser = user;
+                                      stateCodeGovtPrivate = int.parse(user.stateCode.toString());
+                                      CodeGovtPrivate = user.code;
+
+                                      if (stateCodeGovtPrivate != null) {
+                                        isVisibleDitrictGovt = true;
+                                        _getDistrictData(stateCodeGovtPrivate);
+                                      } else {
+                                        isVisibleDitrictGovt = false;
+                                      }
+                                    }),
+                                    value: _selectedUser,
+                                    items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                                      return DropdownMenuItem<Data>(
+                                        value: user,
+                                        child: Text(user.stateName),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
+
+              Visibility(
+                visible: isVisibleDitrictGovt,
+                child: Column(
+                  children: [
+                    Center(
+                      child: FutureBuilder<List<DataDsiricst>>(
+                        future: _getDistrictData(stateCodeGovtPrivate),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (!snapshot.hasData) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          // Logging for debugging
+                          developer.log('@@snapshot: ${snapshot.data}');
+
+                          List<DataDsiricst> districtList = snapshot.data;
+
+                          // Ensure selected district is in the list, otherwise select the first one
+                          if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                            _selectedUserDistrict = districtList.first;
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text('Select District:'),
+                                DropdownButtonFormField<DataDsiricst>(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  onChanged: (districtUser) => setState(() {
+                                    _selectedUserDistrict = districtUser;
+                                    distCodeGovtPrivate = int.parse(districtUser.districtCode.toString());
+                                    // Update state or further actions here
+                                    print('Selected District: ${districtUser.districtName}');
+                                  }),
+                                  value: _selectedUserDistrict,
+                                  items: districtList.map((DataDsiricst district) {
+                                    return DropdownMenuItem<DataDsiricst>(
+                                      value: district,
+                                      child: Text(district.districtName),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: new TextField(
@@ -2711,157 +2729,154 @@ class _RegisterScreen extends State<RegisterScreen> {
                   children: [
                     Center(
                       child: FutureBuilder<List<Data>>(
-                          future: _future,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
+                        future: _future,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
 
-                            if (snapshot.data == null) {
-                              return const CircularProgressIndicator();
-                            }
-                            developer.log(
-                                '@@snapshot' + snapshot.data.toString());
+                          if (!snapshot.hasData) {
+                            return const CircularProgressIndicator();
+                          }
 
-                            List list = snapshot.data
-                                .map<Data>((state) {
-                              return state;
-                            }).toList();
-                            if (_selectedUser == null ||
-                                list.contains(_selectedUser) ==
-                                    false) {
-                              _selectedUser = list.first;
-                            }
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  const Text(
-                                    'Select State:',
+                          // Logging for debugging
+                          developer.log('@@snapshot: ${snapshot.data}');
+
+                          List<Data> stateList = snapshot.data;
+
+                          // Ensure selected state is in the list, otherwise select the first
+                          if (_selectedUser == null || !stateList.contains(_selectedUser)) {
+                            _selectedUser = stateList.first;
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'Select State:',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                DropdownButtonFormField<Data>(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
                                   ),
-                                  DropdownButtonFormField<Data>(
-                                    onChanged: (user) => setState(() {
-                                      _selectedUser = user;
+                                  onChanged: (user) => setState(() {
+                                    _selectedUser = user;
+                                    stateCodeDPM = int.parse(user.stateCode.toString());
+                                    print('@@statenameSPO: $stateCodeDPM');
+                                    codeDPM = user.code;
+                                    print('@@CodeSPO___1: $codeDPM');
+                                    distNameDPM = user.stateName;
 
-                                      stateCodeDPM = int.parse(
-                                          (user.stateCode).toString());
-                                      print('@@statenameSPO' +
-                                          stateCodeDPM.toString());
-                                      codeDPM = user.code;
-                                      print('@@CodeSPO___1' +
-                                          stateCodeDPM.toString());
-                                      distNameDPM = user.stateName;
-                                      if (codeDPM != null) {
-                                        print('@@CodeSPO___66' +
-                                            codeDPM.toString() +
-                                            "statename -----" +
-                                            distNameDPM);
-
-                                        SharedPrefs.storeSharedValue(
-                                            AppConstant.txtStateDPmValue,
-                                            stateCodeDPM);
-                                        if (stateCodeDPM != null) {
-                                          print('@@chakValue---' +
-                                              codeDPM.toString());
-                                          isVisibleDitrict = true;
-                                          _getDistrictData(stateCodeDPM);
-                                        } else {
-                                          isVisibleDitrict = false;
-                                        }
-                                        setState(() {});
-                                      }
-                                    }),
-                                    value: _selectedUser,
-                                    items: [
-                                      ...snapshot.data.map(
-                                        (user) => DropdownMenuItem(
-                                          value: user,
-                                          child: Text('${user.stateName}'),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            );
-                          }),
-                    ),
+                                    // Update shared preferences and visibility based on the selected state
+                                    if (codeDPM != null) {
+                                      print('@@CodeSPO___66: $codeDPM statename ----- $distNameDPM');
+                                      SharedPrefs.storeSharedValue(AppConstant.txtStateDPmValue, stateCodeDPM);
+                                      isVisibleDitrict = true;
+                                      _getDistrictData(stateCodeDPM);
+                                    } else {
+                                      isVisibleDitrict = false;
+                                    }
+                                    setState(() {});
+                                  }),
+                                  value: _selectedUser,
+                                  items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                                    return DropdownMenuItem<Data>(
+                                      value: user,
+                                      child: Text(user.stateName),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                    ,
 
                     Visibility(
                       visible: isVisibleDitrict,
-                      child: Column(
-                        children: [
-                          Center(
-                            child: FutureBuilder<List<DataDsiricst>>(
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const Text(
+                              'Select District:',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            Center(
+                              child: FutureBuilder<List<DataDsiricst>>(
                                 future: _getDistrictData(stateCodeDPM),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   }
-                                  if (snapshot.data == null) {
+                                  if (!snapshot.hasData) {
                                     return const CircularProgressIndicator();
                                   }
-                                  developer.log(
-                                      '@@snapshot' + snapshot.data.toString());
 
-                                  List list = snapshot.data
-                                      .map<DataDsiricst>((district) {
-                                    return district;
-                                  }).toList();
-                                  if (_selectedUserDistrict == null ||
-                                      list.contains(_selectedUserDistrict) ==
-                                          false) {
-                                    _selectedUserDistrict = list.first;
+                                  // Logging for debugging
+                                  developer.log('@@snapshot: ${snapshot.data}');
+
+                                  List<DataDsiricst> districtList = snapshot.data;
+
+                                  // Ensure selected district is in the list, otherwise select the first
+                                  if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                                    _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
                                   }
-                                  return Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 10, 20.0, 0),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        const Text(
-                                          'Select District:',
-                                        ),
-                                        DropdownButtonFormField<DataDsiricst>(
-                                          onChanged: (districtUser) =>
-                                              setState(() {
-                                            _selectedUserDistrict =
-                                                districtUser;
-                                            distCodeDPM = int.parse(
-                                                (districtUser.districtCode
-                                                    .toString()));
-                                            distNameDPMs_distictValues =
-                                                districtUser.districtName;
-                                            print('@@@Districtuser' +
-                                                districtUser.districtName
-                                                    .toString());
-                                            setState(() {});
-                                          }),
-                                          value: _selectedUserDistrict,
-                                          items: snapshot.data.map<
-                                                  DropdownMenuItem<
-                                                      DataDsiricst>>(
-                                              (DataDsiricst district) {
-                                            return DropdownMenuItem<
-                                                DataDsiricst>(
-                                              value: district,
-                                              child:
-                                                  Text(district.districtName),
-                                            );
-                                          }).toList(),
 
-                                        ),
-                                      ],
+                                  return DropdownButtonFormField<DataDsiricst>(
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
                                     ),
+                                    onChanged: (districtUser) {
+                                      setState(() {
+                                        _selectedUserDistrict = districtUser;
+                                        distCodeDPM = int.parse(districtUser.districtCode.toString());
+                                        distNameDPMs_distictValues = districtUser.districtName;
+                                        print('@@@Districtuser: ${districtUser.districtName}');
+                                      });
+                                    },
+                                    value: _selectedUserDistrict,
+                                    items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                      return DropdownMenuItem<DataDsiricst>(
+                                        value: district,
+                                        child: Text(district.districtName),
+                                      );
+                                    }).toList(),
                                   );
-                                }),
-                          ),
-                        ],
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
+                    )
+                    ,
 
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
