@@ -4330,7 +4330,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                       if (snapshot.data == null) {
                         return const CircularProgressIndicator();
                       }
-
+                      developer.log('@@snapshot' + snapshot.data.toString());
+                      print('@@snapshot___5: ');
+                      List list =
+                      snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
+                        return district;
+                      }).toList();
+                      if (_selectedUser == null ||
+                          list.contains(_selectedUser) == false) {
+                        _selectedUser = list.first;
+                      }
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                         child: Column(
@@ -11072,7 +11081,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           onTap: () {
                             // Handle approval action
                             print(
-                                '@@Corneal Blindness Data for approval Data for approval clicked');
+                                '@@Corneal Blindness  Data for approval clicked');
                             setState(() {
                               dashboardviewReplace = true;
 
@@ -11847,7 +11856,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               alignment: Alignment.center,
                               // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
                               child: Text(
-                                'VR Surgery Data for approval Data for approval',
+                                'VR Surgery Data for approval',
                                 style: TextStyle(
                                     color: Colors.white), // White text color
                               ),
