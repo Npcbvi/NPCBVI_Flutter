@@ -4332,8 +4332,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
                       developer.log('@@snapshot' + snapshot.data.toString());
                       print('@@snapshot___5: ');
-                      List list =
-                      snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
+                      List list = snapshot.data
+                          .map<DataGetDPM_ScreeningYear>((district) {
                         return district;
                       }).toList();
                       if (_selectedUser == null ||
@@ -12046,7 +12046,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           } else if (lowVisionData ==
                               "Private Medical College") {
                             lowVisionDataValue = 13;
-                          }else{
+                          } else {
                             lowVisionDataValue = 0;
                           }
                         });
@@ -12805,13 +12805,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                             // Handle approval action
                             print('@@Congenital Ptosis clicked');
                             setState(() {
-                              /* dashboardviewReplace = true;
+                               dashboardviewReplace = true;
 
                               LowVisionRegisterCatracts = false;
                               LowVisionRegisterDiabitic=false;
                               LowVisionRegisterGlaucoma=false;
                               LowVisionRegisterCornealBlindness=false;
-                              LowVisionRegisterVRSurgery=false;*/
+                              LowVisionRegisterVRSurgery=false;
                             });
 
                             // You can also navigate or update some data here
@@ -12973,9 +12973,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                             lowVisionDataValue = 5;
                           } else if (lowVisionDatas == "Private Practitioner") {
                             lowVisionDataValue = 12;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
                           } else if (lowVisionData ==
                               "Private Medical College") {
                             lowVisionDataValue = 13;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
+                          }else{
+                            lowVisionDataValue = 0;
                           }
                         });
                       },
@@ -12983,94 +12989,466 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-              Center(
-                child: FutureBuilder<List<DataBindOrgan>>(
-                  future: _futureBindOrgan,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
 
-                    if (!snapshot.hasData || snapshot.data == null) {
-                      return const CircularProgressIndicator();
-                    }
+              if (lowVisionDataValue == 5)
+                Center(
+                  child: FutureBuilder<List<DataBindOrgan>>(
+                    future: _futureBindOrgan,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                    List<DataBindOrgan> list = snapshot.data;
-                    developer.log('@@snapshot: $list');
+                      if (!snapshot.hasData || snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
 
-                    if (_selectBindOrgniasation == null ||
-                        !list.contains(_selectBindOrgniasation)) {
-                      _selectBindOrgniasation =
-                          list.isNotEmpty ? list.first : null;
-                    }
+                      List<DataBindOrgan> list = snapshot.data;
+                      developer.log('@@snapshot___5: $list');
+                      print('@@LowVisionRegisterChildhoodCongenitalPtosiss_1: $lowVisionDataValue');
 
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Text(
-                              'Select:',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 10),
-                            DropdownButtonFormField<DataBindOrgan>(
-                              onChanged: (userbindOrgan) {
-                                setState(() {
-                                  _selectBindOrgniasation = userbindOrgan;
-                                  bindOrganisationNAme =
-                                      userbindOrgan?.name ?? '';
-                                  npcbCongenitalPtosis =
-                                      userbindOrgan?.npcbNo ?? '';
-                                  print('@@npcbCongenitalPtosis-- click------' +
-                                      npcbCongenitalPtosis);
-                                });
-                              },
-                              value: _selectBindOrgniasation,
-                              items: list.map((userbindorgansa) {
-                                return DropdownMenuItem<DataBindOrgan>(
-                                  value: userbindorgansa,
-                                  child: Text(
-                                    userbindorgansa.name,
+                      if (_selectBindOrgniasation == null ||
+                          !list.contains(_selectBindOrgniasation)) {
+                        _selectBindOrgniasation =
+                            list.isNotEmpty ? list.first : null;
+                      }
 
-                                    maxLines: 2,
-                                    // Set max lines to 2
-                                    overflow: TextOverflow.ellipsis,
-                                    // Handle overflow
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                );
-                              }).toList(),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blueAccent, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.blue[50],
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              dropdownColor: Colors.blue[50],
-                              style: TextStyle(color: Colors.black),
-                              icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.blue),
-                            ),
-                          ],
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<DataBindOrgan>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasation = userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.name ?? '';
+                                    npcbCongenitalPtosis =
+                                        userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasation,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<DataBindOrgan>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.name,
+
+                                      maxLines: 2,
+                                      // Set max lines to 2
+                                      overflow: TextOverflow.ellipsis,
+                                      // Handle overflow
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blueAccent, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 12)
+                Center(
+                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                    future: _futureDataBindOrganValuebiggerFive,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      // Show CircularProgressIndicator only while loading (waiting for data)
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      // List from the snapshot
+                      List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                      // If the list is empty or null, show an empty dropdown with a message
+                      if (list == null || list.isEmpty) {
+                        print('@@LowVisionRegisterChildhoodCongenitalPtosiss_1: $lowVisionDataValue');
+
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'No data found',
+                                style:
+                                    TextStyle(fontSize: 18, color: Colors.red),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: null,
+                                // Disable dropdown when no data
+                                items: [],
+                                // Empty list as no items are available
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                hint: const Text('No items available'),
+                                disabledHint: const Text('No items to select'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // If an item is not selected, select the first one by default
+                      if (_selectBindOrgniasationBiggerFive == null ||
+                          !list.contains(_selectBindOrgniasationBiggerFive)) {
+                        _selectBindOrgniasationBiggerFive =
+                            list.isNotEmpty ? list.first : null;
+                      }
+                      print('@@LowVisionRegisterChildhoodCongenitalPtosiss_11: $lowVisionDataValue');
+
+                      // Render dropdown with data if available
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasationBiggerFive =
+                                        userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.oName ?? '';
+                                    npcbCongenitalPtosis =
+                                        userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasationBiggerFive,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<
+                                      DataBindOrganValuebiggerFive>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.oName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 13)
+                Center(
+                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                    future: _futureDataBindOrganValuebiggerFive,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      // Only show CircularProgressIndicator if the connection is still waiting
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      // Once data is available, check the list
+                      List<DataBindOrganValuebiggerFive> list = snapshot.data;
+                      print('@@LowVisionRegisterChildhoodCongenitalPtosiss_2: $lowVisionDataValue');
+
+                      // If no data is found, show an empty dropdown with a message
+                      if (list == null || list.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'No data found',
+                                style:
+                                    TextStyle(fontSize: 18, color: Colors.red),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: null,
+                                // Disable dropdown if there's no data
+                                items: [],
+                                // Provide an empty list
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                hint: const Text('No items available'),
+                                disabledHint: Text('No items to select'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // Select first item if not already selected
+                      if (_selectBindOrgniasationBiggerFive == null ||
+                          !list.contains(_selectBindOrgniasationBiggerFive)) {
+                        _selectBindOrgniasationBiggerFive =
+                            list.isNotEmpty ? list.first : null;
+                      }
+                      print('@@LowVisionRegisterChildhoodCongenitalPtosiss_3: $lowVisionDataValue');
+
+                      // Render the dropdown with available data
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasationBiggerFive =
+                                        userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.oName ?? '';
+                                    npcbCongenitalPtosis =
+                                        userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasationBiggerFive,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<
+                                      DataBindOrganValuebiggerFive>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.oName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 0)
+                Center(
+                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                    future: _futureDataBindOrganValuebiggerFive,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      // Show CircularProgressIndicator only while loading (waiting for data)
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      // List from the snapshot
+                      List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                      // If the list is empty or null, show an empty dropdown with a message
+                      if (list == null || list.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'No data found',
+                                style:
+                                    TextStyle(fontSize: 18, color: Colors.red),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: null,
+                                // Disable dropdown when no data
+                                items: [],
+                                // Empty list as no items are available
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                hint: const Text('No items available'),
+                                disabledHint: const Text('No items to select'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // If an item is not selected, select the first one by default
+                      if (_selectBindOrgniasationBiggerFive == null ||
+                          !list.contains(_selectBindOrgniasationBiggerFive)) {
+                        _selectBindOrgniasationBiggerFive =
+                            list.isNotEmpty ? list.first : null;
+                      }
+
+                      // Render dropdown with data if available
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasationBiggerFive =
+                                        userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.oName ?? '';
+                                    npcbCongenitalPtosis =
+                                        userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasationBiggerFive,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<
+                                      DataBindOrganValuebiggerFive>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.oName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -13171,6 +13549,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
 }
 
 class DPMDashboardParamsData {

@@ -11,6 +11,7 @@ import 'package:mohfw_npcbvi/src/hospitaldashboard/HospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
+import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
@@ -95,6 +96,9 @@ class _LoginScreenState extends State<LoginScreen> {
             break;
           case '3':
             nextScreen = DPMDashboard();
+            break;
+          case '5':
+            nextScreen = NgoDashboard();
             break;
           default:
             nextScreen = MainDashboard();
