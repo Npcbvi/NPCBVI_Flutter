@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+
 class NgoDashboard extends StatefulWidget {
   @override
   _NgoDashboard createState() => _NgoDashboard();
@@ -17,16 +18,15 @@ class NgoDashboard extends StatefulWidget {
 
 class _NgoDashboard extends State<NgoDashboard> {
   TextEditingController fullnameControllers = new TextEditingController();
-  String _chosenValue,districtNames,userId,stateNames;
+  String _chosenValue, districtNames, userId, stateNames,_chosenValueMange;
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
   TextEditingController _confirmnPasswordontrollere =
-  new TextEditingController();
+      new TextEditingController();
   GetChangeAPsswordFieldss getchangePwds = new GetChangeAPsswordFieldss();
 
   final GlobalKey _dropdownKey = GlobalKey();
-  String _chosenValueLOWVision = "Manage Users";
-  String fullnameController,getYearNgoHopital,getfyidNgoHospital;
+  String fullnameController, getYearNgoHopital, getfyidNgoHospital;
   bool ManageUSerNGOHospt = false;
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
@@ -39,16 +39,17 @@ class _NgoDashboard extends State<NgoDashboard> {
     // To generate number on loading of page
     getUserData();
   }
+
   void getUserData() {
     try {
       SharedPrefs.getUser().then((user) {
         setState(() {
           fullnameController = user.name;
-          districtNames= user.districtName;
-          stateNames=user.stateName;
-          userId= user.userId;
-          print('@@-0----2'+user.name);
-          print('@@-0----3'+fullnameController);
+          districtNames = user.districtName;
+          stateNames = user.stateName;
+          userId = user.userId;
+          print('@@-0----2' + user.name);
+          print('@@-0----3' + fullnameController);
         });
       });
     } catch (e) {
@@ -56,12 +57,11 @@ class _NgoDashboard extends State<NgoDashboard> {
     }
   }
 
-
   void _showPopupMenu() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay.of(context)?.context.findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -90,6 +90,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       }
     });
   }
+
   void _handleMenuSelection(int value) {
     switch (value) {
       case 1:
@@ -98,7 +99,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         ManageUSerNGOHospt = true;
         break;
 
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -106,9 +107,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenuScreeningCamp() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay.of(context)?.context.findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -141,6 +142,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       }
     });
   }
+
   void _handleMenuSelectionScreeninCamp(int value) {
     switch (value) {
       case 1:
@@ -153,7 +155,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
         break;
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -161,9 +163,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenuSatteliteCenter() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay.of(context)?.context.findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -196,6 +198,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       }
     });
   }
+
   void _handleMenuSelectionSatelliteCamp(int value) {
     switch (value) {
       case 1:
@@ -208,12 +211,11 @@ class _NgoDashboard extends State<NgoDashboard> {
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
         break;
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
   }
-
 
   Future<List<DataGetDPM_ScreeningYear>> getDPM_ScreeningYear() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -222,7 +224,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-      GetDPM_ScreeningYear.fromJson(json);
+          GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -230,6 +232,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       return null;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -238,7 +241,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: Text(
-          'Welcome ${fullnameController}', // Assuming fullnameController has .text
+          'Welcome ${fullnameController}',
+          // Assuming fullnameController has .text
           style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
@@ -285,10 +289,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                   _showChangePasswordDialog();
                   break;
                 case 2:
-                // Implement User Manual action
+                  // Implement User Manual action
                   break;
                 case 3:
-                // Handle Logout
+                  // Handle Logout
                   break;
               }
             },
@@ -309,6 +313,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     children: [
                       _buildNavigationButton('Dashboard', () {
                         print('@@dashboardviewReplace----display---');
+                        //   hitDashboardApi(); // Call the API when the button is pressed
                         setState(() {});
                       }),
                       SizedBox(width: 8.0),
@@ -354,7 +359,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
-            key: _dropdownKey, // Assign the key here
+            key: _dropdownKey,
+            // Assign the key here
             focusColor: Colors.white,
             value: _chosenValue,
             style: TextStyle(color: Colors.white),
@@ -412,10 +418,13 @@ class _NgoDashboard extends State<NgoDashboard> {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              _buildUserInfoItem('Login Type:', 'District NGO', Colors.black, Colors.red),
+              _buildUserInfoItem(
+                  'Login Type:', 'District NGO', Colors.black, Colors.red),
               _buildUserInfoItem('Login Id:', userId, Colors.black, Colors.red),
-              _buildUserInfoItem('District:', districtNames, Colors.black, Colors.red),
-              _buildUserInfoItem('State:', stateNames, Colors.black, Colors.red),
+              _buildUserInfoItem(
+                  'District:', districtNames, Colors.black, Colors.red),
+              _buildUserInfoItem(
+                  'State:', stateNames, Colors.black, Colors.red),
             ],
           ),
         ),
@@ -423,12 +432,15 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget _buildUserInfoItem(String label, String value, Color labelColor, Color valueColor) {
+  Widget _buildUserInfoItem(
+      String label, String value, Color labelColor, Color valueColor) {
     return Row(
       children: [
-        Text(label, style: TextStyle(color: labelColor, fontWeight: FontWeight.w500)),
+        Text(label,
+            style: TextStyle(color: labelColor, fontWeight: FontWeight.w500)),
         SizedBox(width: 10),
-        Text(value, style: TextStyle(color: valueColor, fontWeight: FontWeight.w500)),
+        Text(value,
+            style: TextStyle(color: valueColor, fontWeight: FontWeight.w500)),
         SizedBox(width: 10),
       ],
     );
@@ -485,6 +497,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
+
   Future<void> _submitchangePAsswordApi() async {
     print('@@EntryPoimt heres');
     getchangePwds.userid = userId;
@@ -533,6 +546,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       });
     }
   }
+
   Widget LowVisionRegisterNgoHopsital() {
     return Column(
       children: [
@@ -547,13 +561,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10),
                         child: ElevatedButton(
                           onPressed: () {
                             print('Hospitals List');
                             // Handle the action here (e.g., navigate to a new screen)
                           },
-
                           child: Text(
                             'Hospitals List',
                             textAlign: TextAlign.center,
@@ -563,7 +577,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                     ),
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10),
                         child: ElevatedButton(
                           onPressed: () {
                             print('@@Congenital Ptosis clicked');
@@ -587,9 +602,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                   ],
                 ),
               ),
-
               SizedBox(height: 8.0),
-
               Center(
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _future,
@@ -601,20 +614,25 @@ class _NgoDashboard extends State<NgoDashboard> {
                     if (!snapshot.hasData) {
                       return CircularProgressIndicator();
                     }
-
-                    var list = snapshot.data;
-                    if (_selectedUser == null || !list.contains(_selectedUser)) {
-                      _selectedUser = list.isNotEmpty ? list.first : null;
+                    List list =
+                        snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
+                      return district;
+                    }).toList();
+                    if (_selectedUser == null ||
+                        list.contains(_selectedUser) == false) {
+                      _selectedUser = list.first;
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             'Select year:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           SizedBox(height: 10),
                           DropdownButtonFormField<DataGetDPM_ScreeningYear>(
@@ -623,8 +641,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 _selectedUser = userc;
                                 getYearNgoHopital = userc?.name ?? '';
                                 getfyidNgoHospital = userc?.fyid ?? '';
-                                print('@@getYearNgoHopital-- $getYearNgoHopital');
-                                print('@@getfyidNgoHospital here---- $getfyidNgoHospital');
+                                print(
+                                    '@@getYearNgoHopital-- $getYearNgoHopital');
+                                print(
+                                    '@@getfyidNgoHospital here---- $getfyidNgoHospital');
                               });
                             },
                             value: _selectedUser,
@@ -638,13 +658,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                               );
                             }).toList(),
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                borderSide:
+                                    BorderSide(color: Colors.blue, width: 2.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                borderSide: BorderSide(
+                                    color: Colors.blueAccent, width: 2.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               filled: true,
@@ -652,7 +675,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                             dropdownColor: Colors.blue[50],
                             style: TextStyle(color: Colors.black),
-                            icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                            icon:
+                                Icon(Icons.arrow_drop_down, color: Colors.blue),
                           ),
                         ],
                       ),
@@ -660,14 +684,108 @@ class _NgoDashboard extends State<NgoDashboard> {
                   },
                 ),
               ),
-
-              SizedBox(height: 8.0),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10.0, 0),
+                child: Container(
+                  width: 300,
+                  padding: EdgeInsets.all(12), // Padding inside the container
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue, width: 2.0),
+                    // Blue border
+                    borderRadius: BorderRadius.circular(5.0),
+                    // Rounded corners
+                    color: Colors.white, // Background color (optional)
+                  ),
+                  child: Text(
+                    stateNames, // Replace with your text content
+                    style: TextStyle(
+                      color: Colors.black, // Text color
+                      fontSize: 16, // Text size
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Container(
+                  width: 300,
+                  padding: EdgeInsets.all(12), // Padding inside the container
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue, width: 2.0),
+                    // Blue border
+                    borderRadius: BorderRadius.circular(5.0),
+                    // Rounded corners
+                    color: Colors.white, // Background color (optional)
+                  ),
+                  child: Text(
+                    districtNames, // Replace with your text content
+                    style: TextStyle(
+                      color: Colors.black, // Text color
+                      fontSize: 16, // Text size
+                    ),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Container(
+                  child: Theme(
+                    data: Theme.of(context).copyWith(
+                      canvasColor: Colors.blue.shade200,
+                    ),
+                    child: DropdownButtonFormField<String>(
+                      value: _chosenValueMange,
+                      style: TextStyle(color: Colors.black), // Text color
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blue, width: 2.0), // Border color
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.blueAccent, width: 2.0), // Border color when focused
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                        hintText: 'All',
+                        hintStyle: TextStyle(color: Colors.black), // Hint text color
+                      ),
+                      items: <String>[
+                        'Hospitals',
+                        'Camps',
+                        'Satellite Centres',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.black), // Item text color
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String value) {
+                        setState(() {
+                          _chosenValueMange = value ?? 'All'; // Default to 'All' if null
+                          if (_chosenValueMange == "Hospitals") {
+                            print('@@NGO--1' + _chosenValueMange);
+                          } else if (_chosenValueMange == "Camps") {
+                            // Handle Camps selection
+                          } else if (_chosenValueMange == "Satellite Centres") {
+                            // Handle Satellite Centres selection
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
 
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                 child: ElevatedButton(
                   onPressed: () {
-                    print('@@lowvisionCornealBlindnessDataDispla-- click------');
+                    print(
+                        '@@lowvisionCornealBlindnessDataDispla-- click------');
                     setState(() {
                       // Add any additional logic needed here
                     });
@@ -681,9 +799,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
-
-
 }
+
 class GetChangeAPsswordFieldss {
   String userid;
   String oldPassword;

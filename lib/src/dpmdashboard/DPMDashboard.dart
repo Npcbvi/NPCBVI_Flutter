@@ -3485,7 +3485,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                       if (snapshot.data == null) {
                         return const CircularProgressIndicator();
                       }
-
+                      List list = snapshot.data
+                          .map<DataGetDPM_ScreeningYear>((district) {
+                        return district;
+                      }).toList();
+                      if (_selectedUser == null ||
+                          list.contains(_selectedUser) == false) {
+                        _selectedUser = list.first;
+                      }
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                         child: Column(
