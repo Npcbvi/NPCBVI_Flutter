@@ -180,6 +180,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool lowvisionCataractDataDispla = false;
   bool lowvisionCornealBlindnessDataDispla = false;
   bool lowvisionVRSurgeryDataDispla = false;
+  bool lowvisionCongenitalPtosisDataDispla=false;
   bool LowVisionRegisterCornealBlindness = false;
   bool LowVisionRegisterVRSurgery = false;
   String getYearGlucoma,
@@ -13465,9 +13466,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                     child: ElevatedButton(
                       onPressed: () {
                         print(
-                            '@@lowvisionCornealBlindnessDataDispla-- click------');
+                            '@@lowvisionCongenitalPtosisDataDispla-- click------');
                         setState(() {
-                          lowvisionVRSurgeryDataDispla = true;
+                          lowvisionCongenitalPtosisDataDispla = true;
                         });
                       },
                       child: Text('Submit'),
@@ -13475,7 +13476,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ],
               ),
-              if (lowvisionVRSurgeryDataDispla)
+              if (lowvisionCongenitalPtosisDataDispla)
                 Column(
                   children: [
                     SingleChildScrollView(

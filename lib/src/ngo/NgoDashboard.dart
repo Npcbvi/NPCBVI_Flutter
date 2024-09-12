@@ -32,6 +32,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   DataGetDPM_ScreeningYear _selectedUser;
   DataGetDPM_ScreeningMonth _selectedUserMonth;
 
+  bool ngoDashboardclicks = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -312,8 +313,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                   child: Row(
                     children: [
                       _buildNavigationButton('Dashboard', () {
+
                         print('@@dashboardviewReplace----display---');
-                        //   hitDashboardApi(); // Call the API when the button is pressed
+                        _future = getDPM_ScreeningYear();
+                        ngoDashboardclicks=true;
                         setState(() {});
                       }),
                       SizedBox(width: 8.0),
@@ -330,6 +333,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             ),
             _buildUserInfo(),
             LowVisionRegisterNgoHopsital(),
+            ngoDashboardclick(),
           ],
         ),
       ),
@@ -799,6 +803,180 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
+  Widget ngoDashboardclick() {
+    return Row(
+      children: [
+        Visibility(
+          visible: ngoDashboardclicks,
+          child: Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (!snapshot.hasData) {
+                        return CircularProgressIndicator();
+                      }
+
+                      List<DataGetDPM_ScreeningYear> list = snapshot.data.map((district) {
+                        return district;
+                      }).toList();
+
+                      if (_selectedUser == null || !list.contains(_selectedUser)) {
+                        _selectedUser = list.first;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Select year:',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 10),
+                            DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                              value: _selectedUser,
+                              onChanged: (userc) {
+                                setState(() {
+                                  _selectedUser = userc;
+                                  getYearNgoHopital = userc?.name ?? '';
+                                  getfyidNgoHospital = userc?.fyid ?? '';
+                                  print('Selected Year: $getYearNgoHopital');
+                                  print('FYID: $getfyidNgoHospital');
+                                });
+                              },
+                              items: list.map((user) {
+                                return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                                  value: user,
+                                  child: Text(user.name, style: TextStyle(fontSize: 16)),
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.blue[50],
+                              ),
+                              dropdownColor: Colors.blue[50],
+                              style: TextStyle(color: Colors.black),
+                              icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                SizedBox(height: 10),
+                buildInfoContainer(stateNames),
+                SizedBox(height: 10),
+                buildInfoContainer(districtNames),
+                SizedBox(height: 10),
+                buildDropdownHospitalType(),
+                SizedBox(height: 10),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      print('Submit button clicked');
+                      setState(() {
+                        // Add any additional logic here if needed
+                      });
+                    },
+                    child: Text('Submit'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget buildInfoContainer(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        width: 300,
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.blue, width: 2.0),
+          borderRadius: BorderRadius.circular(5.0),
+          color: Colors.white,
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildDropdownHospitalType() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        width: 300,
+        child: Theme(
+          data: Theme.of(context).copyWith(canvasColor: Colors.blue.shade200),
+          child: DropdownButtonFormField<String>(
+            value: _chosenValueMange,
+            style: TextStyle(color: Colors.black),
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                borderRadius: BorderRadius.circular(5.0),
+              ),
+              hintText: 'All',
+              hintStyle: TextStyle(color: Colors.black),
+            ),
+            items: <String>['Hospitals', 'Camps', 'Satellite Centres']
+                .map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(
+                  value,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(color: Colors.black),
+                ),
+              );
+            }).toList(),
+            onChanged: (String value) {
+              setState(() {
+                _chosenValueMange = value ?? 'All';
+                // Add logic to handle different selections if needed
+                print('Selected: $_chosenValueMange');
+              });
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
 }
 
 class GetChangeAPsswordFieldss {
