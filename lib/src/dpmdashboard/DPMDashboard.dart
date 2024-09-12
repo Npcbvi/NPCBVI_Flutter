@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMEyeSchoolScreens.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DPMReportScreen.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrganValuebiggerFive.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMGovtPrivateOrganisationTypeData.dart';
@@ -16,6 +17,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientAPprovedwithFinanceYear.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientPendingwithFinance.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmDashboardPatinetApproveDisesesViewClick/PatientapprovedSisesesViewclick.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_EyeScreeningEdit.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
@@ -5764,11 +5766,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // Handle the edit action here
                                     // For example, navigate to an edit screen or show a dialog
                                     print(
-                                        '@@Edit clicked for item: ${offer.diseaseName}');
+                                        '@@Edit clicked for item: ${offer.diseaseId}');
                                     //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
 
-                                    // Example: Navigate to an edit page with the selected item
-                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
+                                    showDiseaseApprovedPatintViewClick(offer.diseaseId);
                                   }),
                                 ],
                               );
@@ -5892,6 +5893,101 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
+  void showDiseaseApprovedPatintViewClick(int diseaseid) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Text('Disease Data'),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Horizontal Scrolling Header Row
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('NGO'),
+                        _buildHeaderCell('Approved'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                  ),
+                  Divider(color: Colors.blue, height: 1.0),
+                  // Data Rows
+                  FutureBuilder<List<DataPatientapprovedSisesesViewclick>>(
+                    future: ApiController.GetDPM_Patients_Approved_View(
+                        district_code_login,
+                        state_code_login,
+                        currentFinancialYear,"",diseaseid),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData ||
+                          snapshot.data == null ||
+                          snapshot.data.isEmpty) {
+                        return Utils.getEmptyView("No data found");
+                      } else {
+                        List<DataPatientapprovedSisesesViewclick> ddata =
+                            snapshot.data;
+                        print('@@---ddata' + ddata.length.toString());
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.ngoname),
+                                  _buildDataCell(
+                                      offer.approved.toString()),
+                                  _buildDataCellViewBlue("View", () {
+                                    // Handle the edit action here
+                                    // For example, navigate to an edit screen or show a dialog
+                                    print("@@npcbNo==="+offer.npcbNo);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => DPMReportScreen()));
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
   /// here we are showing the NGO Data on DPm Dashboard.
   Widget NGOClickAprrovalDisplayDatas() {
     return Column(

@@ -47,4 +47,8 @@ class ApiConstants {
   static String GetDPM_CornealBlindness = 'DpmDashboard/api/GetDPM_CornealBlindness';
 
   static String GetDPM_VRSurgery = 'DpmDashboard/api/GetDPM_VRSurgery';
+  //Childhood blindness pending work now
+
+  static String GetDPM_Patients_Approved_View = 'DpmDashboard/api/GetDPM_Patients_Approved_View';
+
 }
