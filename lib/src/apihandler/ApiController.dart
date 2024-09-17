@@ -28,6 +28,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientAPprovedwithFin
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientPendingwithFinance.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmDashboardPatinetApproveDisesesViewClick/PatientapprovedSisesesViewclick.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmReportScreen/ReportScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_EyeScreeningEdit.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_EyeScreeningEdit.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetEyeScreening.dart';
@@ -111,7 +112,9 @@ class ApiController {
 
     //Way to send url with methodname
   }
-  static Future<ChangePassword> changePAssword(GetChangeAPsswordFields getChangeAPsswordFields) async {
+
+  static Future<ChangePassword> changePAssword(
+      GetChangeAPsswordFields getChangeAPsswordFields) async {
     ChangePassword changePassword = ChangePassword();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -132,8 +135,7 @@ class ApiController {
           "confirmPassword": getChangeAPsswordFields.confirmPassword,
           //"platformName": Platform.isIOS ? "IOS" : "Android"
         });
-        print(
-            "@@changePAssword1234-----" + url + body.toString());
+        print("@@changePAssword1234-----" + url + body.toString());
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -143,15 +145,15 @@ class ApiController {
                 contentType: "application/json",
                 responseType: ResponseType.plain));
         // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
-        print( "@@changePAssword1234---re--" + response1.toString());
+        print("@@changePAssword1234---re--" + response1.toString());
         changePassword = ChangePassword.fromJson(json.decode(response1.data));
         print("@@changePAssword1234---re--df" + changePassword.message);
         if (changePassword.status) {
-
           print("@@changePAssword1234---re--dfhh" + changePassword.message);
           Utils.showToast(changePassword.message, true);
-        }else{
-          print("@@changePAssword1234---re--dfhhhhjjj" + changePassword.message);
+        } else {
+          print(
+              "@@changePAssword1234---re--dfhhhhjjj" + changePassword.message);
           Utils.showToast(changePassword.message, true);
         }
         return changePassword;
@@ -166,7 +168,9 @@ class ApiController {
 
     //Way to send url with methodname
   }
-  static Future<ChangePassword> ngochangePAssword(GetChangeAPsswordFieldss getChangeAPsswordFields) async {
+
+  static Future<ChangePassword> ngochangePAssword(
+      GetChangeAPsswordFieldss getChangeAPsswordFields) async {
     ChangePassword changePassword = ChangePassword();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -187,8 +191,7 @@ class ApiController {
           "confirmPassword": getChangeAPsswordFields.confirmPassword,
           //"platformName": Platform.isIOS ? "IOS" : "Android"
         });
-        print(
-            "@@changePAssword1234-----" + url + body.toString());
+        print("@@changePAssword1234-----" + url + body.toString());
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -198,15 +201,15 @@ class ApiController {
                 contentType: "application/json",
                 responseType: ResponseType.plain));
         // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
-        print( "@@changePAssword1234---re--" + response1.toString());
+        print("@@changePAssword1234---re--" + response1.toString());
         changePassword = ChangePassword.fromJson(json.decode(response1.data));
         print("@@changePAssword1234---re--df" + changePassword.message);
         if (changePassword.status) {
-
           print("@@changePAssword1234---re--dfhh" + changePassword.message);
           Utils.showToast(changePassword.message, true);
-        }else{
-          print("@@changePAssword1234---re--dfhhhhjjj" + changePassword.message);
+        } else {
+          print(
+              "@@changePAssword1234---re--dfhhhhjjj" + changePassword.message);
           Utils.showToast(changePassword.message, true);
         }
         return changePassword;
@@ -650,29 +653,23 @@ class ApiController {
     }
   }
 
-  static Future<govtPrivateRegisterUSerId>
-  GetRegisteredUserGvtprivates(
-      String registeredUserId/*,int stateid,int districtId*/) async {
-    govtPrivateRegisterUSerId registrationModel =
-    govtPrivateRegisterUSerId();
+  static Future<govtPrivateRegisterUSerId> GetRegisteredUserGvtprivates(
+      String registeredUserId /*,int stateid,int districtId*/) async {
+    govtPrivateRegisterUSerId registrationModel = govtPrivateRegisterUSerId();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
 
     if (isNetworkAvailable) {
       try {
-        var url = ApiConstants.baseUrl +
-            ApiConstants.GetRegisteredUser;
+        var url = ApiConstants.baseUrl + ApiConstants.GetRegisteredUser;
 
         Map<String, dynamic> payload = {
           "registeredUserId": registeredUserId,
-       /*   "stateid": stateid,
+          /*   "stateid": stateid,
           "districtId": districtId,*/
-
         };
 
-        print("@@GetRegisteredUserGvtprivate---" +
-            url +
-            payload.toString());
+        print("@@GetRegisteredUserGvtprivate---" + url + payload.toString());
 
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -680,13 +677,11 @@ class ApiController {
             options: new Options(
                 contentType: "application/json",
                 responseType: ResponseType.plain));
-        print("@@GetRegisteredUserGvtprivate--Api" +
-            response1.toString());
+        print("@@GetRegisteredUserGvtprivate--Api" + response1.toString());
         // Assuming the API returns a status and message in response
         // Parse the response1 to update registrationModel accordingly
         registrationModel =
-            govtPrivateRegisterUSerId.fromJson(
-                jsonDecode(response1.data));
+            govtPrivateRegisterUSerId.fromJson(jsonDecode(response1.data));
         if (registrationModel.status) {
           Utils.showToast(registrationModel.message, true);
         } else {
@@ -703,7 +698,7 @@ class ApiController {
     }
   }
 
-  /*static Future<List<DatagovtPrivateRegisterUSerId>> GetRegisteredUserGvtprivate (String registeredUserId*//*,int stateid,int districtId*//*) async {
+  /*static Future<List<DatagovtPrivateRegisterUSerId>> GetRegisteredUserGvtprivate (String registeredUserId*/ /*,int stateid,int districtId*/ /*) async {
     print("@@GetRegisteredUserGvtprivate"+"1");
     govtPrivateRegisterUSerId registrationModel =
     govtPrivateRegisterUSerId();
@@ -764,17 +759,22 @@ class ApiController {
     }
   }*/
 
-
-
   static Future<GetDPMDashboardData> getDPM_Dashboard(
-      int districtidDPM,  int stateidDPM,  int old_districtidDPM, String useridDPM,String roleidDPM, int statusDPM,String financialYearDPM) async {
+      int districtidDPM,
+      int stateidDPM,
+      int old_districtidDPM,
+      String useridDPM,
+      String roleidDPM,
+      int statusDPM,
+      String financialYearDPM) async {
     GetDPMDashboardData getDPMDashboardData = GetDPMDashboardData();
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String districtCode_loginFetch = prefs.getString(AppConstant.distritcCode) ?? "";
+    String districtCode_loginFetch =
+        prefs.getString(AppConstant.distritcCode) ?? "";
     String stateCode_loginFetch = prefs.getString(AppConstant.state_code) ?? "";
     print("@@districtCode_loginFetch__from login: $districtCode_loginFetch");
     print("@@stateCode_loginFetch__from login: $stateCode_loginFetch");
-   /* if (districtCode_loginFetch.isEmpty || stateCode_loginFetch.isEmpty) {
+    /* if (districtCode_loginFetch.isEmpty || stateCode_loginFetch.isEmpty) {
       Utils.showToast("District or State code is missing.", true);
       return [];
     }*/
@@ -795,11 +795,13 @@ class ApiController {
           "stateid": stateidDPM,
           "old_districtid": 569,
           "userid": useridDPM,
-          "roleid":roleidDPM,
+          "roleid": roleidDPM,
           "status": statusDPM,
           "financialYear": financialYearDPM,
         });
-        print("@@getDPM_Dashboard---api check parmeters--" + url + body.toString());
+        print("@@getDPM_Dashboard---api check parmeters--" +
+            url +
+            body.toString());
         //Way to send network calls
         Dio dio = new Dio();
         response1 = await dio.post(url,
@@ -831,9 +833,9 @@ class ApiController {
     }
   }
 
-
-  static Future<List<DataNGOAPPlicationDropDownDPm>> getDPM_NGOApplicationDropDown(int district_code,int state_code ) async {
-    print("@@getDPM_NGOApplicationDropDown"+"1");
+  static Future<List<DataNGOAPPlicationDropDownDPm>>
+      getDPM_NGOApplicationDropDown(int district_code, int state_code) async {
+    print("@@getDPM_NGOApplicationDropDown" + "1");
     Response response1;
 
     // Check network availability
@@ -856,9 +858,9 @@ class ApiController {
       var body = json.encode({
         "district_code": 536,
         "state_code": 29,
-
       });
-      print("@@getDPM_NGOApplicationDropDown--bodyprint--: ${url+body.toString()}");
+      print(
+          "@@getDPM_NGOApplicationDropDown--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -871,11 +873,13 @@ class ApiController {
         ),
       );
 
-      print("@@getDPM_NGOApplicationDropDown--Api Response: ${response.toString()}");
+      print(
+          "@@getDPM_NGOApplicationDropDown--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      NGOAPPlicationDropDownDPm data = NGOAPPlicationDropDownDPm.fromJson(responseData);
+      NGOAPPlicationDropDownDPm data =
+          NGOAPPlicationDropDownDPm.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -890,8 +894,10 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataGetNewHospitalData>> getDPM_HospitalApproval(int district_code,int state_code ) async {
-    print("@@getDPM_HospitalApproval"+"1");
+
+  static Future<List<DataGetNewHospitalData>> getDPM_HospitalApproval(
+      int district_code, int state_code) async {
+    print("@@getDPM_HospitalApproval" + "1");
     Response response1;
 
     // Check network availability
@@ -914,9 +920,8 @@ class ApiController {
       var body = json.encode({
         "district_code": district_code,
         "state_code": state_code,
-
       });
-      print("@@getDPM_HospitalApproval--bodyprint--: ${url+body.toString()}");
+      print("@@getDPM_HospitalApproval--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -948,8 +953,11 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataDPMGovtPrivateOrganisationTypeData>> getDPM_GovtPvtOther(int district_code,int state_code,int organisationroleId ) async {
-    print("@@getDPM_GovtPvtOther"+"1");
+
+  static Future<List<DataDPMGovtPrivateOrganisationTypeData>>
+      getDPM_GovtPvtOther(
+          int district_code, int state_code, int organisationroleId) async {
+    print("@@getDPM_GovtPvtOther" + "1");
     Response response1;
 
     // Check network availability
@@ -972,10 +980,9 @@ class ApiController {
       var body = json.encode({
         "district_code": district_code,
         "state_code": state_code,
-        "roleId":organisationroleId
-
+        "roleId": organisationroleId
       });
-      print("@@getDPM_GovtPvtOther--bodyprint--: ${url+body.toString()}");
+      print("@@getDPM_GovtPvtOther--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -992,7 +999,8 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      DPMGovtPrivateOrganisationTypeData data = DPMGovtPrivateOrganisationTypeData.fromJson(responseData);
+      DPMGovtPrivateOrganisationTypeData data =
+          DPMGovtPrivateOrganisationTypeData.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1007,10 +1015,12 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataGetDPM_NGOAPProved_pending>> getDPM_NGOAPProved_pendings(int district_code,int state_code,int status ) async {
-    print("@@getDPM_NGOAPProved_pending"+"1");
-    Response response1;
 
+  static Future<List<DataGetDPM_NGOAPProved_pending>>
+      getDPM_NGOAPProved_pendings(
+          int district_code, int state_code, int status) async {
+    print("@@getDPM_NGOAPProved_pending" + "1");
+    Response response1;
 
     // Check network availability
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -1047,11 +1057,13 @@ class ApiController {
         ),
       );
 
-      print("@@getDPM_NGOAPProved_pendings--Api Response: ${response.toString()}");
+      print(
+          "@@getDPM_NGOAPProved_pendings--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetDPM_NGOAPProved_pending data = GetDPM_NGOAPProved_pending.fromJson(responseData);
+      GetDPM_NGOAPProved_pending data =
+          GetDPM_NGOAPProved_pending.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1066,8 +1078,11 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DatagetDPMGH_clickAPProved>> getDPM_GetDPM_GHAPProved_pendings(int district_code,int state_code,int status ) async {
-    print("@@DatagetDPMGH_clickAPProved--APProvedWala--"+"1");
+
+  static Future<List<DatagetDPMGH_clickAPProved>>
+      getDPM_GetDPM_GHAPProved_pendings(
+          int district_code, int state_code, int status) async {
+    print("@@DatagetDPMGH_clickAPProved--APProvedWala--" + "1");
     Response response1;
 
     // Check network availability
@@ -1105,11 +1120,13 @@ class ApiController {
         ),
       );
 
-      print("@@DataGetDPM_NGOAPProved_pending--Api Response: ${response.toString()}");
+      print(
+          "@@DataGetDPM_NGOAPProved_pending--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      getDPMGH_clickAPProved data = getDPMGH_clickAPProved.fromJson(responseData);
+      getDPMGH_clickAPProved data =
+          getDPMGH_clickAPProved.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1124,8 +1141,10 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataGetDPM_PrivatePartition>> getDPM_PrivatePartition(int district_code,int state_code,int status ) async {
-    print("@@getDPM_PrivatePartition"+"1");
+
+  static Future<List<DataGetDPM_PrivatePartition>> getDPM_PrivatePartition(
+      int district_code, int state_code, int status) async {
+    print("@@getDPM_PrivatePartition" + "1");
     Response response1;
 
     // Check network availability
@@ -1163,11 +1182,13 @@ class ApiController {
         ),
       );
 
-      print("@@DataGetDPM_PrivatePartition--Api Response: ${response.toString()}");
+      print(
+          "@@DataGetDPM_PrivatePartition--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetDPM_PrivatePartition data = GetDPM_PrivatePartition.fromJson(responseData);
+      GetDPM_PrivatePartition data =
+          GetDPM_PrivatePartition.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1182,8 +1203,11 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataDPMRivateMEdicalColleges>> GetDPM_PrivateMedicalColleges(int district_code,int state_code,int status ) async {
-    print("@@DataDPMRivateMEdicalColleges"+"1");
+
+  static Future<List<DataDPMRivateMEdicalColleges>>
+      GetDPM_PrivateMedicalColleges(
+          int district_code, int state_code, int status) async {
+    print("@@DataDPMRivateMEdicalColleges" + "1");
     Response response1;
 
     // Check network availability
@@ -1195,7 +1219,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_PrivateMedicalCollege;
+      var url =
+          ApiConstants.baseUrl + ApiConstants.GetDPM_PrivateMedicalCollege;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -1221,11 +1246,13 @@ class ApiController {
         ),
       );
 
-      print("@@DataDPMRivateMEdicalColleges--Api Response: ${response.toString()}");
+      print(
+          "@@DataDPMRivateMEdicalColleges--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      DPMRivateMEdicalColleges data = DPMRivateMEdicalColleges.fromJson(responseData);
+      DPMRivateMEdicalColleges data =
+          DPMRivateMEdicalColleges.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1240,8 +1267,10 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataDPMsatteliteCenter>> GetDPM_SatelliteCentre(int district_code,int state_code ) async {
-    print("@@DPMsatteliteCenter"+"1");
+
+  static Future<List<DataDPMsatteliteCenter>> GetDPM_SatelliteCentre(
+      int district_code, int state_code) async {
+    print("@@DPMsatteliteCenter" + "1");
     Response response1;
 
     // Check network availability
@@ -1297,8 +1326,12 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataGetDPM_MOUApprove>> getDPM_MOUApprove(int district_code,int organisationTypes,int organisationrSelectedoleId ) async {
-    print("@@getDPM_MOUApprove"+"1");
+
+  static Future<List<DataGetDPM_MOUApprove>> getDPM_MOUApprove(
+      int district_code,
+      int organisationTypes,
+      int organisationrSelectedoleId) async {
+    print("@@getDPM_MOUApprove" + "1");
     Response response1;
 
     // Check network availability
@@ -1321,10 +1354,9 @@ class ApiController {
       var body = json.encode({
         "district_code": district_code,
         "organisationType": organisationTypes,
-        "roleId":organisationrSelectedoleId
-
+        "roleId": organisationrSelectedoleId
       });
-      print("@@getDPM_MOUApprove--bodyprint--: ${url+body.toString()}");
+      print("@@getDPM_MOUApprove--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1357,10 +1389,13 @@ class ApiController {
     }
   }
 
-
-
-  static Future<List<DataDPMScreeningCamp>> GetDPM_ScreeningCamp(int district_code,int state_code,String financialYear,String mode,String campType ) async {
-    print("@@GetDPM_ScreeningCamp"+"1");
+  static Future<List<DataDPMScreeningCamp>> GetDPM_ScreeningCamp(
+      int district_code,
+      int state_code,
+      String financialYear,
+      String mode,
+      String campType) async {
+    print("@@GetDPM_ScreeningCamp" + "1");
     Response response1;
 
     // Check network availability
@@ -1420,10 +1455,11 @@ class ApiController {
     }
   }
 
-
   ///Pending work here
-  static Future<List<DataGetDPM_PrivatePartition>> getPatiientApprovedPendingclick(int district_code,int state_code,int status ) async {
-    print("@@getDPM_PrivatePartition"+"1");
+  static Future<List<DataGetDPM_PrivatePartition>>
+      getPatiientApprovedPendingclick(
+          int district_code, int state_code, int status) async {
+    print("@@getDPM_PrivatePartition" + "1");
     Response response1;
 
     // Check network availability
@@ -1461,11 +1497,13 @@ class ApiController {
         ),
       );
 
-      print("@@DataGetDPM_PrivatePartition--Api Response: ${response.toString()}");
+      print(
+          "@@DataGetDPM_PrivatePartition--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetDPM_PrivatePartition data = GetDPM_PrivatePartition.fromJson(responseData);
+      GetDPM_PrivatePartition data =
+          GetDPM_PrivatePartition.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1481,8 +1519,10 @@ class ApiController {
     }
   }
 
-  static Future<List<DataGetPatientAPprovedwithFinanceYear>> GetDPM_Patients_Approved_finacne(int district_code,int state_code,String financialYear ) async {
-    print("@@GetDPM_Patients_Approved_finacne"+"1");
+  static Future<List<DataGetPatientAPprovedwithFinanceYear>>
+      GetDPM_Patients_Approved_finacne(
+          int district_code, int state_code, String financialYear) async {
+    print("@@GetDPM_Patients_Approved_finacne" + "1");
     Response response1;
 
     // Check network availability
@@ -1520,11 +1560,13 @@ class ApiController {
         ),
       );
 
-      print("@@GetDPM_Patients_Approved_finacne--Api Response: ${response.toString()}");
+      print(
+          "@@GetDPM_Patients_Approved_finacne--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetPatientAPprovedwithFinanceYear data = GetPatientAPprovedwithFinanceYear.fromJson(responseData);
+      GetPatientAPprovedwithFinanceYear data =
+          GetPatientAPprovedwithFinanceYear.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1539,8 +1581,11 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataGetPatientPendingwithFinance>> GetDPM_Patients_Pending_finacne(int district_code,int state_code,String financialYear ) async {
-    print("@@GetDPM_Patients_Pending_finacne"+"1");
+
+  static Future<List<DataGetPatientPendingwithFinance>>
+      GetDPM_Patients_Pending_finacne(
+          int district_code, int state_code, String financialYear) async {
+    print("@@GetDPM_Patients_Pending_finacne" + "1");
     Response response1;
 
     // Check network availability
@@ -1565,7 +1610,8 @@ class ApiController {
         "state_code": state_code,
         "financialYear": financialYear, // for approved
       });
-      print("@@GetDPM_Patients_Pending_finacne--bodyprint--: ${body.toString()}");
+      print(
+          "@@GetDPM_Patients_Pending_finacne--bodyprint--: ${body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1578,11 +1624,13 @@ class ApiController {
         ),
       );
 
-      print("@@GetDPM_Patients_Approved_finacne--Api Response: ${response.toString()}");
+      print(
+          "@@GetDPM_Patients_Approved_finacne--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetPatientPendingwithFinance data = GetPatientPendingwithFinance.fromJson(responseData);
+      GetPatientPendingwithFinance data =
+          GetPatientPendingwithFinance.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1598,8 +1646,9 @@ class ApiController {
     }
   }
 
-  static Future<List<DataGetEyeScreening>> GetDPM_EyeScreening(int district_code,int state_code,String userid ) async {
-    print("@@GetDPM_EyeScreening"+"1");
+  static Future<List<DataGetEyeScreening>> GetDPM_EyeScreening(
+      int district_code, int state_code, String userid) async {
+    print("@@GetDPM_EyeScreening" + "1");
     Response response1;
 
     // Check network availability
@@ -1624,7 +1673,7 @@ class ApiController {
         "state_code": state_code,
         "userid": userid, // for approved
       });
-      print("@@GetDPM_EyeScreening--bodyprint--: ${url+body.toString()}");
+      print("@@GetDPM_EyeScreening--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1637,7 +1686,8 @@ class ApiController {
         ),
       );
 
-      print("@@DataGetDPM_PrivatePartition--Api Response: ${response.toString()}");
+      print(
+          "@@DataGetDPM_PrivatePartition--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
@@ -1656,8 +1706,10 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataGetDPM_EyeScreeningEdit>> getDPM_EyeScreeningEdit(int district_code,int state_code,String userid ) async {
-    print("@@GetDPM_EyeScreeningEdit"+"1");
+
+  static Future<List<DataGetDPM_EyeScreeningEdit>> getDPM_EyeScreeningEdit(
+      int district_code, int state_code, String userid) async {
+    print("@@GetDPM_EyeScreeningEdit" + "1");
     Response response1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
@@ -1680,12 +1732,12 @@ class ApiController {
 
       // Define the request body
       var body = json.encode({
-        "schoolid":schoolidSaved,
+        "schoolid": schoolidSaved,
         "district_code": district_code,
         "state_code": state_code,
         "userid": userid, // for approved
       });
-      print("@@GetDPM_EyeScreeningEdit--bodyprint--: ${url+body.toString()}");
+      print("@@GetDPM_EyeScreeningEdit--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1702,7 +1754,8 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetDPM_EyeScreeningEdit data = GetDPM_EyeScreeningEdit.fromJson(responseData);
+      GetDPM_EyeScreeningEdit data =
+          GetDPM_EyeScreeningEdit.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1717,8 +1770,12 @@ class ApiController {
       return [];
     }
   }
-  static Future<SchoolEyeScreening_Registration> getSchoolEyeScreening_Registration(GetSchoolEyeScreening_Registrations _getSchoolEyeScreening_Registrations ) async {
-    print("@@getSchoolEyeScreening_Registration"+"1");
+
+  static Future<SchoolEyeScreening_Registration>
+      getSchoolEyeScreening_Registration(
+          GetSchoolEyeScreening_Registrations
+              _getSchoolEyeScreening_Registrations) async {
+    print("@@getSchoolEyeScreening_Registration" + "1");
     Response response1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
@@ -1746,8 +1803,8 @@ class ApiController {
           "monthid": _getSchoolEyeScreening_Registrations.monthid,
           "yearid": _getSchoolEyeScreening_Registrations.yearid,
           "entry_by": _getSchoolEyeScreening_Registrations.entry_by,
-          "trained_teacher": _getSchoolEyeScreening_Registrations
-              .trained_teacher,
+          "trained_teacher":
+              _getSchoolEyeScreening_Registrations.trained_teacher,
           "child_screen": _getSchoolEyeScreening_Registrations.child_screen,
           "child_detect": _getSchoolEyeScreening_Registrations.child_detect,
           "freeglass": _getSchoolEyeScreening_Registrations.freeglass,
@@ -1756,8 +1813,8 @@ class ApiController {
 
           // for approved
         });
-        print("@@getSchoolEyeScreening_Registration--bodyprint--: ${url +
-            body.toString()}");
+        print(
+            "@@getSchoolEyeScreening_Registration--bodyprint--: ${url + body.toString()}");
         // Create Dio instance and make the request
         Dio dio = Dio();
         Response response = await dio.post(
@@ -1775,8 +1832,8 @@ class ApiController {
 
         // Parse the response
         var responseData = json.decode(response.data);
-        SchoolEyeScreening_Registration data = SchoolEyeScreening_Registration
-            .fromJson(responseData);
+        SchoolEyeScreening_Registration data =
+            SchoolEyeScreening_Registration.fromJson(responseData);
 
         if (data.status) {
           Utils.showToast(data.message, true);
@@ -1789,8 +1846,14 @@ class ApiController {
       }
     }
   }
-  static Future<List<Datalowvisionregister_Glaucoma>> getDPM_Glaucoma(int district_code,int state_code,String npcbno,String financialYear,int organisationtypeValue ) async {
-    print("@@getDPM_Glaucoma"+"1");
+
+  static Future<List<Datalowvisionregister_Glaucoma>> getDPM_Glaucoma(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@getDPM_Glaucoma" + "1");
     Response response1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
@@ -1819,7 +1882,7 @@ class ApiController {
         "financialYear": financialYear,
         "organisationType": organisationtypeValue
       });
-      print("@@getDPM_Glaucoma--bodyprint--: ${url+body.toString()}");
+      print("@@getDPM_Glaucoma--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1836,7 +1899,8 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      lowvisionregister_Glaucoma data = lowvisionregister_Glaucoma.fromJson(responseData);
+      lowvisionregister_Glaucoma data =
+          lowvisionregister_Glaucoma.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1851,8 +1915,14 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<Datalowvisionregister_cataract>> getDPM_Cataract(int district_code,int state_code,String npcbno,String financialYear,int organisationtypeValue  ) async {
-    print("@@getDPM_Cataract"+"1");
+
+  static Future<List<Datalowvisionregister_cataract>> getDPM_Cataract(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@getDPM_Cataract" + "1");
     Response response1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
@@ -1881,7 +1951,7 @@ class ApiController {
         "financialYear": financialYear,
         "organisationType": organisationtypeValue
       });
-      print("@@getDPM_Cataract--bodyprint--: ${url+body.toString()}");
+      print("@@getDPM_Cataract--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1898,7 +1968,8 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      lowvisionregister_cataract data = lowvisionregister_cataract.fromJson(responseData);
+      lowvisionregister_cataract data =
+          lowvisionregister_cataract.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1913,8 +1984,14 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<Datalowvisonregister_diabitic>> getDPM_Daiabetic(int district_code,int state_code,String npcbno,String financialYear,int organisationtypeValue  ) async {
-    print("@@getDPM_Daiabetic"+"1");
+
+  static Future<List<Datalowvisonregister_diabitic>> getDPM_Daiabetic(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@getDPM_Daiabetic" + "1");
     Response response1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
@@ -1943,7 +2020,7 @@ class ApiController {
         "financialYear": financialYear,
         "organisationType": organisationtypeValue
       });
-      print("@@getDPM_Daiabetic--bodyprint--: ${url+body.toString()}");
+      print("@@getDPM_Daiabetic--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1960,7 +2037,8 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      lowvisonregister_diabitic data = lowvisonregister_diabitic.fromJson(responseData);
+      lowvisonregister_diabitic data =
+          lowvisonregister_diabitic.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -1975,8 +2053,14 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DatalowvisionCornealBlindness>> getDPM_CornealBlindness(int district_code,int state_code,String npcbno,String financialYear,int organisationtypeValue  ) async {
-    print("@@getDPM_CornealBlindness"+"1");
+
+  static Future<List<DatalowvisionCornealBlindness>> getDPM_CornealBlindness(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@getDPM_CornealBlindness" + "1");
     Response response1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
@@ -2005,7 +2089,7 @@ class ApiController {
         "financialYear": financialYear,
         "organisationType": organisationtypeValue
       });
-      print("@@GetDPM_CornealBlindness--bodyprint--: ${url+body.toString()}");
+      print("@@GetDPM_CornealBlindness--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -2022,7 +2106,8 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      lowvisionCornealBlindness data = lowvisionCornealBlindness.fromJson(responseData);
+      lowvisionCornealBlindness data =
+          lowvisionCornealBlindness.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -2037,8 +2122,14 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DatalowvisionVRSurgery>> getDPM_VRSurgery(int district_code,int state_code,String npcbno,String financialYear,int organisationtypeValue  ) async {
-    print("@@GetDPM_VRSurgery"+"1");
+
+  static Future<List<DatalowvisionVRSurgery>> getDPM_VRSurgery(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@GetDPM_VRSurgery" + "1");
     Response response1;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
@@ -2067,7 +2158,7 @@ class ApiController {
         "financialYear": financialYear,
         "organisationType": organisationtypeValue
       });
-      print("@@GetDPM_VRSurgery--bodyprint--: ${url+body.toString()}");
+      print("@@GetDPM_VRSurgery--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -2099,8 +2190,11 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataPatientapprovedSisesesViewclick>> GetDPM_Patients_Approved_View(int district_code,int state_code,String financialYear,String mode,int diseaseid ) async {
-    print("@@GetDPM_Patients_Approved_View"+"1");
+
+  static Future<List<DataPatientapprovedSisesesViewclick>>
+      GetDPM_Patients_Approved_View(int district_code, int state_code,
+          String financialYear, String mode, int diseaseid) async {
+    print("@@GetDPM_Patients_Approved_View" + "1");
     Response response1;
 
     // Check network availability
@@ -2112,7 +2206,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Patients_Approved_View;
+      var url =
+          ApiConstants.baseUrl + ApiConstants.GetDPM_Patients_Approved_View;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -2124,8 +2219,8 @@ class ApiController {
         "district_code": district_code,
         "state_code": state_code,
         "financialYear": financialYear,
-        "mode":mode,
-        "diseaseid":diseaseid// for approved
+        "mode": mode,
+        "diseaseid": diseaseid // for approved
       });
       print("@@GetDPM_Patients_Approved_View--bodyprint--: ${body.toString()}");
       // Create Dio instance and make the request
@@ -2140,11 +2235,13 @@ class ApiController {
         ),
       );
 
-      print("@@GetDPM_Patients_Approved_View--Api Response: ${response.toString()}");
+      print(
+          "@@GetDPM_Patients_Approved_View--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      PatientapprovedSisesesViewclick data = PatientapprovedSisesesViewclick.fromJson(responseData);
+      PatientapprovedSisesesViewclick data =
+          PatientapprovedSisesesViewclick.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -2161,5 +2258,76 @@ class ApiController {
     }
   }
 
+  static Future<List<DataReportScreen>> GetData_by_allngo_amount_totalCount(int year,String _selectedDateText,String _selectedDateTextToDate,int stateId,int districtId,int orgtype,String bindOrganisationNAme,int status,String financialYear,String npcbno) async {
+    print("@@GetData_by_allngo_amount_totalCount" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetData_by_allngo_amount_totalCount;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+        "financialYear":financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@GetData_by_allngo_amount_totalCount--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetData_by_allngo_amount_totalCount--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ReportScreen data = ReportScreen.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmReportScreen/ReportScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
@@ -35,6 +37,7 @@ class _DPMReportScreen extends State<DPMReportScreen> {
   int status, district_code_login, state_code_login,lowVisionDataValue = 0;
   String role_id,bindOrganisationNAme,npcbNo,lowVisionDatas;
   DataBindOrgan _selectBindOrgniasation;
+  bool dpmReportDataList = false;
 
   @override
   void initState() {
@@ -439,8 +442,8 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                                   _selectedUser = userc;
                                   getYearNgoHopital = userc?.name ?? '';
                                   getfyidNgoHospital = userc?.fyid ?? '';
-                                  print('Selected Year: $getYearNgoHopital');
-                                  print('FYID: $getfyidNgoHospital');
+                                  print('@@@Selected Year: $getYearNgoHopital');
+                                  print('@@ReportScreen__FYID: $getfyidNgoHospital');
                                 });
                               },
                               items: list.map((user) {
@@ -510,7 +513,7 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                                 if (pickedDate != null) {
                                   // Handle the selected date (e.g., display or save it)
                                   String formattedDate =
-                                      "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                                      "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
 
                                   // Update the state with the selected date
                                   setState(() {
@@ -567,7 +570,7 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                                 if (pickedDate != null) {
                                   // Handle the selected date (e.g., display or save it)
                                   String formattedDate =
-                                      "${pickedDate.day}/${pickedDate.month}/${pickedDate.year}";
+                                      "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
 
                                   // Update the state with the selected date
                                   setState(() {
@@ -693,6 +696,14 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                             } else if (oganisationTypeGovtPrivateDRopDown ==
                                 "Other") {
                               dropDownvalueOrgnbaistaionType = 14;
+                              print('@@oganisationTypeGovtPrivateDRopDown--' +
+                                  oganisationTypeGovtPrivateDRopDown +
+                                  "-----" +
+                                  dropDownvalueOrgnbaistaionType.toString());
+
+                            }
+                            else  {
+                              dropDownvalueOrgnbaistaionType = 0;
                               print('@@oganisationTypeGovtPrivateDRopDown--' +
                                   oganisationTypeGovtPrivateDRopDown +
                                   "-----" +
@@ -858,7 +869,7 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                           primary: Colors.blue,
                         ),
                         onPressed: () {
-                          print('@@GovtPvtSubmit clkick------');
+                          dpmReportDataList=true;
                           setState(() {
                           });
                         },
@@ -866,6 +877,65 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                     ),
                   ],
                 ),
+                if (dpmReportDataList)
+                  Column(
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('Organisation Name'),
+                            _buildHeaderCell('No of Patient'),
+                            _buildHeaderCell('Total Amount @ 2000'),
+                            _buildHeaderCell('Action'),
+
+                          ],
+                        ),
+                      ),
+                      Divider(color: Colors.blue, height: 1.0),
+                      FutureBuilder<List<DataReportScreen>>(
+                        future: ApiController.GetData_by_allngo_amount_totalCount(int.parse(getfyidNgoHospital),_selectedDateText,_selectedDateTextToDate,state_code_login,district_code_login, dropDownvalueOrgnbaistaionType,bindOrganisationNAme,lowVisionDataValue,getYearNgoHopital,npcbNo),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Utils.getEmptyView("Error: ${snapshot.error}");
+                          } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                            return Utils.getEmptyView("No data found");
+                          } else {
+                            List<DataReportScreen> ddata = snapshot.data;
+
+                            print('@@---ddata: ' + lowVisionDataValue.toString());
+                            return SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo(
+                                          (ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.ngoname),
+                                      _buildDataCell(offer.totalpatient.toString()),
+                                      _buildDataCell(offer.amount.toString()),
+
+                                      _buildDataCellViewBlue("View", () {
+                                        // Handle the view action here
+                                        // Example: Navigate to a details page with the selected item
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
 
 
               ],
@@ -873,6 +943,121 @@ class _DPMReportScreen extends State<DPMReportScreen> {
           ),
         ),
       ],
+    );
+  }
+  Widget _buildHeaderCellSrNo(String text) {
+    return Container(
+      height: 40,
+      width: 80, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCell(String text) {
+    return Container(
+      height: 40,
+      width: 150, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCell(String text) {
+    return Container(
+      height: 80,
+      width: 150,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellViewBlue(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 80,
+        width: 150,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellSrNo(String text) {
+    return Container(
+      height: 80,
+      width: 80, //
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
     );
   }
 }

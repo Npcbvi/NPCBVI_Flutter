@@ -51,4 +51,6 @@ class ApiConstants {
 
   static String GetDPM_Patients_Approved_View = 'DpmDashboard/api/GetDPM_Patients_Approved_View';
 
+  static String GetData_by_allngo_amount_totalCount = 'DpmDashboard/api/GetData_by_allngo_amount_totalCount';
+
 }
