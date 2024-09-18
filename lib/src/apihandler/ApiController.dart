@@ -20,6 +20,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMCataractPatientView.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMDashboardData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_MOUApprove.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
@@ -27,6 +28,9 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientAPprovedwithFinanceYear.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientPendingwithFinance.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/childrenblindess/GetDPMCongenitalPtosis.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/childrenblindess/GetDPMSquint.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/childrenblindess/GetDPMTraumaChildren.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmDashboardPatinetApproveDisesesViewClick/PatientapprovedSisesesViewclick.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmReportScreen/ReportScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_EyeScreeningEdit.dart';
@@ -2190,7 +2194,205 @@ class ApiController {
       return [];
     }
   }
+  static Future<List<DataGetDPMCongenitalPtosis>> getDPM_CongenitalPtosis(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@getDPM_CongenitalPtosis" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@getDPM_CongenitalPtosis--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
 
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_CongenitalPtosis;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationtypeValue
+      });
+      print("@@getDPM_CongenitalPtosis--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_CongenitalPtosis--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetDPMCongenitalPtosis data = GetDPMCongenitalPtosis.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<DataGetDPMTraumaChildren>> getDPM_Trauma (
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@getDPM_Trauma" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+  //  String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+  //  print("@@getDPM_Trauma--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_TraumaChildren;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationtypeValue
+      });
+      print("@@getDPM_Trauma--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_CongenitalPtosis--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetDPMTraumaChildren data = GetDPMTraumaChildren.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<DataGetDPMSquint>> getDPM_Squintapproval (
+      int district_code,
+      int state_code,
+      String npcbno,
+      String organisationtypeValue) async {
+    print("@@getDPM_Squintapproval" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    //  String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    //  print("@@getDPM_Trauma--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Squintapproval;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "status": "4"
+      });
+      print("@@getDPM_Squintapproval--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_Squintapproval--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetDPMSquint data = GetDPMSquint.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
   static Future<List<DataPatientapprovedSisesesViewclick>>
       GetDPM_Patients_Approved_View(int district_code, int state_code,
           String financialYear, String mode, int diseaseid) async {
@@ -2258,7 +2460,7 @@ class ApiController {
     }
   }
 
-  static Future<List<DataReportScreen>> GetData_by_allngo_amount_totalCount(int year,String _selectedDateText,String _selectedDateTextToDate,int stateId,int districtId,int orgtype,String bindOrganisationNAme,int status,String financialYear,String npcbno) async {
+  static Future<List<DataReportScreen>> GetData_by_allngo_amount_totalCount(int year,String _selectedDateText,String _selectedDateTextToDate,int stateId,int districtId,String  orgtype,String bindOrganisationNAme,String status,String financialYear,String npcbno) async {
     print("@@GetData_by_allngo_amount_totalCount" + "1");
     Response response1;
 
@@ -2314,6 +2516,73 @@ class ApiController {
       // Parse the response
       var responseData = json.decode(response.data);
       ReportScreen data = ReportScreen.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+  static Future<List<DataGetDPMCataractPatientView>>
+  getDPM_CataractPatientView(String mode,String p_DeseaseId, String p_UserID,
+       String p_vStatus, int orgType) async {
+    print("@@getDPM_CataractPatientView" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.GetDPM_CataractPatientView;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": mode,
+        "p_DeseaseId": p_DeseaseId,
+        "p_UserID": p_UserID,
+        "p_vStatus": p_vStatus,
+
+        "orgType": orgType // for approved
+      });
+      print("@@getDPM_CataractPatientView--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getDPM_CataractPatientView--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetDPMCataractPatientView data =
+     GetDPMCataractPatientView.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);

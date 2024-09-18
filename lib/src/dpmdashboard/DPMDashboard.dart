@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMEyeSchoolScreens.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DPMPatientPatientDisceaseInnerDataDisplay.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMReportScreen.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrganValuebiggerFive.dart';
@@ -11,12 +12,16 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMGovtPrivateOrganisatio
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMScreeningCamp.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMsatteliteCenter.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMCataractPatientView.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_MOUApprove.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPM_PrivatePartition.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetNewHospitalData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientAPprovedwithFinanceYear.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetPatientPendingwithFinance.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/childrenblindess/GetDPMCongenitalPtosis.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/childrenblindess/GetDPMSquint.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/childrenblindess/GetDPMTraumaChildren.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmDashboardPatinetApproveDisesesViewClick/PatientapprovedSisesesViewclick.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_EyeScreeningEdit.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
@@ -161,6 +166,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   String getfyid;
   var month_id;
   bool LowVisionRegisterCatracts = false;
+  bool patinetInnerPandingDataDisplay = false;
   String LowVisionRegisterDataShowsValue;
   int LowVisionRegisterDataShowsValuessss = 0;
   bool LowVisionRegisterGlaucoma = false;
@@ -176,7 +182,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       npcbNoDiabitic,
       npcbNoCornealBlindness,
       npcbVRSurgery,
-      npcbCongenitalPtosis;
+      npcbCongenitalPtosis,npcbTraumaChildren,npcbSquint ;
   bool lowvisionGlucomaDataDispla = false;
   bool lowvisionDiabiticDataDispla = false;
   bool lowvisionCataractDataDispla = false;
@@ -185,17 +191,23 @@ class _DPMDashboard extends State<DPMDashboard> {
   bool lowvisionCongenitalPtosisDataDispla=false;
   bool LowVisionRegisterCornealBlindness = false;
   bool LowVisionRegisterVRSurgery = false;
+  bool lowvisionTrauma =false;
+
+  bool lowvisionSquint =false;
   String getYearGlucoma,
       getYearCatract,
       getYearDiabitic,
       getYearCornealBlindness,
       gerYearVRsurgery,
-      gerYearCongenitalPtosis;
+      gerYearCongenitalPtosis,gerYearTraumaChildren,gerYearSquint ;
   bool showChildhoodBlindnessDropdown = false;
   final GlobalKey _dropdownKey = GlobalKey();
 
   bool LowVisionRegisterChildhoodCongenitalPtosiss = false;
 
+  bool LowVisionRegisterChildhoodTrauma = false;
+
+  bool LowVisionRegisterSquint = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -494,6 +506,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ngoEyeScreeningdataShow = false;
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
+                                    LowVisionRegisterChildhoodTrauma=false;
+                                    LowVisionRegisterSquint=false;
                                   } else if (_chosenValue == "New Hospital") {
                                     dashboardviewReplace = false;
                                     NGO_APPorovedClickShowData = false;
@@ -526,6 +540,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ngoEyeScreeningdataShow = false;
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
+                                    LowVisionRegisterChildhoodTrauma=false;
+                                    LowVisionRegisterSquint=false;
                                   } else if (_chosenValue ==
                                       "Govt/private/Other") {
                                     dashboardviewReplace = false;
@@ -560,6 +576,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ngoEyeScreeningdataShow = false;
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
+                                    LowVisionRegisterChildhoodTrauma=false;
+                                    LowVisionRegisterSquint=false;
                                   }
                                   if (_chosenValue == "Approve Renew MOU") {
                                     dashboardviewReplace = false;
@@ -594,6 +612,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ngoEyeScreeningdataShow = false;
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
+                                    LowVisionRegisterChildhoodTrauma=false;
+                                    LowVisionRegisterSquint=false;
                                   }
                                 });
                               },
@@ -663,6 +683,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ngoEyeScreeningdataShow = false;
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
+                                    LowVisionRegisterSquint=false;
+                                    LowVisionRegisterChildhoodTrauma=false;
                                     print('@@NGO--1' + _chosenValueLOWVision);
                                   } else if (_chosenValueLOWVision ==
                                       "Diabetic") {
@@ -682,6 +704,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ngoEyeScreeningdataShow = false;
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
+                                    LowVisionRegisterChildhoodTrauma=false;
+                                    LowVisionRegisterSquint=false;
                                   } else if (_chosenValueLOWVision ==
                                       "Glaucoma") {
                                     _future = getDPM_ScreeningYear();
@@ -700,6 +724,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ngoEyeScreeningdataShow = false;
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
+                                    LowVisionRegisterChildhoodTrauma=false;
+                                    LowVisionRegisterSquint=false;
                                   } else if (_chosenValueLOWVision ==
                                       "Corneal Blindness") {
                                     _future = getDPM_ScreeningYear();
@@ -718,6 +744,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ngoEyeScreeningdataShow = false;
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
+                                    LowVisionRegisterChildhoodTrauma=false;
+                                    LowVisionRegisterSquint=false;
                                   } else if (_chosenValueLOWVision ==
                                       "VR Surgery") {
                                     print('@@Childhood--' +
@@ -738,6 +766,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ngoEyeScreeningdataShow = false;
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
+                                    LowVisionRegisterChildhoodTrauma=false;
+                                    LowVisionRegisterSquint=false;
                                   } else if (_chosenValueLOWVision ==
                                       "Childhood Blindness") {
                                     print('@@Childhood--' +
@@ -2488,6 +2518,9 @@ class _DPMDashboard extends State<DPMDashboard> {
             //    PatientApprovedFinancneClickDisplayData(),
             LowVisionRegisterDataShowVRSurgery(),
             LowVisionRegisterChildhoodCongenitalPtosis(),
+            LowVisionRegisterChildhoodTraumas(),
+            LowVisionRegisterSquints(),
+           // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
         ),
       ),
@@ -5864,6 +5897,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     print(
                                         '@@Edit clicked for item: ${offer.diseaseName}');
                                     //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+                                    showDiseasePatintPendingClickFlow(offer.diseaseId);
 
                                     // Example: Navigate to an edit page with the selected item
                                     // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
@@ -5963,6 +5997,101 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => DPMReportScreen()));
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void showDiseasePatintPendingClickFlow(int diseaseid) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Text('Disease Data'),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Horizontal Scrolling Header Row
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('NGO'),
+                        _buildHeaderCell('Approved'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                  ),
+                  Divider(color: Colors.blue, height: 1.0),
+                  // Data Rows
+                  FutureBuilder<List<DataPatientapprovedSisesesViewclick>>(
+                    future: ApiController.GetDPM_Patients_Approved_View(
+                        district_code_login,
+                        state_code_login,
+                        "2022-2023","",diseaseid),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData ||
+                          snapshot.data == null ||
+                          snapshot.data.isEmpty) {
+                        return Utils.getEmptyView("No data found");
+                      } else {
+                        List<DataPatientapprovedSisesesViewclick> ddata =
+                            snapshot.data;
+                        print('@@---ddata' + ddata.length.toString());
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.ngoname),
+                                  _buildDataCell(
+                                      offer.approved.toString()),
+                                  _buildDataCellViewBlue("View", () {
+                                    // Handle the edit action here
+                                    // For example, navigate to an edit screen or show a dialog
+                                    print("@@Different TypeShowData--here===");
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => DPMPatientPatientDisceaseInnerDataDisplay()));
                                   }),
                                 ],
                               );
@@ -8691,6 +8820,788 @@ class _DPMDashboard extends State<DPMDashboard> {
       }
     });
   }
+
+  /*Widget ngowisePatientPendingInnerDisplayDataEidt() {
+    return Column(
+      children: [
+        Visibility(
+          visible: patinetInnerPandingDataDisplay,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Handle approval action
+                            print('Cataract Data for approval');
+                            // You can also navigate or update some data here
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue, // Blue background color
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                              child: Text(
+                                'Cataract Data for approval',
+                                style: TextStyle(
+                                    color: Colors.white), // White text color
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Handle approval action
+                            print('@@Cataract Data for approval clicked');
+                            setState(() {
+                              dashboardviewReplace = true;
+                              LowVisionRegisterCatracts = false;
+                              LowVisionRegisterDiabitic = false;
+                              LowVisionRegisterGlaucoma = false;
+                              LowVisionRegisterCornealBlindness = false;
+                            });
+
+                            // You can also navigate or update some data here
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue, // Blue background color
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                              child: Text(
+                                'Back',
+                                style: TextStyle(
+                                    color: Colors.white), // White text color
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
+              // Horizontal Scrolling Header Row
+              SizedBox(width: 8.0),
+              Center(
+                child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                  future: _futureCataract,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.data == null) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    developer.log('@@snapshot' + snapshot.data.toString());
+                    print('@@snapshot___5: ');
+                    List list =
+                    snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
+                      return district;
+                    }).toList();
+                    if (_selectedUser == null ||
+                        list.contains(_selectedUser) == false) {
+                      _selectedUser = list.first;
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Select year:',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          // Added space between label and dropdown
+                          DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                            onChanged: (userc) => setState(() {
+                              _selectedUser = userc;
+                              getYearCatract = userc.name;
+                              getfyid = userc.fyid;
+                              print('@@getYear--' + getYearCatract.toString());
+                              print('@@getfyidSelected here----' +
+                                  getfyid.toString());
+                              ;
+                            }),
+                            value: _selectedUser,
+                            items: [
+                              ...snapshot.data.map(
+                                    (user) => DropdownMenuItem(
+                                  value: user,
+                                  child: Text(
+                                    '${user.name}',
+                                    style: TextStyle(
+                                        fontSize:
+                                        16), // Text style inside dropdown
+                                  ),
+                                ),
+                              ),
+                            ],
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blueAccent, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.blue[
+                              50], // Background color of the dropdown box
+                            ),
+                            dropdownColor: Colors.blue[50],
+                            // Background color of the dropdown menu
+                            style: TextStyle(color: Colors.black),
+                            // Style of the selected item
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.blue), // Dropdown icon style
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: new DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      focusColor: Colors.white,
+                      value: lowVisionDatas,
+                      //elevation: 5,
+                      style: TextStyle(color: Colors.white),
+                      iconEnabledColor: Colors.white,
+                      items: <String>[
+                        'NGOs',
+                        'Private Practitioner',
+                        'Private Medical College',
+                      ].map<DropdownMenuItem<String>>(
+                              (String lowVisionRegistry) {
+                            return DropdownMenuItem<String>(
+                              value: lowVisionRegistry,
+                              child: Text(
+                                lowVisionRegistry,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                      hint: Text(
+                        "Select Type",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onChanged: (String lowVisionData) {
+                        setState(() {
+                          lowVisionDatas = lowVisionData;
+
+                          if (lowVisionDatas == "NGOs") {
+                            lowVisionDataValue = 5;
+                          } else if (lowVisionDatas == "Private Practitioner") {
+                            lowVisionDataValue = 12;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
+                          } else if (lowVisionData ==
+                              "Private Medical College") {
+                            lowVisionDataValue = 13;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
+                          } else {
+                            lowVisionDataValue = 0;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+              if (lowVisionDataValue == 5)
+                Center(
+                  child: FutureBuilder<List<DataBindOrgan>>(
+                    future: _futureBindOrgan,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (!snapshot.hasData || snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      List<DataBindOrgan> list = snapshot.data;
+                      developer.log('@@snapshot___5: $list');
+                      print('@@snapshot___5: $lowVisionDataValue');
+
+                      if (_selectBindOrgniasation == null ||
+                          !list.contains(_selectBindOrgniasation)) {
+                        _selectBindOrgniasation =
+                        list.isNotEmpty ? list.first : null;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<DataBindOrgan>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasation = userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.name ?? '';
+                                    npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasation,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<DataBindOrgan>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.name,
+
+                                      maxLines: 2,
+                                      // Set max lines to 2
+                                      overflow: TextOverflow.ellipsis,
+                                      // Handle overflow
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blueAccent, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 12)
+                Center(
+                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                    future: _futureDataBindOrganValuebiggerFive,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      // Show CircularProgressIndicator only while loading (waiting for data)
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      // List from the snapshot
+                      List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                      // If the list is empty or null, show an empty dropdown with a message
+                      if (list == null || list.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'No data found',
+                                style:
+                                TextStyle(fontSize: 18, color: Colors.red),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: null,
+                                // Disable dropdown when no data
+                                items: [],
+                                // Empty list as no items are available
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                hint: const Text('No items available'),
+                                disabledHint: const Text('No items to select'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // If an item is not selected, select the first one by default
+                      if (_selectBindOrgniasationBiggerFive == null ||
+                          !list.contains(_selectBindOrgniasationBiggerFive)) {
+                        _selectBindOrgniasationBiggerFive =
+                        list.isNotEmpty ? list.first : null;
+                      }
+
+                      // Render dropdown with data if available
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasationBiggerFive =
+                                        userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.oName ?? '';
+                                    npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasationBiggerFive,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<
+                                      DataBindOrganValuebiggerFive>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.oName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 13)
+                  Center(
+                    child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                      future: _futureDataBindOrganValuebiggerFive,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        // Only show CircularProgressIndicator if the connection is still waiting
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        // Once data is available, check the list
+                        List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                        // If no data is found, show an empty dropdown with a message
+                        if (list == null || list.isEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  'No data found',
+                                  style:
+                                  TextStyle(fontSize: 18, color: Colors.red),
+                                ),
+                                SizedBox(height: 10),
+                                DropdownButtonFormField<
+                                    DataBindOrganValuebiggerFive>(
+                                  onChanged: null,
+                                  // Disable dropdown if there's no data
+                                  items: [],
+                                  // Provide an empty list
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  hint: const Text('No items available'),
+                                  disabledHint: Text('No items to select'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        // Select first item if not already selected
+                        if (_selectBindOrgniasationBiggerFive == null ||
+                            !list.contains(_selectBindOrgniasationBiggerFive)) {
+                          _selectBindOrgniasationBiggerFive =
+                          list.isNotEmpty ? list.first : null;
+                        }
+
+                        // Render the dropdown with available data
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'Select:',
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 10),
+                                DropdownButtonFormField<
+                                    DataBindOrganValuebiggerFive>(
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive =
+                                          userbindOrgan;
+                                      bindOrganisationNAme =
+                                          userbindOrgan?.oName ?? '';
+                                      npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<
+                                        DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: Text(
+                                        userbindorgansa.oName,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  dropdownColor: Colors.blue[50],
+                                  style: TextStyle(color: Colors.black),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Colors.blue),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                else if (lowVisionDataValue == 0)
+                    Center(
+                      child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                        future: _futureDataBindOrganValuebiggerFive,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          // Show CircularProgressIndicator only while loading (waiting for data)
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          // List from the snapshot
+                          List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                          // If the list is empty or null, show an empty dropdown with a message
+                          if (list == null || list.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'No data found',
+                                    style:
+                                    TextStyle(fontSize: 18, color: Colors.red),
+                                  ),
+                                  SizedBox(height: 10),
+                                  DropdownButtonFormField<
+                                      DataBindOrganValuebiggerFive>(
+                                    onChanged: null,
+                                    // Disable dropdown when no data
+                                    items: [],
+                                    // Empty list as no items are available
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    hint: const Text('No items available'),
+                                    disabledHint: const Text('No items to select'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+
+                          // If an item is not selected, select the first one by default
+                          if (_selectBindOrgniasationBiggerFive == null ||
+                              !list.contains(_selectBindOrgniasationBiggerFive)) {
+                            _selectBindOrgniasationBiggerFive =
+                            list.isNotEmpty ? list.first : null;
+                          }
+
+                          // Render dropdown with data if available
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text(
+                                    'Select:',
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 10),
+                                  DropdownButtonFormField<
+                                      DataBindOrganValuebiggerFive>(
+                                    onChanged: (userbindOrgan) {
+                                      setState(() {
+                                        _selectBindOrgniasationBiggerFive =
+                                            userbindOrgan;
+                                        bindOrganisationNAme =
+                                            userbindOrgan?.oName ?? '';
+                                        npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                                      });
+                                    },
+                                    value: _selectBindOrgniasationBiggerFive,
+                                    items: list.map((userbindorgansa) {
+                                      return DropdownMenuItem<
+                                          DataBindOrganValuebiggerFive>(
+                                        value: userbindorgansa,
+                                        child: Text(
+                                          userbindorgansa.oName,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    dropdownColor: Colors.blue[50],
+                                    style: TextStyle(color: Colors.black),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Colors.blue),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print('@@lowvisionCataractDataDispla-- click------');
+                        setState(() {
+                          lowvisionCataractDataDispla = true;
+                        });
+                      },
+                      child: Text('Submit'),
+                    ),
+                  ),
+                ],
+              ),
+              if (lowvisionCataractDataDispla)
+                Column(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          _buildHeaderCellSrNo('S.No.'),
+                          _buildHeaderCell('Patient Id'),
+                          _buildHeaderCell('Name of Person'),
+                          _buildHeaderCell('Mobile No.'),
+                          _buildHeaderCell('DOB'),
+                          _buildHeaderCell('Gender'),
+                          _buildHeaderCell('Organisation Date'),
+                          _buildHeaderCell('Operated type'),
+                          _buildHeaderCell('NGO'),
+                          _buildHeaderCell('Action'),
+                        ],
+                      ),
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    FutureBuilder<List<DataGetDPMCataractPatientView>>(
+                      future: ApiController.getDPM_CataractPatientView(
+                        "",
+                        "5206916",
+                        "026986330",
+                        "4",
+                      5,
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetDPMCataractPatientView> ddata =
+                              snapshot.data;
+
+                          print('@@---ddata: ' + lowVisionDataValue.toString());
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              children: ddata.map((offer) {
+                                return Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildDataCellSrNo(
+                                        (ddata.indexOf(offer) + 1).toString()),
+                                    _buildDataCell(offer.pUniqueID),
+                                    _buildDataCell(offer.name),
+                                    _buildDataCell(offer.mobile.toString()),
+                                    _buildDataCell(
+                                        Utils.formatDateString(offer.dob)),
+                                    _buildDataCell((offer.gender)),
+                                    _buildDataCell((offer.addressLine1)),
+                                    _buildDataCell(Utils.formatDateString(
+                                        offer.operatedOn)),
+                                    _buildDataCell(offer.operatedAt.toString()),
+                                    _buildDataCellViewBlue("View", () {
+                                      // Handle the view action here
+                                      // Example: Navigate to a details page with the selected item
+                                    }),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }*/
 
   Widget LowVisionRegisterCatract() {
     return Column(
@@ -12835,10 +13746,19 @@ class _DPMDashboard extends State<DPMDashboard> {
         _futureBindOrgan = GetDPM_Bindorg();
         dashboardviewReplace = false;
         LowVisionRegisterChildhoodCongenitalPtosiss = true;
+        LowVisionRegisterChildhoodTrauma=false;
+        LowVisionRegisterSquint=false;
         // Implement any action for Congenital Ptosis
         break;
       case 2:
         print("Selected: Intraocular Trauma in Children");
+        print("@@Selected: Congenital Ptosis");
+        _future = getDPM_ScreeningYear();
+        _futureBindOrgan = GetDPM_Bindorg();
+        dashboardviewReplace = false;
+        LowVisionRegisterChildhoodCongenitalPtosiss = false;
+        LowVisionRegisterChildhoodTrauma=true;
+        LowVisionRegisterSquint=false;
         // Implement any action for Intraocular Trauma
         break;
       case 3:
@@ -12852,6 +13772,14 @@ class _DPMDashboard extends State<DPMDashboard> {
       case 5:
         print("Selected: Squint");
         // Implement any action for Squint
+        print("Selected: Intraocular Trauma in Children");
+        print("@@Selected: Congenital Ptosis");
+        _future = getDPM_ScreeningYear();
+        _futureBindOrgan = GetDPM_Bindorg();
+        dashboardviewReplace = false;
+        LowVisionRegisterChildhoodCongenitalPtosiss = false;
+        LowVisionRegisterChildhoodTrauma=false;
+        LowVisionRegisterSquint=true;
         break;
       default:
         print("Unknown selection");
@@ -12916,6 +13844,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               LowVisionRegisterGlaucoma=false;
                               LowVisionRegisterCornealBlindness=false;
                               LowVisionRegisterVRSurgery=false;
+
                             });
 
                             // You can also navigate or update some data here
@@ -13593,12 +14522,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                       ),
                     ),
                     Divider(color: Colors.blue, height: 1.0),
-                    FutureBuilder<List<DatalowvisionVRSurgery>>(
-                      future: ApiController.getDPM_VRSurgery(
+                    FutureBuilder<List<DataGetDPMCongenitalPtosis>>(
+                      future: ApiController.getDPM_CongenitalPtosis(
                         district_code_login,
                         state_code_login,
-                        npcbVRSurgery,
-                        gerYearVRsurgery,
+                        npcbCongenitalPtosis,
+                        gerYearCongenitalPtosis,
                         lowVisionDataValue,
                       ),
                       builder: (context, snapshot) {
@@ -13610,7 +14539,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                           return Utils.getEmptyView("No data found");
                         } else {
-                          List<DatalowvisionVRSurgery> ddata = snapshot.data;
+                          List<DataGetDPMCongenitalPtosis> ddata = snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());
                           return SingleChildScrollView(
@@ -13653,7 +14582,1598 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+  Widget LowVisionRegisterChildhoodTraumas () {
+    return Column(
+      children: [
+        Visibility(
+          visible: LowVisionRegisterChildhoodTrauma,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Handle approval action
+                            print(
+                                'Trauma in Children Data for approval');
+                            // You can also navigate or update some data here
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue, // Blue background color
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                              child: Text(
+                                'Trauma in Children Data for approval',
+                                style: TextStyle(
+                                    color: Colors.white), // White text color
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Handle approval action
+                            print('@@Trauma in Children');
+                            setState(() {
+                              dashboardviewReplace = true;
 
+                              LowVisionRegisterCatracts = false;
+                              LowVisionRegisterDiabitic=false;
+                              LowVisionRegisterGlaucoma=false;
+                              LowVisionRegisterCornealBlindness=false;
+                              LowVisionRegisterVRSurgery=false;
+                              LowVisionRegisterChildhoodCongenitalPtosiss=false;
+                            });
+
+                            // You can also navigate or update some data here
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue, // Blue background color
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                              child: Text(
+                                'Back',
+                                style: TextStyle(
+                                    color: Colors.white), // White text color
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
+              // Horizontal Scrolling Header Row
+              SizedBox(width: 8.0),
+              Center(
+                child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.data == null) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    developer.log('@@snapshot' + snapshot.data.toString());
+
+                    List list =
+                    snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
+                      return district;
+                    }).toList();
+                    if (_selectedUser == null ||
+                        list.contains(_selectedUser) == false) {
+                      _selectedUser = list.first;
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Select year:',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          // Added space between label and dropdown
+                          DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                            onChanged: (userc) => setState(() {
+                              _selectedUser = userc;
+                              gerYearTraumaChildren = userc.name;
+                              getfyid = userc.fyid;
+                              print('@@gerYearCongenitalPtosis--' +
+                                  gerYearTraumaChildren.toString());
+                              print('@@getfyidSelected here----' +
+                                  getfyid.toString());
+                              ;
+                            }),
+                            value: _selectedUser,
+                            items: [
+                              ...snapshot.data.map(
+                                    (user) => DropdownMenuItem(
+                                  value: user,
+                                  child: Text(
+                                    '${user.name}',
+                                    style: TextStyle(
+                                        fontSize:
+                                        16), // Text style inside dropdown
+                                  ),
+                                ),
+                              ),
+                            ],
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blueAccent, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.blue[
+                              50], // Background color of the dropdown box
+                            ),
+                            dropdownColor: Colors.blue[50],
+                            // Background color of the dropdown menu
+                            style: TextStyle(color: Colors.black),
+                            // Style of the selected item
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.blue), // Dropdown icon style
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: new DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      focusColor: Colors.white,
+                      value: lowVisionDatas,
+                      //elevation: 5,
+                      style: TextStyle(color: Colors.white),
+                      iconEnabledColor: Colors.white,
+                      items: <String>[
+                        'NGOs',
+                        'Private Practitioner',
+                        'Private Medical College',
+                      ].map<DropdownMenuItem<String>>(
+                              (String lowVisionRegistry) {
+                            return DropdownMenuItem<String>(
+                              value: lowVisionRegistry,
+                              child: Text(
+                                lowVisionRegistry,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                      hint: Text(
+                        "Select Type",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onChanged: (String lowVisionData) {
+                        setState(() {
+                          lowVisionDatas = lowVisionData;
+
+                          if (lowVisionDatas == "NGOs") {
+                            lowVisionDataValue = 5;
+                          } else if (lowVisionDatas == "Private Practitioner") {
+                            lowVisionDataValue = 12;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
+                          } else if (lowVisionData ==
+                              "Private Medical College") {
+                            lowVisionDataValue = 13;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
+                          }else{
+                            lowVisionDataValue = 0;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+
+              if (lowVisionDataValue == 5)
+                Center(
+                  child: FutureBuilder<List<DataBindOrgan>>(
+                    future: _futureBindOrgan,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (!snapshot.hasData || snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      List<DataBindOrgan> list = snapshot.data;
+                      developer.log('@@snapshot___5: $list');
+                      print('@@LowVisionRegisterChildhoodCongenitalPtosiss_1: $lowVisionDataValue');
+
+                      if (_selectBindOrgniasation == null ||
+                          !list.contains(_selectBindOrgniasation)) {
+                        _selectBindOrgniasation =
+                        list.isNotEmpty ? list.first : null;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<DataBindOrgan>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasation = userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.name ?? '';
+                                    npcbTraumaChildren =
+                                        userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasation,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<DataBindOrgan>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.name,
+
+                                      maxLines: 2,
+                                      // Set max lines to 2
+                                      overflow: TextOverflow.ellipsis,
+                                      // Handle overflow
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blueAccent, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 12)
+                Center(
+                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                    future: _futureDataBindOrganValuebiggerFive,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      // Show CircularProgressIndicator only while loading (waiting for data)
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      // List from the snapshot
+                      List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                      // If the list is empty or null, show an empty dropdown with a message
+                      if (list == null || list.isEmpty) {
+                        print('@@LowVisionRegisterChildhoodCongenitalPtosiss_1: $lowVisionDataValue');
+
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'No data found',
+                                style:
+                                TextStyle(fontSize: 18, color: Colors.red),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: null,
+                                // Disable dropdown when no data
+                                items: [],
+                                // Empty list as no items are available
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                hint: const Text('No items available'),
+                                disabledHint: const Text('No items to select'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // If an item is not selected, select the first one by default
+                      if (_selectBindOrgniasationBiggerFive == null ||
+                          !list.contains(_selectBindOrgniasationBiggerFive)) {
+                        _selectBindOrgniasationBiggerFive =
+                        list.isNotEmpty ? list.first : null;
+                      }
+                      print('@@LowVisionRegisterChildhoodCongenitalPtosiss_11: $lowVisionDataValue');
+
+                      // Render dropdown with data if available
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasationBiggerFive =
+                                        userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.oName ?? '';
+                                    npcbTraumaChildren =
+                                        userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasationBiggerFive,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<
+                                      DataBindOrganValuebiggerFive>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.oName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 13)
+                  Center(
+                    child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                      future: _futureDataBindOrganValuebiggerFive,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        // Only show CircularProgressIndicator if the connection is still waiting
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        // Once data is available, check the list
+                        List<DataBindOrganValuebiggerFive> list = snapshot.data;
+                        print('@@LowVisionRegisterChildhoodCongenitalPtosiss_2: $lowVisionDataValue');
+
+                        // If no data is found, show an empty dropdown with a message
+                        if (list == null || list.isEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  'No data found',
+                                  style:
+                                  TextStyle(fontSize: 18, color: Colors.red),
+                                ),
+                                SizedBox(height: 10),
+                                DropdownButtonFormField<
+                                    DataBindOrganValuebiggerFive>(
+                                  onChanged: null,
+                                  // Disable dropdown if there's no data
+                                  items: [],
+                                  // Provide an empty list
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  hint: const Text('No items available'),
+                                  disabledHint: Text('No items to select'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        // Select first item if not already selected
+                        if (_selectBindOrgniasationBiggerFive == null ||
+                            !list.contains(_selectBindOrgniasationBiggerFive)) {
+                          _selectBindOrgniasationBiggerFive =
+                          list.isNotEmpty ? list.first : null;
+                        }
+                        print('@@LowVisionRegisterChildhoodCongenitalPtosiss_3: $lowVisionDataValue');
+
+                        // Render the dropdown with available data
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'Select:',
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 10),
+                                DropdownButtonFormField<
+                                    DataBindOrganValuebiggerFive>(
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive =
+                                          userbindOrgan;
+                                      bindOrganisationNAme =
+                                          userbindOrgan?.oName ?? '';
+                                      npcbTraumaChildren =
+                                          userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<
+                                        DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: Text(
+                                        userbindorgansa.oName,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  dropdownColor: Colors.blue[50],
+                                  style: TextStyle(color: Colors.black),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Colors.blue),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                else if (lowVisionDataValue == 0)
+                    Center(
+                      child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                        future: _futureDataBindOrganValuebiggerFive,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          // Show CircularProgressIndicator only while loading (waiting for data)
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          // List from the snapshot
+                          List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                          // If the list is empty or null, show an empty dropdown with a message
+                          if (list == null || list.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'No data found',
+                                    style:
+                                    TextStyle(fontSize: 18, color: Colors.red),
+                                  ),
+                                  SizedBox(height: 10),
+                                  DropdownButtonFormField<
+                                      DataBindOrganValuebiggerFive>(
+                                    onChanged: null,
+                                    // Disable dropdown when no data
+                                    items: [],
+                                    // Empty list as no items are available
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    hint: const Text('No items available'),
+                                    disabledHint: const Text('No items to select'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+
+                          // If an item is not selected, select the first one by default
+                          if (_selectBindOrgniasationBiggerFive == null ||
+                              !list.contains(_selectBindOrgniasationBiggerFive)) {
+                            _selectBindOrgniasationBiggerFive =
+                            list.isNotEmpty ? list.first : null;
+                          }
+
+                          // Render dropdown with data if available
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text(
+                                    'Select:',
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 10),
+                                  DropdownButtonFormField<
+                                      DataBindOrganValuebiggerFive>(
+                                    onChanged: (userbindOrgan) {
+                                      setState(() {
+                                        _selectBindOrgniasationBiggerFive =
+                                            userbindOrgan;
+                                        bindOrganisationNAme =
+                                            userbindOrgan?.oName ?? '';
+                                        npcbTraumaChildren =
+                                            userbindOrgan?.npcbNo ?? '';
+                                      });
+                                    },
+                                    value: _selectBindOrgniasationBiggerFive,
+                                    items: list.map((userbindorgansa) {
+                                      return DropdownMenuItem<
+                                          DataBindOrganValuebiggerFive>(
+                                        value: userbindorgansa,
+                                        child: Text(
+                                          userbindorgansa.oName,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    dropdownColor: Colors.blue[50],
+                                    style: TextStyle(color: Colors.black),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Colors.blue),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print(
+                            '@@lowvisionCongenitalPtosisDataDispla-- click------');
+                        setState(() {
+                          lowvisionTrauma = true;
+                        });
+                      },
+                      child: Text('Submit'),
+                    ),
+                  ),
+                ],
+              ),
+              if (lowvisionTrauma)
+                Column(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          _buildHeaderCellSrNo('S.No.'),
+                          _buildHeaderCell('Patient Id'),
+                          _buildHeaderCell('Name of Person'),
+                          _buildHeaderCell('Mobile No.'),
+                          _buildHeaderCell('DOB'),
+                          _buildHeaderCell('Gender'),
+                          _buildHeaderCell('Organisation Date'),
+                          _buildHeaderCell('Operated type'),
+                          _buildHeaderCell('NGO'),
+                          _buildHeaderCell('Action'),
+                        ],
+                      ),
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    FutureBuilder<List<DataGetDPMTraumaChildren>>(
+                      future: ApiController.getDPM_Trauma(
+                        district_code_login,
+                        state_code_login,
+                        npcbTraumaChildren,
+                        gerYearTraumaChildren,
+                        lowVisionDataValue,
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetDPMTraumaChildren> ddata = snapshot.data;
+
+                          print('@@---ddata: ' + lowVisionDataValue.toString());
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              children: ddata.map((offer) {
+                                return Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildDataCellSrNo(
+                                        (ddata.indexOf(offer) + 1).toString()),
+                                    _buildDataCell(offer.pUniqueID),
+                                    _buildDataCell(offer.name),
+                                    _buildDataCell(offer.mobile.toString()),
+                                    _buildDataCell(
+                                        Utils.formatDateString(offer.dob)),
+                                    _buildDataCell((offer.gender)),
+                                    _buildDataCell((offer.addressLine1)),
+                                    _buildDataCell(Utils.formatDateString(
+                                        offer.operatedOn)),
+                                    _buildDataCell(offer.ngoName.toString()),
+                                    _buildDataCellViewBlue("View", () {
+                                      // Handle the view action here
+                                      // Example: Navigate to a details page with the selected item
+                                    }),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  Widget LowVisionRegisterSquints  () {
+    return Column(
+      children: [
+        Visibility(
+          visible: LowVisionRegisterSquint,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Handle approval action
+                            print(
+                                'Squint in Children Data for approval');
+                            // You can also navigate or update some data here
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue, // Blue background color
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Align(
+                              alignment: Alignment.center,
+                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                              child: Text(
+                                'Squint Data for approval',
+                                style: TextStyle(
+                                    color: Colors.white), // White text color
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            // Handle approval action
+                            print('@@Squint in Children');
+                            setState(() {
+                              dashboardviewReplace = true;
+
+                              LowVisionRegisterCatracts = false;
+                              LowVisionRegisterDiabitic=false;
+                              LowVisionRegisterGlaucoma=false;
+                              LowVisionRegisterCornealBlindness=false;
+                              LowVisionRegisterVRSurgery=false;
+                              LowVisionRegisterChildhoodCongenitalPtosiss=false;
+                              LowVisionRegisterChildhoodTrauma=false;
+                            });
+
+                            // You can also navigate or update some data here
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue, // Blue background color
+                              borderRadius: BorderRadius.circular(5),
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                              child: Text(
+                                'Back',
+                                style: TextStyle(
+                                    color: Colors.white), // White text color
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+
+              // Horizontal Scrolling Header Row
+              SizedBox(width: 8.0),
+              Center(
+                child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.data == null) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    developer.log('@@snapshot' + snapshot.data.toString());
+
+                    List list =
+                    snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
+                      return district;
+                    }).toList();
+                    if (_selectedUser == null ||
+                        list.contains(_selectedUser) == false) {
+                      _selectedUser = list.first;
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Select year:',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 10),
+                          // Added space between label and dropdown
+                          DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                            onChanged: (userc) => setState(() {
+                              _selectedUser = userc;
+                              gerYearSquint = userc.name;
+                              getfyid = userc.fyid;
+                              print('@@gerYearCongenitalPtosis--' +
+                                  gerYearTraumaChildren.toString());
+                              print('@@getfyidSelected here----' +
+                                  getfyid.toString());
+                              ;
+                            }),
+                            value: _selectedUser,
+                            items: [
+                              ...snapshot.data.map(
+                                    (user) => DropdownMenuItem(
+                                  value: user,
+                                  child: Text(
+                                    '${user.name}',
+                                    style: TextStyle(
+                                        fontSize:
+                                        16), // Text style inside dropdown
+                                  ),
+                                ),
+                              ),
+                            ],
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 15.0, horizontal: 10.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                BorderSide(color: Colors.blue, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.blueAccent, width: 2.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.blue[
+                              50], // Background color of the dropdown box
+                            ),
+                            dropdownColor: Colors.blue[50],
+                            // Background color of the dropdown menu
+                            style: TextStyle(color: Colors.black),
+                            // Style of the selected item
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.blue), // Dropdown icon style
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.grey,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: new DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      focusColor: Colors.white,
+                      value: lowVisionDatas,
+                      //elevation: 5,
+                      style: TextStyle(color: Colors.white),
+                      iconEnabledColor: Colors.white,
+                      items: <String>[
+                        'NGOs',
+                        'Private Practitioner',
+                        'Private Medical College',
+                      ].map<DropdownMenuItem<String>>(
+                              (String lowVisionRegistry) {
+                            return DropdownMenuItem<String>(
+                              value: lowVisionRegistry,
+                              child: Text(
+                                lowVisionRegistry,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
+                      hint: Text(
+                        "Select Type",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      onChanged: (String lowVisionData) {
+                        setState(() {
+                          lowVisionDatas = lowVisionData;
+
+                          if (lowVisionDatas == "NGOs") {
+                            lowVisionDataValue = 5;
+                          } else if (lowVisionDatas == "Private Practitioner") {
+                            lowVisionDataValue = 12;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
+                          } else if (lowVisionData ==
+                              "Private Medical College") {
+                            lowVisionDataValue = 13;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
+                          }else{
+                            lowVisionDataValue = 0;
+                          }
+                        });
+                      },
+                    ),
+                  ),
+                ),
+              ),
+
+              if (lowVisionDataValue == 5)
+                Center(
+                  child: FutureBuilder<List<DataBindOrgan>>(
+                    future: _futureBindOrgan,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (!snapshot.hasData || snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      List<DataBindOrgan> list = snapshot.data;
+                      developer.log('@@snapshot___5: $list');
+                      print('@@LowVisionRegisterChildhoodCongenitalPtosiss_1: $lowVisionDataValue');
+
+                      if (_selectBindOrgniasation == null ||
+                          !list.contains(_selectBindOrgniasation)) {
+                        _selectBindOrgniasation =
+                        list.isNotEmpty ? list.first : null;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<DataBindOrgan>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasation = userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.name ?? '';
+                                    npcbTraumaChildren =
+                                        userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasation,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<DataBindOrgan>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.name,
+
+                                      maxLines: 2,
+                                      // Set max lines to 2
+                                      overflow: TextOverflow.ellipsis,
+                                      // Handle overflow
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blueAccent, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 12)
+                Center(
+                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                    future: _futureDataBindOrganValuebiggerFive,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      // Show CircularProgressIndicator only while loading (waiting for data)
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      // List from the snapshot
+                      List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                      // If the list is empty or null, show an empty dropdown with a message
+                      if (list == null || list.isEmpty) {
+                        print('@@LowVisionRegisterChildhoodCongenitalPtosiss_1: $lowVisionDataValue');
+
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'No data found',
+                                style:
+                                TextStyle(fontSize: 18, color: Colors.red),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: null,
+                                // Disable dropdown when no data
+                                items: [],
+                                // Empty list as no items are available
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                hint: const Text('No items available'),
+                                disabledHint: const Text('No items to select'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // If an item is not selected, select the first one by default
+                      if (_selectBindOrgniasationBiggerFive == null ||
+                          !list.contains(_selectBindOrgniasationBiggerFive)) {
+                        _selectBindOrgniasationBiggerFive =
+                        list.isNotEmpty ? list.first : null;
+                      }
+                      print('@@LowVisionRegisterChildhoodCongenitalPtosiss_11: $lowVisionDataValue');
+
+                      // Render dropdown with data if available
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select:',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 10),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasationBiggerFive =
+                                        userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.oName ?? '';
+                                    npcbSquint =
+                                        userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasationBiggerFive,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<
+                                      DataBindOrganValuebiggerFive>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.oName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.blue, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                dropdownColor: Colors.blue[50],
+                                style: TextStyle(color: Colors.black),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.blue),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 13)
+                  Center(
+                    child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                      future: _futureDataBindOrganValuebiggerFive,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        // Only show CircularProgressIndicator if the connection is still waiting
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        // Once data is available, check the list
+                        List<DataBindOrganValuebiggerFive> list = snapshot.data;
+                        print('@@LowVisionRegisterChildhoodCongenitalPtosiss_2: $lowVisionDataValue');
+
+                        // If no data is found, show an empty dropdown with a message
+                        if (list == null || list.isEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  'No data found',
+                                  style:
+                                  TextStyle(fontSize: 18, color: Colors.red),
+                                ),
+                                SizedBox(height: 10),
+                                DropdownButtonFormField<
+                                    DataBindOrganValuebiggerFive>(
+                                  onChanged: null,
+                                  // Disable dropdown if there's no data
+                                  items: [],
+                                  // Provide an empty list
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  hint: const Text('No items available'),
+                                  disabledHint: Text('No items to select'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+
+                        // Select first item if not already selected
+                        if (_selectBindOrgniasationBiggerFive == null ||
+                            !list.contains(_selectBindOrgniasationBiggerFive)) {
+                          _selectBindOrgniasationBiggerFive =
+                          list.isNotEmpty ? list.first : null;
+                        }
+                        print('@@LowVisionRegisterChildhoodCongenitalPtosiss_3: $lowVisionDataValue');
+
+                        // Render the dropdown with available data
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'Select:',
+                                  style: TextStyle(
+                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 10),
+                                DropdownButtonFormField<
+                                    DataBindOrganValuebiggerFive>(
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive =
+                                          userbindOrgan;
+                                      bindOrganisationNAme =
+                                          userbindOrgan?.oName ?? '';
+                                      npcbSquint =
+                                          userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<
+                                        DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: Text(
+                                        userbindorgansa.oName,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  dropdownColor: Colors.blue[50],
+                                  style: TextStyle(color: Colors.black),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Colors.blue),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  )
+                else if (lowVisionDataValue == 0)
+                    Center(
+                      child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                        future: _futureDataBindOrganValuebiggerFive,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          // Show CircularProgressIndicator only while loading (waiting for data)
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          // List from the snapshot
+                          List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                          // If the list is empty or null, show an empty dropdown with a message
+                          if (list == null || list.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: Column(
+                                children: [
+                                  const Text(
+                                    'No data found',
+                                    style:
+                                    TextStyle(fontSize: 18, color: Colors.red),
+                                  ),
+                                  SizedBox(height: 10),
+                                  DropdownButtonFormField<
+                                      DataBindOrganValuebiggerFive>(
+                                    onChanged: null,
+                                    // Disable dropdown when no data
+                                    items: [],
+                                    // Empty list as no items are available
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    hint: const Text('No items available'),
+                                    disabledHint: const Text('No items to select'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+
+                          // If an item is not selected, select the first one by default
+                          if (_selectBindOrgniasationBiggerFive == null ||
+                              !list.contains(_selectBindOrgniasationBiggerFive)) {
+                            _selectBindOrgniasationBiggerFive =
+                            list.isNotEmpty ? list.first : null;
+                          }
+
+                          // Render dropdown with data if available
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text(
+                                    'Select:',
+                                    style: TextStyle(
+                                        fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                  SizedBox(height: 10),
+                                  DropdownButtonFormField<
+                                      DataBindOrganValuebiggerFive>(
+                                    onChanged: (userbindOrgan) {
+                                      setState(() {
+                                        _selectBindOrgniasationBiggerFive =
+                                            userbindOrgan;
+                                        bindOrganisationNAme =
+                                            userbindOrgan?.oName ?? '';
+                                        npcbSquint =
+                                            userbindOrgan?.npcbNo ?? '';
+                                      });
+                                    },
+                                    value: _selectBindOrgniasationBiggerFive,
+                                    items: list.map((userbindorgansa) {
+                                      return DropdownMenuItem<
+                                          DataBindOrganValuebiggerFive>(
+                                        value: userbindorgansa,
+                                        child: Text(
+                                          userbindorgansa.oName,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    dropdownColor: Colors.blue[50],
+                                    style: TextStyle(color: Colors.black),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Colors.blue),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print(
+                            '@@lowvisionCongenitalPtosisDataDispla-- click------');
+                        setState(() {
+                          lowvisionSquint = true;
+                        });
+                      },
+                      child: Text('Submit'),
+                    ),
+                  ),
+                ],
+              ),
+              if (lowvisionSquint )
+                Column(
+                  children: [
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          _buildHeaderCellSrNo('S.No.'),
+                          _buildHeaderCell('Patient Id'),
+                          _buildHeaderCell('Name of Person'),
+                          _buildHeaderCell('Mobile No.'),
+                          _buildHeaderCell('DOB'),
+                          _buildHeaderCell('Gender'),
+                          _buildHeaderCell('Organisation Date'),
+                          _buildHeaderCell('Operated type'),
+                          _buildHeaderCell('NGO'),
+                          _buildHeaderCell('Action'),
+                        ],
+                      ),
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    FutureBuilder<List<DataGetDPMSquint>>(
+                      future: ApiController.getDPM_Squintapproval(
+                        493,
+                        0,
+                        npcbSquint,
+                        "4",//desfault send as per kamal
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetDPMSquint> ddata = snapshot.data;
+
+                          print('@@---ddata: ' + lowVisionDataValue.toString());
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              children: ddata.map((offer) {
+                                return Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildDataCellSrNo(
+                                        (ddata.indexOf(offer) + 1).toString()),
+                                    _buildDataCell(offer.pUniqueID),
+                                    _buildDataCell(offer.name),
+                                    _buildDataCell(offer.mobile.toString()),
+                                    _buildDataCell(
+                                        Utils.formatDateString(offer.dob)),
+                                    _buildDataCell((offer.gender)),
+                                    _buildDataCell((offer.addressLine1)),
+                                    _buildDataCell(Utils.formatDateString(
+                                        offer.operatedOn)),
+                                    _buildDataCell(offer.campId.toString()),
+                                    _buildDataCellViewBlue("View", () {
+                                      // Handle the view action here
+                                      // Example: Navigate to a details page with the selected item
+                                    }),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class DPMDashboardParamsData {

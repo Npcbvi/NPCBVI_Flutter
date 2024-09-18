@@ -212,19 +212,24 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                                   //  print('@@spinnerChooseValue--' + _chosenValue);
                                   if (_chosenValueLOWVision == "Cataract") {
                                     print('@@NGO--1' + _chosenValueLOWVision);
+
                                   } else if (_chosenValueLOWVision ==
                                       "Diabetic") {
-                                    false;
+
                                   } else if (_chosenValueLOWVision ==
                                       "Glaucoma") {
+
                                   } else if (_chosenValueLOWVision ==
                                       "Corneal Blindness") {
-                                  } else if (_chosenValueLOWVision ==
+                                  }
+                                  else if (_chosenValueLOWVision ==
                                       "VR Surgery") {
+
                                     print('@@Childhood--' +
                                         _chosenValueLOWVision);
                                   } else if (_chosenValueLOWVision ==
                                       "Childhood Blindness") {
+
                                     print('@@Childhood--' +
                                         _chosenValueLOWVision);
                                     if (_chosenValueLOWVision ==
@@ -380,7 +385,7 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                 alignment: Alignment.center,
                 // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
                 child: Text(
-                  'Cataract Data Report',
+                  '${_chosenValueLOWVision} Data Report',
                   style: TextStyle(color: Colors.white), // White text color
                 ),
               ),
@@ -895,7 +900,7 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                       ),
                       Divider(color: Colors.blue, height: 1.0),
                       FutureBuilder<List<DataReportScreen>>(
-                        future: ApiController.GetData_by_allngo_amount_totalCount(int.parse(getfyidNgoHospital),_selectedDateText,_selectedDateTextToDate,state_code_login,district_code_login, dropDownvalueOrgnbaistaionType,bindOrganisationNAme,lowVisionDataValue,getYearNgoHopital,npcbNo),
+                        future: ApiController.GetData_by_allngo_amount_totalCount(int.parse(getfyidNgoHospital),_selectedDateText,_selectedDateTextToDate,state_code_login,district_code_login, dropDownvalueOrgnbaistaionType.toString(),bindOrganisationNAme,lowVisionDataValue.toString(),getYearNgoHopital,npcbNo),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
