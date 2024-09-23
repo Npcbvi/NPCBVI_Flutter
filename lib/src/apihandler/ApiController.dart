@@ -2532,7 +2532,7 @@ class ApiController {
     }
   }
   static Future<List<DataGetDPMCataractPatientView>>
-  getDPM_CataractPatientView(String mode,String p_DeseaseId, String p_UserID,
+  getDPM_CataractPatientView(String mode,String p_DeseaseId, String npcbNo,
        String p_vStatus, int orgType) async {
     print("@@getDPM_CataractPatientView" + "1");
     Response response1;
@@ -2558,7 +2558,7 @@ class ApiController {
       var body = json.encode({
         "mode": mode,
         "p_DeseaseId": p_DeseaseId,
-        "p_UserID": p_UserID,
+        "p_UserID": npcbNo,
         "p_vStatus": p_vStatus,
 
         "orgType": orgType // for approved

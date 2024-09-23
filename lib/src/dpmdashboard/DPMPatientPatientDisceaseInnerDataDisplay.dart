@@ -8,6 +8,7 @@ import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMCataractPatientView.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmReportScreen/ReportScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_cataract.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -62,7 +63,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
     // To generate number on loading of page
     getUserData();
     _future = getDPM_ScreeningYear();
-    //reportviewCatracts = true;
+    reportviewCatracts = true;
   }
   Future<List<DataBindOrgan>> GetDPM_Bindorg() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -427,21 +428,80 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                 ),
               ),
             ),
+
             Container(
-              padding: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: Colors.blue, // Blue background color
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Align(
-                alignment: Alignment.center,
-                // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                child: Text(
-                  '${_chosenValueLOWVision} Data Report',
-                  style: TextStyle(color: Colors.white), // White text color
-                ),
+              color: Colors.blue,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          // Handle approval action
+                          print('Cataract Data for approval');
+                          // You can also navigate or update some data here
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.blue, // Blue background color
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Align(
+                            alignment: Alignment.center,
+                            // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                            child: Text(
+                              '${_chosenValueLOWVision} Data Report',
+                              style: TextStyle(
+                                  color: Colors.white), // White text color
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: GestureDetector(
+                        onTap: () {
+                          // Handle approval action
+                          print('@@Cataract Data for approval clicked');
+                          setState(() {
+
+                          });
+
+                          // You can also navigate or update some data here
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.blue, // Blue background color
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
+                            child: Text(
+                              'Back',
+                              style: TextStyle(
+                                  color: Colors.white), // White text color
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
+
+            // Horizontal Scrolling Header Row
+            SizedBox(width: 8.0),
             reportviewCatract(),
           ],
         ),
@@ -456,79 +516,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
           visible: reportviewCatracts,
           child: Column(
             children: [
-              Container(
-                color: Colors.blue,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print('Cataract Data for approval');
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Cataract Data for approval',
-                                style: TextStyle(
-                                    color: Colors.white), // White text color
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print('@@Cataract Data for approval clicked');
-                            setState(() {
 
-                            });
-
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Back',
-                                style: TextStyle(
-                                    color: Colors.white), // White text color
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-
-              // Horizontal Scrolling Header Row
-              SizedBox(width: 8.0),
               Center(
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _future,
@@ -658,7 +646,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
 
                           if (lowVisionDatas == "NGOs") {
                             lowVisionDataValue = 5;
-                            lowVisionDataValue = 12;
+
                             _futureBindOrgan =
                                 GetDPM_Bindorg();
                           } else if (lowVisionDatas == "Private Practitioner") {
@@ -1168,13 +1156,13 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                       ),
                     ),
                     Divider(color: Colors.blue, height: 1.0),
-                    FutureBuilder<List<DataGetDPMCataractPatientView>>(
-                      future: ApiController.getDPM_CataractPatientView(
-                        "",
-                        "5206916",
-                        "026986330",
-                        "4",
-                        5,
+                    FutureBuilder<List<Datalowvisionregister_cataract>>(
+                      future: ApiController.getDPM_Cataract(
+                        district_code_login,
+                        state_code_login,
+                        npcbNoCatract,
+                        getYearCatract,
+                        lowVisionDataValue,
                       ),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -1185,7 +1173,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                           return Utils.getEmptyView("No data found");
                         } else {
-                          List<DataGetDPMCataractPatientView> ddata =
+                          List<Datalowvisionregister_cataract> ddata =
                               snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());
@@ -1208,7 +1196,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                                     _buildDataCell((offer.addressLine1)),
                                     _buildDataCell(Utils.formatDateString(
                                         offer.operatedOn)),
-                                    _buildDataCell(offer.operatedAt.toString()),
+                                    _buildDataCell(offer.ngoName.toString()),
                                     _buildDataCellViewBlue("View", () {
                                       // Handle the view action here
                                       // Example: Navigate to a details page with the selected item

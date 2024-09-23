@@ -6055,8 +6055,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   // Data Rows
                   FutureBuilder<List<DataPatientapprovedSisesesViewclick>>(
                     future: ApiController.GetDPM_Patients_Approved_View(
-                        district_code_login,
-                        state_code_login,
+                       30,// district_code_login,
+                        3,//state_code_login,
                         "2022-2023","",diseaseid),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -6089,9 +6089,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     // For example, navigate to an edit screen or show a dialog
                                     print("@@Different TypeShowData--here===");
                                     Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => DPMPatientPatientDisceaseInnerDataDisplay()));
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => DPMPatientPatientDisceaseInnerDataDisplay(
+
+                                        ),
+                                      ),
+                                    );
                                   }),
                                 ],
                               );
