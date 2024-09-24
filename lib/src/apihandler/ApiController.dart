@@ -50,6 +50,7 @@ import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_
 import 'package:mohfw_npcbvi/src/model/govtprivate/govtPrivateRegisterUSerId.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
+import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -175,6 +176,62 @@ class ApiController {
 
   static Future<ChangePassword> ngochangePAssword(
       GetChangeAPsswordFieldss getChangeAPsswordFields) async {
+    ChangePassword changePassword = ChangePassword();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.ChangePassword;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+        //Way to send params
+        var body = json.encode({
+          "userid": getChangeAPsswordFields.userid,
+          "oldPassword": getChangeAPsswordFields.oldPassword,
+          "newPassword": getChangeAPsswordFields.newPassword,
+          "confirmPassword": getChangeAPsswordFields.confirmPassword,
+          //"platformName": Platform.isIOS ? "IOS" : "Android"
+        });
+        print("@@changePAssword1234-----" + url + body.toString());
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                headers: headers,
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
+        print("@@changePAssword1234---re--" + response1.toString());
+        changePassword = ChangePassword.fromJson(json.decode(response1.data));
+        print("@@changePAssword1234---re--df" + changePassword.message);
+        if (changePassword.status) {
+          print("@@changePAssword1234---re--dfhh" + changePassword.message);
+          Utils.showToast(changePassword.message, true);
+        } else {
+          print(
+              "@@changePAssword1234---re--dfhhhhjjj" + changePassword.message);
+          Utils.showToast(changePassword.message, true);
+        }
+        return changePassword;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+    //Way to send url with methodname
+  }
+
+  static Future<ChangePassword> sPOchangePAssword(
+      GetChangeAPsswordFieldsss getChangeAPsswordFields) async {
     ChangePassword changePassword = ChangePassword();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
