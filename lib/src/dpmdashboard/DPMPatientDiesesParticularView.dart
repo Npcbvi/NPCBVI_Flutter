@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
-import 'package:mohfw_npcbvi/src/dpmdashboard/DPMPatientDiesesParticularView.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMCataractPatientView.dart';
@@ -17,12 +16,14 @@ import 'dart:developer' as developer;
 
 import '../model/bindorg/BindOrganValuebiggerFive.dart';
 
-class DPMPatientPatientDisceaseInnerDataDisplay extends StatefulWidget {
+class DPMPatientDiesesParticularView extends StatefulWidget {
+  String id;
+  DPMPatientDiesesParticularView(this.id);
   @override
-  _DPMPatientPatientDisceaseInnerDataDisplay createState() => _DPMPatientPatientDisceaseInnerDataDisplay();
+  _DPMPatientDiesesParticularView createState() => _DPMPatientDiesesParticularView();
 }
 
-class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatientDisceaseInnerDataDisplay> {
+class _DPMPatientDiesesParticularView extends State<DPMPatientDiesesParticularView> {
   DateTime _selectedDate;
 
   TextEditingController fullnameController_ = new TextEditingController();
@@ -30,6 +31,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
   String _chosenValue, districtNames, userId, stateNames;
   final GlobalKey _dropdownKey = GlobalKey();
   String _chosenValueLOWVision, _chosenEyeBank, _chosenValueLgoutOption;
+
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
   bool reportviewCatracts = false;
@@ -52,7 +54,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       gerYearCongenitalPtosis,gerYearTraumaChildren,gerYearSquint ;
   String getfyid;
   String
-      npcbNoCatract;
+  npcbNoCatract;
   DataBindOrganValuebiggerFive _selectBindOrgniasationBiggerFive;
   bool lowvisionCataractDataDispla = false;
   Future<List<DataBindOrganValuebiggerFive>>
@@ -173,7 +175,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-          GetDPM_ScreeningYear.fromJson(json);
+      GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -216,10 +218,10 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                        'Dashboard',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w800),
-                      )),
+                            'Dashboard',
+                            style: TextStyle(
+                                color: Colors.white, fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -302,7 +304,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                           ),
                         ),
                       ),
-                  /*    Container(
+                      /*    Container(
                           child: Text(
                         'PNJA Catract',
                         style: TextStyle(
@@ -326,39 +328,39 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                        'User Type :',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
+                            'User Type :',
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
                       Container(
                           child: Text(
-                        'DPM',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
+                            'DPM',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
 
                       Container(
                           child: Text(
-                        'Login Id:',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
+                            'Login Id:',
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
                       Flexible(
                         child: Container(
                             child: Text(
-                          '${userId}',
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w800),
-                        )),
+                              '${userId}',
+                              style: TextStyle(
+                                  color: Colors.red, fontWeight: FontWeight.w800),
+                            )),
                       ),
                       Flexible(
                         child: Container(
@@ -388,38 +390,38 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                       // Shown Captcha value to user
                       Container(
                           child: Text(
-                        'District:',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
+                            'District:',
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
                       Container(
                           child: Text(
-                        '${districtNames}',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
+                            '${districtNames}',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
 
                       Container(
                           child: Text(
-                        'State :',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
+                            'State :',
+                            style: TextStyle(
+                                color: Colors.black, fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
                       Container(
                           child: Text(
-                        '${stateNames}',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
+                            '${stateNames}',
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.w800),
+                          )),
                       const SizedBox(
                         width: 10,
                       ),
@@ -1158,13 +1160,13 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                       ),
                     ),
                     Divider(color: Colors.blue, height: 1.0),
-                    FutureBuilder<List<Datalowvisionregister_cataract>>(
-                      future: ApiController.getDPM_Cataract(
-                        district_code_login,
-                        state_code_login,
+                    FutureBuilder<List<DataGetDPMCataractPatientView>>(
+                      future: ApiController.getDPM_CataractPatientView(
+                        "",
+                        widget.id,
                         npcbNoCatract,
-                        getYearCatract,
-                        lowVisionDataValue,
+                        "4",
+                        5,
                       ),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -1175,7 +1177,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                           return Utils.getEmptyView("No data found");
                         } else {
-                          List<Datalowvisionregister_cataract> ddata =
+                          List<DataGetDPMCataractPatientView> ddata =
                               snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());
@@ -1198,17 +1200,10 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                                     _buildDataCell((offer.addressLine1)),
                                     _buildDataCell(Utils.formatDateString(
                                         offer.operatedOn)),
-                                    _buildDataCell(offer.ngoName.toString()),
+                                    _buildDataCell(offer.operatedAt.toString()),
                                     _buildDataCellViewBlue("View", () {
-                                      print("@@500 Internal Server Error--DashboardWebsiteISsue hai --");
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => DPMPatientDiesesParticularView(offer.id.toString()),
-
-
-                                        ),
-                                      );
+                                      // Handle the view action here
+                                      // Example: Navigate to a details page with the selected item
                                     }),
                                   ],
                                 );
