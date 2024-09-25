@@ -59,4 +59,9 @@ class ApiConstants {
 
   static String GetDPM_CataractPatientView = 'DpmDashboard/api/GetDPM_CataractPatientView';
 
+
+  //District NGO APi
+
+  static String GetHospitalNgoForDDL = 'GetHospitalNgoForDDL';
+  static String NGODashboard = 'NGODashboard';
 }
