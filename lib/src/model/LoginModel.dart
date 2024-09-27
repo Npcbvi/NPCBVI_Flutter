@@ -26,14 +26,21 @@ class Result {
   String message;
   bool status;
   LoginData data;
-
+  List<DataList> list;
   Result({this.message, this.status, this.data});
 
   Result.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
     data = json['data'] != null ? new LoginData.fromJson(json['data']) : null;
+    if (json['list'] != null) {
+      list = <DataList>[];
+      json['list'].forEach((v) {
+        list.add(new DataList.fromJson(v));
+      });
+    }
   }
+
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -41,6 +48,9 @@ class Result {
     data['status'] = this.status;
     if (this.data != null) {
       data['data'] = this.data.toJson();
+    }
+    if (this.list != null) {
+      data['list'] = this.list.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -96,6 +106,46 @@ class LoginData {
     data['state_name'] = this.stateName;
     data['district_code'] = this.district_code;
     data['state_code'] = this.state_code;
+    return data;
+  }
+}
+class DataList {
+  String entryBy;
+  String darpanNo;
+  String ngoName;
+  String orgaddress;
+  int status;
+  String memberName;
+  String name;
+
+  DataList(
+      {this.entryBy,
+        this.darpanNo,
+        this.ngoName,
+        this.orgaddress,
+        this.status,
+        this.memberName,
+        this.name});
+
+  DataList.fromJson(Map<String, dynamic> json) {
+    entryBy = json['entryBy'];
+    darpanNo = json['darpan_no'];
+    ngoName = json['ngoName'];
+    orgaddress = json['orgaddress'];
+    status = json['status'];
+    memberName = json['member_name'];
+    name = json['name'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['entryBy'] = this.entryBy;
+    data['darpan_no'] = this.darpanNo;
+    data['ngoName'] = this.ngoName;
+    data['orgaddress'] = this.orgaddress;
+    data['status'] = this.status;
+    data['member_name'] = this.memberName;
+    data['name'] = this.name;
     return data;
   }
 }

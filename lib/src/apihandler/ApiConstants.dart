@@ -64,4 +64,7 @@ class ApiConstants {
 
   static String GetHospitalNgoForDDL = 'GetHospitalNgoForDDL';
   static String NGODashboard = 'NGODashboard';
+  static String GetHospitalList = 'GetHospitalList';
+
+  static String VeiwHospitalDetails = 'VeiwHospitalDetails';
 }

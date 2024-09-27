@@ -8,4 +8,8 @@ class AppConstant {
   static final String distritcCode = "district_code_logins";
   static final String state_code = "state_code_logins";
   static final String schoolid = "schoolid";
+  static final String darpan_no = "darpan_no";
+
+  static final String entryBy = "entryBy";
+  static final String status = "status";
 }

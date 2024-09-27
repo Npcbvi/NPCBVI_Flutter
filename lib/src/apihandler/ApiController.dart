@@ -17,6 +17,8 @@ import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/dropwdonHospitalBased/DropDownHospitalSelected.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/GetHospitalList.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/ViewClickHospitalDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMGovtPrivateOrganisationTypeData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
@@ -105,6 +107,7 @@ class ApiController {
         print("@@Result message----" + result.message);
         if (result.status) {
           SharedPrefs.saveUser(loginModel.result.data);
+
           Utils.showToast(result.message, true);
         }
         return loginModel;
@@ -2722,6 +2725,134 @@ class ApiController {
     } catch (e) {
       Utils.showToast(e.toString(), true);
 
+      return [];
+    }
+  }
+
+  static Future<List<DataGetHospitalList>>
+  getHospitalList(String darpanNo, int districtid,String userId) async {
+    print("@@GetHospitalList" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.GetHospitalList;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+
+        "darpanNo": darpanNo,
+        "districtId": districtid,
+
+        "userId": userId,
+
+
+      });
+      print("@@GetHospitalList--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetHospitalList--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+     GetHospitalList data = GetHospitalList.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+  static Future<List<HospitalDetailsDataViewClickHospitalDetails>> viewHospitalDetails(
+      String darpanNo, String hospitalId, int districtId, String userId) async {
+    print("@@GetHospitalList - Initiating request");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      final url = "${ApiConstants.baseUrl}${ApiConstants.GetHospitalList}";
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "darpanNo": darpanNo,
+        "hospitalId": hospitalId,
+        "districtId": districtId,
+        "userId": userId,
+      });
+      print("@@GetHospitalList - Request Body: $body");
+
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetHospitalList - API Response: ${response.data}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ViewClickHospitalDetails data = ViewClickHospitalDetails.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of hospital details
+        return data.data.hospitalDetails ?? []; // Handle null case
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast("Error: ${e.toString()}", true);
       return [];
     }
   }

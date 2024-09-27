@@ -11,6 +11,7 @@ import 'package:mohfw_npcbvi/src/hospitaldashboard/HospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
+import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
@@ -82,10 +83,35 @@ class _LoginScreenState extends State<LoginScreen> {
       Utils.hideProgressDialog1(context);
 
       if (response != null && response.result.status) {
+
         SharedPrefs.storeSharedValues(AppConstant.distritcCode,
             response.result.data.district_code.toString());
         SharedPrefs.storeSharedValues(
             AppConstant.state_code, response.result.data.state_code.toString());
+        // Assuming `response.result.list` is a List<DataList>
+        // Check if the list is null or empty
+        if (response.result.list != null && response.result.list.isNotEmpty) {
+          // Since the list is not null or empty, you can safely assign it
+          List<DataList> dataList = response.result.list;
+
+          // Now, you can loop through the list or access individual items
+          for (var data in dataList) {
+            // Access individual DataList object fields
+            print("@@@darpanNo-----" + data.darpanNo);
+            SharedPrefs.storeSharedValues(AppConstant.darpan_no,
+                data.darpanNo.toString());
+            SharedPrefs.storeSharedValues(AppConstant.entryBy,
+                data.entryBy.toString());
+            SharedPrefs.storeSharedValues(AppConstant.status,
+                data.status.toString());
+            print("@@@status-----" + data.entryBy.toString());
+            print("@@@status-----" + data.status.toString());
+          }
+        } else {
+          // Handle the case where the list is null or empty
+          print("The list is either null or empty.");
+        }
+
         final roleId = response.result.data.roleId;
         Widget nextScreen;
         switch (roleId) {

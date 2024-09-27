@@ -6,6 +6,7 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/dropwdonHospitalBased/DropDownHospitalSelected.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/GetHospitalList.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -30,7 +31,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
   TextEditingController _confirmnPasswordontrollere =
-      new TextEditingController();
+  new TextEditingController();
   GetChangeAPsswordFieldss getchangePwds = new GetChangeAPsswordFieldss();
 
   final GlobalKey _dropdownKey = GlobalKey();
@@ -38,7 +39,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   bool ManageUSerNGOHospt = false;
   Future<List<DataGetDPM_ScreeningYear>> _future;
   Future<List<DataDropDownHospitalSelected>>
-      _futureDataDropDownHospitalSelected;
+  _futureDataDropDownHospitalSelected;
   DataGetDPM_ScreeningYear _selectedUser;
   DataGetDPM_ScreeningMonth _selectedUserMonth;
   bool selectionBasedHospital = false;
@@ -47,7 +48,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   DataDropDownHospitalSelected _selectHospitalSelected;
   String hospitalNameFetch, reghospitalNameFetch;
   int status, district_code_login, state_code_login;
-  String role_id;
+  String role_id, darpan_nos;
   bool ngoDashboardDatas = false;
   String selectedHospitalName = ''; // String to save the selected value's name
   @override
@@ -56,6 +57,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     super.initState();
     // To generate number on loading of page
     getUserData();
+
     ngoDashboardclicks = true;
     _future = getDPM_ScreeningYear();
   }
@@ -72,6 +74,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           role_id = user.roleId;
           state_code_login = user.state_code;
           district_code_login = user.district_code;
+          getDarpanNo();
           print('@@2' + user.name);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
@@ -79,10 +82,24 @@ class _NgoDashboard extends State<NgoDashboard> {
           print('@@6' + user.districtName);
           print('@@7' + state_code_login.toString());
           print('@@8' + district_code_login.toString());
+          print('@@9' + darpan_nos.toString());
         });
       });
     } catch (e) {
       print(e);
+    }
+  }
+
+// Ensure this method is async
+  Future<void> getDarpanNo() async {
+    // Use await to get the actual value from SharedPrefs
+    darpan_nos =
+    await SharedPrefs.getStoreSharedValue(AppConstant.darpan_no) as String;
+
+    if (darpan_nos != null) {
+      print("Darpan Number: $darpan_nos");
+    } else {
+      print("No Darpan Number found in shared preferences.");
     }
   }
 
@@ -106,7 +123,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       if (response.statusCode == 200) {
         Map<String, dynamic> json = jsonDecode(response.body);
         final DropDownHospitalSelected bindOrgan =
-            DropDownHospitalSelected.fromJson(json);
+        DropDownHospitalSelected.fromJson(json);
         if (bindOrgan.status) {
           print('@@bindOrgan: ' + bindOrgan.message);
         }
@@ -124,9 +141,12 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenu() async {
     final RenderBox dropdownRenderBox =
-        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-        Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    Overlay
+        .of(context)
+        ?.context
+        .findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -162,9 +182,11 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Add Ngo Hospital");
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
+        ngoDashboardclicks = false;
+
         break;
 
-      // Add more cases as needed
+    // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -172,9 +194,12 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenuScreeningCamp() async {
     final RenderBox dropdownRenderBox =
-        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-        Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    Overlay
+        .of(context)
+        ?.context
+        .findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -220,7 +245,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
         break;
-      // Add more cases as needed
+    // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -228,9 +253,12 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenuSatteliteCenter() async {
     final RenderBox dropdownRenderBox =
-        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-        Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    Overlay
+        .of(context)
+        ?.context
+        .findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -276,7 +304,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
         break;
-      // Add more cases as needed
+    // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -289,7 +317,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-          GetDPM_ScreeningYear.fromJson(json);
+      GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -313,7 +341,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         centerTitle: true,
         actions: [
           PopupMenuButton<int>(
-            itemBuilder: (context) => [
+            itemBuilder: (context) =>
+            [
               PopupMenuItem(
                 value: 1,
                 child: Row(
@@ -354,10 +383,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                   _showChangePasswordDialog();
                   break;
                 case 2:
-                  // Implement User Manual action
+                // Implement User Manual action
                   break;
                 case 3:
-                  // Handle Logout
+                // Handle Logout
                   break;
               }
             },
@@ -377,10 +406,12 @@ class _NgoDashboard extends State<NgoDashboard> {
                   child: Row(
                     children: [
                       _buildNavigationButton('Dashboard', () {
-                        print('@@dashboardviewReplace----display---');
-                        _future = getDPM_ScreeningYear();
-                        ngoDashboardclicks = true;
-                        setState(() {});
+                        setState(() {
+                          print('@@dashboardviewReplace----display---');
+                          _future = getDPM_ScreeningYear();
+                          ngoDashboardclicks = true;
+                          ManageUSerNGOHospt = false;
+                        });
                       }),
                       SizedBox(width: 8.0),
                       _buildDropdown(),
@@ -500,8 +531,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget _buildUserInfoItem(
-      String label, String value, Color labelColor, Color valueColor) {
+  Widget _buildUserInfoItem(String label, String value, Color labelColor,
+      Color valueColor) {
     return Row(
       children: [
         Text(label,
@@ -622,201 +653,129 @@ class _NgoDashboard extends State<NgoDashboard> {
           visible: ManageUSerNGOHospt,
           child: Column(
             children: [
-              Center(
-                child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                  future: _future,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-
-                    if (!snapshot.hasData) {
-                      return CircularProgressIndicator();
-                    }
-                    List list =
-                        snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
-                      return district;
-                    }).toList();
-                    if (_selectedUser == null ||
-                        list.contains(_selectedUser) == false) {
-                      _selectedUser = list.first;
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Select year:',
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Hospitals List',
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          SizedBox(height: 10),
-                          DropdownButtonFormField<DataGetDPM_ScreeningYear>(
-                            onChanged: (userc) {
+                        ),
+                      ),
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Handle the tap event here
+                              print('@@Add New Record clicked');
+
                               setState(() {
-                                _selectedUser = userc;
-                                getYearNgoHopital = userc?.name ?? '';
-                                getfyidNgoHospital = userc?.fyid ?? '';
-                                print(
-                                    '@@getYearNgoHopital-- $getYearNgoHopital');
-                                print(
-                                    '@@getfyidNgoHospital here---- $getfyidNgoHospital');
+
                               });
                             },
-                            value: _selectedUser,
-                            items: list.map((user) {
-                              return DropdownMenuItem<DataGetDPM_ScreeningYear>(
-                                value: user,
-                                child: Text(
-                                  user.name,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              );
-                            }).toList(),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
+                            child: Text(
+                              'Add New Hospital',
+                              style: TextStyle(
+                                color: Colors.white, // Text color
+                                fontWeight: FontWeight.w800, // Text weight
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.blueAccent, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              filled: true,
-                              fillColor: Colors.blue[50],
+                              overflow:
+                              TextOverflow.ellipsis, // Handle text overflow
                             ),
-                            dropdownColor: Colors.blue[50],
-                            style: TextStyle(color: Colors.black),
-                            icon:
-                                Icon(Icons.arrow_drop_down, color: Colors.blue),
                           ),
-                        ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Horizontal Scrolling Header Row
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNo('S.No.'),
+                    _buildHeaderCell('Hospital ID'),
+                    _buildHeaderCell('Hospital Name'),
+                    _buildHeaderCell('Mobile No.'),
+                    _buildHeaderCell('Email ID'),
+                    _buildHeaderCell('Equipment'),
+                    _buildHeaderCell('Doctors'),
+                    _buildHeaderCell('MOU'),
+                    _buildHeaderCell('Status'),
+                    _buildHeaderCell('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<DataGetHospitalList>>(
+                future: ApiController.getHospitalList(
+                    darpan_nos, district_code_login, userId),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data == null) {
+                    return Utils.getEmptyView("No data found");
+                  } else {
+                    List<DataGetHospitalList> ddata = snapshot.data;
+                    print('@@---ddata' + ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.hRegID),
+                              _buildDataCell(offer.hName),
+                              _buildDataCell(offer.mobile),
+                              _buildDataCell(offer.emailId),
+                              _buildDataCell(offer.eqCount.toString()),
+                              _buildDataCell(offer.drcount.toString()),
+                              _buildDataCell(offer.moucount.toString()),
+                              _buildDataCell(offer.status.toString()),
+                              if(offer.status == 'Approved')
+                                _buildViewMAnageDoctorUploadMOUUI()
+                              else
+                                if (offer.status == 'Pending')
+                                  _buildEditMAnageDoctorUploadMOUUI()
+                                else
+                                  _buildEdit()
+                              /* _buildDataCellViewBlue("Edit", () {
+                                // Handle the edit action here
+                                // For example, navigate to an edit screen or show a dialog
+                                print(
+                                    '@@Edit clicked for item: ');
+                                //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
+
+
+
+                              }),*/
+                            ],
+                          );
+                        }).toList(),
                       ),
                     );
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10.0, 0),
-                child: Container(
-                  width: 300,
-                  padding: EdgeInsets.all(12), // Padding inside the container
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue, width: 2.0),
-                    // Blue border
-                    borderRadius: BorderRadius.circular(5.0),
-                    // Rounded corners
-                    color: Colors.white, // Background color (optional)
-                  ),
-                  child: Text(
-                    stateNames, // Replace with your text content
-                    style: TextStyle(
-                      color: Colors.black, // Text color
-                      fontSize: 16, // Text size
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                child: Container(
-                  width: 300,
-                  padding: EdgeInsets.all(12), // Padding inside the container
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.blue, width: 2.0),
-                    // Blue border
-                    borderRadius: BorderRadius.circular(5.0),
-                    // Rounded corners
-                    color: Colors.white, // Background color (optional)
-                  ),
-                  child: Text(
-                    districtNames, // Replace with your text content
-                    style: TextStyle(
-                      color: Colors.black, // Text color
-                      fontSize: 16, // Text size
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                child: Container(
-                  child: Theme(
-                    data: Theme.of(context).copyWith(
-                      canvasColor: Colors.blue.shade200,
-                    ),
-                    child: DropdownButtonFormField<String>(
-                      value: _chosenValueMange,
-                      style: TextStyle(color: Colors.black),
-                      // Text color
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.blue, width: 2.0), // Border color
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Colors.blueAccent,
-                              width: 2.0), // Border color when focused
-                          borderRadius: BorderRadius.circular(5.0),
-                        ),
-                        hintText: 'All',
-                        hintStyle:
-                            TextStyle(color: Colors.black), // Hint text color
-                      ),
-                      items: <String>[
-                        'Hospitals',
-                        'Camps',
-                        'Satellite Centres',
-                      ].map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(
-                            value,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                                color: Colors.black), // Item text color
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (String value) {
-                        setState(() {
-                          _chosenValueMange =
-                              value ?? 'All'; // Default to 'All' if null
-                          if (_chosenValueMange == "Hospitals") {
-                            print('@@NGO--1' + _chosenValueMange);
-                          } else if (_chosenValueMange == "Camps") {
-                            // Handle Camps selection
-                          } else if (_chosenValueMange == "Satellite Centres") {
-                            // Handle Satellite Centres selection
-                          }
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-                child: ElevatedButton(
-                  onPressed: () {
-                    print(
-                        '@@lowvisionCornealBlindnessDataDispla-- click------');
-                    setState(() {
-                      // Add any additional logic needed here
-                    });
-                  },
-                  child: Text('Submit'),
-                ),
+                  }
+                },
               ),
             ],
           ),
@@ -866,7 +825,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: Colors.blueAccent, width: 2.0),
+                      BorderSide(color: Colors.blueAccent, width: 2.0),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     hintText: 'All',
@@ -1033,7 +992,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       }
 
                       List<DataGetDPM_ScreeningYear> list =
-                          snapshot.data.toList();
+                      snapshot.data.toList();
 
                       // Check if _selectedUser is null or not part of the list anymore
                       if (_selectedUser == null ||
@@ -1127,87 +1086,88 @@ class _NgoDashboard extends State<NgoDashboard> {
                     child: Text('Get Data'),
                   ),
                 ),
-                if(dropDownTwoSelcted==6)
-                Visibility(
-                  visible: ngoDashboardDatas,
-                  child: Column(
-                    children: [
-                      Container(
-                        color: Colors.blue,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Total number of patients (${hospitalNameFetch})',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w800,
+                if(dropDownTwoSelcted == 6)
+                  Visibility(
+                    visible: ngoDashboardDatas,
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Total number of patients (${hospitalNameFetch})',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
                                 ),
-                              ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _buildHeaderCell('Disease Type'),
+                              _buildHeaderCell('Registered'),
+                              _buildHeaderCell('Operated'),
                             ],
                           ),
                         ),
-                      ),
-                      // Horizontal Scrolling Header Row
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            _buildHeaderCell('Disease Type'),
-                            _buildHeaderCell('Registered'),
-                            _buildHeaderCell('Operated'),
-                          ],
-                        ),
-                      ),
-                      Divider(color: Colors.blue, height: 1.0),
-                      // Data Rows
-                      FutureBuilder<List<DataNGODashboards>>(
-                        future: ApiController.getNGODashboard(
-                            int.parse(role_id),
-                            district_code_login,
-                            state_code_login,
-                            userId,
-                            "2024-2025",
-                            dropDownTwoSelcted,
-                            reghospitalNameFetch),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Utils.getEmptyView(
-                                "Error: ${snapshot.error}");
-                          } else if (!snapshot.hasData ||
-                              snapshot.data.isEmpty) {
-                            return Utils.getEmptyView("No data found");
-                          } else {
-                            List<DataNGODashboards> ddata = snapshot.data;
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<DataNGODashboards>>(
+                          future: ApiController.getNGODashboard(
+                              int.parse(role_id),
+                              district_code_login,
+                              state_code_login,
+                              userId,
+                              "2024-2025",
+                              dropDownTwoSelcted,
+                              reghospitalNameFetch),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<DataNGODashboards> ddata = snapshot.data;
 
-                            return SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Column(
-                                children: ddata.map((offer) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    // Aligning to start for better control
-                                    children: [
-                                      _buildDataCell(offer.status),
-                                      _buildDataCell(offer.registered),
-                                      _buildDataCell(offer.operated),
-                                    ],
-                                  );
-                                }).toList(),
-                              ),
-                            );
-                          }
-                        },
-                      ),
-                    ],
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .start,
+                                      // Aligning to start for better control
+                                      children: [
+                                        _buildDataCell(offer.status),
+                                        _buildDataCell(offer.registered),
+                                        _buildDataCell(offer.operated),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                if(dropDownTwoSelcted==9)
+                if(dropDownTwoSelcted == 9)
                   Visibility(
                     visible: ngoDashboardDatas,
                     child: Column(
@@ -1270,7 +1230,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 child: Column(
                                   children: ddata.map((offer) {
                                     return Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .start,
                                       // Aligning to start for better control
                                       children: [
                                         _buildDataCell(offer.status),
@@ -1287,7 +1248,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       ],
                     ),
                   ),
-                if(dropDownTwoSelcted==8)
+                if(dropDownTwoSelcted == 8)
                   Visibility(
                     visible: ngoDashboardDatas,
                     child: Column(
@@ -1350,7 +1311,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 child: Column(
                                   children: ddata.map((offer) {
                                     return Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .start,
                                       // Aligning to start for better control
                                       children: [
                                         _buildDataCell(offer.status),
@@ -1573,7 +1535,503 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
+
+  Widget _buildViewMAnageDoctorUploadMOUUI() {
+    return Container(
+      height: 80,
+      width: 200,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        // Spaces the buttons evenly
+        children: [
+          // "View" Text Button
+          GestureDetector(
+            onTap: () {
+              print('@@View pressed--');
+              _showDialogTableFormViewClickData();
+            },
+            child: Text(
+              'View',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // Separator "||"
+          Text(
+            '||',
+            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+          ),
+          // "Manage Doctor" Text Button
+          GestureDetector(
+            onTap: () {
+              print('Manage Doctor pressed');
+            },
+            child: Text(
+              'Manage Doctor',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
+          ),
+          // Separator "||"
+          Text(
+            '||',
+            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+          ),
+          // "Upload MoU" Text Button
+          GestureDetector(
+            onTap: () {
+              print('Upload MoU pressed');
+            },
+            child: Text(
+              'Upload MoU',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEditMAnageDoctorUploadMOUUI() {
+    return Container(
+        height: 80,
+        width: 200,
+        // Fixed width to ensure horizontal scrolling
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for header cells
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Spaces the buttons evenly
+          children: [
+            // "View" Text Button
+            GestureDetector(
+              onTap: () {
+                print('View pressed');
+              },
+              child: Text(
+                'Edit',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+            Text(
+              '||',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
+            // "Manage Doctor" Text Button
+            GestureDetector(
+              onTap: () {
+                print('Manage Doctor pressed');
+              },
+              child: Text(
+                'Manage Doctor',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+            Text(
+              '||',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
+            // "Upload MoU" Text Button
+            GestureDetector(
+              onTap: () {
+                print('Upload MoU pressed');
+              },
+              child: Text(
+                'Upload MoU',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        )
+    );
+  }
+
+  Widget _buildEdit() {
+    return Container(
+        height: 80,
+        width: 200,
+        // Fixed width to ensure horizontal scrolling
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for header cells
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Spaces the buttons evenly
+          children: [
+            // "View" Text Button
+            GestureDetector(
+              onTap: () {
+                print('View pressed');
+              },
+              child: Text(
+                'Edit',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+
+          ],
+        )
+    );
+  }
+
+  void _showDialogTableFormViewClickData() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('View Click Data'),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                Table(
+                  border: TableBorder.all(),
+                  columnWidths: {
+                    0: FixedColumnWidth(80.0), // Width for labels
+                    1: FixedColumnWidth(700.0), // Width for values
+                  },
+                  children: [
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Darpan No.',
+                          maxLines: 2,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '$darpan_nos', // Your variable
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w300,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'PAN Number:',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '5435', // Replace with your variable
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'NGO Name:',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '4654', // Replace with your variable
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Member Name:',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '4354', // Replace with your variable
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Email ID:',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '345', // Replace with your variable
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Mobile Number:',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '4534', // Replace with your variable
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Address:',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '435', // Replace with your variable
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'District:',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '45345', // Replace with your variable
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ]),
+                    TableRow(children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'State:',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          '345', // Replace with your variable
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ]),
+                  ],
+                ),
+                // Add the 'Hospitals List' section here
+                Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'List of documents to be verified',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '1. Minimum 3 years of experience certificate.',
+                              maxLines: 8,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300,
+
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'value here',
+                              maxLines: 8,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300,
+
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '2. Society/Charitable public trust registration certificate.',
+                              maxLines: 8,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300,
+
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'value here',
+                              maxLines: 8,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w300,
+
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 }
+
 
 class GetChangeAPsswordFieldss {
   String userid;
