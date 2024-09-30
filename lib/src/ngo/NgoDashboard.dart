@@ -1,12 +1,15 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/dropwdonHospitalBased/DropDownHospitalSelected.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/GetHospitalList.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/ViewClickHospitalDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -178,11 +181,13 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _handleMenuSelection(int value) {
     switch (value) {
+
       case 1:
         print("@@Add Ngo Hospital");
-        _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
         ngoDashboardclicks = false;
+        _future = getDPM_ScreeningYear();
+
 
         break;
 
@@ -237,8 +242,9 @@ class _NgoDashboard extends State<NgoDashboard> {
     switch (value) {
       case 1:
         print("@@Add Ngo Hospital");
-        _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
+        _future = getDPM_ScreeningYear();
+
         break;
       case 2:
         print("@@Screeniong Camp");
@@ -646,7 +652,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     }
   }
 
-  Widget LowVisionRegisterNgoHopsital() {
+/*  Widget LowVisionRegisterNgoHopsital() {
     return Column(
       children: [
         Visibility(
@@ -759,7 +765,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildEditMAnageDoctorUploadMOUUI()
                                 else
                                   _buildEdit()
-                              /* _buildDataCellViewBlue("Edit", () {
+                              *//* _buildDataCellViewBlue("Edit", () {
                                 // Handle the edit action here
                                 // For example, navigate to an edit screen or show a dialog
                                 print(
@@ -768,7 +774,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
 
 
-                              }),*/
+                              }),*//*
                             ],
                           );
                         }).toList(),
@@ -776,6 +782,133 @@ class _NgoDashboard extends State<NgoDashboard> {
                     );
                   }
                 },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }*/
+  Widget LowVisionRegisterNgoHopsital() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ManageUSerNGOHospt,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Hospitals List',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Handle the tap event here
+                              print('@@Add New Record clicked');
+
+                              setState(() {
+
+                              });
+                            },
+                            child: Text(
+                              'Add New Hospital',
+                              style: TextStyle(
+                                color: Colors.white, // Text color
+                                fontWeight: FontWeight.w800, // Text weight
+                              ),
+                              overflow: TextOverflow.ellipsis, // Handle text overflow
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Horizontal Scrolling Table with Header and Data
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Hospital ID'),
+                        _buildHeaderCell('Hospital Name'),
+                        _buildHeaderCell('Mobile No.'),
+                        _buildHeaderCell('Email ID'),
+                        _buildHeaderCell('Equipment'),
+                        _buildHeaderCell('Doctors'),
+                        _buildHeaderCell('MOU'),
+                        _buildHeaderCell('Status'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataGetHospitalList>>(
+                      future: ApiController.getHospitalList(
+                          darpan_nos, district_code_login, userId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetHospitalList> ddata = snapshot.data;
+                          print('@@---ddata' + ddata.length.toString());
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.hRegID),
+                                  _buildDataCell(offer.hName),
+                                  _buildDataCell(offer.mobile),
+                                  _buildDataCell(offer.emailId),
+                                  _buildDataCell(offer.eqCount.toString()),
+                                  _buildDataCell(offer.drcount.toString()),
+                                  _buildDataCell(offer.moucount.toString()),
+                                  _buildDataCell(offer.status.toString()),
+                                  if (offer.status == 'Approved')
+                                    _buildViewManageDoctorUploadMOUUI(offer.hRegID) // Pass hospitalId
+                                  else if (offer.status == 'Pending')
+                                    _buildEditMAnageDoctorUploadMOUUI()
+                                  else
+                                    _buildEdit(),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -1110,60 +1243,60 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ),
                         ),
                         // Horizontal Scrolling Header Row
+
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
-                          child: Row(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildHeaderCell('Disease Type'),
-                              _buildHeaderCell('Registered'),
-                              _buildHeaderCell('Operated'),
+                              // Header Row
+                              Row(
+                                children: [
+                                  _buildHeaderCell('Disease Type'),
+                                  _buildHeaderCell('Registered'),
+                                  _buildHeaderCell('Operated'),
+                                ],
+                              ),
+                              Divider(color: Colors.blue, height: 1.0),
+                              // Data Rows
+                              FutureBuilder<List<DataNGODashboards>>(
+                                future: ApiController.getNGODashboard(
+                                    int.parse(role_id),
+                                    district_code_login,
+                                    state_code_login,
+                                    userId,
+                                    "2024-2025",
+                                    dropDownTwoSelcted,
+                                    reghospitalNameFetch),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return Center(child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                    return Utils.getEmptyView("No data found");
+                                  } else {
+                                    List<DataNGODashboards> ddata = snapshot.data;
+
+                                    return Column(
+                                      children: ddata.map((offer) {
+                                        return Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            _buildDataCell(offer.status),
+                                            _buildDataCell(offer.registered),
+                                            _buildDataCell(offer.operated),
+                                          ],
+                                        );
+                                      }).toList(),
+                                    );
+                                  }
+                                },
+                              ),
                             ],
                           ),
-                        ),
-                        Divider(color: Colors.blue, height: 1.0),
-                        // Data Rows
-                        FutureBuilder<List<DataNGODashboards>>(
-                          future: ApiController.getNGODashboard(
-                              int.parse(role_id),
-                              district_code_login,
-                              state_code_login,
-                              userId,
-                              "2024-2025",
-                              dropDownTwoSelcted,
-                              reghospitalNameFetch),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Utils.getEmptyView(
-                                  "Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData ||
-                                snapshot.data.isEmpty) {
-                              return Utils.getEmptyView("No data found");
-                            } else {
-                              List<DataNGODashboards> ddata = snapshot.data;
+                        )
 
-                              return SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Column(
-                                  children: ddata.map((offer) {
-                                    return Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .start,
-                                      // Aligning to start for better control
-                                      children: [
-                                        _buildDataCell(offer.status),
-                                        _buildDataCell(offer.registered),
-                                        _buildDataCell(offer.operated),
-                                      ],
-                                    );
-                                  }).toList(),
-                                ),
-                              );
-                            }
-                          },
-                        ),
                       ],
                     ),
                   ),
@@ -1362,56 +1495,58 @@ class _NgoDashboard extends State<NgoDashboard> {
                   ),
                 ),
               ),
-              // Horizontal Scrolling Header Row
+              // Combined Horizontal Scrolling for Header and Data
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeaderCell('Disease Type'),
-                    _buildHeaderCell('Registered'),
-                    _buildHeaderCell('Operated'),
+                    // Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCell('Disease Type'),
+                        _buildHeaderCell('Registered'),
+                        _buildHeaderCell('Operated'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataNGODashboards>>(
+                      future: ApiController.getNGODashboard(
+                          int.parse(role_id),
+                          district_code_login,
+                          state_code_login,
+                          userId,
+                          "2024-2025",
+                          dropDownTwoSelcted,
+                          "0"),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataNGODashboards> ddata = snapshot.data;
+
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  _buildDataCell(offer.status),
+                                  _buildDataCell(offer.registered),
+                                  _buildDataCell(offer.operated),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
-              FutureBuilder<List<DataNGODashboards>>(
-                future: ApiController.getNGODashboard(
-                    int.parse(role_id),
-                    district_code_login,
-                    state_code_login,
-                    userId,
-                    "2024-2025",
-                    dropDownTwoSelcted,
-                    "0"),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
-                    List<DataNGODashboards> ddata = snapshot.data;
-
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            // Aligning to start for better control
-                            children: [
-                              _buildDataCell(offer.status),
-                              _buildDataCell(offer.registered),
-                              _buildDataCell(offer.operated),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
               ),
             ],
           ),
@@ -1419,6 +1554,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
+
 
   Widget _buildHeaderCellSrNo(String text) {
     return Container(
@@ -1536,67 +1672,101 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget _buildViewMAnageDoctorUploadMOUUI() {
+ /* Widget _buildViewManageDoctorUploadMOUUI(String hospitalId) {
     return Container(
       height: 80,
       width: 200,
-      // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
+        color: Colors.white,
         border: Border.all(
           width: 0.1,
         ),
       ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        // Spaces the buttons evenly
         children: [
-          // "View" Text Button
-          GestureDetector(
-            onTap: () {
-              print('@@View pressed--');
-              _showDialogTableFormViewClickData();
-            },
-            child: Text(
-              'View',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-            ),
-          ),
-          // Separator "||"
-          Text(
-            '||',
-            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-          ),
-          // "Manage Doctor" Text Button
-          GestureDetector(
-            onTap: () {
-              print('Manage Doctor pressed');
-            },
-            child: Text(
-              'Manage Doctor',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-            ),
-          ),
-          // Separator "||"
-          Text(
-            '||',
-            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-          ),
-          // "Upload MoU" Text Button
-          GestureDetector(
-            onTap: () {
-              print('Upload MoU pressed');
-            },
-            child: Text(
-              'Upload MoU',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-            ),
-          ),
+          _buildButton('View', () async {
+            print('View pressed');
+            print('@@fff1--' + darpan_nos);
+            print('@@fff1--' + hospitalId);
+            print('@@fff1--' + district_code_login.toString());
+            print('@@fff1--' + userId);
+
+            try {
+              // Call the API to view hospital details
+              List<HospitalDetailsDataViewClickHospitalDetails> hospitalDetails = await viewHospitalDetails(
+                "UP_2018_0184013",
+                "H201963364948",
+                district_code_login,
+                userId,
+              );
+
+              // Check if hospitalDetails is not empty
+              if (hospitalDetails.isNotEmpty) {
+                HospitalDetailsDataViewClickHospitalDetails details = hospitalDetails[0];
+
+                print('@@fff1--' + details.toString());
+
+
+
+                // Call the dialog function with the fetched data
+
+                _showDialogTableFormViewClickData(
+                  darpanNo: details.darpanNo,
+                  panNumber: details.panNo,
+                  ngoName: details.ngoName,
+                  memberName: details.name,
+                  emailId: details.emailid,
+                  mobileNumber: details.mobile,
+                  address: details.address,
+                  district: details.districtName,
+                  state: details.stateName,
+
+                );
+
+              } else {
+                Utils.showToast("No hospital details found or an error occurred", true);
+              }
+            } catch (e) {
+              print('Error fetching hospital details: $e');
+              Utils.showToast("Failed to fetch hospital details. Please try again later.", true);
+            }
+          }),
+          _buildSeparator(),
+          _buildButton('Manage Doctor', () {
+            print('Manage Doctor pressed');
+            // Logic for managing doctors
+          }),
+          _buildSeparator(),
+          _buildButton('Upload MoU', () {
+            print('Upload MoU pressed');
+            // Logic for uploading MoU
+          }),
         ],
       ),
     );
+  }*/
+
+
+
+
+  Widget _buildButton(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+      ),
+    );
   }
+
+  Widget _buildSeparator() {
+    return Text(
+      '||',
+      style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+    );
+  }
+
 
   Widget _buildEditMAnageDoctorUploadMOUUI() {
     return Container(
@@ -1618,6 +1788,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             GestureDetector(
               onTap: () {
                 print('View pressed');
+
               },
               child: Text(
                 'Edit',
@@ -1692,328 +1863,179 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  void _showDialogTableFormViewClickData() {
+  Widget _buildViewManageDoctorUploadMOUUI(String hospitalId) {
+    return Container(
+      height: 80,
+      width: 200,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildButton('View', () async {
+            print('View pressed');
+            print('@@fff1--' + darpan_nos);
+            print('@@fff1--' + hospitalId);
+            print('@@fff1--' + district_code_login.toString());
+            print('@@fff1--' + userId);
+
+            try {
+              // Call the API to view hospital details and documents
+              ViewClickHospitalDetails viewClickHospitalDetails = await viewHospitalDetails(
+                "UP_2018_0184013",
+                hospitalId,
+                district_code_login,
+                userId,
+              );
+
+              // Check if the response status is true and hospitalDetails is not empty
+              if (viewClickHospitalDetails.status && viewClickHospitalDetails.data.hospitalDetails.isNotEmpty) {
+                HospitalDetailsDataViewClickHospitalDetails details = viewClickHospitalDetails.data.hospitalDetails[0];
+
+                print('@@fff1--' + details.toString());
+
+                // Prepare documents for display
+                List<HospitalDocumentsHospitalDetailsDataViewClickHospitalDetails> documents = viewClickHospitalDetails.data.hospitalDocuments;
+
+                // Call the dialog function with the fetched data
+                _showDialogTableFormViewClickData(
+                  darpanNo: details.darpanNo,
+                  panNumber: details.panNo,
+                  ngoName: details.ngoName,
+                  memberName: details.name,
+                  emailId: details.emailid,
+                  mobileNumber: details.mobile,
+                  address: details.address,
+                  district: details.districtName,
+                  state: details.stateName,
+                  documents: documents,
+                );
+              } else {
+                Utils.showToast("No hospital details found or an error occurred", true);
+              }
+            } catch (e) {
+              print('Error fetching hospital details: $e');
+              Utils.showToast("Failed to fetch hospital details. Please try again later.", true);
+            }
+          }),
+          _buildSeparator(),
+          _buildButton('Manage Doctor', () {
+            print('Manage Doctor pressed');
+            // Logic for managing doctors
+          }),
+          _buildSeparator(),
+          _buildButton('Upload MoU', () {
+            print('Upload MoU pressed');
+            // Logic for uploading MoU
+          }),
+        ],
+      ),
+    );
+  }
+  void _showDialogTableFormViewClickData({
+    String darpanNo,
+    String panNumber,
+    String ngoName,
+    String memberName,
+    String emailId,
+    String mobileNumber,
+    String address,
+    String district,
+    String state,
+    List<HospitalDocumentsHospitalDetailsDataViewClickHospitalDetails> documents,
+  }) {
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('View Click Data'),
+          title: Text('NGO Application Details'),
           content: SingleChildScrollView(
-            child: Column(
-              children: [
-                Table(
-                  border: TableBorder.all(),
-                  columnWidths: {
-                    0: FixedColumnWidth(80.0), // Width for labels
-                    1: FixedColumnWidth(700.0), // Width for values
-                  },
-                  children: [
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Darpan No.',
-                          maxLines: 2,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w300,
-                          ),
-                        ),
+            child: Container(
+              width: 800, // Set width as per your requirement
+              constraints: BoxConstraints(maxHeight: 600), // Adjust max height
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Ensure minimal height
+                children: [
+                  Table(
+                    border: TableBorder.all(),
+                    columnWidths: {
+                      0: FixedColumnWidth(65.0), // Width for labels
+                      1: FixedColumnWidth(800.0), // Width for values
+                    },
+                    children: [
+                      _buildTableRow('Darpan No.', darpanNo),
+                      _buildTableRow('PAN Number', panNumber),
+                      _buildTableRow('NGO Name', ngoName),
+                      _buildTableRow('Member Name', memberName),
+                      _buildTableRow('Email ID', emailId),
+                      _buildTableRow('Mobile Number', mobileNumber),
+                      _buildTableRow('Address', address),
+                      _buildTableRow('District', district),
+                      _buildTableRow('State', state),
+                    ],
+                  ),
+                  Container(
+                    color: Colors.blue,
+                    padding: const EdgeInsets.all(4.0),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'List of documents to be verified',
+                      maxLines: 2,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '$darpan_nos', // Your variable
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w300,
+                    ),
+                  ),
+                  // Loop through documents and display them
+                  if (documents != null && documents.isNotEmpty) ...[
+                    Column(
+                      children: [
+                        for (var doc in documents)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0), // Adjust padding
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
+                              children: [
+                                Text(
+                                  '1. Minimum 3 years of experience certificate: ${doc.file1}',
+                                  maxLines: 4, // Set max lines for file1
+                                  overflow: TextOverflow.ellipsis, // Handle overflow
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                SizedBox(height: 4), // Add some spacing between the texts
+                                Text(
+                                  '2. Society/Charitable public trust registration certificate: ${doc.file2}',
+                                  maxLines: 4, // Set max lines for file2
+                                  overflow: TextOverflow.ellipsis, // Handle overflow
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
+                      ],
+                    )
+                  ] else ...[
+                    Text(
+                      'No documents available.',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w300,
                       ),
-                    ]),
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'PAN Number:',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '5435', // Replace with your variable
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'NGO Name:',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '4654', // Replace with your variable
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Member Name:',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '4354', // Replace with your variable
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Email ID:',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '345', // Replace with your variable
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Mobile Number:',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '4534', // Replace with your variable
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Address:',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '435', // Replace with your variable
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'District:',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '45345', // Replace with your variable
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ]),
-                    TableRow(children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'State:',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '345', // Replace with your variable
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ]),
+                    ),
                   ],
-                ),
-                // Add the 'Hospitals List' section here
-                Container(
-                  color: Colors.blue,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'List of documents to be verified',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800,
-
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '1. Minimum 3 years of experience certificate.',
-                              maxLines: 8,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300,
-
-                              ),
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'value here',
-                              maxLines: 8,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300,
-
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '2. Society/Charitable public trust registration certificate.',
-                              maxLines: 8,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300,
-
-                              ),
-                            ),
-                          ),
-                        ),
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'value here',
-                              maxLines: 8,
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300,
-
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           actions: [
@@ -2029,6 +2051,111 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
+
+// Helper function to create table rows
+  TableRow _buildTableRow(String label, String value) {
+    return TableRow(children: [
+      Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          constraints: BoxConstraints(maxHeight: 80), // Set max height for the label
+          child: Text(
+            label,
+            maxLines: 3, // Set max lines for the label
+            overflow: TextOverflow.ellipsis, // Handle overflow
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: Container(
+          constraints: BoxConstraints(maxHeight: 80), // Set max height for the value
+          child: Text(
+            value ?? 'N/A', // Use the passed variable
+            maxLines: 3, // Set max lines for the value
+            overflow: TextOverflow.ellipsis, // Handle overflow
+            style: TextStyle(
+              color: Colors.red,
+              fontWeight: FontWeight.w300,
+            ),
+          ),
+        ),
+      ),
+    ]);
+  }
+
+
+
+
+
+  static Future<ViewClickHospitalDetails> viewHospitalDetails(
+      String darpanNo,
+      String hospitalId,
+      int districtId,
+      String userId,
+      ) async {
+    print("@@GetHospitalList - Initiating request");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return ViewClickHospitalDetails(message: "No internet", status: false);
+    }
+
+    try {
+      // Define the URL and headers
+      final url = "${ApiConstants.baseUrl}${ApiConstants.VeiwHospitalDetails}";
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "darpanNo": darpanNo,
+        "hospitalId": hospitalId,
+        "districtId": districtId,
+        "userId": userId,
+      });
+      print("@@GetHospitalList - Request Body: $body");
+
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetHospitalList - API Response: ${response.data}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ViewClickHospitalDetails data = ViewClickHospitalDetails.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the entire ViewClickHospitalDetails object
+        return data; // Return the whole object instead of just the hospital details
+      } else {
+        Utils.showToast(data.message, true);
+        return ViewClickHospitalDetails(message: data.message, status: false);
+      }
+    } catch (e) {
+      Utils.showToast("Error: ${e.toString()}", true);
+      return ViewClickHospitalDetails(message: "Error occurred", status: false);
+    }
+  }
 
 }
 

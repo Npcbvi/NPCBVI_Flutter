@@ -2553,179 +2553,107 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-              // Horizontal Scrolling Header Row
+              // Combined Horizontal Scrolling for Header and Data
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header Row
+                    Container(
+                      color: Colors.white70,
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            margin: EdgeInsets.only(right: 10),
+                            child: Text(
+                              'District: ${districtNames}',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: Text(
+                              'State: ${stateNames}',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                dashboardviewReplace = true;
+                                NGOlistDropDownDisplayDatas = false;
+                                LowVisionRegisterCatracts = false;
+                              });
+                            },
                             child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Shown Captcha value to user
-                                    Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      width: 150.0,
-                                      child: Text(
-                                        'NGO Application)',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          NGOlistDropDownDisplayDatas = false;
-                                          LowVisionRegisterCatracts = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 80.0,
-                                        child: Text(
-                                          'Back',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
+                              width: 80.0,
+                              child: Text(
+                                'Back',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
                           ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
                         ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('NGO Dapan No.'),
-                    _buildHeaderCell('Member Name'),
-                    _buildHeaderCell('Email'),
-                    _buildHeaderCell('Action'),
+                    SizedBox(width: 8.0),
+                    // Table Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('NGO Darpan No.'),
+                        _buildHeaderCell('Member Name'),
+                        _buildHeaderCell('Email'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
+                      future: ApiController.getDPM_NGOApplicationDropDown(
+                          district_code_login, state_code_login),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataNGOAPPlicationDropDownDPm> ddata = snapshot.data;
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.darpanNo),
+                                  _buildDataCell(offer.memberName),
+                                  _buildDataCell(offer.emailid),
+                                  _buildDataCellViewBlue("Edit", () {
+                                    // Handle the edit action here
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
-              FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
-                future: ApiController.getDPM_NGOApplicationDropDown(
-                    district_code_login, state_code_login),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
-                    List<DataNGOAPPlicationDropDownDPm> ddata = snapshot.data;
-                    print('@@---ddata' + ddata.length.toString());
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.name),
-                              _buildDataCell(offer.darpanNo),
-                              _buildDataCell(offer.memberName),
-                              _buildDataCell(offer.emailid),
-                              _buildDataCellViewBlue("Edit", () {
-                                // Handle the edit action here
-                                // For example, navigate to an edit screen or show a dialog
-                                //  print('Edit clicked for item: ${offer.schoolName}');
-                                //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-                                // Example: Navigate to an edit page with the selected item
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
-                              }),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
               ),
             ],
           ),
@@ -2734,6 +2662,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
+
   Widget NGOlistnewHospitalDropdownData() {
     return Column(
       children: [
@@ -2741,6 +2670,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: ngolistNewHosdpitalDropDown,
           child: Column(
             children: [
+              // Header Text
               Container(
                 color: Colors.blue,
                 child: Padding(
@@ -2759,65 +2689,64 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-              // Horizontal Scrolling Header Row
-              SizedBox(width: 8.0),
+              SizedBox(height: 8.0),
+
+              // Horizontal Scrolling for both Header and Data
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('NGO Dapan No.'),
-                    _buildHeaderCell('Ngo  Name'),
-                    _buildHeaderCell('Hospital ID'),
-                    _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Action'),
+                    // Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('NGO Dapan No.'),
+                        _buildHeaderCell('NGO Name'),
+                        _buildHeaderCell('Hospital ID'),
+                        _buildHeaderCell('Hospital Name'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+
+                    // Data Rows
+                    FutureBuilder<List<DataGetNewHospitalData>>(
+                      future: ApiController.getDPM_HospitalApproval(
+                          district_code_login, state_code_login),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetNewHospitalData> ddata = snapshot.data;
+                          print('@@---ddata' + ddata.length.toString());
+
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.darpanNo),
+                                  _buildDataCell(offer.name),
+                                  _buildDataCell(offer.hRegID),
+                                  _buildDataCell(offer.hName),
+                                  _buildDataCellViewBlue("Edit", () {
+                                    // Handle the edit action here
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
-              FutureBuilder<List<DataGetNewHospitalData>>(
-                future: ApiController.getDPM_HospitalApproval(
-                    district_code_login, state_code_login),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
-                    List<DataGetNewHospitalData> ddata = snapshot.data;
-                    print('@@---ddata' + ddata.length.toString());
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.darpanNo),
-                              _buildDataCell(offer.name),
-                              _buildDataCell(offer.hRegID),
-                              _buildDataCell(offer.hName),
-                              _buildDataCellViewBlue("Edit", () {
-                                // Handle the edit action here
-                                // For example, navigate to an edit screen or show a dialog
-                                //  print('Edit clicked for item: ${offer.schoolName}');
-                                //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-                                // Example: Navigate to an edit page with the selected item
-                                // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
-                              }),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
               ),
             ],
           ),
@@ -2826,6 +2755,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
+
   Widget NGOlistgovtPvtotherHospitalDropdownData() {
     return Column(
       children: [
@@ -2833,6 +2763,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: ngoGovtPrivateOthereHosdpitalDataShow,
           child: Column(
             children: [
+              // Header Text
               Container(
                 color: Colors.blue,
                 child: Padding(
@@ -2851,20 +2782,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-              // Horizontal Scrolling Header Row
-              SizedBox(width: 8.0),
+              SizedBox(height: 8.0),
+
+              // Dropdown for selecting organisation type
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: new DropdownButtonHideUnderline(
+                      color: Colors.grey, borderRadius: BorderRadius.circular(10)),
+                  child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      focusColor: Colors.white,
                       value: oganisationTypeGovtPrivateDRopDown,
-                      //elevation: 5,
                       style: TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.white,
                       items: <String>[
@@ -2874,15 +2803,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                         'Private Medical College',
                         'Other(Institution not claiming fund from NPCBVI)',
                       ].map<DropdownMenuItem<String>>(
-                          (String oganisationTypeGovtPrivateDRopDowns) {
-                        return DropdownMenuItem<String>(
-                          value: oganisationTypeGovtPrivateDRopDowns,
-                          child: Text(
-                            oganisationTypeGovtPrivateDRopDowns,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
+                              (String oganisationTypeGovtPrivateDRopDowns) {
+                            return DropdownMenuItem<String>(
+                              value: oganisationTypeGovtPrivateDRopDowns,
+                              child: Text(
+                                oganisationTypeGovtPrivateDRopDowns,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
                       hint: Text(
                         "Select Organisation Type",
                         style: TextStyle(
@@ -2894,135 +2823,92 @@ class _DPMDashboard extends State<DPMDashboard> {
                         setState(() {
                           oganisationTypeGovtPrivateDRopDown =
                               oganisationTypeGovtPrivateDRopDownss;
-                          print('@@oganisationTypeGovtPrivateDRopDown--' +
-                              oganisationTypeGovtPrivateDRopDown);
-                          if (oganisationTypeGovtPrivateDRopDown ==
-                              "Govt. District Hospital/Govt.MEdical College") {
-                            dropDownvalueOrgnbaistaionType = 10;
-                            print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                oganisationTypeGovtPrivateDRopDown +
-                                "-----" +
-                                dropDownvalueOrgnbaistaionType.toString());
-                          } else if (oganisationTypeGovtPrivateDRopDown ==
-                              "CHC/Govt. Sub-Dist. Hospital") {
-                            dropDownvalueOrgnbaistaionType = 11;
-                            print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                oganisationTypeGovtPrivateDRopDown +
-                                "-----" +
-                                dropDownvalueOrgnbaistaionType.toString());
-                          } else if (oganisationTypeGovtPrivateDRopDown ==
-                              "Private Practitioner") {
-                            dropDownvalueOrgnbaistaionType = 12;
-                            print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                oganisationTypeGovtPrivateDRopDown +
-                                "-----" +
-                                dropDownvalueOrgnbaistaionType.toString());
-                          } else if (oganisationTypeGovtPrivateDRopDown ==
-                              "Private Medical College") {
-                            dropDownvalueOrgnbaistaionType = 13;
-                            print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                oganisationTypeGovtPrivateDRopDown +
-                                "-----" +
-                                dropDownvalueOrgnbaistaionType.toString());
-                          } else if (oganisationTypeGovtPrivateDRopDown ==
-                              "Other(Institution not claiming fund from NPCBVI)") {
-                            dropDownvalueOrgnbaistaionType = 14;
-                            print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                oganisationTypeGovtPrivateDRopDown +
-                                "-----" +
-                                dropDownvalueOrgnbaistaionType.toString());
-                          }
+                          updateDropDownSelection();
                         });
                       },
                     ),
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: ElevatedButton(
-                      child: Text('Submit'),
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                      ),
-                      onPressed: () {
-                        print('@@GovtPvtSubmit clkick------');
-                        setState(() {
-                          organisationGovtPrivateSelectionAfter = true;
-                        });
-                      },
-                    ),
+
+              // Submit Button
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: ElevatedButton(
+                  child: Text('Submit'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.blue,
                   ),
-                ],
+                  onPressed: () {
+                    setState(() {
+                      organisationGovtPrivateSelectionAfter = true;
+                    });
+                  },
+                ),
               ),
+
+              // Display data after submission
               Visibility(
                 visible: organisationGovtPrivateSelectionAfter,
                 child: Column(
                   children: [
+                    // Horizontal Scroll for Headers and Data
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: Row(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildHeaderCellSrNo('S.No.'),
-                          _buildHeaderCell('NGO Dapan No.'),
-                          _buildHeaderCell('Ngo Name'),
-                          _buildHeaderCell('Hospital ID'),
-                          _buildHeaderCell('Hospital Name'),
-                          _buildHeaderCell('Action'),
+                          // Header Row
+                          Row(
+                            children: [
+                              _buildHeaderCellSrNo('S.No.'),
+                              _buildHeaderCell('NGO Dapan No.'),
+                              _buildHeaderCell('Ngo Name'),
+                              _buildHeaderCell('Hospital ID'),
+                              _buildHeaderCell('Hospital Name'),
+                              _buildHeaderCell('Action'),
+                            ],
+                          ),
+                          Divider(color: Colors.blue, height: 1.0),
+
+                          // Data Rows
+                          FutureBuilder<List<DataDPMGovtPrivateOrganisationTypeData>>(
+                            future: ApiController.getDPM_GovtPvtOther(
+                                district_code_login,
+                                state_code_login,
+                                dropDownvalueOrgnbaistaionType),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return Utils.getEmptyView("Error: ${snapshot.error}");
+                              } else if (!snapshot.hasData || snapshot.data == null) {
+                                return Utils.getEmptyView("No data found");
+                              } else {
+                                List<DataDPMGovtPrivateOrganisationTypeData> ddata = snapshot.data;
+                                return Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        _buildDataCellSrNo(
+                                            (ddata.indexOf(offer) + 1).toString()),
+                                        _buildDataCell(offer.npcbNo),
+                                        _buildDataCell(offer.oName),
+                                        _buildDataCell(offer.nodalOfficerName),
+                                        _buildDataCell(offer.emailId),
+                                        _buildDataCellViewBlue("View", () {
+                                          // Handle the view action here
+                                        }),
+                                      ],
+                                    );
+                                  }).toList(),
+                                );
+                              }
+                            },
+                          ),
                         ],
                       ),
-                    ),
-                    Divider(color: Colors.blue, height: 1.0),
-                    FutureBuilder<List<DataDPMGovtPrivateOrganisationTypeData>>(
-                      future: ApiController.getDPM_GovtPvtOther(
-                          district_code_login,
-                          state_code_login,
-                          dropDownvalueOrgnbaistaionType),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Utils.getEmptyView("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData || snapshot.data == null) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
-                          List<DataDPMGovtPrivateOrganisationTypeData> ddata =
-                              snapshot.data;
-                          print('@@---ddata' + ddata.length.toString());
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: ddata.map((offer) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    _buildDataCellSrNo(
-                                        (ddata.indexOf(offer) + 1).toString()),
-                                    _buildDataCell(offer.npcbNo),
-                                    _buildDataCell(offer.oName),
-                                    _buildDataCell(offer.nodalOfficerName),
-                                    _buildDataCell(offer.emailId),
-                                    _buildDataCellViewBlue("View", () {
-                                      // Handle the edit action here
-                                      // For example, navigate to an edit screen or show a dialog
-                                      //  print('Edit clicked for item: ${offer.schoolName}');
-                                      //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-                                      // Example: Navigate to an edit page with the selected item
-                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
-                                    }),
-                                  ],
-                                );
-                              }).toList(),
-                            ),
-                          );
-                        }
-                      },
                     ),
                   ],
                 ),
@@ -3033,6 +2919,26 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+  void updateDropDownSelection() {
+    if (oganisationTypeGovtPrivateDRopDown ==
+        "Govt. District Hospital/Govt.MEdical College") {
+      dropDownvalueOrgnbaistaionType = 10;
+    } else if (oganisationTypeGovtPrivateDRopDown ==
+        "CHC/Govt. Sub-Dist. Hospital") {
+      dropDownvalueOrgnbaistaionType = 11;
+    } else if (oganisationTypeGovtPrivateDRopDown == "Private Practitioner") {
+      dropDownvalueOrgnbaistaionType = 12;
+    } else if (oganisationTypeGovtPrivateDRopDown == "Private Medical College") {
+      dropDownvalueOrgnbaistaionType = 13;
+    } else if (oganisationTypeGovtPrivateDRopDown ==
+        "Other(Institution not claiming fund from NPCBVI)") {
+      dropDownvalueOrgnbaistaionType = 14;
+    }
+    print('@@oganisationTypeGovtPrivateDRopDown--$oganisationTypeGovtPrivateDRopDown'
+        '-----$dropDownvalueOrgnbaistaionType');
+  }
+
 
   Widget NGOlistApproveRevenuMOUDataShow() {
     return Column(
@@ -3062,20 +2968,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-              // Horizontal Scrolling Header Row
               SizedBox(width: 8.0),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: new DropdownButtonHideUnderline(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
                       focusColor: Colors.white,
                       value: ngoApproveRevenuMOU,
-                      //elevation: 5,
                       style: TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.white,
                       items: <String>[
@@ -3084,15 +2989,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                         'Private Medical College',
                         'Other(Institution not claiming fund from NPCBVI/GOVT/PRIVATE)',
                       ].map<DropdownMenuItem<String>>(
-                          (String ngoApproveRevenueMOUs) {
-                        return DropdownMenuItem<String>(
-                          value: ngoApproveRevenueMOUs,
-                          child: Text(
-                            ngoApproveRevenueMOUs,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
+                              (String ngoApproveRevenueMOUs) {
+                            return DropdownMenuItem<String>(
+                              value: ngoApproveRevenueMOUs,
+                              child: Text(
+                                ngoApproveRevenueMOUs,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
                       hint: Text(
                         "Select Organisation Type",
                         style: TextStyle(
@@ -3103,7 +3008,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       onChanged: (String ngoApproveRevenueMOUss) {
                         setState(() {
                           ngoApproveRevenuMOU = ngoApproveRevenueMOUss;
-
                           if (ngoApproveRevenuMOU == "NGOs") {
                             ngoApproveRevenueMOUValue = 5;
                           } else if (ngoApproveRevenuMOU ==
@@ -3126,14 +3030,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: new DropdownButtonHideUnderline(
+                    color: Colors.grey,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
                       focusColor: Colors.white,
                       value: ngodependOrganbisatioSelectValue,
-                      //elevation: 5,
                       style: TextStyle(color: Colors.white),
                       iconEnabledColor: Colors.white,
                       items: <String>[
@@ -3141,15 +3045,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                         'Expired',
                         'Renew Approve',
                       ].map<DropdownMenuItem<String>>(
-                          (String ngoApproveRevenueMOUs) {
-                        return DropdownMenuItem<String>(
-                          value: ngoApproveRevenueMOUs,
-                          child: Text(
-                            ngoApproveRevenueMOUs,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
+                              (String ngoApproveRevenueMOUs) {
+                            return DropdownMenuItem<String>(
+                              value: ngoApproveRevenueMOUs,
+                              child: Text(
+                                ngoApproveRevenueMOUs,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
                       hint: Text(
                         "Pending for Renew",
                         style: TextStyle(
@@ -3178,7 +3082,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -3205,82 +3108,74 @@ class _DPMDashboard extends State<DPMDashboard> {
                   children: [
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: Row(
+                      child: Column(
                         children: [
-                          _buildHeaderCellSrNo('S.No.'),
-                          _buildHeaderCell('Hospital Id'),
-                          _buildHeaderCell('Hospital Name'),
-                          _buildHeaderCell('Mobile'),
-                          _buildHeaderCell('Email'),
-                          _buildHeaderCell('From Date'),
-                          _buildHeaderCell('To Date'),
-                          _buildHeaderCell('Status'),
-                          _buildHeaderCell('MOU'),
-                          _buildHeaderCell('Action'),
+                          Row(
+                            children: [
+                              _buildHeaderCellSrNo('S.No.'),
+                              _buildHeaderCell('Hospital Id'),
+                              _buildHeaderCell('Hospital Name'),
+                              _buildHeaderCell('Mobile'),
+                              _buildHeaderCell('Email'),
+                              _buildHeaderCell('From Date'),
+                              _buildHeaderCell('To Date'),
+                              _buildHeaderCell('Status'),
+                              _buildHeaderCell('MOU'),
+                              _buildHeaderCell('Action'),
+                            ],
+                          ),
+                          Divider(color: Colors.blue, height: 1.0),
+                          FutureBuilder<List<DataGetDPM_MOUApprove>>(
+                            future: ApiController.getDPM_MOUApprove(
+                                district_code_login,
+                                ngoApproveRevenueMOUValue,
+                                ngodependOrganbisatioSelectValuessss),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
+                              } else if (snapshot.hasError) {
+                                return Utils.getEmptyView("Error: ${snapshot.error}");
+                              } else if (!snapshot.hasData || snapshot.data == null) {
+                                return Utils.getEmptyView("No data found");
+                              } else {
+                                List<DataGetDPM_MOUApprove> ddata = snapshot.data;
+                                print('@@---ddata' + ddata.length.toString());
+                                return SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Column(
+                                    children: ddata.map((offer) {
+                                      return Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          _buildDataCellSrNo(
+                                              (ddata.indexOf(offer) + 1).toString()),
+                                          _buildDataCell(offer.hRegID),
+                                          _buildDataCell(offer.hName),
+                                          _buildDataCell(offer.mobile.toString()),
+                                          _buildDataCell(offer.emailId),
+                                          _buildDataCell(
+                                              Utils.formatDateString(offer.fromDate)),
+                                          _buildDataCell(
+                                              Utils.formatDateString(offer.toDate)),
+                                          _buildDataCell(offer.vstatus.toString()),
+                                          _buildDataCellViewBlue(offer.file, () {
+                                            // Handle the edit action here
+                                          }),
+                                          _buildDataCellViewBlue(" ", () {
+                                            // Handle the edit action here
+                                          }),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ),
+                                );
+                              }
+                            },
+                          ),
                         ],
                       ),
-                    ),
-                    Divider(color: Colors.blue, height: 1.0),
-                    FutureBuilder<List<DataGetDPM_MOUApprove>>(
-                      future: ApiController.getDPM_MOUApprove(
-                          district_code_login,
-                          ngoApproveRevenueMOUValue,
-                          ngodependOrganbisatioSelectValuessss),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Utils.getEmptyView("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData || snapshot.data == null) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
-                          List<DataGetDPM_MOUApprove> ddata = snapshot.data;
-                          print('@@---ddata' + ddata.length.toString());
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: ddata.map((offer) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    _buildDataCellSrNo(
-                                        (ddata.indexOf(offer) + 1).toString()),
-                                    _buildDataCell(offer.hRegID),
-                                    _buildDataCell(offer.hName),
-                                    _buildDataCell(offer.mobile.toString()),
-                                    _buildDataCell(offer.emailId),
-                                    _buildDataCell(
-                                        Utils.formatDateString(offer.fromDate)),
-                                    _buildDataCell(
-                                        Utils.formatDateString(offer.toDate)),
-                                    _buildDataCell(offer.vstatus.toString()),
-                                    _buildDataCellViewBlue(offer.file, () {
-                                      // Handle the edit action here
-                                      // For example, navigate to an edit screen or show a dialog
-                                      //  print('Edit clicked for item: ${offer.schoolName}');
-                                      //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-                                      // Example: Navigate to an edit page with the selected item
-                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
-                                    }),
-                                    _buildDataCellViewBlue(" ", () {
-                                      // Handle the edit action here
-                                      // For example, navigate to an edit screen or show a dialog
-                                      //  print('Edit clicked for item: ${offer.schoolName}');
-                                      //  Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-                                      // Example: Navigate to an edit page with the selected item
-                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
-                                    }),
-                                  ],
-                                );
-                              }).toList(),
-                            ),
-                          );
-                        }
-                      },
                     ),
                   ],
                 ),
@@ -3291,6 +3186,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
 
   Widget ngolistEyeScreeningShowData() {
     return Column(
@@ -3335,8 +3231,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                                 // Update boolean flags to control UI visibility
                                 ngoEyeScreeningdataShow = false;
-                                dpmEyeScreeningSchoolDataShowADDNewRecord =
-                                    true;
+                                dpmEyeScreeningSchoolDataShowADDNewRecord = true;
                               });
                             },
                             child: Text(
@@ -3345,8 +3240,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 color: Colors.white, // Text color
                                 fontWeight: FontWeight.w800, // Text weight
                               ),
-                              overflow:
-                                  TextOverflow.ellipsis, // Handle text overflow
+                              overflow: TextOverflow.ellipsis, // Handle text overflow
                             ),
                           ),
                         ),
@@ -3355,94 +3249,77 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-              // Horizontal Scrolling Header Row
-              SizedBox(width: 8.0),
+              // Single horizontal scrolling view containing both header and data
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
+                child: Column(
                   children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('Year'),
-                    _buildHeaderCell('Month'),
-                    _buildHeaderCell('School name'),
-                    _buildHeaderCell('Teacher Trained'),
-                    _buildHeaderCell('Children screened'),
-                    _buildHeaderCell(
-                        'Children detected with Refractive Errors'),
-                    _buildHeaderCell('Free Glasses Provided by Organization'),
-                    _buildHeaderCell('Action'),
+                    // Horizontal Scrolling Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Year'),
+                        _buildHeaderCell('Month'),
+                        _buildHeaderCell('School name'),
+                        _buildHeaderCell('Teacher Trained'),
+                        _buildHeaderCell('Children screened'),
+                        _buildHeaderCell(
+                            'Children detected with Refractive Errors'),
+                        _buildHeaderCell('Free Glasses Provided by Organization'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataGetEyeScreening>>(
+                      future: ApiController.GetDPM_EyeScreening(
+                          district_code_login, state_code_login, userId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetEyeScreening> ddata = snapshot.data;
+                          print('@@---ddata' + ddata.length.toString());
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.yearname),
+                                  _buildDataCell(offer.monthname),
+                                  _buildDataCell(offer.schoolName),
+                                //  _buildDataCell(offer.schoolAddress),
+                                  _buildDataCell(offer.trainedTeacher.toString()),
+                                  _buildDataCell(offer.childScreen.toString()),
+                                  _buildDataCell(offer.childDetect.toString()),
+                                  _buildDataCell(offer.freeglass.toString()),
+                                  _buildDataCellViewBlue("Edit", () {
+                                    // Handle the edit action here
+                                    print('@@Edit clicked for item: ${offer.schoolid}');
+                                    SharedPrefs.storeSharedValues(AppConstant.schoolid, offer.schoolid.toString());
+                                    setState(() {
+                                      _future = getDPM_ScreeningYear();
+                                      _futureMonth = getDPM_ScreeningMonth();
+                                      _futureEyeScreeningEdit = ApiController.getDPM_EyeScreeningEdit(
+                                          district_code_login, state_code_login, userId);
+                                      ngoEyeScreeningdataShow = false;
+                                      dpmEyeScreeningSchoolDataShow = true;
+                                    });
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
-              FutureBuilder<List<DataGetEyeScreening>>(
-                future: ApiController.GetDPM_EyeScreening(
-                    district_code_login, state_code_login, userId),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
-                    List<DataGetEyeScreening> ddata = snapshot.data;
-                    print('@@---ddata' + ddata.length.toString());
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.yearname),
-                              _buildDataCell(offer.monthname),
-                              _buildDataCell(offer.schoolName),
-                              _buildDataCell(offer.schoolAddress),
-                              _buildDataCell(offer.trainedTeacher.toString()),
-                              _buildDataCell(offer.childScreen.toString()),
-                              _buildDataCell(offer.childDetect.toString()),
-                              _buildDataCell(offer.freeglass.toString()),
-                              _buildDataCellViewBlue("Edit", () {
-                                // Handle the edit action here
-                                // For example, navigate to an edit screen or show a dialog
-                                print(
-                                    '@@Edit clicked for item: ${offer.schoolid}');
-                                //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-                                SharedPrefs.storeSharedValues(
-                                    AppConstant.schoolid,
-                                    offer.schoolid.toString());
-                                setState(() {
-                                  _future = getDPM_ScreeningYear();
-                                  _futureMonth = getDPM_ScreeningMonth();
-                                  _futureEyeScreeningEdit =
-                                      ApiController.getDPM_EyeScreeningEdit(
-                                          district_code_login,
-                                          state_code_login,
-                                          userId);
-                                  ngoEyeScreeningdataShow = false;
-
-                                  dpmEyeScreeningSchoolDataShow = true;
-                                });
-
-                                /*  Navigator.push(
-                                   context,
-                                   MaterialPageRoute(
-                                       builder: (context) => DPMEyeSchoolScreens()),
-
-                                 );*/
-                              }),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
               ),
             ],
           ),
@@ -3450,6 +3327,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
 
   Future<List<DataGetDPM_ScreeningYear>> getDPM_ScreeningYear() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -5740,78 +5618,68 @@ class _DPMDashboard extends State<DPMDashboard> {
       builder: (BuildContext context) {
         // Get screen size
         double screenWidth = MediaQuery.of(context).size.width;
-
         double screenHeight = MediaQuery.of(context).size.height;
 
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: screenWidth * 0.9, // 90% of screen width
-            height: screenHeight * 0.7, // 70% of screen height
+            width: screenWidth * 0.9,  // 90% of screen width
+            height: screenHeight * 0.7,  // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Horizontal Scrolling Header Row
+                  // Horizontal Scrolling for both Header and Data Rows
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(
+                    child: Column(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('Disease Name'),
-                        _buildHeaderCell('Total'),
-                        _buildHeaderCell('Action'),
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('Disease Name'),
+                            _buildHeaderCell('Total'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<DataGetPatientAPprovedwithFinanceYear>>(
+                          future: ApiController.GetDPM_Patients_Approved_finacne(
+                            district_code_login,
+                            state_code_login,
+                            currentFinancialYear,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<DataGetPatientAPprovedwithFinanceYear> ddata = snapshot.data;
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.diseaseName),
+                                      _buildDataCell(offer.totalApproPending.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print('@@Edit clicked for item: ${offer.diseaseId}');
+                                        showDiseaseApprovedPatintViewClick(offer.diseaseId);
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
-                  ),
-                  Divider(color: Colors.blue, height: 1.0),
-                  // Data Rows
-                  FutureBuilder<List<DataGetPatientAPprovedwithFinanceYear>>(
-                    future: ApiController.GetDPM_Patients_Approved_finacne(
-                        district_code_login,
-                        state_code_login,
-                        currentFinancialYear),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Utils.getEmptyView("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData ||
-                          snapshot.data == null ||
-                          snapshot.data.isEmpty) {
-                        return Utils.getEmptyView("No data found");
-                      } else {
-                        List<DataGetPatientAPprovedwithFinanceYear> ddata =
-                            snapshot.data;
-                        print('@@---ddata' + ddata.length.toString());
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            children: ddata.map((offer) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _buildDataCellSrNo(
-                                      (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.diseaseName),
-                                  _buildDataCell(
-                                      offer.totalApproPending.toString()),
-                                  _buildDataCellViewBlue("View", () {
-                                    // Handle the edit action here
-                                    // For example, navigate to an edit screen or show a dialog
-                                    print(
-                                        '@@Edit clicked for item: ${offer.diseaseId}');
-                                    //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-                                    showDiseaseApprovedPatintViewClick(offer.diseaseId);
-                                  }),
-                                ],
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      }
-                    },
                   ),
                 ],
               ),
@@ -5836,80 +5704,68 @@ class _DPMDashboard extends State<DPMDashboard> {
       builder: (BuildContext context) {
         // Get screen size
         double screenWidth = MediaQuery.of(context).size.width;
-
         double screenHeight = MediaQuery.of(context).size.height;
 
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: screenWidth * 0.9, // 90% of screen width
-            height: screenHeight * 0.7, // 70% of screen height
+            width: screenWidth * 0.9,  // 90% of screen width
+            height: screenHeight * 0.7,  // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Horizontal Scrolling Header Row
+                  // Horizontal scrolling for both Header and Data Rows
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(
+                    child: Column(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('Disease Name'),
-                        _buildHeaderCell('Total'),
-                        _buildHeaderCell('Action'),
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('Disease Name'),
+                            _buildHeaderCell('Total'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<DataGetPatientPendingwithFinance>>(
+                          future: ApiController.GetDPM_Patients_Pending_finacne(
+                            district_code_login,
+                            state_code_login,
+                            currentFinancialYear,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<DataGetPatientPendingwithFinance> ddata = snapshot.data;
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.diseaseName),
+                                      _buildDataCell(offer.totalApproPending.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print('@@Edit clicked for item: ${offer.diseaseName}');
+                                        showDiseasePatintPendingClickFlow(offer.diseaseId);
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
-                  ),
-                  Divider(color: Colors.blue, height: 1.0),
-                  // Data Rows
-                  FutureBuilder<List<DataGetPatientPendingwithFinance>>(
-                    future: ApiController.GetDPM_Patients_Pending_finacne(
-                        district_code_login,
-                        state_code_login,
-                        currentFinancialYear),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Utils.getEmptyView("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData ||
-                          snapshot.data == null ||
-                          snapshot.data.isEmpty) {
-                        return Utils.getEmptyView("No data found");
-                      } else {
-                        List<DataGetPatientPendingwithFinance> ddata =
-                            snapshot.data;
-                        print('@@---ddata' + ddata.length.toString());
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            children: ddata.map((offer) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _buildDataCellSrNo(
-                                      (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.diseaseName),
-                                  _buildDataCell(
-                                      offer.totalApproPending.toString()),
-                                  _buildDataCellViewBlue("View", () {
-                                    // Handle the edit action here
-                                    // For example, navigate to an edit screen or show a dialog
-                                    print(
-                                        '@@Edit clicked for item: ${offer.diseaseName}');
-                                    //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-                                    showDiseasePatintPendingClickFlow(offer.diseaseId);
-
-                                    // Example: Navigate to an edit page with the selected item
-                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => EditPage(offer: offer)));
-                                  }),
-                                ],
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      }
-                    },
                   ),
                 ],
               ),
@@ -5927,6 +5783,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
+
 
   void showDiseaseApprovedPatintViewClick(int diseaseid) {
     showDialog(
@@ -5934,78 +5791,76 @@ class _DPMDashboard extends State<DPMDashboard> {
       builder: (BuildContext context) {
         // Get screen size
         double screenWidth = MediaQuery.of(context).size.width;
-
         double screenHeight = MediaQuery.of(context).size.height;
 
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: screenWidth * 0.9, // 90% of screen width
-            height: screenHeight * 0.7, // 70% of screen height
+            width: screenWidth * 0.9,  // 90% of screen width
+            height: screenHeight * 0.7,  // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Horizontal Scrolling Header Row
+                  // Combined Horizontal Scrolling for Header and Data Rows
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(
+                    child: Column(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('NGO'),
-                        _buildHeaderCell('Approved'),
-                        _buildHeaderCell('Action'),
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('NGO'),
+                            _buildHeaderCell('Approved'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<DataPatientapprovedSisesesViewclick>>(
+                          future: ApiController.GetDPM_Patients_Approved_View(
+                            district_code_login,
+                            state_code_login,
+                            currentFinancialYear,
+                            "",
+                            diseaseid,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<DataPatientapprovedSisesesViewclick> ddata = snapshot.data;
+                              print('@@---ddata: ' + ddata.length.toString());
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.ngoname),
+                                      _buildDataCell(offer.approved.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print("@@npcbNo: " + offer.npcbNo);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DPMReportScreen(),
+                                          ),
+                                        );
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
-                  ),
-                  Divider(color: Colors.blue, height: 1.0),
-                  // Data Rows
-                  FutureBuilder<List<DataPatientapprovedSisesesViewclick>>(
-                    future: ApiController.GetDPM_Patients_Approved_View(
-                        district_code_login,
-                        state_code_login,
-                        currentFinancialYear,"",diseaseid),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Utils.getEmptyView("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData ||
-                          snapshot.data == null ||
-                          snapshot.data.isEmpty) {
-                        return Utils.getEmptyView("No data found");
-                      } else {
-                        List<DataPatientapprovedSisesesViewclick> ddata =
-                            snapshot.data;
-                        print('@@---ddata' + ddata.length.toString());
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            children: ddata.map((offer) {
-                              return Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _buildDataCellSrNo(
-                                      (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.ngoname),
-                                  _buildDataCell(
-                                      offer.approved.toString()),
-                                  _buildDataCellViewBlue("View", () {
-                                    // Handle the edit action here
-                                    // For example, navigate to an edit screen or show a dialog
-                                    print("@@npcbNo==="+offer.npcbNo);
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => DPMReportScreen()));
-                                  }),
-                                ],
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      }
-                    },
                   ),
                 ],
               ),
@@ -6023,88 +5878,83 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
+
   void showDiseasePatintPendingClickFlow(int diseaseid) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         // Get screen size
         double screenWidth = MediaQuery.of(context).size.width;
-
         double screenHeight = MediaQuery.of(context).size.height;
 
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: screenWidth * 0.9, // 90% of screen width
-            height: screenHeight * 0.7, // 70% of screen height
+            width: screenWidth * 0.9,  // 90% of screen width
+            height: screenHeight * 0.7,  // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Horizontal Scrolling Header Row
+                  // Combined Horizontal Scrolling for Header and Data Rows
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(
+                    child: Column(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('NGO'),
-                        _buildHeaderCell('Approved'),
-                        _buildHeaderCell('Action'),
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('NGO'),
+                            _buildHeaderCell('Approved'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<DataPatientapprovedSisesesViewclick>>(
+                          future: ApiController.GetDPM_Patients_Approved_View(
+                              30, // district_code_login
+                              3,  // state_code_login
+                              "2022-2023",
+                              "",
+                              diseaseid
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<DataPatientapprovedSisesesViewclick> ddata = snapshot.data;
+                              print('@@---ddata: ' + ddata.length.toString());
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.ngoname),
+                                      _buildDataCell(offer.approved.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print("@@Different TypeShowData--here===");
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => DPMPatientPatientDisceaseInnerDataDisplay(),
+                                          ),
+                                        );
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
-                  ),
-                  Divider(color: Colors.blue, height: 1.0),
-                  // Data Rows
-                  FutureBuilder<List<DataPatientapprovedSisesesViewclick>>(
-                    future: ApiController.GetDPM_Patients_Approved_View(
-                       30,// district_code_login,
-                        3,//state_code_login,
-                        "2022-2023","",diseaseid),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Utils.getEmptyView("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData ||
-                          snapshot.data == null ||
-                          snapshot.data.isEmpty) {
-                        return Utils.getEmptyView("No data found");
-                      } else {
-                        List<DataPatientapprovedSisesesViewclick> ddata =
-                            snapshot.data;
-                        print('@@---ddata' + ddata.length.toString());
-                        return SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            children: ddata.map((offer) {
-                              return Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _buildDataCellSrNo(
-                                      (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.ngoname),
-                                  _buildDataCell(
-                                      offer.approved.toString()),
-                                  _buildDataCellViewBlue("View", () {
-                                    // Handle the edit action here
-                                    // For example, navigate to an edit screen or show a dialog
-                                    print("@@Different TypeShowData--here===");
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => DPMPatientPatientDisceaseInnerDataDisplay(
-
-                                        ),
-                                      ),
-                                    );
-                                  }),
-                                ],
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      }
-                    },
                   ),
                 ],
               ),
@@ -6122,6 +5972,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
+
   /// here we are showing the NGO Data on DPm Dashboard.
   Widget NGOClickAprrovalDisplayDatas() {
     return Column(
@@ -6130,181 +5981,97 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: NGO_APPorovedClickShowData,
           child: Column(
             children: [
-              // Horizontal Scrolling Header Row
+              // Horizontal Scrolling for both Header and Data Rows
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
+                child: Column(
+                  children: [
+                    // Top Info Bar
+                    Container(
+                      color: Colors.white70,
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          Text('District:', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Text(districtNames, style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Text('State:', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Text(stateNames, style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            margin: EdgeInsets.symmetric(horizontal: 10.0),
+                            width: 150.0,
+                            child: Text('NGO(s) (Approved)', style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500)),
+                          ),
+                          const SizedBox(width: 10),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                dashboardviewReplace = true;
+                                NGO_APPorovedClickShowData = false;
+                                NGO_PendingClickShowData = false;
+                              });
+                            },
                             child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Shown Captcha value to user
-                                    Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      width: 150.0,
-                                      child: Text(
-                                        'NGO(s) (Approved)',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        //
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          NGO_APPorovedClickShowData = false;
-                                          NGO_PendingClickShowData = false;
-                                          // Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 80.0,
-                                        child: Text(
-                                          'Back',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
+                              width: 80.0,
+                              child: Text('Back', overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500)),
                             ),
                           ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
                         ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('NGO Name'),
-                    _buildHeaderCell('Member Name'),
-                    _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Address'),
-                    _buildHeaderCell('Nodal Officer Name'),
-                    _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),
+                    // Data Table Header
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('NGO Name'),
+                        _buildHeaderCell('Member Name'),
+                        _buildHeaderCell('Hospital Name'),
+                        _buildHeaderCell('Address'),
+                        _buildHeaderCell('Nodal Officer Name'),
+                        _buildHeaderCell('Mobile No'),
+                        _buildHeaderCell('Email Id'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
+                      future: ApiController.getDPM_NGOAPProved_pendings(
+                          district_code_login, state_code_login, dpmAPPRoved_valueSendinAPi),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.name),
+                                  _buildDataCell(offer.memberName),
+                                  _buildDataCell(offer.hName),
+                                  _buildDataCell(offer.address),
+                                  _buildDataCell(offer.nodalOfficerName),
+                                  _buildDataCell(offer.mobile.toString()),
+                                  _buildDataCell(offer.emailid.toString()),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
-              FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
-                future: ApiController.getDPM_NGOAPProved_pendings(
-                    district_code_login,
-                    state_code_login,
-                    dpmAPPRoved_valueSendinAPi),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
-                    List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
-                    print('@@---ddata' + ddata.length.toString());
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.name),
-                              _buildDataCell(offer.memberName),
-                              _buildDataCell(offer.hName),
-                              _buildDataCell(offer.address),
-                              _buildDataCell(offer.nodalOfficerName),
-                              _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailid.toString()),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
               ),
             ],
           ),
@@ -6312,6 +6079,8 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+
 
   Widget NGOClickPendingDisplayDatas() {
     return Column(
@@ -6320,180 +6089,102 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: NGO_PendingClickShowData,
           child: Column(
             children: [
-              // Horizontal Scrolling Header Row
+              // Combined Header and Data Rows
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
+                child: Column(
+                  children: [
+                    // Header Row with District and State Information
+                    Container(
+                      color: Colors.white70,
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
+                          Text('District:', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Text(districtNames, style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Text('State:', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Text(stateNames, style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            margin: EdgeInsets.symmetric(horizontal: 10.0),
+                            width: 150.0,
+                            child: Text('NGO(s) (Approved)', style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500)),
+                          ),
+                          const SizedBox(width: 10),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                dashboardviewReplace = true;
+                                NGO_PendingClickShowData = false;
+                                NGO_APPorovedClickShowData = false;
+                              });
+                            },
                             child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Shown Captcha value to user
-                                    Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      width: 150.0,
-                                      child: Text(
-                                        'NGO(s) (Approved)',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          NGO_PendingClickShowData = false;
-                                          NGO_APPorovedClickShowData = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 80.0,
-                                        child: Text(
-                                          'Back',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
+                              width: 80.0,
+                              child: Text('Back', overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.red, fontWeight: FontWeight.w500)),
                             ),
                           ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
                         ],
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('NGO Name'),
-                    _buildHeaderCell('Member Name'),
-                    _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Address'),
-                    _buildHeaderCell('Nodal Officer Name'),
-                    _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),
+
+                    // Table Header
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('NGO Name'),
+                        _buildHeaderCell('Member Name'),
+                        _buildHeaderCell('Hospital Name'),
+                        _buildHeaderCell('Address'),
+                        _buildHeaderCell('Nodal Officer Name'),
+                        _buildHeaderCell('Mobile No'),
+                        _buildHeaderCell('Email Id'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+
+                    // Data Rows
+                    FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
+                      future: ApiController.getDPM_NGOAPProved_pendings(
+                        district_code_login,
+                        state_code_login,
+                        dpmPending_valueSendinAPi,
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.name),
+                                  _buildDataCell(offer.memberName),
+                                  _buildDataCell(offer.hName),
+                                  _buildDataCell(offer.address),
+                                  _buildDataCell(offer.nodalOfficerName),
+                                  _buildDataCell(offer.mobile.toString()),
+                                  _buildDataCell(offer.emailid.toString()),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
-              FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
-                future: ApiController.getDPM_NGOAPProved_pendings(
-                    district_code_login,
-                    state_code_login,
-                    dpmPending_valueSendinAPi),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
-                    List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
-                    print('@@---ddata---' + ddata.length.toString());
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.name),
-                              _buildDataCell(offer.memberName),
-                              _buildDataCell(offer.hName),
-                              _buildDataCell(offer.address),
-                              _buildDataCell(offer.nodalOfficerName),
-                              _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailid.toString()),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
               ),
             ],
           ),
@@ -6501,6 +6192,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
 
   /// here we are showing the GovtPrivateHospital Dat aon DPm Dashboard.
   Widget DPMGetDPM_GHA_Click_prrovalDisplayDatas() {
