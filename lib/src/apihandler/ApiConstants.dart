@@ -67,4 +67,6 @@ class ApiConstants {
   static String GetHospitalList = 'GetHospitalList';
 
   static String VeiwHospitalDetails = 'VeiwHospitalDetails';
+
+  static String GetHospitalData = 'GetHospitalData';
 }

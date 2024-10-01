@@ -12,4 +12,6 @@ class AppConstant {
 
   static final String entryBy = "entryBy";
   static final String status = "status";
+  static final String hospitalId = "hospitalId";
+
 }

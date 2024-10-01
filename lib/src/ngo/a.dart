@@ -55,7 +55,8 @@ class _NgoDashboard extends State<NgoDashboard> {
   String role_id, darpan_nos;
   bool ngoDashboardDatas = false;
   String selectedHospitalName = ''; // String to save the selected value's name
-  String selectedHRegID;
+  String hosID;
+  String selectedHRegID; // This will store the selected hRegID
   @override
   void initState() {
     // TODO: implement initState
@@ -653,143 +654,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     }
   }
 
-/*  Widget LowVisionRegisterNgoHopsital() {
-    return Column(
-      children: [
-        Visibility(
-          visible: ManageUSerNGOHospt,
-          child: Column(
-            children: [
-              Container(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Hospitals List',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              // Handle the tap event here
-                              print('@@Add New Record clicked');
 
-                              setState(() {
-
-                              });
-                            },
-                            child: Text(
-                              'Add New Hospital',
-                              style: TextStyle(
-                                color: Colors.white, // Text color
-                                fontWeight: FontWeight.w800, // Text weight
-                              ),
-                              overflow:
-                              TextOverflow.ellipsis, // Handle text overflow
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // Horizontal Scrolling Header Row
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('Hospital ID'),
-                    _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Mobile No.'),
-                    _buildHeaderCell('Email ID'),
-                    _buildHeaderCell('Equipment'),
-                    _buildHeaderCell('Doctors'),
-                    _buildHeaderCell('MOU'),
-                    _buildHeaderCell('Status'),
-                    _buildHeaderCell('Action'),
-                  ],
-                ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
-              FutureBuilder<List<DataGetHospitalList>>(
-                future: ApiController.getHospitalList(
-                    darpan_nos, district_code_login, userId),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData || snapshot.data == null) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
-                    List<DataGetHospitalList> ddata = snapshot.data;
-                    print('@@---ddata' + ddata.length.toString());
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.hRegID),
-                              _buildDataCell(offer.hName),
-                              _buildDataCell(offer.mobile),
-                              _buildDataCell(offer.emailId),
-                              _buildDataCell(offer.eqCount.toString()),
-                              _buildDataCell(offer.drcount.toString()),
-                              _buildDataCell(offer.moucount.toString()),
-                              _buildDataCell(offer.status.toString()),
-                              if(offer.status == 'Approved')
-                                _buildViewMAnageDoctorUploadMOUUI()
-                              else
-                                if (offer.status == 'Pending')
-                                  _buildEditMAnageDoctorUploadMOUUI()
-                                else
-                                  _buildEdit()
-                              */ /* _buildDataCellViewBlue("Edit", () {
-                                // Handle the edit action here
-                                // For example, navigate to an edit screen or show a dialog
-                                print(
-                                    '@@Edit clicked for item: ');
-                                //   Utils.showToast('Edit clicked for item: ${offer.schoolName}', true);
-
-
-
-                              }),*/ /*
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }*/
   Widget LowVisionRegisterNgoHopsital() {
     return Column(
       children: [
@@ -898,9 +763,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildDataCell(offer.moucount.toString()),
                                   _buildDataCell(offer.status.toString()),
                                   if (offer.status == 'Approved')
-                               // Store locally
+
                                     _buildViewManageDoctorUploadMOUUI(
-                                        offer.hRegID) // Pass hospitalId
+                                        offer.hRegID)
+                                  // Pass hospitalId
                                   else
                                     if (offer.status == 'Pending')
                                       _buildEditMAnageDoctorUploadMOUUI()
@@ -922,7 +788,12 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
-
+  void _storeHRegID(String hRegID) {
+    setState(() {
+      selectedHRegID = hRegID;
+    });
+    print('Stored hRegID: $selectedHRegID');
+  }
   Widget buildInfoContainer(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -1874,6 +1745,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   Widget _buildViewManageDoctorUploadMOUUI(String hospitalId) {
+
     return Container(
       height: 80,
       width: 200,
@@ -1894,8 +1766,10 @@ class _NgoDashboard extends State<NgoDashboard> {
             print('@@fff1--' + userId);
 
             try {
-              _storeHRegID(hospitalId);
               // Call the API to view hospital details and documents
+              //getHospitalID();
+              _storeHRegID(hospitalId); // Store hRegID when button is clicked
+              print('@@hospButton clicked with hRegID: $hospitalId');
               ViewClickHospitalDetails viewClickHospitalDetails = await viewHospitalDetails(
                 "UP_2018_0184013",
                 hospitalId,
@@ -2078,10 +1952,9 @@ class _NgoDashboard extends State<NgoDashboard> {
             TextButton(
               onPressed: () {
                 // Add your 'Next' button action here
-                print('@@NextClick HIDget---'+selectedHRegID);
-                _fetchAndShowHospitalData(context, selectedHRegID);
-              //  _buildNExtClickHospitallinkedwithNGO(selectedHRegID);
-
+                print('@@Next');
+                print('@@NexthosID----'+hosID.toString());
+                // _buildNExtClickHospitallinkedwithNGO(hosID);
               },
               child: Text('Next'),
             ),
@@ -2091,15 +1964,200 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
-
-  void _storeHRegID(String hRegID) {
-    setState(() {
-      selectedHRegID = hRegID;
-    });
-    print('Stored hRegID: $selectedHRegID');
+  Future<void> getHospitalID() async {
+    hosID = await SharedPrefs.getStoreSharedValue(AppConstant.hospitalId);
+    print("@@@@NexthosID-------"+hosID);
   }
 
-  TableRow _buildTableRowtwo(String label, String value) {
+  Widget _buildNExtClickHospitallinkedwithNGO(String hospitalId) {
+    return Container(
+      height: 80,
+      width: 200,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildButton('View', () async {
+
+            print('View pressed');
+            print('@@fff1--' + darpan_nos);
+            print('@@fff1--' + hospitalId);
+            print('@@fff1--' + district_code_login.toString());
+            print('@@fff1--' + userId);
+
+            try {
+              // Call the API to view hospital details and documents
+              HospitallinkedwithNGO hospitallinkedwithNGO = await getHospitalData(
+                "UP_2018_0184013",
+                hospitalId,
+                district_code_login,
+                userId,
+              );
+
+              // Check if the response status is true and hospitalDetails is not empty
+              if (hospitallinkedwithNGO.status &&
+                  hospitallinkedwithNGO.data.hospitalEquipmentList.isNotEmpty) {
+                HospitalDatalinkedwithNGO details = hospitallinkedwithNGO.data
+                    .hospitalData[0];
+
+                print('@@fff1--' + details.toString());
+
+                // Prepare documents for display
+                List<HospitalEquipmentList> documents = hospitallinkedwithNGO
+                    .data.hospitalEquipmentList;
+
+                // Call the dialog function with the fetched data
+                _showDialogNExtClickHospitallinkedwithNGO(
+                  darpanNo: details.darpanNo,
+                  panNumber: details.hName,
+                  ngoName: details.nodalOfficerName,
+                  memberName: details.mobile,
+                  emailId: details.emailId,
+                  mobileNumber: details.address,
+                  address: details.districtName,
+                  district: details.stateName,
+                  state: details.pincode.toString(),
+                  fax: details.fax,
+                  documents: documents,
+                );
+              } else {
+                Utils.showToast(
+                    "No hospital details found or an error occurred", true);
+              }
+            } catch (e) {
+              print('Error fetching hospital details: $e');
+              Utils.showToast(
+                  "Failed to fetch hospital details. Please try again later.",
+                  true);
+            }
+          }),
+          _buildSeparator(),
+          _buildButton('Manage Doctor', () {
+            print('Manage Doctor pressed');
+            // Logic for managing doctors
+          }),
+          _buildSeparator(),
+          _buildButton('Upload MoU', () {
+            print('Upload MoU pressed');
+            // Logic for uploading MoU
+          }),
+        ],
+      ),
+    );
+  }
+
+  void _showDialogNExtClickHospitallinkedwithNGO({
+    String darpanNo,
+    String panNumber,
+    String ngoName,
+    String memberName,
+    String emailId,
+    String mobileNumber,
+    String address,
+    String district,
+    String state,
+    int fax,
+
+    List<HospitalEquipmentList> documents,
+  }) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('NGO Application Details'),
+          content: SingleChildScrollView(
+            child: Container(
+              width: 800, // Set width as per your requirement
+              constraints: BoxConstraints(maxHeight: 600), // Adjust max height
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Ensure minimal height
+                children: [
+                  Table(
+                    border: TableBorder.all(),
+                    columnWidths: {
+                      0: FixedColumnWidth(65.0), // Width for labels
+                      1: FixedColumnWidth(800.0), // Width for values
+                    },
+                    children: [
+                      _buildTableRow('Darpan No.', darpanNo),
+                      _buildTableRow('PAN Number', panNumber),
+                      _buildTableRow('NGO Name', ngoName),
+                      _buildTableRow('Member Name', memberName),
+                      _buildTableRow('Email ID', emailId),
+                      _buildTableRow('Mobile Number', mobileNumber),
+                      _buildTableRow('Address', address),
+                      _buildTableRow('District', district),
+                      _buildTableRow('State', state),
+                    ],
+                  ),
+                  Container(
+                    color: Colors.blue,
+                    padding: const EdgeInsets.all(4.0),
+                    alignment: Alignment.center,
+                    child: Text(
+                      'List of documents to be verified',
+                      maxLines: 2,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  // Loop through documents and display them
+                  if (documents != null && documents.isNotEmpty) ...[
+                    Column(
+                      children: [
+                        for (var i = 0; i < documents.length; i++)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                              ],
+                            ),
+                          ),
+                      ],
+                    )
+                  ] else
+                    ...[
+                      Text(
+                        'No documents available.',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w300,
+                        ),
+                      ),
+                    ],
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Close'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Add your 'Next' button action here
+                print('@@Next');
+              },
+              child: Text('Next'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  TableRow _buildTableRow(String label, String value) {
     return TableRow(
       children: [
         Padding(
@@ -2135,7 +2193,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
 // Helper function to create table rows
-  TableRow _buildTableRow(String label, String value) {
+  TableRow _buildTableRowo(String label, String value) {
     return TableRow(children: [
       Padding(
         padding: const EdgeInsets.all(4.0),
@@ -2147,7 +2205,6 @@ class _NgoDashboard extends State<NgoDashboard> {
             overflow: TextOverflow.ellipsis, // Handle overflow
             style: TextStyle(
               color: Colors.black,
-
               fontWeight: FontWeight.w300,
             ),
           ),
@@ -2241,7 +2298,10 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   static Future<HospitallinkedwithNGO> getHospitalData(
+      String darpanNo,
       String hospitalId,
+      int districtId,
+      String userId,
       ) async {
     print("@@HospitallinkedwithNGO - Initiating request");
 
@@ -2263,7 +2323,10 @@ class _NgoDashboard extends State<NgoDashboard> {
 
       // Define the request body
       var body = json.encode({
+        "darpanNo": darpanNo,
         "hospitalId": hospitalId,
+        "districtId": districtId,
+        "userId": userId,
       });
       print("@@HospitallinkedwithNGO - Request Body: $body");
 
@@ -2297,172 +2360,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       Utils.showToast("Error: ${e.toString()}", true);
       return HospitallinkedwithNGO(message: "Error occurred", status: false);
     }
-  }
-
-
-  Future<void> _fetchAndShowHospitalData(BuildContext context, String hospitalId) async {
-    try {
-      HospitallinkedwithNGO hospitalData = await getHospitalData(hospitalId);
-
-      if (hospitalData.status) {
-        // Show the dialog with the received data
-        _showDialogWithData(context, hospitalData);
-      } else {
-        Utils.showToast("No hospital details found or an error occurred", true);
-      }
-    } catch (e) {
-      print('Error: $e');
-      Utils.showToast("Failed to fetch hospital details. Please try again later.", true);
-    }
-  }
-  void _showDialogWithData(BuildContext context, HospitallinkedwithNGO data) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Hospital(s) linked with NGO'),
-          content: SingleChildScrollView(
-            child: Container(
-              width: 800,
-              constraints: BoxConstraints(maxHeight: 600),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Table(
-                    border: TableBorder.all(),
-                    columnWidths: {
-                      0: FixedColumnWidth(60.0),
-                      1: FixedColumnWidth(800.0),
-                    },
-                    children: [
-                      _buildTableRow('Darpan No.', data.data.hospitalData[0].darpanNo),
-                      _buildTableRow('Hospital Name', data.data.hospitalData[0].hName),
-                      _buildTableRow('Officer Name', data.data.hospitalData[0].nodalOfficerName),
-                      _buildTableRow('Mobile No.', data.data.hospitalData[0].mobile),
-                      _buildTableRow('Email ID', data.data.hospitalData[0].emailId),
-                      _buildTableRow('Address', data.data.hospitalData[0].address),
-                      _buildTableRow('District', data.data.hospitalData[0].districtName),
-                      _buildTableRow('State', data.data.hospitalData[0].stateName),
-                      _buildTableRow('Pin Code', data.data.hospitalData[0].pincode.toString()),
-                      _buildTableRow('Fax No.', data.data.hospitalData[0].fax.toString()),
-                    ],
-                  ),
-                  Container(
-                    color: Colors.blue,
-                    padding: const EdgeInsets.all(4.0),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'List of Equipment',
-                      maxLines: 2,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                  Table(
-                    border: TableBorder.all(),
-                    columnWidths: {
-                      0: FixedColumnWidth(50.0),
-                      1: FixedColumnWidth(400.0),
-                      2: FixedColumnWidth(250.0),
-                    },
-                    children: [
-                   /*   _buildTableRow('S.No', 'Equipment Name', 'Number of Equipment'),
-                      for (int i = 0; i < data.data.hospitalEquipmentList.length; i++)
-                        _buildTableRow(
-                          (i + 1).toString(),
-                          data.data.hospitalEquipmentList[i].equipmentName,
-                          data.data.hospitalEquipmentList[i].numberOfEquipment.toString(),
-                        ),*/
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ),
-          actions: [
-
-            TextButton(
-              onPressed: () {
-                print('Next ');
-                // Handle any additional logic for the Next button
-              },
-              child: Text('Next'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text('Previous'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-  // Example API call to get hospital data
-  static Future<HospitallinkedwithNGO> getHospitalDatas(String hospitalId) async {
-    print("@@HospitallinkedwithNGO - Initiating request");
-    bool isNetworkAvailable = await Utils.isNetworkAvailable();
-    if (!isNetworkAvailable) {
-      Utils.showToast(AppConstant.noInternet, true);
-      return HospitallinkedwithNGO(message: "No internet", status: false);
-    }
-
-    try {
-      final url = "${ApiConstants.baseUrl}${ApiConstants.GetHospitalData}";
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "apikey": "Key123",
-        "apipassword": "PWD123",
-      };
-
-      var body = json.encode({"hospitalId": hospitalId});
-      print("@@HospitallinkedwithNGO - Request Body: $body");
-
-      Dio dio = Dio();
-      Response response = await dio.post(
-        url,
-        data: body,
-        options: Options(
-          headers: headers,
-          contentType: "application/json",
-          responseType: ResponseType.plain,
-        ),
-      );
-
-      print("@@HospitallinkedwithNGO - API Response: ${response.data}");
-
-      var responseData = json.decode(response.data);
-      HospitallinkedwithNGO data = HospitallinkedwithNGO.fromJson(responseData);
-
-      if (data.status) {
-        Utils.showToast(data.message, true);
-        return data;
-      } else {
-        Utils.showToast(data.message, true);
-        return HospitallinkedwithNGO(message: data.message, status: false);
-      }
-    } catch (e) {
-      Utils.showToast("Error: ${e.toString()}", true);
-      return HospitallinkedwithNGO(message: "Error occurred", status: false);
-    }
-  }
-
-  TableRow _buildTableRowthree(String label, String value) {
-    return TableRow(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(value),
-        ),
-      ],
-    );
   }
 
 }
