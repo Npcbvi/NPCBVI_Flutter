@@ -7,6 +7,8 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/GetDoctorDetailsById.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/HospitallinkedwithNGO.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/dropwdonHospitalBased/DropDownHospitalSelected.dart';
@@ -2520,8 +2522,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                         ),
                         Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
-                        FutureBuilder<
-                            List<DataDoctorlinkedwithHospital>>(
+                        FutureBuilder<List<DataDoctorlinkedwithHospital>>(
                           future: ApiController.getDoctorlinkedwithHospital(
                               hospitalId
 
@@ -2553,9 +2554,18 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       _buildDataCell(offer.dName.toString()),
                                       _buildDataCell(offer.mobile.toString()),
                                       _buildDataCell(offer.emailId.toString()),
-                                      _buildDataCellViewBlue("View", () {
-                                        print("@@npcbNo: " + offer.mcIID);
+                                      _buildDataCellViewBlue("View", () async {
+                                        print("@@Doctor Details: " + offer.mcIID);
+                                        print('@@fromshareValueGet--'+storedValueHospitalID);
 
+                                        List<DataGetDoctorDetailsById> doctorDetails = await ApiController.getDoctorDetailsById(storedValueHospitalID,offer.mcIID);
+
+                                        // Show doctor details dialog if data is available
+                                        if (doctorDetails.isNotEmpty) {
+                                          _showDoctorDetailsDialog(context, doctorDetails[0]);
+                                        } else {
+                                          Utils.showToast("No details found for this doctor.", true);
+                                        }
                                       }),
                                     ],
                                   );
@@ -2564,6 +2574,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             }
                           },
                         ),
+
                       ],
                     ),
                   ),
@@ -2584,6 +2595,104 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
+  void _showDoctorDetailsDialog(BuildContext context, DataGetDoctorDetailsById doctor) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Doctor Details'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildDetailRow('MCI ID', doctor.mcIID),
+                _buildDetailRow('Hospital Name', 'test eye care'), // Replace with real data if available
+                _buildDetailRow('Doctor Name', doctor.dName),
+                _buildDetailRow('Gender', doctor.gender ?? 'N/A'), // Replace with real data
+                _buildDetailRow('DOB', doctor.dob ?? 'N/A'), // Replace with real data
+                _buildDetailRow('Mobile Number', doctor.mobile ?? 'N/A'),
+                _buildDetailRow('Email ID', doctor.emailId ?? 'N/A'),
+                _buildDetailRow('District Name', doctor.districtName ?? 'N/A'), // Replace with real data
+                _buildDetailRow('State Name', doctor.stateName ?? 'N/A'), // Replace with real data
+                _buildDetailRow('Pin Code', doctor.pincode ?? 'N/A'), // Replace with real data
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Next'),
+              onPressed: () async {
+               // Navigator.of(context).pop();
+                List<DataGetAllNgoService> doctorDetails = await ApiController.getAllNgoService(userId);
+
+                // Show doctor details dialog if data is available
+                if (doctorDetails.isNotEmpty) {
+                  _showNgoServiceDetailsDialog(context, doctorDetails[0]);
+                } else {
+                  Utils.showToast("No details found for this doctor.", true);
+                }
+              },
+            ),
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  //need to work here more
+  void _showNgoServiceDetailsDialog(
+      BuildContext context, DataGetAllNgoService ngoServiceDetails) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('NGO Service Details'),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Service ID: ${ngoServiceDetails.name}'),
+                Text('Service Name: ${ngoServiceDetails.name}'),
+                Text('Description: ${ngoServiceDetails.name}'),
+                Text('Category: ${ngoServiceDetails.name}'),
+                Text('Location: ${ngoServiceDetails.name}'),
+                Text('Start Date: ${ngoServiceDetails.name}'),
+                Text('End Date: ${ngoServiceDetails.name}'),
+                // Add more fields here as needed based on the DataGetAllNgoService structure
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
+          Text(value ?? 'N/A', style: TextStyle(color: Colors.black)),
+        ],
+      ),
+    );
+  }
 
   TableRow _buildTableRowthree(String label, String value) {
     return TableRow(
