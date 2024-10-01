@@ -69,4 +69,7 @@ class ApiConstants {
   static String VeiwHospitalDetails = 'VeiwHospitalDetails';
 
   static String GetHospitalData = 'GetHospitalData';
+
+  static String GetDoctorlinkedwithHospital = 'GetDoctorlinkedwithHospital';
+
 }

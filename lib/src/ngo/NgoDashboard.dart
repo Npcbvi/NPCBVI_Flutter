@@ -6,6 +6,7 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/HospitallinkedwithNGO.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/dropwdonHospitalBased/DropDownHospitalSelected.dart';
@@ -56,6 +57,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   bool ngoDashboardDatas = false;
   String selectedHospitalName = ''; // String to save the selected value's name
   String selectedHRegID;
+  String storedValueHospitalID;
   @override
   void initState() {
     // TODO: implement initState
@@ -2092,12 +2094,37 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  void _storeHRegID(String hRegID) {
+  Future<void> _storeHRegID(String hRegID) async {
+    // Ensure hRegID is not null or empty
+    if (hRegID == null || hRegID.isEmpty) {
+      print('hRegID is null or empty. Cannot store it.');
+      return;
+    }
+
     setState(() {
       selectedHRegID = hRegID;
+
+      // Store the hospital ID in shared preferences
+      SharedPrefs.storeSharedValues(
+        AppConstant.hospitalId,
+        selectedHRegID,
+      );
     });
+
+    // Retrieve the stored value to verify it's been saved correctly
+     storedValueHospitalID = await SharedPrefs.getStoreSharedValue(AppConstant.hospitalId);
+
+    // Check if the retrieved value matches the stored value
+    if (storedValueHospitalID == selectedHRegID) {
+      print('Successfully stored and retrieved hRegID: $storedValueHospitalID');
+    } else {
+      print('Error: Stored value does not match. Expected: $selectedHRegID, Got: $storedValueHospitalID');
+    }
+
+    // Print the stored hRegID
     print('Stored hRegID: $selectedHRegID');
   }
+
 
   TableRow _buildTableRowtwo(String label, String value) {
     return TableRow(
@@ -2169,6 +2196,57 @@ class _NgoDashboard extends State<NgoDashboard> {
         ),
       ),
     ]);
+  }
+  TableRow _buildTableRowth(String label, String value, String values) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Container(
+            // Remove max height for better text display
+            child: Text(
+              label,
+              maxLines: 5, // Set max lines for the label
+              overflow: TextOverflow.ellipsis, // Handle overflow
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w500, // Make label bolder
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Container(
+            // Remove max height for better text display
+            child: Text(
+              value.isNotEmpty ? value : 'N/A', // Use isNotEmpty for additional checks
+              maxLines: 5, // Set max lines for the value
+              overflow: TextOverflow.ellipsis, // Handle overflow
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Container(
+            // Remove max height for better text display
+            child: Text(
+              values.isNotEmpty ? values : 'N/A', // Use isNotEmpty for additional checks
+              maxLines: 5, // Set max lines for the value
+              overflow: TextOverflow.ellipsis, // Handle overflow
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
 
@@ -2323,8 +2401,8 @@ class _NgoDashboard extends State<NgoDashboard> {
           title: Text('Hospital(s) linked with NGO'),
           content: SingleChildScrollView(
             child: Container(
-              width: 800,
-              constraints: BoxConstraints(maxHeight: 600),
+              width: double.infinity,
+              constraints: BoxConstraints(maxHeight: 2000), // Set max height for the dialog content
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -2332,7 +2410,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     border: TableBorder.all(),
                     columnWidths: {
                       0: FixedColumnWidth(60.0),
-                      1: FixedColumnWidth(800.0),
+                      1: FixedColumnWidth(300.0), // Adjust as needed
                     },
                     children: [
                       _buildTableRow('Darpan No.', data.data.hospitalData[0].darpanNo),
@@ -2347,6 +2425,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       _buildTableRow('Fax No.', data.data.hospitalData[0].fax.toString()),
                     ],
                   ),
+                  SizedBox(height: 10), // Add some space between the tables
                   Container(
                     color: Colors.blue,
                     padding: const EdgeInsets.all(4.0),
@@ -2363,18 +2442,19 @@ class _NgoDashboard extends State<NgoDashboard> {
                   Table(
                     border: TableBorder.all(),
                     columnWidths: {
-                      0: FixedColumnWidth(50.0),
-                      1: FixedColumnWidth(400.0),
-                      2: FixedColumnWidth(250.0),
+                      0: FixedColumnWidth(40.0),
+                      1: FlexColumnWidth(60),
+                      2: FlexColumnWidth(20),
                     },
                     children: [
-                   /*   _buildTableRow('S.No', 'Equipment Name', 'Number of Equipment'),
+                      _buildTableRowth('S.No', 'Equipment Name', 'Number of Equipment'),
                       for (int i = 0; i < data.data.hospitalEquipmentList.length; i++)
-                        _buildTableRow(
+
+                        _buildTableRowth(
                           (i + 1).toString(),
-                          data.data.hospitalEquipmentList[i].equipmentName,
-                          data.data.hospitalEquipmentList[i].numberOfEquipment.toString(),
-                        ),*/
+                          data.data.hospitalEquipmentList[i].name,
+                          data.data.hospitalEquipmentList[i].noOfEquipment.toString(),
+                        ),
                     ],
                   ),
                 ],
@@ -2382,11 +2462,13 @@ class _NgoDashboard extends State<NgoDashboard> {
             ),
           ),
           actions: [
-
             TextButton(
               onPressed: () {
-                print('Next ');
+                print('@@fromshareValueGet--'+storedValueHospitalID);
                 // Handle any additional logic for the Next button
+              //  _storeHRegID(hospitalId);
+
+                showDoctorlinkedwithHospital(context,  storedValueHospitalID);
               },
               child: Text('Next'),
             ),
@@ -2401,54 +2483,107 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
-  // Example API call to get hospital data
-  static Future<HospitallinkedwithNGO> getHospitalDatas(String hospitalId) async {
-    print("@@HospitallinkedwithNGO - Initiating request");
-    bool isNetworkAvailable = await Utils.isNetworkAvailable();
-    if (!isNetworkAvailable) {
-      Utils.showToast(AppConstant.noInternet, true);
-      return HospitallinkedwithNGO(message: "No internet", status: false);
-    }
 
-    try {
-      final url = "${ApiConstants.baseUrl}${ApiConstants.GetHospitalData}";
-      Map<String, String> headers = {
-        "Content-Type": "application/json",
-        "apikey": "Key123",
-        "apipassword": "PWD123",
-      };
 
-      var body = json.encode({"hospitalId": hospitalId});
-      print("@@HospitallinkedwithNGO - Request Body: $body");
 
-      Dio dio = Dio();
-      Response response = await dio.post(
-        url,
-        data: body,
-        options: Options(
-          headers: headers,
-          contentType: "application/json",
-          responseType: ResponseType.plain,
-        ),
-      );
+  void showDoctorlinkedwithHospital(BuildContext context, String hospitalId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
 
-      print("@@HospitallinkedwithNGO - API Response: ${response.data}");
+        return AlertDialog(
+          title: Text('Doctor(s) linked with Hospital'),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Combined Horizontal Scrolling for Header and Data Rows
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      children: [
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('Doctor ID'),
+                            _buildHeaderCell('Doctor Name'),
+                            _buildHeaderCell('Mobile No.'),
+                            _buildHeaderCell('Email ID'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<
+                            List<DataDoctorlinkedwithHospital>>(
+                          future: ApiController.getDoctorlinkedwithHospital(
+                              hospitalId
 
-      var responseData = json.decode(response.data);
-      HospitallinkedwithNGO data = HospitallinkedwithNGO.fromJson(responseData);
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<DataDoctorlinkedwithHospital> ddata =
+                                  snapshot.data;
+                              print('@@---ddata: ' + ddata.length.toString());
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo(
+                                          (ddata.indexOf(offer) + 1)
+                                              .toString()),
+                                      _buildDataCell(offer.mcIID),
+                                      _buildDataCell(offer.dName.toString()),
+                                      _buildDataCell(offer.mobile.toString()),
+                                      _buildDataCell(offer.emailId.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print("@@npcbNo: " + offer.mcIID);
 
-      if (data.status) {
-        Utils.showToast(data.message, true);
-        return data;
-      } else {
-        Utils.showToast(data.message, true);
-        return HospitallinkedwithNGO(message: data.message, status: false);
-      }
-    } catch (e) {
-      Utils.showToast("Error: ${e.toString()}", true);
-      return HospitallinkedwithNGO(message: "Error occurred", status: false);
-    }
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+
 
   TableRow _buildTableRowthree(String label, String value) {
     return TableRow(
