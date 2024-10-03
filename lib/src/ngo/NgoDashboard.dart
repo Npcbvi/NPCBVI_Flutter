@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetDoctorDetailsById.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/HospitallinkedwithNGO.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/UploadedMOU/UploadMOUNGO.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/dropwdonHospitalBased/DropDownHospitalSelected.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/GetHospitalList.dart';
@@ -1901,7 +1902,7 @@ class _NgoDashboard extends State<NgoDashboard> {
               _storeHRegID(hospitalId);
               // Call the API to view hospital details and documents
               ViewClickHospitalDetails viewClickHospitalDetails = await viewHospitalDetails(
-                "UP_2018_0184013",
+                darpan_nos,
                 hospitalId,
                 district_code_login,
                 userId,
@@ -1946,7 +1947,12 @@ class _NgoDashboard extends State<NgoDashboard> {
           }),
           _buildSeparator(),
           _buildButton('Manage Doctor', () {
+            print('@@fff1--Manage' + darpan_nos);
+            print('@@fff1--Manage' + hospitalId);
+            print('@@fff1--Manage' + district_code_login.toString());
+            print('@@fff1--Manage' + userId);
             print('Manage Doctor pressed');
+            _showNgoGetUploadedMouList(hospitalId,district_code_login,int.parse(role_id));
             // Logic for managing doctors
           }),
           _buildSeparator(),
@@ -2708,69 +2714,153 @@ class _NgoDashboard extends State<NgoDashboard> {
               textAlign: TextAlign.center, // Optional: center the title text
               style: TextStyle(
                 fontWeight: FontWeight.bold, // Optional: styling
-                color: Colors.white, // Set title text color to blue
-              ), // Optional: styling
+                color: Colors.white, // Set title text color to white
+              ),
             ),
           ),
           content: Container(
             width: screenWidth * 0.9, // 90% of screen width
             height: screenHeight * 0.7, // 70% of screen height
             child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
               child: Column(
                 children: [
                   // Horizontal scrolling for both Header and Data Rows
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Column(
-                      children: [
-                        // Header Row
-                        Row(
-                          children: [
-                            _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('Component'),
+                  Row(
+                    children: [
+                      // Header Row
+                      _buildHeaderCellSrNo('S.No.'),
+                      _buildHeaderCell('Component'),
+                    ],
+                  ),
+                  Divider(color: Colors.blue, height: 1.0),
+                  // Data Rows
+                  FutureBuilder<List<DataGetAllNgoService>>(
+                    future: ApiController.getAllNgoService(userId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return Utils.getEmptyView("No data found");
+                      } else {
+                        List<DataGetAllNgoService> ddata = snapshot.data;
+                        return Column(
+                          children: ddata.map((offer) {
+                            return Row(
+                              children: [
+                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCell(offer.name),
+                              ],
+                            );
+                          }).toList(),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void _showNgoGetUploadedMouList( String hospitalId,int districtId,int userRoleId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
 
-                          ],
-                        ),
-                        Divider(color: Colors.blue, height: 1.0),
-                        // Data Rows
-                        FutureBuilder<List<DataGetAllNgoService>>(
-                          future: ApiController.getAllNgoService(
-                          userId
-                          ),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Utils.getEmptyView(
-                                  "Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData ||
-                                snapshot.data.isEmpty) {
-                              return Utils.getEmptyView("No data found");
-                            } else {
-                              List<DataGetAllNgoService> ddata =
-                                  snapshot.data;
-                              return Column(
-                                children: ddata.map((offer) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      _buildDataCellSrNo(
-                                          (ddata.indexOf(offer) + 1)
-                                              .toString()),
-                                      _buildDataCell(offer.name),
+        return AlertDialog(
+          title: Container(
+            color: Colors.blue,
+            width: double.infinity, // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            child: Text(
+              'Uploaded MOU',
+              textAlign: TextAlign.center, // Optional: center the title text
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // Optional: styling
+                color: Colors.white, // Set title text color to white
+              ),
+            ),
+          ),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  // Horizontal scrolling for both Header and Data Rows
+                  Row(
+                    children: [
+                      // Header Row
+                      _buildHeaderCellSrNo('S.No.'),
+                      _buildHeaderCell('Id'),
+                      _buildHeaderCell('From Date'),
+                      _buildHeaderCell('To Date'),
+                      _buildHeaderCell('Status'),
+                      _buildHeaderCell('MOU'),
+                      _buildHeaderCell('Action'),
+                    ],
+                  ),
+                  Divider(color: Colors.blue, height: 1.0),
+                  // Data Rows
+                  FutureBuilder<List<DataUploadMOUNGO>>(
+                    future: ApiController.getUploadedMouList( hospitalId,
+                        districtId,
+                        userRoleId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return Utils.getEmptyView("No data found");
+                      } else {
+                        List<DataUploadMOUNGO> ddata = snapshot.data;
+                        return Column(
+                          children: ddata.map((offer) {
+                            return Row(
+                              children: [
+                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCell(offer.hRegID),
+                                _buildDataCell(Utils.formatDateString(
+                                    offer.fromDate)),
+                                _buildDataCell(Utils.formatDateString(
+                                    offer.toDate)),
+                                _buildDataCell(
+                                    offer.name),
+                                _buildDataCell(
+                                    offer.file),
+                                if(offer.vstatus=='3')
+                                  _buildDataCell(
+                                      '	Renew'),
+                                _buildDataCellViewBlue("RENEW", () async {
+                                  print("@@Doctor Details: ");
 
 
-                                    ],
-                                  );
-                                }).toList(),
-                              );
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+                                  // Show doctor details dialog if data is available
+                                }),
+                              ],
+                            );
+                          }).toList(),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),

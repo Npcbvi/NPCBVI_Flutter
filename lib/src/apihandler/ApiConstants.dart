@@ -75,4 +75,6 @@ class ApiConstants {
   static String GetDoctorDetailsById = 'GetDoctorDetailsById';
 
   static String GetAllNgoService = 'GetAllNgoService';
+
+  static String GetUploadedMouList = 'GetUploadedMouList';
 }
