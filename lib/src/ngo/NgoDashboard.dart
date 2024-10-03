@@ -1976,7 +1976,15 @@ class _NgoDashboard extends State<NgoDashboard> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('NGO Application Details'),
+          title: Text(
+            'NGO Application Details',
+            textAlign: TextAlign.center, // Optional: center the title text
+            style: TextStyle(
+              fontWeight: FontWeight.bold, // Optional: styling
+              color: Colors.white, // Set title text color to blue
+            ), // Optional: styling
+          ),
+
           content: SingleChildScrollView(
             child: Container(
               width: 800, // Set width as per your requirement
@@ -2400,7 +2408,19 @@ class _NgoDashboard extends State<NgoDashboard> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Hospital(s) linked with NGO'),
+          title: Container(
+            color: Colors.blue,
+            width: double.infinity, // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            child: Text(
+              'Hospital(s) linked with NGO',
+              textAlign: TextAlign.center, // Optional: center the title text
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // Optional: styling
+                color: Colors.white, // Set title text color to blue
+              ), // Optional: styling
+            ),
+          ),
           content: SingleChildScrollView(
             child: Container(
               width: double.infinity,
@@ -2497,7 +2517,19 @@ class _NgoDashboard extends State<NgoDashboard> {
         double screenHeight = MediaQuery.of(context).size.height;
 
         return AlertDialog(
-          title: Text('Doctor(s) linked with Hospital'),
+          title:  Container(
+            color: Colors.blue,
+            width: double.infinity, // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            child: Text(
+              'Doctor(s) linked with Hospita',
+              textAlign: TextAlign.center, // Optional: center the title text
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // Optional: styling
+                color: Colors.white, // Set title text color to blue
+              ), // Optional: styling
+            ),
+          ),
           content: Container(
             width: screenWidth * 0.9, // 90% of screen width
             height: screenHeight * 0.7, // 70% of screen height
@@ -2600,7 +2632,19 @@ class _NgoDashboard extends State<NgoDashboard> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Doctor Details'),
+          title: Container(
+            color: Colors.blue,
+            width: double.infinity, // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            child: Text(
+              'Doctor Details',
+              textAlign: TextAlign.center, // Optional: center the title text
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // Optional: styling
+                color: Colors.white, // Set title text color to blue
+              ), // Optional: styling
+            ),
+          ),
           content: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2627,7 +2671,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                 // Show doctor details dialog if data is available
                 if (doctorDetails.isNotEmpty) {
-                  _showNgoServiceDetailsDialog(context, doctorDetails[0]);
+                  _showNgoServiceDetailsDialog();
                 } else {
                   Utils.showToast("No details found for this doctor.", true);
                 }
@@ -2645,27 +2689,91 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  //need to work here more
-  void _showNgoServiceDetailsDialog(
-      BuildContext context, DataGetAllNgoService ngoServiceDetails) {
+
+  void _showNgoServiceDetailsDialog() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
         return AlertDialog(
-          title: Text('NGO Service Details'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text('Service ID: ${ngoServiceDetails.name}'),
-                Text('Service Name: ${ngoServiceDetails.name}'),
-                Text('Description: ${ngoServiceDetails.name}'),
-                Text('Category: ${ngoServiceDetails.name}'),
-                Text('Location: ${ngoServiceDetails.name}'),
-                Text('Start Date: ${ngoServiceDetails.name}'),
-                Text('End Date: ${ngoServiceDetails.name}'),
-                // Add more fields here as needed based on the DataGetAllNgoService structure
-              ],
+          title: Container(
+            color: Colors.blue,
+            width: double.infinity, // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            child: Text(
+              'NGO Application Details',
+              textAlign: TextAlign.center, // Optional: center the title text
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // Optional: styling
+                color: Colors.white, // Set title text color to blue
+              ), // Optional: styling
+            ),
+          ),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Horizontal scrolling for both Header and Data Rows
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      children: [
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('Component'),
+
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<DataGetAllNgoService>>(
+                          future: ApiController.getAllNgoService(
+                          userId
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<DataGetAllNgoService> ddata =
+                                  snapshot.data;
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo(
+                                          (ddata.indexOf(offer) + 1)
+                                              .toString()),
+                                      _buildDataCell(offer.name),
+
+
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           actions: <Widget>[
@@ -2680,7 +2788,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
-
   Widget _buildDetailRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
