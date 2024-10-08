@@ -6,15 +6,18 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/AddEyeBank.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetDoctorDetailsById.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/HospitallinkedwithNGO.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/ManageDoctor.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/UploadedMOU/UploadMOUNGO.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/dropwdonHospitalBased/DropDownHospitalSelected.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/GetHospitalList.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/ViewClickHospitalDetails.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/ngoCampWork/NgoCampMangerList.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -56,11 +59,14 @@ class _NgoDashboard extends State<NgoDashboard> {
   DataDropDownHospitalSelected _selectHospitalSelected;
   String hospitalNameFetch, reghospitalNameFetch;
   int status, district_code_login, state_code_login;
-  String role_id, darpan_nos;
+  String role_id, darpan_nos,entryby;
   bool ngoDashboardDatas = false;
   String selectedHospitalName = ''; // String to save the selected value's name
   String selectedHRegID;
   String storedValueHospitalID;
+
+  bool EyeBankApplication = false;
+  bool ngoCampManagerLists= false;
   @override
   void initState() {
     // TODO: implement initState
@@ -69,6 +75,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     getUserData();
 
     ngoDashboardclicks = true;
+    EyeBankApplication=false;
+    ngoCampManagerLists=false;
     _future = getDPM_ScreeningYear();
   }
 
@@ -85,6 +93,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           state_code_login = user.state_code;
           district_code_login = user.district_code;
           getDarpanNo();
+          getentryby();
           print('@@2' + user.name);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
@@ -112,7 +121,17 @@ class _NgoDashboard extends State<NgoDashboard> {
       print("No Darpan Number found in shared preferences.");
     }
   }
+  Future<void> getentryby() async {
+    // Use await to get the actual value from SharedPrefs
+    entryby =
+    await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
 
+    if (entryby != null) {
+      print("entryby Number: $entryby");
+    } else {
+      print("No entryby found in shared preferences.");
+    }
+  }
   Future<List<DataDropDownHospitalSelected>> GetHospitalNgoForDDL() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -192,6 +211,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Add Ngo Hospital");
         ManageUSerNGOHospt = true;
         ngoDashboardclicks = false;
+        EyeBankApplication=false;
+        ngoCampManagerLists=false;
         _future = getDPM_ScreeningYear();
 
 
@@ -247,15 +268,20 @@ class _NgoDashboard extends State<NgoDashboard> {
   void _handleMenuSelectionScreeninCamp(int value) {
     switch (value) {
       case 1:
-        print("@@Add Ngo Hospital");
-        ManageUSerNGOHospt = true;
+        print("@@Camp Manager");
         _future = getDPM_ScreeningYear();
+        EyeBankApplication=false;
+        ngoDashboardclicks = false;
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists=true;
 
         break;
       case 2:
         print("@@Screeniong Camp");
         _future = getDPM_ScreeningYear();
-        ManageUSerNGOHospt = true;
+        EyeBankApplication=true;
+        ngoDashboardclicks = false;
+        ManageUSerNGOHospt = false;
         break;
     // Add more cases as needed
       default:
@@ -310,11 +336,13 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Satellite Camp");
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
+        EyeBankApplication=false;
         break;
       case 2:
         print("@@Satellite Center");
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
+        EyeBankApplication=false;
         break;
     // Add more cases as needed
       default:
@@ -423,6 +451,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           _future = getDPM_ScreeningYear();
                           ngoDashboardclicks = true;
                           ManageUSerNGOHospt = false;
+                          EyeBankApplication=false;
+                          ngoCampManagerLists=false;
                         });
                       }),
                       SizedBox(width: 8.0),
@@ -430,7 +460,12 @@ class _NgoDashboard extends State<NgoDashboard> {
                       SizedBox(width: 8.0),
                       _buildNavigationButton('Add Eye Bank', () {
                         print('@@Add Eye Bank Clicked');
-                        setState(() {});
+                        setState(() {
+                          EyeBankApplication=true;
+                          ngoDashboardclicks = false;
+                          ManageUSerNGOHospt = false;
+                          ngoCampManagerLists=false;
+                        });
                       }),
                     ],
                   ),
@@ -440,6 +475,8 @@ class _NgoDashboard extends State<NgoDashboard> {
             _buildUserInfo(),
             LowVisionRegisterNgoHopsital(),
             ngoDashboardclick(),
+            EyeBankApplicationNgo(),
+            ngoCampManagerList(),
 
           ],
         ),
@@ -928,6 +965,209 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
+  Widget EyeBankApplicationNgo() {
+    return Column(
+      children: [
+        Visibility(
+          visible: EyeBankApplication,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Eye Bank Application',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
+              // Horizontal Scrolling Table with Header and Data
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Eye Bank ID'),
+                        _buildHeaderCell('Eye Bank Name'),
+                        _buildHeaderCell('Member Name'),
+                        _buildHeaderCell('Email'),
+                        _buildHeaderCell('Status'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataAddEyeBank>>(
+                      future: ApiController.getEyeBankDonationList(
+                          state_code_login, district_code_login, userId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataAddEyeBank> ddata = snapshot.data;
+                          print('@@---ddata' + ddata.length.toString());
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.eyeBankUniqueID),
+                                  _buildDataCell(offer.eyebankName),
+                                  _buildDataCell(offer.officername),
+                                  _buildDataCell(offer.emailid),
+                                  _buildDataCell(offer.status.toString()),
+                                  if (offer.status == 'Approved')
+                                  // Store locally
+                                    _buildMAnageEyeDonationMOUUI()
+                                  else if (offer.status == 'Pending')
+                                    _buildMAnageEyeDonationMOUUI()
+                                    else
+                                    _buildMAnageEyeDonationMOUUI(),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget ngoCampManagerList() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ngoCampManagerLists,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'CAMP MANAGER DETAILS',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+              ),
+              // Horizontal Scrolling Table with Header and Data
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('NGO Name'),
+                        _buildHeaderCell('User Id'),
+                        _buildHeaderCell('Officer Name'),
+                        _buildHeaderCell('Mobile Number'),
+                        _buildHeaderCell('Email id'),
+                        _buildHeaderCell('Address'),
+                        _buildHeaderCell('Designation'),
+                        _buildHeaderCell('Update/Block'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataNgoCampMangerList>>(
+                      future: ApiController.getCampManagerList(
+                          state_code_login, district_code_login, entryby),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataNgoCampMangerList> ddata = snapshot.data;
+                          print('@@---ddata' + ddata.length.toString());
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.managerName),
+                                  _buildDataCell(offer.userId),
+                                  _buildDataCell(offer.managerName),
+                                  _buildDataCell(offer.mobile),
+                                  _buildDataCell(offer.emailId.toString()),
+                                  _buildDataCell(offer.address.toString()),
+                                  _buildDataCell(offer.designation.toString()),
+                                    _buildMAnageEyeDonationMOUUI()
+
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget buildInfoContainer(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -1276,7 +1516,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     district_code_login,
                                     state_code_login,
                                     userId,
-                                    "2024-2025",
+                                    getYearNgoHopital,
                                     dropDownTwoSelcted,
                                     reghospitalNameFetch),
                                 builder: (context, snapshot) {
@@ -1359,7 +1599,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               district_code_login,
                               state_code_login,
                               userId,
-                              "2024-2025",
+                              getYearNgoHopital,
                               dropDownTwoSelcted,
                               reghospitalNameFetch),
                           builder: (context, snapshot) {
@@ -1440,7 +1680,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               district_code_login,
                               state_code_login,
                               userId,
-                              "2024-2025",
+                              getYearNgoHopital,
                               dropDownTwoSelcted,
                               reghospitalNameFetch),
                           builder: (context, snapshot) {
@@ -1845,6 +2085,100 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
+  Widget _buildMAnageEyeDonationMOUUI() {
+    return Container(
+        height: 80,
+        width: 200,
+        // Fixed width to ensure horizontal scrolling
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for header cells
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Spaces the buttons evenly
+          children: [
+            // "View" Text Button
+            GestureDetector(
+              onTap: () {
+                print('MOU pressed');
+              },
+              child: Text(
+                'MOU',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+            Text(
+              '||',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
+            // "Manage Doctor" Text Button
+            GestureDetector(
+              onTap: () {
+                print('Manage Eye Donation');
+              },
+              child: Text(
+                'Manage Eye Donation',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+          ],
+        )
+    );
+  }
+
+  Widget _buildMAnageEDITDELETE() {
+    return Container(
+        height: 80,
+        width: 200,
+        // Fixed width to ensure horizontal scrolling
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for header cells
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Spaces the buttons evenly
+          children: [
+            // "View" Text Button
+            GestureDetector(
+              onTap: () {
+                print('MOU pressed');
+              },
+              child: Text(
+                'Edit',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+            Text(
+              '||',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
+            // "Manage Doctor" Text Button
+            GestureDetector(
+              onTap: () {
+                print('Manage Eye Donation');
+              },
+              child: Text(
+                'Delete',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+          ],
+        )
+    );
+  }
+
   Widget _buildEdit() {
     return Container(
         height: 80,
@@ -1952,12 +2286,15 @@ class _NgoDashboard extends State<NgoDashboard> {
             print('@@fff1--Manage' + district_code_login.toString());
             print('@@fff1--Manage' + userId);
             print('Manage Doctor pressed');
-            _showNgoGetUploadedMouList(hospitalId,district_code_login,int.parse(role_id));
+            _showNgoManageDoctore(hospitalId,district_code_login);
+
             // Logic for managing doctors
           }),
           _buildSeparator(),
           _buildButton('Upload MoU', () {
-            print('Upload MoU pressed');
+            print('@@Upload MoU pressed');
+            _showNgoGetUploadedMouList(hospitalId,district_code_login,int.parse(role_id));
+
             // Logic for uploading MoU
           }),
         ],
@@ -2775,6 +3112,108 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
+  void _showNgoManageDoctore( String hospitalId,int districtId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Container(
+            color: Colors.blue,
+            width: double.infinity, // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            child: Text(
+              'Doctors Detail',
+              textAlign: TextAlign.center, // Optional: center the title text
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // Optional: styling
+                color: Colors.white, // Set title text color to white
+              ),
+            ),
+          ),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  // Horizontal scrolling for both Header and Data Rows
+                  Row(
+                    children: [
+                      // Header Row
+                      _buildHeaderCellSrNo('S.No.'),
+                      _buildHeaderCell('MCI ID'),
+                      _buildHeaderCell('Hospital Id'),
+                      _buildHeaderCell('Doctor Name'),
+                      _buildHeaderCell('Mobile No.'),
+                      _buildHeaderCell('Email ID'),
+                      _buildHeaderCell('Status'),
+                      _buildHeaderCell('Action'),
+                    ],
+                  ),
+                  Divider(color: Colors.blue, height: 1.0),
+                  // Data Rows
+                  FutureBuilder<List<DataManageDoctor>>(
+                    future: ApiController.getDoctorListByHId( hospitalId,
+                        districtId,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return Utils.getEmptyView("No data found");
+                      } else {
+                        List<DataManageDoctor> ddata = snapshot.data;
+                        return Column(
+                          children: ddata.map((offer) {
+                            return Row(
+                              children: [
+                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCell(offer.mcIID),
+                                _buildDataCell(offer.hRegID),
+                                _buildDataCell(offer.dName),
+                                _buildDataCell(offer.mobile),
+                                _buildDataCell(offer.emailId),
+                                  _buildDataCell(offer.status),
+                                if (offer.status == 'Approved')
+                                // Store locally
+                                  _buildMAnageEDITDELETE(
+                                      ) // Pass hospitalId
+                                else
+                                  if (offer.status == 'Pending')
+                                    _buildMAnageEDITDELETE()
+                                  else
+                                    _buildMAnageEDITDELETE(),
+                              ],
+                            );
+                          }).toList(),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showNgoGetUploadedMouList( String hospitalId,int districtId,int userRoleId) {
     showDialog(
       context: context,
@@ -2848,7 +3287,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     offer.file),
                                 if(offer.vstatus=='3')
                                   _buildDataCell(
-                                      '	Renew'),
+                                      'Download'),
                                 _buildDataCellViewBlue("RENEW", () async {
                                   print("@@Doctor Details: ");
 

@@ -63,7 +63,7 @@ class ApiConstants {
   //District NGO APi
 
   static String GetHospitalNgoForDDL = 'GetHospitalNgoForDDL';
-  static String NGODashboard = 'NGODashboard';
+  static String NGODashboard = 'GetNGODashboardData';
   static String GetHospitalList = 'GetHospitalList';
 
   static String VeiwHospitalDetails = 'VeiwHospitalDetails';
@@ -77,4 +77,8 @@ class ApiConstants {
   static String GetAllNgoService = 'GetAllNgoService';
 
   static String GetUploadedMouList = 'GetUploadedMouList';
+  static String GetEyeBankDonationList = 'GetEyeBankDonationList';
+
+  static String GetCampManagerList = 'GetCampManagerList';
+  static String GetDoctorListByHId = 'GetDoctorListByHId';
 }

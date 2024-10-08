@@ -15,14 +15,17 @@ import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/changePassword/ChangePassword.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/AddEyeBank.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetDoctorDetailsById.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/ManageDoctor.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/UploadedMOU/UploadMOUNGO.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/dropwdonHospitalBased/DropDownHospitalSelected.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/GetHospitalList.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/ViewClickHospitalDetails.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/ngoCampWork/NgoCampMangerList.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMGovtPrivateOrganisationTypeData.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRegistartionModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMRivateMEdicalColleges.dart';
@@ -2667,7 +2670,7 @@ class ApiController {
 
   static Future<List<DataNGODashboards>>
   getNGODashboard(int userRoleType, int districtid,int stateid,String userId,String financialYear,int organizationType,String ngoId) async {
-    print("@@getNGODashboard" + "1");
+    print("@@getNGODashboard_modified" + "1");
     Response response1;
 
     // Check network availability
@@ -3101,6 +3104,209 @@ class ApiController {
       var responseData = json.decode(response.data);
       UploadMOUNGO data =
       UploadMOUNGO.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+
+  static Future<List<DataAddEyeBank>>
+  getEyeBankDonationList(int stateId, int districtid,String userId) async {
+    print("@@getEyeBankDonationList" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.GetEyeBankDonationList;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+
+        "stateId": stateId,
+        "districtId": districtid,
+
+        "userId": userId,
+
+
+      });
+      print("@@getEyeBankDonationList--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getEyeBankDonationList--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      AddEyeBank data = AddEyeBank.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+
+  static Future<List<DataNgoCampMangerList>>
+  getCampManagerList(int stateId, int districtid,String entryBy) async {
+    print("@@getCampManagerList" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.GetCampManagerList;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+
+        "stateId": stateId,
+        "districtId": districtid,
+
+        "entryBy": entryBy,
+
+
+      });
+      print("@@getCampManagerList--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getCampManagerList--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+     NgoCampMangerList data = NgoCampMangerList.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+
+  static Future<List<DataManageDoctor>>
+  getDoctorListByHId(String hospitalId, int districtid) async {
+    print("@@getDoctorListByHId" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.GetDoctorListByHId;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+
+        "hospitalId": hospitalId,
+        "districtId": districtid,
+
+
+
+      });
+      print("@@getDoctorListByHId--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getDoctorListByHId--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ManageDoctor data = ManageDoctor.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
