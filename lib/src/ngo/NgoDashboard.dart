@@ -17,6 +17,7 @@ import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODa
 import 'package:mohfw_npcbvi/src/model/districtngowork/dropwdonHospitalBased/DropDownHospitalSelected.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/GetHospitalList.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/ViewClickHospitalDetails.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/ngoCampWork/GetCampManagerDetailsByIdEditData.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/ngoCampWork/NgoCampMangerList.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
@@ -42,7 +43,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
   TextEditingController _confirmnPasswordontrollere =
-  new TextEditingController();
+      new TextEditingController();
   GetChangeAPsswordFieldss getchangePwds = new GetChangeAPsswordFieldss();
 
   final GlobalKey _dropdownKey = GlobalKey();
@@ -50,7 +51,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   bool ManageUSerNGOHospt = false;
   Future<List<DataGetDPM_ScreeningYear>> _future;
   Future<List<DataDropDownHospitalSelected>>
-  _futureDataDropDownHospitalSelected;
+      _futureDataDropDownHospitalSelected;
   DataGetDPM_ScreeningYear _selectedUser;
   DataGetDPM_ScreeningMonth _selectedUserMonth;
   bool selectionBasedHospital = false;
@@ -59,14 +60,33 @@ class _NgoDashboard extends State<NgoDashboard> {
   DataDropDownHospitalSelected _selectHospitalSelected;
   String hospitalNameFetch, reghospitalNameFetch;
   int status, district_code_login, state_code_login;
-  String role_id, darpan_nos,entryby;
+  String role_id, darpan_nos, entryby, ngoNames;
   bool ngoDashboardDatas = false;
   String selectedHospitalName = ''; // String to save the selected value's name
   String selectedHRegID;
   String storedValueHospitalID;
 
   bool EyeBankApplication = false;
-  bool ngoCampManagerLists= false;
+  bool ngoCampManagerLists = false;
+  bool CampManagerRegisterartions = true; // This should be based on your logic
+  String userName = '';
+  String mobileNumber = '';
+  String emailId = '';
+  String address = '';
+  String designation = '';
+  String gender = 'Male'; // Default gender
+  final _formKey = GlobalKey<FormState>();
+
+  // Controllers for TextFormFields
+  TextEditingController _userNameController = TextEditingController();
+  TextEditingController _mobileNumberController = TextEditingController();
+  TextEditingController _emailIdController = TextEditingController();
+  TextEditingController _addressController = TextEditingController();
+  TextEditingController _designationController = TextEditingController();
+
+  // Gender state variable
+  bool CampManagerRegisterartionsEdit = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -75,8 +95,10 @@ class _NgoDashboard extends State<NgoDashboard> {
     getUserData();
 
     ngoDashboardclicks = true;
-    EyeBankApplication=false;
-    ngoCampManagerLists=false;
+    EyeBankApplication = false;
+    ngoCampManagerLists = false;
+    CampManagerRegisterartions = false;
+    CampManagerRegisterartionsEdit=false;
     _future = getDPM_ScreeningYear();
   }
 
@@ -94,6 +116,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           district_code_login = user.district_code;
           getDarpanNo();
           getentryby();
+          ngoName();
           print('@@2' + user.name);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
@@ -113,7 +136,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   Future<void> getDarpanNo() async {
     // Use await to get the actual value from SharedPrefs
     darpan_nos =
-    await SharedPrefs.getStoreSharedValue(AppConstant.darpan_no) as String;
+        await SharedPrefs.getStoreSharedValue(AppConstant.darpan_no) as String;
 
     if (darpan_nos != null) {
       print("Darpan Number: $darpan_nos");
@@ -121,10 +144,11 @@ class _NgoDashboard extends State<NgoDashboard> {
       print("No Darpan Number found in shared preferences.");
     }
   }
+
   Future<void> getentryby() async {
     // Use await to get the actual value from SharedPrefs
     entryby =
-    await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
+        await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
 
     if (entryby != null) {
       print("entryby Number: $entryby");
@@ -132,6 +156,19 @@ class _NgoDashboard extends State<NgoDashboard> {
       print("No entryby found in shared preferences.");
     }
   }
+
+  Future<void> ngoName() async {
+    // Use await to get the actual value from SharedPrefs
+    ngoNames =
+        await SharedPrefs.getStoreSharedValue(AppConstant.ngoName) as String;
+
+    if (ngoNames != null) {
+      print("ngoNames Number: $ngoNames");
+    } else {
+      print("No ngoNames found in shared preferences.");
+    }
+  }
+
   Future<List<DataDropDownHospitalSelected>> GetHospitalNgoForDDL() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -152,7 +189,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       if (response.statusCode == 200) {
         Map<String, dynamic> json = jsonDecode(response.body);
         final DropDownHospitalSelected bindOrgan =
-        DropDownHospitalSelected.fromJson(json);
+            DropDownHospitalSelected.fromJson(json);
         if (bindOrgan.status) {
           print('@@bindOrgan: ' + bindOrgan.message);
         }
@@ -170,12 +207,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenu() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay
-        .of(context)
-        ?.context
-        .findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -211,14 +245,15 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Add Ngo Hospital");
         ManageUSerNGOHospt = true;
         ngoDashboardclicks = false;
-        EyeBankApplication=false;
-        ngoCampManagerLists=false;
+        EyeBankApplication = false;
+        ngoCampManagerLists = false;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit=false;
         _future = getDPM_ScreeningYear();
-
 
         break;
 
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -226,12 +261,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenuScreeningCamp() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay
-        .of(context)
-        ?.context
-        .findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -270,20 +302,24 @@ class _NgoDashboard extends State<NgoDashboard> {
       case 1:
         print("@@Camp Manager");
         _future = getDPM_ScreeningYear();
-        EyeBankApplication=false;
+        EyeBankApplication = false;
         ngoDashboardclicks = false;
         ManageUSerNGOHospt = false;
-        ngoCampManagerLists=true;
+        ngoCampManagerLists = true;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit=false;
 
         break;
       case 2:
         print("@@Screeniong Camp");
         _future = getDPM_ScreeningYear();
-        EyeBankApplication=true;
+        EyeBankApplication = true;
         ngoDashboardclicks = false;
         ManageUSerNGOHospt = false;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit=false;
         break;
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -291,12 +327,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenuSatteliteCenter() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay
-        .of(context)
-        ?.context
-        .findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -336,15 +369,19 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Satellite Camp");
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
-        EyeBankApplication=false;
+        EyeBankApplication = false;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit=false;
         break;
       case 2:
         print("@@Satellite Center");
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
-        EyeBankApplication=false;
+        EyeBankApplication = false;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit=false;
         break;
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -357,7 +394,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-      GetDPM_ScreeningYear.fromJson(json);
+          GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -381,8 +418,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         centerTitle: true,
         actions: [
           PopupMenuButton<int>(
-            itemBuilder: (context) =>
-            [
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: 1,
                 child: Row(
@@ -423,10 +459,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                   _showChangePasswordDialog();
                   break;
                 case 2:
-                // Implement User Manual action
+                  // Implement User Manual action
                   break;
                 case 3:
-                // Handle Logout
+                  // Handle Logout
                   break;
               }
             },
@@ -451,8 +487,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                           _future = getDPM_ScreeningYear();
                           ngoDashboardclicks = true;
                           ManageUSerNGOHospt = false;
-                          EyeBankApplication=false;
-                          ngoCampManagerLists=false;
+                          EyeBankApplication = false;
+                          ngoCampManagerLists = false;
+                          CampManagerRegisterartions = false;
+                          CampManagerRegisterartionsEdit=false;
                         });
                       }),
                       SizedBox(width: 8.0),
@@ -461,10 +499,12 @@ class _NgoDashboard extends State<NgoDashboard> {
                       _buildNavigationButton('Add Eye Bank', () {
                         print('@@Add Eye Bank Clicked');
                         setState(() {
-                          EyeBankApplication=true;
+                          EyeBankApplication = true;
                           ngoDashboardclicks = false;
                           ManageUSerNGOHospt = false;
-                          ngoCampManagerLists=false;
+                          ngoCampManagerLists = false;
+                          CampManagerRegisterartions = false;
+                          CampManagerRegisterartionsEdit=false;
                         });
                       }),
                     ],
@@ -477,7 +517,8 @@ class _NgoDashboard extends State<NgoDashboard> {
             ngoDashboardclick(),
             EyeBankApplicationNgo(),
             ngoCampManagerList(),
-
+            AddCampManager(),
+            EditCampManager(),
           ],
         ),
       ),
@@ -580,8 +621,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget _buildUserInfoItem(String label, String value, Color labelColor,
-      Color valueColor) {
+  Widget _buildUserInfoItem(
+      String label, String value, Color labelColor, Color valueColor) {
     return Row(
       children: [
         Text(label,
@@ -867,9 +908,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               // Handle the tap event here
                               print('@@Add New Record clicked');
 
-                              setState(() {
-
-                              });
+                              setState(() {});
                             },
                             child: Text(
                               'Add New Hospital',
@@ -877,8 +916,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 color: Colors.white, // Text color
                                 fontWeight: FontWeight.w800, // Text weight
                               ),
-                              overflow: TextOverflow
-                                  .ellipsis, // Handle text overflow
+                              overflow:
+                                  TextOverflow.ellipsis, // Handle text overflow
                             ),
                           ),
                         ),
@@ -940,14 +979,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildDataCell(offer.moucount.toString()),
                                   _buildDataCell(offer.status.toString()),
                                   if (offer.status == 'Approved')
-                               // Store locally
+                                    // Store locally
                                     _buildViewManageDoctorUploadMOUUI(
                                         offer.hRegID) // Pass hospitalId
+                                  else if (offer.status == 'Pending')
+                                    _buildEditMAnageDoctorUploadMOUUI()
                                   else
-                                    if (offer.status == 'Pending')
-                                      _buildEditMAnageDoctorUploadMOUUI()
-                                    else
-                                      _buildEdit(),
+                                    _buildEdit(),
                                 ],
                               );
                             }).toList(),
@@ -992,7 +1030,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -1044,11 +1081,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildDataCell(offer.emailid),
                                   _buildDataCell(offer.status.toString()),
                                   if (offer.status == 'Approved')
-                                  // Store locally
+                                    // Store locally
                                     _buildMAnageEyeDonationMOUUI()
                                   else if (offer.status == 'Pending')
                                     _buildMAnageEyeDonationMOUUI()
-                                    else
+                                  else
                                     _buildMAnageEyeDonationMOUUI(),
                                 ],
                               );
@@ -1094,7 +1131,22 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ),
                         ),
                       ),
-
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: _addCampManager,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Add Camp Manager',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w800,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -1149,8 +1201,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildDataCell(offer.emailId.toString()),
                                   _buildDataCell(offer.address.toString()),
                                   _buildDataCell(offer.designation.toString()),
-                                    _buildMAnageEyeDonationMOUUI()
-
+                                  _buildEditCampMabgerList(
+                                      int.parse(offer.srNo))
                                 ],
                               );
                             }).toList(),
@@ -1166,6 +1218,19 @@ class _NgoDashboard extends State<NgoDashboard> {
         ),
       ],
     );
+  }
+
+  void _addCampManager() {
+    // Handle the tap event here
+    print('Add Camp Manager tapped!');
+    setState(() {
+      ManageUSerNGOHospt = false;
+      ngoDashboardclicks = false;
+      EyeBankApplication = false;
+      ngoCampManagerLists = false;
+      CampManagerRegisterartions = true;
+      CampManagerRegisterartionsEdit=false;
+    });
   }
 
   Widget buildInfoContainer(String text) {
@@ -1209,7 +1274,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Colors.blueAccent, width: 2.0),
+                          BorderSide(color: Colors.blueAccent, width: 2.0),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     hintText: 'All',
@@ -1353,7 +1418,6 @@ class _NgoDashboard extends State<NgoDashboard> {
         ));
   }
 
-
   Widget ngoDashboardclick() {
     return Row(
       children: [
@@ -1376,7 +1440,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       }
 
                       List<DataGetDPM_ScreeningYear> list =
-                      snapshot.data.toList();
+                          snapshot.data.toList();
 
                       // Check if _selectedUser is null or not part of the list anymore
                       if (_selectedUser == null ||
@@ -1470,7 +1534,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     child: Text('Get Data'),
                   ),
                 ),
-                if(dropDownTwoSelcted == 6)
+                if (dropDownTwoSelcted == 6)
                   Visibility(
                     visible: ngoDashboardDatas,
                     child: Column(
@@ -1531,14 +1595,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       snapshot.data.isEmpty) {
                                     return Utils.getEmptyView("No data found");
                                   } else {
-                                    List<DataNGODashboards> ddata = snapshot
-                                        .data;
+                                    List<DataNGODashboards> ddata =
+                                        snapshot.data;
 
                                     return Column(
                                       children: ddata.map((offer) {
                                         return Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
                                             _buildDataCell(offer.status),
                                             _buildDataCell(offer.registered),
@@ -1553,11 +1617,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ],
                           ),
                         )
-
                       ],
                     ),
                   ),
-                if(dropDownTwoSelcted == 9)
+                if (dropDownTwoSelcted == 9)
                   Visibility(
                     visible: ngoDashboardDatas,
                     child: Column(
@@ -1620,8 +1683,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 child: Column(
                                   children: ddata.map((offer) {
                                     return Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       // Aligning to start for better control
                                       children: [
                                         _buildDataCell(offer.status),
@@ -1638,7 +1701,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       ],
                     ),
                   ),
-                if(dropDownTwoSelcted == 8)
+                if (dropDownTwoSelcted == 8)
                   Visibility(
                     visible: ngoDashboardDatas,
                     child: Column(
@@ -1701,8 +1764,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 child: Column(
                                   children: ddata.map((offer) {
                                     return Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       // Aligning to start for better control
                                       children: [
                                         _buildDataCell(offer.status),
@@ -1812,7 +1875,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
-
 
   Widget _buildHeaderCellSrNo(String text) {
     return Container(
@@ -1930,82 +1992,6 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  /* Widget _buildViewManageDoctorUploadMOUUI(String hospitalId) {
-    return Container(
-      height: 80,
-      width: 200,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          _buildButton('View', () async {
-            print('View pressed');
-            print('@@fff1--' + darpan_nos);
-            print('@@fff1--' + hospitalId);
-            print('@@fff1--' + district_code_login.toString());
-            print('@@fff1--' + userId);
-
-            try {
-              // Call the API to view hospital details
-              List<HospitalDetailsDataViewClickHospitalDetails> hospitalDetails = await viewHospitalDetails(
-                "UP_2018_0184013",
-                "H201963364948",
-                district_code_login,
-                userId,
-              );
-
-              // Check if hospitalDetails is not empty
-              if (hospitalDetails.isNotEmpty) {
-                HospitalDetailsDataViewClickHospitalDetails details = hospitalDetails[0];
-
-                print('@@fff1--' + details.toString());
-
-
-
-                // Call the dialog function with the fetched data
-
-                _showDialogTableFormViewClickData(
-                  darpanNo: details.darpanNo,
-                  panNumber: details.panNo,
-                  ngoName: details.ngoName,
-                  memberName: details.name,
-                  emailId: details.emailid,
-                  mobileNumber: details.mobile,
-                  address: details.address,
-                  district: details.districtName,
-                  state: details.stateName,
-
-                );
-
-              } else {
-                Utils.showToast("No hospital details found or an error occurred", true);
-              }
-            } catch (e) {
-              print('Error fetching hospital details: $e');
-              Utils.showToast("Failed to fetch hospital details. Please try again later.", true);
-            }
-          }),
-          _buildSeparator(),
-          _buildButton('Manage Doctor', () {
-            print('Manage Doctor pressed');
-            // Logic for managing doctors
-          }),
-          _buildSeparator(),
-          _buildButton('Upload MoU', () {
-            print('Upload MoU pressed');
-            // Logic for uploading MoU
-          }),
-        ],
-      ),
-    );
-  }*/
-
-
   Widget _buildButton(String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -2022,7 +2008,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
     );
   }
-
 
   Widget _buildEditMAnageDoctorUploadMOUUI() {
     return Container(
@@ -2081,8 +2066,7 @@ class _NgoDashboard extends State<NgoDashboard> {
               ),
             ),
           ],
-        )
-    );
+        ));
   }
 
   Widget _buildMAnageEyeDonationMOUUI() {
@@ -2128,8 +2112,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             ),
             // Separator "||"
           ],
-        )
-    );
+        ));
   }
 
   Widget _buildMAnageEDITDELETE() {
@@ -2175,8 +2158,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             ),
             // Separator "||"
           ],
-        )
-    );
+        ));
   }
 
   Widget _buildEdit() {
@@ -2206,10 +2188,79 @@ class _NgoDashboard extends State<NgoDashboard> {
               ),
             ),
             // Separator "||"
-
           ],
-        )
-    );
+        ));
+  }
+
+  Widget _buildEditCampMabgerList(int sR_No) {
+    return Container(
+        height: 80,
+        width: 200,
+        // Fixed width to ensure horizontal scrolling
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for header cells
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Spaces the buttons evenly
+          children: [
+            // "View" Text Button
+            _buildButton('Edit', () async {
+              print('View pressed');
+
+              try {
+                // Call the API to view camp manager details
+                GetCampManagerDetailsByIdEditData
+                    getCampManagerDetailsByIdEditDatas =
+                    await ApiController.getCampManagerDetailsById(
+                  sR_No,
+                  entryby, // Assuming `userId` is the correct entryBy parameter
+                );
+
+                // Check if the response is not null and status is true
+                if (getCampManagerDetailsByIdEditDatas != null &&
+                    getCampManagerDetailsByIdEditDatas.status) {
+                  print(getCampManagerDetailsByIdEditDatas
+                      .message); // Success message
+                  getCampManagerDetailsByIdEditDatas.data.forEach((manager) {
+                    print('Manager Name: ${manager.managerName}');
+                    // Initialize the controllers with the provided values
+                    _userNameController = TextEditingController(text: manager.managerName);
+                    _mobileNumberController = TextEditingController(text: manager.mobile);
+                    _emailIdController = TextEditingController(text: manager.emailId);
+                    _addressController = TextEditingController(text: manager.address);
+                    _designationController = TextEditingController(text: manager.designation);
+                    // Access other fields as needed
+                    setState(() {
+                      CampManagerRegisterartionsEdit = true;
+                      ManageUSerNGOHospt = false;
+                      ngoDashboardclicks = false;
+                      EyeBankApplication = false;
+                      ngoCampManagerLists = false;
+                      CampManagerRegisterartions = false;
+
+                    });
+                  });
+
+                  // Prepare documents for display
+
+                } else {
+                  Utils.showToast(
+                      "No hospital details found or an error occurred", true);
+                }
+              } catch (e) {
+                print('Error fetching hospital details: $e');
+                Utils.showToast(
+                    "Failed to fetch hospital details. Please try again later.",
+                    true);
+              }
+            }),
+          ],
+        ));
   }
 
   Widget _buildViewManageDoctorUploadMOUUI(String hospitalId) {
@@ -2235,7 +2286,8 @@ class _NgoDashboard extends State<NgoDashboard> {
             try {
               _storeHRegID(hospitalId);
               // Call the API to view hospital details and documents
-              ViewClickHospitalDetails viewClickHospitalDetails = await viewHospitalDetails(
+              ViewClickHospitalDetails viewClickHospitalDetails =
+                  await viewHospitalDetails(
                 darpan_nos,
                 hospitalId,
                 district_code_login,
@@ -2245,15 +2297,14 @@ class _NgoDashboard extends State<NgoDashboard> {
               // Check if the response status is true and hospitalDetails is not empty
               if (viewClickHospitalDetails.status &&
                   viewClickHospitalDetails.data.hospitalDetails.isNotEmpty) {
-                HospitalDetailsDataViewClickHospitalDetails details = viewClickHospitalDetails
-                    .data.hospitalDetails[0];
+                HospitalDetailsDataViewClickHospitalDetails details =
+                    viewClickHospitalDetails.data.hospitalDetails[0];
 
                 print('@@fff1--' + details.toString());
 
                 // Prepare documents for display
-                List<
-                    HospitalDocumentsHospitalDetailsDataViewClickHospitalDetails> documents = viewClickHospitalDetails
-                    .data.hospitalDocuments;
+                List<HospitalDocumentsHospitalDetailsDataViewClickHospitalDetails>
+                    documents = viewClickHospitalDetails.data.hospitalDocuments;
 
                 // Call the dialog function with the fetched data
                 _showDialogTableFormViewClickData(
@@ -2286,14 +2337,15 @@ class _NgoDashboard extends State<NgoDashboard> {
             print('@@fff1--Manage' + district_code_login.toString());
             print('@@fff1--Manage' + userId);
             print('Manage Doctor pressed');
-            _showNgoManageDoctore(hospitalId,district_code_login);
+            _showNgoManageDoctore(hospitalId, district_code_login);
 
             // Logic for managing doctors
           }),
           _buildSeparator(),
           _buildButton('Upload MoU', () {
             print('@@Upload MoU pressed');
-            _showNgoGetUploadedMouList(hospitalId,district_code_login,int.parse(role_id));
+            _showNgoGetUploadedMouList(
+                hospitalId, district_code_login, int.parse(role_id));
 
             // Logic for uploading MoU
           }),
@@ -2312,8 +2364,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     String address,
     String district,
     String state,
-    List<
-        HospitalDocumentsHospitalDetailsDataViewClickHospitalDetails> documents,
+    List<HospitalDocumentsHospitalDetailsDataViewClickHospitalDetails>
+        documents,
   }) {
     showDialog(
       context: context,
@@ -2327,7 +2379,6 @@ class _NgoDashboard extends State<NgoDashboard> {
               color: Colors.white, // Set title text color to blue
             ), // Optional: styling
           ),
-
           content: SingleChildScrollView(
             child: Container(
               width: 800, // Set width as per your requirement
@@ -2379,8 +2430,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               // Align text to the start
                               children: [
                                 Text(
-                                  '1. Minimum 3 years of experience certificate: ${doc
-                                      .file1}',
+                                  '1. Minimum 3 years of experience certificate: ${doc.file1}',
                                   maxLines: 4,
                                   // Set max lines for file1
                                   overflow: TextOverflow.ellipsis,
@@ -2393,8 +2443,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 SizedBox(height: 4),
                                 // Add some spacing between the texts
                                 Text(
-                                  '2. Society/Charitable public trust registration certificate: ${doc
-                                      .file2}',
+                                  '2. Society/Charitable public trust registration certificate: ${doc.file2}',
                                   maxLines: 4,
                                   // Set max lines for file2
                                   overflow: TextOverflow.ellipsis,
@@ -2409,16 +2458,15 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ),
                       ],
                     )
-                  ] else
-                    ...[
-                      Text(
-                        'No documents available.',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w300,
-                        ),
+                  ] else ...[
+                    Text(
+                      'No documents available.',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w300,
                       ),
-                    ],
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -2433,15 +2481,13 @@ class _NgoDashboard extends State<NgoDashboard> {
             TextButton(
               onPressed: () {
                 // Add your 'Next' button action here
-                print('@@NextClick HIDget---'+selectedHRegID);
+                print('@@NextClick HIDget---' + selectedHRegID);
                 _fetchAndShowHospitalData(context, selectedHRegID);
-              //  _buildNExtClickHospitallinkedwithNGO(selectedHRegID);
-
+                //  _buildNExtClickHospitallinkedwithNGO(selectedHRegID);
               },
               child: Text('Next'),
             ),
           ],
-
         );
       },
     );
@@ -2465,19 +2511,20 @@ class _NgoDashboard extends State<NgoDashboard> {
     });
 
     // Retrieve the stored value to verify it's been saved correctly
-     storedValueHospitalID = await SharedPrefs.getStoreSharedValue(AppConstant.hospitalId);
+    storedValueHospitalID =
+        await SharedPrefs.getStoreSharedValue(AppConstant.hospitalId);
 
     // Check if the retrieved value matches the stored value
     if (storedValueHospitalID == selectedHRegID) {
       print('Successfully stored and retrieved hRegID: $storedValueHospitalID');
     } else {
-      print('Error: Stored value does not match. Expected: $selectedHRegID, Got: $storedValueHospitalID');
+      print(
+          'Error: Stored value does not match. Expected: $selectedHRegID, Got: $storedValueHospitalID');
     }
 
     // Print the stored hRegID
     print('Stored hRegID: $selectedHRegID');
   }
-
 
   TableRow _buildTableRowtwo(String label, String value) {
     return TableRow(
@@ -2520,14 +2567,14 @@ class _NgoDashboard extends State<NgoDashboard> {
       Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
-          constraints: BoxConstraints(maxHeight: 80), // Set max height for the label
+          constraints: BoxConstraints(maxHeight: 80),
+          // Set max height for the label
           child: Text(
             label,
             maxLines: 3, // Set max lines for the label
             overflow: TextOverflow.ellipsis, // Handle overflow
             style: TextStyle(
               color: Colors.black,
-
               fontWeight: FontWeight.w300,
             ),
           ),
@@ -2536,7 +2583,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       Padding(
         padding: const EdgeInsets.all(4.0),
         child: Container(
-          constraints: BoxConstraints(maxHeight: 80), // Set max height for the value
+          constraints: BoxConstraints(maxHeight: 80),
+          // Set max height for the value
           child: Text(
             value ?? 'N/A', // Use the passed variable
             maxLines: 3, // Set max lines for the value
@@ -2550,6 +2598,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     ]);
   }
+
   TableRow _buildTableRowth(String label, String value, String values) {
     return TableRow(
       children: [
@@ -2573,7 +2622,8 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Container(
             // Remove max height for better text display
             child: Text(
-              value.isNotEmpty ? value : 'N/A', // Use isNotEmpty for additional checks
+              value.isNotEmpty ? value : 'N/A',
+              // Use isNotEmpty for additional checks
               maxLines: 5, // Set max lines for the value
               overflow: TextOverflow.ellipsis, // Handle overflow
               style: TextStyle(
@@ -2588,7 +2638,8 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Container(
             // Remove max height for better text display
             child: Text(
-              values.isNotEmpty ? values : 'N/A', // Use isNotEmpty for additional checks
+              values.isNotEmpty ? values : 'N/A',
+              // Use isNotEmpty for additional checks
               maxLines: 5, // Set max lines for the value
               overflow: TextOverflow.ellipsis, // Handle overflow
               style: TextStyle(
@@ -2602,16 +2653,12 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-
-
-
-
   static Future<ViewClickHospitalDetails> viewHospitalDetails(
-      String darpanNo,
-      String hospitalId,
-      int districtId,
-      String userId,
-      ) async {
+    String darpanNo,
+    String hospitalId,
+    int districtId,
+    String userId,
+  ) async {
     print("@@GetHospitalList - Initiating request");
 
     // Check network availability
@@ -2655,7 +2702,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      ViewClickHospitalDetails data = ViewClickHospitalDetails.fromJson(responseData);
+      ViewClickHospitalDetails data =
+          ViewClickHospitalDetails.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -2672,8 +2720,8 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   static Future<HospitallinkedwithNGO> getHospitalData(
-      String hospitalId,
-      ) async {
+    String hospitalId,
+  ) async {
     print("@@HospitallinkedwithNGO - Initiating request");
 
     // Check network availability
@@ -2730,8 +2778,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     }
   }
 
-
-  Future<void> _fetchAndShowHospitalData(BuildContext context, String hospitalId) async {
+  Future<void> _fetchAndShowHospitalData(
+      BuildContext context, String hospitalId) async {
     try {
       HospitallinkedwithNGO hospitalData = await getHospitalData(hospitalId);
 
@@ -2743,9 +2791,11 @@ class _NgoDashboard extends State<NgoDashboard> {
       }
     } catch (e) {
       print('Error: $e');
-      Utils.showToast("Failed to fetch hospital details. Please try again later.", true);
+      Utils.showToast(
+          "Failed to fetch hospital details. Please try again later.", true);
     }
   }
+
   void _showDialogWithData(BuildContext context, HospitallinkedwithNGO data) {
     showDialog(
       context: context,
@@ -2753,8 +2803,10 @@ class _NgoDashboard extends State<NgoDashboard> {
         return AlertDialog(
           title: Container(
             color: Colors.blue,
-            width: double.infinity, // Make title container span the full width
-            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            width: double.infinity,
+            // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0),
+            // Optional: padding for spacing
             child: Text(
               'Hospital(s) linked with NGO',
               textAlign: TextAlign.center, // Optional: center the title text
@@ -2767,7 +2819,8 @@ class _NgoDashboard extends State<NgoDashboard> {
           content: SingleChildScrollView(
             child: Container(
               width: double.infinity,
-              constraints: BoxConstraints(maxHeight: 2000), // Set max height for the dialog content
+              constraints: BoxConstraints(maxHeight: 2000),
+              // Set max height for the dialog content
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -2778,16 +2831,26 @@ class _NgoDashboard extends State<NgoDashboard> {
                       1: FixedColumnWidth(300.0), // Adjust as needed
                     },
                     children: [
-                      _buildTableRow('Darpan No.', data.data.hospitalData[0].darpanNo),
-                      _buildTableRow('Hospital Name', data.data.hospitalData[0].hName),
-                      _buildTableRow('Officer Name', data.data.hospitalData[0].nodalOfficerName),
-                      _buildTableRow('Mobile No.', data.data.hospitalData[0].mobile),
-                      _buildTableRow('Email ID', data.data.hospitalData[0].emailId),
-                      _buildTableRow('Address', data.data.hospitalData[0].address),
-                      _buildTableRow('District', data.data.hospitalData[0].districtName),
-                      _buildTableRow('State', data.data.hospitalData[0].stateName),
-                      _buildTableRow('Pin Code', data.data.hospitalData[0].pincode.toString()),
-                      _buildTableRow('Fax No.', data.data.hospitalData[0].fax.toString()),
+                      _buildTableRow(
+                          'Darpan No.', data.data.hospitalData[0].darpanNo),
+                      _buildTableRow(
+                          'Hospital Name', data.data.hospitalData[0].hName),
+                      _buildTableRow('Officer Name',
+                          data.data.hospitalData[0].nodalOfficerName),
+                      _buildTableRow(
+                          'Mobile No.', data.data.hospitalData[0].mobile),
+                      _buildTableRow(
+                          'Email ID', data.data.hospitalData[0].emailId),
+                      _buildTableRow(
+                          'Address', data.data.hospitalData[0].address),
+                      _buildTableRow(
+                          'District', data.data.hospitalData[0].districtName),
+                      _buildTableRow(
+                          'State', data.data.hospitalData[0].stateName),
+                      _buildTableRow('Pin Code',
+                          data.data.hospitalData[0].pincode.toString()),
+                      _buildTableRow(
+                          'Fax No.', data.data.hospitalData[0].fax.toString()),
                     ],
                   ),
                   SizedBox(height: 10), // Add some space between the tables
@@ -2812,13 +2875,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                       2: FlexColumnWidth(20),
                     },
                     children: [
-                      _buildTableRowth('S.No', 'Equipment Name', 'Number of Equipment'),
-                      for (int i = 0; i < data.data.hospitalEquipmentList.length; i++)
-
+                      _buildTableRowth(
+                          'S.No', 'Equipment Name', 'Number of Equipment'),
+                      for (int i = 0;
+                          i < data.data.hospitalEquipmentList.length;
+                          i++)
                         _buildTableRowth(
                           (i + 1).toString(),
                           data.data.hospitalEquipmentList[i].name,
-                          data.data.hospitalEquipmentList[i].noOfEquipment.toString(),
+                          data.data.hospitalEquipmentList[i].noOfEquipment
+                              .toString(),
                         ),
                     ],
                   ),
@@ -2829,11 +2895,11 @@ class _NgoDashboard extends State<NgoDashboard> {
           actions: [
             TextButton(
               onPressed: () {
-                print('@@fromshareValueGet--'+storedValueHospitalID);
+                print('@@fromshareValueGet--' + storedValueHospitalID);
                 // Handle any additional logic for the Next button
-              //  _storeHRegID(hospitalId);
+                //  _storeHRegID(hospitalId);
 
-                showDoctorlinkedwithHospital(context,  storedValueHospitalID);
+                showDoctorlinkedwithHospital(context, storedValueHospitalID);
               },
               child: Text('Next'),
             ),
@@ -2849,8 +2915,6 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-
-
   void showDoctorlinkedwithHospital(BuildContext context, String hospitalId) {
     showDialog(
       context: context,
@@ -2860,10 +2924,12 @@ class _NgoDashboard extends State<NgoDashboard> {
         double screenHeight = MediaQuery.of(context).size.height;
 
         return AlertDialog(
-          title:  Container(
+          title: Container(
             color: Colors.blue,
-            width: double.infinity, // Make title container span the full width
-            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            width: double.infinity,
+            // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0),
+            // Optional: padding for spacing
             child: Text(
               'Doctor(s) linked with Hospita',
               textAlign: TextAlign.center, // Optional: center the title text
@@ -2899,9 +2965,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                         // Data Rows
                         FutureBuilder<List<DataDoctorlinkedwithHospital>>(
                           future: ApiController.getDoctorlinkedwithHospital(
-                              hospitalId
-
-                          ),
+                              hospitalId),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -2920,7 +2984,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 children: ddata.map((offer) {
                                   return Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
@@ -2930,16 +2994,25 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       _buildDataCell(offer.mobile.toString()),
                                       _buildDataCell(offer.emailId.toString()),
                                       _buildDataCellViewBlue("View", () async {
-                                        print("@@Doctor Details: " + offer.mcIID);
-                                        print('@@fromshareValueGet--'+storedValueHospitalID);
+                                        print(
+                                            "@@Doctor Details: " + offer.mcIID);
+                                        print('@@fromshareValueGet--' +
+                                            storedValueHospitalID);
 
-                                        List<DataGetDoctorDetailsById> doctorDetails = await ApiController.getDoctorDetailsById(storedValueHospitalID,offer.mcIID);
+                                        List<DataGetDoctorDetailsById>
+                                            doctorDetails = await ApiController
+                                                .getDoctorDetailsById(
+                                                    storedValueHospitalID,
+                                                    offer.mcIID);
 
                                         // Show doctor details dialog if data is available
                                         if (doctorDetails.isNotEmpty) {
-                                          _showDoctorDetailsDialog(context, doctorDetails[0]);
+                                          _showDoctorDetailsDialog(
+                                              context, doctorDetails[0]);
                                         } else {
-                                          Utils.showToast("No details found for this doctor.", true);
+                                          Utils.showToast(
+                                              "No details found for this doctor.",
+                                              true);
                                         }
                                       }),
                                     ],
@@ -2949,7 +3022,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                             }
                           },
                         ),
-
                       ],
                     ),
                   ),
@@ -2970,15 +3042,18 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  void _showDoctorDetailsDialog(BuildContext context, DataGetDoctorDetailsById doctor) {
+  void _showDoctorDetailsDialog(
+      BuildContext context, DataGetDoctorDetailsById doctor) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Container(
             color: Colors.blue,
-            width: double.infinity, // Make title container span the full width
-            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            width: double.infinity,
+            // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0),
+            // Optional: padding for spacing
             child: Text(
               'Doctor Details',
               textAlign: TextAlign.center, // Optional: center the title text
@@ -2993,15 +3068,21 @@ class _NgoDashboard extends State<NgoDashboard> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildDetailRow('MCI ID', doctor.mcIID),
-                _buildDetailRow('Hospital Name', 'test eye care'), // Replace with real data if available
+                _buildDetailRow('Hospital Name', 'test eye care'),
+                // Replace with real data if available
                 _buildDetailRow('Doctor Name', doctor.dName),
-                _buildDetailRow('Gender', doctor.gender ?? 'N/A'), // Replace with real data
-                _buildDetailRow('DOB', doctor.dob ?? 'N/A'), // Replace with real data
+                _buildDetailRow('Gender', doctor.gender ?? 'N/A'),
+                // Replace with real data
+                _buildDetailRow('DOB', doctor.dob ?? 'N/A'),
+                // Replace with real data
                 _buildDetailRow('Mobile Number', doctor.mobile ?? 'N/A'),
                 _buildDetailRow('Email ID', doctor.emailId ?? 'N/A'),
-                _buildDetailRow('District Name', doctor.districtName ?? 'N/A'), // Replace with real data
-                _buildDetailRow('State Name', doctor.stateName ?? 'N/A'), // Replace with real data
-                _buildDetailRow('Pin Code', doctor.pincode ?? 'N/A'), // Replace with real data
+                _buildDetailRow('District Name', doctor.districtName ?? 'N/A'),
+                // Replace with real data
+                _buildDetailRow('State Name', doctor.stateName ?? 'N/A'),
+                // Replace with real data
+                _buildDetailRow('Pin Code', doctor.pincode ?? 'N/A'),
+                // Replace with real data
               ],
             ),
           ),
@@ -3009,8 +3090,9 @@ class _NgoDashboard extends State<NgoDashboard> {
             TextButton(
               child: Text('Next'),
               onPressed: () async {
-               // Navigator.of(context).pop();
-                List<DataGetAllNgoService> doctorDetails = await ApiController.getAllNgoService(userId);
+                // Navigator.of(context).pop();
+                List<DataGetAllNgoService> doctorDetails =
+                    await ApiController.getAllNgoService(userId);
 
                 // Show doctor details dialog if data is available
                 if (doctorDetails.isNotEmpty) {
@@ -3032,7 +3114,6 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-
   void _showNgoServiceDetailsDialog() {
     showDialog(
       context: context,
@@ -3044,8 +3125,10 @@ class _NgoDashboard extends State<NgoDashboard> {
         return AlertDialog(
           title: Container(
             color: Colors.blue,
-            width: double.infinity, // Make title container span the full width
-            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            width: double.infinity,
+            // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0),
+            // Optional: padding for spacing
             child: Text(
               'NGO Application Details',
               textAlign: TextAlign.center, // Optional: center the title text
@@ -3087,7 +3170,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           children: ddata.map((offer) {
                             return Row(
                               children: [
-                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCellSrNo(
+                                    (ddata.indexOf(offer) + 1).toString()),
                                 _buildDataCell(offer.name),
                               ],
                             );
@@ -3112,7 +3196,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
-  void _showNgoManageDoctore( String hospitalId,int districtId) {
+
+  void _showNgoManageDoctore(String hospitalId, int districtId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -3123,8 +3208,10 @@ class _NgoDashboard extends State<NgoDashboard> {
         return AlertDialog(
           title: Container(
             color: Colors.blue,
-            width: double.infinity, // Make title container span the full width
-            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            width: double.infinity,
+            // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0),
+            // Optional: padding for spacing
             child: Text(
               'Doctors Detail',
               textAlign: TextAlign.center, // Optional: center the title text
@@ -3158,8 +3245,9 @@ class _NgoDashboard extends State<NgoDashboard> {
                   Divider(color: Colors.blue, height: 1.0),
                   // Data Rows
                   FutureBuilder<List<DataManageDoctor>>(
-                    future: ApiController.getDoctorListByHId( hospitalId,
-                        districtId,
+                    future: ApiController.getDoctorListByHId(
+                      hospitalId,
+                      districtId,
                     ),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -3174,14 +3262,28 @@ class _NgoDashboard extends State<NgoDashboard> {
                           children: ddata.map((offer) {
                             return Row(
                               children: [
-                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCellSrNo(
+                                    (ddata.indexOf(offer) + 1).toString()),
                                 _buildDataCell(offer.mcIID),
                                 _buildDataCell(offer.hRegID),
                                 _buildDataCell(offer.dName),
                                 _buildDataCell(offer.mobile),
                                 _buildDataCell(offer.emailId),
-                                  _buildDataCell(offer.status),
-                                if (offer.status == 'Approved')
+                                _buildDataCell(offer.status),
+                                /* if (offer.status == 'Approved')
+                                // Store locally
+                                  _buildMAnageEDITDELETE(
+                                     */ /* offer.hRegID*/ /*) // Pass hospitalId
+                                else
+                                  if (offer.status == 'Pending')
+                                    _buildMAnageEDITDELETE()
+                                  else
+                                    _buildMAnageEDITDELETE(),
+*/
+                                _buildDataCellViewBlue("View", () async {
+                                  print('@@Pending work---'); // Pass hospitalId
+                                }),
+                                /*  if (offer.status == 'Approved')
                                 // Store locally
                                   _buildMAnageEDITDELETE(
                                       ) // Pass hospitalId
@@ -3189,7 +3291,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   if (offer.status == 'Pending')
                                     _buildMAnageEDITDELETE()
                                   else
-                                    _buildMAnageEDITDELETE(),
+                                    _buildMAnageEDITDELETE(),*/
                               ],
                             );
                           }).toList(),
@@ -3214,7 +3316,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  void _showNgoGetUploadedMouList( String hospitalId,int districtId,int userRoleId) {
+  void _showNgoGetUploadedMouList(
+      String hospitalId, int districtId, int userRoleId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -3225,8 +3328,10 @@ class _NgoDashboard extends State<NgoDashboard> {
         return AlertDialog(
           title: Container(
             color: Colors.blue,
-            width: double.infinity, // Make title container span the full width
-            padding: const EdgeInsets.only(bottom: 8.0), // Optional: padding for spacing
+            width: double.infinity,
+            // Make title container span the full width
+            padding: const EdgeInsets.only(bottom: 8.0),
+            // Optional: padding for spacing
             child: Text(
               'Uploaded MOU',
               textAlign: TextAlign.center, // Optional: center the title text
@@ -3259,9 +3364,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                   Divider(color: Colors.blue, height: 1.0),
                   // Data Rows
                   FutureBuilder<List<DataUploadMOUNGO>>(
-                    future: ApiController.getUploadedMouList( hospitalId,
-                        districtId,
-                        userRoleId),
+                    future: ApiController.getUploadedMouList(
+                        hospitalId, districtId, userRoleId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -3275,22 +3379,19 @@ class _NgoDashboard extends State<NgoDashboard> {
                           children: ddata.map((offer) {
                             return Row(
                               children: [
-                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCellSrNo(
+                                    (ddata.indexOf(offer) + 1).toString()),
                                 _buildDataCell(offer.hRegID),
-                                _buildDataCell(Utils.formatDateString(
-                                    offer.fromDate)),
-                                _buildDataCell(Utils.formatDateString(
-                                    offer.toDate)),
                                 _buildDataCell(
-                                    offer.name),
+                                    Utils.formatDateString(offer.fromDate)),
                                 _buildDataCell(
-                                    offer.file),
-                                if(offer.vstatus=='3')
-                                  _buildDataCell(
-                                      'Download'),
+                                    Utils.formatDateString(offer.toDate)),
+                                _buildDataCell(offer.name),
+                                _buildDataCell(offer.file),
+                                if (offer.vstatus == '3')
+                                  _buildDataCell('Download'),
                                 _buildDataCellViewBlue("RENEW", () async {
                                   print("@@Doctor Details: ");
-
 
                                   // Show doctor details dialog if data is available
                                 }),
@@ -3317,6 +3418,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
+
   Widget _buildDetailRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -3345,8 +3447,485 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-}
+// Widget for Camp Manager Registration Form
+  // Function to reset form fields
+  void _resetForm() {
+    _userNameController.clear();
+    _mobileNumberController.clear();
+    _emailIdController.clear();
+    _addressController.clear();
+    _designationController.clear();
+    setState(() {
+      gender = null; // Reset gender selection
+    });
+  }
 
+  Widget AddCampManager() {
+    return Column(
+      children: [
+        Visibility(
+          visible: CampManagerRegisterartions,
+          // Assuming CampManagerRegisterartions is true
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Camp Manager Registration',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Form for Camp Manager Registration
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        // Username Field
+                        TextFormField(
+                          controller: _userNameController, // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'User Name*',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your name';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Gender Selection
+                        Text('Gender*'),
+                        Row(
+                          children: [
+                            Radio<String>(
+                              value: 'Male',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Male'),
+                            Radio<String>(
+                              value: 'Female',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Female'),
+                            Radio<String>(
+                              value: 'Transgender',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Transgender'),
+                          ],
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Mobile Number Field
+                        TextFormField(
+                          controller: _mobileNumberController,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Mobile No.*',
+                          ),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number';
+                            } else if (value.length != 10) {
+                              return 'Please enter a valid 10-digit mobile number';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Email ID Field
+                        TextFormField(
+                          controller: _emailIdController, // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Email ID*',
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Address Field
+                        TextFormField(
+                          controller: _addressController, // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Address*',
+                          ),
+                          maxLines: 3,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Designation Field
+                        TextFormField(
+                          controller: _designationController,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Designation',
+                          ),
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Submit and Cancel Buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  // Process the form data
+                                  print("@@_campManagerRegistration--");
+                                  _campManagerRegistration();
+                                }
+                              },
+                              child: Text('Submit'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Reset form fields
+                                _resetForm();
+                              },
+                              child: Text('Reset'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget EditCampManager() {
+    return Column(
+      children: [
+        Visibility(
+          visible: CampManagerRegisterartionsEdit, // Change this to your actual condition
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Camp Manager Registration',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Form for Camp Manager Registration
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        // Username Field
+                        TextFormField(
+                          controller: _userNameController,
+                          decoration: InputDecoration(
+                            labelText: 'User Name*',
+                            hintText: 'Enter your name',
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your name';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Gender Selection
+                        Text('Gender*'),
+                        Row(
+                          children: [
+                            Radio<String>(
+                              value: 'Male',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Male'),
+                            Radio<String>(
+                              value: 'Female',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Female'),
+                            Radio<String>(
+                              value: 'Transgender',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Transgender'),
+                          ],
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Mobile Number Field
+                        TextFormField(
+                          controller: _mobileNumberController,
+                          decoration: InputDecoration(
+                            labelText: 'Mobile No.*',
+                            hintText: 'Enter your mobile number',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number';
+                            } else if (value.length != 10) {
+                              return 'Please enter a valid 10-digit mobile number';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Email ID Field
+                        TextFormField(
+                          controller: _emailIdController,
+                          decoration: InputDecoration(
+                            labelText: 'Email ID*',
+                            hintText: 'Enter your email address',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Address Field
+                        TextFormField(
+                          controller: _addressController,
+                          decoration: InputDecoration(
+                            labelText: 'Address*',
+                            hintText: 'Enter your address',
+                            border: OutlineInputBorder(),
+                          ),
+                          maxLines: 3,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Designation Field
+                        TextFormField(
+                          controller: _designationController,
+                          decoration: InputDecoration(
+                            labelText: 'Designation',
+                            hintText: 'Enter your designation',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Submit and Cancel Buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  // Process the form data
+                                  _campManagerRegistrationEdit();
+                                }
+                              },
+                              child: Text('Submit'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Reset form fields
+                                _resetForm();
+                              },
+                              child: Text('Reset'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+
+  }
+
+// API call method for Camp Manager Registration
+  Future<void> _campManagerRegistration() async {
+    if (_formKey.currentState.validate()) {
+      Utils.showProgressDialog1(context);
+
+      var response = await ApiController.campManagerRegistration(
+          _userNameController.text.toString().trim(),
+          gender,
+          _mobileNumberController.text.toString().trim(),
+          _emailIdController.text.toString().trim(),
+          _addressController.text.toString().trim(),
+          _designationController.text.toString().trim(),
+          district_code_login,
+          state_code_login,
+          userId,
+          int.parse(entryby),
+          darpan_nos,
+          "0",
+          ngoNames,
+          stateNames,
+          districtNames,
+          "0");
+
+      Utils.hideProgressDialog1(context);
+
+      // Check if the response is null before accessing properties
+      if (response.message == "Camp Manager Registered Successfully.") {
+        Utils.showToast(response.message.toString(), true);
+        print("@@Result message----Class: " + response.message);
+        EyeBankApplication = true;
+        ngoDashboardclicks = false;
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists = true;
+        CampManagerRegisterartions = false;
+      }
+    } else {
+      // Handle the case where the list is null or empty
+      Utils.showToast("Not created succesfully", true);
+    }
+  }
+  Future<void> _campManagerRegistrationEdit() async {
+    if (_formKey.currentState.validate()) {
+      Utils.showProgressDialog1(context);
+
+      var response = await ApiController.updateCampManager(
+          _userNameController.text.toString().trim(),
+          gender,
+          _mobileNumberController.text.toString().trim(),
+          _emailIdController.text.toString().trim(),
+          _addressController.text.toString().trim(),
+          _designationController.text.toString().trim(),
+          district_code_login,
+          state_code_login,
+          userId,
+          int.parse(entryby),
+          darpan_nos,
+          "0",
+          ngoNames,
+          stateNames,
+          districtNames,
+          "0");
+
+      Utils.hideProgressDialog1(context);
+
+      // Check if the response is null before accessing properties
+      if (response.message == "Camp Manager Details Updated Successfully.") {
+        Utils.showToast(response.message.toString(), true);
+        print("@@Result message----Class: " + response.message);
+        EyeBankApplication = false;
+        ngoDashboardclicks = false;
+
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists = true;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit=false;
+      }
+    } else {
+      // Handle the case where the list is null or empty
+      Utils.showToast("Not created succesfully", true);
+    }
+  }
+}
 
 class GetChangeAPsswordFieldss {
   String userid;
