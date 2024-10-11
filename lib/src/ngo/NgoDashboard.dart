@@ -19,6 +19,7 @@ import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/GetHospit
 import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/ViewClickHospitalDetails.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/ngoCampWork/GetCampManagerDetailsByIdEditData.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/ngoCampWork/NgoCampMangerList.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/screeningcamp/ScreeningCampList.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -87,6 +88,9 @@ class _NgoDashboard extends State<NgoDashboard> {
   // Gender state variable
   bool CampManagerRegisterartionsEdit = false;
 
+  bool ngoScreeningCampListss = false;
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -99,6 +103,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     ngoCampManagerLists = false;
     CampManagerRegisterartions = false;
     CampManagerRegisterartionsEdit=false;
+    ngoScreeningCampListss=false;
+
     _future = getDPM_ScreeningYear();
   }
 
@@ -261,13 +267,13 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenuScreeningCamp() async {
     final RenderBox dropdownRenderBox =
-        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-        Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
-    // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
-      return;
+      print("RenderBox or OverlayRenderBox is null");
+      return; // Ensure the RenderBoxes are not null
     }
 
     final RelativeRect position = RelativeRect.fromRect(
@@ -284,10 +290,9 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Text("Camp Manager"),
         ),
         PopupMenuItem<int>(
-          value: 1,
+          value: 2,
           child: Text("Screening Camp"),
         ),
-        // Add more PopupMenuItem if needed
       ],
       elevation: 8.0,
     ).then((selectedValue) {
@@ -296,6 +301,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       }
     });
   }
+
 
   void _handleMenuSelectionScreeninCamp(int value) {
     switch (value) {
@@ -308,16 +314,19 @@ class _NgoDashboard extends State<NgoDashboard> {
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit=false;
+        ngoScreeningCampListss=false;
 
         break;
       case 2:
         print("@@Screeniong Camp");
         _future = getDPM_ScreeningYear();
-        EyeBankApplication = true;
+        EyeBankApplication = false;
         ngoDashboardclicks = false;
         ManageUSerNGOHospt = false;
+        ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit=false;
+        ngoScreeningCampListss=true;
         break;
       // Add more cases as needed
       default:
@@ -372,6 +381,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         EyeBankApplication = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit=false;
+        ngoScreeningCampListss=false;
+
         break;
       case 2:
         print("@@Satellite Center");
@@ -380,6 +391,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         EyeBankApplication = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit=false;
+        ngoScreeningCampListss=false;
+
         break;
       // Add more cases as needed
       default:
@@ -491,6 +504,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ngoCampManagerLists = false;
                           CampManagerRegisterartions = false;
                           CampManagerRegisterartionsEdit=false;
+                          ngoScreeningCampListss=false;
+
                         });
                       }),
                       SizedBox(width: 8.0),
@@ -505,6 +520,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ngoCampManagerLists = false;
                           CampManagerRegisterartions = false;
                           CampManagerRegisterartionsEdit=false;
+                          ngoScreeningCampListss=false;
+
                         });
                       }),
                     ],
@@ -519,6 +536,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             ngoCampManagerList(),
             AddCampManager(),
             EditCampManager(),
+            ngoScreeningCampList(),
           ],
         ),
       ),
@@ -1230,9 +1248,25 @@ class _NgoDashboard extends State<NgoDashboard> {
       ngoCampManagerLists = false;
       CampManagerRegisterartions = true;
       CampManagerRegisterartionsEdit=false;
+      ngoScreeningCampListss=false;
+
     });
   }
 
+  void _addScreeningCampManager() {
+    // Handle the tap event here
+    print('Add Camp Manager tapped!');
+    setState(() {
+      ManageUSerNGOHospt = false;
+      ngoDashboardclicks = false;
+      EyeBankApplication = false;
+      ngoCampManagerLists = false;
+      CampManagerRegisterartions = true;
+      CampManagerRegisterartionsEdit=false;
+      ngoScreeningCampListss=false;
+
+    });
+  }
   Widget buildInfoContainer(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -2161,6 +2195,52 @@ class _NgoDashboard extends State<NgoDashboard> {
         ));
   }
 
+  Widget _buildCAMPMAnageEDITDELETE() {
+    return Container(
+        height: 80,
+        width: 200,
+        // Fixed width to ensure horizontal scrolling
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for header cells
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Spaces the buttons evenly
+          children: [
+            // "View" Text Button
+            GestureDetector(
+              onTap: () {
+                print('MOU pressed');
+              },
+              child: Text(
+                'Edit',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+            Text(
+              '||',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
+            // "Manage Doctor" Text Button
+            GestureDetector(
+              onTap: () {
+                print('Manage Eye Donation');
+              },
+              child: Text(
+                'Delete',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+          ],
+        ));
+  }
+
   Widget _buildEdit() {
     return Container(
         height: 80,
@@ -2242,6 +2322,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                       EyeBankApplication = false;
                       ngoCampManagerLists = false;
                       CampManagerRegisterartions = false;
+                      ngoScreeningCampListss=false;
+
 
                     });
                   });
@@ -3919,11 +4001,123 @@ class _NgoDashboard extends State<NgoDashboard> {
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit=false;
+        ngoScreeningCampListss=false;
+
       }
     } else {
       // Handle the case where the list is null or empty
       Utils.showToast("Not created succesfully", true);
     }
+  }
+
+  Widget ngoScreeningCampList() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ngoScreeningCampListss,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Screening Camp',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: _addScreeningCampManager,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Add Screening Camp',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w800,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Horizontal Scrolling Table with Header and Data
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Camp Name'),
+                        _buildHeaderCell('Start Date'),
+                        _buildHeaderCell('End Date'),
+                        _buildHeaderCell('City'),
+                        _buildHeaderCell('Update/Block'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataScreeningCampList>>(
+                      future: ApiController.getCampList(
+                          state_code_login, district_code_login, entryby),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataScreeningCampList> ddata = snapshot.data;
+                          print('@@---ddata' + ddata.length.toString());
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.campNo),
+                                  _buildDataCell(Utils.formatDateString(offer.startDate)),
+                                  _buildDataCell(Utils.formatDateString(offer.endDate)),
+                                  _buildDataCell(offer.name),
+                                  _buildCAMPMAnageEDITDELETE(
+                                    )
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
 

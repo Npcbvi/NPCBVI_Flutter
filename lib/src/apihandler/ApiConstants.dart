@@ -87,4 +87,5 @@ class ApiConstants {
 
   static String UpdateCampManager = 'UpdateCampManager';
 
+  static String GetCampList = 'GetCampList';
 }
