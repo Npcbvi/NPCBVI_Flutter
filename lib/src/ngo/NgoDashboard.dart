@@ -212,39 +212,40 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   void _showPopupMenu() async {
-    final RenderBox dropdownRenderBox =
-        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
-    final RenderBox overlayRenderBox =
-        Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final RenderBox dropdownRenderBox =
+      _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+      final RenderBox overlayRenderBox =
+      Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
-    // Check if both render boxes are not null
-    if (dropdownRenderBox == null || overlayRenderBox == null) {
-      return;
-    }
-
-    final RelativeRect position = RelativeRect.fromRect(
-      dropdownRenderBox.localToGlobal(Offset.zero) & dropdownRenderBox.size,
-      Offset.zero & overlayRenderBox.size,
-    );
-
-    await showMenu<int>(
-      context: context,
-      position: position,
-      items: [
-        PopupMenuItem<int>(
-          value: 1,
-          child: Text("Add Ngo Hospital"),
-        ),
-        // Add more PopupMenuItem if needed
-      ],
-      elevation: 8.0,
-    ).then((selectedValue) {
-      if (selectedValue != null) {
-        _handleMenuSelection(selectedValue);
+      // Check if both render boxes are not null
+      if (dropdownRenderBox == null || overlayRenderBox == null) {
+        return;
       }
+
+      final RelativeRect position = RelativeRect.fromRect(
+        dropdownRenderBox.localToGlobal(Offset.zero) & dropdownRenderBox.size,
+        Offset.zero & overlayRenderBox.size,
+      );
+
+      await showMenu<int>(
+        context: context,
+        position: position,
+        items: [
+          PopupMenuItem<int>(
+            value: 1,
+            child: Text("Add Ngo Hospital"),
+          ),
+          // Add more PopupMenuItem if needed
+        ],
+        elevation: 8.0,
+      ).then((selectedValue) {
+        if (selectedValue != null) {
+          _handleMenuSelection(selectedValue);
+        }
+      });
     });
   }
-
   void _handleMenuSelection(int value) {
     switch (value) {
       case 1:
@@ -255,11 +256,12 @@ class _NgoDashboard extends State<NgoDashboard> {
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit=false;
+        ngoScreeningCampListss=false;
         _future = getDPM_ScreeningYear();
 
         break;
 
-      // Add more cases as needed
+    // Add more cases as needed
       default:
         print("Unknown selection");
     }
