@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/model/city/GetCity.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/AddEyeBank.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
@@ -20,12 +22,15 @@ import 'package:mohfw_npcbvi/src/model/districtngowork/gethospitalList/ViewClick
 import 'package:mohfw_npcbvi/src/model/districtngowork/ngoCampWork/GetCampManagerDetailsByIdEditData.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/ngoCampWork/NgoCampMangerList.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/screeningcamp/ScreeningCampList.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/ScreeningCampManager.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+
+import '../model/DashboardStateModel.dart';
 
 class NgoDashboard extends StatefulWidget {
   @override
@@ -51,9 +56,12 @@ class _NgoDashboard extends State<NgoDashboard> {
   String fullnameController, getYearNgoHopital, getfyidNgoHospital;
   bool ManageUSerNGOHospt = false;
   Future<List<DataGetDPM_ScreeningYear>> _future;
+
+  Future<List<DataScreeningCampManager>> _manger;
   Future<List<DataDropDownHospitalSelected>>
       _futureDataDropDownHospitalSelected;
   DataGetDPM_ScreeningYear _selectedUser;
+  DataScreeningCampManager _mangerUser;
   DataGetDPM_ScreeningMonth _selectedUserMonth;
   bool selectionBasedHospital = false;
   bool ngoDashboardclicks = false;
@@ -77,6 +85,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   String designation = '';
   String gender = 'Male'; // Default gender
   final _formKey = GlobalKey<FormState>();
+  String locationTypeValues = 'Urban';
 
   // Controllers for TextFormFields
   TextEditingController _userNameController = TextEditingController();
@@ -89,7 +98,34 @@ class _NgoDashboard extends State<NgoDashboard> {
   bool CampManagerRegisterartionsEdit = false;
 
   bool ngoScreeningCampListss = false;
+  bool AddScreeningCamps = false;
+  String _selectedDateText = 'Start Date *'; // Initially set to "From Date"
 
+  String _selectedDateTextToDate = 'End Date*';
+  String getMAnagerNAme, getmanagerSrNO;
+  bool isVisibleDitrictGovt = false;
+  Future<List<Data>> _futureState;
+  Data _selectedUserState;
+  DataDsiricst _selectedUserDistrict;
+  int stateCodeSPO,
+      disrtcCode,
+      stateCodeDPM,
+      stateCodeGovtPrivate,
+      distCodeDPM,
+      distCodeGovtPrivate;
+  String CodeSPO,
+      codeDPM,
+      CodeGovtPrivate,
+      distNameDPM,
+      distNameDPMs_distictValues;
+
+  TextEditingController _nGONameController = TextEditingController();
+  TextEditingController _campNameController = TextEditingController();
+  TextEditingController _mobileController = TextEditingController();
+  TextEditingController _addresssController = TextEditingController();
+  TextEditingController _Pincodecontroller = TextEditingController();
+  Future<List<DataGetCity>> _futureCity;
+  DataGetCity _selectedUserCity;
 
   @override
   void initState() {
@@ -102,10 +138,12 @@ class _NgoDashboard extends State<NgoDashboard> {
     EyeBankApplication = false;
     ngoCampManagerLists = false;
     CampManagerRegisterartions = false;
-    CampManagerRegisterartionsEdit=false;
-    ngoScreeningCampListss=false;
-
+    CampManagerRegisterartionsEdit = false;
+    ngoScreeningCampListss = false;
+    AddScreeningCamps = false;
     _future = getDPM_ScreeningYear();
+    _manger = getCampManager(district_code_login, entryby);
+    _futureCity = _getCity(district_code_login);
   }
 
   void getUserData() {
@@ -214,9 +252,9 @@ class _NgoDashboard extends State<NgoDashboard> {
   void _showPopupMenu() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final RenderBox dropdownRenderBox =
-      _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+          _dropdownKey.currentContext?.findRenderObject() as RenderBox;
       final RenderBox overlayRenderBox =
-      Overlay.of(context)?.context.findRenderObject() as RenderBox;
+          Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
       // Check if both render boxes are not null
       if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -246,6 +284,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       });
     });
   }
+
   void _handleMenuSelection(int value) {
     switch (value) {
       case 1:
@@ -255,13 +294,14 @@ class _NgoDashboard extends State<NgoDashboard> {
         EyeBankApplication = false;
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
-        CampManagerRegisterartionsEdit=false;
-        ngoScreeningCampListss=false;
+        CampManagerRegisterartionsEdit = false;
+        ngoScreeningCampListss = false;
+        AddScreeningCamps = false;
         _future = getDPM_ScreeningYear();
 
         break;
 
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -269,9 +309,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   void _showPopupMenuScreeningCamp() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay.of(context)?.context.findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     if (dropdownRenderBox == null || overlayRenderBox == null) {
       print("RenderBox or OverlayRenderBox is null");
@@ -304,7 +344,6 @@ class _NgoDashboard extends State<NgoDashboard> {
     });
   }
 
-
   void _handleMenuSelectionScreeninCamp(int value) {
     switch (value) {
       case 1:
@@ -315,8 +354,9 @@ class _NgoDashboard extends State<NgoDashboard> {
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
-        CampManagerRegisterartionsEdit=false;
-        ngoScreeningCampListss=false;
+        CampManagerRegisterartionsEdit = false;
+        ngoScreeningCampListss = false;
+        AddScreeningCamps = false;
 
         break;
       case 2:
@@ -327,8 +367,9 @@ class _NgoDashboard extends State<NgoDashboard> {
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
-        CampManagerRegisterartionsEdit=false;
-        ngoScreeningCampListss=true;
+        CampManagerRegisterartionsEdit = false;
+        ngoScreeningCampListss = true;
+        AddScreeningCamps = false;
         break;
       // Add more cases as needed
       default:
@@ -382,8 +423,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         ManageUSerNGOHospt = true;
         EyeBankApplication = false;
         CampManagerRegisterartions = false;
-        CampManagerRegisterartionsEdit=false;
-        ngoScreeningCampListss=false;
+        CampManagerRegisterartionsEdit = false;
+        ngoScreeningCampListss = false;
 
         break;
       case 2:
@@ -392,8 +433,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         ManageUSerNGOHospt = true;
         EyeBankApplication = false;
         CampManagerRegisterartions = false;
-        CampManagerRegisterartionsEdit=false;
-        ngoScreeningCampListss=false;
+        CampManagerRegisterartionsEdit = false;
+        ngoScreeningCampListss = false;
 
         break;
       // Add more cases as needed
@@ -412,6 +453,43 @@ class _NgoDashboard extends State<NgoDashboard> {
           GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+
+  Future<List<DataScreeningCampManager>> getCampManager(
+      int districtid, String entryBy) async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      // Prepare the request body as a Map
+      Map<String, dynamic> body = {
+        'districtid': districtid,
+        'entryBy': entryBy, // Add user ID to the body
+      };
+
+      // Send POST request with the body encoded as JSON
+      final response = await http.post(
+        Uri.parse(
+            'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetCampManager'),
+        headers: {
+          'Content-Type': 'application/json', // Set content type to JSON
+        },
+        body: jsonEncode(body), // Encode the body as JSON
+      );
+
+      // Check if the response is successful
+      if (response.statusCode == 200) {
+        Map<String, dynamic> json = jsonDecode(response.body);
+        final ScreeningCampManager dashboardStateModel =
+            ScreeningCampManager.fromJson(json);
+        return dashboardStateModel.data;
+      } else {
+        // Handle the case when the server responds with an error
+        Utils.showToast('Error: ${response.statusCode}', true);
+        return null;
+      }
     } else {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
@@ -505,9 +583,9 @@ class _NgoDashboard extends State<NgoDashboard> {
                           EyeBankApplication = false;
                           ngoCampManagerLists = false;
                           CampManagerRegisterartions = false;
-                          CampManagerRegisterartionsEdit=false;
-                          ngoScreeningCampListss=false;
-
+                          CampManagerRegisterartionsEdit = false;
+                          ngoScreeningCampListss = false;
+                          AddScreeningCamps = false;
                         });
                       }),
                       SizedBox(width: 8.0),
@@ -521,9 +599,9 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ManageUSerNGOHospt = false;
                           ngoCampManagerLists = false;
                           CampManagerRegisterartions = false;
-                          CampManagerRegisterartionsEdit=false;
-                          ngoScreeningCampListss=false;
-
+                          CampManagerRegisterartionsEdit = false;
+                          ngoScreeningCampListss = false;
+                          AddScreeningCamps = false;
                         });
                       }),
                     ],
@@ -539,6 +617,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             AddCampManager(),
             EditCampManager(),
             ngoScreeningCampList(),
+            AddScreeningCamp(),
           ],
         ),
       ),
@@ -1249,26 +1328,29 @@ class _NgoDashboard extends State<NgoDashboard> {
       EyeBankApplication = false;
       ngoCampManagerLists = false;
       CampManagerRegisterartions = true;
-      CampManagerRegisterartionsEdit=false;
-      ngoScreeningCampListss=false;
-
+      CampManagerRegisterartionsEdit = false;
+      ngoScreeningCampListss = false;
+      AddScreeningCamps = false;
     });
   }
 
   void _addScreeningCampManager() {
     // Handle the tap event here
-    print('Add Camp Manager tapped!');
+    print('@@AddScreening camp clicked--');
     setState(() {
       ManageUSerNGOHospt = false;
       ngoDashboardclicks = false;
       EyeBankApplication = false;
       ngoCampManagerLists = false;
-      CampManagerRegisterartions = true;
-      CampManagerRegisterartionsEdit=false;
-      ngoScreeningCampListss=false;
-
+      CampManagerRegisterartions = false;
+      CampManagerRegisterartionsEdit = false;
+      ngoScreeningCampListss = false;
+      AddScreeningCamps = true;
+      _manger = getCampManager(district_code_login, entryby);
+      _futureState = _getStatesDAta();
     });
   }
+
   Widget buildInfoContainer(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -2311,11 +2393,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                   getCampManagerDetailsByIdEditDatas.data.forEach((manager) {
                     print('Manager Name: ${manager.managerName}');
                     // Initialize the controllers with the provided values
-                    _userNameController = TextEditingController(text: manager.managerName);
-                    _mobileNumberController = TextEditingController(text: manager.mobile);
-                    _emailIdController = TextEditingController(text: manager.emailId);
-                    _addressController = TextEditingController(text: manager.address);
-                    _designationController = TextEditingController(text: manager.designation);
+                    _userNameController =
+                        TextEditingController(text: manager.managerName);
+                    _mobileNumberController =
+                        TextEditingController(text: manager.mobile);
+                    _emailIdController =
+                        TextEditingController(text: manager.emailId);
+                    _addressController =
+                        TextEditingController(text: manager.address);
+                    _designationController =
+                        TextEditingController(text: manager.designation);
                     // Access other fields as needed
                     setState(() {
                       CampManagerRegisterartionsEdit = true;
@@ -2324,9 +2411,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                       EyeBankApplication = false;
                       ngoCampManagerLists = false;
                       CampManagerRegisterartions = false;
-                      ngoScreeningCampListss=false;
-
-
+                      ngoScreeningCampListss = false;
+                      AddScreeningCamps = false;
                     });
                   });
 
@@ -3737,7 +3823,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     return Column(
       children: [
         Visibility(
-          visible: CampManagerRegisterartionsEdit, // Change this to your actual condition
+          visible: CampManagerRegisterartionsEdit,
+          // Change this to your actual condition
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -3856,7 +3943,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
-                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
                               return 'Please enter a valid email address';
                             }
                             return null;
@@ -3925,7 +4013,746 @@ class _NgoDashboard extends State<NgoDashboard> {
         ),
       ],
     );
+  }
 
+  Widget AddScreeningCamp() {
+    return Column(
+      children: [
+        Visibility(
+          visible: AddScreeningCamps,
+          // Assuming CampManagerRegisterartions is true
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Camp Registration',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Form for Camp Manager Registration
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Flexible(
+                              flex: 2, // Adjust the flex value as needed
+                              child: Text(
+                                'NGO Name*',
+                                style: TextStyle(
+                                  fontSize: 16.0,
+                                  // Adjust the font size if needed
+                                  fontWeight: FontWeight
+                                      .bold, // Make it bold if desired
+                                ),
+                              ),
+                            ),
+                            Flexible(
+                              flex: 4, // Adjust the flex value as needed
+                              child: TextFormField(
+                                controller: _nGONameController,
+                                // Attach controller
+                                decoration: InputDecoration(
+                                  labelText: ngoNames,
+                                  disabledBorder: OutlineInputBorder(
+                                    // Use a rectangle (outline) border
+                                    borderSide: BorderSide(color: Colors.red),
+                                    // Border color red
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            4.0)), // Optional: corner radius
+                                  ),
+                                ),
+                                style: TextStyle(
+                                  color:
+                                      Colors.red, // Set the text color to red
+                                ),
+                                enabled: false,
+                                // Makes the field non-editable
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter Ngo name';
+                                  }
+                                  return null;
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        // Username Field
+                        TextFormField(
+                          controller: _campNameController, // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Camp Name*',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter camp  name';
+                            }
+                            return null;
+                          },
+                        ),
+                        Container(
+                          color: Colors.white,
+                          margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Flexible(
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        // Handle the tap event here
+                                        print('@@Add New Record clicked');
+
+                                        // Open the calendar on tap
+                                        DateTime pickedDate =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          // Default date to show
+                                          firstDate: DateTime(2000),
+                                          // The earliest allowed date
+                                          lastDate: DateTime(
+                                              2101), // The latest allowed date
+                                        );
+
+                                        if (pickedDate != null) {
+                                          // Handle the selected date (e.g., display or save it)
+                                          String formattedDate =
+                                              "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+
+                                          // Update the state with the selected date
+                                          setState(() {
+                                            _selectedDateText = formattedDate;
+                                          });
+                                        }
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(12.0),
+                                        // Padding inside the box
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          // Background color of the box
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          // Rounded corners
+                                          border: Border.all(
+                                            color: Colors.blue, // Border color
+                                            width: 2.0, // Border width
+                                          ),
+                                        ),
+                                        child: Text(
+                                          _selectedDateText,
+                                          // Display the selected date or "From Date"
+                                          style: TextStyle(
+                                            color: Colors.black, // Text color
+                                            fontWeight:
+                                                FontWeight.w800, // Text weight
+                                          ),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Handle text overflow
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        // Handle the tap event here
+                                        print('@@Add New Record clicked');
+
+                                        // Open the calendar on tap
+                                        DateTime pickedDate =
+                                            await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          // Default date to show
+                                          firstDate: DateTime(2000),
+                                          // The earliest allowed date
+                                          lastDate: DateTime(
+                                              2101), // The latest allowed date
+                                        );
+
+                                        if (pickedDate != null) {
+                                          // Handle the selected date (e.g., display or save it)
+                                          String formattedDate =
+                                              "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+
+                                          // Update the state with the selected date
+                                          setState(() {
+                                            _selectedDateTextToDate =
+                                                formattedDate;
+                                          });
+                                        }
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(12.0),
+                                        // Padding inside the box
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          // Background color of the box
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          // Rounded corners
+                                          border: Border.all(
+                                            color: Colors.blue, // Border color
+                                            width: 2.0, // Border width
+                                          ),
+                                        ),
+                                        child: Text(
+                                          _selectedDateTextToDate,
+                                          // Display the selected date or "From Date"
+                                          style: TextStyle(
+                                            color: Colors.black, // Text color
+                                            fontWeight:
+                                                FontWeight.w800, // Text weight
+                                          ),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Handle text overflow
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 16.0),
+                        Center(
+                          child: FutureBuilder<List<DataScreeningCampManager>>(
+                            future: _manger,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+
+                              if (!snapshot.hasData) {
+                                return CircularProgressIndicator();
+                              }
+
+                              List<DataScreeningCampManager> list =
+                                  snapshot.data.toList();
+
+                              // Check if _selectedUser is null or not part of the list anymore
+                              if (_mangerUser == null ||
+                                  !list.contains(_mangerUser)) {
+                                _mangerUser =
+                                    list.first; // Set the first item as default
+                              }
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Camp Manager Name*',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 10),
+                                    DropdownButtonFormField<
+                                        DataScreeningCampManager>(
+                                      value: _mangerUser,
+                                      onChanged: (userc) {
+                                        setState(() {
+                                          _mangerUser = userc;
+                                          getMAnagerNAme =
+                                              userc?.managerName ?? '';
+                                          getmanagerSrNO = userc?.srNo ?? '';
+                                          print(
+                                              'getMAnagerNAme Year: $getMAnagerNAme');
+                                          print(
+                                              'getmanagerSrNO: $getmanagerSrNO');
+                                        });
+                                      },
+                                      items: list.map((user) {
+                                        return DropdownMenuItem<
+                                            DataScreeningCampManager>(
+                                          value: user,
+                                          child: Text(user.managerName,
+                                              style: TextStyle(fontSize: 16)),
+                                        );
+                                      }).toList(),
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 15.0, horizontal: 10.0),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.blue, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.blueAccent,
+                                              width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.blue[50],
+                                      ),
+                                      dropdownColor: Colors.blue[50],
+                                      style: TextStyle(color: Colors.black),
+                                      icon: Icon(Icons.arrow_drop_down,
+                                          color: Colors.blue),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        // Gender Selection
+                        Text('Location Type*'),
+                        Row(
+                          children: [
+                            Radio<String>(
+                              value: 'Urban',
+                              groupValue: locationTypeValues,
+                              onChanged: (value) {
+                                setState(() {
+                                  locationTypeValues = value;
+                                });
+                              },
+                            ),
+                            Text('Urban'),
+                            Radio<String>(
+                              value: 'Rural',
+                              groupValue: locationTypeValues,
+                              onChanged: (value) {
+                                setState(() {
+                                  locationTypeValues = value;
+                                });
+                              },
+                            ),
+                            Text('Rural'),
+                          ],
+                        ),
+                        SizedBox(height: 16.0),
+                        // Show additional content based on the selected value
+                        if (locationTypeValues == 'Urban')
+                          // Content to display if "Urban" is selected
+                          Column(
+                            children: [
+                              Center(
+                                child: FutureBuilder<List<DataGetCity>>(
+                                  future:
+                                      _getCity(district_code_login),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    }
+                                    if (!snapshot.hasData) {
+                                      return const CircularProgressIndicator();
+                                    }
+
+                                    // Logging for debugging
+                                    developer
+                                        .log('@@snapshot: ${snapshot.data}');
+
+                                    List<DataGetCity> districtList =
+                                        snapshot.data;
+
+                                    // Ensure selected district is in the list, otherwise select the first one
+                                    if (_selectedUserCity == null ||
+                                        !districtList.contains(
+                                            _selectedUserCity)) {
+                                      _selectedUserCity =
+                                          districtList.first;
+                                    }
+
+                                    return Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20.0, 0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          const Text('Select City:'),
+                                          DropdownButtonFormField<
+                                              DataGetCity>(
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 15.0,
+                                                      horizontal: 10.0),
+                                              enabledBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blue,
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10.0),
+                                              ),
+                                              focusedBorder:
+                                                  OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blueAccent,
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10.0),
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.blue[50],
+                                            ),
+                                            onChanged: (districtUser) =>
+                                                setState(() {
+                                                  _selectedUserCity =
+                                                  districtUser;
+                                              distCodeGovtPrivate = int.parse(
+                                                  districtUser.subdistrictCode
+                                                      .toString());
+                                              // Update state or further actions here
+                                              print(
+                                                  'Selected District: ${districtUser.subdistrictCode}');
+                                            }),
+                                            value: _selectedUserCity,
+                                            items: districtList
+                                                .map((DataGetCity district) {
+                                              return DropdownMenuItem<
+                                                  DataGetCity>(
+                                                value: district,
+                                                child: Text(
+                                                    district.name),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+
+                              ),
+                              TextFormField(
+                                controller: _Pincodecontroller,
+                                // Attach controller
+                                decoration: InputDecoration(
+                                  labelText: 'Pin Code*',
+                                ),
+                                keyboardType: TextInputType.phone,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter PinCode number';
+                                  }
+                                  return null;
+                                },
+                              )
+                            ],
+                          )
+
+
+                        else if (locationTypeValues == 'Urban')
+                          // Content to display if "Urban" is selected
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            color: Colors.blue[100],
+                            child: Text(
+                              'Urban selected: Show specific content for Urban.',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        // Mobile Number Field
+                        TextFormField(
+                          controller: _mobileController,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Mobile No.*',
+                          ),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number';
+                            } else if (value.length != 10) {
+                              return 'Please enter a valid 10-digit mobile number';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Email ID Field
+
+                        // Address Field
+                        TextFormField(
+                          controller: _addresssController, // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Address*',
+                          ),
+                          maxLines: 3,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  width: 1.5, color: Colors.grey[300]),
+                            ),
+                          ),
+                          child: Center(
+                            child: FutureBuilder<List<Data>>(
+                              future: _futureState, // Future to fetch the data
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+
+                                if (!snapshot.hasData) {
+                                  return const CircularProgressIndicator();
+                                }
+
+                                // Logging data for debugging
+                                developer.log('@@snapshot: ${snapshot.data}');
+
+                                List<Data> stateList = snapshot.data;
+
+                                // Ensure selected state is in the list, otherwise select the first
+                                if (_selectedUserState == null ||
+                                    !stateList.contains(_selectedUserState)) {
+                                  _selectedUserState = stateList.first;
+                                }
+
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      bottom: BorderSide(
+                                          width: 1.5, color: Colors.grey[300]),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        20, 10, 20.0, 0),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        const Text(
+                                          'Select State:',
+                                        ),
+                                        DropdownButtonFormField<Data>(
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                EdgeInsets.symmetric(
+                                                    vertical: 15.0,
+                                                    horizontal: 10.0),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.blue,
+                                                  width: 2.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.blueAccent,
+                                                  width: 2.0),
+                                              borderRadius:
+                                                  BorderRadius.circular(10.0),
+                                            ),
+                                            filled: true,
+                                            fillColor: Colors.blue[50],
+                                          ),
+                                          onChanged: (user) => setState(() {
+                                            _selectedUserState = user;
+                                            stateCodeGovtPrivate = int.parse(
+                                                user.stateCode.toString());
+                                            CodeGovtPrivate = user.code;
+
+                                            if (stateCodeGovtPrivate != null) {
+                                              isVisibleDitrictGovt = true;
+                                              _getDistrictData(
+                                                  stateCodeGovtPrivate);
+                                            } else {
+                                              isVisibleDitrictGovt = false;
+                                            }
+                                          }),
+                                          value: _selectedUserState,
+                                          items: stateList
+                                              .map<DropdownMenuItem<Data>>(
+                                                  (Data user) {
+                                            return DropdownMenuItem<Data>(
+                                              value: user,
+                                              child: Text(user.stateName),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+
+                        Visibility(
+                          visible: isVisibleDitrictGovt,
+                          child: Column(
+                            children: [
+                              Center(
+                                child: FutureBuilder<List<DataDsiricst>>(
+                                  future:
+                                      _getDistrictData(stateCodeGovtPrivate),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    }
+                                    if (!snapshot.hasData) {
+                                      return const CircularProgressIndicator();
+                                    }
+
+                                    // Logging for debugging
+                                    developer
+                                        .log('@@snapshot: ${snapshot.data}');
+
+                                    List<DataDsiricst> districtList =
+                                        snapshot.data;
+
+                                    // Ensure selected district is in the list, otherwise select the first one
+                                    if (_selectedUserDistrict == null ||
+                                        !districtList
+                                            .contains(_selectedUserDistrict)) {
+                                      _selectedUserDistrict =
+                                          districtList.first;
+                                    }
+
+                                    return Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20.0, 0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          const Text('Select District:'),
+                                          DropdownButtonFormField<DataDsiricst>(
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 15.0,
+                                                      horizontal: 10.0),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blue,
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blueAccent,
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.blue[50],
+                                            ),
+                                            onChanged: (districtUser) =>
+                                                setState(() {
+                                              _selectedUserDistrict =
+                                                  districtUser;
+                                              distCodeGovtPrivate = int.parse(
+                                                  districtUser.districtCode
+                                                      .toString());
+                                              // Update state or further actions here
+                                              print(
+                                                  'Selected District: ${districtUser.districtName}');
+                                            }),
+                                            value: _selectedUserDistrict,
+                                            items: districtList
+                                                .map((DataDsiricst district) {
+                                              return DropdownMenuItem<
+                                                  DataDsiricst>(
+                                                value: district,
+                                                child:
+                                                    Text(district.districtName),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        // Designation Field
+
+                        // Submit and Cancel Buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  // Process the form data
+                                  print("@@Camp Registration--");
+                                  _campManagerRegistration();
+                                }
+                              },
+                              child: Text('Submit'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Reset form fields
+                                _resetForm();
+                              },
+                              child: Text('Reset'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
 // API call method for Camp Manager Registration
@@ -3962,12 +4789,14 @@ class _NgoDashboard extends State<NgoDashboard> {
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
+        AddScreeningCamps = false;
       }
     } else {
       // Handle the case where the list is null or empty
       Utils.showToast("Not created succesfully", true);
     }
   }
+
   Future<void> _campManagerRegistrationEdit() async {
     if (_formKey.currentState.validate()) {
       Utils.showProgressDialog1(context);
@@ -4002,9 +4831,9 @@ class _NgoDashboard extends State<NgoDashboard> {
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
-        CampManagerRegisterartionsEdit=false;
-        ngoScreeningCampListss=false;
-
+        CampManagerRegisterartionsEdit = false;
+        ngoScreeningCampListss = false;
+        AddScreeningCamps = false;
       }
     } else {
       // Handle the case where the list is null or empty
@@ -4100,11 +4929,12 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.campNo),
-                                  _buildDataCell(Utils.formatDateString(offer.startDate)),
-                                  _buildDataCell(Utils.formatDateString(offer.endDate)),
+                                  _buildDataCell(
+                                      Utils.formatDateString(offer.startDate)),
+                                  _buildDataCell(
+                                      Utils.formatDateString(offer.endDate)),
                                   _buildDataCell(offer.name),
-                                  _buildCAMPMAnageEDITDELETE(
-                                    )
+                                  _buildCAMPMAnageEDITDELETE()
                                 ],
                               );
                             }).toList(),
@@ -4120,6 +4950,85 @@ class _NgoDashboard extends State<NgoDashboard> {
         ),
       ],
     );
+  }
+
+  Future<List<Data>> _getStatesDAta() async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      final response = await http.get(Uri.parse(
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/State'));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final DashboardStateModel dashboardStateModel =
+          DashboardStateModel.fromJson(json);
+
+      return dashboardStateModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+
+  Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
+    DashboardDistrictModel dashboardDistrictModel = DashboardDistrictModel();
+    ;
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      var body = json.encode({"state_code": stateCode});
+      //Way to send network calls
+      Dio dio = new Dio();
+      response1 = await dio.post(
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/ListDistrict",
+          data: body,
+          options: new Options(
+              contentType: "application/json",
+              responseType: ResponseType.plain));
+      print("@@Response--Api" + body.toString());
+      print("@@Response--Api=====" + response1.toString());
+      dashboardDistrictModel =
+          DashboardDistrictModel.fromJson(json.decode(response1.data));
+      if (dashboardDistrictModel.status) {
+        print("@@dashboardDistrictModel----getting of size +++--" +
+            dashboardDistrictModel.data.length.toString());
+      } else {
+        print("@@no data---" + dashboardDistrictModel.data.length.toString());
+      }
+      return dashboardDistrictModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+
+  Future<List<DataGetCity>> _getCity(int districtId) async {
+    GetCity dashboardDistrictModel = GetCity();
+
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      var body = json.encode({"districtId": districtId});
+      //Way to send network calls
+      Dio dio = new Dio();
+      response1 = await dio.post(
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetCity",
+          data: body,
+          options: new Options(
+              contentType: "application/json",
+              responseType: ResponseType.plain));
+      print("@@Response--Api" + body.toString());
+      print("@@Response--Api=====" + response1.toString());
+      dashboardDistrictModel = GetCity.fromJson(json.decode(response1.data));
+      if (dashboardDistrictModel.status) {
+        print("@@dashboardDistrictModel----getting of size +++--" +
+            dashboardDistrictModel.data.length.toString());
+      } else {
+        print("@@no data---" + dashboardDistrictModel.data.length.toString());
+      }
+      return dashboardDistrictModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
   }
 }
 
