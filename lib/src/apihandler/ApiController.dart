@@ -70,6 +70,7 @@ import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/screeningCamp/ScreenCampRegister.dart';
 import '../utils/Utils.dart';
 import 'dart:developer';
 import 'package:mohfw_npcbvi/src/model/cities_model.dart';
@@ -3713,6 +3714,72 @@ class ApiController {
     } catch (e) {
       Utils.showToast(e.toString(), true);
       return [];
+    }
+  }
+
+  static Future<ScreenCampRegister> campRegistration(
+      String ngoName,String campName,String startDate,String endDate,String campManagerName,
+      String mobileNo,String address,int locationType,int campStateId,int campDistrictid,
+      String emailId,int cityId,int villageId, int town,int blockId,String pinCode,int districtid,
+      int stateId,String userId,String entryBy,String darpanNumber ) async {
+    ScreenCampRegister registrationModel = ScreenCampRegister();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.CampRegistration;
+
+        Map<String, dynamic> payload = {
+          "ngoName": ngoName,
+          "campName": campName,
+          "startDate": startDate,
+          "endDate": endDate,
+          "campManagerName": campManagerName,
+          "mobileNo": mobileNo,
+          "address": address,
+          "locationType": locationType,
+          "campStateId": campStateId,
+          "campDistrictid": campDistrictid,
+          "emailId": emailId,
+          "cityId": cityId,
+          "villageId": villageId,
+          "town":town,
+          "blockId":blockId,
+          "pinCode": pinCode,
+          "districtid":districtid,
+          "stateId": stateId,
+          "userId": userId,
+          "entryBy": entryBy,
+          "darpanNumber":darpanNumber,
+        };
+
+        print("@@campRegistration---" + url + payload.toString());
+
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: payload,
+            options: new Options(
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@campRegistration--Api" + response1.toString());
+        // Assuming the API returns a status and message in response
+        // Parse the response1 to update registrationModel accordingly
+        registrationModel =
+            ScreenCampRegister.fromJson(jsonDecode(response1.data));
+        if (registrationModel.message == "Camp Registered Successfully.") {
+          Utils.showToast(registrationModel.message, true);
+        } else {
+          Utils.showToast("Wrong registered use id!", true);
+        }
+        return registrationModel;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
     }
   }
 }

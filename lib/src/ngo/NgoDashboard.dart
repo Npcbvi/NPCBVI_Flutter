@@ -8,6 +8,7 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/city/GetCity.dart';
+import 'package:mohfw_npcbvi/src/model/city/GetVillage.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/AddEyeBank.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
@@ -85,6 +86,8 @@ class _NgoDashboard extends State<NgoDashboard> {
   String designation = '';
   String gender = 'Male'; // Default gender
   final _formKey = GlobalKey<FormState>();
+  final _formKey1 = GlobalKey<FormState>();
+
   String locationTypeValues = 'Urban';
 
   // Controllers for TextFormFields
@@ -127,6 +130,10 @@ class _NgoDashboard extends State<NgoDashboard> {
   Future<List<DataGetCity>> _futureCity;
   DataGetCity _selectedUserCity;
 
+  Future<List<DataGetVillage>> _futureVillage;
+  DataGetVillage _selectedUserVillage;
+  int valuetype = 0;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -144,6 +151,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     _future = getDPM_ScreeningYear();
     _manger = getCampManager(district_code_login, entryby);
     _futureCity = _getCity(district_code_login);
+    _futureVillage = _getVillage(district_code_login, state_code_login, 10011);
   }
 
   void getUserData() {
@@ -4049,7 +4057,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Form(
-                    key: _formKey,
+                    key: _formKey1,
                     child: Column(
                       children: [
                         Row(
@@ -4344,6 +4352,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               onChanged: (value) {
                                 setState(() {
                                   locationTypeValues = value;
+                                  valuetype = 0;
                                 });
                               },
                             ),
@@ -4354,6 +4363,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               onChanged: (value) {
                                 setState(() {
                                   locationTypeValues = value;
+                                  valuetype = 1;
                                 });
                               },
                             ),
@@ -4368,8 +4378,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             children: [
                               Center(
                                 child: FutureBuilder<List<DataGetCity>>(
-                                  future:
-                                      _getCity(district_code_login),
+                                  future: _getCity(district_code_login),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasError) {
                                       return Text('Error: ${snapshot.error}');
@@ -4387,10 +4396,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                                     // Ensure selected district is in the list, otherwise select the first one
                                     if (_selectedUserCity == null ||
-                                        !districtList.contains(
-                                            _selectedUserCity)) {
-                                      _selectedUserCity =
-                                          districtList.first;
+                                        !districtList
+                                            .contains(_selectedUserCity)) {
+                                      _selectedUserCity = districtList.first;
                                     }
 
                                     return Padding(
@@ -4401,38 +4409,32 @@ class _NgoDashboard extends State<NgoDashboard> {
                                             MainAxisAlignment.start,
                                         children: <Widget>[
                                           const Text('Select City:'),
-                                          DropdownButtonFormField<
-                                              DataGetCity>(
+                                          DropdownButtonFormField<DataGetCity>(
                                             decoration: InputDecoration(
                                               contentPadding:
                                                   EdgeInsets.symmetric(
                                                       vertical: 15.0,
                                                       horizontal: 10.0),
-                                              enabledBorder:
-                                                  OutlineInputBorder(
+                                              enabledBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
                                                     color: Colors.blue,
                                                     width: 2.0),
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        10.0),
+                                                    BorderRadius.circular(10.0),
                                               ),
-                                              focusedBorder:
-                                                  OutlineInputBorder(
+                                              focusedBorder: OutlineInputBorder(
                                                 borderSide: BorderSide(
                                                     color: Colors.blueAccent,
                                                     width: 2.0),
                                                 borderRadius:
-                                                    BorderRadius.circular(
-                                                        10.0),
+                                                    BorderRadius.circular(10.0),
                                               ),
                                               filled: true,
                                               fillColor: Colors.blue[50],
                                             ),
                                             onChanged: (districtUser) =>
                                                 setState(() {
-                                                  _selectedUserCity =
-                                                  districtUser;
+                                              _selectedUserCity = districtUser;
                                               distCodeGovtPrivate = int.parse(
                                                   districtUser.subdistrictCode
                                                       .toString());
@@ -4446,8 +4448,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                               return DropdownMenuItem<
                                                   DataGetCity>(
                                                 value: district,
-                                                child: Text(
-                                                    district.name),
+                                                child: Text(district.name),
                                               );
                                             }).toList(),
                                           ),
@@ -4456,7 +4457,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     );
                                   },
                                 ),
-
                               ),
                               TextFormField(
                                 controller: _Pincodecontroller,
@@ -4474,18 +4474,195 @@ class _NgoDashboard extends State<NgoDashboard> {
                               )
                             ],
                           )
-
-
-                        else if (locationTypeValues == 'Urban')
+                        else if (locationTypeValues == 'Rural')
                           // Content to display if "Urban" is selected
-                          Container(
-                            padding: EdgeInsets.all(16.0),
-                            color: Colors.blue[100],
-                            child: Text(
-                              'Urban selected: Show specific content for Urban.',
-                              style: TextStyle(fontSize: 16),
-                            ),
+
+                          Column(
+                            children: [
+                              Center(
+                                child: FutureBuilder<List<DataGetCity>>(
+                                  future: _getCity(district_code_login),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    }
+                                    if (!snapshot.hasData) {
+                                      return const CircularProgressIndicator();
+                                    }
+
+                                    // Logging for debugging
+                                    developer
+                                        .log('@@snapshot: ${snapshot.data}');
+
+                                    List<DataGetCity> districtList =
+                                        snapshot.data;
+
+                                    // Ensure selected district is in the list, otherwise select the first one
+                                    if (_selectedUserCity == null ||
+                                        !districtList
+                                            .contains(_selectedUserCity)) {
+                                      _selectedUserCity = districtList.first;
+                                    }
+
+                                    return Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20.0, 0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          const Text('Select City:'),
+                                          DropdownButtonFormField<DataGetCity>(
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 15.0,
+                                                      horizontal: 10.0),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blue,
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blueAccent,
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.blue[50],
+                                            ),
+                                            onChanged: (districtUser) =>
+                                                setState(() {
+                                              _selectedUserCity = districtUser;
+                                              distCodeGovtPrivate = int.parse(
+                                                  districtUser.subdistrictCode
+                                                      .toString());
+                                              // Update state or further actions here
+                                              print(
+                                                  'Selected District: ${districtUser.subdistrictCode}');
+                                            }),
+                                            value: _selectedUserCity,
+                                            items: districtList
+                                                .map((DataGetCity district) {
+                                              return DropdownMenuItem<
+                                                  DataGetCity>(
+                                                value: district,
+                                                child: Text(district.name),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              Center(
+                                child: FutureBuilder<List<DataGetVillage>>(
+                                  future: _getVillage(district_code_login,
+                                      state_code_login, 10011),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    }
+                                    if (!snapshot.hasData) {
+                                      return const CircularProgressIndicator();
+                                    }
+
+                                    // Logging for debugging
+                                    developer
+                                        .log('@@snapshot: ${snapshot.data}');
+
+                                    List<DataGetVillage> districtList =
+                                        snapshot.data;
+
+                                    // Ensure selected district is in the list, otherwise select the first one
+                                    if (_selectedUserVillage == null ||
+                                        !districtList
+                                            .contains(_selectedUserVillage)) {
+                                      _selectedUserVillage = districtList.first;
+                                    }
+
+                                    return Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          20, 10, 20.0, 0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          const Text('Select Village:'),
+                                          DropdownButtonFormField<
+                                              DataGetVillage>(
+                                            decoration: InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 15.0,
+                                                      horizontal: 10.0),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blue,
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    color: Colors.blueAccent,
+                                                    width: 2.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.blue[50],
+                                            ),
+                                            onChanged: (districtUser) =>
+                                                setState(() {
+                                              _selectedUserVillage =
+                                                  districtUser;
+                                              distCodeGovtPrivate = int.parse(
+                                                  districtUser.villageCode
+                                                      .toString());
+                                              // Update state or further actions here
+                                              print(
+                                                  'Selected District: ${districtUser.villageCode}');
+                                            }),
+                                            value: _selectedUserVillage,
+                                            items: districtList
+                                                .map((DataGetVillage district) {
+                                              return DropdownMenuItem<
+                                                  DataGetVillage>(
+                                                value: district,
+                                                child: Text(district.name),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              TextFormField(
+                                controller: _Pincodecontroller,
+                                // Attach controller
+                                decoration: InputDecoration(
+                                  labelText: 'Pin Code*',
+                                ),
+                                keyboardType: TextInputType.phone,
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter PinCode number';
+                                  }
+                                  return null;
+                                },
+                              )
+                            ],
                           ),
+
                         // Mobile Number Field
                         TextFormField(
                           controller: _mobileController,
@@ -4726,11 +4903,9 @@ class _NgoDashboard extends State<NgoDashboard> {
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                if (_formKey.currentState.validate()) {
                                   // Process the form data
-                                  print("@@Camp Registration--");
-                                  _campManagerRegistration();
-                                }
+                                  print("@@-----CampRegistration--");
+                                  _ScreeningCampRegistration();
                               },
                               child: Text('Submit'),
                             ),
@@ -5028,6 +5203,83 @@ class _NgoDashboard extends State<NgoDashboard> {
     } else {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
+    }
+  }
+
+  Future<List<DataGetVillage>> _getVillage(
+      int districtId, int stateId, int blockId) async {
+    GetVillage dashboardDistrictModel = GetVillage();
+
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      var body = json.encode(
+          {"districtId": districtId, "stateId": stateId, "blockId": blockId});
+      //Way to send network calls
+      Dio dio = new Dio();
+      response1 = await dio.post(
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetVillage",
+          data: body,
+          options: new Options(
+              contentType: "application/json",
+              responseType: ResponseType.plain));
+      print("@@Response--Api" + body.toString());
+      print("@@Response--Api=====" + response1.toString());
+      dashboardDistrictModel = GetVillage.fromJson(json.decode(response1.data));
+      if (dashboardDistrictModel.status) {
+        print("@@GetVillage----getting of size +++--" +
+            dashboardDistrictModel.data.length.toString());
+      } else {
+        print("@@no data---" + dashboardDistrictModel.data.length.toString());
+      }
+      return dashboardDistrictModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+
+  Future<void> _ScreeningCampRegistration() async {
+      Utils.showProgressDialog1(context);
+      print("@@-----CampRegistration--inside api");
+      var response = await ApiController.campRegistration(
+          ngoNames.toString().trim(),
+          _campNameController.text.toString().trim(),
+          _selectedDateText.toString(),
+          _selectedDateTextToDate.toString().trim(),
+          getMAnagerNAme,
+          _mobileController.text.toString().trim(),
+          _addresssController.text.toString().trim(),
+          valuetype,
+          0,
+          0,
+          "0",
+          0,
+          0,
+          0,
+          0,
+          _Pincodecontroller.text.toString().trim(),
+          district_code_login,
+          state_code_login,
+          userId,
+          entryby,
+          darpan_nos);
+
+      Utils.hideProgressDialog1(context);
+      print("@@-----CampRegistration--inside api--2");
+      // Check if the response is null before accessing properties
+      if (response.message == "Camp Registered Successfully.") {
+        Utils.showToast(response.message.toString(), true);
+        print("@@Result message----Class: " + response.message);
+     /*   EyeBankApplication = true;
+        ngoDashboardclicks = false;
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists = true;
+        CampManagerRegisterartions = false;
+        AddScreeningCamps = false;*/
+    } else {
+      // Handle the case where the list is null or empty
+      Utils.showToast("Not created succesfully", true);
     }
   }
 }
