@@ -105,7 +105,8 @@ class _NgoDashboard extends State<NgoDashboard> {
   String _selectedDateText = 'Start Date *'; // Initially set to "From Date"
 
   String _selectedDateTextToDate = 'End Date*';
-  String getMAnagerNAme, getmanagerSrNO;
+  String getMAnagerNAme;
+  int getmanagerSrNO;
   bool isVisibleDitrictGovt = false;
   Future<List<Data>> _futureState;
   Data _selectedUserState;
@@ -4297,7 +4298,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           _mangerUser = userc;
                                           getMAnagerNAme =
                                               userc?.managerName ?? '';
-                                          getmanagerSrNO = userc?.srNo ?? '';
+                                          getmanagerSrNO = int.tryParse(userc?.srNo?.toString() ?? '') ?? 0;
                                           print(
                                               'getMAnagerNAme Year: $getMAnagerNAme');
                                           print(
@@ -5247,7 +5248,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           _campNameController.text.toString().trim(),
           _selectedDateText.toString(),
           _selectedDateTextToDate.toString().trim(),
-          getMAnagerNAme,
+          getmanagerSrNO,
           _mobileController.text.toString().trim(),
           _addresssController.text.toString().trim(),
           valuetype,

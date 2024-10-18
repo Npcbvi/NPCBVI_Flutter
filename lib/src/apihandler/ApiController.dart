@@ -3718,7 +3718,7 @@ class ApiController {
   }
 
   static Future<ScreenCampRegister> campRegistration(
-      String ngoName,String campName,String startDate,String endDate,String campManagerName,
+      String ngoName,String campName,String startDate,String endDate,int campManagerName,
       String mobileNo,String address,int locationType,int campStateId,int campDistrictid,
       String emailId,int cityId,int villageId, int town,int blockId,String pinCode,int districtid,
       int stateId,String userId,String entryBy,String darpanNumber ) async {
