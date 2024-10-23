@@ -6,6 +6,7 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
+import 'package:mohfw_npcbvi/src/model/GetHospitalForDDL/GethospitalForDDL.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/city/GetCity.dart';
 import 'package:mohfw_npcbvi/src/model/city/GetVillage.dart';
@@ -33,6 +34,7 @@ import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
 import '../model/DashboardStateModel.dart';
+import '../model/GetHospitalForDDL/GethospitalForDDL.dart';
 
 class NgoDashboard extends StatefulWidget {
   @override
@@ -136,16 +138,27 @@ class _NgoDashboard extends State<NgoDashboard> {
   DataGetVillage _selectedUserVillage;
   int valuetype = 0;
 
-  bool ngoSATELLITECENTREMANAGERLists=  false;
-  bool AddSatelliteManagers=false;
+  bool ngoSATELLITECENTREMANAGERLists = false;
+  bool AddSatelliteManagers = false;
 
   // Controllers for TextFormFields
-  TextEditingController _userNameControllerStatelliteManger = TextEditingController();
-  TextEditingController _mobileNumberControllerStatelliteManger = TextEditingController();
-  TextEditingController _emailIdControllerStatelliteManger = TextEditingController();
-  TextEditingController _addressControllerStatelliteManger = TextEditingController();
-  TextEditingController _designationControllerStatelliteManger = TextEditingController();
-  TextEditingController _hospitalControllerStatelliteManger = TextEditingController();
+  TextEditingController _userNameControllerStatelliteManger =
+      TextEditingController();
+  TextEditingController _mobileNumberControllerStatelliteManger =
+      TextEditingController();
+  TextEditingController _emailIdControllerStatelliteManger =
+      TextEditingController();
+  TextEditingController _addressControllerStatelliteManger =
+      TextEditingController();
+  TextEditingController _designationControllerStatelliteManger =
+      TextEditingController();
+  TextEditingController _hospitalControllerStatelliteManger =
+      TextEditingController();
+
+  Future<List<DataGethospitalForDDL>> _futureDataGethospitalForDDL;
+  DataGethospitalForDDL _dataGethospitalForDDL;
+String gethospitalName;
+  int gethospitalNameSrNO;
   @override
   void initState() {
     // TODO: implement initState
@@ -160,12 +173,12 @@ class _NgoDashboard extends State<NgoDashboard> {
     CampManagerRegisterartionsEdit = false;
     ngoScreeningCampListss = false;
     AddScreeningCamps = false;
-    ngoSATELLITECENTREMANAGERLists=false;
+    ngoSATELLITECENTREMANAGERLists = false;
     _future = getDPM_ScreeningYear();
     _manger = getCampManager(district_code_login, entryby);
     _futureCity = _getCity(district_code_login);
     _futureVillage = _getVillage(district_code_login, state_code_login, 10011);
-    AddSatelliteManagers=false;
+    AddSatelliteManagers = false;
   }
 
   void getUserData() {
@@ -320,8 +333,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
         _future = getDPM_ScreeningYear();
-        ngoSATELLITECENTREMANAGERLists=false;
-        AddSatelliteManagers=false;
+        ngoSATELLITECENTREMANAGERLists = false;
+        AddSatelliteManagers = false;
 
         break;
 
@@ -381,8 +394,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
-        ngoSATELLITECENTREMANAGERLists=false;
-        AddSatelliteManagers=false;
+        ngoSATELLITECENTREMANAGERLists = false;
+        AddSatelliteManagers = false;
 
         break;
       case 2:
@@ -396,8 +409,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = true;
         AddScreeningCamps = false;
-        ngoSATELLITECENTREMANAGERLists=false;
-        AddSatelliteManagers=false;
+        ngoSATELLITECENTREMANAGERLists = false;
+        AddSatelliteManagers = false;
         break;
       // Add more cases as needed
       default:
@@ -457,8 +470,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
-        ngoSATELLITECENTREMANAGERLists=true;
-        AddSatelliteManagers=false;
+        ngoSATELLITECENTREMANAGERLists = true;
+        AddSatelliteManagers = false;
 
         break;
       case 2:
@@ -469,8 +482,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = false;
-        ngoSATELLITECENTREMANAGERLists=false;
-        AddSatelliteManagers=false;
+        ngoSATELLITECENTREMANAGERLists = false;
+        AddSatelliteManagers = false;
 
         break;
       // Add more cases as needed
@@ -478,6 +491,54 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("Unknown selection");
     }
   }
+  Future<List<DataGethospitalForDDL>> GetHospitalForDDL(
+      int districtid, int stateId, String userId) async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      // Prepare the request body as a Map
+      Map<String, dynamic> body = {
+        'districtid': districtid,
+        'stateId': stateId,
+        'userId': userId, // Add user ID to the body
+      };
+
+      try {
+        // Send POST request with the body encoded as JSON
+        final response = await http.post(
+          Uri.parse(
+              'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetHospitalForDDL'),
+          headers: {
+            'Content-Type': 'application/json', // Set content type to JSON
+          },
+          body: jsonEncode(body), // Encode the body as JSON
+        );
+        // Print the URL and request parameters
+        print('@@URL:' +"https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetHospitalForDDL");
+        print('@@Params: ${jsonEncode(body)}');
+        // Check if the response is successful
+        if (response.statusCode == 200) {
+          Map<String, dynamic> json = jsonDecode(response.body);
+          final GethospitalForDDL dashboardStateModel =
+          GethospitalForDDL.fromJson(json);
+          print('@@Params: ${dashboardStateModel.data.toString()}');
+          return dashboardStateModel.data;
+
+        } else {
+          // Handle the case when the server responds with an error
+          Utils.showToast('Error: ${response.statusCode}', true);
+          return null;
+        }
+      } catch (e) {
+        // Handle potential JSON decoding or other unexpected errors
+        Utils.showToast('An error occurred: $e', true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+
 
   Future<List<DataGetDPM_ScreeningYear>> getDPM_ScreeningYear() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -622,8 +683,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           CampManagerRegisterartionsEdit = false;
                           ngoScreeningCampListss = false;
                           AddScreeningCamps = false;
-                          ngoSATELLITECENTREMANAGERLists=false;
-                          AddSatelliteManagers=false;
+                          ngoSATELLITECENTREMANAGERLists = false;
+                          AddSatelliteManagers = false;
                         });
                       }),
                       SizedBox(width: 8.0),
@@ -640,8 +701,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           CampManagerRegisterartionsEdit = false;
                           ngoScreeningCampListss = false;
                           AddScreeningCamps = false;
-                          ngoSATELLITECENTREMANAGERLists=false;
-                          AddSatelliteManagers=false;
+                          ngoSATELLITECENTREMANAGERLists = false;
+                          AddSatelliteManagers = false;
                         });
                       }),
                     ],
@@ -659,7 +720,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             ngoScreeningCampList(),
             AddScreeningCamp(),
             ngoSATELLITECENTREMANAGERList(),
-            AddSatelliteManager(),
+            AddSatelliteManagerOption(),
           ],
         ),
       ),
@@ -1373,8 +1434,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       CampManagerRegisterartionsEdit = false;
       ngoScreeningCampListss = false;
       AddScreeningCamps = false;
-      ngoSATELLITECENTREMANAGERLists=false;
-      AddSatelliteManagers=false;
+      ngoSATELLITECENTREMANAGERLists = false;
+      AddSatelliteManagers = false;
     });
   }
 
@@ -1392,8 +1453,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       AddScreeningCamps = true;
       _manger = getCampManager(district_code_login, entryby);
       _futureState = _getStatesDAta();
-      ngoSATELLITECENTREMANAGERLists=false;
-      AddSatelliteManagers=false;
+      ngoSATELLITECENTREMANAGERLists = false;
+      AddSatelliteManagers = false;
     });
   }
 
@@ -1409,10 +1470,11 @@ class _NgoDashboard extends State<NgoDashboard> {
       CampManagerRegisterartionsEdit = false;
       ngoScreeningCampListss = false;
       AddScreeningCamps = false;
-      _manger = getCampManager(district_code_login, entryby);
       _futureState = _getStatesDAta();
-      ngoSATELLITECENTREMANAGERLists=false;
-      AddSatelliteManagers=true;
+      ngoSATELLITECENTREMANAGERLists = false;
+      AddSatelliteManagers = true;
+      _futureDataGethospitalForDDL = GetHospitalForDDL(district_code_login,state_code_login, userId);
+
     });
   }
 
@@ -2390,7 +2452,6 @@ class _NgoDashboard extends State<NgoDashboard> {
         ));
   }
 
-
   Widget _buildCAMPMAnageEDITBlocked() {
     return Container(
         height: 80,
@@ -2525,8 +2586,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                       CampManagerRegisterartions = false;
                       ngoScreeningCampListss = false;
                       AddScreeningCamps = false;
-                      ngoSATELLITECENTREMANAGERLists=false;
-                      AddSatelliteManagers=false;
+                      ngoSATELLITECENTREMANAGERLists = false;
+                      AddSatelliteManagers = false;
                     });
                   });
 
@@ -4403,7 +4464,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           _mangerUser = userc;
                                           getMAnagerNAme =
                                               userc?.managerName ?? '';
-                                          getmanagerSrNO = int.tryParse(userc?.srNo?.toString() ?? '') ?? 0;
+                                          getmanagerSrNO = int.tryParse(
+                                                  userc?.srNo?.toString() ??
+                                                      '') ??
+                                              0;
                                           print(
                                               'getMAnagerNAme Year: $getMAnagerNAme');
                                           print(
@@ -5009,9 +5073,9 @@ class _NgoDashboard extends State<NgoDashboard> {
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                  // Process the form data
-                                  print("@@-----CampRegistration--");
-                                  _ScreeningCampRegistration();
+                                // Process the form data
+                                print("@@-----CampRegistration--");
+                                _ScreeningCampRegistration();
                               },
                               child: Text('Submit'),
                             ),
@@ -5071,7 +5135,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
         AddScreeningCamps = false;
-        ngoSATELLITECENTREMANAGERLists=false;
+        ngoSATELLITECENTREMANAGERLists = false;
       }
     } else {
       // Handle the case where the list is null or empty
@@ -5116,8 +5180,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
-        ngoSATELLITECENTREMANAGERLists=false;
-        AddSatelliteManagers=false;
+        ngoSATELLITECENTREMANAGERLists = false;
+        AddSatelliteManagers = false;
       }
     } else {
       // Handle the case where the list is null or empty
@@ -5349,38 +5413,38 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   Future<void> _ScreeningCampRegistration() async {
-      Utils.showProgressDialog1(context);
-      print("@@-----CampRegistration--inside api");
-      var response = await ApiController.campRegistration(
-          ngoNames.toString().trim(),
-          _campNameController.text.toString().trim(),
-          _selectedDateText.toString(),
-          _selectedDateTextToDate.toString().trim(),
-          getmanagerSrNO,
-          _mobileController.text.toString().trim(),
-          _addresssController.text.toString().trim(),
-          valuetype,
-          0,
-          0,
-          "0",
-          0,
-          0,
-          0,
-          0,
-          _Pincodecontroller.text.toString().trim(),
-          district_code_login,
-          state_code_login,
-          userId,
-          entryby,
-          darpan_nos);
+    Utils.showProgressDialog1(context);
+    print("@@-----CampRegistration--inside api");
+    var response = await ApiController.campRegistration(
+        ngoNames.toString().trim(),
+        _campNameController.text.toString().trim(),
+        _selectedDateText.toString(),
+        _selectedDateTextToDate.toString().trim(),
+        getmanagerSrNO,
+        _mobileController.text.toString().trim(),
+        _addresssController.text.toString().trim(),
+        valuetype,
+        0,
+        0,
+        "0",
+        0,
+        0,
+        0,
+        0,
+        _Pincodecontroller.text.toString().trim(),
+        district_code_login,
+        state_code_login,
+        userId,
+        entryby,
+        darpan_nos);
 
-      Utils.hideProgressDialog1(context);
-      print("@@-----CampRegistration--inside api--2");
-      // Check if the response is null before accessing properties
-      if (response.message == "Camp Registered Successfully.") {
-        Utils.showToast(response.message.toString(), true);
-        print("@@Result message----Class: " + response.message);
-     /*   EyeBankApplication = true;
+    Utils.hideProgressDialog1(context);
+    print("@@-----CampRegistration--inside api--2");
+    // Check if the response is null before accessing properties
+    if (response.message == "Camp Registered Successfully.") {
+      Utils.showToast(response.message.toString(), true);
+      print("@@Result message----Class: " + response.message);
+      /*   EyeBankApplication = true;
         ngoDashboardclicks = false;
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
@@ -5391,7 +5455,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       Utils.showToast("Not created succesfully", true);
     }
   }
-
 
   Widget ngoSATELLITECENTREMANAGERList() {
     return Column(
@@ -5473,7 +5536,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                         } else if (!snapshot.hasData || snapshot.data == null) {
                           return Utils.getEmptyView("No data found");
                         } else {
-                          List<DataGetSatelliteCenterList> ddata = snapshot.data;
+                          List<DataGetSatelliteCenterList> ddata =
+                              snapshot.data;
                           print('@@---ddata' + ddata.length.toString());
                           return Column(
                             children: ddata.map((offer) {
@@ -5482,10 +5546,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.name),
-                                  _buildDataCell(
-                                      offer.hName),
-                                  _buildDataCell(
-                                      offer.designation),
+                                  _buildDataCell(offer.hName),
+                                  _buildDataCell(offer.designation),
                                   _buildDataCell(offer.mobile),
                                   _buildDataCell(offer.emailId),
                                   _buildCAMPMAnageEDITBlocked()
@@ -5506,7 +5568,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget AddSatelliteManager() {
+  Widget AddSatelliteManagerOption() {
     return Column(
       children: [
         Visibility(
@@ -5545,7 +5607,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                       children: [
                         // Username Field
                         TextFormField(
-                          controller: _userNameControllerStatelliteManger, // Attach controller
+                          controller: _userNameControllerStatelliteManger,
+                          // Attach controller
                           decoration: InputDecoration(
                             labelText: 'User Name*',
                           ),
@@ -5617,7 +5680,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Email ID Field
                         TextFormField(
-                          controller: _emailIdControllerStatelliteManger, // Attach controller
+                          controller: _emailIdControllerStatelliteManger,
+                          // Attach controller
                           decoration: InputDecoration(
                             labelText: 'Email ID*',
                           ),
@@ -5633,23 +5697,103 @@ class _NgoDashboard extends State<NgoDashboard> {
                           },
                         ),
                         SizedBox(height: 16.0),
-                        TextFormField(
-                          controller: _hospitalControllerStatelliteManger, // Attach controller
-                          decoration: InputDecoration(
-                            labelText: 'Hospital *',
+
+                        Center(
+                          child: FutureBuilder<List<DataGethospitalForDDL>>(
+                            future: _futureDataGethospitalForDDL,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+
+                              if (!snapshot.hasData) {
+                                return CircularProgressIndicator();
+                              }
+
+                              List<DataGethospitalForDDL> list =
+                                  snapshot.data.toList();
+
+                              // Check if _selectedUser is null or not part of the list anymore
+                              if (_dataGethospitalForDDL == null ||
+                                  !list.contains(_dataGethospitalForDDL)) {
+                                _dataGethospitalForDDL =
+                                    list.first; // Set the first item as default
+                              }
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Select hospital*',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 10),
+                                    DropdownButtonFormField<
+                                        DataGethospitalForDDL>(
+                                      value: _dataGethospitalForDDL,
+                                      onChanged: (userc) {
+                                        setState(() {
+                                          _dataGethospitalForDDL = userc;
+                                          gethospitalName =
+                                              userc?.hName ?? '';
+                                          gethospitalNameSrNO = int.tryParse(
+                                                  userc?.hRegID?.toString() ??
+                                                      '') ??
+                                              0;
+                                          print(
+                                              'getMAnagerNAme Year: $gethospitalName');
+                                          print(
+                                              'getmanagerSrNO: $gethospitalNameSrNO');
+                                        });
+                                      },
+                                      items: list.map((user) {
+                                        return DropdownMenuItem<
+                                            DataGethospitalForDDL>(
+                                          value: user,
+                                          child: Text(user.hName,
+                                              style: TextStyle(fontSize: 16)),
+                                        );
+                                      }).toList(),
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 15.0, horizontal: 10.0),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.blue, width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.blueAccent,
+                                              width: 2.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.blue[50],
+                                      ),
+                                      dropdownColor: Colors.blue[50],
+                                      style: TextStyle(color: Colors.black),
+                                      icon: Icon(Icons.arrow_drop_down,
+                                          color: Colors.blue),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
-                          maxLines: 3,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter Hospital ';
-                            }
-                            return null;
-                          },
                         ),
                         SizedBox(height: 16.0),
                         // Address Field
                         TextFormField(
-                          controller: _addressControllerStatelliteManger, // Attach controller
+                          controller: _addressControllerStatelliteManger,
+                          // Attach controller
                           decoration: InputDecoration(
                             labelText: 'Address*',
                           ),
@@ -5682,7 +5826,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 if (_formKey.currentState.validate()) {
                                   // Process the form data
                                   print("@@_SatteliteMAnagerRegistration--");
-                                 // _campManagerRegistration();
+                                   _satelliteManagersRegistration();
                                 }
                               },
                               child: Text('Submit'),
@@ -5706,6 +5850,52 @@ class _NgoDashboard extends State<NgoDashboard> {
         ),
       ],
     );
+  }
+  Future<void> _satelliteManagersRegistration() async {
+    if (_formKey.currentState.validate()) {
+      Utils.showProgressDialog1(context);
+
+      var response = await ApiController.satelliteManagerRegistration(
+          _userNameControllerStatelliteManger.text.toString().trim(),
+          gender,
+          _mobileNumberControllerStatelliteManger.text.toString().trim(),
+          _emailIdControllerStatelliteManger.text.toString().trim(),
+          gethospitalNameSrNO.toString(),
+          _addressControllerStatelliteManger.text.toString().trim(),
+          _designationControllerStatelliteManger.text.toString().trim(),
+          district_code_login,
+          state_code_login,
+          userId,
+          int.parse(entryby),
+          darpan_nos,
+          ngoNames,
+          stateNames,
+          districtNames,
+         );
+
+
+      Utils.hideProgressDialog1(context);
+
+      // Check if the response is null before accessing properties
+      if (response.message == "Satellite Manager Registered Successfully.") {
+        Utils.showToast(response.message.toString(), true);
+        print("@@Result message----Class: " + response.message);
+        EyeBankApplication = false;
+        ngoDashboardclicks = false;
+
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists = true;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit = false;
+        ngoScreeningCampListss = false;
+        AddScreeningCamps = false;
+        ngoSATELLITECENTREMANAGERLists = false;
+        AddSatelliteManagers = false;
+      }
+    } else {
+      // Handle the case where the list is null or empty
+      Utils.showToast("Not created succesfully", true);
+    }
   }
 
 }

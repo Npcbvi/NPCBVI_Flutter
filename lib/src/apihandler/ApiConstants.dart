@@ -91,6 +91,8 @@ class ApiConstants {
   static String GetCampManager = 'GetCampManager';
   static String CampRegistration = 'CampRegistration';
 
-
+  static String GetHospitalForDDL = 'GetHospitalForDDL';
   static String GetSatelliteManagerList = 'GetSatelliteManagerList';
+
+  static String SatelliteManagerRegistration = 'SatelliteManagerRegistration';
 }

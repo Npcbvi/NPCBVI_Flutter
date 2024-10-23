@@ -64,6 +64,7 @@ import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/govtPrivateRegisterUSerId.dart';
+import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/ngoSatelliteManagerRegistration.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
@@ -3854,5 +3855,101 @@ class ApiController {
       return [];
     }
   }
+
+
+  static Future<ngoSatelliteManagerRegistration> satelliteManagerRegistration(
+      String userName,
+      String gender,
+      String mobileNo,
+      String emailId,
+      String hospitalId,
+      String officeAddress,
+      String designation,
+      int districtId,
+      int stateId,
+      String userId,
+      int entryBy,
+      String darpanNumber,
+      String loggedInNgoName,
+      String loggedInStateName,
+      String loggedInDistrictName
+     ) async {
+    ngoSatelliteManagerRegistration ngoSatelliteManagerRegistrations;
+    // Check for network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.SatelliteManagerRegistration;
+      // Headers for the request
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Prepare the body for the request
+      var body = json.encode({
+
+
+        "userName": userName,
+        "gender": gender,
+        "mobileNo":mobileNo,
+        "emailId": emailId,
+        "hospitalId": hospitalId,
+        "designation": designation,
+        "officeAddress":officeAddress,
+        "districtid": districtId,
+        "stateId": stateId,
+        "userId": userId,
+        "entryBy": entryBy,
+        "darpanNumber":darpanNumber,
+        "loggedInNgoName":loggedInNgoName,
+        "loggedInStateName": loggedInStateName,
+        "loggedInDistrictName": loggedInDistrictName,
+
+
+      });
+
+      print("@@Response--ParamsCheck with platform---" + url + body.toString());
+
+      // Making the network call
+      Dio dio = Dio();
+      Response response1 = await dio.post(url,
+          data: body,
+          options: Options(
+              headers: headers,
+              contentType: "application/json",
+              responseType: ResponseType.json));
+
+      print("@@Response--Api: " + response1.toString());
+
+      // Check if the response data is valid before parsing
+      if (response1.data != null) {
+        ngoSatelliteManagerRegistrations = ngoSatelliteManagerRegistration.fromJson(response1.data);
+
+        if (ngoSatelliteManagerRegistrations.message=="Satellite Manager Registered Successfully.") {
+          print("@@Result message----1: " + ngoSatelliteManagerRegistrations.message);
+          Utils.showToast(ngoSatelliteManagerRegistrations.message, true);
+
+        } else {
+          Utils.showToast(ngoSatelliteManagerRegistrations.message ?? "Registration failed", true);
+        }
+      } else {
+        Utils.showToast("No data received from server", true);
+      }
+
+      return ngoSatelliteManagerRegistrations;
+
+    } catch (e) {
+      print("@@Error during registration: " + e.toString());
+      Utils.showToast(e.toString(), true);
+      return null;
+    }
+  }
+
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/
