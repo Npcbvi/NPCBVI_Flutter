@@ -90,4 +90,7 @@ class ApiConstants {
   static String GetCampList = 'GetCampList';
   static String GetCampManager = 'GetCampManager';
   static String CampRegistration = 'CampRegistration';
+
+
+  static String GetSatelliteManagerList = 'GetSatelliteManagerList';
 }

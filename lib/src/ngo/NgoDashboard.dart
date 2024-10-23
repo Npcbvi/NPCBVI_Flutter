@@ -26,6 +26,7 @@ import 'package:mohfw_npcbvi/src/model/districtngowork/screeningcamp/ScreeningCa
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/ScreeningCampManager.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
+import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -135,6 +136,16 @@ class _NgoDashboard extends State<NgoDashboard> {
   DataGetVillage _selectedUserVillage;
   int valuetype = 0;
 
+  bool ngoSATELLITECENTREMANAGERLists=  false;
+  bool AddSatelliteManagers=false;
+
+  // Controllers for TextFormFields
+  TextEditingController _userNameControllerStatelliteManger = TextEditingController();
+  TextEditingController _mobileNumberControllerStatelliteManger = TextEditingController();
+  TextEditingController _emailIdControllerStatelliteManger = TextEditingController();
+  TextEditingController _addressControllerStatelliteManger = TextEditingController();
+  TextEditingController _designationControllerStatelliteManger = TextEditingController();
+  TextEditingController _hospitalControllerStatelliteManger = TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -149,10 +160,12 @@ class _NgoDashboard extends State<NgoDashboard> {
     CampManagerRegisterartionsEdit = false;
     ngoScreeningCampListss = false;
     AddScreeningCamps = false;
+    ngoSATELLITECENTREMANAGERLists=false;
     _future = getDPM_ScreeningYear();
     _manger = getCampManager(district_code_login, entryby);
     _futureCity = _getCity(district_code_login);
     _futureVillage = _getVillage(district_code_login, state_code_login, 10011);
+    AddSatelliteManagers=false;
   }
 
   void getUserData() {
@@ -307,6 +320,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
         _future = getDPM_ScreeningYear();
+        ngoSATELLITECENTREMANAGERLists=false;
+        AddSatelliteManagers=false;
 
         break;
 
@@ -366,6 +381,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
+        ngoSATELLITECENTREMANAGERLists=false;
+        AddSatelliteManagers=false;
 
         break;
       case 2:
@@ -379,6 +396,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = true;
         AddScreeningCamps = false;
+        ngoSATELLITECENTREMANAGERLists=false;
+        AddSatelliteManagers=false;
         break;
       // Add more cases as needed
       default:
@@ -411,7 +430,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Text("Satellite Manager"),
         ),
         PopupMenuItem<int>(
-          value: 1,
+          value: 2,
           child: Text("Satellite Center"),
         ),
         // Add more PopupMenuItem if needed
@@ -427,13 +446,19 @@ class _NgoDashboard extends State<NgoDashboard> {
   void _handleMenuSelectionSatelliteCamp(int value) {
     switch (value) {
       case 1:
-        print("@@Satellite Camp");
+        print("@@Satellite Manger Camp");
+
         _future = getDPM_ScreeningYear();
-        ManageUSerNGOHospt = true;
         EyeBankApplication = false;
+        ngoDashboardclicks = false;
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = false;
+        AddScreeningCamps = false;
+        ngoSATELLITECENTREMANAGERLists=true;
+        AddSatelliteManagers=false;
 
         break;
       case 2:
@@ -444,6 +469,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = false;
+        ngoSATELLITECENTREMANAGERLists=false;
+        AddSatelliteManagers=false;
 
         break;
       // Add more cases as needed
@@ -595,6 +622,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           CampManagerRegisterartionsEdit = false;
                           ngoScreeningCampListss = false;
                           AddScreeningCamps = false;
+                          ngoSATELLITECENTREMANAGERLists=false;
+                          AddSatelliteManagers=false;
                         });
                       }),
                       SizedBox(width: 8.0),
@@ -611,6 +640,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           CampManagerRegisterartionsEdit = false;
                           ngoScreeningCampListss = false;
                           AddScreeningCamps = false;
+                          ngoSATELLITECENTREMANAGERLists=false;
+                          AddSatelliteManagers=false;
                         });
                       }),
                     ],
@@ -627,6 +658,8 @@ class _NgoDashboard extends State<NgoDashboard> {
             EditCampManager(),
             ngoScreeningCampList(),
             AddScreeningCamp(),
+            ngoSATELLITECENTREMANAGERList(),
+            AddSatelliteManager(),
           ],
         ),
       ),
@@ -1340,6 +1373,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       CampManagerRegisterartionsEdit = false;
       ngoScreeningCampListss = false;
       AddScreeningCamps = false;
+      ngoSATELLITECENTREMANAGERLists=false;
+      AddSatelliteManagers=false;
     });
   }
 
@@ -1357,6 +1392,27 @@ class _NgoDashboard extends State<NgoDashboard> {
       AddScreeningCamps = true;
       _manger = getCampManager(district_code_login, entryby);
       _futureState = _getStatesDAta();
+      ngoSATELLITECENTREMANAGERLists=false;
+      AddSatelliteManagers=false;
+    });
+  }
+
+  void _addSatelliteCenterManager() {
+    // Handle the tap event here
+    print('@@AddSattelliteCenterclicked--');
+    setState(() {
+      ManageUSerNGOHospt = false;
+      ngoDashboardclicks = false;
+      EyeBankApplication = false;
+      ngoCampManagerLists = false;
+      CampManagerRegisterartions = false;
+      CampManagerRegisterartionsEdit = false;
+      ngoScreeningCampListss = false;
+      AddScreeningCamps = false;
+      _manger = getCampManager(district_code_login, entryby);
+      _futureState = _getStatesDAta();
+      ngoSATELLITECENTREMANAGERLists=false;
+      AddSatelliteManagers=true;
     });
   }
 
@@ -2334,6 +2390,53 @@ class _NgoDashboard extends State<NgoDashboard> {
         ));
   }
 
+
+  Widget _buildCAMPMAnageEDITBlocked() {
+    return Container(
+        height: 80,
+        width: 200,
+        // Fixed width to ensure horizontal scrolling
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for header cells
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Spaces the buttons evenly
+          children: [
+            // "View" Text Button
+            GestureDetector(
+              onTap: () {
+                print('Edit pressed');
+              },
+              child: Text(
+                'Edit',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+            Text(
+              '||',
+              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+            ),
+            // "Manage Doctor" Text Button
+            GestureDetector(
+              onTap: () {
+                print('Manage Eye Donation');
+              },
+              child: Text(
+                'Blocked',
+                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Separator "||"
+          ],
+        ));
+  }
+
   Widget _buildEdit() {
     return Container(
         height: 80,
@@ -2422,6 +2525,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                       CampManagerRegisterartions = false;
                       ngoScreeningCampListss = false;
                       AddScreeningCamps = false;
+                      ngoSATELLITECENTREMANAGERLists=false;
+                      AddSatelliteManagers=false;
                     });
                   });
 
@@ -4966,6 +5071,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
         AddScreeningCamps = false;
+        ngoSATELLITECENTREMANAGERLists=false;
       }
     } else {
       // Handle the case where the list is null or empty
@@ -5010,6 +5116,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         CampManagerRegisterartionsEdit = false;
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
+        ngoSATELLITECENTREMANAGERLists=false;
+        AddSatelliteManagers=false;
       }
     } else {
       // Handle the case where the list is null or empty
@@ -5283,6 +5391,323 @@ class _NgoDashboard extends State<NgoDashboard> {
       Utils.showToast("Not created succesfully", true);
     }
   }
+
+
+  Widget ngoSATELLITECENTREMANAGERList() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ngoSATELLITECENTREMANAGERLists,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'SATELLITE CENTRE MANAGER DETAILS',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: GestureDetector(
+                          onTap: _addSatelliteCenterManager,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Add Satellite Manager',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w800,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Horizontal Scrolling Table with Header and Data
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Officer Name'),
+                        _buildHeaderCell('Hospital'),
+                        _buildHeaderCell('Designation'),
+                        _buildHeaderCell('Mobile Number'),
+                        _buildHeaderCell('Email id'),
+                        _buildHeaderCell('Update/Block'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataGetSatelliteCenterList>>(
+                      future: ApiController.GetSatelliteManagerList(
+                          state_code_login, district_code_login, entryby),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetSatelliteCenterList> ddata = snapshot.data;
+                          print('@@---ddata' + ddata.length.toString());
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.name),
+                                  _buildDataCell(
+                                      offer.hName),
+                                  _buildDataCell(
+                                      offer.designation),
+                                  _buildDataCell(offer.mobile),
+                                  _buildDataCell(offer.emailId),
+                                  _buildCAMPMAnageEDITBlocked()
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget AddSatelliteManager() {
+    return Column(
+      children: [
+        Visibility(
+          visible: AddSatelliteManagers,
+          // Assuming CampManagerRegisterartions is true
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Satellite Manager Registration',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Form for Camp Manager Registration
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        // Username Field
+                        TextFormField(
+                          controller: _userNameControllerStatelliteManger, // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'User Name*',
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your name';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Gender Selection
+                        Text('Gender*'),
+                        Row(
+                          children: [
+                            Radio<String>(
+                              value: 'Male',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Male'),
+                            Radio<String>(
+                              value: 'Female',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Female'),
+                            Radio<String>(
+                              value: 'Transgender',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Transgender'),
+                          ],
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Mobile Number Field
+                        TextFormField(
+                          controller: _mobileNumberControllerStatelliteManger,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Mobile No.*',
+                          ),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number';
+                            } else if (value.length != 10) {
+                              return 'Please enter a valid 10-digit mobile number';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Email ID Field
+                        TextFormField(
+                          controller: _emailIdControllerStatelliteManger, // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Email ID*',
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        TextFormField(
+                          controller: _hospitalControllerStatelliteManger, // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Hospital *',
+                          ),
+                          maxLines: 3,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter Hospital ';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        // Address Field
+                        TextFormField(
+                          controller: _addressControllerStatelliteManger, // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Address*',
+                          ),
+                          maxLines: 3,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Designation Field
+                        TextFormField(
+                          controller: _designationControllerStatelliteManger,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            labelText: 'Designation',
+                          ),
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Submit and Cancel Buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                if (_formKey.currentState.validate()) {
+                                  // Process the form data
+                                  print("@@_SatteliteMAnagerRegistration--");
+                                 // _campManagerRegistration();
+                                }
+                              },
+                              child: Text('Submit'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Reset form fields
+                                _resetForm();
+                              },
+                              child: Text('Reset'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
 }
 
 class GetChangeAPsswordFieldss {
