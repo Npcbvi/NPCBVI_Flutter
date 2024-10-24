@@ -64,6 +64,8 @@ import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/govtPrivateRegisterUSerId.dart';
+import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/GetSatelliteManagerById.dart';
+import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/SatelitteMangerDetails.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/ngoSatelliteManagerRegistration.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
@@ -3950,6 +3952,153 @@ class ApiController {
       return null;
     }
   }
+  static Future<GetSatelliteManagerById> getSatelliteManagerById(int sR_No, String entryBy) async {
+    print("@@GetSatelliteManagerById" + "1");
+    Response response1;
 
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;  // Return null for network issues
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSatelliteManagerById;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "sR_No": sR_No,
+        "entryBy": entryBy
+      });
+      print("@@GetSatelliteManagerById--bodyprint--: ${body.toString()}");
+
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetSatelliteManagerById--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetSatelliteManagerById data = GetSatelliteManagerById.fromJson(responseData);
+
+      // Check the status of the response
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        return data; // Return the entire data object
+      } else {
+        Utils.showToast(data.message, true);
+        return null; // Return null if the status is false
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return null; // Return null on exceptions
+    }
+  }
+  static Future<SatelitteMangerDetails> UpdateSatelliteManager(
+      String userName,
+      String gender,
+      String mobileNo,
+      String emailId,
+      String officeAddress,
+      String designation,
+      int districtId,
+      int stateId,
+      String userId,
+      int entryBy,
+      String darpanNumber,
+      String hospitalId,
+      String loggedInNgoName,
+      String loggedInStateName,
+      String loggedInDistrictName,
+      String srNo) async {
+    SatelitteMangerDetails updateCampManagerDetailss;
+    // Check for network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.UpdateSatelliteManager;
+      // Headers for the request
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Prepare the body for the request
+      var body = json.encode({
+        "userName": userName,
+        "gender": gender,
+        "mobileNo": mobileNo,
+        "emailId": emailId,
+        "officeAddress": officeAddress,
+        "designation": designation,
+        "districtid": districtId,
+        "stateId": stateId,
+        "userId": userId,
+        "entryBy": entryBy,
+        "darpanNumber": darpanNumber,
+        "hospitalid": hospitalId,
+        "loggedInNgoName": loggedInNgoName,
+        "loggedInStateName": loggedInStateName,
+        "loggedInDistrictName": loggedInDistrictName,
+        "sr_no": srNo,
+      });
+
+      print("@@Response--ParamsCheck with platform---" + url + body.toString());
+
+      // Making the network call
+      Dio dio = Dio();
+      Response response1 = await dio.post(url,
+          data: body,
+          options: Options(
+              headers: headers,
+              contentType: "application/json",
+              responseType: ResponseType.json));
+
+      print("@@Response--Api: " + response1.toString());
+
+      // Check if the response data is valid before parsing
+      if (response1.data != null) {
+        updateCampManagerDetailss = SatelitteMangerDetails.fromJson(response1.data);
+
+        if (updateCampManagerDetailss.status) {
+          print("@@Result message----1: " + updateCampManagerDetailss.message);
+          Utils.showToast(updateCampManagerDetailss.message, true);
+
+        } else {
+          Utils.showToast(updateCampManagerDetailss.message ?? "Registration failed", true);
+        }
+      } else {
+        Utils.showToast("No data received from server", true);
+      }
+
+      return updateCampManagerDetailss;
+
+    } catch (e) {
+      print("@@Error during registration: " + e.toString());
+      Utils.showToast(e.toString(), true);
+      return null;
+    }
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

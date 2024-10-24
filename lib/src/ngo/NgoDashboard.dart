@@ -27,6 +27,7 @@ import 'package:mohfw_npcbvi/src/model/districtngowork/screeningcamp/ScreeningCa
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/ScreeningCampManager.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
+import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/GetSatelliteManagerById.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
@@ -53,7 +54,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
   TextEditingController _confirmnPasswordontrollere =
-      new TextEditingController();
+  new TextEditingController();
   GetChangeAPsswordFieldss getchangePwds = new GetChangeAPsswordFieldss();
 
   final GlobalKey _dropdownKey = GlobalKey();
@@ -63,7 +64,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   Future<List<DataScreeningCampManager>> _manger;
   Future<List<DataDropDownHospitalSelected>>
-      _futureDataDropDownHospitalSelected;
+  _futureDataDropDownHospitalSelected;
   DataGetDPM_ScreeningYear _selectedUser;
   DataScreeningCampManager _mangerUser;
   DataGetDPM_ScreeningMonth _selectedUserMonth;
@@ -90,7 +91,8 @@ class _NgoDashboard extends State<NgoDashboard> {
   String gender = 'Male'; // Default gender
   final _formKey = GlobalKey<FormState>();
   final _formKey1 = GlobalKey<FormState>();
-
+  final _formKeySatelliteManger = GlobalKey<FormState>();
+  final _formKeySatelliteMangerEditClick = GlobalKey<FormState>();
   String locationTypeValues = 'Urban';
 
   // Controllers for TextFormFields
@@ -102,6 +104,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   // Gender state variable
   bool CampManagerRegisterartionsEdit = false;
+  bool SatelliteManagerRegisterartionsEdit = false;
 
   bool ngoScreeningCampListss = false;
   bool AddScreeningCamps = false;
@@ -143,27 +146,43 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   // Controllers for TextFormFields
   TextEditingController _userNameControllerStatelliteManger =
-      TextEditingController();
+  TextEditingController();
   TextEditingController _mobileNumberControllerStatelliteManger =
-      TextEditingController();
+  TextEditingController();
   TextEditingController _emailIdControllerStatelliteManger =
-      TextEditingController();
+  TextEditingController();
   TextEditingController _addressControllerStatelliteManger =
-      TextEditingController();
+  TextEditingController();
   TextEditingController _designationControllerStatelliteManger =
-      TextEditingController();
+  TextEditingController();
   TextEditingController _hospitalControllerStatelliteManger =
-      TextEditingController();
+  TextEditingController();
+
+
+  TextEditingController _userNameControllerStatelliteMangerReg =
+  TextEditingController();
+  TextEditingController _mobileNumberControllerStatelliteMangerReg =
+  TextEditingController();
+  TextEditingController _emailIdControllerStatelliteMangerReg =
+  TextEditingController();
+  TextEditingController _addressControllerStatelliteMangerReg =
+  TextEditingController();
+  TextEditingController _designationControllerStatelliteMangerReg =
+  TextEditingController();
+  TextEditingController _hospitalControllerStatelliteMangerReg =
+  TextEditingController();
 
   Future<List<DataGethospitalForDDL>> _futureDataGethospitalForDDL;
   DataGethospitalForDDL _dataGethospitalForDDL;
-String gethospitalName;
-  int gethospitalNameSrNO;
+  String gethospitalName;
+  String gethospitalNameSrNOReg;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // To generate number on loading of page
+
     getUserData();
 
     ngoDashboardclicks = true;
@@ -171,6 +190,7 @@ String gethospitalName;
     ngoCampManagerLists = false;
     CampManagerRegisterartions = false;
     CampManagerRegisterartionsEdit = false;
+    SatelliteManagerRegisterartionsEdit = false;
     ngoScreeningCampListss = false;
     AddScreeningCamps = false;
     ngoSATELLITECENTREMANAGERLists = false;
@@ -215,7 +235,7 @@ String gethospitalName;
   Future<void> getDarpanNo() async {
     // Use await to get the actual value from SharedPrefs
     darpan_nos =
-        await SharedPrefs.getStoreSharedValue(AppConstant.darpan_no) as String;
+    await SharedPrefs.getStoreSharedValue(AppConstant.darpan_no) as String;
 
     if (darpan_nos != null) {
       print("Darpan Number: $darpan_nos");
@@ -227,7 +247,7 @@ String gethospitalName;
   Future<void> getentryby() async {
     // Use await to get the actual value from SharedPrefs
     entryby =
-        await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
+    await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
 
     if (entryby != null) {
       print("entryby Number: $entryby");
@@ -239,7 +259,7 @@ String gethospitalName;
   Future<void> ngoName() async {
     // Use await to get the actual value from SharedPrefs
     ngoNames =
-        await SharedPrefs.getStoreSharedValue(AppConstant.ngoName) as String;
+    await SharedPrefs.getStoreSharedValue(AppConstant.ngoName) as String;
 
     if (ngoNames != null) {
       print("ngoNames Number: $ngoNames");
@@ -268,7 +288,7 @@ String gethospitalName;
       if (response.statusCode == 200) {
         Map<String, dynamic> json = jsonDecode(response.body);
         final DropDownHospitalSelected bindOrgan =
-            DropDownHospitalSelected.fromJson(json);
+        DropDownHospitalSelected.fromJson(json);
         if (bindOrgan.status) {
           print('@@bindOrgan: ' + bindOrgan.message);
         }
@@ -287,9 +307,12 @@ String gethospitalName;
   void _showPopupMenu() async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final RenderBox dropdownRenderBox =
-          _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+      _dropdownKey.currentContext?.findRenderObject() as RenderBox;
       final RenderBox overlayRenderBox =
-          Overlay.of(context)?.context.findRenderObject() as RenderBox;
+      Overlay
+          .of(context)
+          ?.context
+          .findRenderObject() as RenderBox;
 
       // Check if both render boxes are not null
       if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -330,6 +353,8 @@ String gethospitalName;
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit = false;
+
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
         _future = getDPM_ScreeningYear();
@@ -338,7 +363,7 @@ String gethospitalName;
 
         break;
 
-      // Add more cases as needed
+    // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -346,9 +371,12 @@ String gethospitalName;
 
   void _showPopupMenuScreeningCamp() async {
     final RenderBox dropdownRenderBox =
-        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-        Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    Overlay
+        .of(context)
+        ?.context
+        .findRenderObject() as RenderBox;
 
     if (dropdownRenderBox == null || overlayRenderBox == null) {
       print("RenderBox or OverlayRenderBox is null");
@@ -392,6 +420,8 @@ String gethospitalName;
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit = false;
+
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
         ngoSATELLITECENTREMANAGERLists = false;
@@ -407,12 +437,14 @@ String gethospitalName;
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit = false;
+
         ngoScreeningCampListss = true;
         AddScreeningCamps = false;
         ngoSATELLITECENTREMANAGERLists = false;
         AddSatelliteManagers = false;
         break;
-      // Add more cases as needed
+    // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -420,9 +452,12 @@ String gethospitalName;
 
   void _showPopupMenuSatteliteCenter() async {
     final RenderBox dropdownRenderBox =
-        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-        Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    Overlay
+        .of(context)
+        ?.context
+        .findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -468,6 +503,8 @@ String gethospitalName;
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit = false;
+
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
         ngoSATELLITECENTREMANAGERLists = true;
@@ -481,18 +518,21 @@ String gethospitalName;
         EyeBankApplication = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit = false;
+
         ngoScreeningCampListss = false;
         ngoSATELLITECENTREMANAGERLists = false;
         AddSatelliteManagers = false;
 
         break;
-      // Add more cases as needed
+    // Add more cases as needed
       default:
         print("Unknown selection");
     }
   }
-  Future<List<DataGethospitalForDDL>> GetHospitalForDDL(
-      int districtid, int stateId, String userId) async {
+
+  Future<List<DataGethospitalForDDL>> GetHospitalForDDL(int districtid,
+      int stateId, String userId) async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
       // Prepare the request body as a Map
@@ -513,7 +553,8 @@ String gethospitalName;
           body: jsonEncode(body), // Encode the body as JSON
         );
         // Print the URL and request parameters
-        print('@@URL:' +"https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetHospitalForDDL");
+        print('@@URL:' +
+            "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetHospitalForDDL");
         print('@@Params: ${jsonEncode(body)}');
         // Check if the response is successful
         if (response.statusCode == 200) {
@@ -522,7 +563,6 @@ String gethospitalName;
           GethospitalForDDL.fromJson(json);
           print('@@Params: ${dashboardStateModel.data.toString()}');
           return dashboardStateModel.data;
-
         } else {
           // Handle the case when the server responds with an error
           Utils.showToast('Error: ${response.statusCode}', true);
@@ -547,7 +587,7 @@ String gethospitalName;
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-          GetDPM_ScreeningYear.fromJson(json);
+      GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -556,8 +596,8 @@ String gethospitalName;
     }
   }
 
-  Future<List<DataScreeningCampManager>> getCampManager(
-      int districtid, String entryBy) async {
+  Future<List<DataScreeningCampManager>> getCampManager(int districtid,
+      String entryBy) async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
       // Prepare the request body as a Map
@@ -580,7 +620,7 @@ String gethospitalName;
       if (response.statusCode == 200) {
         Map<String, dynamic> json = jsonDecode(response.body);
         final ScreeningCampManager dashboardStateModel =
-            ScreeningCampManager.fromJson(json);
+        ScreeningCampManager.fromJson(json);
         return dashboardStateModel.data;
       } else {
         // Handle the case when the server responds with an error
@@ -608,7 +648,8 @@ String gethospitalName;
         centerTitle: true,
         actions: [
           PopupMenuButton<int>(
-            itemBuilder: (context) => [
+            itemBuilder: (context) =>
+            [
               PopupMenuItem(
                 value: 1,
                 child: Row(
@@ -649,10 +690,10 @@ String gethospitalName;
                   _showChangePasswordDialog();
                   break;
                 case 2:
-                  // Implement User Manual action
+                // Implement User Manual action
                   break;
                 case 3:
-                  // Handle Logout
+                // Handle Logout
                   break;
               }
             },
@@ -681,6 +722,8 @@ String gethospitalName;
                           ngoCampManagerLists = false;
                           CampManagerRegisterartions = false;
                           CampManagerRegisterartionsEdit = false;
+                          SatelliteManagerRegisterartionsEdit = false;
+
                           ngoScreeningCampListss = false;
                           AddScreeningCamps = false;
                           ngoSATELLITECENTREMANAGERLists = false;
@@ -699,6 +742,8 @@ String gethospitalName;
                           ngoCampManagerLists = false;
                           CampManagerRegisterartions = false;
                           CampManagerRegisterartionsEdit = false;
+                          SatelliteManagerRegisterartionsEdit = false;
+
                           ngoScreeningCampListss = false;
                           AddScreeningCamps = false;
                           ngoSATELLITECENTREMANAGERLists = false;
@@ -721,6 +766,7 @@ String gethospitalName;
             AddScreeningCamp(),
             ngoSATELLITECENTREMANAGERList(),
             AddSatelliteManagerOption(),
+            EditSatelliteManager(),
           ],
         ),
       ),
@@ -823,8 +869,8 @@ String gethospitalName;
     );
   }
 
-  Widget _buildUserInfoItem(
-      String label, String value, Color labelColor, Color valueColor) {
+  Widget _buildUserInfoItem(String label, String value, Color labelColor,
+      Color valueColor) {
     return Row(
       children: [
         Text(label,
@@ -1119,7 +1165,7 @@ String gethospitalName;
                                 fontWeight: FontWeight.w800, // Text weight
                               ),
                               overflow:
-                                  TextOverflow.ellipsis, // Handle text overflow
+                              TextOverflow.ellipsis, // Handle text overflow
                             ),
                           ),
                         ),
@@ -1181,13 +1227,14 @@ String gethospitalName;
                                   _buildDataCell(offer.moucount.toString()),
                                   _buildDataCell(offer.status.toString()),
                                   if (offer.status == 'Approved')
-                                    // Store locally
+                                  // Store locally
                                     _buildViewManageDoctorUploadMOUUI(
                                         offer.hRegID) // Pass hospitalId
-                                  else if (offer.status == 'Pending')
-                                    _buildEditMAnageDoctorUploadMOUUI()
                                   else
-                                    _buildEdit(),
+                                    if (offer.status == 'Pending')
+                                      _buildEditMAnageDoctorUploadMOUUI()
+                                    else
+                                      _buildEdit(),
                                 ],
                               );
                             }).toList(),
@@ -1283,12 +1330,13 @@ String gethospitalName;
                                   _buildDataCell(offer.emailid),
                                   _buildDataCell(offer.status.toString()),
                                   if (offer.status == 'Approved')
-                                    // Store locally
-                                    _buildMAnageEyeDonationMOUUI()
-                                  else if (offer.status == 'Pending')
+                                  // Store locally
                                     _buildMAnageEyeDonationMOUUI()
                                   else
-                                    _buildMAnageEyeDonationMOUUI(),
+                                    if (offer.status == 'Pending')
+                                      _buildMAnageEyeDonationMOUUI()
+                                    else
+                                      _buildMAnageEyeDonationMOUUI(),
                                 ],
                               );
                             }).toList(),
@@ -1421,7 +1469,86 @@ String gethospitalName;
       ],
     );
   }
+  Widget _buildEditCampMabgerList(int sR_No) {
+    return Container(
+        height: 80,
+        width: 200,
+        // Fixed width to ensure horizontal scrolling
+        decoration: BoxDecoration(
+          color: Colors.white, // Background color for header cells
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          // Spaces the buttons evenly
+          children: [
+            // "View" Text Button
+            _buildButton('Edit', () async {
+              print('View pressed');
 
+              try {
+                // Call the API to view camp manager details
+                GetCampManagerDetailsByIdEditData
+                getCampManagerDetailsByIdEditDatas =
+                await ApiController.getCampManagerDetailsById(
+                  sR_No,
+                  entryby, // Assuming `userId` is the correct entryBy parameter
+                );
+
+                // Check if the response is not null and status is true
+                if (getCampManagerDetailsByIdEditDatas != null &&
+                    getCampManagerDetailsByIdEditDatas.status) {
+                  print(getCampManagerDetailsByIdEditDatas
+                      .message); // Success message
+                  getCampManagerDetailsByIdEditDatas.data.forEach((manager) {
+                    print('Manager Name: ${manager.managerName}');
+                    // Initialize the controllers with the provided values
+                    _userNameController =
+                        TextEditingController(text: manager.managerName);
+                    _mobileNumberController =
+                        TextEditingController(text: manager.mobile);
+                    _emailIdController =
+                        TextEditingController(text: manager.emailId);
+                    _addressController =
+                        TextEditingController(text: manager.address);
+                    _designationController =
+                        TextEditingController(text: manager.designation);
+                    // Access other fields as needed
+                    setState(() {
+                      CampManagerRegisterartionsEdit = true;
+                      SatelliteManagerRegisterartionsEdit=false;
+
+                      ManageUSerNGOHospt = false;
+                      ngoDashboardclicks = false;
+                      EyeBankApplication = false;
+                      ngoCampManagerLists = false;
+                      CampManagerRegisterartions = false;
+                      ngoScreeningCampListss = false;
+                      AddScreeningCamps = false;
+                      ngoSATELLITECENTREMANAGERLists = false;
+                      AddSatelliteManagers = false;
+                    });
+                  });
+
+                  // Prepare documents for display
+
+                } else {
+                  Utils.showToast(
+                      "No hospital details found or an error occurred", true);
+                }
+              } catch (e) {
+                print('Error fetching hospital details: $e');
+                Utils.showToast(
+                    "Failed to fetch hospital details. Please try again later.",
+                    true);
+              }
+            }),
+          ],
+        ));
+  }
   void _addCampManager() {
     // Handle the tap event here
     print('Add Camp Manager tapped!');
@@ -1432,6 +1559,8 @@ String gethospitalName;
       ngoCampManagerLists = false;
       CampManagerRegisterartions = true;
       CampManagerRegisterartionsEdit = false;
+      SatelliteManagerRegisterartionsEdit = false;
+
       ngoScreeningCampListss = false;
       AddScreeningCamps = false;
       ngoSATELLITECENTREMANAGERLists = false;
@@ -1448,6 +1577,8 @@ String gethospitalName;
       EyeBankApplication = false;
       ngoCampManagerLists = false;
       CampManagerRegisterartions = false;
+      SatelliteManagerRegisterartionsEdit = false;
+
       CampManagerRegisterartionsEdit = false;
       ngoScreeningCampListss = false;
       AddScreeningCamps = true;
@@ -1468,13 +1599,15 @@ String gethospitalName;
       ngoCampManagerLists = false;
       CampManagerRegisterartions = false;
       CampManagerRegisterartionsEdit = false;
+      SatelliteManagerRegisterartionsEdit = false;
+
       ngoScreeningCampListss = false;
       AddScreeningCamps = false;
       _futureState = _getStatesDAta();
       ngoSATELLITECENTREMANAGERLists = false;
       AddSatelliteManagers = true;
-      _futureDataGethospitalForDDL = GetHospitalForDDL(district_code_login,state_code_login, userId);
-
+      _futureDataGethospitalForDDL =
+          GetHospitalForDDL(district_code_login, state_code_login, userId);
     });
   }
 
@@ -1519,7 +1652,7 @@ String gethospitalName;
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: Colors.blueAccent, width: 2.0),
+                      BorderSide(color: Colors.blueAccent, width: 2.0),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     hintText: 'All',
@@ -1685,7 +1818,7 @@ String gethospitalName;
                       }
 
                       List<DataGetDPM_ScreeningYear> list =
-                          snapshot.data.toList();
+                      snapshot.data.toList();
 
                       // Check if _selectedUser is null or not part of the list anymore
                       if (_selectedUser == null ||
@@ -1847,7 +1980,7 @@ String gethospitalName;
                                       children: ddata.map((offer) {
                                         return Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          MainAxisAlignment.start,
                                           children: [
                                             _buildDataCell(offer.status),
                                             _buildDataCell(offer.registered),
@@ -1929,7 +2062,7 @@ String gethospitalName;
                                   children: ddata.map((offer) {
                                     return Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      MainAxisAlignment.start,
                                       // Aligning to start for better control
                                       children: [
                                         _buildDataCell(offer.status),
@@ -2010,7 +2143,7 @@ String gethospitalName;
                                   children: ddata.map((offer) {
                                     return Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      MainAxisAlignment.start,
                                       // Aligning to start for better control
                                       children: [
                                         _buildDataCell(offer.status),
@@ -2452,51 +2585,92 @@ String gethospitalName;
         ));
   }
 
-  Widget _buildCAMPMAnageEDITBlocked() {
+  Widget _buildSatelliteManagerEditBlocked(int sR_No) {
     return Container(
-        height: 80,
-        width: 200,
-        // Fixed width to ensure horizontal scrolling
-        decoration: BoxDecoration(
-          color: Colors.white, // Background color for header cells
-          border: Border.all(
-            width: 0.1,
+      height: 80,
+      width: 200, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(width: 0.1),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _buildButton('Edit', () async {
+            print('@@Edit Ka click');
+
+            try {
+              // Call the API to view camp manager details
+              GetSatelliteManagerById getSatelliteManagerByIds =
+              await ApiController.getSatelliteManagerById(
+                sR_No,
+                entryby, // Assuming `entryby` is correct
+              );
+
+              if (getSatelliteManagerByIds != null &&
+                  getSatelliteManagerByIds.status) {
+                print(getSatelliteManagerByIds.message); // Success message
+
+                if (getSatelliteManagerByIds.data != null) {
+                  final manager = getSatelliteManagerByIds.data.first;
+
+                  print('@@Manager Name: ${manager.name}');
+
+                  // Update controllers instead of reinitializing them
+                  setState(() {
+                    print('@@Edit Ka click');
+                    _userNameControllerStatelliteMangerReg.text = manager.name ?? '';
+                    _mobileNumberControllerStatelliteMangerReg.text = manager.mobile ?? '';
+                    _emailIdControllerStatelliteMangerReg.text = manager.emailId ?? '';
+                    _addressControllerStatelliteMangerReg.text = manager.address ?? '';
+                    _designationControllerStatelliteMangerReg.text = manager.designation ?? '';
+
+                    SatelliteManagerRegisterartionsEdit = true;
+                    CampManagerRegisterartionsEdit = false;
+                    ManageUSerNGOHospt = false;
+                    ngoDashboardclicks = false;
+                    EyeBankApplication = false;
+                    ngoCampManagerLists = false;
+                    CampManagerRegisterartions = false;
+                    ngoScreeningCampListss = false;
+                    AddScreeningCamps = false;
+                    ngoSATELLITECENTREMANAGERLists = false;
+                    AddSatelliteManagers = false;
+                  });
+                } else {
+                  Utils.showToast(
+                      "No satellite manager details found", true);
+                }
+              } else {
+                Utils.showToast(
+                    "Error: ${getSatelliteManagerByIds.message}", true);
+              }
+            } catch (e) {
+              print('Error fetching satellite manager details: $e');
+              Utils.showToast(
+                  "Failed to fetch satellite manager details. Please try again later.",
+                  true);
+            }
+          }),
+          Text(
+            '||',
+            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
           ),
-        ),
-        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          // Spaces the buttons evenly
-          children: [
-            // "View" Text Button
-            GestureDetector(
-              onTap: () {
-                print('Edit pressed');
-              },
-              child: Text(
-                'Edit',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-              ),
-            ),
-            // Separator "||"
-            Text(
-              '||',
+          GestureDetector(
+            onTap: () {
+              print('Manage Eye Donation Blocked');
+            },
+            child: Text(
+              'Blocked',
               style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
             ),
-            // "Manage Doctor" Text Button
-            GestureDetector(
-              onTap: () {
-                print('Manage Eye Donation');
-              },
-              child: Text(
-                'Blocked',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-              ),
-            ),
-            // Separator "||"
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
+
+
 
   Widget _buildEdit() {
     return Container(
@@ -2529,84 +2703,7 @@ String gethospitalName;
         ));
   }
 
-  Widget _buildEditCampMabgerList(int sR_No) {
-    return Container(
-        height: 80,
-        width: 200,
-        // Fixed width to ensure horizontal scrolling
-        decoration: BoxDecoration(
-          color: Colors.white, // Background color for header cells
-          border: Border.all(
-            width: 0.1,
-          ),
-        ),
-        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          // Spaces the buttons evenly
-          children: [
-            // "View" Text Button
-            _buildButton('Edit', () async {
-              print('View pressed');
 
-              try {
-                // Call the API to view camp manager details
-                GetCampManagerDetailsByIdEditData
-                    getCampManagerDetailsByIdEditDatas =
-                    await ApiController.getCampManagerDetailsById(
-                  sR_No,
-                  entryby, // Assuming `userId` is the correct entryBy parameter
-                );
-
-                // Check if the response is not null and status is true
-                if (getCampManagerDetailsByIdEditDatas != null &&
-                    getCampManagerDetailsByIdEditDatas.status) {
-                  print(getCampManagerDetailsByIdEditDatas
-                      .message); // Success message
-                  getCampManagerDetailsByIdEditDatas.data.forEach((manager) {
-                    print('Manager Name: ${manager.managerName}');
-                    // Initialize the controllers with the provided values
-                    _userNameController =
-                        TextEditingController(text: manager.managerName);
-                    _mobileNumberController =
-                        TextEditingController(text: manager.mobile);
-                    _emailIdController =
-                        TextEditingController(text: manager.emailId);
-                    _addressController =
-                        TextEditingController(text: manager.address);
-                    _designationController =
-                        TextEditingController(text: manager.designation);
-                    // Access other fields as needed
-                    setState(() {
-                      CampManagerRegisterartionsEdit = true;
-                      ManageUSerNGOHospt = false;
-                      ngoDashboardclicks = false;
-                      EyeBankApplication = false;
-                      ngoCampManagerLists = false;
-                      CampManagerRegisterartions = false;
-                      ngoScreeningCampListss = false;
-                      AddScreeningCamps = false;
-                      ngoSATELLITECENTREMANAGERLists = false;
-                      AddSatelliteManagers = false;
-                    });
-                  });
-
-                  // Prepare documents for display
-
-                } else {
-                  Utils.showToast(
-                      "No hospital details found or an error occurred", true);
-                }
-              } catch (e) {
-                print('Error fetching hospital details: $e');
-                Utils.showToast(
-                    "Failed to fetch hospital details. Please try again later.",
-                    true);
-              }
-            }),
-          ],
-        ));
-  }
 
   Widget _buildViewManageDoctorUploadMOUUI(String hospitalId) {
     return Container(
@@ -5178,6 +5275,8 @@ String gethospitalName;
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit=false;
+
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
         ngoSATELLITECENTREMANAGERLists = false;
@@ -5456,6 +5555,8 @@ String gethospitalName;
     }
   }
 
+
+
   Widget ngoSATELLITECENTREMANAGERList() {
     return Column(
       children: [
@@ -5550,7 +5651,7 @@ String gethospitalName;
                                   _buildDataCell(offer.designation),
                                   _buildDataCell(offer.mobile),
                                   _buildDataCell(offer.emailId),
-                                  _buildCAMPMAnageEDITBlocked()
+                                  _buildSatelliteManagerEditBlocked( int.parse(offer.srNo))
                                 ],
                               );
                             }).toList(),
@@ -5602,12 +5703,12 @@ String gethospitalName;
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Form(
-                    key: _formKey,
+                    key: _formKeySatelliteManger,
                     child: Column(
                       children: [
                         // Username Field
                         TextFormField(
-                          controller: _userNameControllerStatelliteManger,
+                          controller: _userNameControllerStatelliteMangerReg,
                           // Attach controller
                           decoration: InputDecoration(
                             labelText: 'User Name*',
@@ -5661,7 +5762,7 @@ String gethospitalName;
 
                         // Mobile Number Field
                         TextFormField(
-                          controller: _mobileNumberControllerStatelliteManger,
+                          controller: _mobileNumberControllerStatelliteMangerReg,
                           // Attach controller
                           decoration: InputDecoration(
                             labelText: 'Mobile No.*',
@@ -5680,7 +5781,7 @@ String gethospitalName;
 
                         // Email ID Field
                         TextFormField(
-                          controller: _emailIdControllerStatelliteManger,
+                          controller: _emailIdControllerStatelliteMangerReg,
                           // Attach controller
                           decoration: InputDecoration(
                             labelText: 'Email ID*',
@@ -5741,14 +5842,11 @@ String gethospitalName;
                                           _dataGethospitalForDDL = userc;
                                           gethospitalName =
                                               userc?.hName ?? '';
-                                          gethospitalNameSrNO = int.tryParse(
-                                                  userc?.hRegID?.toString() ??
-                                                      '') ??
-                                              0;
+                                          gethospitalNameSrNOReg =  userc?.hRegID ?? '';
                                           print(
                                               'getMAnagerNAme Year: $gethospitalName');
                                           print(
-                                              'getmanagerSrNO: $gethospitalNameSrNO');
+                                              'getmanagerSrNO: $gethospitalNameSrNOReg');
                                         });
                                       },
                                       items: list.map((user) {
@@ -5792,7 +5890,7 @@ String gethospitalName;
                         SizedBox(height: 16.0),
                         // Address Field
                         TextFormField(
-                          controller: _addressControllerStatelliteManger,
+                          controller: _addressControllerStatelliteMangerReg,
                           // Attach controller
                           decoration: InputDecoration(
                             labelText: 'Address*',
@@ -5809,7 +5907,7 @@ String gethospitalName;
 
                         // Designation Field
                         TextFormField(
-                          controller: _designationControllerStatelliteManger,
+                          controller: _designationControllerStatelliteMangerReg,
                           // Attach controller
                           decoration: InputDecoration(
                             labelText: 'Designation',
@@ -5823,10 +5921,10 @@ String gethospitalName;
                           children: [
                             ElevatedButton(
                               onPressed: () {
-                                if (_formKey.currentState.validate()) {
+                                if (_formKeySatelliteManger.currentState.validate()) {
                                   // Process the form data
                                   print("@@_SatteliteMAnagerRegistration--");
-                                   _satelliteManagersRegistration();
+                                   _satelliteManagersRegistrationRedOption();
                                 }
                               },
                               child: Text('Submit'),
@@ -5851,18 +5949,18 @@ String gethospitalName;
       ],
     );
   }
-  Future<void> _satelliteManagersRegistration() async {
-    if (_formKey.currentState.validate()) {
+  Future<void> _satelliteManagersRegistrationRedOption() async {
+    if (_formKeySatelliteManger.currentState.validate()) {
       Utils.showProgressDialog1(context);
 
       var response = await ApiController.satelliteManagerRegistration(
-          _userNameControllerStatelliteManger.text.toString().trim(),
+          _userNameControllerStatelliteMangerReg.text.toString().trim(),
           gender,
-          _mobileNumberControllerStatelliteManger.text.toString().trim(),
-          _emailIdControllerStatelliteManger.text.toString().trim(),
-          gethospitalNameSrNO.toString(),
-          _addressControllerStatelliteManger.text.toString().trim(),
-          _designationControllerStatelliteManger.text.toString().trim(),
+          _mobileNumberControllerStatelliteMangerReg.text.toString().trim(),
+          _emailIdControllerStatelliteMangerReg.text.toString().trim(),
+        gethospitalNameSrNOReg.toString(),
+          _addressControllerStatelliteMangerReg.text.toString().trim(),
+          _designationControllerStatelliteMangerReg.text.toString().trim(),
           district_code_login,
           state_code_login,
           userId,
@@ -5877,7 +5975,7 @@ String gethospitalName;
       Utils.hideProgressDialog1(context);
 
       // Check if the response is null before accessing properties
-      if (response.message == "Satellite Manager Registered Successfully.") {
+      if (response.status) {
         Utils.showToast(response.message.toString(), true);
         print("@@Result message----Class: " + response.message);
         EyeBankApplication = false;
@@ -5887,6 +5985,254 @@ String gethospitalName;
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit=false;
+
+        ngoScreeningCampListss = false;
+        AddScreeningCamps = false;
+
+        ngoSATELLITECENTREMANAGERLists = false;
+        AddSatelliteManagers = false;
+      }else{
+        Utils.showToast(response.message.toString(), true);
+      }
+    } else {
+      // Handle the case where the list is null or empty
+      Utils.showToast("Not created succesfully", true);
+    }
+  }
+  Widget EditSatelliteManager() {
+    return Column(
+      children: [
+        Visibility(
+          visible: SatelliteManagerRegisterartionsEdit,
+          // Change this to your actual condition
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Satellite Manager Registration',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                // Form for Camp Manager Registration
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKeySatelliteMangerEditClick,
+                    child: Column(
+                      children: [
+                        // Username Field
+                        TextFormField(
+                          controller: _userNameControllerStatelliteMangerReg,
+                          decoration: InputDecoration(
+                            labelText: 'User Name*',
+                            hintText: 'Enter your name',
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your name';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Gender Selection
+                        Text('Gender*'),
+                        Row(
+                          children: [
+                            Radio<String>(
+                              value: 'Male',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Male'),
+                            Radio<String>(
+                              value: 'Female',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Female'),
+                            Radio<String>(
+                              value: 'Transgender',
+                              groupValue: gender,
+                              onChanged: (value) {
+                                setState(() {
+                                  gender = value;
+                                });
+                              },
+                            ),
+                            Text('Transgender'),
+                          ],
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Mobile Number Field
+                        TextFormField(
+                          controller: _mobileNumberControllerStatelliteMangerReg,
+                          decoration: InputDecoration(
+                            labelText: 'Mobile No.*',
+                            hintText: 'Enter your mobile number',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number';
+                            } else if (value.length != 10) {
+                              return 'Please enter a valid 10-digit mobile number';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Email ID Field
+                        TextFormField(
+                          controller: _emailIdControllerStatelliteMangerReg,
+                          decoration: InputDecoration(
+                            labelText: 'Email ID*',
+                            hintText: 'Enter your email address',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Address Field
+                        TextFormField(
+                          controller: _addressControllerStatelliteMangerReg,
+                          decoration: InputDecoration(
+                            labelText: 'Address*',
+                            hintText: 'Enter your address',
+                            border: OutlineInputBorder(),
+                          ),
+                          maxLines: 3,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your address';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Designation Field
+                        TextFormField(
+                          controller: _designationControllerStatelliteMangerReg,
+                          decoration: InputDecoration(
+                            labelText: 'Designation',
+                            hintText: 'Enter your designation',
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                        SizedBox(height: 16.0),
+
+                        // Submit and Cancel Buttons
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              onPressed: () {
+                                if (_formKeySatelliteMangerEditClick.currentState.validate()) {
+                                  // Process the form data
+                                  _SatelliteManagerRegistrationEdit();
+                                }
+                              },
+                              child: Text('Submit'),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                // Reset form fields
+                                _resetForm();
+                              },
+                              child: Text('Reset'),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  Future<void> _SatelliteManagerRegistrationEdit() async {
+    print('@@Editclick of _SatelliteManagerRegistrationEdit List--');
+    if (_formKeySatelliteMangerEditClick.currentState.validate()) {
+      Utils.showProgressDialog1(context);
+
+      var response = await ApiController.UpdateSatelliteManager(
+          _userNameControllerStatelliteMangerReg.text.toString().trim(),
+          gender,
+          _mobileNumberControllerStatelliteMangerReg.text.toString().trim(),
+          _emailIdControllerStatelliteMangerReg.text.toString().trim(),
+          _addressControllerStatelliteMangerReg.text.toString().trim(),
+          _designationControllerStatelliteMangerReg.text.toString().trim(),
+          district_code_login,
+          state_code_login,
+          userId,
+          int.parse(entryby),
+          darpan_nos,
+          "0",
+          ngoNames,
+          stateNames,
+          districtNames,
+          "0");
+
+      Utils.hideProgressDialog1(context);
+
+      // Check if the response is null before accessing properties
+      if (response.status) {
+        Utils.showToast(response.message.toString(), true);
+        print("@@Result message----Class: " + response.message);
+        EyeBankApplication = false;
+        ngoDashboardclicks = false;
+
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists = true;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit=false;
+
         ngoScreeningCampListss = false;
         AddScreeningCamps = false;
         ngoSATELLITECENTREMANAGERLists = false;
@@ -5897,7 +6243,6 @@ String gethospitalName;
       Utils.showToast("Not created succesfully", true);
     }
   }
-
 }
 
 class GetChangeAPsswordFieldss {
