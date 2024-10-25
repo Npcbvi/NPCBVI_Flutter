@@ -176,7 +176,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   DataGethospitalForDDL _dataGethospitalForDDL;
   String gethospitalName;
   String gethospitalNameSrNOReg;
-
+  int genderSatelliteManagerApi; // 1 for Male, 2 for Female, 3 for Transgender
   @override
   void initState() {
     // TODO: implement initState
@@ -3901,7 +3901,16 @@ class _NgoDashboard extends State<NgoDashboard> {
       gender = null; // Reset gender selection
     });
   }
-
+  void _resetFormSatelliteManager() {
+    _userNameControllerStatelliteMangerReg.clear();
+    _mobileNumberControllerStatelliteMangerReg.clear();
+    _emailIdControllerStatelliteMangerReg.clear();
+    _addressControllerStatelliteMangerReg.clear();
+    _designationControllerStatelliteMangerReg.clear();
+    setState(() {
+      gender = null; // Reset gender selection
+    });
+  }
   Widget AddCampManager() {
     return Column(
       children: [
@@ -5726,32 +5735,32 @@ class _NgoDashboard extends State<NgoDashboard> {
                         Text('Gender*'),
                         Row(
                           children: [
-                            Radio<String>(
-                              value: 'Male',
-                              groupValue: gender,
+                            Radio<int>(
+                              value: 1,
+                              groupValue: genderSatelliteManagerApi,
                               onChanged: (value) {
                                 setState(() {
-                                  gender = value;
+                                  genderSatelliteManagerApi = value;
                                 });
                               },
                             ),
                             Text('Male'),
-                            Radio<String>(
-                              value: 'Female',
-                              groupValue: gender,
+                            Radio<int>(
+                              value: 2,
+                              groupValue: genderSatelliteManagerApi,
                               onChanged: (value) {
                                 setState(() {
-                                  gender = value;
+                                  genderSatelliteManagerApi = value;
                                 });
                               },
                             ),
                             Text('Female'),
-                            Radio<String>(
-                              value: 'Transgender',
-                              groupValue: gender,
+                            Radio<int>(
+                              value: 3,
+                              groupValue: genderSatelliteManagerApi,
                               onChanged: (value) {
                                 setState(() {
-                                  gender = value;
+                                  genderSatelliteManagerApi = value;
                                 });
                               },
                             ),
@@ -5932,7 +5941,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ElevatedButton(
                               onPressed: () {
                                 // Reset form fields
-                                _resetForm();
+                                _resetFormSatelliteManager();
                               },
                               child: Text('Reset'),
                             ),
@@ -5955,7 +5964,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
       var response = await ApiController.satelliteManagerRegistration(
           _userNameControllerStatelliteMangerReg.text.toString().trim(),
-          gender,
+        genderSatelliteManagerApi,
           _mobileNumberControllerStatelliteMangerReg.text.toString().trim(),
           _emailIdControllerStatelliteMangerReg.text.toString().trim(),
         gethospitalNameSrNOReg.toString(),
@@ -5982,7 +5991,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         ngoDashboardclicks = false;
 
         ManageUSerNGOHospt = false;
-        ngoCampManagerLists = true;
+        ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
         SatelliteManagerRegisterartionsEdit=false;
@@ -5992,6 +6001,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
         ngoSATELLITECENTREMANAGERLists = false;
         AddSatelliteManagers = false;
+        ngoSATELLITECENTREMANAGERLists=true;
       }else{
         Utils.showToast(response.message.toString(), true);
       }

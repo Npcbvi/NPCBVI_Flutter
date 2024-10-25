@@ -98,4 +98,7 @@ class ApiConstants {
 
   static String GetSatelliteManagerById = 'GetSatelliteManagerById';
   static String UpdateSatelliteManager = 'UpdateSatelliteManager';
+
+  static String GetSatelliteCenterList = 'GetSatelliteCenterList';
+
 }

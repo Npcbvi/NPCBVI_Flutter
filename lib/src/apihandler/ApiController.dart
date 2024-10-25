@@ -3861,7 +3861,7 @@ class ApiController {
 
   static Future<ngoSatelliteManagerRegistration> satelliteManagerRegistration(
       String userName,
-      String gender,
+      int gender,
       String mobileNo,
       String emailId,
       String hospitalId,
@@ -3933,7 +3933,7 @@ class ApiController {
       if (response1.data != null) {
         ngoSatelliteManagerRegistrations = ngoSatelliteManagerRegistration.fromJson(response1.data);
 
-        if (ngoSatelliteManagerRegistrations.message=="Satellite Manager Registered Successfully.") {
+        if (ngoSatelliteManagerRegistrations.status) {
           print("@@Result message----1: " + ngoSatelliteManagerRegistrations.message);
           Utils.showToast(ngoSatelliteManagerRegistrations.message, true);
 
@@ -4100,5 +4100,72 @@ class ApiController {
       return null;
     }
   }
+
+  static Future<List<DataGetSatelliteCenterList>> getSatelliteCenterLists(int stateId, int districtid, String entryBy) async {
+    print("@@getSatelliteCenterLists" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.GetSatelliteCenterList;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+
+        "stateId": stateId,
+        "districtId": districtid,
+
+        "entryBy": entryBy,
+
+
+      });
+      print("@@getSatelliteCenterLists--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getSatelliteCenterLists--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetSatelliteCenterList data = GetSatelliteCenterList.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/
