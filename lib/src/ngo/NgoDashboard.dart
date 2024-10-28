@@ -6684,6 +6684,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               child: Text('Submit'),
                             ),
                             ElevatedButton(
+
                               onPressed: () {
                                 // Reset form fields
                                 _resetFormSatelliteManager();
