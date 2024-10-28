@@ -69,6 +69,7 @@ import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/SatelitteMange
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/ngoSatelliteManagerRegistration.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/CenterOfficeNameSatelliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
+import 'package:mohfw_npcbvi/src/model/sattelliteCenter/SatelliteCenterRegistation.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
@@ -4169,6 +4170,98 @@ class ApiController {
   }
 
 
+  static Future<SatelliteCenterRegistation> satelliteCenterRegistation(
+      String userName,
+      int gender,
+      String mobileNo,
+      String emailId,
+      String hospitalId,
+      String officeAddress,
+      String designation,
+      int districtId,
+      int stateId,
+      String userId,
+      int entryBy,
+      String darpanNumber,
+      String loggedInNgoName,
+      String loggedInStateName,
+      String loggedInDistrictName
+      ) async {
+    SatelliteCenterRegistation satelliteCenterRegistation;
+    // Check for network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
 
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.SetallightCenterRegistration;
+      // Headers for the request
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Prepare the body for the request
+      var body = json.encode({
+
+
+        "userName": userName,
+        "gender": gender,
+        "mobileNo":mobileNo,
+        "emailId": emailId,
+        "hospitalId": hospitalId,
+        "designation": designation,
+        "officeAddress":officeAddress,
+        "districtid": districtId,
+        "stateId": stateId,
+        "userId": userId,
+        "entryBy": entryBy,
+        "darpanNumber":darpanNumber,
+        "loggedInNgoName":loggedInNgoName,
+        "loggedInStateName": loggedInStateName,
+        "loggedInDistrictName": loggedInDistrictName,
+
+
+      });
+
+      print("@@satelliteCenterRegistation--ParamsCheck with platform---" + url + body.toString());
+
+      // Making the network call
+      Dio dio = Dio();
+      Response response1 = await dio.post(url,
+          data: body,
+          options: Options(
+              headers: headers,
+              contentType: "application/json",
+              responseType: ResponseType.json));
+
+      print("@@satelliteCenterRegistation--Api: " + response1.toString());
+
+      // Check if the response data is valid before parsing
+      if (response1.data != null) {
+        satelliteCenterRegistation = SatelliteCenterRegistation.fromJson(response1.data);
+
+        if (satelliteCenterRegistation.status) {
+          print("@@Result message----1: " + satelliteCenterRegistation.message);
+          Utils.showToast(satelliteCenterRegistation.message, true);
+
+        } else {
+          Utils.showToast(satelliteCenterRegistation.message ?? "Registration failed", true);
+        }
+      } else {
+        Utils.showToast("No data received from server", true);
+      }
+
+      return satelliteCenterRegistation;
+
+    } catch (e) {
+      print("@@Error during registration: " + e.toString());
+      Utils.showToast(e.toString(), true);
+      return null;
+    }
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

@@ -6707,9 +6707,10 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   Future<void> _satelliteCentersRegistrationRedOption() async {
     if (_formKeySatelliteCneterO.currentState.validate()) {
+
       Utils.showProgressDialog1(context);
 
-      var response = await ApiController.satelliteManagerRegistration(
+      var response = await ApiController.satelliteCenterRegistation(
         _userNameControllerStatelliteMangerReg.text.toString().trim(),
         genderSatelliteManagerApi,
         _mobileNumberControllerStatelliteMangerReg.text.toString().trim(),
