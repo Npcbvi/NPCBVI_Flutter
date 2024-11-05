@@ -4171,21 +4171,20 @@ class ApiController {
 
 
   static Future<SatelliteCenterRegistation> satelliteCenterRegistation(
-      String userName,
-      int gender,
-      String mobileNo,
-      String emailId,
+      String satelliteCenterName,
+   //   int gender,
       String hospitalId,
+      int centerOfficerName,
+      String mobileNo,
       String officeAddress,
-      String designation,
+      String emailId,
+
+
       int districtId,
       int stateId,
       String userId,
       int entryBy,
       String darpanNumber,
-      String loggedInNgoName,
-      String loggedInStateName,
-      String loggedInDistrictName
       ) async {
     SatelliteCenterRegistation satelliteCenterRegistation;
     // Check for network availability
@@ -4208,26 +4207,23 @@ class ApiController {
       var body = json.encode({
 
 
-        "userName": userName,
-        "gender": gender,
+        "satelliteCenterName": satelliteCenterName,
+        "hospitalId": hospitalId,
+        "centerOfficerName":centerOfficerName,
         "mobileNo":mobileNo,
         "emailId": emailId,
-        "hospitalId": hospitalId,
-        "designation": designation,
+
         "officeAddress":officeAddress,
         "districtid": districtId,
         "stateId": stateId,
         "userId": userId,
         "entryBy": entryBy,
         "darpanNumber":darpanNumber,
-        "loggedInNgoName":loggedInNgoName,
-        "loggedInStateName": loggedInStateName,
-        "loggedInDistrictName": loggedInDistrictName,
 
 
       });
 
-      print("@@satelliteCenterRegistation--ParamsCheck with platform---" + url + body.toString());
+      print("@@satelliteCenterRegistationRed--ParamsCheck with platform---" + url + body.toString());
 
       // Making the network call
       Dio dio = Dio();
@@ -4238,14 +4234,14 @@ class ApiController {
               contentType: "application/json",
               responseType: ResponseType.json));
 
-      print("@@satelliteCenterRegistation--Api: " + response1.toString());
+      print("@@@@satelliteCenterRegistationRed--Api: " + response1.toString());
 
       // Check if the response data is valid before parsing
       if (response1.data != null) {
         satelliteCenterRegistation = SatelliteCenterRegistation.fromJson(response1.data);
 
         if (satelliteCenterRegistation.status) {
-          print("@@Result message----1: " + satelliteCenterRegistation.message);
+          print("@@@@satelliteCenterRegistationRed message----1: " + satelliteCenterRegistation.message);
           Utils.showToast(satelliteCenterRegistation.message, true);
 
         } else {

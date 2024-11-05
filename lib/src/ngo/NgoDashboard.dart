@@ -178,8 +178,9 @@ class _NgoDashboard extends State<NgoDashboard> {
   Future<List<DataCenterOfficeNameSatelliteCenter>> _futureCenterOfficerName;
   DataCenterOfficeNameSatelliteCenter _dataCenterOfficeNameSatelliteCenter;
 
-  String gethospitalName,getCenterOfficerName;
-  String gethospitalNameSrNOReg,getCenterOfficerNameSRNo;
+  String gethospitalName,getCenterOfficerName,gethospitalNameSrNORegRedOption,gethospitalNameRegRedOption;
+  String gethospitalNameSrNOReg;
+      int getCenterOfficerNameSRNo;
   int genderSatelliteManagerApi; // 1 for Male, 2 for Female, 3 for Transgender
   int genderSatelliteCenterApi;
   bool satelliteCenterMenuListdisplay = false;
@@ -606,7 +607,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
    Future<List<DataCenterOfficeNameSatelliteCenter>> getSatelliteManager(int stateId, int districtid, String entryBy) async {
-    print("@@getSatelliteManager" + "1");
+    print("@@getSatelliteManager--check for officeerName" + "1");
     Response response1;
 
     // Check network availability
@@ -649,8 +650,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         ),
       );
 
-      print(
-          "@@getSatelliteManager--Api Response: ${response.toString()}");
+      print("@@getSatelliteManager--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
@@ -5971,7 +5971,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       // Check if the response is null before accessing properties
       if (response.status) {
         Utils.showToast(response.message.toString(), true);
-        print("@@Result message----Class: " + response.message);
+        print("@@Result message----satelliteManagerRegistration: " + response.message);
         EyeBankApplication = false;
         ngoDashboardclicks = false;
 
@@ -6523,13 +6523,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       onChanged: (userc) {
                                         setState(() {
                                           _dataGethospitalForDDL = userc;
-                                          gethospitalName = userc?.hName ?? '';
-                                          gethospitalNameSrNOReg =
+                                          gethospitalNameRegRedOption = userc?.hName ?? '';
+                                          gethospitalNameSrNORegRedOption =
                                               userc?.hRegID ?? '';
                                           print(
                                               'getMAnagerNAme Year: $gethospitalName');
                                           print(
-                                              'getmanagerSrNO: $gethospitalNameSrNOReg');
+                                              '@@gethospitalNameSrNORegRedOption: $gethospitalNameSrNORegRedOption');
                                         });
                                       },
                                       items: list.map((user) {
@@ -6584,7 +6584,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               }
 
                               List<DataCenterOfficeNameSatelliteCenter> list = snapshot.data;
-
+print('@@DataCenterOfficeNameSatelliteCenter'+list.toString());
                               // Check if list is empty and handle accordingly
                               if (list.isEmpty) {
                                 return Text('No managers available.');
@@ -6602,7 +6602,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Select Manager',
+                                      'Centre Officer Name*',
                                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(height: 10),
@@ -6610,11 +6610,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       value: _dataCenterOfficeNameSatelliteCenter,
                                       onChanged: (userc) {
                                         setState(() {
+                                          print('@@DataCenterOfficeNameSatelliteCenter'+_dataCenterOfficeNameSatelliteCenter.toString());
+                                          print('@@DataCenterOfficeNameSatelliteCenteruserc'+userc.srNo.toString());
+
+
                                           _dataCenterOfficeNameSatelliteCenter = userc;
                                           getCenterOfficerName = userc?.name ?? '';
                                           getCenterOfficerNameSRNo = userc?.srNo ?? '';
-                                          print('getCenterOfficerName Year: $getCenterOfficerName');
-                                          print('getCenterOfficerNameSRNo: $getCenterOfficerNameSRNo');
+
+                                          print('@@getCenterOfficerName Year: $getCenterOfficerName');
+                                          print('@@getCenterOfficerNameSRNo:' +getCenterOfficerNameSRNo.toString());
                                         });
                                       },
                                       items: list.map((user) {
@@ -6677,7 +6682,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 if (_formKeySatelliteCneterO.currentState
                                     .validate()) {
                                   // Process the form data
-                                  print("@@_satelliteCenter--Pending work here--");
+                                  print("@@satelliteCenterRegistationRed--Pending work here--");
                                   _satelliteCentersRegistrationRedOption();
                                 }
                               },
@@ -6706,26 +6711,25 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   Future<void> _satelliteCentersRegistrationRedOption() async {
+    print("@@satelliteCenterRegistationRed--Pending work here--11");
+
     if (_formKeySatelliteCneterO.currentState.validate()) {
 
       Utils.showProgressDialog1(context);
 
+      print("@@satelliteCenterRegistationRed--Pending work here--33");
       var response = await ApiController.satelliteCenterRegistation(
-        _userNameControllerStatelliteMangerReg.text.toString().trim(),
-        genderSatelliteManagerApi,
-        _mobileNumberControllerStatelliteMangerReg.text.toString().trim(),
-        _emailIdControllerStatelliteMangerReg.text.toString().trim(),
-        gethospitalNameSrNOReg.toString(),
-        _addressControllerStatelliteMangerReg.text.toString().trim(),
-        _designationControllerStatelliteMangerReg.text.toString().trim(),
+        _userSatelliteCentreNameRegCenter.text.toString().trim(),
+        gethospitalNameSrNORegRedOption,
+       getCenterOfficerNameSRNo,
+        _mobileNumberControllerStatelliteMangerRegCenter.text.toString().trim(),
+        _addressControllerStatelliteMangerRegCenter.text.toString().trim(),
+        _emailIdControllerStatelliteMangerRegCenter.text.toString().trim(),
         district_code_login,
         state_code_login,
         userId,
         int.parse(entryby),
         darpan_nos,
-        ngoNames,
-        stateNames,
-        districtNames,
       );
 
       Utils.hideProgressDialog1(context);
@@ -6734,21 +6738,25 @@ class _NgoDashboard extends State<NgoDashboard> {
       if (response.status) {
         Utils.showToast(response.message.toString(), true);
         print("@@Result message----Class: " + response.message);
-        EyeBankApplication = false;
-        ngoDashboardclicks = false;
+        setState(() {
+          // Update any relevant state variables here.
+          EyeBankApplication = false;
+          ngoDashboardclicks = false;
 
-        ManageUSerNGOHospt = false;
-        ngoCampManagerLists = false;
-        CampManagerRegisterartions = false;
-        CampManagerRegisterartionsEdit = false;
-        SatelliteManagerRegisterartionsEdit = false;
+          ManageUSerNGOHospt = false;
+          ngoCampManagerLists = false;
+          CampManagerRegisterartions = false;
+          CampManagerRegisterartionsEdit = false;
+          SatelliteManagerRegisterartionsEdit = false;
 
-        ngoScreeningCampListss = false;
-        AddScreeningCamps = false;
+          ngoScreeningCampListss = false;
+          AddScreeningCamps = false;
+          AddSatelliteCenterRedOptionFields=false;
+          // ngoSATELLITECENTREMANAGERLists = false;
+          AddSatelliteManagers = false;
+          ngoSATELLITECENTREMANAGERLists = true;
+        });
 
-        ngoSATELLITECENTREMANAGERLists = false;
-        AddSatelliteManagers = false;
-        ngoSATELLITECENTREMANAGERLists = true;
       } else {
         Utils.showToast(response.message.toString(), true);
       }
