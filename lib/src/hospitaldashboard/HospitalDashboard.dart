@@ -308,99 +308,116 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 ),
               ),
             ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
               child: Container(
-                color: Colors.grey,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Shown Captcha value to user
-                      Container(
-                          child: Text(
-                        'Login Type:',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          child: Text(
-                        'Hospital',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-
-                      Flexible(
-                        child: Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Container(
+                  color: Colors.white70,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // Shown Captcha value to user
+                        Container(
                             child: Text(
-                          '${userId}',
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w800),
-                        )),
-                      ),
+                              'Login Type:',
+                              style: TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                            child: Text(
+                              'Hospital',
+                              style: TextStyle(
+                                  color: Colors.red, fontWeight: FontWeight.w500),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
 
-                      //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Container(
-                color: Colors.grey,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Shown Captcha value to user
-                      Container(
-                          child: Text(
-                        'District:',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          child: Text(
-                        '${districtNames}',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                        Container(
+                            child: Text(
+                              'Login Id:',
+                              style: TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                            child: Text(
+                              '${userId}',
+                              style: TextStyle(
+                                  color: Colors.red, fontWeight: FontWeight.w500),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: Container(
+                            color: Colors.white70,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // Shown Captcha value to user
+                                  Container(
+                                      child: Text(
+                                        'District:',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                      child: Text(
+                                        '${districtNames}',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
 
-                      Container(
-                          child: Text(
-                        'State :',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          child: Text(
-                        '${stateNames}',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                    ],
+                                  Container(
+                                      child: Text(
+                                        'State :',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                      child: Text(
+                                        '${stateNames}',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                      ],
+                    ),
                   ),
                 ),
               ),
