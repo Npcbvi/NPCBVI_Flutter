@@ -252,7 +252,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                       SizedBox(width: 8.0),
                       Container(
-                        width: 300,
+                        width: 200,
                         child: new Theme(
                           data: Theme.of(context).copyWith(
                             canvasColor: Colors.blue.shade200,
