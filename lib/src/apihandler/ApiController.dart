@@ -64,6 +64,7 @@ import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/govtPrivateRegisterUSerId.dart';
+import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/HospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/GetSatelliteManagerById.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/SatelitteMangerDetails.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/ngoSatelliteManagerRegistration.dart';
@@ -4257,6 +4258,75 @@ class ApiController {
       print("@@Error during registration: " + e.toString());
       Utils.showToast(e.toString(), true);
       return null;
+    }
+  }
+
+  static Future<List<DataHospitalDashboard>>
+  hospitalDashboard(int userRoleType, int districtid, int stateid, String userId,
+      String financialYear, int organizationType, String ngoId) async {
+    print("@@hospitalDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.HospitalDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+
+        "userRoleType": userRoleType,
+        "districtId": districtid,
+        "stateId": stateid,
+        "userId": userId,
+        "financialYear": financialYear,
+        "organizationType": organizationType,
+        "ngoId": ngoId
+      });
+      print("@@hospitalDashboard--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@hospitalDashboard--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      HospitalDashboard data = HospitalDashboard.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
     }
   }
 }

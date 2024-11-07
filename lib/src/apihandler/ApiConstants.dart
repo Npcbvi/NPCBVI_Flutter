@@ -104,4 +104,6 @@ class ApiConstants {
   static String GetSatelliteManager = 'GetSatelliteManager';
 
   static String SetallightCenterRegistration = 'SetallightCenterRegistration';
+
+  static String HospitalDashboard = 'HospitalDashboard';
 }
