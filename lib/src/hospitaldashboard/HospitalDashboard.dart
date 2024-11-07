@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
@@ -17,7 +19,8 @@ class HospitalDashboard extends StatefulWidget {
 
 class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController fullnameControllers = new TextEditingController();
-  String _chosenValue, districtNames, userId, stateNames,fullnameController,role_id;
+  String _chosenValue, districtNames, userId, stateNames, fullnameController,
+      role_id;
   int status, district_code_login, state_code_login;
   final GlobalKey _dropdownKey = GlobalKey();
 
@@ -27,9 +30,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
-  bool hospitalDashboardclickDsiplay=false;
-  String  getYearNgoHopital, getfyidNgoHospital,_chosenValueMangeTwo;
+  bool hospitalDashboardclickDsiplay = false;
+  String getYearNgoHopital, getfyidNgoHospital, _chosenValueMangeTwo;
   bool hospitalDashboardDatas = false;
+  bool hospitalAddPatientData = false;
+  String registerationtypeRadio = 'Hospital Walk-in'; // Default gender
+  File _selectedImage;
+  String _errorMessage;
+  final ImagePicker _picker = ImagePicker();
+  final _formKeyhopsitalPersonalDetal = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -82,6 +91,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       return null;
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,7 +107,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         centerTitle: true,
         actions: [
           PopupMenuButton<int>(
-            itemBuilder: (context) => [
+            itemBuilder: (context) =>
+            [
               PopupMenuItem(
                 value: 1,
                 child: Row(
@@ -164,7 +175,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         setState(() {
                           print('@@dashboardviewReplace----display---');
                           _future = getDPM_ScreeningYear();
-                          hospitalDashboardclickDsiplay= true;
+                          hospitalDashboardclickDsiplay = true;
                         });
                       }),
                       SizedBox(width: 8.0),
@@ -221,7 +232,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   _chosenValueLOWVision = value;
                                   //  print('@@spinnerChooseValue--' + _chosenValue);
                                   if (_chosenValueLOWVision == "Cataract") {
-
                                     print('@@NGO--1' + _chosenValueLOWVision);
                                   } else if (_chosenValueLOWVision ==
                                       "Diabetic") {
@@ -237,16 +247,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                       "VR Surgery") {
                                     print('@@Childhood--' +
                                         _chosenValueLOWVision);
-
                                   } else if (_chosenValueLOWVision ==
                                       "Childhood Blindness") {
                                     print('@@Childhood--' +
                                         _chosenValueLOWVision);
-
-                                    } else {
-                                      print('@@Childhood--2' +
-                                          _chosenValueLOWVision);
-                                    }
+                                  } else {
+                                    print('@@Childhood--2' +
+                                        _chosenValueLOWVision);
+                                  }
                                 });
                               },
                             ),
@@ -298,7 +306,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   _chosenValueLOWVision = value;
                                   //  print('@@spinnerChooseValue--' + _chosenValue);
                                   if (_chosenValueLOWVision == "Cataract") {
-
                                     print('@@NGO--1' + _chosenValueLOWVision);
                                   } else if (_chosenValueLOWVision ==
                                       "Diabetic") {
@@ -314,12 +321,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                       "VR Surgery") {
                                     print('@@Childhood--' +
                                         _chosenValueLOWVision);
-
                                   } else if (_chosenValueLOWVision ==
                                       "Childhood Blindness") {
                                     print('@@Childhood--' +
                                         _chosenValueLOWVision);
-
                                   } else {
                                     print('@@Childhood--2' +
                                         _chosenValueLOWVision);
@@ -338,7 +343,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
               ),
             ),
             _buildUserInfo(),
-            hospitalDashboardclick()
+            hospitalDashboardclick(),
+            HospitalAddPatientData()
           ],
         ),
       ),
@@ -402,13 +408,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 _chosenValue = value ?? '';
                 if (_chosenValue == "Add Patient") {
                   print('@@NGO---Hospital--1 $_chosenValue');
+                  hospitalAddPatientData = true;
+                  hospitalDashboardclickDsiplay = false;
                   //_showPopupMenu();
                 } else if (_chosenValue == "Update Patient") {
                   print('@@Screening--1 $_chosenValue');
-                //  _showPopupMenuScreeningCamp();
+                  //  _showPopupMenuScreeningCamp();
                 } else if (_chosenValue == "Screening Entry") {
                   print('@@Sattelite--1 $_chosenValue');
-                //  _showPopupMenuSatteliteCenter();
+                  //  _showPopupMenuSatteliteCenter();
                 }
               });
             },
@@ -441,8 +449,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
-  Widget _buildUserInfoItem(
-      String label, String value, Color labelColor, Color valueColor) {
+  Widget _buildUserInfoItem(String label, String value, Color labelColor,
+      Color valueColor) {
     return Row(
       children: [
         Text(label,
@@ -454,6 +462,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ],
     );
   }
+
   Widget hospitalDashboardclick() {
     return Row(
       children: [
@@ -561,11 +570,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       setState(() {
                         // Update ngoDashboardDatas based on dropDownTwoSelcted value
                         // if (dropDownTwoSelcted == 6) {
-                        if(getYearNgoHopital==null){
-                          Utils.showToast("Please Select financialYear !", false);
-                        }else{
+                        if (getYearNgoHopital == null) {
+                          Utils.showToast(
+                              "Please Select financialYear !", false);
+                        } else {
                           hospitalDashboardDatas = true;
-
                         }
                         /*   } else {
                           ngoDashboardDatas = false;
@@ -575,91 +584,91 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     child: Text('Get Data'),
                   ),
                 ),
-                  Visibility(
-                    visible: hospitalDashboardDatas,
-                    child: Column(
-                      children: [
-                        Container(
-                          color: Colors.blue,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Total number of patients (Hospital)',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Horizontal Scrolling Header Row
-
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                Visibility(
+                  visible: hospitalDashboardDatas,
+                  child: Column(
+                    children: [
+                      Container(
+                        color: Colors.blue,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // Header Row
-                              Row(
-                                children: [
-                                  _buildHeaderCell('Disease Type'),
-                                  _buildHeaderCell('Registered'),
-                                  _buildHeaderCell('Operated'),
-                                ],
-                              ),
-                              Divider(color: Colors.blue, height: 1.0),
-                              // Data Rows
-                              FutureBuilder<List<DataHospitalDashboard>>(
-                                future: ApiController.hospitalDashboard(
-                                    int.parse(role_id),
-                                    district_code_login,
-                                    state_code_login,
-                                    userId,
-                                    getYearNgoHopital,
-                                    0,
-                                    "0"),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return Center(
-                                        child: CircularProgressIndicator());
-                                  } else if (snapshot.hasError) {
-                                    return Utils.getEmptyView(
-                                        "Error: ${snapshot.error}");
-                                  } else if (!snapshot.hasData ||
-                                      snapshot.data.isEmpty) {
-                                    return Utils.getEmptyView("No data found");
-                                  } else {
-                                    List<DataHospitalDashboard> ddata =
-                                        snapshot.data;
-
-                                    return Column(
-                                      children: ddata.map((offer) {
-                                        return Row(
-                                          mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                          children: [
-                                            _buildDataCell(offer.status),
-                                            _buildDataCellblue(offer.registered),
-                                            _buildDataCellblue(offer.operated),
-                                          ],
-                                        );
-                                      }).toList(),
-                                    );
-                                  }
-                                },
+                              Text(
+                                'Total number of patients (Hospital)',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w800,
+                                ),
                               ),
                             ],
                           ),
-                        )
-                      ],
-                    ),
+                        ),
+                      ),
+                      // Horizontal Scrolling Header Row
+
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Header Row
+                            Row(
+                              children: [
+                                _buildHeaderCell('Disease Type'),
+                                _buildHeaderCell('Registered'),
+                                _buildHeaderCell('Operated'),
+                              ],
+                            ),
+                            Divider(color: Colors.blue, height: 1.0),
+                            // Data Rows
+                            FutureBuilder<List<DataHospitalDashboard>>(
+                              future: ApiController.hospitalDashboard(
+                                  int.parse(role_id),
+                                  district_code_login,
+                                  state_code_login,
+                                  userId,
+                                  getYearNgoHopital,
+                                  0,
+                                  "0"),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                } else if (snapshot.hasError) {
+                                  return Utils.getEmptyView(
+                                      "Error: ${snapshot.error}");
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data.isEmpty) {
+                                  return Utils.getEmptyView("No data found");
+                                } else {
+                                  List<DataHospitalDashboard> ddata =
+                                      snapshot.data;
+
+                                  return Column(
+                                    children: ddata.map((offer) {
+                                      return Row(
+                                        mainAxisAlignment:
+                                        MainAxisAlignment.start,
+                                        children: [
+                                          _buildDataCell(offer.status),
+                                          _buildDataCellblue(offer.registered),
+                                          _buildDataCellblue(offer.operated),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
                   ),
+                ),
 
               ],
             ),
@@ -668,6 +677,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ],
     );
   }
+
   Widget buildInfoContainer(String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -758,6 +768,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }
+
   Widget _buildDataCellblue(String text) {
     return Container(
       height: 80,
@@ -829,6 +840,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }
+
   Widget buildDropdownHospitalType() {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -870,13 +882,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       _chosenValueMangeTwo = value ?? 'All';
                       switch (_chosenValueMangeTwo) {
                         case 'Hospitals':
-
                           break;
 
 
-
                         default:
-
                           break;
                       }
                     });
@@ -887,5 +896,317 @@ class _HospitalDashboard extends State<HospitalDashboard> {
             ),
           ),
         ));
+  }
+
+  Widget HospitalAddPatientData() {
+    return Column(
+      children: [
+        Visibility(
+          visible: hospitalAddPatientData,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Patient Registration',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Handle the tap event here
+                              print('@@Today Registered Patient');
+
+                              // Update state and perform actions
+                              setState(() {
+                                // Update the future values to fetch data
+
+                              });
+                            },
+                            child: Text(
+                              'Today Registered Patient(s) : 0',
+                              style: TextStyle(
+                                color: Colors.white, // Text color
+                                fontWeight: FontWeight.w800, // Text weight
+                              ),
+                              overflow:
+                              TextOverflow.ellipsis, // Handle text overflow
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+
+              // Gender Selection
+              SizedBox(height: 16.0),
+              Text(
+                'Registration Type',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Radio<String>(
+                      value: 'Screening Camp',
+                      groupValue: registerationtypeRadio,
+                      onChanged: (value) {
+                        setState(() {
+                          registerationtypeRadio = value;
+                        });
+                      },
+                    ),
+                    Text('Screening Camp'),
+                    SizedBox(width: 10),
+                    Radio<String>(
+                      value: 'Satellite Centre',
+                      groupValue: registerationtypeRadio,
+                      onChanged: (value) {
+                        setState(() {
+                          registerationtypeRadio = value;
+                        });
+                      },
+                    ),
+                    Text('Satellite Centre'),
+                    SizedBox(width: 10),
+                    Radio<String>(
+                      value: 'Hospital Walk-in',
+                      groupValue: registerationtypeRadio,
+                      onChanged: (value) {
+                        setState(() {
+                          registerationtypeRadio = value;
+                        });
+                      },
+                    ),
+                    Text('Hospital Walk-in'),
+                  ],
+
+                ),
+              ),
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Personal Details',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKeyhopsitalPersonalDetal,
+                  child: Column(
+                    children: [
+                      // Username Field
+                      TextFormField(
+                       // controller: _userNameControllerStatelliteMangerReg,
+                        // Attach controller
+                        decoration: InputDecoration(
+                          labelText: 'User Name*',
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your name';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 16.0),
+
+                      // Gender Selection
+                      Text('Dependency type *'),
+                      Row(
+                        children: [
+                          Radio<int>(
+                            value: 1,
+                           // groupValue: genderSatelliteManagerApi,
+                            onChanged: (value) {
+                              setState(() {
+                              //  genderSatelliteManagerApi = value;
+                              });
+                            },
+                          ),
+                          Text('Self'),
+                          Radio<int>(
+                            value: 2,
+                           // groupValue: genderSatelliteManagerApi,
+                            onChanged: (value) {
+                              setState(() {
+                             //   genderSatelliteManagerApi = value;
+                              });
+                            },
+                          ),
+                          Text('Dependent'),
+                          Radio<int>(
+                            value: 3,
+                           // groupValue: genderSatelliteManagerApi,
+                            onChanged: (value) {
+                              setState(() {
+                               // genderSatelliteManagerApi = value;
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.0),
+
+                      // Mobile Number Field
+                      TextFormField(
+                       // controller: _mobileNumberControllerStatelliteMangerReg,
+                        // Attach controller
+                        decoration: InputDecoration(
+                          labelText: 'Mobile No.*',
+                        ),
+                        keyboardType: TextInputType.phone,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your mobile number';
+                          } else if (value.length != 10) {
+                            return 'Please enter a valid 10-digit mobile number';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 16.0),
+
+                      // Email ID Field
+                      TextFormField(
+                       // controller: _emailIdControllerStatelliteMangerReg,
+                        // Attach controller
+                        decoration: InputDecoration(
+                          labelText: 'Email ID*',
+                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                              .hasMatch(value)) {
+                            return 'Please enter a valid email address';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 16.0),
+
+                      SizedBox(height: 16.0),
+                      // Address Field
+                      TextFormField(
+                     //   controller: _addressControllerStatelliteMangerReg,
+                        // Attach controller
+                        decoration: InputDecoration(
+                          labelText: 'Address*',
+                        ),
+                        maxLines: 3,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your address';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 16.0),
+
+                      // Designation Field
+                      TextFormField(
+                       // controller: _designationControllerStatelliteMangerReg,
+                        // Attach controller
+                        decoration: InputDecoration(
+                          labelText: 'Designation',
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+
+                      // Submit and Cancel Buttons
+                    ],
+                  ),
+                ),
+              ),
+              // Combined Horizontal Scrolling for Header and Data
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _pickImage() async {
+    try {
+      // Pick an image from the gallery
+      final File pickedFile = await ImagePicker.pickImage(
+          source: ImageSource.gallery);
+
+      if (pickedFile != null) {
+        File imageFile = File(pickedFile.path);
+
+        // Check the file size (200 KB max)
+        int fileSize = await imageFile.length();
+        if (fileSize > 200 * 1024) {
+          setState(() {
+            _errorMessage = 'Image size exceeds 200 KB';
+          });
+          return;
+        }
+
+        // Check the file type (only jpg and png allowed)
+        String fileExtension = pickedFile.path
+            .split('.')
+            .last
+            .toLowerCase();
+        if (fileExtension != 'jpg' && fileExtension != 'png') {
+          setState(() {
+            _errorMessage = 'Only JPG and PNG formats are allowed';
+          });
+          return;
+        }
+
+        // If the image is valid, update the state
+        setState(() {
+          _selectedImage = imageFile;
+          _errorMessage = null;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Error picking image: $e';
+      });
+    }
   }
 }
