@@ -40,6 +40,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   final ImagePicker _picker = ImagePicker();
   final _formKeyhopsitalPersonalDetal = GlobalKey<FormState>();
 
+  TextEditingController _firstNamePatientDetail =
+  TextEditingController();
+  TextEditingController _lastNamePatientDetail =
+  TextEditingController();
+  TextEditingController _AgePatientDetail =
+  TextEditingController();
+  String gender = 'Male'; // Default gender
+  var dependencyTypeRadio;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -899,273 +908,224 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   }
 
   Widget HospitalAddPatientData() {
-    return Column(
-      children: [
-        Visibility(
-          visible: hospitalAddPatientData,
-          child: Column(
-            children: [
-              Container(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Patient Registration',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              // Handle the tap event here
-                              print('@@Today Registered Patient');
 
-                              // Update state and perform actions
-                              setState(() {
-                                // Update the future values to fetch data
-
-                              });
-                            },
-                            child: Text(
-                              'Today Registered Patient(s) : 0',
-                              style: TextStyle(
-                                color: Colors.white, // Text color
-                                fontWeight: FontWeight.w800, // Text weight
-                              ),
-                              overflow:
-                              TextOverflow.ellipsis, // Handle text overflow
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-
-              // Gender Selection
-              SizedBox(height: 16.0),
-              Text(
-                'Registration Type',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    Radio<String>(
-                      value: 'Screening Camp',
-                      groupValue: registerationtypeRadio,
-                      onChanged: (value) {
-                        setState(() {
-                          registerationtypeRadio = value;
-                        });
-                      },
-                    ),
-                    Text('Screening Camp'),
-                    SizedBox(width: 10),
-                    Radio<String>(
-                      value: 'Satellite Centre',
-                      groupValue: registerationtypeRadio,
-                      onChanged: (value) {
-                        setState(() {
-                          registerationtypeRadio = value;
-                        });
-                      },
-                    ),
-                    Text('Satellite Centre'),
-                    SizedBox(width: 10),
-                    Radio<String>(
-                      value: 'Hospital Walk-in',
-                      groupValue: registerationtypeRadio,
-                      onChanged: (value) {
-                        setState(() {
-                          registerationtypeRadio = value;
-                        });
-                      },
-                    ),
-                    Text('Hospital Walk-in'),
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Visibility(
+            visible: hospitalAddPatientData,
+            child: Column(
+              children: [
+                _sectionHeader('Patient Registration'),
+                _patientInfoRow(),
+                SizedBox(height: 16.0),
+                _sectionTitle('Registration Type'),
+                _radioButtonRow(
+                  options: [
+                    'Screening Camp',
+                    'Satellite Centre',
+                    'Hospital Walk-in'
                   ],
-
+                  groupValue: registerationtypeRadio,
+                  onChanged: (value) {
+                    setState(() {
+                      registerationtypeRadio = value;
+                    });
+                  },
                 ),
-              ),
-              Container(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Personal Details',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                _sectionHeader('Personal Details'),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    key: _formKeyhopsitalPersonalDetal,
+                    child: Column(
+                      children: [
+                        _textInputField(
+                          controller: _firstNamePatientDetail,
+                          labelText: 'First Name *',
+                          validator: (value) =>
+                          value == null || value.isEmpty
+                              ? 'Please enter First name'
+                              : null,
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 16.0),
+                        _sectionTitle('Dependency Type'),
+                        _radioButtonRow(
+                          options: ['Self', 'Dependent'],
+                          groupValue: dependencyTypeRadio,
+                          onChanged: (value) {
+                            setState(() {
+                              dependencyTypeRadio = value;
+                            });
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        _textInputField(
+                          controller: _lastNamePatientDetail,
+                          labelText: 'Last Name *',
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number';
+                            } else if (value.length != 10) {
+                              return 'Please enter a valid 10-digit mobile number';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        _textInputField(
+                          controller: _AgePatientDetail,
+                          labelText: 'Age *',
+                          keyboardType: TextInputType.number,
+                        ),
+                        _sectionTitle('Gender *'),
+                        _radioButtonRow(
+                          options: ['Male', 'Female', 'Transgender'],
+                          groupValue: gender,
+                          onChanged: (value) {
+                            setState(() {
+                              gender = value;
+                            });
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKeyhopsitalPersonalDetal,
-                  child: Column(
-                    children: [
-                      // Username Field
-                      TextFormField(
-                       // controller: _userNameControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          labelText: 'User Name*',
+                _sectionHeader('Mobile Number Details'),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        _textInputField(
+                         // controller: _mobileNumberDetails,
+                          labelText: 'Mobile No *',
+                          keyboardType: TextInputType.phone,
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your name';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 16.0),
-
-                      // Gender Selection
-                      Text('Dependency type *'),
-                      Row(
-                        children: [
-                          Radio<int>(
-                            value: 1,
-                           // groupValue: genderSatelliteManagerApi,
-                            onChanged: (value) {
-                              setState(() {
-                              //  genderSatelliteManagerApi = value;
-                              });
-                            },
-                          ),
-                          Text('Self'),
-                          Radio<int>(
-                            value: 2,
-                           // groupValue: genderSatelliteManagerApi,
-                            onChanged: (value) {
-                              setState(() {
-                             //   genderSatelliteManagerApi = value;
-                              });
-                            },
-                          ),
-                          Text('Dependent'),
-                          Radio<int>(
-                            value: 3,
-                           // groupValue: genderSatelliteManagerApi,
-                            onChanged: (value) {
-                              setState(() {
-                               // genderSatelliteManagerApi = value;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 16.0),
-
-                      // Mobile Number Field
-                      TextFormField(
-                       // controller: _mobileNumberControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          labelText: 'Mobile No.*',
-                        ),
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your mobile number';
-                          } else if (value.length != 10) {
-                            return 'Please enter a valid 10-digit mobile number';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 16.0),
-
-                      // Email ID Field
-                      TextFormField(
-                       // controller: _emailIdControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          labelText: 'Email ID*',
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                              .hasMatch(value)) {
-                            return 'Please enter a valid email address';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 16.0),
-
-                      SizedBox(height: 16.0),
-                      // Address Field
-                      TextFormField(
-                     //   controller: _addressControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          labelText: 'Address*',
-                        ),
-                        maxLines: 3,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your address';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 16.0),
-
-                      // Designation Field
-                      TextFormField(
-                       // controller: _designationControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          labelText: 'Designation',
-                        ),
-                      ),
-                      SizedBox(height: 16.0),
-
-                      // Submit and Cancel Buttons
-                    ],
+                        SizedBox(height: 16.0),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              // Combined Horizontal Scrolling for Header and Data
-            ],
+              ],
+            ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionHeader(String title) {
+    return Container(
+      color: Colors.blue,
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            child: Align(
+              alignment: Alignment.center,
+              child: Text(
+                title,
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.w800),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _sectionTitle(String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16.0),
+        Text(
+          title,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
+        SizedBox(height: 8.0),
       ],
     );
   }
+
+  Widget _radioButtonRow({
+     List<String> options,
+     String groupValue,
+     Function(String) onChanged,
+  }) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: options
+            .map((option) =>
+            Row(
+              children: [
+                Radio<String>(
+                  value: option,
+                  groupValue: groupValue,
+                  onChanged: onChanged,
+                ),
+                Text(option),
+                SizedBox(width: 10),
+              ],
+            ))
+            .toList(),
+      ),
+    );
+  }
+
+  Widget _textInputField({
+     TextEditingController controller,
+     String labelText,
+    TextInputType keyboardType = TextInputType.text,
+    String Function(String) validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(labelText: labelText),
+      keyboardType: keyboardType,
+      validator: validator,
+    );
+  }
+
+  Widget _patientInfoRow() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Flexible(
+            child: Align(
+              alignment: Alignment.centerRight,
+              child: GestureDetector(
+                onTap: () {
+                  // Handle the tap event here
+                  print('@@Today Registered Patient');
+                  setState(() {
+                    // Update future values to fetch data
+                  });
+                },
+                child: Text(
+                  'Today Registered Patient(s) : 0',
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w800),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   Future<void> _pickImage() async {
     try {
