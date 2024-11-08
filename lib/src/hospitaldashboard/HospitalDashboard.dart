@@ -12,6 +12,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+
 class HospitalDashboard extends StatefulWidget {
   @override
   _HospitalDashboard createState() => _HospitalDashboard();
@@ -19,7 +20,11 @@ class HospitalDashboard extends StatefulWidget {
 
 class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController fullnameControllers = new TextEditingController();
-  String _chosenValue, districtNames, userId, stateNames, fullnameController,
+  String _chosenValue,
+      districtNames,
+      userId,
+      stateNames,
+      fullnameController,
       role_id;
   int status, district_code_login, state_code_login;
   final GlobalKey _dropdownKey = GlobalKey();
@@ -36,18 +41,23 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   bool hospitalAddPatientData = false;
   String registerationtypeRadio = 'Hospital Walk-in'; // Default gender
   File _selectedImage;
-  String _errorMessage;
+  String _errorMessage, VoterIDtype;
   final ImagePicker _picker = ImagePicker();
   final _formKeyhopsitalPersonalDetal = GlobalKey<FormState>();
 
-  TextEditingController _firstNamePatientDetail =
-  TextEditingController();
-  TextEditingController _lastNamePatientDetail =
-  TextEditingController();
-  TextEditingController _AgePatientDetail =
-  TextEditingController();
+  TextEditingController _firstNamePatientDetail = TextEditingController();
+  TextEditingController _lastNamePatientDetail = TextEditingController();
+  TextEditingController _AgePatientDetail = TextEditingController();
   String gender = 'Male'; // Default gender
   var dependencyTypeRadio;
+  int voterIDTypeValue = 0;
+  bool showVoterIDField = false,showDrivingLicenseField=false,showPassport=false,showRationCard=false,showPanCard=false,showNotAvailble=false;
+  TextEditingController _voterIDNumber = TextEditingController();
+  TextEditingController _drivingLicenseNumber = TextEditingController();
+  TextEditingController _passport = TextEditingController();
+  TextEditingController _rationCard = TextEditingController();
+  TextEditingController _panCard = TextEditingController();
+  TextEditingController _notAvalble = TextEditingController();
 
   @override
   void initState() {
@@ -92,7 +102,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-      GetDPM_ScreeningYear.fromJson(json);
+          GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -116,8 +126,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         centerTitle: true,
         actions: [
           PopupMenuButton<int>(
-            itemBuilder: (context) =>
-            [
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: 1,
                 child: Row(
@@ -155,13 +164,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
             onSelected: (value) {
               switch (value) {
                 case 1:
-                //  _showChangePasswordDialog();
+                  //  _showChangePasswordDialog();
                   break;
                 case 2:
-                // Implement User Manual action
+                  // Implement User Manual action
                   break;
                 case 3:
-                // Handle Logout
+                  // Handle Logout
                   break;
               }
             },
@@ -192,10 +201,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       SizedBox(width: 8.0),
                       _buildNavigationButton('Add PNJA', () {
                         print('@@Add PNJA');
-                        setState(() {
-
-
-                        });
+                        setState(() {});
                       }),
                       SizedBox(width: 8.0),
                       Container(
@@ -244,14 +250,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                     print('@@NGO--1' + _chosenValueLOWVision);
                                   } else if (_chosenValueLOWVision ==
                                       "Diabetic") {
-
-
                                   } else if (_chosenValueLOWVision ==
                                       "Glaucoma") {
-
                                   } else if (_chosenValueLOWVision ==
                                       "Corneal Blindness") {
-
                                   } else if (_chosenValueLOWVision ==
                                       "VR Surgery") {
                                     print('@@Childhood--' +
@@ -270,7 +272,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         ),
                       ),
-
                       SizedBox(width: 8.0),
                       Container(
                         width: 170.0,
@@ -318,14 +319,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                     print('@@NGO--1' + _chosenValueLOWVision);
                                   } else if (_chosenValueLOWVision ==
                                       "Diabetic") {
-
-
                                   } else if (_chosenValueLOWVision ==
                                       "Glaucoma") {
-
                                   } else if (_chosenValueLOWVision ==
                                       "Corneal Blindness") {
-
                                   } else if (_chosenValueLOWVision ==
                                       "VR Surgery") {
                                     print('@@Childhood--' +
@@ -344,8 +341,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         ),
                       ),
-
-
                     ],
                   ),
                 ),
@@ -458,8 +453,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
-  Widget _buildUserInfoItem(String label, String value, Color labelColor,
-      Color valueColor) {
+  Widget _buildUserInfoItem(
+      String label, String value, Color labelColor, Color valueColor) {
     return Row(
       children: [
         Text(label,
@@ -494,7 +489,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       }
 
                       List<DataGetDPM_ScreeningYear> list =
-                      snapshot.data.toList();
+                          snapshot.data.toList();
 
                       // Check if _selectedUser is null or not part of the list anymore
                       if (_selectedUser == null ||
@@ -561,7 +556,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     },
                   ),
                 ),
-
                 SizedBox(height: 10),
                 buildInfoContainer(stateNames),
                 SizedBox(height: 10),
@@ -660,7 +654,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                     children: ddata.map((offer) {
                                       return Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                            MainAxisAlignment.start,
                                         children: [
                                           _buildDataCell(offer.status),
                                           _buildDataCellblue(offer.registered),
@@ -678,7 +672,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),
@@ -708,7 +701,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }
-
 
   Widget _buildHeaderCellSrNo(String text) {
     return Container(
@@ -869,7 +861,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Colors.blueAccent, width: 2.0),
+                          BorderSide(color: Colors.blueAccent, width: 2.0),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     hintText: 'Hospitals',
@@ -893,7 +885,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         case 'Hospitals':
                           break;
 
-
                         default:
                           break;
                       }
@@ -908,7 +899,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   }
 
   Widget HospitalAddPatientData() {
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -940,11 +930,119 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     key: _formKeyhopsitalPersonalDetal,
                     child: Column(
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String>(
+                                isExpanded: true,
+                                focusColor: Colors.white,
+                                value: VoterIDtype,
+                                style: TextStyle(color: Colors.white),
+                                iconEnabledColor: Colors.white,
+                                items: <String>[
+                                  'Voter ID',
+                                  'Driving License',
+                                  'Passport',
+                                  'Ration Card',
+                                  'Pan Card',
+                                  'Not Available',
+                                ].map<DropdownMenuItem<String>>((String type) {
+                                  return DropdownMenuItem<String>(
+                                    value: type,
+                                    child: Text(
+                                      type,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  );
+                                }).toList(),
+                                hint: Text(
+                                  "Select Type",
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+                                ),
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    VoterIDtype = newValue;
+                                    showVoterIDField = VoterIDtype == "Voter ID"; // Show field if "Voter ID" is selected
+                                    showDrivingLicenseField = VoterIDtype == "Driving License";
+                                    showPassport = VoterIDtype == "Passport";
+                                    showRationCard= VoterIDtype == "Ration Card";
+                                    showPanCard= VoterIDtype == "Pan Card";
+
+                                    showNotAvailble= VoterIDtype == "Not Available";
+
+
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        if (showVoterIDField)
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: _textInputField(
+                              controller: _voterIDNumber,
+                              labelText: "Voter ID No.",
+                              validator: (value) => value == null || value.isEmpty
+                                  ? 'Please enter Voter ID No.'
+                                  : null,
+                            ),
+                          ),
+                        if (showDrivingLicenseField)
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: _textInputField(
+                              controller: _drivingLicenseNumber,
+                              labelText: "Driving License No.",
+                              validator: (value) => value == null || value.isEmpty
+                                  ? 'Please enter Driving License No.'
+                                  : null,
+                            ),
+                          ),
+                        if (showPassport)
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: _textInputField(
+                              controller: _passport,
+                              labelText: "Passport No.",
+                              validator: (value) => value == null || value.isEmpty
+                                  ? 'Please enter Passport No.'
+                                  : null,
+                            ),
+                          ),
+                        if (showRationCard)
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: _textInputField(
+                              controller: _rationCard,
+                              labelText: "Ration Card No.",
+                              validator: (value) => value == null || value.isEmpty
+                                  ? 'Please enter Ration Card No.'
+                                  : null,
+                            ),
+                          ),
+                        if (showPanCard)
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: _textInputField(
+                              controller: _panCard,
+                              labelText: "Pan Card No.",
+                              validator: (value) => value == null || value.isEmpty
+                                  ? 'Please enter Pan Card No.'
+                                  : null,
+                            ),
+                          ),
+                        if (showNotAvailble)
                         _textInputField(
                           controller: _firstNamePatientDetail,
                           labelText: 'First Name *',
-                          validator: (value) =>
-                          value == null || value.isEmpty
+                          validator: (value) => value == null || value.isEmpty
                               ? 'Please enter First name'
                               : null,
                         ),
@@ -1001,7 +1099,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     child: Column(
                       children: [
                         _textInputField(
-                         // controller: _mobileNumberDetails,
+                          // controller: _mobileNumberDetails,
                           labelText: 'Mobile No *',
                           keyboardType: TextInputType.phone,
                         ),
@@ -1030,8 +1128,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
               alignment: Alignment.center,
               child: Text(
                 title,
-                style: TextStyle(
-                    color: Colors.white, fontWeight: FontWeight.w800),
+                style:
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -1056,34 +1154,33 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   }
 
   Widget _radioButtonRow({
-     List<String> options,
-     String groupValue,
-     Function(String) onChanged,
+    List<String> options,
+    String groupValue,
+    Function(String) onChanged,
   }) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: options
-            .map((option) =>
-            Row(
-              children: [
-                Radio<String>(
-                  value: option,
-                  groupValue: groupValue,
-                  onChanged: onChanged,
-                ),
-                Text(option),
-                SizedBox(width: 10),
-              ],
-            ))
+            .map((option) => Row(
+                  children: [
+                    Radio<String>(
+                      value: option,
+                      groupValue: groupValue,
+                      onChanged: onChanged,
+                    ),
+                    Text(option),
+                    SizedBox(width: 10),
+                  ],
+                ))
             .toList(),
       ),
     );
   }
 
   Widget _textInputField({
-     TextEditingController controller,
-     String labelText,
+    TextEditingController controller,
+    String labelText,
     TextInputType keyboardType = TextInputType.text,
     String Function(String) validator,
   }) {
@@ -1126,12 +1223,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
-
   Future<void> _pickImage() async {
     try {
       // Pick an image from the gallery
-      final File pickedFile = await ImagePicker.pickImage(
-          source: ImageSource.gallery);
+      final File pickedFile =
+          await ImagePicker.pickImage(source: ImageSource.gallery);
 
       if (pickedFile != null) {
         File imageFile = File(pickedFile.path);
@@ -1146,10 +1242,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         }
 
         // Check the file type (only jpg and png allowed)
-        String fileExtension = pickedFile.path
-            .split('.')
-            .last
-            .toLowerCase();
+        String fileExtension = pickedFile.path.split('.').last.toLowerCase();
         if (fileExtension != 'jpg' && fileExtension != 'png') {
           setState(() {
             _errorMessage = 'Only JPG and PNG formats are allowed';
