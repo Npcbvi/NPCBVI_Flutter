@@ -27,7 +27,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String randomString = "";
   bool isVerified = false;
-
   TextEditingController _loginIdController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _captchaController = TextEditingController();
@@ -153,18 +152,23 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
         contentPadding: EdgeInsets.only(top: 10.0),
-        title: Text("Full-Description", style: TextStyle(fontSize: 24.0)),
+        title: Text("Full Description",  style: TextStyle(
+          color: Colors.blue,
+          fontWeight: FontWeight.bold,  // Makes text bold
+        ),
+        ),
         content: Container(
           height: 400,
           child: SingleChildScrollView(
             padding: EdgeInsets.all(8.0),
             child: Text(
               'In order to login for the first time into the new web application it is necessary to register and upload certain documents and information as detailed below. Hence keep the scanned copy of these documents handy before starting the process of registration.\n\n'
-              'CHECKLIST FOR REGISTRATION\n\nFor NGOs:\nDarpan Number is a must for registration. If you haven\'t registered on the Darpan portal, Click here.\n\n'
-              'Equipment details of your hospital need to be filled once you log in.\nDocuments Checklist:\n- Society/Charitable public trust registration certificate\n- Minimum 3 years of experience certificate\n- Bank Details like Account No., Bank IFSC Code, and Bank Name.\n\n'
-              'For Private Practitioners/Private Medical Colleges/Others:\nEquipment details of your hospital need to be filled.\nDocuments Checklist:\n- MS Ophthalmology Degree\n- Two years of Experience post PG\n\n'
+              'CHECKLIST FOR REGISTRATION\n\n• For NGOs:\n • Darpan Number is a must for registration. If you haven\'t registered on the Darpan portal. \n\n'
+              '• Equipment details of your hospital need to be filled once you log in.\n• Documents Checklist:\n i. Society/Charitable public trust registration certificate\n ii. Minimum 3 years of experience certificate\n • Bank Details like Account No., Bank IFSC Code, and Bank Name.\n\n'
+              'For Private Practitioners/Private Medical Colleges/Others:\n• Equipment details of your hospital need to be filled.\nDocuments Checklist:\n i. MS Ophthalmology Degree\n ii. Two years of Experience post PG\n\n '
               'If there is any problem in the registration, please contact: helpdesk[dot]npcb[at]nic[dot]in.',
-              style: TextStyle(fontSize: 12),
+              style: TextStyle(fontSize: 14,
+                fontWeight: FontWeight.bold,),
             ),
           ),
         ),
@@ -238,8 +242,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                   ),
                   TextSpan(
-                    text: '\nRead more.',
-                    style: TextStyle(color: Colors.blue),
+                    text: '\nRead more',
+                    style: TextStyle(color: Colors.blue,
+                      fontWeight: FontWeight.bold),
                     recognizer: TapGestureRecognizer()..onTap = showDataAlert,
                   ),
                 ],
@@ -268,7 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderRadius: BorderRadius.circular(8.0)),
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -303,7 +308,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 });
               },
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 isVerified = _captchaController.text == randomString;
@@ -317,7 +322,8 @@ class _LoginScreenState extends State<LoginScreen> {
               style: ElevatedButton.styleFrom(primary: Colors.blue),
             ),
             SizedBox(height: 10),
-            InkWell(
+          //comment code for next sprint
+          /*  InkWell(
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()));
@@ -346,7 +352,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-            ),
+            ),*/
+            //comment code for next sprint
             MaterialButton(
               onPressed: () {
                 Navigator.push(
