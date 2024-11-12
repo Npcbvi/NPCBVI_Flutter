@@ -224,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'In order to login for the first time into the new web application it is necessary to'
                         ' register and upload certain documents and information as detailed below. Hence keep'
                         ' the scanned copy of these documents handy before starting the process of registration.\n\n'
-                        'CHECKLIST FOR REGISTRATION\n\nFor NGOs\nDarpan Number is must for registration. If you haven\'t registered on Darpan portal.',
+                        'CHECKLIST FOR REGISTRATION\n\n • For NGOs\nDarpan Number is must for registration. If you haven\'t registered on Darpan portal.',
                   ),
                   TextSpan(
                     text: ' Click here.',

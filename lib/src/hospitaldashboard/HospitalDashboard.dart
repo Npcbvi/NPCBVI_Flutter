@@ -58,7 +58,46 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController _rationCard = TextEditingController();
   TextEditingController _panCard = TextEditingController();
   TextEditingController _notAvalble = TextEditingController();
+  File _image;
 
+  Future<void> _showPickerDialog() async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: Icon(Icons.photo_library),
+                title: Text('Gallery'),
+                onTap: () {
+                  _pickImage(ImageSource.gallery);
+                  Navigator.of(context).pop();
+                },
+              ),
+              ListTile(
+                leading: Icon(Icons.camera_alt),
+                title: Text('Camera'),
+                onTap: () {
+                  _pickImage(ImageSource.camera);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    final pickedImage = await ImagePicker.pickImage(source: source);
+    if (pickedImage != null) {
+      setState(() {
+        _image = pickedImage;
+      });
+    }
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -923,6 +962,25 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     });
                   },
                 ),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      ElevatedButton(
+                        onPressed: _showPickerDialog,
+                        child: Text("Select Image"),
+                      ),
+                      SizedBox(height: 20),
+                      if (_image != null)
+                        Image.file(
+                          File(_image.path),
+                          height: 200,
+                          width: 200,
+                          fit: BoxFit.cover,
+                        ),
+                    ],
+                  ),
+                ),
                 _sectionHeader('Personal Details'),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -1223,43 +1281,4 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
-  Future<void> _pickImage() async {
-    try {
-      // Pick an image from the gallery
-      final File pickedFile =
-          await ImagePicker.pickImage(source: ImageSource.gallery);
-
-      if (pickedFile != null) {
-        File imageFile = File(pickedFile.path);
-
-        // Check the file size (200 KB max)
-        int fileSize = await imageFile.length();
-        if (fileSize > 200 * 1024) {
-          setState(() {
-            _errorMessage = 'Image size exceeds 200 KB';
-          });
-          return;
-        }
-
-        // Check the file type (only jpg and png allowed)
-        String fileExtension = pickedFile.path.split('.').last.toLowerCase();
-        if (fileExtension != 'jpg' && fileExtension != 'png') {
-          setState(() {
-            _errorMessage = 'Only JPG and PNG formats are allowed';
-          });
-          return;
-        }
-
-        // If the image is valid, update the state
-        setState(() {
-          _selectedImage = imageFile;
-          _errorMessage = null;
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'Error picking image: $e';
-      });
-    }
-  }
 }
