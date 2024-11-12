@@ -81,7 +81,7 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
           children: <Widget>[
             SizedBox(
               width: double.infinity,
-              height: 40,
+              height: 50,
               child: Expanded(
                   child: Marquee(
                 text: 'NGO Darpan number is mandatory for registration.',
@@ -140,17 +140,22 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                         child: new Text(
                           AppConstant.entertxForgotPssword,
                           style: new TextStyle(
-                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
                         )),
+                    SizedBox(height: 10),
                     TextFormField(
                       controller: userIDController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: 'User Id',
                         labelText: 'User Id',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
                       ),
                     ),
+                    SizedBox(height: 10),
                     GestureDetector(
                       child: new Container(
                         padding: const EdgeInsets.all(
@@ -181,9 +186,11 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                                         ),
                                         child: Text(
                                           AppConstant.txtSendEmail,
+
                                           style: TextStyle(
                                             color: Colors.white,
                                           ),
+
                                         ),
                                         onPressed: _forgotPassword,
                                       )),
@@ -213,11 +220,11 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(width: 10.0),
+              /*  SizedBox(width: 10.0),
                 Text(
                   'Send OTP',
                   style: new TextStyle(color: Colors.black),
-                ),
+                ),*/
                 Row(
                   children: [
                     Radio(
