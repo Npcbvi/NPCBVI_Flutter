@@ -29,17 +29,17 @@ class _MainDashboard extends State<MainDashboard> {
         Utils.hideProgressDialog1(context);
         if (value.status) {
           setState(() {
-            ngoCount = value.data.ngoCount;
-            gH_CHC_Count = value.data.gHCHCCount;
-            ppCount = value.data.ppCount;
-            campCount = value.data.campCount;
-            satellitecentreCount = value.data.satellitecentreCount;
-            patientCount = value.data.patientCount;
-            dpm = value.data.dpm;
-            pmcCount = value.data.pmcCount;
-            totalEB = value.data.totalEB;
-            totalEd = value.data.totalEd;
-            spo = value.data.spo;
+            ngoCount = value.data.ngoCount ?? 'null';
+            gH_CHC_Count = value.data.gHCHCCount ?? 'null';
+            ppCount = value.data.ppCount ?? 'null';
+            campCount = value.data.campCount ?? 'null';
+            satellitecentreCount = value.data.satellitecentreCount ?? 'null';
+            patientCount = value.data.patientCount ?? 'null';
+            dpm = value.data.dpm ?? 'null';
+            pmcCount = value.data.pmcCount ?? 'null';
+            totalEB = value.data.totalEB ?? 'null';
+            totalEd = value.data.totalEd ?? 'null';
+            spo = value.data.spo ?? 'null';
           });
         }
         //    Utils.showToast(value.message, !value.status);

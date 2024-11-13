@@ -275,38 +275,54 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 10),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+             // mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Container(
-                  padding: EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.red)),
-                  child: Text(
-                    randomString,
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.w500),
+                Expanded(
+                  flex: 4,
+                  child: TextField(
+                  controller: _captchaController,
+                  decoration: InputDecoration(
+                    labelText: 'Enter Captcha Value',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0)),
+                  ),
+                  onChanged: (value) {
+                    setState(() {
+                      isVerified = false;
+                    });
+                  },
+                ),),
+
+                Expanded(
+                  flex: 2,
+                  child: Container(
+                    height: 55,
+                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 2, color: Colors.red),
+                    ),
+                    child: Center( // Center widget to center the text
+                      child: Text(
+                        randomString,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                SizedBox(width: 10),
-                IconButton(
+
+
+                Expanded(
+                  flex: 1,
+                  child: IconButton(
                   onPressed: buildCaptcha,
                   icon: Icon(Icons.refresh),
-                ),
+                ),),
               ],
-            ),
-            SizedBox(height: 10),
-            TextField(
-              controller: _captchaController,
-              decoration: InputDecoration(
-                labelText: 'Enter Captcha Value',
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0)),
-              ),
-              onChanged: (value) {
-                setState(() {
-                  isVerified = false;
-                });
-              },
             ),
             SizedBox(height: 10),
             ElevatedButton(
@@ -321,7 +337,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Text('Sign In'),
               style: ElevatedButton.styleFrom(primary: Colors.blue),
             ),
-            SizedBox(height: 10),
+           // SizedBox(height: 10),
           //comment code for next sprint
           /*  InkWell(
               onTap: () {

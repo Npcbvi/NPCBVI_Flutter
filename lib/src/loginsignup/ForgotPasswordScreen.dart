@@ -110,11 +110,18 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                     children: [
                       // Shown Captcha value to user
                       Container(
-                          child: Text(
-                        'Reset Password',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w800),
-                      )),
+
+                      child: Center( // Center widget to center the text
+                        child: Text(
+                          'Reset Password',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      ),
                       const SizedBox(
                         width: 10,
                       ),

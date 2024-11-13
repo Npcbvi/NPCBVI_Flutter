@@ -1005,12 +1005,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                             width: double.infinity,
                             decoration: new BoxDecoration(
                                 gradient: new LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              colors: [
-                                Color.fromARGB(255, 25, 178, 238),
-                                Color.fromARGB(255, 21, 236, 229)
-                              ],
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Color(0xFFF78CA0), // #f78ca0 at 0%
+                                    Color(0xFFF9748F), // #f9748f at 19%
+                                    Color(0xFFFD868C), // #fd868c at 60%
+                                    Color(0xFFFE9A8B), // #fe9a8b at 100%
+                                  ],
+                                  stops: [0.0, 0.19, 0.6, 1.0], // Define the color stops
                             )),
                             child: Column(
                               children: [
@@ -1115,12 +1118,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
+                                          colors: [
+                                            Color(0xFF16D9E3), // #16d9e3 at 0%
+                                            Color(0xFF30C7EC), // #30c7ec at 47%
+                                            Color(0xFF46AEF7), // #46aef7 at 100%
+                                          ],
+                                          stops: [0.0, 0.47, 1.0],
                                   )),
                                   child: Column(
                                     children: [
@@ -1329,12 +1332,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                        colors: [
+                                          Color(0xFF0BA360), // #0ba360 at 0%
+                                          Color(0xFF3CBA92), // #3cba92 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
                                   )),
                                   child: Column(
                                     children: [
@@ -1540,12 +1544,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          Color(0xFFBF7DFF), // #bf7dff at 0%
+                                          Color(0xFF5DA7F1), // #5da7f1 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
                                   )),
                                   child: Column(
                                     children: [
@@ -1752,12 +1757,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          Color(0xFFE465F3), // #e465f3 at 0%
+                                          Color(0xFFF5576C), // #f5576c at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
                                   )),
                                   child: Column(
                                     children: [
@@ -1963,12 +1969,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
+                                        begin: Alignment.bottomRight,
+                                        end: Alignment.topLeft,
+                                        colors: [
+                                          Color(0xFF667EEA), // #667eea at 0%
+                                          Color(0xFF764BA2), // #764ba2 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
                                   )),
                                   child: Column(
                                     children: [
@@ -2257,12 +2264,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          Color(0xFFFFC91E), // #ffc91e at 0%
+                                          Color(0xFFFF7249), // #ff7249 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
                                   )),
                                   child: Column(
                                     children: [
@@ -2283,7 +2291,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -2352,7 +2360,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -2387,12 +2395,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                    begin: Alignment.topCenter,
-                                    end: Alignment.bottomCenter,
-                                    colors: [
-                                      Color.fromARGB(255, 25, 178, 238),
-                                      Color.fromARGB(255, 21, 236, 229)
-                                    ],
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          Color(0xFF2B5876), // #2b5876 at 0%
+                                          Color(0xFF4E4376), // #4e4376 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
                                   )),
                                   child: Column(
                                     children: [
@@ -2413,7 +2422,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -2436,7 +2445,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
-                                                      20, 10, 20.0, 0),
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
