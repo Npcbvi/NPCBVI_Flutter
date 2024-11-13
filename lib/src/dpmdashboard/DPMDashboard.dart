@@ -423,6 +423,38 @@ class _DPMDashboard extends State<DPMDashboard> {
                             NGOlistDropDownDisplayDatas = false;
 
                             dashboardviewReplace = true;
+                            NGO_APPorovedClickShowData = false;
+                            NGO_PendingClickShowData = false;
+                            GetDPM_GH_APPorovedClickShowData = false;
+                            GetDPM_GH_PendingClickShowData = false;
+                            GetDPM_PrivatePartitionPorovedClickShowData =
+                            false;
+                            DPM_PrivatePartitionP_PendingClickShowData =
+                            false;
+                            DPM_privateMEdicalCollegeApprovedData =
+                            false;
+                            DPM_privateMEdicalCollegePendingData =
+                            false;
+                            ScreeningCamp = false;
+                            ScreeningCampOngoing = false;
+                            ScreeningCampComing = false;
+                            satelliteCentreShowData = false;
+                            ngoApproveRevenueMOU = false;
+
+                            NGOlistDropDownDisplayDatas = false;
+                            ngoGovtPrivateOthereHosdpitalDataShow =
+                            false;
+                            ngolistNewHosdpitalDropDown = false;
+                            LowVisionRegisterCatracts = false;
+                            LowVisionRegisterGlaucoma = false;
+                            LowVisionRegisterDiabitic = false;
+                            LowVisionRegisterCornealBlindness = false;
+                            LowVisionRegisterVRSurgery = false;
+                            ngoEyeScreeningdataShow = false;
+                            LowVisionRegisterChildhoodCongenitalPtosiss =
+                            false;
+                            LowVisionRegisterChildhoodTrauma = false;
+                            LowVisionRegisterSquint = false;
                           });
                         },
                         child: Container(
@@ -2611,12 +2643,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                             },
                             child: Container(
                               width: 80.0,
+                              margin: EdgeInsets.fromLTRB(12,0,0,0), // Adds 8.0 pixels of margin on all sides
                               child: Text(
                                 'Back',
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
+                                  fontWeight: FontWeight.bold, // Set font weight to bold
                                   color: Colors.red,
-                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
@@ -2632,7 +2665,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         _buildHeaderCell('NGO Darpan No.'),
                         _buildHeaderCell('Member Name'),
                         _buildHeaderCell('Email'),
-                        _buildHeaderCell('Action'),
+                        //_buildHeaderCell('Action'), //comment for first sprint
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -2646,9 +2679,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData || snapshot.data == null) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
+                        } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                          return Center(
+                            child: Text(
+                              "No data found",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        }  else {
                           List<DataNGOAPPlicationDropDownDPm> ddata =
                               snapshot.data;
                           return Column(
@@ -2660,9 +2703,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   _buildDataCell(offer.darpanNo),
                                   _buildDataCell(offer.memberName),
                                   _buildDataCell(offer.emailid),
-                                  _buildDataCellViewBlue("Edit", () {
+                               //comment for first sprint
+                               /*   _buildDataCellViewBlue("Edit", () {
                                     // Handle the edit action here
-                                  }),
+                                  }),*/
                                 ],
                               );
                             }).toList(),
@@ -2722,7 +2766,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         _buildHeaderCell('NGO Name'),
                         _buildHeaderCell('Hospital ID'),
                         _buildHeaderCell('Hospital Name'),
-                        _buildHeaderCell('Action'),
+                        //comment for first sprint
+                        // _buildHeaderCell('Action'),
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -2738,7 +2783,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data == null) {
-                          return Utils.getEmptyView("No data found");
+                         // return Utils.getEmptyView("No data found");
+                          return Center(
+                            child: Text(
+                              "No data found",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          );
                         } else {
                           List<DataGetNewHospitalData> ddata = snapshot.data;
                           print('@@---ddata' + ddata.length.toString());
@@ -2755,9 +2811,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   _buildDataCell(offer.name),
                                   _buildDataCell(offer.hRegID),
                                   _buildDataCell(offer.hName),
-                                  _buildDataCellViewBlue("Edit", () {
+                                  //comment for first sprint
+                                /*  _buildDataCellViewBlue("Edit", () {
                                     // Handle the edit action here
-                                  }),
+                                  }),*/
                                 ],
                               );
                             }).toList(),
@@ -2808,7 +2865,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey,
+                      color: Colors.lightBlue,
                       borderRadius: BorderRadius.circular(10)),
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
@@ -2823,15 +2880,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                         'Private Medical College',
                         'Other(Institution not claiming fund from NPCBVI)',
                       ].map<DropdownMenuItem<String>>(
-                          (String oganisationTypeGovtPrivateDRopDowns) {
-                        return DropdownMenuItem<String>(
-                          value: oganisationTypeGovtPrivateDRopDowns,
-                          child: Text(
-                            oganisationTypeGovtPrivateDRopDowns,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
+                              (String oganisationTypeGovtPrivateDRopDowns) {
+                            return DropdownMenuItem<String>(
+                              value: oganisationTypeGovtPrivateDRopDowns,
+                              child: Text(
+                                oganisationTypeGovtPrivateDRopDowns,
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            );
+                          }).toList(),
                       hint: Text(
                         "Select Organisation Type",
                         style: TextStyle(
@@ -2850,6 +2907,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
+
+
+
 
               // Submit Button
               Padding(
@@ -2886,7 +2946,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildHeaderCell('Ngo Name'),
                               _buildHeaderCell('Hospital ID'),
                               _buildHeaderCell('Hospital Name'),
-                              _buildHeaderCell('Action'),
+                             //Comment for first sprint
+                              // _buildHeaderCell('Action'),
                             ],
                           ),
                           Divider(color: Colors.blue, height: 1.0),
@@ -2906,9 +2967,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                               } else if (snapshot.hasError) {
                                 return Utils.getEmptyView(
                                     "Error: ${snapshot.error}");
-                              } else if (!snapshot.hasData ||
-                                  snapshot.data == null) {
-                                return Utils.getEmptyView("No data found");
+                              }  else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                              //  return Utils.getEmptyView("No data found");
+                                return Center(
+                                  child: Text(
+                                    "No data found",
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                );
                               } else {
                                 List<DataDPMGovtPrivateOrganisationTypeData>
                                     ddata = snapshot.data;
@@ -2925,9 +2996,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         _buildDataCell(offer.oName),
                                         _buildDataCell(offer.nodalOfficerName),
                                         _buildDataCell(offer.emailId),
-                                        _buildDataCellViewBlue("View", () {
+                                        //Comment for first sprint
+                                      /*  _buildDataCellViewBlue("View", () {
                                           // Handle the view action here
-                                        }),
+                                        }),*/
                                       ],
                                     );
                                   }).toList(),
@@ -3002,7 +3074,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: Colors.lightBlue,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: DropdownButtonHideUnderline(
@@ -3059,7 +3131,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.grey,
+                    color: Colors.lightBlue,
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: DropdownButtonHideUnderline(
@@ -3150,7 +3222,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildHeaderCell('To Date'),
                               _buildHeaderCell('Status'),
                               _buildHeaderCell('MOU'),
-                              _buildHeaderCell('Action'),
+                              //comment for first sprint
+                              //_buildHeaderCell('Action'),
                             ],
                           ),
                           Divider(color: Colors.blue, height: 1.0),
@@ -3160,17 +3233,24 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 ngoApproveRevenueMOUValue,
                                 ngodependOrganbisatioSelectValuessss),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
                               } else if (snapshot.hasError) {
-                                return Utils.getEmptyView(
-                                    "Error: ${snapshot.error}");
-                              } else if (!snapshot.hasData ||
-                                  snapshot.data == null) {
-                                return Utils.getEmptyView("No data found");
-                              } else {
+                                return Utils.getEmptyView("Error: ${snapshot.error}");
+                              } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                                return Center(
+                                  child: Text(
+                                    "No data found",
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.left,
+                                  ),
+                                );
+                              }
+                              else {
                                 List<DataGetDPM_MOUApprove> ddata =
                                     snapshot.data;
                                 print('@@---ddata' + ddata.length.toString());
@@ -3200,9 +3280,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               () {
                                             // Handle the edit action here
                                           }),
-                                          _buildDataCellViewBlue(" ", () {
+                                        /*  _buildDataCellViewBlue(" ", () {
                                             // Handle the edit action here
-                                          }),
+                                          }),*/
                                         ],
                                       );
                                     }).toList(),
