@@ -531,12 +531,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ScreeningCampComing = false;
                                     satelliteCentreShowData = false;
                                     ngoApproveRevenueMOU = false;
-
                                     NGOlistDropDownDisplayDatas = true;
                                     ngolistNewHosdpitalDropDown = false;
-                                    ngoGovtPrivateOthereHosdpitalDataShow =
-                                        false;
-
+                                    ngoGovtPrivateOthereHosdpitalDataShow = false;
                                     ngoApproveRevenueMOU = false;
                                     LowVisionRegisterCatracts = false;
                                     LowVisionRegisterGlaucoma = false;
@@ -3280,6 +3277,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               () {
                                             // Handle the edit action here
                                           }),
+                                          //comment for first sprint
                                         /*  _buildDataCellViewBlue(" ", () {
                                             // Handle the edit action here
                                           }),*/
