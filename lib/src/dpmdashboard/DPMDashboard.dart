@@ -449,6 +449,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                             LowVisionRegisterChildhoodCongenitalPtosiss = false;
                             LowVisionRegisterChildhoodTrauma = false;
                             LowVisionRegisterSquint = false;
+                            satelliteCentreShowData =
+                            false;
                           });
                         },
                         child: Container(
@@ -2919,7 +2921,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                   onPressed: () {
                     setState(() {
-                      organisationGovtPrivateSelectionAfter = true;
+                      print("@@oganisationTypeGovtPrivateDRopDown--1 "+oganisationTypeGovtPrivateDRopDown);
+                      if (oganisationTypeGovtPrivateDRopDown == null) {
+                        Utils.showToast(
+                            "Please Select oganisation Type !", false);
+                      } else {
+                        organisationGovtPrivateSelectionAfter = true;
+                      }
+
                     });
                   },
                 ),
@@ -3191,10 +3200,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                     child: ElevatedButton(
                       child: Text('Submit'),
                       style: ElevatedButton.styleFrom(
+
                         primary: Colors.blue,
                       ),
                       onPressed: () {
-                        print('@@ApproveRevenueMOU-- clkick------');
+                        print('@@ApproveRevenueMOU-- clkick------'+ ngoApproveRevenuMOU+"---"+ngodependOrganbisatioSelectValue);
                         setState(() {
                           ApproveRenveMOUDataShows = true;
                         });
@@ -3203,105 +3213,105 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ],
               ),
-              Visibility(
-                visible: ApproveRenveMOUDataShows,
-                child: Column(
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              _buildHeaderCellSrNo('S.No.'),
-                              _buildHeaderCell('Hospital Id'),
-                              _buildHeaderCell('Hospital Name'),
-                              _buildHeaderCell('Mobile'),
-                              _buildHeaderCell('Email'),
-                              _buildHeaderCell('From Date'),
-                              _buildHeaderCell('To Date'),
-                              _buildHeaderCell('Status'),
-                              _buildHeaderCell('MOU'),
-                              //comment for first sprint
-                              //_buildHeaderCell('Action'),
-                            ],
+      Visibility(
+        visible: ApproveRenveMOUDataShows,
+        child: Column(
+          children: [
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      _buildHeaderCellSrNo('S.No.'),
+                      _buildHeaderCell('Hospital Id'),
+                      _buildHeaderCell('Hospital Name'),
+                      _buildHeaderCell('Mobile'),
+                      _buildHeaderCell('Email'),
+                      _buildHeaderCell('From Date'),
+                      _buildHeaderCell('To Date'),
+                      _buildHeaderCell('Status'),
+                      _buildHeaderCell('MOU'),
+                      //comment for first sprint
+                      //_buildHeaderCell('Action'),
+                    ],
+                  ),
+                  Divider(color: Colors.blue, height: 1.0),
+                  FutureBuilder<List<DataGetDPM_MOUApprove>>(
+                    future: ApiController.getDPM_MOUApprove(
+                        district_code_login,
+                        ngoApproveRevenueMOUValue,
+                        ngodependOrganbisatioSelectValuessss),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData ||
+                          snapshot.data == null ||
+                          snapshot.data.isEmpty) {
+                        // Display "No data found" message on the left side
+                        return Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        List<DataGetDPM_MOUApprove> ddata = snapshot.data;
+                        print('@@---ddata: ${ddata.length}');
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.hRegID),
+                                  _buildDataCell(offer.hName),
+                                  _buildDataCell(offer.mobile.toString()),
+                                  _buildDataCell(offer.emailId),
+                                  _buildDataCell(
+                                      Utils.formatDateString(offer.fromDate)),
+                                  _buildDataCell(
+                                      Utils.formatDateString(offer.toDate)),
+                                  _buildDataCell(offer.vstatus.toString()),
+                                  _buildDataCellViewBlue(offer.file, () {
+                                    // Handle the view/download action here
+                                  }),
+                                  //comment for first sprint
+                                  /*  _buildDataCellViewBlue(" ", () {
+                                // Handle the edit action here
+                              }),*/
+                                ],
+                              );
+                            }).toList(),
                           ),
-                          Divider(color: Colors.blue, height: 1.0),
-                          FutureBuilder<List<DataGetDPM_MOUApprove>>(
-                            future: ApiController.getDPM_MOUApprove(
-                                district_code_login,
-                                ngoApproveRevenueMOUValue,
-                                ngodependOrganbisatioSelectValuessss),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else if (snapshot.hasError) {
-                                return Utils.getEmptyView(
-                                    "Error: ${snapshot.error}");
-                              } else if (!snapshot.hasData ||
-                                  snapshot.data == null ||
-                                  snapshot.data.isEmpty) {
-                                return Center(
-                                  child: Text(
-                                    "No data found",
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                );
-                              } else {
-                                List<DataGetDPM_MOUApprove> ddata =
-                                    snapshot.data;
-                                print('@@---ddata' + ddata.length.toString());
-                                return SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Column(
-                                    children: ddata.map((offer) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          _buildDataCellSrNo(
-                                              (ddata.indexOf(offer) + 1)
-                                                  .toString()),
-                                          _buildDataCell(offer.hRegID),
-                                          _buildDataCell(offer.hName),
-                                          _buildDataCell(
-                                              offer.mobile.toString()),
-                                          _buildDataCell(offer.emailId),
-                                          _buildDataCell(Utils.formatDateString(
-                                              offer.fromDate)),
-                                          _buildDataCell(Utils.formatDateString(
-                                              offer.toDate)),
-                                          _buildDataCell(
-                                              offer.vstatus.toString()),
-                                          _buildDataCellViewBlue(offer.file,
-                                              () {
-                                            // Handle the edit action here
-                                          }),
-                                          //comment for first sprint
-                                          /*  _buildDataCellViewBlue(" ", () {
-                                            // Handle the edit action here
-                                          }),*/
-                                        ],
-                                      );
-                                    }).toList(),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
+            ),
+          ],
+        ),
+      ),
+
+
             ],
           ),
         ),
@@ -10395,7 +10405,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         child: GestureDetector(
                           onTap: () {
                             // Handle approval action
-                            print('Cataract Data for approval clicked');
+                            print('Diabetic Data for approval clicked');
                             // You can also navigate or update some data here
                           },
                           child: Container(
@@ -10408,7 +10418,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               alignment: Alignment.center,
                               // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
                               child: Text(
-                                'Glaucoma Data for approval',
+                                'Diabetic Data for approval',
                                 style: TextStyle(
                                     color: Colors.white), // White text color
                               ),
@@ -10424,7 +10434,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         child: GestureDetector(
                           onTap: () {
                             // Handle approval action
-                            print('@@Cataract Data for approval clicked');
+                            print('@@Diabetic Data for approval clicked');
                             setState(() {
                               dashboardviewReplace = true;
 
@@ -10550,65 +10560,64 @@ class _DPMDashboard extends State<DPMDashboard> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: new DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      focusColor: Colors.white,
-                      value: lowVisionDatas,
-                      //elevation: 5,
-                      style: TextStyle(color: Colors.white),
-                      iconEnabledColor: Colors.white,
-                      items: <String>[
-                        'NGOs',
-                        'Private Practitioner',
-                        'Private Medical College',
-                      ].map<DropdownMenuItem<String>>(
-                          (String lowVisionRegistry) {
-                        return DropdownMenuItem<String>(
-                          value: lowVisionRegistry,
-                          child: Text(
-                            lowVisionRegistry,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                      hint: Text(
-                        "Select Type",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      onChanged: (String lowVisionData) {
-                        setState(() {
-                          lowVisionDatas = lowVisionData;
-
-                          if (lowVisionDatas == "NGOs") {
-                            lowVisionDataValue = 5;
-                          } else if (lowVisionDatas == "Private Practitioner") {
-                            lowVisionDataValue = 12;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
-                          } else if (lowVisionData ==
-                              "Private Medical College") {
-                            lowVisionDataValue = 13;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
-                          } else {
-                            lowVisionDataValue = 0;
-                          }
-                        });
-                      },
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.lightBlueAccent,
+              border: Border.all(color: Colors.blueAccent, width: 2.0), // Add border
+              borderRadius: BorderRadius.circular(10.0), // Add rounded corners
+            ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                isExpanded: true,
+                focusColor: Colors.white,
+                value: lowVisionDatas,
+                style: TextStyle(color: Colors.white),
+                iconEnabledColor: Colors.white,
+                items: <String>[
+                  'NGOs',
+                  'Private Practitioner',
+                  'Private Medical College',
+                ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
+                  return DropdownMenuItem<String>(
+                    value: lowVisionRegistry,
+                    child: Text(
+                      lowVisionRegistry,
+                      style: TextStyle(color: Colors.black),
                     ),
+                  );
+                }).toList(),
+                hint: Text(
+                  "Select Type",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
+                onChanged: (String lowVisionData) {
+                  setState(() {
+                    lowVisionDatas = lowVisionData;
+
+                    if (lowVisionDatas == "NGOs") {
+                      lowVisionDataValue = 5;
+                    } else if (lowVisionDatas == "Private Practitioner") {
+                      lowVisionDataValue = 12;
+                      _futureDataBindOrganValuebiggerFive = GetDPM_Bindorg_New();
+                    } else if (lowVisionData == "Private Medical College") {
+                      lowVisionDataValue = 13;
+                      _futureDataBindOrganValuebiggerFive = GetDPM_Bindorg_New();
+                    } else {
+                      lowVisionDataValue = 0;
+                    }
+                  });
+                },
               ),
+            ),
+          ),
+        ),
+
               /* Center(
                 child: FutureBuilder<List<DataBindOrgan>>(
                   future: _futureBindOrgan,

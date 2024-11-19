@@ -1381,10 +1381,11 @@ class ApiController {
 
       // Define the request body
       var body = json.encode({
+
         "district_code": district_code,
         "state_code": state_code,
       });
-      print("@@DPMsatteliteCenter--bodyprint--: ${body.toString()}");
+      print("@@DPMsatteliteCenter--bodyprint--:${url}+ ${body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1397,7 +1398,7 @@ class ApiController {
         ),
       );
 
-      print("@@GetDPM_SatelliteCentre--Api Response: ${response.toString()}");
+      print("@@GetDPM_SatelliteCentre--Api Response: ${url}+ ${body.toString()}+${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
@@ -1408,7 +1409,7 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
