@@ -842,6 +842,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                           setState(() {
                             dashboardviewReplace = false;
                             ngoEyeScreeningdataShow = true;
+                            dpmEyeScreeningSchoolDataShowADDNewRecord =
+                            false;
                             dashboardviewReplace = false;
                             ngolistNewHosdpitalDropDown = false;
                             NGOlistDropDownDisplayDatas = false;
@@ -3336,16 +3338,36 @@ class _DPMDashboard extends State<DPMDashboard> {
                       Flexible(
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            'School Eye Screening',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w800,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Handle the tap event here
+                              print('@@Add New Record clicked');
+
+                              // Update state and perform actions
+                              setState(() {
+                                // Update the future values to fetch data
+                                _future = getDPM_ScreeningYear();
+                                _futureMonth = getDPM_ScreeningMonth();
+
+                                // Update boolean flags to control UI visibility
+                                ngoEyeScreeningdataShow = true;
+                                dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                false;
+                              });
+                            },
+                            child: Text(
+                              'School Eye Screening',
+                              style: TextStyle(
+                                color: Colors.white, // Text color
+                                fontWeight: FontWeight.w800, // Text weight
+                              ),
+                              overflow:
+                              TextOverflow.ellipsis, // Handle text overflow
                             ),
-                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
+
                       Flexible(
                         child: Align(
                           alignment: Alignment.centerRight,
@@ -9648,7 +9670,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               child: Text(
                                 'Back',
                                 style: TextStyle(
-                                    color: Colors.white), // White text color
+                                    color: Colors.white,fontWeight: FontWeight.bold), // White text color
                               ),
                             ),
                           ),
@@ -9754,12 +9776,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
+                    color: Colors.blue[50],
+                    // Background color of the dropdown box
+                    border: Border.all(color: Colors.blue, width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   child: new DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      focusColor: Colors.white,
+                      focusColor: Colors.black,
                       value: lowVisionDatas,
                       //elevation: 5,
                       style: TextStyle(color: Colors.white),
@@ -9781,7 +9806,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       hint: Text(
                         "Select Type",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
                       ),
@@ -10458,7 +10483,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                               child: Text(
                                 'Back',
                                 style: TextStyle(
-                                    color: Colors.white), // White text color
+                                    color: Colors.white,
+                                  fontWeight: FontWeight.bold,), // White text color
                               ),
                             ),
                           ),
@@ -10564,14 +10590,15 @@ class _DPMDashboard extends State<DPMDashboard> {
           padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
           child: Container(
             decoration: BoxDecoration(
-              color: Colors.lightBlueAccent,
-              border: Border.all(color: Colors.blueAccent, width: 2.0), // Add border
-              borderRadius: BorderRadius.circular(10.0), // Add rounded corners
+              color: Colors.blue[50],
+              // Background color of the dropdown box
+              border: Border.all(color: Colors.blue, width: 2.0),
+              borderRadius: BorderRadius.circular(10.0),
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
                 isExpanded: true,
-                focusColor: Colors.white,
+                focusColor: Colors.black,
                 value: lowVisionDatas,
                 style: TextStyle(color: Colors.white),
                 iconEnabledColor: Colors.white,
@@ -10591,7 +10618,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 hint: Text(
                   "Select Type",
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Colors.black,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                   ),
@@ -10618,93 +10645,6 @@ class _DPMDashboard extends State<DPMDashboard> {
           ),
         ),
 
-              /* Center(
-                child: FutureBuilder<List<DataBindOrgan>>(
-                  future: _futureBindOrgan,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-
-                    if (!snapshot.hasData || snapshot.data == null) {
-                      return const CircularProgressIndicator();
-                    }
-
-                    List<DataBindOrgan> list = snapshot.data;
-                    developer.log('@@snapshot: $list');
-
-                    if (_selectBindOrgniasation == null ||
-                        !list.contains(_selectBindOrgniasation)) {
-                      _selectBindOrgniasation =
-                          list.isNotEmpty ? list.first : null;
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Text(
-                              'Select:',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 10),
-                            DropdownButtonFormField<DataBindOrgan>(
-                              onChanged: (userbindOrgan) {
-                                setState(() {
-                                  _selectBindOrgniasation = userbindOrgan;
-                                  bindOrganisationNAme =
-                                      userbindOrgan?.name ?? '';
-                                  npcbNoDiabitic = userbindOrgan?.npcbNo ?? '';
-                                  print(
-                                      '@@npcbNo-- click------' + npcbNoGlucom);
-                                });
-                              },
-                              value: _selectBindOrgniasation,
-                              items: list.map((userbindorgansa) {
-                                return DropdownMenuItem<DataBindOrgan>(
-                                  value: userbindorgansa,
-                                  child: Text(
-                                    userbindorgansa.name,
-
-                                    maxLines: 2,
-                                    // Set max lines to 2
-                                    overflow: TextOverflow.ellipsis,
-                                    // Handle overflow
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                                );
-                              }).toList(),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blueAccent, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.blue[50],
-                              ),
-                              dropdownColor: Colors.blue[50],
-                              style: TextStyle(color: Colors.black),
-                              icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.blue),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              ),*/
               if (lowVisionDataValue == 5)
                 Center(
                   child: FutureBuilder<List<DataBindOrgan>>(
@@ -11358,7 +11298,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               child: Text(
                                 'Back',
                                 style: TextStyle(
-                                    color: Colors.white), // White text color
+                                    color: Colors.white,fontWeight: FontWeight.bold), // White text color
                               ),
                             ),
                           ),
@@ -11464,12 +11404,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
+                    color: Colors.blue[50],
+                    // Background color of the dropdown box
+                    border: Border.all(color: Colors.blue, width: 2.0),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
                   child: new DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      focusColor: Colors.white,
+                      focusColor: Colors.black,
                       value: lowVisionDatas,
                       //elevation: 5,
                       style: TextStyle(color: Colors.white),
@@ -11491,7 +11434,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       hint: Text(
                         "Select Type",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
                       ),
@@ -12151,7 +12094,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               child: Text(
                                 'Back',
                                 style: TextStyle(
-                                    color: Colors.white), // White text color
+                                    color: Colors.white,fontWeight: FontWeight.bold), // White text color
                               ),
                             ),
                           ),
@@ -12257,12 +12200,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
+                    color: Colors.blue, // Blue background color
+                    borderRadius: BorderRadius.circular(5),
+                  ),
                   child: new DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      focusColor: Colors.white,
+                      focusColor: Colors.black,
                       value: lowVisionDatas,
                       //elevation: 5,
                       style: TextStyle(color: Colors.white),
@@ -12284,7 +12228,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       hint: Text(
                         "Select Type",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
                       ),
