@@ -2082,6 +2082,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                         false;
                                                   });
                                                 },
+                                                
                                                 child: new Text('Completed',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
