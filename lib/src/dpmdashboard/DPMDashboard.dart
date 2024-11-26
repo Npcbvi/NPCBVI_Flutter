@@ -561,7 +561,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ScreeningCampComing = false;
                                     satelliteCentreShowData = false;
                                     ngoApproveRevenueMOU = false;
-
                                     NGOlistDropDownDisplayDatas = false;
                                     ngoGovtPrivateOthereHosdpitalDataShow =
                                         false;
@@ -572,6 +571,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     LowVisionRegisterCornealBlindness = false;
                                     LowVisionRegisterVRSurgery = false;
                                     ngoEyeScreeningdataShow = false;
+
                                     LowVisionRegisterChildhoodCongenitalPtosiss =
                                         false;
                                     LowVisionRegisterChildhoodTrauma = false;
@@ -719,6 +719,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         false;
                                     LowVisionRegisterSquint = false;
                                     LowVisionRegisterChildhoodTrauma = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
                                     print('@@NGO--1' + _chosenValueLOWVision);
                                   } else if (_chosenValueLOWVision ==
                                       "Diabetic") {
@@ -740,6 +743,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         false;
                                     LowVisionRegisterChildhoodTrauma = false;
                                     LowVisionRegisterSquint = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
                                   } else if (_chosenValueLOWVision ==
                                       "Glaucoma") {
                                     _future = getDPM_ScreeningYear();
@@ -760,6 +766,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         false;
                                     LowVisionRegisterChildhoodTrauma = false;
                                     LowVisionRegisterSquint = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
                                   } else if (_chosenValueLOWVision ==
                                       "Corneal Blindness") {
                                     _future = getDPM_ScreeningYear();
@@ -780,6 +789,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         false;
                                     LowVisionRegisterChildhoodTrauma = false;
                                     LowVisionRegisterSquint = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
                                   } else if (_chosenValueLOWVision ==
                                       "VR Surgery") {
                                     print('@@Childhood--' +
@@ -802,6 +814,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         false;
                                     LowVisionRegisterChildhoodTrauma = false;
                                     LowVisionRegisterSquint = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
                                   } else if (_chosenValueLOWVision ==
                                       "Childhood Blindness") {
                                     print('@@Childhood--' +
@@ -822,6 +837,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       ngoGovtPrivateOthereHosdpitalDataShow =
                                           false;
                                       ngoEyeScreeningdataShow = false;
+                                      ngoEyeScreeningdataShow = false;
+                                      dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                      false;
                                       _showPopupMenuChildhoodBlindness();
                                     } else {
                                       print('@@Childhood--2' +
@@ -844,7 +862,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                             ngoEyeScreeningdataShow = true;
                             dpmEyeScreeningSchoolDataShowADDNewRecord =
                             false;
-                            dashboardviewReplace = false;
                             ngolistNewHosdpitalDropDown = false;
                             NGOlistDropDownDisplayDatas = false;
                             ngoApproveRevenueMOU = false;
@@ -854,6 +871,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                             LowVisionRegisterDiabitic = false;
                             LowVisionRegisterCornealBlindness = false;
                             LowVisionRegisterVRSurgery = false;
+
+
                           });
                         },
                         child: Container(
@@ -3322,7 +3341,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  Widget ngolistEyeScreeningShowData() {
+ /* Widget ngolistEyeScreeningShowData() {
     return Column(
       children: [
         Visibility(
@@ -3428,6 +3447,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                     Divider(color: Colors.blue, height: 1.0),
                     // Data Rows
+
                     FutureBuilder<List<DataGetEyeScreening>>(
                       future: ApiController.GetDPM_EyeScreening(
                           district_code_login, state_code_login, userId),
@@ -3493,6 +3513,259 @@ class _DPMDashboard extends State<DPMDashboard> {
         ),
       ],
     );
+  }*/
+  Widget ngolistEyeScreeningShowData() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ngoEyeScreeningdataShow,
+          child: Column(
+            children: [
+              Container(
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Handle the tap event here
+                              print('@@Add New Record clicked');
+
+                              // Update state and perform actions
+                              setState(() {
+                                _future = getDPM_ScreeningYear();
+                                _futureMonth = getDPM_ScreeningMonth();
+
+                                // Update boolean flags to control UI visibility
+                                ngoEyeScreeningdataShow = true;
+                                dpmEyeScreeningSchoolDataShowADDNewRecord = false;
+
+                                DPM_privateMEdicalCollegePendingData =
+                                false;
+                                NGO_APPorovedClickShowData =
+                                false;
+                                NGO_PendingClickShowData =
+                                false;
+                                GetDPM_GH_APPorovedClickShowData =
+                                false;
+                                GetDPM_GH_PendingClickShowData =
+                                false;
+                                GetDPM_PrivatePartitionPorovedClickShowData =
+                                false;
+                                DPM_PrivatePartitionP_PendingClickShowData =
+                                false;
+                                DPM_privateMEdicalCollegeApprovedData =
+                                false;
+                                ScreeningCamp = false;
+                                ScreeningCampOngoing =
+                                false;
+                                ScreeningCampComing = false;
+                                satelliteCentreShowData =
+                                false;
+                                ngoApproveRevenueMOU =
+                                false;
+                                NGOlistDropDownDisplayDatas =
+                                false;
+                                ngoGovtPrivateOthereHosdpitalDataShow =
+                                false;
+                                ngolistNewHosdpitalDropDown =
+                                false;
+                                LowVisionRegisterCatracts =
+                                false;
+                                LowVisionRegisterGlaucoma =
+                                false;
+                                LowVisionRegisterDiabitic =
+                                false;
+                                LowVisionRegisterCornealBlindness =
+                                false;
+                                LowVisionRegisterVRSurgery =
+                                false;
+
+
+                              });
+                            },
+                            child: Text(
+                              'School Eye Screening',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Flexible(
+                        child: Align(
+                          alignment: Alignment.centerRight,
+                          child: GestureDetector(
+                            onTap: () {
+                              // Handle the tap event here
+                              print('@@Add New Record clicked');
+
+                              // Update state and perform actions
+                              setState(() {
+                                _future = getDPM_ScreeningYear();
+                                _futureMonth = getDPM_ScreeningMonth();
+                                ngoEyeScreeningdataShow = false;
+                                dpmEyeScreeningSchoolDataShowADDNewRecord = true;
+
+
+
+                                DPM_privateMEdicalCollegePendingData =
+                                false;
+                                NGO_APPorovedClickShowData =
+                                false;
+                                NGO_PendingClickShowData =
+                                false;
+                                GetDPM_GH_APPorovedClickShowData =
+                                false;
+                                GetDPM_GH_PendingClickShowData =
+                                false;
+                                GetDPM_PrivatePartitionPorovedClickShowData =
+                                false;
+                                DPM_PrivatePartitionP_PendingClickShowData =
+                                false;
+                                DPM_privateMEdicalCollegeApprovedData =
+                                false;
+                                ScreeningCamp = false;
+                                ScreeningCampOngoing =
+                                false;
+                                ScreeningCampComing = false;
+                                satelliteCentreShowData =
+                                false;
+                                ngoApproveRevenueMOU =
+                                false;
+                                NGOlistDropDownDisplayDatas =
+                                false;
+                                ngoGovtPrivateOthereHosdpitalDataShow =
+                                false;
+                                ngolistNewHosdpitalDropDown =
+                                false;
+                                LowVisionRegisterCatracts =
+                                false;
+                                LowVisionRegisterGlaucoma =
+                                false;
+                                LowVisionRegisterDiabitic =
+                                false;
+                                LowVisionRegisterCornealBlindness =
+                                false;
+                                LowVisionRegisterVRSurgery =
+                                false;
+
+                              });
+                            },
+                            child: Text(
+                              'Add New Record',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w800,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Year'),
+                        _buildHeaderCell('Month'),
+                        _buildHeaderCell('School name'),
+                        _buildHeaderCell('Teacher Trained'),
+                        _buildHeaderCell('Children screened'),
+                        _buildHeaderCell('Children detected with Refractive Errors'),
+                        _buildHeaderCell('Free Glasses Provided by Organization'),
+                        _buildHeaderCell('Action'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<DataGetEyeScreening>>(
+                      future: _fetchDataWithProgressDialog(context),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<DataGetEyeScreening> ddata = snapshot.data;
+                          print('@@---ddata' + ddata.length.toString());
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.yearname),
+                                  _buildDataCell(offer.monthname),
+                                  _buildDataCell(offer.schoolName),
+                                  _buildDataCell(offer.trainedTeacher.toString()),
+                                  _buildDataCell(offer.childScreen.toString()),
+                                  _buildDataCell(offer.childDetect.toString()),
+                                  _buildDataCell(offer.freeglass.toString()),
+                                  _buildDataCellViewBlue("Edit", () {
+                                    // Handle the edit action here
+                                    print('@@Edit clicked for item: ${offer.schoolid}');
+                                    SharedPrefs.storeSharedValues(AppConstant.schoolid, offer.schoolid.toString());
+                                    setState(() {
+                                      _future = getDPM_ScreeningYear();
+                                      _futureMonth = getDPM_ScreeningMonth();
+                                      _futureEyeScreeningEdit = ApiController.getDPM_EyeScreeningEdit(district_code_login, state_code_login, userId);
+                                      ngoEyeScreeningdataShow = false;
+                                      dpmEyeScreeningSchoolDataShow = true;
+                                    });
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+// This is where you manually handle the progress dialog
+  Future<List<DataGetEyeScreening>> _fetchDataWithProgressDialog(BuildContext context) async {
+    try {
+      // Show the progress dialog before the API call
+      Utils.showProgressDialog(context);
+
+      // Perform the actual API call
+      List<DataGetEyeScreening> response = await ApiController.GetDPM_EyeScreening(district_code_login, state_code_login, userId);
+
+      // Dismiss the progress dialog after the API call completes
+      Utils.hideProgressDialog(context);
+
+      return response;
+    } catch (e) {
+      // Dismiss the progress dialog if an error occurs
+      Utils.hideProgressDialog(context);
+      rethrow;
+    }
   }
 
   Future<List<DataGetDPM_ScreeningYear>> getDPM_ScreeningYear() async {
@@ -8821,10 +9094,50 @@ class _DPMDashboard extends State<DPMDashboard> {
                             print('@@Cataract Data for approval clicked');
                             setState(() {
                               dashboardviewReplace = true;
-                              LowVisionRegisterCatracts = false;
-                              LowVisionRegisterDiabitic = false;
-                              LowVisionRegisterGlaucoma = false;
-                              LowVisionRegisterCornealBlindness = false;
+
+                              DPM_privateMEdicalCollegePendingData =
+                              false;
+                              NGO_APPorovedClickShowData =
+                              false;
+                              NGO_PendingClickShowData =
+                              false;
+                              GetDPM_GH_APPorovedClickShowData =
+                              false;
+                              GetDPM_GH_PendingClickShowData =
+                              false;
+                              GetDPM_PrivatePartitionPorovedClickShowData =
+                              false;
+                              DPM_PrivatePartitionP_PendingClickShowData =
+                              false;
+                              DPM_privateMEdicalCollegeApprovedData =
+                              false;
+                              ScreeningCamp = false;
+                              ScreeningCampOngoing =
+                              false;
+                              ScreeningCampComing = false;
+                              satelliteCentreShowData =
+                              false;
+                              ngoApproveRevenueMOU =
+                              false;
+                              NGOlistDropDownDisplayDatas =
+                              false;
+                              ngoGovtPrivateOthereHosdpitalDataShow =
+                              false;
+                              ngolistNewHosdpitalDropDown =
+                              false;
+                              LowVisionRegisterCatracts =
+                              false;
+                              LowVisionRegisterGlaucoma =
+                              false;
+                              LowVisionRegisterDiabitic =
+                              false;
+                              LowVisionRegisterCornealBlindness =
+                              false;
+                              LowVisionRegisterVRSurgery =
+                              false;
+                              ngoEyeScreeningdataShow =
+                              false;
+
                             });
 
                             // You can also navigate or update some data here
