@@ -110,4 +110,6 @@ class ApiConstants {
   static String GetSPO_Dashboard = 'SpmDashboard/api/GetSPO_Dashboard';
 
   static String GetSPO_DPM_View = 'SpmDashboard/api/GetSPO_DPM_View';
+
+  static String GetSPO_RegisteredEyesurgeonList = 'SpmDashboard/api/GetSPO_RegisteredEyesurgeonList';
 }

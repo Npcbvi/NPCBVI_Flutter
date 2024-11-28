@@ -6,6 +6,7 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/EyeSurgeons.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
@@ -46,6 +47,7 @@ class _SpoDashboard extends State<SpoDashboard> {
   bool dashboardviewReplace = false;
 
   bool SPOLcikONDPMMEnus = false;
+  bool RegisteredEyesurgeon=false;
   String ngoCountApproved,
       ngoCountPending,
       totalPatientApproved,
@@ -444,6 +446,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                           setState(() {
                             dashboardviewReplace=true;
                             SPOLcikONDPMMEnus=false;
+                            RegisteredEyesurgeon=false;
                           });
                         },
                         child: Container(
@@ -467,6 +470,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                           setState(() {
                             dashboardviewReplace=false;
                             SPOLcikONDPMMEnus=true;
+                            RegisteredEyesurgeon=false;
                           });
                         },
                         child: Container(
@@ -525,7 +529,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   if (_chosenValue == "Eye surgeons") {
                                     print('@@NGO--1' + _chosenValue);
                                     dashboardviewReplace=false;
-
+                                    SPOLcikONDPMMEnus=false;
+                                    RegisteredEyesurgeon=true;
                                   } else if (_chosenValue == "Estimate Target Allocation") {
                                     dashboardviewReplace=false;
                                   }
@@ -1756,6 +1761,7 @@ class _SpoDashboard extends State<SpoDashboard> {
               ),
             ),
             SPOLcikONDPMMEnu(),
+            RegisteredEyesurgeons(),
             // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
         ),
@@ -2452,7 +2458,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                     const Divider(color: Colors.blue, height: 1.0),
                     // Data Rows
                     FutureBuilder<List<SPODashboardDPMClickViewData>>(
-                      future: ApiController.getSPO_DPM_View(29),
+                      future: ApiController.getSPO_DPM_View(state_code_login),
                       builder: (context, snapshot) {
                         // Show progress dialog when the request is in progress
                         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -2481,7 +2487,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
-                                _buildDataCellSrNo('1'),
                                 _buildDataCell('No data found'),
                               ],
                             ),
@@ -2542,6 +2547,169 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+// Method to build a text input cell in each row
+  // Method to create an editable text field
+  // Editable Text Field Method
+  Widget createEditableTextField(String initialValue) {
+    TextEditingController controller = TextEditingController(text: initialValue);
+
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Enter value',
+          ),
+        ),
+      ),
+    );
+  }
+  Widget createButton({
+     String text,
+     VoidCallback onPressed,
+    Color color = Colors.blue,
+    Color textColor = Colors.white,
+  }) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      // Define the function to be called when the button is pressed
+      style: ElevatedButton.styleFrom(
+        primary: color, // Background color
+        padding: EdgeInsets.symmetric(
+            horizontal: 20, vertical: 12), // Button padding
+      ),
+      child: Text(
+        text,
+        style: TextStyle(color: textColor), // Text color
+      ),
+    );
+  }
+  Widget RegisteredEyesurgeons() {
+    return Column(
+      children: [
+        Visibility(
+          visible: RegisteredEyesurgeon,  // Ensure this is set to true
+          child: Column(
+            children: [
+              // Top Info Bar (not scrollable)
+              Container(
+                color: Colors.white70,
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: 10),
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                      width: 250.0,
+                      child: const Text(
+                        'Registered Eye surgeon',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                  ],
+                ),
+              ),
+              // Horizontal Scrolling for Header and Data Rows
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                child: Column(
+                  children: [
+                    // Data Table Header (horizontal scrollable)
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Action'),
+                        _buildHeaderCell('In Government Sector'),
+                        _buildHeaderCell('In NGO Sector'),
+                        _buildHeaderCell('In Private Medical College'),
+                        _buildHeaderCell('In Private Practioner'),
+                      ],
+                    ),
+                    const Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows (horizontal scrollable)
+                    FutureBuilder<List<EyeSurgeonsData>>(
+                      future: ApiController.getSPO_RegisteredEyesurgeonList(100, "NPCBTT"),
+                      builder: (context, snapshot) {
+                        // Show progress dialog when the request is in progress
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          // Show the progress dialog
+                          Utils.showProgressDialog(context);
+                        } else {
+                          // Dismiss the progress dialog once the data is fetched
+                          if (snapshot.connectionState != ConnectionState.waiting) {
+                            Utils.hideProgressDialog(context);
+                          }
+                        }
+
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text("Error: ${snapshot.error}"),
+                            ),
+                          );
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                _buildDataCell('No data found'),
+                              ],
+                            ),
+                          );
+                        } else {
+                          List<EyeSurgeonsData> ddata = snapshot.data;
+                          print('@@ddata======='+ddata.toString());
+                          return Column(
+                            children: ddata?.map((offer) {  // Using ?. for safety
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  createButton(
+                                    text: 'Submit',
+                                    onPressed: () {},
+                                  ),
+                                  createEditableTextField(getNullSafeValue(offer.totalGov)),
+                                  createEditableTextField(getNullSafeValue(offer.totalNgo)),
+                                  createEditableTextField(getNullSafeValue(offer.totalPmc)),
+                                  createEditableTextField(getNullSafeValue(offer.totalPp)),
+                                ],
+                              );
+                            }).toList() ?? [],  // Fallback to empty list if null
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+
+
+  // Helper method to safely handle null and int values
+  String getNullSafeValue(dynamic value) {
+    return value?.toString() ?? 'N/A';
+  }
+// Method to create button inside a DataCell
+
 // New method to build the radio button cell
   // Updated method to build the radio button cell with 'status' logic
   Widget _buildRadioCell(SPODashboardDPMClickViewData offer) {
@@ -2693,6 +2861,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+
 }
 
 class GetChangeAPsswordFieldsss {
