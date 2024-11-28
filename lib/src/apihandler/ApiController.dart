@@ -71,6 +71,8 @@ import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/ngoSatelliteMa
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/CenterOfficeNameSatelliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/SatelliteCenterRegistation.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/SpoDashobardData.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
@@ -4330,5 +4332,140 @@ class ApiController {
       return [];
     }
   }
+
+
+  static Future<SpoDashobardData> getSPO_dashboard(int districtidDPM,
+      int stateidDPM,
+      int old_districtidDPM,
+      String useridDPM,
+      String roleidDPM,
+      int statusDPM,
+      String financialYearDPM) async {
+    SpoDashobardData getSpoDashobardData = SpoDashobardData();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String districtCode_loginFetch =
+        prefs.getString(AppConstant.distritcCode) ?? "";
+    String stateCode_loginFetch = prefs.getString(AppConstant.state_code) ?? "";
+    print("@@districtCode_loginFetch__from login: $districtCode_loginFetch");
+    print("@@stateCode_loginFetch__from login: $stateCode_loginFetch");
+    /* if (districtCode_loginFetch.isEmpty || stateCode_loginFetch.isEmpty) {
+      Utils.showToast("District or State code is missing.", true);
+      return [];
+    }*/
+
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.GetSPO_Dashboard;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+        };
+        //Way to send params
+        //Way to send params
+        var body = json.encode({
+          "districtid": districtidDPM,
+          "stateid": stateidDPM,
+          "old_districtid": 569,
+          "userid": useridDPM,
+          "roleid": roleidDPM,
+          "status": statusDPM,
+          "financialYear": financialYearDPM,
+        });
+        print("@@getSPO_dashboard---api check parmeters--" +
+            url +
+            body.toString());
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                headers: headers,
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        // print("@@Response--ParamsCheck with plattfor---" + url+body.toString());
+        print("@@Response--Api" + response1.toString());
+        getSpoDashobardData =
+            SpoDashobardData.fromJson(json.decode(response1.data));
+        print("@@getSpoDashobardData====+ " + getSpoDashobardData.data.toString());
+
+        print("@@getSpoDashobardData----" + getSpoDashobardData.message);
+        if (getSpoDashobardData.status) {
+          Utils.showToast(getSpoDashobardData.message, true);
+        } else {
+          Utils.showToast(getSpoDashobardData.message, true);
+        }
+        return getSpoDashobardData;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+  static Future<List<SPODashboardDPMClickViewData>> getSPO_DPM_View(
+      int stateid) async {
+    print("@@SPODashboardDPMClickViewData" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_DPM_View;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateid": stateid,
+
+      });
+      print("@@SPODashboardDPMClickViewData--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@SPODashboardDPMClickViewData--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      SPODashboardDPMClickView data = SPODashboardDPMClickView.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

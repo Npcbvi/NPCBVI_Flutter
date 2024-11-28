@@ -233,6 +233,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           print('@@dashboardviewReplace----display---');
                           _future = getDPM_ScreeningYear();
                           hospitalDashboardclickDsiplay = true;
+                          hospitalAddPatientData = false;
                         });
                       }),
                       SizedBox(width: 8.0),
@@ -947,7 +948,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
               children: [
                 _sectionHeader('Patient Registration'),
                 _patientInfoRow(),
-                SizedBox(height: 16.0),
+                SizedBox(height: 10.0),
                 _sectionTitle('Registration Type'),
                 _radioButtonRow(
                   options: [
@@ -992,16 +993,18 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                           child: Container(
                             decoration: BoxDecoration(
-                              color: Colors.grey,
-                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.blue[50],
+                              // Background color of the dropdown box
+                              border: Border.all(color: Colors.blue, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: DropdownButtonHideUnderline(
                               child: DropdownButton<String>(
                                 isExpanded: true,
-                                focusColor: Colors.white,
+                                focusColor: Colors.black,
                                 value: VoterIDtype,
-                                style: TextStyle(color: Colors.white),
-                                iconEnabledColor: Colors.white,
+                                style: TextStyle(color: Colors.black),
+                                iconEnabledColor: Colors.black,
                                 items: <String>[
                                   'Voter ID',
                                   'Driving License',
@@ -1021,7 +1024,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 hint: Text(
                                   "Select Type",
                                   style: TextStyle(
-                                      color: Colors.white, fontSize: 14, fontWeight: FontWeight.w500),
+                                      color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
                                 ),
                                 onChanged: (String newValue) {
                                   setState(() {
@@ -1244,11 +1247,41 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   }) {
     return TextFormField(
       controller: controller,
-      decoration: InputDecoration(labelText: labelText),
+      decoration: InputDecoration(
+        labelText: labelText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0), // Customize as needed
+          borderSide: BorderSide(
+            color: Colors.grey, // Default border color
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: Colors.blue, // Border color when focused
+            width: 2.0, // Customize border width
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: Colors.red, // Border color when validation fails
+            width: 2.0,
+          ),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8.0),
+          borderSide: BorderSide(
+            color: Colors.grey, // Border color when enabled but not focused
+            width: 1.0,
+          ),
+        ),
+      ),
       keyboardType: keyboardType,
       validator: validator,
     );
   }
+
 
   Widget _patientInfoRow() {
     return Padding(
@@ -1258,7 +1291,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         children: [
           Flexible(
             child: Align(
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
               child: GestureDetector(
                 onTap: () {
                   // Handle the tap event here
@@ -1270,7 +1303,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 child: Text(
                   'Today Registered Patient(s) : 0',
                   style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w800),
+                      color: Colors.black, fontWeight: FontWeight.w800),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),

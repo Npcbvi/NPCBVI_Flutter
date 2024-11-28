@@ -120,19 +120,19 @@ class _LoginScreenState extends State<LoginScreen> {
             nextScreen = CampDashboard();
             break;
           case '6':
-            nextScreen = HospitalDashboard();
+            nextScreen = HospitalDashboard();// login and menu detaiuls
             break;
           case '3':
-            nextScreen = DPMDashboard();
+            nextScreen = DPMDashboard(); //working full
             break;
           case '5':
-            nextScreen = NgoDashboard();
+            nextScreen = NgoDashboard();// working full
             break;
           case '2':
-            nextScreen = SpoDashboard();
+            nextScreen = SpoDashboard(); ///Only Dashboardview
             break;
           default:
-            nextScreen = MainDashboard();
+            nextScreen = MainDashboard();// working full
         }
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => nextScreen));

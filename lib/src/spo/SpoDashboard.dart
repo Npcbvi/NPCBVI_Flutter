@@ -6,6 +6,7 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +18,9 @@ class SpoDashboard extends StatefulWidget {
 }
 
 class _SpoDashboard extends State<SpoDashboard> {
+  bool _isLoading = true;
+  bool _hasError = false;
+  String _errorMessage = '';
   TextEditingController fullnameControllers = new TextEditingController();
   String _chosenValue, districtNames, userId, stateNames,_chosenValueMange;
   TextEditingController _oldPasswordControllere = new TextEditingController();
@@ -31,16 +35,107 @@ class _SpoDashboard extends State<SpoDashboard> {
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
   DataGetDPM_ScreeningMonth _selectedUserMonth;
-
+  int status, district_code_login, state_code_login;
+  String role_id;
+  bool isLoadingApi = true;
   bool ngoDashboardclicks = false;
+  String currentFinancialYear;
+  String _chosenValueLOWVision,
+      _chosenEyeBank,
+      _chosenValueLgoutOption;
+  bool dashboardviewReplace = false;
+
+  bool SPOLcikONDPMMEnus = false;
+  String ngoCountApproved,
+      ngoCountPending,
+      totalPatientApproved,
+      totalPatientPending,
+      gH_CHC_Count,
+      gH_CHC_Count_Pending,
+      ppCount,
+      ppCount_pending,
+      pmcCount,
+      pmcCountPending,
+      campCompletedCount,
+      campongoingCount,
+      campCommingCount,
+      campCount,
+      satellitecentreCount,
+      patientCount;
+  String ngo_application_name;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    // To generate number on loading of page
-    getUserData();
-  }
+    dashboardviewReplace = true;
 
+    _getSPOashbnoardData();
+  }
+  void _getSPOashbnoardData() {
+    getUserData();
+    Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+
+      if (isNetworkAvailable) {
+        Utils.showProgressDialog(context);
+        try {
+          final response = await ApiController.getSPO_dashboard(
+              district_code_login,
+              state_code_login,
+              569,
+              userId,
+              role_id,
+              status,
+              currentFinancialYear);
+          Utils.hideProgressDialog(context);
+          if (response.status) {
+            setState(() {
+              ngoCountApproved = response.data.ngoCount;
+              ngoCountPending = response.data.ngoPendingCount;
+              totalPatientApproved = response.data.totalPatientApproved;
+              totalPatientPending = response.data.totalPatientPending;
+              gH_CHC_Count = response.data.gHCHCCount;
+              gH_CHC_Count_Pending = response.data.gHCHCCountPending;
+              ppCount = response.data.ppCount;
+              ppCount_pending = response.data.ppCountPending;
+              pmcCount = response.data.pmcCount;
+              pmcCountPending = response.data.pmcCountPending;
+              campCompletedCount = response.data.campCompletedCount;
+              campongoingCount = response.data.campongoingCount;
+              campCommingCount = response.data.campCommingCount;
+              campCount = response.data.campCount;
+              satellitecentreCount = response.data.satellitecentreCount;
+              patientCount = response.data.patientCount;
+              print('@@After Api hit===' +
+                  ngoCountApproved +
+                  "====" +
+                  ngoCountPending);
+              _isLoading = false;
+            });
+          } else {
+            setState(() {
+              _isLoading = false;
+              _hasError = true;
+              _errorMessage = response.message;
+            });
+            Utils.showToast(response.message, true);
+          }
+        } catch (e) {
+          setState(() {
+            _isLoading = false;
+            _hasError = true;
+            _errorMessage = e.toString();
+          });
+        }
+      } else {
+        setState(() {
+          _isLoading = false;
+          _hasError = true;
+          _errorMessage = AppConstant.noInternet;
+        });
+        Utils.showToast(AppConstant.noInternet, true);
+      }
+    });
+  }
   void getUserData() {
     try {
       SharedPrefs.getUser().then((user) {
@@ -49,8 +144,17 @@ class _SpoDashboard extends State<SpoDashboard> {
           districtNames = user.districtName;
           stateNames = user.stateName;
           userId = user.userId;
-          print('@@-0----2' + user.name);
-          print('@@-0----3' + fullnameController);
+          status = user.status;
+          role_id = user.roleId;
+          state_code_login = user.state_code;
+          district_code_login = user.district_code;
+          print('@@2' + user.name);
+          print('@@3' + user.stateName);
+          print('@@4' + user.roleId);
+          print('@@5' + user.userId);
+          print('@@6' + user.districtName);
+          print('@@7' + state_code_login.toString());
+          print('@@8' + district_code_login.toString());
         });
       });
     } catch (e) {
@@ -233,20 +337,43 @@ class _SpoDashboard extends State<SpoDashboard> {
       return null;
     }
   }
+  String getCurrentFinancialYear() {
+    DateTime now = DateTime.now();
+    int currentYear = now.year;
+    int nextYear = currentYear + 1;
+    String financialYear;
+
+    if (now.month >= 4) {
+      // Financial year starts in April
+      financialYear = '$currentYear-${nextYear.toString().substring(2)}';
+    } else {
+      financialYear =
+      '${currentYear - 1}-${currentYear.toString().substring(2)}';
+    }
+
+    return financialYear;
+  }
 
   @override
   Widget build(BuildContext context) {
+    currentFinancialYear = getCurrentFinancialYear();
+    // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
+      appBar: new AppBar(
         backgroundColor: Colors.blue,
-        title: Text(
-          'Welcome ${fullnameController}',
-          // Assuming fullnameController has .text
-          style: TextStyle(color: Colors.white),
-        ),
+        title: new Text('Welcome ' + '${fullnameController}',
+            style: new TextStyle(
+              color: Colors.white,
+            )),
         centerTitle: true,
+        /* leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Utils.hideKeyboard(context);
+              Navigator.of(context).pop(context);
+            }),*/
         actions: [
           PopupMenuButton<int>(
             itemBuilder: (context) => [
@@ -256,7 +383,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                   children: [
                     Icon(Icons.lock),
                     SizedBox(width: 10),
-                    Text("Change Password"),
+                    Text("Change Password")
                   ],
                 ),
               ),
@@ -266,7 +393,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                   children: [
                     Icon(Icons.book),
                     SizedBox(width: 10),
-                    Text("User Manual"),
+                    Text("User Manual")
                   ],
                 ),
               ),
@@ -276,25 +403,24 @@ class _SpoDashboard extends State<SpoDashboard> {
                   children: [
                     Icon(Icons.logout),
                     SizedBox(width: 10),
-                    Text("Logout"),
+                    Text("Logout")
                   ],
                 ),
               ),
             ],
-            offset: Offset(0, 50),
+            offset: const Offset(0, 50),
             color: Colors.white,
             elevation: 2,
             onSelected: (value) {
-              switch (value) {
-                case 1:
-                  _showChangePasswordDialog();
-                  break;
-                case 2:
+              if (value == 1) {
+                _showChangePasswordDialog();
+              } else if (value == 2) {
                 // Implement User Manual action
-                  break;
-                case 3:
-                // Handle Logout
-                  break;
+              } else if (value == 3) {
+                setState(() {
+                  /* dashboardviewReplace = false;
+                  chnagePAsswordView = true;*/
+                });
               }
             },
           ),
@@ -304,7 +430,6 @@ class _SpoDashboard extends State<SpoDashboard> {
         child: Column(
           children: [
             Container(
-              width: double.infinity,
               color: Colors.blue,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -312,28 +437,1326 @@ class _SpoDashboard extends State<SpoDashboard> {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      _buildNavigationButton('Dashboard', () {
+                      InkWell(
+                        onTap: () {
+                          print('@@SpoDashboardview----display---');
+                          //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                          setState(() {
+                            dashboardviewReplace=true;
+                            SPOLcikONDPMMEnus=false;
+                          });
+                        },
+                        child: Container(
+                          width: 80.0,
+                          child: Text(
+                            'Dashboard',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
 
-                        print('@@dashboardviewReplace----display---');
-                        _future = getDPM_ScreeningYear();
-                        ngoDashboardclicks=true;
-                        setState(() {});
-                      }),
+                      SizedBox(width: 10.0),
+                      InkWell(
+                        onTap: () {
+                          print('@@DPMClickSPo----display---');
+                          //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                          setState(() {
+                            dashboardviewReplace=false;
+                            SPOLcikONDPMMEnus=true;
+                          });
+                        },
+                        child: Container(
+                          width: 80.0,
+                          child: Text(
+                            'DPM',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(width: 10.0), // Add spacing between widgets
+                      Container(
+                        width: 190.0,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: _chosenValue,
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.white,
+                              items: <String>[
+                                'Eye surgeons',
+                                'Estimate Target Allocation',
+
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Update",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _chosenValue = value;
+                                  //  print('@@spinnerChooseValue--' + _chosenValue);
+                                  if (_chosenValue == "Eye surgeons") {
+                                    print('@@NGO--1' + _chosenValue);
+                                    dashboardviewReplace=false;
+
+                                  } else if (_chosenValue == "Estimate Target Allocation") {
+                                    dashboardviewReplace=false;
+                                  }
+
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                       SizedBox(width: 8.0),
-                      _buildDropdown(),
+
+
+                      Container(
+                        width: 170.0,
+                        key: _dropdownKey,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: _chosenValueLOWVision,
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.white,
+                              items: <String>[
+                                'Eye Bank',
+                                'Eye Donation',
+
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "eye Bank Approval",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _chosenValueLOWVision = value;
+                                  //  print('@@spinnerChooseValue--' + _chosenValue);
+                                  if (_chosenValueLOWVision == "Eye Bank") {
+                                    print('@@NGO--1' + _chosenValueLOWVision);
+                                    dashboardviewReplace=false;
+                                  } else if (_chosenValueLOWVision ==
+                                      "Eye Donation") {
+                                    dashboardviewReplace=false;
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+
                       SizedBox(width: 8.0),
-                      _buildNavigationButton('Add Eye Bank', () {
-                        print('@@Add Eye Bank Clicked');
-                        setState(() {});
-                      }),
+                      Container(
+                        width: 300,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: _chosenEyeBank,
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.white,
+                              items: <String>[
+                                'Eye Bank Collection',
+                                'Eye Donation',
+                                'Eyeball Collection Via Eye Bank',
+                                'Eyeball Collection Via Eye Donation Center',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Application",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _chosenEyeBank = value;
+                                  //  print('@@spinnerChooseValue--' + _chosenValue);
+                                  if (_chosenEyeBank == "Eye Bank Collection") {
+                                    print('@@NGO--1' + _chosenEyeBank);
+                                    dashboardviewReplace=false;
+                                  } else if (_chosenEyeBank == "Eye Donation") {
+                                    dashboardviewReplace=false;
+                                  } else if (_chosenEyeBank ==
+                                      "Eyeball Collection Via Eye Bank") {
+                                    dashboardviewReplace=false;
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
             ),
-            _buildUserInfo(),
-            LowVisionRegisterNgoHopsital(),
-            ngoDashboardclick(),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Container(
+                  color: Colors.white70,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // Shown Captcha value to user
+                        Container(
+                            child: Text(
+                              'Login Type:',
+                              style: TextStyle(
+                                  color: Colors.black, fontWeight: FontWeight.w500),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                            child: Text(
+                              'STATE PROGRAM OFFICER',
+                              style: TextStyle(
+                                  color: Colors.red, fontWeight: FontWeight.w500),
+                            )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: Container(
+                            color: Colors.white70,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // Shown Captcha value to user
+                                  Container(
+                                      child: Text(
+                                        'Login ID:',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                      child: Text(
+                                        '${userId}',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+
+                                  Container(
+                                      child: Text(
+                                        'State :',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                      child: Text(
+                                        '${stateNames}',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500),
+                                      )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: dashboardviewReplace,
+              child: Container(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Container(
+                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Container(
+                            height: 160,
+                            width: double.infinity,
+                            decoration: new BoxDecoration(
+                                gradient: new LinearGradient(
+                                  begin: Alignment.centerLeft,
+                                  end: Alignment.centerRight,
+                                  colors: [
+                                    Color(0xFFF78CA0), // #f78ca0 at 0%
+                                    Color(0xFFF9748F), // #f9748f at 19%
+                                    Color(0xFFFD868C), // #fd868c at 60%
+                                    Color(0xFFFE9A8B), // #fe9a8b at 100%
+                                  ],
+                                  stops: [
+                                    0.0,
+                                    0.19,
+                                    0.6,
+                                    1.0
+                                  ], // Define the color stops
+                                )),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                      'Patient(s) ($currentFinancialYear)',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white)),
+                                ),
+                                Divider(color: Colors.grey, height: 1.0),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 30, 20.0, 0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            print(
+                                                '@@---Patient(s) (2024-2025) APproved for Dialog');
+                                         //   showDiseaseDialogApprovedPatintFinance();
+                                          },
+                                          child: new Text(
+                                            'Approved',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 30, 20.0, 0),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            print(
+                                                '@@---Patient(s) (2024-2025) Pending for Dialog');
+                                          //  showDiseaseDialogPendingPatintFinance();
+                                          },
+                                          child: new Text('Pending',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 17,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white)),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 10, 20.0, 0),
+                                        child: new Text('$totalPatientApproved',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 1,
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 10, 20.0, 0),
+                                        child: new Text(
+                                            '${totalPatientPending}',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 17,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ))),
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Container(
+                                  height: 160,
+                                  width: double.infinity,
+                                  decoration: new BoxDecoration(
+                                      gradient: new LinearGradient(
+                                        colors: [
+                                          Color(0xFF16D9E3), // #16d9e3 at 0%
+                                          Color(0xFF30C7EC), // #30c7ec at 47%
+                                          Color(0xFF46AEF7), // #46aef7 at 100%
+                                        ],
+                                        stops: [0.0, 0.47, 1.0],
+                                      )),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text('NGO(s)',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                      Divider(color: Colors.grey, height: 1.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print('@@---NGOsAPProved--1');
+
+                                                  setState(() {
+
+                                                  });
+
+                                                  // GetDPM_NGOApprovedPending();
+                                                },
+                                                child: new Text('Approved',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---ngo_PendingTask--1');
+
+                                                  setState(() {
+
+                                                  });
+
+                                                  // GetDPM_NGOApprovedPending();
+                                                },
+                                                child: new Text('Pending',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text(
+                                                  '${ngoCountApproved}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text(
+                                                  '${ngoCountPending}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ))),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Container(
+                                  height: 160,
+                                  width: double.infinity,
+                                  decoration: new BoxDecoration(
+                                      gradient: new LinearGradient(
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                        colors: [
+                                          Color(0xFF0BA360), // #0ba360 at 0%
+                                          Color(0xFF3CBA92), // #3cba92 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
+                                      )),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text(
+                                            'Government Hospital(s)/CHC(s)/Other',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                      Divider(color: Colors.grey, height: 1.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---Government_approved--1');
+
+                                                  setState(() {
+
+                                                  });
+                                                },
+                                                child: new Text('Approved',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---Government_Pending--1');
+
+                                                  setState(() {
+
+                                                  });
+                                                },
+                                                child: new Text('Pending',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text('${gH_CHC_Count}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text(
+                                                  '${gH_CHC_Count_Pending}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ))),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Container(
+                                  height: 160,
+                                  width: double.infinity,
+                                  decoration: new BoxDecoration(
+                                      gradient: new LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          Color(0xFFBF7DFF), // #bf7dff at 0%
+                                          Color(0xFF5DA7F1), // #5da7f1 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
+                                      )),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text('Private Practitioner(s)',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                      Divider(color: Colors.grey, height: 1.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---GetDPM_PrivatePartitionPorovedClickShowData--1');
+
+                                                  setState(() {
+
+                                                  });
+
+                                                  // GetDPM_NGOApprovedPending();
+                                                },
+                                                child: new Text('Approved',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---Pending here work----1');
+
+                                                  setState(() {
+
+                                                  });
+                                                },
+                                                child: new Text('Pending',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text('${ppCount}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text(
+                                                  '${ppCount_pending}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ))),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Container(
+                                  height: 160,
+                                  width: double.infinity,
+                                  decoration: new BoxDecoration(
+                                      gradient: new LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          Color(0xFFE465F3), // #e465f3 at 0%
+                                          Color(0xFFF5576C), // #f5576c at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
+                                      )),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text(
+                                            'Private Medical College(s)',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                      Divider(color: Colors.grey, height: 1.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---APProved here work----1');
+
+                                                  setState(() {
+
+                                                  });
+                                                },
+                                                child: new Text('Approved',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---DPM_privateMEdicalCollegePendingData here work----1');
+
+                                                  setState(() {
+
+                                                  });
+                                                },
+                                                child: new Text('Pending',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text('${pmcCount}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text(
+                                                  '${ppCount_pending}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ))),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Container(
+                                  height: 160,
+                                  width: double.infinity,
+                                  decoration: new BoxDecoration(
+                                      gradient: new LinearGradient(
+                                        begin: Alignment.bottomRight,
+                                        end: Alignment.topLeft,
+                                        colors: [
+                                          Color(0xFF667EEA), // #667eea at 0%
+                                          Color(0xFF764BA2), // #764ba2 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
+                                      )),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text('Screening Camp(s)',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                      Divider(color: Colors.grey, height: 1.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---Screening here work----1');
+
+                                                  setState(() {
+
+                                                  });
+                                                },
+
+                                                child: new Text('Completed',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---Screening here work----1');
+
+                                                  setState(() {
+
+                                                  });
+                                                },
+                                                child: new Text('Ongoing',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---Screening here work----1');
+
+                                                  setState(() {
+
+                                                  });
+                                                },
+                                                child: new Text('Coming',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text(
+                                                  '${campCompletedCount}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text(
+                                                  '${campongoingCount}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 10, 20.0, 0),
+                                              child: new Text(
+                                                  '${campCommingCount}',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontSize: 17,
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      color: Colors.white)),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ))),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Container(
+                                  height: 160,
+                                  width: double.infinity,
+                                  decoration: new BoxDecoration(
+                                      gradient: new LinearGradient(
+                                        begin: Alignment.bottomLeft,
+                                        end: Alignment.topRight,
+                                        colors: [
+                                          Color(0xFFFFC91E), // #ffc91e at 0%
+                                          Color(0xFFFF7249), // #ff7249 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
+                                      )),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text('Satellite Centre(s)',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                      Divider(color: Colors.grey, height: 1.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  print(
+                                                      '@@---satelliteCentreShowData here work----1');
+
+                                                  setState(() {
+
+                                                  });
+                                                },
+                                                child: new Text(
+                                                    '${satellitecentreCount}',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Utils.showToast(
+                                                      "Due to large amount of data",
+                                                      true);
+                                                },
+                                                child: new Text('more..',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ))),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.white,
+                      child: Column(
+                        children: [
+                          Container(
+                              margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                              child: Container(
+                                  height: 160,
+                                  width: double.infinity,
+                                  decoration: new BoxDecoration(
+                                      gradient: new LinearGradient(
+                                        begin: Alignment.topRight,
+                                        end: Alignment.bottomLeft,
+                                        colors: [
+                                          Color(0xFF2B5876), // #2b5876 at 0%
+                                          Color(0xFF4E4376), // #4e4376 at 100%
+                                        ],
+                                        stops: [0.0, 1.0], // Define the color stops
+                                      )),
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: Text('Total Patient(s)',
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.white)),
+                                      ),
+                                      Divider(color: Colors.grey, height: 1.0),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Utils.showToast(
+                                                      "Due to large amount of data",
+                                                      true);
+                                                },
+                                                child: new Text(
+                                                    '${patientCount}',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            flex: 1,
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets.fromLTRB(
+                                                  20, 30, 20.0, 0),
+                                              child: GestureDetector(
+                                                onTap: () {
+                                                  Utils.showToast(
+                                                      "Due to large amount of data",
+                                                      true);
+                                                },
+                                                child: new Text('more..',
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                        FontWeight.bold,
+                                                        color: Colors.white)),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ))),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: Colors.blue,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: new Text(
+                                  'Disease-wise Patient Statistics( Since FY: $currentFinancialYear )',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding:
+                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: new Text(
+                                  'Disease-wise Registered Patient(Since FY: $currentFinancialYear',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SPOLcikONDPMMEnu(),
+            // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
         ),
       ),
@@ -976,7 +2399,300 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+  Widget SPOLcikONDPMMEnu() {
+    return Column(
+      children: [
+        Visibility(
+          visible: SPOLcikONDPMMEnus,
+          child: Column(
+            children: [
+              // Horizontal Scrolling for both Header and Data Rows
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  children: [
+                    // Top Info Bar
+                    Container(
+                      color: Colors.white70,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(width: 10),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                            width: 250.0,
+                            child: const Text(
+                              'District Programme Manager Details',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                        ],
+                      ),
+                    ),
+                    // Data Table Header
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('District'),
+                        _buildHeaderCell('User ID'),
+                        _buildHeaderCell('Name'),
+                        _buildHeaderCell('Address'),
+                        _buildHeaderCell('Mobile No.'),
+                        _buildHeaderCell('Email ID'),
+                        _buildHeaderCell('Status'),
+                        _buildHeaderCellACtiveDeactive('Activate/Deactivate'),
+                        //in comment next sprint
+                       // _buildHeaderCell('Select'),
+                      ],
+                    ),
+                    const Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<SPODashboardDPMClickViewData>>(
+                      future: ApiController.getSPO_DPM_View(29),
+                      builder: (context, snapshot) {
+                        // Show progress dialog when the request is in progress
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          // Show the progress dialog
+                          Utils.showProgressDialog(context);
+                        } else {
+                          // Dismiss the progress dialog once the data is fetched
+                          if (snapshot.connectionState != ConnectionState.waiting) {
+                            Utils.hideProgressDialog(context);
+                          }
+                        }
 
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else if (snapshot.hasError) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text("Error: ${snapshot.error}"),
+                            ),
+                          );
+                        }else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                _buildDataCellSrNo('1'),
+                                _buildDataCell('No data found'),
+                              ],
+                            ),
+                          );
+                        } else {
+                          List<SPODashboardDPMClickViewData> ddata = snapshot.data;
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.districtName ?? 'N/A'), // Handle null
+                                  _buildDataCell(offer.userId ?? 'N/A'), // Add field if necessary
+                                  _buildDataCell(offer.name ?? 'N/A'),
+                                  _buildDataCell(offer.address ?? 'N/A'),
+                                  _buildDataCell(offer.mobile?.toString() ?? 'N/A'),
+                                  _buildDataCell(offer.emailId?.toString() ?? 'N/A'),
+                                  _buildDataCell(offer.status?.toString() ?? 'N/A'),
+                                 _buildRadioCell(offer),
+                                  //in comment next sprint
+                                  /*  _buildHeaderCell('Select'),*/// Add Radio Button Cell
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  Widget _buildHeaderCellACtiveDeactive(String text) {
+    return Container(
+      height: 40,
+      width: 250, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+// New method to build the radio button cell
+  // Updated method to build the radio button cell with 'status' logic
+  Widget _buildRadioCell(SPODashboardDPMClickViewData offer) {
+    return Container(
+      height: 80,
+      width: 250, // Fixed width for consistency
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Radio<String>(
+            value: 'Activate',
+            groupValue: offer.status == '1' ? 'Activate' : 'Deactivate', // If status is 1, activate is selected
+            onChanged: (String newValue) {
+              offer.status = '1'; // Change status to '1' for Activate
+            },
+          ),
+          const Text('Activate'), // Label for the radio button
+          Radio<String>(
+            value: 'Deactivate',
+            groupValue: offer.status == '0' ? 'Deactivate' : 'Activate', // If status is 0, deactivate is selected
+            onChanged: (String newValue) {
+              offer.status = '0'; // Change status to '0' for Deactivate
+            },
+          ),
+          const Text('Deactivate'), // Label for the radio button
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellSrNo(String text) {
+    return Container(
+      height: 40,
+      width: 80, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCell(String text) {
+    return Container(
+      height: 40,
+      width: 150, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCell(String text) {
+    return Container(
+      height: 80,
+      width: 150,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellViewBlue(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 80,
+        width: 150,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellSrNo(String text) {
+    return Container(
+      height: 80,
+      width: 80, //
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class GetChangeAPsswordFieldsss {
