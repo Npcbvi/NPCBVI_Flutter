@@ -71,6 +71,7 @@ import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/ngoSatelliteMa
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/CenterOfficeNameSatelliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/SatelliteCenterRegistation.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/EyeBankApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeSurgeons.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SpoDashobardData.dart';
@@ -4532,6 +4533,70 @@ class ApiController {
     }
   }
 
+  static Future<List<EyeBankApprovalDataData>> getSPO_EyeBankApplicationApproval(int stateid, String userid) async {
+    print("@@getSPO_EyeBankApplicationApproval: 1");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_EyeBankApplicationApproval;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateid": stateid,
+        "userid": userid,
+      });
+      print("@@getSPO_EyeBankApplicationApproval--URL: $url");
+      print("@@getSPO_EyeBankApplicationApproval--body: ${body.toString()}");
+
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.json,  // Use ResponseType.json to get the data already parsed
+        ),
+      );
+
+      print("@@getSPO_EyeBankApplicationApproval--Api Response: ${response.toString()}");
+
+      // Access response data directly
+      var responseData = response.data; // response.data is already a Map<String, dynamic>
+
+      // Check the response
+      EyeBankApproval data = EyeBankApproval.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print("@@11: ${response.toString()}");
+
+        // Return the list of data
+        return data.data;
+      } else {
+        print("@@22: ${response.toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@33--Error: $e");
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
 
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

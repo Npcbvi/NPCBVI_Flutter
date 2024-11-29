@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
@@ -19,17 +22,25 @@ class SpoDashboard extends StatefulWidget {
 }
 
 class _SpoDashboard extends State<SpoDashboard> {
+  DataDsiricst _selectedUserDistrict;
+  int stateCodeSPO,
+      disrtcCode,
+      stateCodeDPM,
+      stateCodeGovtPrivate,
+      distCodeDPM,
+      distCodeGovtPrivate;
   bool _isLoading = true;
   bool _hasError = false;
   String _errorMessage = '';
   TextEditingController fullnameControllers = new TextEditingController();
-  String _chosenValue, districtNames, userId, stateNames,_chosenValueMange;
+  String _chosenValue, districtNames, userId, stateNames, _chosenValueMange;
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
   TextEditingController _confirmnPasswordontrollere =
   new TextEditingController();
   GetChangeAPsswordFieldsss getchangePwds = new GetChangeAPsswordFieldsss();
-
+   double cellWidth = 100.0; // Set desired width
+   double cellHeight = 40.0; // Set desired height
   final GlobalKey _dropdownKey = GlobalKey();
   String fullnameController, getYearNgoHopital, getfyidNgoHospital;
   bool ManageUSerNGOHospt = false;
@@ -46,8 +57,10 @@ class _SpoDashboard extends State<SpoDashboard> {
       _chosenValueLgoutOption;
   bool dashboardviewReplace = false;
 
+  bool eyeBankApprovals = false;
+  bool RegisteredEyesurgeonsEstimateTargetAllocations = false;
   bool SPOLcikONDPMMEnus = false;
-  bool RegisteredEyesurgeon=false;
+  bool RegisteredEyesurgeon = false;
   String ngoCountApproved,
       ngoCountPending,
       totalPatientApproved,
@@ -65,6 +78,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       satellitecentreCount,
       patientCount;
   String ngo_application_name;
+  Future<List<EyeSurgeonsData>> _futures;
   @override
   void initState() {
     // TODO: implement initState
@@ -72,11 +86,12 @@ class _SpoDashboard extends State<SpoDashboard> {
     dashboardviewReplace = true;
 
     _getSPOashbnoardData();
+    _futures = ApiController.getSPO_RegisteredEyesurgeonList(100, "NPCBTT");
   }
+
   void _getSPOashbnoardData() {
     getUserData();
     Utils.isNetworkAvailable().then((isNetworkAvailable) async {
-
       if (isNetworkAvailable) {
         Utils.showProgressDialog(context);
         try {
@@ -138,6 +153,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       }
     });
   }
+
   void getUserData() {
     try {
       SharedPrefs.getUser().then((user) {
@@ -168,7 +184,10 @@ class _SpoDashboard extends State<SpoDashboard> {
     final RenderBox dropdownRenderBox =
     _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    Overlay
+        .of(context)
+        ?.context
+        .findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -216,7 +235,10 @@ class _SpoDashboard extends State<SpoDashboard> {
     final RenderBox dropdownRenderBox =
     _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    Overlay
+        .of(context)
+        ?.context
+        .findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -272,7 +294,10 @@ class _SpoDashboard extends State<SpoDashboard> {
     final RenderBox dropdownRenderBox =
     _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay.of(context)?.context.findRenderObject() as RenderBox;
+    Overlay
+        .of(context)
+        ?.context
+        .findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -339,6 +364,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       return null;
     }
   }
+
   String getCurrentFinancialYear() {
     DateTime now = DateTime.now();
     int currentYear = now.year;
@@ -378,7 +404,8 @@ class _SpoDashboard extends State<SpoDashboard> {
             }),*/
         actions: [
           PopupMenuButton<int>(
-            itemBuilder: (context) => [
+            itemBuilder: (context) =>
+            [
               PopupMenuItem(
                 value: 1,
                 child: Row(
@@ -444,9 +471,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                           print('@@SpoDashboardview----display---');
                           //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                           setState(() {
-                            dashboardviewReplace=true;
-                            SPOLcikONDPMMEnus=false;
-                            RegisteredEyesurgeon=false;
+                            dashboardviewReplace = true;
+                            SPOLcikONDPMMEnus = false;
+                            RegisteredEyesurgeon = false;
+                            RegisteredEyesurgeonsEstimateTargetAllocations=false;
                           });
                         },
                         child: Container(
@@ -468,9 +496,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                           print('@@DPMClickSPo----display---');
                           //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                           setState(() {
-                            dashboardviewReplace=false;
-                            SPOLcikONDPMMEnus=true;
-                            RegisteredEyesurgeon=false;
+                            dashboardviewReplace = false;
+                            SPOLcikONDPMMEnus = true;
+                            RegisteredEyesurgeon = false;
+                            RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                            eyeBankApprovals=false;
                           });
                         },
                         child: Container(
@@ -528,13 +558,17 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   //  print('@@spinnerChooseValue--' + _chosenValue);
                                   if (_chosenValue == "Eye surgeons") {
                                     print('@@NGO--1' + _chosenValue);
-                                    dashboardviewReplace=false;
-                                    SPOLcikONDPMMEnus=false;
-                                    RegisteredEyesurgeon=true;
-                                  } else if (_chosenValue == "Estimate Target Allocation") {
-                                    dashboardviewReplace=false;
+                                    dashboardviewReplace = false;
+                                    SPOLcikONDPMMEnus = false;
+                                    RegisteredEyesurgeon = true;
+                                    eyeBankApprovals=false;
+                                  } else if (_chosenValue ==
+                                      "Estimate Target Allocation") {
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=true;
+                                    eyeBankApprovals=false;
                                   }
-
                                 });
                               },
                             ),
@@ -572,7 +606,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                 );
                               }).toList(),
                               hint: Text(
-                                "eye Bank Approval",
+                                "Eye Bank Approval",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 14,
@@ -585,10 +619,16 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   //  print('@@spinnerChooseValue--' + _chosenValue);
                                   if (_chosenValueLOWVision == "Eye Bank") {
                                     print('@@NGO--1' + _chosenValueLOWVision);
-                                    dashboardviewReplace=false;
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=true;
                                   } else if (_chosenValueLOWVision ==
                                       "Eye Donation") {
-                                    dashboardviewReplace=false;
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=false;
                                   }
                                 });
                               },
@@ -639,12 +679,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   //  print('@@spinnerChooseValue--' + _chosenValue);
                                   if (_chosenEyeBank == "Eye Bank Collection") {
                                     print('@@NGO--1' + _chosenEyeBank);
-                                    dashboardviewReplace=false;
+                                    dashboardviewReplace = false;
+                                    eyeBankApprovals=false;
                                   } else if (_chosenEyeBank == "Eye Donation") {
-                                    dashboardviewReplace=false;
+                                    dashboardviewReplace = false;
                                   } else if (_chosenEyeBank ==
                                       "Eyeball Collection Via Eye Bank") {
-                                    dashboardviewReplace=false;
+                                    dashboardviewReplace = false;
+                                    eyeBankApprovals=false;
                                   }
                                 });
                               },
@@ -673,7 +715,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                             child: Text(
                               'Login Type:',
                               style: TextStyle(
-                                  color: Colors.black, fontWeight: FontWeight.w500),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
                             )),
                         const SizedBox(
                           width: 10,
@@ -682,7 +725,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                             child: Text(
                               'STATE PROGRAM OFFICER',
                               style: TextStyle(
-                                  color: Colors.red, fontWeight: FontWeight.w500),
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500),
                             )),
                         const SizedBox(
                           width: 10,
@@ -805,7 +849,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           onTap: () {
                                             print(
                                                 '@@---Patient(s) (2024-2025) APproved for Dialog');
-                                         //   showDiseaseDialogApprovedPatintFinance();
+                                            //   showDiseaseDialogApprovedPatintFinance();
                                           },
                                           child: new Text(
                                             'Approved',
@@ -827,7 +871,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           onTap: () {
                                             print(
                                                 '@@---Patient(s) (2024-2025) Pending for Dialog');
-                                          //  showDiseaseDialogPendingPatintFinance();
+                                            //  showDiseaseDialogPendingPatintFinance();
                                           },
                                           child: new Text('Pending',
                                               textAlign: TextAlign.center,
@@ -1018,7 +1062,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           Color(0xFF0BA360), // #0ba360 at 0%
                                           Color(0xFF3CBA92), // #3cba92 at 100%
                                         ],
-                                        stops: [0.0, 1.0], // Define the color stops
+                                        stops: [
+                                          0.0,
+                                          1.0
+                                        ], // Define the color stops
                                       )),
                                   child: Column(
                                     children: [
@@ -1144,7 +1191,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           Color(0xFFBF7DFF), // #bf7dff at 0%
                                           Color(0xFF5DA7F1), // #5da7f1 at 100%
                                         ],
-                                        stops: [0.0, 1.0], // Define the color stops
+                                        stops: [
+                                          0.0,
+                                          1.0
+                                        ], // Define the color stops
                                       )),
                                   child: Column(
                                     children: [
@@ -1271,7 +1321,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           Color(0xFFE465F3), // #e465f3 at 0%
                                           Color(0xFFF5576C), // #f5576c at 100%
                                         ],
-                                        stops: [0.0, 1.0], // Define the color stops
+                                        stops: [
+                                          0.0,
+                                          1.0
+                                        ], // Define the color stops
                                       )),
                                   child: Column(
                                     children: [
@@ -1397,7 +1450,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           Color(0xFF667EEA), // #667eea at 0%
                                           Color(0xFF764BA2), // #764ba2 at 100%
                                         ],
-                                        stops: [0.0, 1.0], // Define the color stops
+                                        stops: [
+                                          0.0,
+                                          1.0
+                                        ], // Define the color stops
                                       )),
                                   child: Column(
                                     children: [
@@ -1565,7 +1621,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           Color(0xFFFFC91E), // #ffc91e at 0%
                                           Color(0xFFFF7249), // #ff7249 at 100%
                                         ],
-                                        stops: [0.0, 1.0], // Define the color stops
+                                        stops: [
+                                          0.0,
+                                          1.0
+                                        ], // Define the color stops
                                       )),
                                   child: Column(
                                     children: [
@@ -1653,7 +1712,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           Color(0xFF2B5876), // #2b5876 at 0%
                                           Color(0xFF4E4376), // #4e4376 at 100%
                                         ],
-                                        stops: [0.0, 1.0], // Define the color stops
+                                        stops: [
+                                          0.0,
+                                          1.0
+                                        ], // Define the color stops
                                       )),
                                   child: Column(
                                     children: [
@@ -1762,6 +1824,8 @@ class _SpoDashboard extends State<SpoDashboard> {
             ),
             SPOLcikONDPMMEnu(),
             RegisteredEyesurgeons(),
+            RegisteredEyesurgeonsEstimateTargetAllocation(),
+            eyeBankApproval(),
             // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
         ),
@@ -1865,8 +1929,8 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  Widget _buildUserInfoItem(
-      String label, String value, Color labelColor, Color valueColor) {
+  Widget _buildUserInfoItem(String label, String value, Color labelColor,
+      Color valueColor) {
     return Row(
       children: [
         Text(label,
@@ -2168,18 +2232,22 @@ class _SpoDashboard extends State<SpoDashboard> {
                     ),
                     child: DropdownButtonFormField<String>(
                       value: _chosenValueMange,
-                      style: TextStyle(color: Colors.black), // Text color
+                      style: TextStyle(color: Colors.black),
+                      // Text color
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue, width: 2.0), // Border color
+                          borderSide: BorderSide(color: Colors.blue,
+                              width: 2.0), // Border color
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blueAccent, width: 2.0), // Border color when focused
+                          borderSide: BorderSide(color: Colors.blueAccent,
+                              width: 2.0), // Border color when focused
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         hintText: 'All',
-                        hintStyle: TextStyle(color: Colors.black), // Hint text color
+                        hintStyle: TextStyle(
+                            color: Colors.black), // Hint text color
                       ),
                       items: <String>[
                         'Hospitals',
@@ -2191,13 +2259,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                           child: Text(
                             value,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(color: Colors.black), // Item text color
+                            style: TextStyle(
+                                color: Colors.black), // Item text color
                           ),
                         );
                       }).toList(),
                       onChanged: (String value) {
                         setState(() {
-                          _chosenValueMange = value ?? 'All'; // Default to 'All' if null
+                          _chosenValueMange =
+                              value ?? 'All'; // Default to 'All' if null
                           if (_chosenValueMange == "Hospitals") {
                             print('@@NGO--1' + _chosenValueMange);
                           } else if (_chosenValueMange == "Camps") {
@@ -2232,6 +2302,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       ],
     );
   }
+
   Widget ngoDashboardclick() {
     return Row(
       children: [
@@ -2253,22 +2324,26 @@ class _SpoDashboard extends State<SpoDashboard> {
                         return CircularProgressIndicator();
                       }
 
-                      List<DataGetDPM_ScreeningYear> list = snapshot.data.map((district) {
+                      List<DataGetDPM_ScreeningYear> list = snapshot.data.map((
+                          district) {
                         return district;
                       }).toList();
 
-                      if (_selectedUser == null || !list.contains(_selectedUser)) {
+                      if (_selectedUser == null ||
+                          !list.contains(_selectedUser)) {
                         _selectedUser = list.first;
                       }
 
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Select year:',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             SizedBox(height: 10),
                             DropdownButtonFormField<DataGetDPM_ScreeningYear>(
@@ -2283,19 +2358,24 @@ class _SpoDashboard extends State<SpoDashboard> {
                                 });
                               },
                               items: list.map((user) {
-                                return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                                return DropdownMenuItem<
+                                    DataGetDPM_ScreeningYear>(
                                   value: user,
-                                  child: Text(user.name, style: TextStyle(fontSize: 16)),
+                                  child: Text(user.name,
+                                      style: TextStyle(fontSize: 16)),
                                 );
                               }).toList(),
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                  borderSide: BorderSide(
+                                      color: Colors.blue, width: 2.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                  borderSide: BorderSide(
+                                      color: Colors.blueAccent, width: 2.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 filled: true,
@@ -2303,7 +2383,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                               ),
                               dropdownColor: Colors.blue[50],
                               style: TextStyle(color: Colors.black),
-                              icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                              icon: Icon(
+                                  Icons.arrow_drop_down, color: Colors.blue),
                             ),
                           ],
                         ),
@@ -2319,7 +2400,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                 buildDropdownHospitalType(),
                 SizedBox(height: 10),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10),
                   child: ElevatedButton(
                     onPressed: () {
                       print('Submit button clicked');
@@ -2405,6 +2487,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+
   Widget SPOLcikONDPMMEnu() {
     return Column(
       children: [
@@ -2426,7 +2509,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         children: [
                           const SizedBox(width: 10),
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 10.0),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 10.0),
                             width: 250.0,
                             child: const Text(
                               'District Programme Manager Details',
@@ -2452,7 +2536,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         _buildHeaderCell('Status'),
                         _buildHeaderCellACtiveDeactive('Activate/Deactivate'),
                         //in comment next sprint
-                       // _buildHeaderCell('Select'),
+                        // _buildHeaderCell('Select'),
                       ],
                     ),
                     const Divider(color: Colors.blue, height: 1.0),
@@ -2461,17 +2545,20 @@ class _SpoDashboard extends State<SpoDashboard> {
                       future: ApiController.getSPO_DPM_View(state_code_login),
                       builder: (context, snapshot) {
                         // Show progress dialog when the request is in progress
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           // Show the progress dialog
                           Utils.showProgressDialog(context);
                         } else {
                           // Dismiss the progress dialog once the data is fetched
-                          if (snapshot.connectionState != ConnectionState.waiting) {
+                          if (snapshot.connectionState !=
+                              ConnectionState.waiting) {
                             Utils.hideProgressDialog(context);
                           }
                         }
 
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return const Center(
                             child: CircularProgressIndicator(),
                           );
@@ -2482,7 +2569,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                               child: Text("Error: ${snapshot.error}"),
                             ),
                           );
-                        }else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
@@ -2492,23 +2579,32 @@ class _SpoDashboard extends State<SpoDashboard> {
                             ),
                           );
                         } else {
-                          List<SPODashboardDPMClickViewData> ddata = snapshot.data;
+                          List<SPODashboardDPMClickViewData> ddata = snapshot
+                              .data;
                           return Column(
                             children: ddata.map((offer) {
                               return Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                mainAxisAlignment: MainAxisAlignment
+                                    .spaceEvenly,
                                 children: [
-                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.districtName ?? 'N/A'), // Handle null
-                                  _buildDataCell(offer.userId ?? 'N/A'), // Add field if necessary
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.districtName ?? 'N/A'),
+                                  // Handle null
+                                  _buildDataCell(offer.userId ?? 'N/A'),
+                                  // Add field if necessary
                                   _buildDataCell(offer.name ?? 'N/A'),
                                   _buildDataCell(offer.address ?? 'N/A'),
-                                  _buildDataCell(offer.mobile?.toString() ?? 'N/A'),
-                                  _buildDataCell(offer.emailId?.toString() ?? 'N/A'),
-                                  _buildDataCell(offer.status?.toString() ?? 'N/A'),
-                                 _buildRadioCell(offer),
+                                  _buildDataCell(
+                                      offer.mobile?.toString() ?? 'N/A'),
+                                  _buildDataCell(
+                                      offer.emailId?.toString() ?? 'N/A'),
+                                  _buildDataCell(
+                                      offer.status?.toString() ?? 'N/A'),
+                                  _buildRadioCell(offer),
                                   //in comment next sprint
-                                  /*  _buildHeaderCell('Select'),*/// Add Radio Button Cell
+                                  /*  _buildHeaderCell('Select'),*/
+                                  // Add Radio Button Cell
                                 ],
                               );
                             }).toList(),
@@ -2525,6 +2621,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       ],
     );
   }
+
   Widget _buildHeaderCellACtiveDeactive(String text) {
     return Container(
       height: 40,
@@ -2547,11 +2644,16 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+
 // Method to build a text input cell in each row
   // Method to create an editable text field
   // Editable Text Field Method
-  Widget createEditableTextField(String initialValue) {
-    TextEditingController controller = TextEditingController(text: initialValue);
+  Widget createEditableTextField(/*String initialValue*/) {
+    // Ensure initialValue is not null
+    // final safeValue = initialValue ?? '';
+
+    // Initialize controller with non-null value
+    final controller = TextEditingController(/*text: safeValue*/);
 
     return Expanded(
       child: Padding(
@@ -2566,9 +2668,10 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+
   Widget createButton({
-     String text,
-     VoidCallback onPressed,
+    String text,
+    VoidCallback onPressed,
     Color color = Colors.blue,
     Color textColor = Colors.white,
   }) {
@@ -2586,72 +2689,60 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+
+
   Widget RegisteredEyesurgeons() {
     return Column(
       children: [
         Visibility(
-          visible: RegisteredEyesurgeon,  // Ensure this is set to true
+          visible: RegisteredEyesurgeon,
           child: Column(
             children: [
-              // Top Info Bar (not scrollable)
+              // Top Info Bar
               Container(
                 color: Colors.white70,
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const SizedBox(width: 10),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 10.0),
-                      width: 250.0,
-                      child: const Text(
-                        'Registered Eye surgeon',
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Registered Eye Surgeon',
                         style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w500),
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-              // Horizontal Scrolling for Header and Data Rows
+              // Data Rows
               SingleChildScrollView(
-                scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+                scrollDirection: Axis.horizontal,
                 child: Column(
                   children: [
-                    // Data Table Header (horizontal scrollable)
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('Action'),
-                        _buildHeaderCell('In Government Sector'),
-                        _buildHeaderCell('In NGO Sector'),
-                        _buildHeaderCell('In Private Medical College'),
-                        _buildHeaderCell('In Private Practioner'),
+                        _buildDataCellSrNoeyeSereonsss('S.No.'),
+                        _buildDataCellSrNoeyeSereonsss('Action'),
+                        _buildDataCellSrNoeyeSereonsss('In Government Sector'),
+                        _buildDataCellSrNoeyeSereonsss('In NGO Sector'),
+                        _buildDataCellSrNoeyeSereonsss('In Private Medical College'),
+                        _buildDataCellSrNoeyeSereonsss('In Private Practitioner'),
                       ],
                     ),
                     const Divider(color: Colors.blue, height: 1.0),
-                    // Data Rows (horizontal scrollable)
                     FutureBuilder<List<EyeSurgeonsData>>(
-                      future: ApiController.getSPO_RegisteredEyesurgeonList(100, "NPCBTT"),
+                      future: _futures, // Cached future
                       builder: (context, snapshot) {
-                        // Show progress dialog when the request is in progress
                         if (snapshot.connectionState == ConnectionState.waiting) {
-                          // Show the progress dialog
                           Utils.showProgressDialog(context);
-                        } else {
-                          // Dismiss the progress dialog once the data is fetched
-                          if (snapshot.connectionState != ConnectionState.waiting) {
-                            Utils.hideProgressDialog(context);
-                          }
-                        }
-
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
+                          return const Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
+                          Utils.hideProgressDialog(context);
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Center(
@@ -2661,34 +2752,58 @@ class _SpoDashboard extends State<SpoDashboard> {
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                _buildDataCell('No data found'),
-                              ],
-                            ),
-                          );
-                        } else {
-                          List<EyeSurgeonsData> ddata = snapshot.data;
-                          print('@@ddata======='+ddata.toString());
-                          return Column(
-                            children: ddata?.map((offer) {  // Using ?. for safety
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
-                                  createButton(
-                                    text: 'Submit',
-                                    onPressed: () {},
-                                  ),
-                                  createEditableTextField(getNullSafeValue(offer.totalGov)),
-                                  createEditableTextField(getNullSafeValue(offer.totalNgo)),
-                                  createEditableTextField(getNullSafeValue(offer.totalPmc)),
-                                  createEditableTextField(getNullSafeValue(offer.totalPp)),
-                                ],
-                              );
-                            }).toList() ?? [],  // Fallback to empty list if null
+                            child: _buildDataCellSrNoeyeSereonsss('No data found'),
                           );
                         }
+
+                        Utils.hideProgressDialog(context);
+
+                        List<EyeSurgeonsData> ddata = snapshot.data;
+                        return Column(
+                          children: ddata.map((offer) {
+                            return Row(
+                              children: [
+                                _buildDataCellSrNoeyeSereonsss((ddata.indexOf(offer) + 1).toString()),
+                                SizedBox(
+                                  height: 60,
+                                  width: 150,
+                                  child: createButton(
+                                    text: 'Submit',
+                                    onPressed: () {
+                                    Utils.showToast("Next Sprint add!", true);
+                                    },
+                                  ),
+                                ),
+                                _buildEditableDataCell(
+                                  offer.totalGov.toString(),
+                                  onChanged: (value) {
+                                    print('@@Edited value: $value');
+                                  },
+                                ),
+                                _buildEditableDataCell(
+
+                                  offer.totalngo.toString(),
+                                  onChanged: (value) {
+                                    print('@@Edited value: $value');
+                                  },
+                                ),
+                                _buildEditableDataCell(
+                                  offer.totalPMC.toString(),
+                                  onChanged: (value) {
+                                    print('@@Edited value: $value');
+                                  },
+                                ),
+                                _buildEditableDataCell(
+                                  offer.totalPP.toString(),
+                                  onChanged: (value) {
+                                    print('@@Edited value: $value');
+                                  },
+                                ),
+
+                              ],
+                            );
+                          }).toList(),
+                        );
                       },
                     ),
                   ],
@@ -2701,13 +2816,162 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-
-
-
-  // Helper method to safely handle null and int values
-  String getNullSafeValue(dynamic value) {
-    return value?.toString() ?? 'N/A';
+  Widget RegisteredEyesurgeonsEstimateTargetAllocation() {
+    return Column(
+      children: [
+        Visibility(
+          visible: RegisteredEyesurgeonsEstimateTargetAllocations,
+          child: Column(
+            children: [
+              // Top Info Bar
+              Container(
+                color: Colors.white70,
+                padding: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Complete in Next Sprint due to\n website error!',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              // Data Rows
+            ],
+          ),
+        ),
+      ],
+    );
   }
+  Widget _buildDataCellSrNoeyeSereonsSrNo(String text) {
+    return Container(
+      height: 60,
+      width: 50,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          width: 0.5,
+          color: Colors.grey,
+        ),
+      ),
+      child: Center(
+        child: Text(
+
+          text,
+          style: const TextStyle(
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellSrNoeyeSereonss(String text) {
+    return Container(
+      height: cellHeight,
+      width: cellWidth,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          width: 0.5,
+          color: Colors.grey,
+        ),
+      ),
+      child: Center(
+        child: Text(
+
+          text,
+          style: const TextStyle(
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellSrNoeyeSereons(/*String text*/) {
+    return Container(
+
+      height: 60,
+      width: 150,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          width: 0.5,
+          color: Colors.grey,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          "",
+          style: const TextStyle(
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellSrNoeyeSereonsss(String text) {
+    return Container(
+      height: 60,
+      width: 150,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          width: 0.5,
+          color: Colors.grey,
+        ),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEditableDataCell(String initialValue, {Function(String) onChanged}) {
+    TextEditingController controller = TextEditingController(text: initialValue);
+
+    return Container(
+      height: 60,
+      width: 150,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          width: 0.5,
+          color: Colors.grey,
+        ),
+      ),
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number, // Set keyboard type to number
+        inputFormatters: [
+          FilteringTextInputFormatter.digitsOnly, // Allow only digits
+        ],
+        onChanged: onChanged, // Callback to handle changes if needed
+        decoration: const InputDecoration(
+          border: InputBorder.none, // Remove default border
+          contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+        ),
+        style: const TextStyle(
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+    );
+  }
+
+
+
 // Method to create button inside a DataCell
 
 // New method to build the radio button cell
@@ -2727,7 +2991,8 @@ class _SpoDashboard extends State<SpoDashboard> {
         children: [
           Radio<String>(
             value: 'Activate',
-            groupValue: offer.status == '1' ? 'Activate' : 'Deactivate', // If status is 1, activate is selected
+            groupValue: offer.status == '1' ? 'Activate' : 'Deactivate',
+            // If status is 1, activate is selected
             onChanged: (String newValue) {
               offer.status = '1'; // Change status to '1' for Activate
             },
@@ -2735,7 +3000,8 @@ class _SpoDashboard extends State<SpoDashboard> {
           const Text('Activate'), // Label for the radio button
           Radio<String>(
             value: 'Deactivate',
-            groupValue: offer.status == '0' ? 'Deactivate' : 'Activate', // If status is 0, deactivate is selected
+            groupValue: offer.status == '0' ? 'Deactivate' : 'Activate',
+            // If status is 0, deactivate is selected
             onChanged: (String newValue) {
               offer.status = '0'; // Change status to '0' for Deactivate
             },
@@ -2862,8 +3128,168 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-}
 
+
+  Widget eyeBankApproval() {
+
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Visibility(
+            visible: eyeBankApprovals,
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                alignment: Alignment.center,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Container(
+                      height: 40,
+                      color: Colors.blue,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: const Text(
+                            'District Programme Manager Details',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
+                          ),
+                      ),
+                    ),
+
+
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Select District:',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Center(
+                            child: FutureBuilder<List<DataDsiricst>>(
+                              future: _getDistrictData(29),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+                                if (!snapshot.hasData) {
+                                  return const CircularProgressIndicator();
+                                }
+
+                                // Logging for debugging
+                                developer.log('@@snapshot: ${snapshot.data}');
+
+                                List<DataDsiricst> districtList = snapshot.data;
+
+                                // Ensure selected district is in the list, otherwise select the first
+                                if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                                  _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
+                                }
+
+                                return DropdownButtonFormField<DataDsiricst>(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  onChanged: (districtUser) {
+                                    setState(() {
+                                      _selectedUserDistrict = districtUser;
+                                      distCodeDPM = int.parse(districtUser.districtCode.toString());
+                                      print('@@@Districtuser: ${districtUser.districtName}');
+                                    });
+                                  },
+                                  value: _selectedUserDistrict,
+                                  items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                    return DropdownMenuItem<DataDsiricst>(
+                                      value: district,
+                                      child: Text(district.districtName),
+                                    );
+                                  }).toList(),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                      child: ElevatedButton(
+                          child: Text('Submit'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                          ),
+                          onPressed: () {
+                            print('@@DPMMMM Hit here-----Api---------');
+                          }),
+                    ),
+
+
+
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+  Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
+    DashboardDistrictModel dashboardDistrictModel = DashboardDistrictModel();
+
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      var body = json.encode({"state_code": stateCode});
+      Dio dio = Dio();
+      response1 = await dio.post(
+        "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/ListDistrict",
+        data: body,
+        options: Options(
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+      print("@@Response--Api" + body.toString());
+      dashboardDistrictModel = DashboardDistrictModel.fromJson(json.decode(response1.data));
+      if (dashboardDistrictModel.status) {
+        print("@@dashboardDistrictModel----getting of size +++--" +
+            dashboardDistrictModel.data.length.toString());
+      } else {
+        print("@@no data---" + dashboardDistrictModel.data.length.toString());
+      }
+      return dashboardDistrictModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+  }
+
+
+}
 class GetChangeAPsswordFieldsss {
   String userid;
   String oldPassword;
