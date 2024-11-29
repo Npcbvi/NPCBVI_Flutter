@@ -4533,7 +4533,7 @@ class ApiController {
     }
   }
 
-  static Future<List<EyeBankApprovalDataData>> getSPO_EyeBankApplicationApproval(int stateid, String userid) async {
+  static Future<List<EyeBankApprovalDataData>> getSPO_EyeBankApplicationApproval(int eyeBankUniqueID, int eyeBankingRole_id,int stateId, int districtId) async {
     print("@@getSPO_EyeBankApplicationApproval: 1");
 
     // Check network availability
@@ -4554,8 +4554,10 @@ class ApiController {
 
       // Define the request body
       var body = json.encode({
-        "stateid": stateid,
-        "userid": userid,
+        "eyeBankUniqueID": eyeBankUniqueID,
+        "eyeBankingRole_id": eyeBankingRole_id,
+        "stateId": stateId,
+        "districtId": districtId
       });
       print("@@getSPO_EyeBankApplicationApproval--URL: $url");
       print("@@getSPO_EyeBankApplicationApproval--body: ${body.toString()}");

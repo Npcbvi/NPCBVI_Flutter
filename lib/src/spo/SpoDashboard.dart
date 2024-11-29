@@ -9,6 +9,7 @@ import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/EyeBankApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeSurgeons.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -79,6 +80,8 @@ class _SpoDashboard extends State<SpoDashboard> {
       patientCount;
   String ngo_application_name;
   Future<List<EyeSurgeonsData>> _futures;
+  bool isSubmitPressed = false; // Track button press
+
   @override
   void initState() {
     // TODO: implement initState
@@ -3128,9 +3131,203 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-
-
   Widget eyeBankApproval() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Visibility(
+            visible: eyeBankApprovals,
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                alignment: Alignment.center,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Container(
+                      height: 40,
+                      color: Colors.blue,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: const Text(
+                            'District Programme Manager Details',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Select District:',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Center(
+                            child: FutureBuilder<List<DataDsiricst>>(
+                              future: _getDistrictData(29),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+                                if (!snapshot.hasData) {
+                                  return const CircularProgressIndicator();
+                                }
+
+                                // Logging for debugging
+                                developer.log('@@snapshot: ${snapshot.data}');
+
+                                List<DataDsiricst> districtList = snapshot.data;
+
+                                // Ensure selected district is in the list, otherwise select the first
+                                if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                                  _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
+                                }
+
+                                return DropdownButtonFormField<DataDsiricst>(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  onChanged: (districtUser) {
+                                    setState(() {
+                                      _selectedUserDistrict = districtUser;
+                                      distCodeDPM = int.parse(districtUser.districtCode.toString());
+                                      print('@@@Districtuser: ${districtUser.districtName}');
+                                    });
+                                  },
+                                  value: _selectedUserDistrict,
+                                  items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                    return DropdownMenuItem<DataDsiricst>(
+                                      value: district,
+                                      child: Text(district.districtName),
+                                    );
+                                  }).toList(),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                      child: ElevatedButton(
+                          child: Text('Submit'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isSubmitPressed = true; // Mark as submit pressed
+                            });
+                            print('@@DPMMMM Hit here-----Api---------');
+                          }
+                      ),
+                    ),
+
+                    // Display SingleChildScrollView only if submit is pressed and district is selected
+                    if (isSubmitPressed && _selectedUserDistrict != null)
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                _buildDataCellSrNo('S.No.'),
+                                _buildDataCell('Id'),
+                                _buildDataCell('Eye Bank Name'),
+                                _buildDataCell('Member Name'),
+                                _buildDataCell('Email'),
+                              ],
+                            ),
+                            const Divider(color: Colors.blue, height: 1.0),
+                            FutureBuilder<List<EyeBankApprovalDataData>>(
+                              future: ApiController.getSPO_EyeBankApplicationApproval(0,15,29,630),
+                              builder: (context, snapshot) {
+                                // Show progress dialog when the request is in progress
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  Utils.showProgressDialog(context);
+                                } else {
+                                  if (snapshot.connectionState != ConnectionState.waiting) {
+                                    Utils.hideProgressDialog(context);
+                                  }
+                                }
+
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: Text("Error: ${snapshot.error}"),
+                                    ),
+                                  );
+                                } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        _buildDataCell('No data found'),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  List<EyeBankApprovalDataData> ddata = snapshot.data;
+                                  return Column(
+                                    children: ddata.map((offer) {
+                                      return Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                          _buildDataCell(offer.eyeBankUniqueID ?? 'N/A'),
+                                          _buildDataCell(offer.eyebankName ?? 'N/A'),
+                                          _buildDataCell(offer.officername ?? 'N/A'),
+                                          _buildDataCell(offer.emailid?.toString() ?? 'N/A'),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+
+
+/*  Widget eyeBankApproval() {
 
 
     return SingleChildScrollView(
@@ -3242,7 +3439,92 @@ class _SpoDashboard extends State<SpoDashboard> {
                             print('@@DPMMMM Hit here-----Api---------');
                           }),
                     ),
+                    // Display SingleChildScrollView only if a district is selected
+                    if (_selectedUserDistrict != null)
+                      SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              _buildDataCellSrNoeyeSereonsss('S.No.'),
+                              _buildDataCellSrNoeyeSereonsss('Id'),
+                              _buildDataCellSrNoeyeSereonsss('Eye Bank Name'),
+                              _buildDataCellSrNoeyeSereonsss('Member Name'),
+                              _buildDataCellSrNoeyeSereonsss('Email'),
+                            ],
+                          ),
+                          const Divider(color: Colors.blue, height: 1.0),
+                          FutureBuilder<List<EyeBankApprovalDataData>>(
+                            future: ApiController.getSPO_EyeBankApplicationApproval(state_code_login,""),
+                            builder: (context, snapshot) {
+                              // Show progress dialog when the request is in progress
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                // Show the progress dialog
+                                Utils.showProgressDialog(context);
+                              } else {
+                                // Dismiss the progress dialog once the data is fetched
+                                if (snapshot.connectionState !=
+                                    ConnectionState.waiting) {
+                                  Utils.hideProgressDialog(context);
+                                }
+                              }
 
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else if (snapshot.hasError) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                    child: Text("Error: ${snapshot.error}"),
+                                  ),
+                                );
+                              } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      _buildDataCell('No data found'),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                List<EyeBankApprovalDataData> ddata = snapshot
+                                    .data;
+                                return Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .spaceEvenly,
+                                      children: [
+                                        _buildDataCellSrNo(
+                                            (ddata.indexOf(offer) + 1).toString()),
+                                        _buildDataCell(offer.districtName ?? 'N/A'),
+                                        // Handle null
+                                        _buildDataCell(offer.eyeBankUniqueID ?? 'N/A'),
+                                        // Add field if necessary
+                                        _buildDataCell(offer.eyebankName ?? 'N/A'),
+                                        _buildDataCell(offer.officername ?? 'N/A'),
+                                        _buildDataCell(
+                                            offer.emailid?.toString() ?? 'N/A'),
+
+                                        //in comment next sprint
+                                        *//*  _buildHeaderCell('Select'),*//*
+                                        // Add Radio Button Cell
+                                      ],
+                                    );
+                                  }).toList(),
+                                );
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
 
 
                   ],
@@ -3253,7 +3535,7 @@ class _SpoDashboard extends State<SpoDashboard> {
         ],
       ),
     );
-  }
+  }*/
 
 
 
