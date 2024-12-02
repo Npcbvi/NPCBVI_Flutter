@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeBankApproval.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/EyeBankDonationApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeSurgeons.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -62,6 +63,10 @@ class _SpoDashboard extends State<SpoDashboard> {
   bool RegisteredEyesurgeonsEstimateTargetAllocations = false;
   bool SPOLcikONDPMMEnus = false;
   bool RegisteredEyesurgeon = false;
+
+  bool eyeBankDonationApprovals = false;
+
+  bool eyeBankCollections = false;
   String ngoCountApproved,
       ngoCountPending,
       totalPatientApproved,
@@ -504,6 +509,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                             RegisteredEyesurgeon = false;
                             RegisteredEyesurgeonsEstimateTargetAllocations=false;
                             eyeBankApprovals=false;
+                            eyeBankDonationApprovals=false;
+                            eyeBankCollections=false;
                           });
                         },
                         child: Container(
@@ -565,12 +572,16 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     SPOLcikONDPMMEnus = false;
                                     RegisteredEyesurgeon = true;
                                     eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=false;
                                   } else if (_chosenValue ==
                                       "Estimate Target Allocation") {
                                     dashboardviewReplace = false;
                                     RegisteredEyesurgeon = false;
                                     RegisteredEyesurgeonsEstimateTargetAllocations=true;
                                     eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=false;
                                   }
                                 });
                               },
@@ -626,12 +637,16 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     RegisteredEyesurgeon = false;
                                     RegisteredEyesurgeonsEstimateTargetAllocations=false;
                                     eyeBankApprovals=true;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=false;
                                   } else if (_chosenValueLOWVision ==
                                       "Eye Donation") {
                                     dashboardviewReplace = false;
                                     RegisteredEyesurgeon = false;
                                     RegisteredEyesurgeonsEstimateTargetAllocations=false;
                                     eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=true;
+                                    eyeBankCollections=false;
                                   }
                                 });
                               },
@@ -648,6 +663,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                             canvasColor: Colors.blue.shade200,
                           ),
                           child: DropdownButtonHideUnderline(
+
                             child: DropdownButton<String>(
                               focusColor: Colors.white,
                               value: _chosenEyeBank,
@@ -668,7 +684,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                 );
                               }).toList(),
                               hint: Text(
-                                "Application",
+                                "Application(s)",
                                 overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: Colors.white,
@@ -684,12 +700,31 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     print('@@NGO--1' + _chosenEyeBank);
                                     dashboardviewReplace = false;
                                     eyeBankApprovals=false;
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=true;
                                   } else if (_chosenEyeBank == "Eye Donation") {
                                     dashboardviewReplace = false;
+                                    eyeBankApprovals=false;
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=true;
                                   } else if (_chosenEyeBank ==
                                       "Eyeball Collection Via Eye Bank") {
                                     dashboardviewReplace = false;
                                     eyeBankApprovals=false;
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=true;
                                   }
                                 });
                               },
@@ -1829,6 +1864,8 @@ class _SpoDashboard extends State<SpoDashboard> {
             RegisteredEyesurgeons(),
             RegisteredEyesurgeonsEstimateTargetAllocation(),
             eyeBankApproval(),
+            eyeBankDonationApproval(),
+        eyeBankCollection(),
             // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
         ),
@@ -1958,21 +1995,35 @@ class _SpoDashboard extends State<SpoDashboard> {
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Old Password',
+                  border: OutlineInputBorder(  // Adds a border around the TextField
+                    borderRadius: BorderRadius.circular(12), // Optional: Makes the border rounded
+                    borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0), // Optional: Sets the border color and width
+                  ),
                 ),
                 controller: _oldPasswordControllere,
                 obscureText: true,
               ),
+              SizedBox(height: 10),
               TextField(
                 controller: _newPasswordontrollere,
                 decoration: InputDecoration(
                   labelText: 'New Password',
+                  border: OutlineInputBorder(  // Adds a border around the TextField
+                    borderRadius: BorderRadius.circular(12), // Optional: Makes the border rounded
+                    borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0), // Optional: Sets the border color and width
+                  ),
                 ),
                 obscureText: true,
               ),
+              SizedBox(height: 10),
               TextField(
                 controller: _confirmnPasswordontrollere,
                 decoration: InputDecoration(
                   labelText: 'Confirm New Password',
+                  border: OutlineInputBorder(  // Adds a border around the TextField
+                    borderRadius: BorderRadius.circular(12), // Optional: Makes the border rounded
+                    borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0), // Optional: Sets the border color and width
+                  ),
                 ),
                 obscureText: true,
               ),
@@ -3261,8 +3312,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                               ],
                             ),
                             const Divider(color: Colors.blue, height: 1.0),
+                            //eyeBankingRole_id=15 in case of Eye Bank Static send
                             FutureBuilder<List<EyeBankApprovalDataData>>(
-                              future: ApiController.getSPO_EyeBankApplicationApproval(0,15,29,630),
+                              future: ApiController.getSPO_EyeBankApplicationApproval(0,15,state_code_login,district_code_login),
                               builder: (context, snapshot) {
                                 // Show progress dialog when the request is in progress
                                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -3325,16 +3377,13 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-
-
-/*  Widget eyeBankApproval() {
-
+  Widget eyeBankDonationApproval() {
 
     return SingleChildScrollView(
       child: Column(
         children: [
           Visibility(
-            visible: eyeBankApprovals,
+            visible: eyeBankDonationApprovals,
             child: Center(
               child: Container(
                 margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
@@ -3349,16 +3398,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                           child: const Text(
-                            'District Programme Manager Details',
+                            'Eye Donation Application(s) for Approval',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w500),
                           ),
-                          ),
+                        ),
                       ),
                     ),
-
-
 
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
@@ -3425,6 +3472,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         ],
                       ),
                     ),
+
                     const SizedBox(
                       height: 10,
                     ),
@@ -3436,97 +3484,85 @@ class _SpoDashboard extends State<SpoDashboard> {
                             primary: Colors.blue,
                           ),
                           onPressed: () {
+                            setState(() {
+                              isSubmitPressed = true; // Mark as submit pressed
+                            });
                             print('@@DPMMMM Hit here-----Api---------');
-                          }),
-                    ),
-                    // Display SingleChildScrollView only if a district is selected
-                    if (_selectedUserDistrict != null)
-                      SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              _buildDataCellSrNoeyeSereonsss('S.No.'),
-                              _buildDataCellSrNoeyeSereonsss('Id'),
-                              _buildDataCellSrNoeyeSereonsss('Eye Bank Name'),
-                              _buildDataCellSrNoeyeSereonsss('Member Name'),
-                              _buildDataCellSrNoeyeSereonsss('Email'),
-                            ],
-                          ),
-                          const Divider(color: Colors.blue, height: 1.0),
-                          FutureBuilder<List<EyeBankApprovalDataData>>(
-                            future: ApiController.getSPO_EyeBankApplicationApproval(state_code_login,""),
-                            builder: (context, snapshot) {
-                              // Show progress dialog when the request is in progress
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                // Show the progress dialog
-                                Utils.showProgressDialog(context);
-                              } else {
-                                // Dismiss the progress dialog once the data is fetched
-                                if (snapshot.connectionState !=
-                                    ConnectionState.waiting) {
-                                  Utils.hideProgressDialog(context);
-                                }
-                              }
-
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              } else if (snapshot.hasError) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Center(
-                                    child: Text("Error: ${snapshot.error}"),
-                                  ),
-                                );
-                              } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      _buildDataCell('No data found'),
-                                    ],
-                                  ),
-                                );
-                              } else {
-                                List<EyeBankApprovalDataData> ddata = snapshot
-                                    .data;
-                                return Column(
-                                  children: ddata.map((offer) {
-                                    return Row(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .spaceEvenly,
-                                      children: [
-                                        _buildDataCellSrNo(
-                                            (ddata.indexOf(offer) + 1).toString()),
-                                        _buildDataCell(offer.districtName ?? 'N/A'),
-                                        // Handle null
-                                        _buildDataCell(offer.eyeBankUniqueID ?? 'N/A'),
-                                        // Add field if necessary
-                                        _buildDataCell(offer.eyebankName ?? 'N/A'),
-                                        _buildDataCell(offer.officername ?? 'N/A'),
-                                        _buildDataCell(
-                                            offer.emailid?.toString() ?? 'N/A'),
-
-                                        //in comment next sprint
-                                        *//*  _buildHeaderCell('Select'),*//*
-                                        // Add Radio Button Cell
-                                      ],
-                                    );
-                                  }).toList(),
-                                );
-                              }
-                            },
-                          ),
-                        ],
+                          }
                       ),
                     ),
 
+                    // Display SingleChildScrollView only if submit is pressed and district is selected
+                    if (isSubmitPressed && _selectedUserDistrict != null)
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                _buildDataCellSrNo('S.No.'),
+                                _buildDataCell('Id'),
+                                _buildDataCell('Eye Bank Name'),
+                                _buildDataCell('Member Name'),
+                                _buildDataCell('Email'),
+                              ],
+                            ),
+                            const Divider(color: Colors.blue, height: 1.0),
+                            //eyeBankingRole_id=16 in case of Eye Donation Static send
+                            FutureBuilder<List<EyeBankDonationApprovalData>>(
+                              future: ApiController.getSPO_EyeDonationApplicationApproval(0,16,29,630),
+                              builder: (context, snapshot) {
+                                // Show progress dialog when the request is in progress
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  Utils.showProgressDialog(context);
+                                } else {
+                                  if (snapshot.connectionState != ConnectionState.waiting) {
+                                    Utils.hideProgressDialog(context);
+                                  }
+                                }
 
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: Text("Error: ${snapshot.error}"),
+                                    ),
+                                  );
+                                } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        _buildDataCell('No data found'),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  List<EyeBankDonationApprovalData> ddata = snapshot.data;
+                                  return Column(
+                                    children: ddata.map((offer) {
+                                      return Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                          _buildDataCell(offer.eyeBankUniqueID ?? 'N/A'),
+                                          _buildDataCell(offer.eyebankName ?? 'N/A'),
+                                          _buildDataCell(offer.officername ?? 'N/A'),
+                                          _buildDataCell(offer.emailid?.toString() ?? 'N/A'),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -3535,8 +3571,202 @@ class _SpoDashboard extends State<SpoDashboard> {
         ],
       ),
     );
-  }*/
+  }
 
+  Widget eyeBankCollection() {
+
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Visibility(
+            visible: eyeBankCollections,
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                alignment: Alignment.center,
+                child: ListView(
+                  shrinkWrap: true,
+                  children: [
+                    Container(
+                      height: 40,
+                      color: Colors.blue,
+                      child: Center(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: const Text(
+                            'Complet in next Sprint!',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                   /* Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          const Text(
+                            'Select District:',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          Center(
+                            child: FutureBuilder<List<DataDsiricst>>(
+                              future: _getDistrictData(29),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+                                if (!snapshot.hasData) {
+                                  return const CircularProgressIndicator();
+                                }
+
+                                // Logging for debugging
+                                developer.log('@@snapshot: ${snapshot.data}');
+
+                                List<DataDsiricst> districtList = snapshot.data;
+
+                                // Ensure selected district is in the list, otherwise select the first
+                                if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                                  _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
+                                }
+
+                                return DropdownButtonFormField<DataDsiricst>(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  onChanged: (districtUser) {
+                                    setState(() {
+                                      _selectedUserDistrict = districtUser;
+                                      distCodeDPM = int.parse(districtUser.districtCode.toString());
+                                      print('@@@Districtuser: ${districtUser.districtName}');
+                                    });
+                                  },
+                                  value: _selectedUserDistrict,
+                                  items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                    return DropdownMenuItem<DataDsiricst>(
+                                      value: district,
+                                      child: Text(district.districtName),
+                                    );
+                                  }).toList(),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                      child: ElevatedButton(
+                          child: Text('Submit'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              isSubmitPressed = true; // Mark as submit pressed
+                            });
+                            print('@@DPMMMM Hit here-----Api---------');
+                          }
+                      ),
+                    ),
+
+                    if (isSubmitPressed && _selectedUserDistrict != null)
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                _buildDataCellSrNo('S.No.'),
+                                _buildDataCell('Id'),
+                                _buildDataCell('Eye Bank Name'),
+                                _buildDataCell('Member Name'),
+                                _buildDataCell('Email'),
+                              ],
+                            ),
+                            const Divider(color: Colors.blue, height: 1.0),
+                            //eyeBankingRole_id=16 in case of Eye Donation Static send
+                            FutureBuilder<List<EyeBankDonationApprovalData>>(
+                              future: ApiController.getSPO_EyeDonationApplicationApproval(0,16,29,630),
+                              builder: (context, snapshot) {
+                                // Show progress dialog when the request is in progress
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  Utils.showProgressDialog(context);
+                                } else {
+                                  if (snapshot.connectionState != ConnectionState.waiting) {
+                                    Utils.hideProgressDialog(context);
+                                  }
+                                }
+
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
+                                } else if (snapshot.hasError) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Center(
+                                      child: Text("Error: ${snapshot.error}"),
+                                    ),
+                                  );
+                                } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        _buildDataCell('No data found'),
+                                      ],
+                                    ),
+                                  );
+                                } else {
+                                  List<EyeBankDonationApprovalData> ddata = snapshot.data;
+                                  return Column(
+                                    children: ddata.map((offer) {
+                                      return Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                          _buildDataCell(offer.eyeBankUniqueID ?? 'N/A'),
+                                          _buildDataCell(offer.eyebankName ?? 'N/A'),
+                                          _buildDataCell(offer.officername ?? 'N/A'),
+                                          _buildDataCell(offer.emailid?.toString() ?? 'N/A'),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  );
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      ),*/
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
 
   Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
