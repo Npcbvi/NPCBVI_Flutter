@@ -2577,6 +2577,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         ],
                       ),
                     ),
+
                     // Data Table Header
                     Row(
                       children: [

@@ -74,6 +74,7 @@ import 'package:mohfw_npcbvi/src/model/sattelliteCenter/SatelliteCenterRegistati
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeBankApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeBankDonationApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeSurgeons.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/PatientRegistrations.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SpoDashobardData.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
@@ -4665,6 +4666,203 @@ class ApiController {
       print("@@33--Error: $e");
       Utils.showToast(e.toString(), true);
       return [];
+    }
+  }
+/*  static Future<PatientRegistrations> hopitalPatientRegistration(
+      int registrationType,   File patientImage,String idType,String idName,String dependencyType,
+      String relationType,String relationName,String firstName,String lastName,String dob,
+      String age,String gender,String mobileRelationType, String mobileNo,String screeningDate,String tentativeSurgeryDate,String disease,
+      String reportingPlace,int state,int district,int city,
+      int village,String address,String apartment,String nearLandMark,
+      String pincode,int communicationLanguage,int loggedInUserStateId,int loggedInUserDistrictId,
+      String entryBy,String loggedInNgoId,String programeId,int loggedInUserRole,
+      String userId,) async {
+    PatientRegistrations registrationModel = PatientRegistrations();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.PatientRegistration;
+
+        Map<String, dynamic> payload = {
+          "registrationType": registrationType,
+          "patientImage": patientImage,
+          "idType": idType,
+          "idName": idName,
+          "dependencyType": dependencyType,
+          "relationType": relationType,
+          "relationName": relationName,
+          "firstName": firstName,
+          "lastName": lastName,
+          "dob": dob,
+          "age": age,
+          "gender": gender,
+          "mobileRelationType": mobileRelationType,
+          "mobileNo":mobileNo,
+          "screeningDate":screeningDate,
+          "tentativeSurgeryDate": tentativeSurgeryDate,
+          "disease":disease,
+          "state": state,
+          "district": district,
+          "city": city,
+          "village":village,
+          "address":address,
+          "apartment":apartment,
+          "nearLandMark":nearLandMark,
+          "pincode":pincode,
+          "communicationLanguage":communicationLanguage,
+          "loggedInUserStateId":loggedInUserStateId,
+          "entryBy":entryBy,
+          "pincode":pincode,
+          "loggedInNgoId":loggedInNgoId,
+          "programeId":programeId,
+          "loggedInUserRole":loggedInUserRole,
+          "userId":userId,
+        };
+
+        print("@@hopitalPatientRegistration---" + url + payload.toString());
+
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: payload,
+            options: new Options(
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@hopitalPatientRegistration--Api" + response1.toString());
+        // Assuming the API returns a status and message in response
+        // Parse the response1 to update registrationModel accordingly
+        registrationModel =
+            PatientRegistrations.fromJson(jsonDecode(response1.data));
+        if (registrationModel.status ) {
+          Utils.showToast(registrationModel.message, true);
+        } else {
+          Utils.showToast("Wrong registered use id!", true);
+        }
+        return registrationModel;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }*/
+
+
+
+  static Future<PatientRegistrations> hopitalPatientRegistration(
+      int registrationType,
+      File patientImage,  // Use File instead of String
+      String idType,
+      String idName,
+      String dependencyType,
+      String relationType,
+      String relationName,
+      String firstName,
+      String lastName,
+      String dob,
+      String age,
+      String gender,
+      String mobileRelationType,
+      String mobileNo,
+      String screeningDate,
+      String tentativeSurgeryDate,
+      String disease,
+      String reportingPlace,
+      int state,
+      int district,
+      int city,
+      int village,
+      String address,
+      String apartment,
+      String nearLandMark,
+      String pincode,
+      int communicationLanguage,
+      int loggedInUserStateId,
+      int loggedInUserDistrictId,
+      String entryBy,
+      String loggedInNgoId,
+      String programeId,
+      int loggedInUserRole,
+      String userId) async {
+
+    PatientRegistrations registrationModel = PatientRegistrations();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.PatientRegistration;
+
+        // Build the multipart form data
+        FormData formData = FormData.fromMap({
+          "registrationType": registrationType,
+          "patientImage": await MultipartFile.fromFile(
+            patientImage.path,
+            filename: patientImage.path.split('/').last,
+          ),
+          "idType": idType,
+          "idName": idName,
+          "dependencyType": dependencyType,
+          "relationType": relationType,
+          "relationName": relationName,
+          "firstName": firstName,
+          "lastName": lastName,
+          "dob": dob,
+          "age": age,
+          "gender": gender,
+          "mobileRelationType": mobileRelationType,
+          "mobileNo": mobileNo,
+          "screeningDate": screeningDate,
+          "tentativeSurgeryDate": tentativeSurgeryDate,
+          "disease": disease,
+          "reportingPlace": reportingPlace,
+          "state": state,
+          "district": district,
+          "city": city,
+          "village": village,
+          "address": address,
+          "apartment": apartment,
+          "nearLandMark": nearLandMark,
+          "pincode": pincode,
+          "communicationLanguage": communicationLanguage,
+          "loggedInUserStateId": loggedInUserStateId,
+          "entryBy": entryBy,
+          "loggedInNgoId": loggedInNgoId,
+          "programeId": programeId,
+          "loggedInUserRole": loggedInUserRole,
+          "userId": userId,
+        });
+
+        Dio dio = Dio();
+        response1 = await dio.post(
+          url,
+          data: formData,
+          options: Options(
+            contentType: "multipart/form-data",
+            responseType: ResponseType.plain,
+          ),
+        );
+
+        print("@@hopitalPatientRegistration--Api: ${response1.data}");
+
+        registrationModel = PatientRegistrations.fromJson(jsonDecode(response1.data));
+
+        if (registrationModel.status) {
+          Utils.showToast(registrationModel.message, true);
+        } else {
+          Utils.showToast("Registration failed!", true);
+        }
+        return registrationModel;
+      } catch (e) {
+        Utils.showToast("Error: $e", true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
     }
   }
 

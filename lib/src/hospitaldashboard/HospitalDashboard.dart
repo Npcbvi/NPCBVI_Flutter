@@ -1,17 +1,31 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart' as dio;
+import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
+import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+import 'package:mohfw_npcbvi/src/model/city/GetCity.dart';
+import 'package:mohfw_npcbvi/src/model/city/GetVillage.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/HospitalDashboard.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/GetDiseaseForDDL.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/GetLanguageForDDLs.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/GetLanguageForDDLs.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/GetLanguageForDDLs.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+
+import '../model/spoModel/GetLanguageForDDLs.dart';
+import '../model/spoModel/GetLanguageForDDLs.dart';
 
 class HospitalDashboard extends StatefulWidget {
   @override
@@ -31,7 +45,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
   final GlobalKey _dropdownKeySenTODPM = GlobalKey();
 
-  String _chosenValueLOWVision, _chosenEyeBank, _chosenValueLgoutOption;
+  String _chosenValueLOWVision, _chosenEyeBank, _chosenValueLgoutOption,lowVisionDatas,_chosenValueDiseses;
 
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
@@ -40,26 +54,72 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   bool hospitalDashboardDatas = false;
   bool hospitalAddPatientData = false;
   String registerationtypeRadio = 'Hospital Walk-in'; // Default gender
+  int registerationtypeRadioValueinAPi = 2; // Default gender
   File _selectedImage;
-  String _errorMessage, VoterIDtype;
+  String _errorMessage, VoterIDtype,relationtypeValue,relationtypeValueMobile;
   final ImagePicker _picker = ImagePicker();
   final _formKeyhopsitalPersonalDetal = GlobalKey<FormState>();
 
   TextEditingController _firstNamePatientDetail = TextEditingController();
   TextEditingController _lastNamePatientDetail = TextEditingController();
   TextEditingController _AgePatientDetail = TextEditingController();
+
+  TextEditingController _mobileNumberDetailsRelationtype = TextEditingController();
   String gender = 'Male'; // Default gender
   var dependencyTypeRadio;
   int voterIDTypeValue = 0;
   bool showVoterIDField = false,showDrivingLicenseField=false,showPassport=false,showRationCard=false,showPanCard=false,showNotAvailble=false;
+  bool showSelf = false,Dependent=false;
   TextEditingController _voterIDNumber = TextEditingController();
   TextEditingController _drivingLicenseNumber = TextEditingController();
   TextEditingController _passport = TextEditingController();
   TextEditingController _rationCard = TextEditingController();
   TextEditingController _panCard = TextEditingController();
   TextEditingController _notAvalble = TextEditingController();
-  File _image;
+  TextEditingController _reportingPlaceController = TextEditingController();
 
+  TextEditingController _AddressHouse = TextEditingController();
+  TextEditingController _Apartment = TextEditingController();
+  TextEditingController _AreaNearLandMark = TextEditingController();
+  TextEditingController _PinCode = TextEditingController();
+
+  File _image;
+  String _selectedDateText = 'Screening Date *'; // Initially set to "From Date"
+
+  String _selectedDateTextToDate = 'Tentative Surgery Date *';
+
+  String _dob = 'Date of birth';
+
+  Future<List<Data>> _futureState;
+  Data _selectedUserState;
+  DataDsiricst _selectedUserDistrict;
+  Future<List<DataGetVillage>> _futureVillage;
+  DataGetVillage _selectedUserVillage;
+  Future<List<DataGetCity>> _futureCity;
+  DataGetCity _selectedUserCity;
+  bool isVisibleDitrictGovt = false;
+  Future<List<GetLanguageForDDLsDatas>> _futureStateGetLanguageForDDLsData;
+  GetLanguageForDDLsDatas GetLanguageForDDLsDatasa;
+  Future<List<GetDiseaseForDDLData>> _futureGetDiseaseForDDLDatas;
+  GetDiseaseForDDLData _futureGetDiseaseForDDLDatass;
+  int stateCodeSPO,
+      disrtcCode,
+      stateCodeDPM,
+      stateCodeGovtPrivate,
+      distCodeDPM,
+      distCodeGovtPrivate,stateLKanguage,getDissesID;
+  String CodeSPO,
+      codeDPM,
+      CodeGovtPrivate,
+      distNameDPM,
+      distNameDPMs_distictValues;
+  TextEditingController relationNameController = TextEditingController();
+  TextEditingController relationFatherController = TextEditingController();
+  TextEditingController relationMotherController = TextEditingController();
+  TextEditingController relationBrotherController = TextEditingController();
+  TextEditingController relationSisterController = TextEditingController();
+  TextEditingController relationDaughterController = TextEditingController();
+  TextEditingController relationspouseController = TextEditingController();
   Future<void> _showPickerDialog() async {
     showModalBottomSheet(
       context: context,
@@ -94,7 +154,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     final pickedImage = await ImagePicker.pickImage(source: source);
     if (pickedImage != null) {
       setState(() {
-        _image = pickedImage;
+      //  _image = pickedImage;
+        _image = File(pickedImage.path); // Ensure _image is a File
       });
     }
   }
@@ -106,6 +167,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     getUserData();
     hospitalDashboardclickDsiplay = true;
     _future = getDPM_ScreeningYear();
+    _futureState = _getStatesDAta();
+    _futureVillage = _getVillage(district_code_login, state_code_login);
+_futureStateGetLanguageForDDLsData=getLanguageForDDL();
+    _futureStateGetLanguageForDDLsData=getLanguageForDDL();
+    _futureGetDiseaseForDDLDatas=getDiseaseForDDL();
   }
 
   void getUserData() {
@@ -127,6 +193,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           print('@@6' + user.districtName);
           print('@@7' + state_code_login.toString());
           print('@@8' + district_code_login.toString());
+          // Assuming you fetch the value from login or a previous screen
+          String reportingPlace = fullnameController; // Replace with actual value
+          _reportingPlaceController.text  = reportingPlace;
         });
       });
     } catch (e) {
@@ -960,6 +1029,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   onChanged: (value) {
                     setState(() {
                       registerationtypeRadio = value;
+                      print('@@1'+registerationtypeRadio.toString());
+                      if(registerationtypeRadio=="Screening Camp"){
+                        registerationtypeRadioValueinAPi=1;
+                      }else if (registerationtypeRadio=="Satellite Centre"){
+                        registerationtypeRadioValueinAPi=2;
+                      }else if(registerationtypeRadio=="Hospital Walk-in"){
+                        registerationtypeRadioValueinAPi=3;
+                      }
+
                     });
                   },
                 ),
@@ -1059,7 +1137,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: _textInputField(
-                              controller: _drivingLicenseNumber,
+                              controller: _voterIDNumber,
                               labelText: "Driving License No.",
                               validator: (value) => value == null || value.isEmpty
                                   ? 'Please enter Driving License No.'
@@ -1070,7 +1148,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: _textInputField(
-                              controller: _passport,
+                              controller: _voterIDNumber,
                               labelText: "Passport No.",
                               validator: (value) => value == null || value.isEmpty
                                   ? 'Please enter Passport No.'
@@ -1081,7 +1159,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: _textInputField(
-                              controller: _rationCard,
+                              controller: _voterIDNumber,
                               labelText: "Ration Card No.",
                               validator: (value) => value == null || value.isEmpty
                                   ? 'Please enter Ration Card No.'
@@ -1092,7 +1170,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: _textInputField(
-                              controller: _panCard,
+                              controller: _voterIDNumber,
                               labelText: "Pan Card No.",
                               validator: (value) => value == null || value.isEmpty
                                   ? 'Please enter Pan Card No.'
@@ -1100,13 +1178,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             ),
                           ),
                         if (showNotAvailble)
-                        _textInputField(
-                          controller: _firstNamePatientDetail,
-                          labelText: 'First Name *',
-                          validator: (value) => value == null || value.isEmpty
-                              ? 'Please enter First name'
-                              : null,
-                        ),
+
                         SizedBox(height: 16.0),
                         _sectionTitle('Dependency Type'),
                         _radioButtonRow(
@@ -1115,10 +1187,176 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           onChanged: (value) {
                             setState(() {
                               dependencyTypeRadio = value;
+                              print('@@11' + dependencyTypeRadio.toString());
+                              showSelf = dependencyTypeRadio == "Self"; // Show field if "Self" is selected
+                              Dependent = dependencyTypeRadio == "Dependent";
                             });
                           },
                         ),
-                        SizedBox(height: 16.0),
+                        if (Dependent) // Only show if "Dependent" is selected
+                          Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.blue[50],
+                                      border: Border.all(color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton<String>(
+                                        isExpanded: true,
+                                        focusColor: Colors.black,
+                                        value: relationtypeValue,
+                                        style: TextStyle(color: Colors.black),
+                                        iconEnabledColor: Colors.black,
+                                        items: <String>[
+                                          'Father',
+                                          'Mother',
+                                          'Brother',
+                                          'Sister',
+                                          'Daughter',
+                                          'Spouse',
+                                        ].map<DropdownMenuItem<String>>((String type) {
+                                          return DropdownMenuItem<String>(
+                                            value: type,
+                                            child: Text(
+                                              type,
+                                              style: TextStyle(color: Colors.black),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        hint: Text(
+                                          "Relation Type",
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        onChanged: (String newValue) {
+                                          setState(() {
+                                            relationtypeValue = newValue;
+
+                                            // Set the relation name dynamically
+                                            if (relationtypeValue == "Father") {
+                                              relationNameController.text = "Father's Name";
+                                            } else if (relationtypeValue == "Mother") {
+                                              relationNameController.text = "Mother's Name";
+                                            }else if (relationtypeValue == "Brother") {
+                                              relationNameController.text = "Brother's Name";
+                                            }
+                                            else if (relationtypeValue == "Sister") {
+                                              relationNameController.text = "Sister's Name";
+                                            }
+                                            else if (relationtypeValue == "Daughter") {
+                                              relationNameController.text = "Daughter's Name";
+                                            }
+                                            else if (relationtypeValue == "Spouse") {
+                                              relationNameController.text = "Spouse's Name";
+                                            }
+
+                                            else {
+                                              relationNameController.clear();
+                                            }
+                                          });
+
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                // Display input field based on selected relation
+                                if (relationtypeValue == "Father")
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: _textInputField(
+                                      controller: relationFatherController,
+                                      labelText: "Father's Name",
+                                      validator: (value) => value == null || value.isEmpty
+                                          ? 'Please enter Father\'s name'
+                                          : null,
+                                    ),
+                                  ),
+                                if (relationtypeValue == "Mother")
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: _textInputField(
+                                      controller: relationFatherController,
+                                      labelText: "Mother's Name",
+                                      validator: (value) => value == null || value.isEmpty
+                                          ? 'Please enter Mother\'s name'
+                                          : null,
+                                    ),
+                                  ),
+                                if (relationtypeValue == "Brother")
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: _textInputField(
+                                      controller: relationFatherController,
+                                      labelText: "Brother's Name",
+                                      validator: (value) => value == null || value.isEmpty
+                                          ? 'Please enter Brother\'s name'
+                                          : null,
+                                    ),
+                                  ),
+                                if (relationtypeValue == "Sister")
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: _textInputField(
+                                      controller: relationFatherController,
+                                      labelText: "Sister's Name",
+                                      validator: (value) => value == null || value.isEmpty
+                                          ? 'Please enter Sister\'s name'
+                                          : null,
+                                    ),
+                                  ),
+                                if (relationtypeValue == "Daughter")
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: _textInputField(
+                                      controller: relationFatherController,
+                                      labelText: "Daughter's Name",
+                                      validator: (value) => value == null || value.isEmpty
+                                          ? 'Please enter Daughter\'s name'
+                                          : null,
+                                    ),
+                                  ),
+                                if (relationtypeValue == "Spouse")
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: _textInputField(
+                                      controller: relationFatherController,
+                                      labelText: "Spouse's Name",
+                                      validator: (value) => value == null || value.isEmpty
+                                          ? 'Please enter Spouse\'s name'
+                                          : null,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+
+                        if (showSelf) // Hide the relation type section if "Self" is selected
+                          SizedBox.shrink(), // This will render nothing when "Self" is selected
+
+                        SizedBox(height: 10.0),
+                        _textInputField(
+                          controller: _firstNamePatientDetail,
+                          labelText: 'First  Name *',
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number';
+                            } else if (value.length != 10) {
+                              return 'Please enter a valid 10-digit mobile number';
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 10.0),
                         _textInputField(
                           controller: _lastNamePatientDetail,
                           labelText: 'Last Name *',
@@ -1132,7 +1370,79 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 16.0),
+
+                        Container(
+                          color: Colors.white,
+                          margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+
+                              children: [
+                                Flexible(
+                                  child: Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        // Handle the tap event here
+                                        print('@@Add New Record clicked');
+
+                                        // Open the calendar on tap
+                                        DateTime pickedDate = await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          // Default date to show
+                                          firstDate: DateTime(2000),
+                                          // The earliest allowed date
+                                          lastDate:
+                                          DateTime(2101), // The latest allowed date
+                                        );
+
+                                        if (pickedDate != null) {
+                                          // Handle the selected date (e.g., display or save it)
+                                          String formattedDate =
+                                              "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+
+                                          // Update the state with the selected date
+                                          setState(() {
+                                            _dob = formattedDate;
+                                          });
+                                        }
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(12.0),
+                                        // Padding inside the box
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[200],
+                                          // Background color of the box
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          // Rounded corners
+                                          border: Border.all(
+                                            color: Colors.blue, // Border color
+                                            width: 2.0, // Border width
+                                          ),
+                                        ),
+                                        child: Text(
+                                          _dob,
+                                          // Display the selected date or "From Date"
+                                          style: TextStyle(
+                                            color: Colors.black, // Text color
+                                            fontWeight: FontWeight.w800, // Text weight
+                                          ),
+                                          overflow: TextOverflow
+                                              .ellipsis, // Handle text overflow
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
                         _textInputField(
                           controller: _AgePatientDetail,
                           labelText: 'Age *',
@@ -1156,18 +1466,943 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 _sectionHeader('Mobile Number Details'),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            border: Border.all(color: Colors.blue, width: 2.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              isExpanded: true,
+                              focusColor: Colors.black,
+                              value: relationtypeValueMobile,
+                              style: TextStyle(color: Colors.black),
+                              iconEnabledColor: Colors.black,
+                              items: <String>[
+                                'Father',
+                                'Mother',
+                                'Brother',
+                                'Sister',
+                                'Daughter',
+                                'Spouse',
+                              ].map<DropdownMenuItem<String>>((String type) {
+                                return DropdownMenuItem<String>(
+                                  value: type,
+                                  child: Text(
+                                    type,
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Relation Type",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  relationtypeValueMobile = newValue;
+
+
+                                });
+
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Display input field based on selected relation
+                      if (relationtypeValue == "Father")
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: _textInputField(
+                            controller: relationFatherController,
+                            labelText: "Father's Name",
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please enter Father\'s name'
+                                : null,
+                          ),
+                        ),
+                      if (relationtypeValue == "Mother")
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: _textInputField(
+                            controller: relationFatherController,
+                            labelText: "Mother's Name",
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please enter Mother\'s name'
+                                : null,
+                          ),
+                        ),
+                      if (relationtypeValue == "Brother")
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: _textInputField(
+                            controller: relationFatherController,
+                            labelText: "Brother's Name",
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please enter Brother\'s name'
+                                : null,
+                          ),
+                        ),
+                      if (relationtypeValue == "Sister")
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: _textInputField(
+                            controller: relationFatherController,
+                            labelText: "Sister's Name",
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please enter Sister\'s name'
+                                : null,
+                          ),
+                        ),
+                      if (relationtypeValue == "Daughter")
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: _textInputField(
+                            controller: relationFatherController,
+                            labelText: "Daughter's Name",
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please enter Daughter\'s name'
+                                : null,
+                          ),
+                        ),
+                      if (relationtypeValue == "Spouse")
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: _textInputField(
+                            controller: relationFatherController,
+                            labelText: "Spouse's Name",
+                            validator: (value) => value == null || value.isEmpty
+                                ? 'Please enter Spouse\'s name'
+                                : null,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
                   child: Form(
                     child: Column(
                       children: [
                         _textInputField(
-                          // controller: _mobileNumberDetails,
+                           controller: _mobileNumberDetailsRelationtype,
                           labelText: 'Mobile No *',
                           keyboardType: TextInputType.phone,
                         ),
-                        SizedBox(height: 16.0),
+                        SizedBox(height: 10.0),
                       ],
                     ),
                   ),
+                ),
+
+                Container(
+                  color: Colors.white,
+                  margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+
+                      children: [
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: GestureDetector(
+                              onTap: () async {
+                                // Handle the tap event here
+                                print('@@Add New Record clicked');
+
+                                // Open the calendar on tap
+                                DateTime pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  // Default date to show
+                                  firstDate: DateTime(2000),
+                                  // The earliest allowed date
+                                  lastDate:
+                                  DateTime(2101), // The latest allowed date
+                                );
+
+                                if (pickedDate != null) {
+                                  // Handle the selected date (e.g., display or save it)
+                                  String formattedDate =
+                                      "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+
+                                  // Update the state with the selected date
+                                  setState(() {
+                                    _selectedDateText = formattedDate;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(12.0),
+                                // Padding inside the box
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  // Background color of the box
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  // Rounded corners
+                                  border: Border.all(
+                                    color: Colors.blue, // Border color
+                                    width: 2.0, // Border width
+                                  ),
+                                ),
+                                child: Text(
+                                  _selectedDateText,
+                                  // Display the selected date or "From Date"
+                                  style: TextStyle(
+                                    color: Colors.black, // Text color
+                                    fontWeight: FontWeight.w800, // Text weight
+                                  ),
+                                  overflow: TextOverflow
+                                      .ellipsis, // Handle text overflow
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Flexible(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: () async {
+                                // Handle the tap event here
+                                print('@@Add New Record clicked');
+
+                                // Open the calendar on tap
+                                DateTime pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  // Default date to show
+                                  firstDate: DateTime(2000),
+                                  // The earliest allowed date
+                                  lastDate:
+                                  DateTime(2101), // The latest allowed date
+                                );
+
+                                if (pickedDate != null) {
+                                  // Handle the selected date (e.g., display or save it)
+                                  String formattedDate =
+                                      "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+
+                                  // Update the state with the selected date
+                                  setState(() {
+                                    _selectedDateTextToDate = formattedDate;
+                                  });
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(12.0),
+                                // Padding inside the box
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[200],
+                                  // Background color of the box
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  // Rounded corners
+                                  border: Border.all(
+                                    color: Colors.blue, // Border color
+                                    width: 2.0, // Border width
+                                  ),
+                                ),
+                                child: Text(
+                                  _selectedDateTextToDate,
+                                  // Display the selected date or "From Date"
+                                  style: TextStyle(
+                                    color: Colors.black, // Text color
+                                    fontWeight: FontWeight.w800, // Text weight
+                                  ),
+                                  overflow: TextOverflow
+                                      .ellipsis, // Handle text overflow
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 10.0),
+                Center(
+                  child: Column(
+                    children: [
+                      FutureBuilder<List<GetDiseaseForDDLData>>(
+                        future: _futureGetDiseaseForDDLDatas,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (!snapshot.hasData) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          // Logging for debugging
+                          developer
+                              .log('@@snapshot: ${snapshot.data}');
+
+                          List<GetDiseaseForDDLData> districtList =
+                              snapshot.data;
+
+                          // Ensure selected district is in the list, otherwise select the first one
+                          if (_futureGetDiseaseForDDLDatass == null ||
+                              !districtList
+                                  .contains(_futureGetDiseaseForDDLDatass)) {
+                            _futureGetDiseaseForDDLDatass = districtList.first;
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20, 10, 20.0, 0),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text('Select Diseases:'),
+                                DropdownButtonFormField<GetDiseaseForDDLData>(
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                    EdgeInsets.symmetric(
+                                        vertical: 15.0,
+                                        horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue,
+                                          width: 2.0),
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent,
+                                          width: 2.0),
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  onChanged: (districtUser) =>
+                                      setState(() {
+                                        _futureGetDiseaseForDDLDatass = districtUser;
+                                        getDissesID = int.parse(
+                                            districtUser.id
+                                                .toString());
+                                        // Update state or further actions here
+                                        print(
+                                            'Selected District: ${districtUser.name}');
+                                      }),
+                                  value: _futureGetDiseaseForDDLDatass,
+                                  items: districtList
+                                      .map((GetDiseaseForDDLData district) {
+                                    return DropdownMenuItem<
+                                        GetDiseaseForDDLData>(
+                                      value: district,
+                                      child: Text(district.name),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+
+                    ],
+                  ),
+                ),
+
+
+
+                SizedBox(height: 10.0),
+
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        _textInputField(
+                           controller: _reportingPlaceController,
+                          labelText: 'Reporting Place *',
+                          keyboardType: TextInputType.phone,
+                        ),
+                        SizedBox(height: 10.0),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 10.0),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                          width: 1.5, color: Colors.grey[300]),
+                    ),
+                  ),
+                  child: Center(
+                    child: FutureBuilder<List<Data>>(
+                      future: _futureState, // Future to fetch the data
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        if (!snapshot.hasData) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        // Logging data for debugging
+                        developer.log('@@snapshot: ${snapshot.data}');
+
+                        List<Data> stateList = snapshot.data;
+
+                        // Ensure selected state is in the list, otherwise select the first
+                        if (_selectedUserState == null ||
+                            !stateList.contains(_selectedUserState)) {
+                          _selectedUserState = stateList.first;
+                        }
+
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  width: 1.5, color: Colors.grey[300]),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20, 10, 20.0, 0),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'Select State:',
+                                ),
+                                DropdownButtonFormField<Data>(
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                    EdgeInsets.symmetric(
+                                        vertical: 15.0,
+                                        horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue,
+                                          width: 2.0),
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent,
+                                          width: 2.0),
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  onChanged: (user) => setState(() {
+                                    _selectedUserState = user;
+                                    stateCodeGovtPrivate = int.parse(
+                                        user.stateCode.toString());
+                                    CodeGovtPrivate = user.code;
+
+                                    if (stateCodeGovtPrivate != null) {
+                                      isVisibleDitrictGovt = true;
+                                      _getDistrictData(
+                                          stateCodeGovtPrivate);
+                                    } else {
+                                      isVisibleDitrictGovt = false;
+                                    }
+                                  }),
+                                  value: _selectedUserState,
+                                  items: stateList
+                                      .map<DropdownMenuItem<Data>>(
+                                          (Data user) {
+                                        return DropdownMenuItem<Data>(
+                                          value: user,
+                                          child: Text(user.stateName),
+                                        );
+                                      }).toList(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+
+                Visibility(
+                  visible: isVisibleDitrictGovt,
+                  child: Column(
+                    children: [
+                      Center(
+                        child: FutureBuilder<List<DataDsiricst>>(
+                          future:
+                          _getDistrictData(stateCodeGovtPrivate),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+                            if (!snapshot.hasData) {
+                              return const CircularProgressIndicator();
+                            }
+
+                            // Logging for debugging
+                            developer
+                                .log('@@snapshot: ${snapshot.data}');
+
+                            List<DataDsiricst> districtList =
+                                snapshot.data;
+
+                            // Ensure selected district is in the list, otherwise select the first one
+                            if (_selectedUserDistrict == null ||
+                                !districtList
+                                    .contains(_selectedUserDistrict)) {
+                              _selectedUserDistrict =
+                                  districtList.first;
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                  20, 10, 20.0, 0),
+                              child: Column(
+                                mainAxisAlignment:
+                                MainAxisAlignment.start,
+                                children: <Widget>[
+                                  const Text('Select District:'),
+                                  DropdownButtonFormField<DataDsiricst>(
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                      EdgeInsets.symmetric(
+                                          vertical: 15.0,
+                                          horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue,
+                                            width: 2.0),
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blueAccent,
+                                            width: 2.0),
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    onChanged: (districtUser) =>
+                                        setState(() {
+                                          _selectedUserDistrict =
+                                              districtUser;
+                                          distCodeGovtPrivate = int.parse(
+                                              districtUser.districtCode
+                                                  .toString());
+                                          // Update state or further actions here
+                                          print(
+                                              'Selected District: ${districtUser.districtName}');
+                                        }),
+                                    value: _selectedUserDistrict,
+                                    items: districtList
+                                        .map((DataDsiricst district) {
+                                      return DropdownMenuItem<
+                                          DataDsiricst>(
+                                        value: district,
+                                        child:
+                                        Text(district.districtName),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Center(
+                  child: Column(
+                    children: [
+                      FutureBuilder<List<DataGetCity>>(
+                        future: _getCity(district_code_login),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (!snapshot.hasData) {
+                            return const CircularProgressIndicator();
+                          }
+
+                          // Logging for debugging
+                          developer
+                              .log('@@snapshot: ${snapshot.data}');
+
+                          List<DataGetCity> districtList =
+                              snapshot.data;
+
+                          // Ensure selected district is in the list, otherwise select the first one
+                          if (_selectedUserCity == null ||
+                              !districtList
+                                  .contains(_selectedUserCity)) {
+                            _selectedUserCity = districtList.first;
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20, 10, 20.0, 0),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              children: <Widget>[
+                                const Text('Select City:'),
+                                DropdownButtonFormField<DataGetCity>(
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                    EdgeInsets.symmetric(
+                                        vertical: 15.0,
+                                        horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue,
+                                          width: 2.0),
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent,
+                                          width: 2.0),
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  onChanged: (districtUser) =>
+                                      setState(() {
+                                        _selectedUserCity = districtUser;
+                                        distCodeGovtPrivate = int.parse(
+                                            districtUser.subdistrictCode
+                                                .toString());
+                                        // Update state or further actions here
+                                        print(
+                                            'Selected District: ${districtUser.subdistrictCode}');
+                                      }),
+                                  value: _selectedUserCity,
+                                  items: districtList
+                                      .map((DataGetCity district) {
+                                    return DropdownMenuItem<
+                                        DataGetCity>(
+                                      value: district,
+                                      child: Text(district.name),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+
+                    ],
+                  ),
+                ),
+                SizedBox(height: 10,),
+                Center(
+                  child: FutureBuilder<List<DataGetVillage>>(
+                    future: _getVillage(district_code_login, state_code_login),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      // Handle null or empty data
+                      if (snapshot.data == null || snapshot.data.isEmpty) {
+                        return Container(
+                          padding: EdgeInsets.all(16.0), // Padding inside the border
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.blue, width: 2.0), // Border color and width
+                            borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                            color: Colors.blue[50], // Background color (optional)
+                          ),
+                          child: const Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 16.0, color: Colors.black), // Text style
+                          ),
+                        );
+                      }
+
+                      List<DataGetVillage> districtList = snapshot.data;
+
+                      // Ensure selected district is in the list, otherwise select the first one
+                      if (_selectedUserVillage == null ||
+                          !districtList.contains(_selectedUserVillage)) {
+                        _selectedUserVillage = districtList.first;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const Text('Select Village:'),
+                            DropdownButtonFormField<DataGetVillage>(
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.blue[50],
+                              ),
+                              onChanged: (districtUser) => setState(() {
+                                _selectedUserVillage = districtUser;
+                                distCodeGovtPrivate =
+                                    int.parse(districtUser.villageCode.toString());
+                              }),
+                              value: _selectedUserVillage,
+                              items: districtList.map((DataGetVillage district) {
+                                return DropdownMenuItem<DataGetVillage>(
+                                  value: district,
+                                  child: Text(district.name),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+
+                SizedBox(height: 10.0),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        _textInputField(
+                          controller: _AddressHouse,
+                          labelText: 'Address/ House/ Flat Number *',
+
+                          keyboardType: TextInputType.text,
+                        ),
+                        SizedBox(height: 10.0),
+                      ],
+                    ),
+                  ),
+                ),
+
+
+                SizedBox(height: 10.0),
+             /*   Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        _textInputField(
+                          controller: _AddressHouse,
+                          labelText: 'Address/ House/ Flat Number *',
+                          keyboardType: TextInputType.text,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),*/
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        _textInputField(
+                          controller: _Apartment,
+                          labelText: 'Apartment/ building,/Colony /floor',
+                          keyboardType: TextInputType.text,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 10.0),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        _textInputField(
+                          controller: _AreaNearLandMark,
+                          labelText: 'Area/ Near Land Mark, etc',
+                          keyboardType: TextInputType.text,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+
+                SizedBox(height: 10.0),
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        _textInputField(
+                          controller: _PinCode,
+                          labelText: 'Pin Code',
+                          keyboardType: TextInputType.text,
+                        ),
+                        SizedBox(height: 10.0),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                          width: 1.5, color: Colors.grey[300]),
+                    ),
+                  ),
+                  child: Center(
+                    child: FutureBuilder<List<GetLanguageForDDLsDatas>>(
+                      future: _futureStateGetLanguageForDDLsData, // Future to fetch the data
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        if (!snapshot.hasData) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        // Logging data for debugging
+                        developer.log('@@snapshot: ${snapshot.data}');
+
+                        List<GetLanguageForDDLsDatas> stateList = snapshot.data;
+
+                        // Ensure selected state is in the list, otherwise select the first
+                        if (GetLanguageForDDLsDatasa == null ||
+                            !stateList.contains(GetLanguageForDDLsDatasa)) {
+                          GetLanguageForDDLsDatasa = stateList.first;
+                        }
+
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  width: 1.5, color: Colors.grey[300]),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(
+                                20, 10, 20.0, 0),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  'Communication Language *',
+                                ),
+                                DropdownButtonFormField<GetLanguageForDDLsDatas>(
+                                  decoration: InputDecoration(
+                                    contentPadding:
+                                    EdgeInsets.symmetric(
+                                        vertical: 15.0,
+                                        horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blue,
+                                          width: 2.0),
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent,
+                                          width: 2.0),
+                                      borderRadius:
+                                      BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  onChanged: (user) => setState(() {
+                                    GetLanguageForDDLsDatasa = user;
+                                    stateLKanguage = int.parse(
+                                        user.id.toString());
+
+
+                                  }),
+                                  value: GetLanguageForDDLsDatasa,
+                                  items: stateList
+                                      .map<DropdownMenuItem<GetLanguageForDDLsDatas>>(
+                                          (GetLanguageForDDLsDatas user) {
+                                        return DropdownMenuItem<GetLanguageForDDLsDatas>(
+                                          value: user,
+                                          child: Text(user.name),
+                                        );
+                                      }).toList(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Process the form data
+                        print("@@-----click SubmitAdd Patient--");
+                        ApipatientRegistration();
+                      },
+                      child: Text('Submit'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Reset form fields
+                     //   _resetForm();
+                      },
+                      child: Text('Reset'),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -1176,9 +2411,38 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }
+  Future<void> ApipatientRegistration() async {
+    File imageFile = File(_image.path); // Ensure you have an image file
+    Utils.showProgressDialog1(context);
+    print("@@-----hopitalPatientRegistration--inside api");
+    var response = await ApiController.hopitalPatientRegistration(
+        registerationtypeRadioValueinAPi,imageFile,VoterIDtype.toString(),_voterIDNumber.text.toString(),dependencyTypeRadio.toString(),relationtypeValue.toString(),relationFatherController.text.toString(),
+        _firstNamePatientDetail.text.toString(),_lastNamePatientDetail.text.toString(),_dob.toString(),
+    _AgePatientDetail.text.toString(),gender.toString(),relationtypeValueMobile.toString(),_mobileNumberDetailsRelationtype.text.toString(),
+        _selectedDateText.toString(),_selectedDateTextToDate.toString(),getDissesID.toString(),_reportingPlaceController.text.toString(),state_code_login,district_code_login,distCodeGovtPrivate,0,
+        _AddressHouse.text.toString(),_Apartment.text.toString(),_AreaNearLandMark.text.toString(),_PinCode.text.toString(),stateLKanguage,state_code_login,district_code_login,"entryBy",
+   "","002",int.parse(role_id),userId.toString() );
 
+    Utils.hideProgressDialog1(context);
+    print("@@-----hopitalPatientRegistration--inside api--2");
+    // Check if the response is null before accessing properties
+    if (response.status) {
+      Utils.showToast(response.message.toString(), true);
+      print("@@Result hopitalPatientRegistration----Class: " + response.message);
+      /*   EyeBankApplication = true;
+        ngoDashboardclicks = false;
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists = true;
+        CampManagerRegisterartions = false;
+        AddScreeningCamps = false;*/
+    } else {
+      // Handle the case where the list is null or empty
+      Utils.showToast("Not created succesfully", true);
+    }
+  }
   Widget _sectionHeader(String title) {
     return Container(
+      margin: const EdgeInsets.fromLTRB(10.0,0.0,20.0,0.0), // External margin
       color: Colors.blue,
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -1281,8 +2545,150 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       validator: validator,
     );
   }
+  Future<List<Data>> _getStatesDAta() async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      final response = await http.get(Uri.parse(
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/State'));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final DashboardStateModel dashboardStateModel =
+      DashboardStateModel.fromJson(json);
+
+      return dashboardStateModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+
+  Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
+    DashboardDistrictModel dashboardDistrictModel = DashboardDistrictModel();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      var body = json.encode({"state_code": stateCode});
+      //Way to send network calls
+      Dio dio = new Dio();
+      response1 = await dio.post(
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/ListDistrict",
+          data: body,
+          options: new Options(
+              contentType: "application/json",
+              responseType: ResponseType.plain));
+      print("@@Response--Api" + body.toString());
+      print("@@Response--Api=====" + response1.toString());
+      dashboardDistrictModel =
+          DashboardDistrictModel.fromJson(json.decode(response1.data));
+      if (dashboardDistrictModel.status) {
+        print("@@dashboardDistrictModel----getting of size +++--" +
+            dashboardDistrictModel.data.length.toString());
+      } else {
+        print("@@no data---" + dashboardDistrictModel.data.length.toString());
+      }
+      return dashboardDistrictModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+
+  Future<List<DataGetCity>> _getCity(int districtId) async {
+    GetCity dashboardDistrictModel = GetCity();
+
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      var body = json.encode({"districtId": districtId});
+      //Way to send network calls
+      Dio dio = new Dio();
+      response1 = await dio.post(
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetCity",
+          data: body,
+          options: new Options(
+              contentType: "application/json",
+              responseType: ResponseType.plain));
+      print("@@Response--Api" + body.toString());
+      print("@@Response--Api=====" + response1.toString());
+      dashboardDistrictModel = GetCity.fromJson(json.decode(response1.data));
+      if (dashboardDistrictModel.status) {
+        print("@@dashboardDistrictModel----getting of size +++--" +
+            dashboardDistrictModel.data.length.toString());
+      } else {
+        print("@@no data---" + dashboardDistrictModel.data.length.toString());
+      }
+      return dashboardDistrictModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+  Future<List<DataGetVillage>> _getVillage(int districtId, int stateId) async {
+    GetVillage dashboardDistrictModel = GetVillage();
+    Response response1;
+
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      var body = json.encode({"districtId": districtId, "stateId": stateId});
+
+      Dio dio = Dio();
+      response1 = await dio.post(
+        "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetVillage",
+        data: body,
+        options: Options(
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetVillage--Api: $body");
+      print("@@GetVillage--Api Response: ${response1.data}");
+
+      dashboardDistrictModel = GetVillage.fromJson(json.decode(response1.data));
+
+      if (dashboardDistrictModel.status && dashboardDistrictModel.data != null) {
+        print("@@GetVillage--Data Size: ${dashboardDistrictModel.data.length}");
+        return dashboardDistrictModel.data;
+      } else {
+        print("@@GetVillage--No Data Found");
+        return [];
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+  }
 
 
+  Future<List<GetLanguageForDDLsDatas>> getLanguageForDDL() async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      final response = await http.get(Uri.parse(
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetLanguageForDDL'));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final GetLanguageForDDLs dashboardStateModel =
+      GetLanguageForDDLs.fromJson(json);
+
+      return dashboardStateModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+  Future<List<GetDiseaseForDDLData>> getDiseaseForDDL() async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      final response = await http.get(Uri.parse(
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetDiseaseForDDL'));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final GetDiseaseForDDL dashboardStateModel =
+      GetDiseaseForDDL.fromJson(json);
+
+      return dashboardStateModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
   Widget _patientInfoRow() {
     return Padding(
       padding: const EdgeInsets.all(8.0),

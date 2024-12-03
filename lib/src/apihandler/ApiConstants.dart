@@ -118,4 +118,6 @@ class ApiConstants {
 
   static String GetSPO_EyeDonationApplicationApproval = 'SpmDashboard/api/GetSPO_EyeDonationApplicationApproval';
 
+  static String PatientRegistration = 'PatientRegistration';
+
 }
