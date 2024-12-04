@@ -56,7 +56,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   String registerationtypeRadio = 'Hospital Walk-in'; // Default gender
   int registerationtypeRadioValueinAPi = 2; // Default gender
   File _selectedImage;
-  String _errorMessage, VoterIDtype,relationtypeValue,relationtypeValueMobile;
+  String _errorMessage, VoterIDtype,relationtypeValueMobile,entryby,loggedInNgoId;
   final ImagePicker _picker = ImagePicker();
   final _formKeyhopsitalPersonalDetal = GlobalKey<FormState>();
 
@@ -120,6 +120,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController relationSisterController = TextEditingController();
   TextEditingController relationDaughterController = TextEditingController();
   TextEditingController relationspouseController = TextEditingController();
+  String relationtypeValue; // Initialize as null
   Future<void> _showPickerDialog() async {
     showModalBottomSheet(
       context: context,
@@ -186,6 +187,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
           role_id = user.roleId;
           state_code_login = user.state_code;
           district_code_login = user.district_code;
+          getentryby();
+         // getloggedInNgoId();
           print('@@2' + user.name);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
@@ -477,7 +480,28 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
       ),
     );
   }
+  Future<void> getentryby() async {
+    // Use await to get the actual value from SharedPrefs
+    entryby =
+    await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
 
+    if (entryby != null) {
+      print("entryby Number: $entryby");
+    } else {
+      print("No entryby found in shared preferences.");
+    }
+  }
+  Future<void> getloggedInNgoId() async {
+    // Use await to get the actual value from SharedPrefs
+    loggedInNgoId =
+    await SharedPrefs.getStoreSharedValue(AppConstant.loggedInNgoId) as String;
+
+    if (loggedInNgoId != null) {
+      print("loggedInNgoId Number: $loggedInNgoId");
+    } else {
+      print("No loggedInNgoId found in shared preferences.");
+    }
+  }
   Widget _buildDropdownRegisterPatient() {
     return Container(
       width: 170.0,
@@ -1017,7 +1041,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
               children: [
                 _sectionHeader('Patient Registration'),
                 _patientInfoRow(),
-                SizedBox(height: 10.0),
+                SizedBox(height: 5.0),
                 _sectionTitle('Registration Type'),
                 _radioButtonRow(
                   options: [
@@ -1041,6 +1065,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     });
                   },
                 ),
+                SizedBox(height: 10),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1060,6 +1085,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     ],
                   ),
                 ),
+                SizedBox(height: 10),
                 _sectionHeader('Personal Details'),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -1127,6 +1153,9 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                             padding: const EdgeInsets.all(20.0),
                             child: _textInputField(
                               controller: _voterIDNumber,
+                              keyboardType: TextInputType.number,
+
+
                               labelText: "Voter ID No.",
                               validator: (value) => value == null || value.isEmpty
                                   ? 'Please enter Voter ID No.'
@@ -1139,6 +1168,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                             child: _textInputField(
                               controller: _voterIDNumber,
                               labelText: "Driving License No.",
+                              keyboardType: TextInputType.number,
                               validator: (value) => value == null || value.isEmpty
                                   ? 'Please enter Driving License No.'
                                   : null,
@@ -1149,6 +1179,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                             padding: const EdgeInsets.all(20.0),
                             child: _textInputField(
                               controller: _voterIDNumber,
+                              keyboardType: TextInputType.number,
                               labelText: "Passport No.",
                               validator: (value) => value == null || value.isEmpty
                                   ? 'Please enter Passport No.'
@@ -1160,6 +1191,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                             padding: const EdgeInsets.all(20.0),
                             child: _textInputField(
                               controller: _voterIDNumber,
+                              keyboardType: TextInputType.number,
                               labelText: "Ration Card No.",
                               validator: (value) => value == null || value.isEmpty
                                   ? 'Please enter Ration Card No.'
@@ -1171,6 +1203,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                             padding: const EdgeInsets.all(20.0),
                             child: _textInputField(
                               controller: _voterIDNumber,
+                              keyboardType: TextInputType.number,
                               labelText: "Pan Card No.",
                               validator: (value) => value == null || value.isEmpty
                                   ? 'Please enter Pan Card No.'
@@ -1179,7 +1212,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                           ),
                         if (showNotAvailble)
 
-                        SizedBox(height: 16.0),
+                        SizedBox(height: 10.0),
                         _sectionTitle('Dependency Type'),
                         _radioButtonRow(
                           options: ['Self', 'Dependent'],
@@ -1190,6 +1223,13 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                               print('@@11' + dependencyTypeRadio.toString());
                               showSelf = dependencyTypeRadio == "Self"; // Show field if "Self" is selected
                               Dependent = dependencyTypeRadio == "Dependent";
+                              if (showSelf) {
+                                relationFatherController.text="string";
+                                relationtypeValue = null; // Reset value for dropdown
+                                relationFatherController.text='xr';
+                                // Set to '0' or a special indicator for "Self"
+                              // relationNameController.clear();
+                              }
                             });
                           },
                         ),
@@ -1198,6 +1238,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
                               children: [
+
                                 Padding(
                                   padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                                   child: Container(
@@ -1339,7 +1380,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                             ),
                           ),
 
-                        if (showSelf) // Hide the relation type section if "Self" is selected
+                        if (showSelf)
+                        // Hide the relation type section if "Self" is selected
                           SizedBox.shrink(), // This will render nothing when "Self" is selected
 
                         SizedBox(height: 10.0),
@@ -1373,81 +1415,70 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
 
                         Container(
                           color: Colors.white,
-                          margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Flexible(
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: GestureDetector(
-                                      onTap: () async {
-                                        // Handle the tap event here
-                                        print('@@Add New Record clicked');
+                                // Date Picker Container with fixed height and width
+                                SizedBox(
+                                  width: 150, // Set same width for both widgets
+                                  height: 50,  // Set desired height
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      DateTime pickedDate = await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2101),
+                                      );
 
-                                        // Open the calendar on tap
-                                        DateTime pickedDate = await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          // Default date to show
-                                          firstDate: DateTime(2000),
-                                          // The earliest allowed date
-                                          lastDate:
-                                          DateTime(2101), // The latest allowed date
-                                        );
-
-                                        if (pickedDate != null) {
-                                          // Handle the selected date (e.g., display or save it)
-                                          String formattedDate =
-                                              "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-
-                                          // Update the state with the selected date
-                                          setState(() {
-                                            _dob = formattedDate;
-                                          });
-                                        }
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.all(12.0),
-                                        // Padding inside the box
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey[200],
-                                          // Background color of the box
-                                          borderRadius: BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                            color: Colors.blue, // Border color
-                                            width: 2.0, // Border width
-                                          ),
-                                        ),
-                                        child: Text(
-                                          _dob,
-                                          // Display the selected date or "From Date"
-                                          style: TextStyle(
-                                            color: Colors.black, // Text color
-                                            fontWeight: FontWeight.w800, // Text weight
-                                          ),
-                                          overflow: TextOverflow
-                                              .ellipsis, // Handle text overflow
+                                      if (pickedDate != null) {
+                                        String formattedDate =
+                                            "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                        setState(() {
+                                          _dob = formattedDate;
+                                        });
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey[200],
+                                        borderRadius: BorderRadius.circular(8.0),
+                                        border: Border.all(
+                                          color: Colors.blue,
+                                          width: 2.0,
                                         ),
                                       ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        _dob.isEmpty ? "Select Date" : _dob,
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
+                                  ),
+                                ),
+                                SizedBox(width: 10.0), // Spacing between the widgets
+                                // Age Input Field with same width and height
+                                SizedBox(
+                                  width: 150, // Same width as Date Picker
+                                  height: 50,  // Same height as Date Picker
+                                  child: _textInputField(
+                                    controller: _AgePatientDetail,
+                                    labelText: 'Age *',
+                                    keyboardType: TextInputType.number,
                                   ),
                                 ),
                               ],
                             ),
                           ),
                         ),
-                        SizedBox(height: 10.0),
-                        _textInputField(
-                          controller: _AgePatientDetail,
-                          labelText: 'Age *',
-                          keyboardType: TextInputType.number,
-                        ),
+
+
                         _sectionTitle('Gender *'),
                         _radioButtonRow(
                           options: ['Male', 'Female', 'Transgender'],
@@ -2217,28 +2248,13 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
 
                           keyboardType: TextInputType.text,
                         ),
-                        SizedBox(height: 10.0),
                       ],
                     ),
                   ),
                 ),
 
 
-                SizedBox(height: 10.0),
-             /*   Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Form(
-                    child: Column(
-                      children: [
-                        _textInputField(
-                          controller: _AddressHouse,
-                          labelText: 'Address/ House/ Flat Number *',
-                          keyboardType: TextInputType.text,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),*/
+
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Form(
@@ -2254,7 +2270,6 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                   ),
                 ),
 
-                SizedBox(height: 10.0),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Form(
@@ -2282,7 +2297,6 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                           labelText: 'Pin Code',
                           keyboardType: TextInputType.text,
                         ),
-                        SizedBox(height: 10.0),
                       ],
                     ),
                   ),
@@ -2411,17 +2425,17 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
       ),
     );
   }
-  Future<void> ApipatientRegistration() async {
-    File imageFile = File(_image.path); // Ensure you have an image file
+  /*Future<void> ApipatientRegistration() async {
+    File imageFile = _image; // Ensure you have an image file
     Utils.showProgressDialog1(context);
     print("@@-----hopitalPatientRegistration--inside api");
     var response = await ApiController.hopitalPatientRegistration(
-        registerationtypeRadioValueinAPi,imageFile,VoterIDtype.toString(),_voterIDNumber.text.toString(),dependencyTypeRadio.toString(),relationtypeValue.toString(),relationFatherController.text.toString(),
+        registerationtypeRadioValueinAPi,"",VoterIDtype.toString(),_voterIDNumber.text.toString(),dependencyTypeRadio.toString(),relationtypeValue.toString(),relationFatherController.text.toString(),
         _firstNamePatientDetail.text.toString(),_lastNamePatientDetail.text.toString(),_dob.toString(),
     _AgePatientDetail.text.toString(),gender.toString(),relationtypeValueMobile.toString(),_mobileNumberDetailsRelationtype.text.toString(),
         _selectedDateText.toString(),_selectedDateTextToDate.toString(),getDissesID.toString(),_reportingPlaceController.text.toString(),state_code_login,district_code_login,distCodeGovtPrivate,0,
-        _AddressHouse.text.toString(),_Apartment.text.toString(),_AreaNearLandMark.text.toString(),_PinCode.text.toString(),stateLKanguage,state_code_login,district_code_login,"entryBy",
-   "","002",int.parse(role_id),userId.toString() );
+        _AddressHouse.text.toString(),_Apartment.text.toString(),_AreaNearLandMark.text.toString(),_PinCode.text.toString(),stateLKanguage,state_code_login,district_code_login,entryby,
+   "10126","002",int.parse(role_id),userId.toString() );
 
     Utils.hideProgressDialog1(context);
     print("@@-----hopitalPatientRegistration--inside api--2");
@@ -2429,17 +2443,100 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
     if (response.status) {
       Utils.showToast(response.message.toString(), true);
       print("@@Result hopitalPatientRegistration----Class: " + response.message);
-      /*   EyeBankApplication = true;
+      *//*   EyeBankApplication = true;
         ngoDashboardclicks = false;
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
-        AddScreeningCamps = false;*/
+        AddScreeningCamps = false;*//*
     } else {
       // Handle the case where the list is null or empty
       Utils.showToast("Not created succesfully", true);
     }
+  }*/
+  Future<void> ApipatientRegistration() async {
+    // Validate fields
+    if (_firstNamePatientDetail.text.isEmpty) {
+      Utils.showToast("Please enter first name", false);
+      return;
+    }
+    if (_lastNamePatientDetail.text.isEmpty) {
+      Utils.showToast("Please enter last name", false);
+      return;
+    }
+    if (_dob.isEmpty || _dob == "Select Date") {
+      Utils.showToast("Please select a date of birth", false);
+      return;
+    }
+    if (_AgePatientDetail.text.isEmpty) {
+      Utils.showToast("Please enter age", false);
+      return;
+    }
+    if (_mobileNumberDetailsRelationtype.text.isEmpty) {
+      Utils.showToast("Please enter mobile number", false);
+      return;
+    }
+    if (_AddressHouse.text.isEmpty) {
+      Utils.showToast("Please enter house address", false);
+      return;
+    }
+    if (_Apartment.text.isEmpty) {
+      Utils.showToast("Please enter apartment", false);
+      return;
+    }
+    if (_AreaNearLandMark.text.isEmpty) {
+      Utils.showToast("Please enter area/landmark", false);
+      return;
+    }
+    if (_PinCode.text.isEmpty) {
+      Utils.showToast("Please enter pin code", false);
+      return;
+    }
+
+    // Optionally, check for other required fields here...
+
+    // Proceed with API call if all validations are passed
+    File imageFile = _image; // Ensure you have an image file
+    Utils.showProgressDialog1(context);
+    print("@@-----hopitalPatientRegistration--inside api");
+
+    try {
+      var response = await ApiController.hopitalPatientRegistration(
+          registerationtypeRadioValueinAPi, "",
+          VoterIDtype.toString(), _voterIDNumber.text.toString(),
+          dependencyTypeRadio.toString(), relationtypeValue.toString(),
+          relationFatherController.text.toString(),
+          _firstNamePatientDetail.text.toString(),
+          _lastNamePatientDetail.text.toString(),
+          _dob.toString(), _AgePatientDetail.text.toString(),
+          gender.toString(), relationtypeValueMobile.toString(),
+          _mobileNumberDetailsRelationtype.text.toString(),
+          _selectedDateText.toString(), _selectedDateTextToDate.toString(),
+          getDissesID.toString(), _reportingPlaceController.text.toString(),
+          state_code_login, district_code_login, distCodeGovtPrivate, 0,
+          _AddressHouse.text.toString(), _Apartment.text.toString(),
+          _AreaNearLandMark.text.toString(), _PinCode.text.toString(),
+          stateLKanguage, state_code_login, district_code_login,
+          entryby, "10126", "002", int.parse(role_id),
+          userId.toString()
+      );
+
+      Utils.hideProgressDialog1(context);
+      print("@@-----hopitalPatientRegistration--inside api--2");
+
+      if (response.status) {
+        Utils.showToast(response.message.toString(), true);
+        print("@@Result hopitalPatientRegistration----Class: " + response.message);
+        // Handle success (navigate, show success message, etc.)
+      } else {
+        Utils.showToast("Not created successfully", true);
+      }
+    } catch (e) {
+      Utils.hideProgressDialog1(context);
+      Utils.showToast("Error: $e", false);
+    }
   }
+
   Widget _sectionHeader(String title) {
     return Container(
       margin: const EdgeInsets.fromLTRB(10.0,0.0,20.0,0.0), // External margin

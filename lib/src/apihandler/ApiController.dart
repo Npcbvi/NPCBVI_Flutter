@@ -77,6 +77,9 @@ import 'package:mohfw_npcbvi/src/model/spoModel/EyeSurgeons.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/PatientRegistrations.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SpoDashobardData.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/ApprovedclickPatients.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_DiseasewiseRecordsApproval.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_Patients_Approved_View.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
@@ -4668,8 +4671,8 @@ class ApiController {
       return [];
     }
   }
-/*  static Future<PatientRegistrations> hopitalPatientRegistration(
-      int registrationType,   File patientImage,String idType,String idName,String dependencyType,
+  static Future<PatientRegistrations> hopitalPatientRegistration(
+      int registrationType,   String patientImage,String idType,String idName,String dependencyType,
       String relationType,String relationName,String firstName,String lastName,String dob,
       String age,String gender,String mobileRelationType, String mobileNo,String screeningDate,String tentativeSurgeryDate,String disease,
       String reportingPlace,int state,int district,int city,
@@ -4703,6 +4706,7 @@ class ApiController {
           "screeningDate":screeningDate,
           "tentativeSurgeryDate": tentativeSurgeryDate,
           "disease":disease,
+          "reportingPlace":reportingPlace,
           "state": state,
           "district": district,
           "city": city,
@@ -4748,10 +4752,10 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-  }*/
+  }
 
 
-
+/*
   static Future<PatientRegistrations> hopitalPatientRegistration(
       int registrationType,
       File patientImage,  // Use File instead of String
@@ -4864,7 +4868,200 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
+  }*/
+  static Future<List<ApprovedclickPatientsData>>
+  getSPO_PatientApproval(int district_code, int state_code,
+      String financialYear,int status) async {
+    print("@@getSPO_PatientApproval" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_PatientApproval;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "districtid": district_code,
+        "stateId": state_code,
+        "financialYear": financialYear,
+        "status": status, // for approved
+      });
+      print("@@DataGetDPM_PrivatePartition--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getSPO_PatientApproval--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ApprovedclickPatients data =
+      ApprovedclickPatients.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<GetSPO_DiseasewiseRecordsApprovalData>>
+  getSPO_DiseasewiseRecordsApproval(int district_code, int state_code,
+      String financialYear,int status) async {
+    print("@@getSPO_DiseasewiseRecordsApproval" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_DiseasewiseRecordsApproval;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "districtid": district_code,
+        "stateId": state_code,
+        "financialYear": financialYear,
+        "status": status, // for approved
+      });
+      print("@@getSPO_DiseasewiseRecordsApproval--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getSPO_DiseasewiseRecordsApproval--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetSPO_DiseasewiseRecordsApproval data =
+      GetSPO_DiseasewiseRecordsApproval.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
   }
 
+  static Future<List<GetSPO_Patients_Approved_ViewData>>
+  getSPO_Patients_Approved_View(int district_code, int state_code,
+      String financialYear,int status,int diseaseid) async {
+    print("@@getSPO_Patients_Approved_View" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_Patients_Approved_View;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "financialYear": financialYear,
+        "mode": "",
+        "diseaseid":diseaseid// for approved
+      });
+      print("@@getSPO_Patients_Approved_View--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getSPO_Patients_Approved_View--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetSPO_Patients_Approved_View data =
+      GetSPO_Patients_Approved_View.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

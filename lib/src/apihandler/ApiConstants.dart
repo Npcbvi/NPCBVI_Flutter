@@ -120,4 +120,10 @@ class ApiConstants {
 
   static String PatientRegistration = 'PatientRegistration';
 
+  static String GetSPO_PatientApproval = 'SpmDashboard/api/GetSPO_PatientApproval';
+
+  static String GetSPO_DiseasewiseRecordsApproval = 'SpmDashboard/api/GetSPO_DiseasewiseRecordsApproval';
+
+  static String GetSPO_Patients_Approved_View = 'SpmDashboard/api/GetSPO_Patients_Approved_View';
+
 }
