@@ -3840,7 +3840,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Data Rows
                         FutureBuilder<List<ApprovedclickPatientsData>>(
                           future: ApiController.getSPO_PatientApproval(
-                            568, 33, "2024-2025", statusApproved,
+                            //568, 33, "2024-2025", statusApproved,
+                            district_code_login, state_code_login, currentFinancialYear, statusApproved,
+
                           ),
                           builder: (context, snapshot) {
                             // Show loader while waiting for response
@@ -3944,7 +3946,9 @@ void showDiseaseApprovedPatintViewClick() {
                             currentFinancialYear,
                             "",
                             diseaseid,*/
-                            568, 33, "2024-2025", statusApproved,
+                           // 568, 33, "2024-2025", statusApproved,
+                            district_code_login, state_code_login, currentFinancialYear, statusApproved,
+
                           ),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
@@ -4042,7 +4046,9 @@ void showDiseaseApprovedPatintViewClick() {
                             currentFinancialYear,
                             "",
                             diseaseid,*/
-                            568, 33, "2024-2025", statusApproved,diseaseId,
+                       //     568, 33, "2024-2025", statusApproved,diseaseId,
+                            district_code_login,state_code_login, currentFinancialYear,statusApproved,diseaseId,
+
                           ),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
