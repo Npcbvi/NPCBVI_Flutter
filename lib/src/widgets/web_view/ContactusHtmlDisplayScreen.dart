@@ -35,7 +35,7 @@ class _ContactusHtmlDisplayScreen extends State<ContactusHtmlDisplayScreen> {
         if (value.status) {
           print('@@status--' + value.status.toString());
           for (var element in value.data) {
-            htmlDatalink = (element.link);
+        //    htmlDatalink = (element.link);
             htmlData = (element.detail);
             print('@@htmlDatya--' + htmlData);
           }
@@ -69,7 +69,7 @@ class _ContactusHtmlDisplayScreen extends State<ContactusHtmlDisplayScreen> {
                     : Container(
                         child: SingleChildScrollView(
                           child: Html(
-                            data: htmlDatalink + '\n' + htmlData,
+                            data:/* htmlDatalink + '\n' +*/ htmlData,
                           ),
                         ),
                       )),

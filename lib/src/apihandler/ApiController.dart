@@ -4330,7 +4330,7 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {

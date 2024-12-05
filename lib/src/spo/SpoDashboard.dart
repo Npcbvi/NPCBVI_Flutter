@@ -521,7 +521,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         child: Container(
                           width: 80.0,
                           child: Text(
-                            'DPM',
+                            'DPMs',
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                               color: Colors.white,
@@ -755,6 +755,25 @@ class _SpoDashboard extends State<SpoDashboard> {
                       children: [
                         // Shown Captcha value to user
                         Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              print('Text clicked!');
+                              // Add your desired action here, e.g., navigation, alert, etc.
+                            },
+                            child: Text(
+                              'PNJA Dashboard:',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Container(
                             child: Text(
                               'Login Type:',
                               style: TextStyle(
@@ -914,7 +933,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           onTap: () {
                                             print(
                                                 '@@---Patient(s) (2024-2025) Pending for Dialog');
-                                             // showDiseaseDialogPendingPatintFinance();
+                                              showDiseaseDialogPendingPatintFinance();
                                           },
                                           child: new Text('Pending',
                                               textAlign: TextAlign.center,
@@ -3815,7 +3834,7 @@ class _SpoDashboard extends State<SpoDashboard> {
         double screenHeight = MediaQuery.of(context).size.height;
 
         return AlertDialog(
-          title: Text('Disease Data'),
+          title: Text('District-wise Records (Approved)'),
           content: Container(
             width: screenWidth * 0.9, // 90% of screen width
             height: screenHeight * 0.7, // 70% of screen height
@@ -3915,7 +3934,7 @@ void showDiseaseApprovedPatintViewClick() {
         double screenHeight = MediaQuery.of(context).size.height;
 
         return AlertDialog(
-          title: Text('Disease Data'),
+          title: Text('Disease-wise Records (Approved)'),
           content: Container(
             width: screenWidth * 0.9, // 90% of screen width
             height: screenHeight * 0.7, // 70% of screen height
@@ -3978,6 +3997,106 @@ void showDiseaseApprovedPatintViewClick() {
                                       _buildDataCellViewBlue("View", () {
                                         print("@@npcbNo: " + offer.diseaseId.toString());
                                         showDiseaseGetSPO_Patients_Approved_View(offer.diseaseId);
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void showDiseasePendingPatintViewClick() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Text('Disease-wise Records(Pending)'),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Combined Horizontal Scrolling for Header and Data Rows
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      children: [
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('NGO'),
+                            _buildHeaderCell('Approved'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<
+                            List<GetSPO_DiseasewiseRecordsApprovalData>>(
+                          future: ApiController.getSPO_DiseasewiseRecordsApproval(
+                            /*   district_code_login,
+                            state_code_login,
+                            currentFinancialYear,
+                            "",
+                            diseaseid,*/
+                            // 568, 33, "2024-2025", statusPending, in case of pending
+                            district_code_login, state_code_login, currentFinancialYear, statusPending,
+
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<GetSPO_DiseasewiseRecordsApprovalData> ddata =
+                                  snapshot.data;
+                              print('@@---ddata: ' + ddata.length.toString());
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo(
+                                          (ddata.indexOf(offer) + 1)
+                                              .toString()),
+                                      _buildDataCell(offer.diseaseName),
+                                      _buildDataCell(offer.totalApproPending.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print("@@npcbNo: " + offer.diseaseId.toString());
+                                        showDiseaseGetSPO_Patients_Pending_View(offer.diseaseId);
                                       }),
                                     ],
                                   );
@@ -4082,6 +4201,205 @@ void showDiseaseApprovedPatintViewClick() {
                                     ],
                                   );
                                 }).toList(),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  void showDiseaseGetSPO_Patients_Pending_View(int diseaseId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Text('NGO-wise Records (Pending)'),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Combined Horizontal Scrolling for Header and Data Rows
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      children: [
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('NGO'),
+                            _buildHeaderCell('Approved'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<GetSPO_Patients_Approved_ViewData>>(
+                          future: ApiController.getSPO_Patients_Approved_View(
+                            district_code_login,
+                            state_code_login,
+                            currentFinancialYear,
+                            statusPending,
+                            diseaseId,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              // Return a TextField displaying 'No data found'
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "No data found",
+                                    style: TextStyle(fontSize: 16, color: Colors.black54,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              );
+                            } else {
+                              List<GetSPO_Patients_Approved_ViewData> ddata = snapshot.data;
+                              print('@@---ddata: ${ddata.length}');
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.ngoname),
+                                      _buildDataCell(offer.total.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print("@@npcbNo: ${offer.ngoname}");
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+  void showDiseaseDialogPendingPatintFinance() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Text('District-wise Records (Pending)'),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Horizontal Scrolling for both Header and Data Rows
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      children: [
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('District Name'),
+                            _buildHeaderCell('Total'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<ApprovedclickPatientsData>>(
+                          future: ApiController.getSPO_PatientApproval(
+                            //568, 33, "2024-2025", 1,// in case of pending rest same
+
+                           district_code_login, state_code_login, currentFinancialYear, statusPending,
+
+                          ),
+                          builder: (context, snapshot) {
+                            // Show loader while waiting for response
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              Utils.showProgressDialog(context);
+                            } else {
+                              if (snapshot.connectionState != ConnectionState.waiting) {
+                                Utils.hideProgressDialog(context);
+                              }
+                            }
+
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<ApprovedclickPatientsData> ddata = snapshot.data;
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.districtName),
+                                      _buildDataCell(offer.totalCount.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print('@@Edit clicked for item: ${offer.districtName}');
+                                        // You can add further actions here if needed
+                                        showDiseasePendingPatintViewClick();
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+
                               );
                             }
                           },

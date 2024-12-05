@@ -156,17 +156,22 @@ class _MainDashboard extends State<MainDashboard> {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
-                                      child: Container(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Action when 'more..' is clicked
+                                          // _handleMoreClick();
+                                          Utils.showToast("Complete in next Sprint!", true);
+                                        },
                                         child: Text(
                                           'more..',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
+                                            color: Colors.black, // Changed to blue to indicate it's clickable
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -235,17 +240,22 @@ class _MainDashboard extends State<MainDashboard> {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
-                                      child: Container(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Action when 'more..' is clicked
+                                          // _handleMoreClick();
+                                          Utils.showToast("Complete in next Sprint!", true);
+                                        },
                                         child: Text(
                                           'more..',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
+                                            color: Colors.black, // Changed to blue to indicate it's clickable
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -314,17 +324,22 @@ class _MainDashboard extends State<MainDashboard> {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
-                                      child: Container(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Action when 'more..' is clicked
+                                          // _handleMoreClick();
+                                          Utils.showToast("Complete in next Sprint!", true);
+                                        },
                                         child: Text(
                                           'more..',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
+                                            color: Colors.black, // Changed to blue to indicate it's clickable
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -393,17 +408,22 @@ class _MainDashboard extends State<MainDashboard> {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
-                                      child: Container(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Action when 'more..' is clicked
+                                          // _handleMoreClick();
+                                          Utils.showToast("Complete in next Sprint!", true);
+                                        },
                                         child: Text(
                                           'more..',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
+                                            color: Colors.black, // Changed to blue to indicate it's clickable
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                       ),
                                     ),
