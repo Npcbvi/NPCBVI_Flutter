@@ -6,6 +6,7 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMEyeSchoolScreens.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMPatientPatientDisceaseInnerDataDisplay.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMReportScreen.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrganValuebiggerFive.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/DPMGovtPrivateOrganisationTypeData.dart';
@@ -396,6 +397,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                 // Implement User Manual action
               } else if (value == 3) {
                 setState(() {
+                  showLogoutDialog();
+
                   /* dashboardviewReplace = false;
                   chnagePAsswordView = true;*/
                 });
@@ -16440,6 +16443,72 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+  Future<void> showLogoutDialog() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15), // Rounded corners
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.logout, color: Colors.redAccent),
+              SizedBox(width: 8),
+              Text("Logout"),
+            ],
+          ),
+          content: Text(
+            "Are you sure you want to logout?",
+            style: TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                logoutUserStatic();  // Call the logout function
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                "Logout",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  Future<void> logoutUserStatic() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Utils.showToast("You have been logged out!", false);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false,
+    );
+  }
+
 }
 
 class DPMDashboardParamsData {

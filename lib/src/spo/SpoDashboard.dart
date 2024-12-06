@@ -1022,7 +1022,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print('@@---NGOsAPProved--1');
 
                                                   setState(() {
-
+                                                    showDiseaseDialogNGOApproved();
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -4395,6 +4395,105 @@ void showDiseaseApprovedPatintViewClick() {
                                         print('@@Edit clicked for item: ${offer.districtName}');
                                         // You can add further actions here if needed
                                         showDiseasePendingPatintViewClick();
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+//here click of NGO(s) approved
+  void showDiseaseDialogNGOApproved() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Text('District-wise NGO(s) (Approved))'),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Horizontal Scrolling for both Header and Data Rows
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      children: [
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('District'),
+                            _buildHeaderCell('Total'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<ApprovedclickPatientsData>>(
+                          future: ApiController.getSPO_PatientApproval(
+                            //568, 33, "2024-2025", statusApproved,
+                            district_code_login, state_code_login, currentFinancialYear, statusApproved,
+
+                          ),
+                          builder: (context, snapshot) {
+                            // Show loader while waiting for response
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              Utils.showProgressDialog(context);
+                            } else {
+                              if (snapshot.connectionState != ConnectionState.waiting) {
+                                Utils.hideProgressDialog(context);
+                              }
+                            }
+
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<ApprovedclickPatientsData> ddata = snapshot.data;
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.districtName),
+                                      _buildDataCell(offer.totalCount.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print('@@Edit clicked for item: ${offer.districtName}');
+                                        // You can add further actions here if needed
+                                    //    showDiseaseApprovedPatintViewClick();
                                       }),
                                     ],
                                   );
