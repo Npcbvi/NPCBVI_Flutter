@@ -35,6 +35,7 @@ Future<void> main() async {
 
   runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,  // Removes the debug banner
       home: LoginScreen(), // Set the initial screen
       // home: HomePage(), // Uncomment this line if you want to use HomePage instead of LoginScreen
     ),
