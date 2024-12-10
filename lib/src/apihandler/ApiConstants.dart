@@ -125,5 +125,8 @@ class ApiConstants {
   static String GetSPO_DiseasewiseRecordsApproval = 'SpmDashboard/api/GetSPO_DiseasewiseRecordsApproval';
 
   static String GetSPO_Patients_Approved_View = 'SpmDashboard/api/GetSPO_Patients_Approved_View';
+  static String GetSPO_DistrictNgoApproval = 'SpmDashboard/api/GetSPO_DistrictNgoApproval';
+
+  static String getSPO_DistrictNgoApproval_list = 'SpmDashboard/api/GetSPO_DistrictNgoApproval_list';
 
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DPMEyeSchoolScreens.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
@@ -16,6 +17,9 @@ import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/ApprovedclickPatients.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_DiseasewiseRecordsApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_Patients_Approved_View.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOApprovalClick.dart';
+import 'package:mohfw_npcbvi/src/spo/ListNGOApprovalWidget.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -63,6 +67,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       _chosenEyeBank,
       _chosenValueLgoutOption;
   bool dashboardviewReplace = false;
+  bool LsitNGO_APPorovedClickShowData=false;
 
   bool eyeBankApprovals = false;
   bool RegisteredEyesurgeonsEstimateTargetAllocations = false;
@@ -1890,6 +1895,7 @@ class _SpoDashboard extends State<SpoDashboard> {
             eyeBankApproval(),
             eyeBankDonationApproval(),
         eyeBankCollection(),
+         //   ListGetSPO_DistrictNgoApproval_(),
             // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
         ),
@@ -4456,10 +4462,10 @@ void showDiseaseApprovedPatintViewClick() {
                         ),
                         Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
-                        FutureBuilder<List<ApprovedclickPatientsData>>(
-                          future: ApiController.getSPO_PatientApproval(
-                            //568, 33, "2024-2025", statusApproved,
-                            district_code_login, state_code_login, currentFinancialYear, statusApproved,
+                        FutureBuilder<List<NGOApprovalClickData>>(
+                          future: ApiController.getSPO_DistrictNgoApproval(
+                            568, 33, "2024-2025", statusApproved,
+                            //district_code_login, state_code_login, currentFinancialYear, statusApproved,
 
                           ),
                           builder: (context, snapshot) {
@@ -4481,7 +4487,7 @@ void showDiseaseApprovedPatintViewClick() {
                             } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                               return Utils.getEmptyView("No data found");
                             } else {
-                              List<ApprovedclickPatientsData> ddata = snapshot.data;
+                              List<NGOApprovalClickData> ddata = snapshot.data;
                               return Column(
                                 children: ddata.map((offer) {
                                   return Row(
@@ -4489,11 +4495,21 @@ void showDiseaseApprovedPatintViewClick() {
                                     children: [
                                       _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
                                       _buildDataCell(offer.districtName),
-                                      _buildDataCell(offer.totalCount.toString()),
+                                      _buildDataCell(offer.countstate.toString()),
                                       _buildDataCellViewBlue("View", () {
                                         print('@@Edit clicked for item: ${offer.districtName}');
-                                        // You can add further actions here if needed
-                                    //    showDiseaseApprovedPatintViewClick();
+                                        // Example Usage
+                                        // Close the dialog before navigating
+                                        Navigator.of(context).pop();
+
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ListNGOApprovalWidget(districtName: offer.districtName),
+                                          ),
+                                        );
+
                                       }),
                                     ],
                                   );
@@ -4522,6 +4538,134 @@ void showDiseaseApprovedPatintViewClick() {
       },
     );
   }
+ /* Widget ListGetSPO_DistrictNgoApproval_() {
+    return Column(
+      children: [
+        Visibility(
+          visible: LsitNGO_APPorovedClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling for both Header and Data Rows
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  children: [
+                    // Top Info Bar
+                    Container(
+                      color: Colors.white70,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text('District:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Text(districtNames,
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Text('State:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Text(stateNames,
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500)),
+                          const SizedBox(width: 10),
+                          Container(
+                            margin: EdgeInsets.symmetric(horizontal: 10.0),
+                            width: 150.0,
+                            child: Text('NGO(s) (Approved)',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w500)),
+                          ),
+                          const SizedBox(width: 10),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                               *//* dashboardviewReplace = true;
+                                NGO_APPorovedClickShowData = false;
+                                NGO_PendingClickShowData = false;*//*
+                              });
+                            },
+                            child: Container(
+                              width: 80.0,
+                              child: Text('Back',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w500)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Data Table Header
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('NGO Name'),
+                        _buildHeaderCell('Member Name'),
+                        _buildHeaderCell('Hospital Name'),
+                        _buildHeaderCell('Address'),
+                        _buildHeaderCell('Nodal Officer Name'),
+                        _buildHeaderCell('Mobile No'),
+                        _buildHeaderCell('Email Id'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<NGOAPPRovedClickListDetailData>>(
+                      future: ApiController.getSPO_DistrictNgoApproval_lists(
+                        568, 33, "2024-2025", statusApproved,),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Utils.getEmptyView("No data found");
+                        } else {
+                          List<NGOAPPRovedClickListDetailData> ddata =
+                              snapshot.data;
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.name),
+                                  _buildDataCell(offer.memberName),
+                                  _buildDataCell(offer.hName),
+                                  _buildDataCell(offer.address),
+                                  _buildDataCell(offer.nodalOfficerName),
+                                  _buildDataCell(offer.mobile.toString()),
+                                  _buildDataCell(offer.emailid.toString()),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }*/
 }
 class GetChangeAPsswordFieldsss {
   String userid;
