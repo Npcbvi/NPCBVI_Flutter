@@ -35,8 +35,8 @@ class SpoDashboard extends StatefulWidget {
 }
 
 class _SpoDashboard extends State<SpoDashboard> {
-  int statusApproved=2;
-      int statusPending=1;
+  int statusApproved = 2;
+  int statusPending = 1;
   DataDsiricst _selectedUserDistrict;
   int stateCodeSPO,
       disrtcCode,
@@ -52,10 +52,10 @@ class _SpoDashboard extends State<SpoDashboard> {
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
   TextEditingController _confirmnPasswordontrollere =
-  new TextEditingController();
+      new TextEditingController();
   GetChangeAPsswordFieldsss getchangePwds = new GetChangeAPsswordFieldsss();
-   double cellWidth = 100.0; // Set desired width
-   double cellHeight = 40.0; // Set desired height
+  double cellWidth = 100.0; // Set desired width
+  double cellHeight = 40.0; // Set desired height
   final GlobalKey _dropdownKey = GlobalKey();
   String fullnameController, getYearNgoHopital, getfyidNgoHospital;
   bool ManageUSerNGOHospt = false;
@@ -67,11 +67,9 @@ class _SpoDashboard extends State<SpoDashboard> {
   bool isLoadingApi = true;
   bool ngoDashboardclicks = false;
   String currentFinancialYear;
-  String _chosenValueLOWVision,
-      _chosenEyeBank,
-      _chosenValueLgoutOption;
+  String _chosenValueLOWVision, _chosenEyeBank, _chosenValueLgoutOption;
   bool dashboardviewReplace = false;
-  bool LsitNGO_APPorovedClickShowData=false;
+  bool LsitNGO_APPorovedClickShowData = false;
 
   bool eyeBankApprovals = false;
   bool RegisteredEyesurgeonsEstimateTargetAllocations = false;
@@ -204,12 +202,9 @@ class _SpoDashboard extends State<SpoDashboard> {
 
   void _showPopupMenu() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay
-        .of(context)
-        ?.context
-        .findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -247,7 +242,7 @@ class _SpoDashboard extends State<SpoDashboard> {
         ManageUSerNGOHospt = true;
         break;
 
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -255,12 +250,9 @@ class _SpoDashboard extends State<SpoDashboard> {
 
   void _showPopupMenuScreeningCamp() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay
-        .of(context)
-        ?.context
-        .findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -306,7 +298,7 @@ class _SpoDashboard extends State<SpoDashboard> {
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
         break;
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -314,12 +306,9 @@ class _SpoDashboard extends State<SpoDashboard> {
 
   void _showPopupMenuSatteliteCenter() async {
     final RenderBox dropdownRenderBox =
-    _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+        _dropdownKey.currentContext?.findRenderObject() as RenderBox;
     final RenderBox overlayRenderBox =
-    Overlay
-        .of(context)
-        ?.context
-        .findRenderObject() as RenderBox;
+        Overlay.of(context)?.context.findRenderObject() as RenderBox;
 
     // Check if both render boxes are not null
     if (dropdownRenderBox == null || overlayRenderBox == null) {
@@ -365,7 +354,7 @@ class _SpoDashboard extends State<SpoDashboard> {
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = true;
         break;
-    // Add more cases as needed
+      // Add more cases as needed
       default:
         print("Unknown selection");
     }
@@ -378,7 +367,7 @@ class _SpoDashboard extends State<SpoDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-      GetDPM_ScreeningYear.fromJson(json);
+          GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -398,7 +387,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       financialYear = '$currentYear-${nextYear.toString().substring(2)}';
     } else {
       financialYear =
-      '${currentYear - 1}-${currentYear.toString().substring(2)}';
+          '${currentYear - 1}-${currentYear.toString().substring(2)}';
     }
 
     return financialYear;
@@ -426,8 +415,7 @@ class _SpoDashboard extends State<SpoDashboard> {
             }),*/
         actions: [
           PopupMenuButton<int>(
-            itemBuilder: (context) =>
-            [
+            itemBuilder: (context) => [
               PopupMenuItem(
                 value: 1,
                 child: Row(
@@ -479,10 +467,178 @@ class _SpoDashboard extends State<SpoDashboard> {
           ),
         ],
       ),
+      drawer: Drawer(
+        child: Container(
+          width: 100.0,  // Set the width of the drawer
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white70, Colors.white70],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Container(
+            margin: EdgeInsets.all(8.0), // Reduce the margin to decrease space// Set the margin here
+            child: ListView(
+              children: [
+
+                _buildMenuItem(
+                  icon: Icons.dashboard,
+                  title: 'Dashboard',
+                  onTap: () {
+                    setState(() {
+                      dashboardviewReplace = true;
+                      SPOLcikONDPMMEnus = false;
+                      RegisteredEyesurgeon = false;
+                      RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+                _buildMenuItem(
+                  icon: Icons.assignment,
+                  title: 'DPMs',
+                  onTap: () {
+                    setState(() {
+                      dashboardviewReplace = false;
+                      SPOLcikONDPMMEnus = true;
+                      RegisteredEyesurgeon = false;
+                      RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                      eyeBankApprovals=false;
+                      eyeBankDonationApprovals=false;
+                      eyeBankCollections=false;
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+                _buildDropdownItem(
+                  value: _chosenValue,
+                  hint: 'Update',
+                  hintIcon: Icon(Icons.update, color: Colors.black), // Add an icon to the hint
+                  items: [
+                    {'value': 'Eye surgeons', 'icon': Icons.person},
+                    {'value': 'Estimate Target Allocation', 'icon': Icons.assignment},
+                  ],
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenValue = value;
+                      //  print('@@spinnerChooseValue--' + _chosenValue);
+                      if (_chosenValue == "Eye surgeons") {
+                        print('@@NGO--1' + _chosenValue);
+                        dashboardviewReplace = false;
+                        SPOLcikONDPMMEnus = false;
+                        RegisteredEyesurgeon = true;
+                        eyeBankApprovals=false;
+                        eyeBankDonationApprovals=false;
+                        eyeBankCollections=false;
+                      } else if (_chosenValue ==
+                          "Estimate Target Allocation") {
+                        dashboardviewReplace = false;
+                        RegisteredEyesurgeon = false;
+                        RegisteredEyesurgeonsEstimateTargetAllocations=true;
+                        eyeBankApprovals=false;
+                        eyeBankDonationApprovals=false;
+                        eyeBankCollections=false;
+                      }
+                    });
+                  },
+                ),
+                _buildDropdownItem(
+                  value: _chosenValueLOWVision,
+                  hint: 'Eye Bank Approval',
+                  hintIcon: Icon(Icons.local_hospital, color: Colors.black), // Add an icon to the hint
+                  items: [
+                    {'value': 'Eye Bank', 'icon': Icons.local_hospital},
+                    // Add an icon here
+                    {'value': 'Eye Donation', 'icon': Icons.healing},
+                    // Add an icon here
+                  ],
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenValueLOWVision = value;
+                      //  print('@@spinnerChooseValue--' + _chosenValue);
+                      if (_chosenValueLOWVision == "Eye Bank") {
+                        print('@@NGO--1' + _chosenValueLOWVision);
+                        dashboardviewReplace = false;
+                        RegisteredEyesurgeon = false;
+                        RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                        eyeBankApprovals=true;
+                        eyeBankDonationApprovals=false;
+                        eyeBankCollections=false;
+                      } else if (_chosenValueLOWVision ==
+                          "Eye Donation") {
+                        dashboardviewReplace = false;
+                        RegisteredEyesurgeon = false;
+                        RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                        eyeBankApprovals=false;
+                        eyeBankDonationApprovals=true;
+                        eyeBankCollections=false;
+                      }
+                    });
+                  },
+                ),
+                _buildDropdownItem(
+                  value: _chosenEyeBank,
+                  hint: 'Application(s)',
+                  hintIcon: Icon(Icons.apps, color: Colors.black), // Add an icon to the hint
+                  items: [
+                    {'value': 'Eye Bank Collection', 'icon': Icons.collections},
+                    {'value': 'Eye Donation', 'icon': Icons.healing},
+                    {
+                      'value': 'Eyeball Collection Via Eye Bank',
+                      'icon': Icons.add_circle_outline
+                    },
+                    {
+                      'value': 'Eyeball Collection Via Eye Donation Center',
+                      'icon': Icons.center_focus_weak
+                    },
+                  ],
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenEyeBank = value;
+                      //  print('@@spinnerChooseValue--' + _chosenValue);
+                      if (_chosenEyeBank == "Eye Bank Collection") {
+                        print('@@NGO--1' + _chosenEyeBank);
+                        dashboardviewReplace = false;
+                        eyeBankApprovals=false;
+                        dashboardviewReplace = false;
+                        RegisteredEyesurgeon = false;
+                        RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                        eyeBankApprovals=false;
+                        eyeBankDonationApprovals=false;
+                        eyeBankCollections=true;
+                      } else if (_chosenEyeBank == "Eye Donation") {
+                        dashboardviewReplace = false;
+                        eyeBankApprovals=false;
+                        dashboardviewReplace = false;
+                        RegisteredEyesurgeon = false;
+                        RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                        eyeBankApprovals=false;
+                        eyeBankDonationApprovals=false;
+                        eyeBankCollections=true;
+                      } else if (_chosenEyeBank ==
+                          "Eyeball Collection Via Eye Bank") {
+                        dashboardviewReplace = false;
+                        eyeBankApprovals=false;
+                        dashboardviewReplace = false;
+                        RegisteredEyesurgeon = false;
+                        RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                        eyeBankApprovals=false;
+                        eyeBankDonationApprovals=false;
+                        eyeBankCollections=true;
+                      }
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+            /* Container(
               color: Colors.blue,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -752,7 +908,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                   ),
                 ),
               ),
-            ),
+            ),*/
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
@@ -776,7 +932,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                               style: TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.w500,
-
                               ),
                             ),
                           ),
@@ -786,21 +941,19 @@ class _SpoDashboard extends State<SpoDashboard> {
                         ),
                         Container(
                             child: Text(
-                              'Login Type:',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            )),
+                          'Login Type:',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w500),
+                        )),
                         const SizedBox(
                           width: 10,
                         ),
                         Container(
                             child: Text(
-                              'STATE PROGRAM OFFICER',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500),
-                            )),
+                          'STATE PROGRAM OFFICER',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w500),
+                        )),
                         const SizedBox(
                           width: 10,
                         ),
@@ -817,42 +970,42 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   // Shown Captcha value to user
                                   Container(
                                       child: Text(
-                                        'Login ID:',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500),
-                                      )),
+                                    'Login ID:',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                  )),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Container(
                                       child: Text(
-                                        '${userId}',
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500),
-                                      )),
+                                    '${userId}',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500),
+                                  )),
                                   const SizedBox(
                                     width: 10,
                                   ),
 
                                   Container(
                                       child: Text(
-                                        'State :',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.w500),
-                                      )),
+                                    'State :',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                  )),
                                   const SizedBox(
                                     width: 10,
                                   ),
                                   Container(
                                       child: Text(
-                                        '${stateNames}',
-                                        style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500),
-                                      )),
+                                    '${stateNames}',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500),
+                                  )),
                                   const SizedBox(
                                     width: 10,
                                   ),
@@ -883,21 +1036,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                             width: double.infinity,
                             decoration: new BoxDecoration(
                                 gradient: new LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Color(0xFFF78CA0), // #f78ca0 at 0%
-                                    Color(0xFFF9748F), // #f9748f at 19%
-                                    Color(0xFFFD868C), // #fd868c at 60%
-                                    Color(0xFFFE9A8B), // #fe9a8b at 100%
-                                  ],
-                                  stops: [
-                                    0.0,
-                                    0.19,
-                                    0.6,
-                                    1.0
-                                  ], // Define the color stops
-                                )),
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color(0xFFF78CA0), // #f78ca0 at 0%
+                                Color(0xFFF9748F), // #f9748f at 19%
+                                Color(0xFFFD868C), // #fd868c at 60%
+                                Color(0xFFFE9A8B), // #fe9a8b at 100%
+                              ],
+                              stops: [
+                                0.0,
+                                0.19,
+                                0.6,
+                                1.0
+                              ], // Define the color stops
+                            )),
                             child: Column(
                               children: [
                                 Padding(
@@ -922,7 +1075,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           onTap: () {
                                             print(
                                                 '@@---ApprovedPatient(s) (2024-2025) APproved par Dialog');
-                                               showDiseaseDialogApprovedPatintFinance();
+                                            showDiseaseDialogApprovedPatintFinance();
                                           },
                                           child: new Text(
                                             'Approved',
@@ -944,7 +1097,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           onTap: () {
                                             print(
                                                 '@@---Patient(s) (2024-2025) Pending for Dialog');
-                                              showDiseaseDialogPendingPatintFinance();
+                                            showDiseaseDialogPendingPatintFinance();
                                           },
                                           child: new Text('Pending',
                                               textAlign: TextAlign.center,
@@ -1001,13 +1154,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        colors: [
-                                          Color(0xFF16D9E3), // #16d9e3 at 0%
-                                          Color(0xFF30C7EC), // #30c7ec at 47%
-                                          Color(0xFF46AEF7), // #46aef7 at 100%
-                                        ],
-                                        stops: [0.0, 0.47, 1.0],
-                                      )),
+                                    colors: [
+                                      Color(0xFF16D9E3), // #16d9e3 at 0%
+                                      Color(0xFF30C7EC), // #30c7ec at 47%
+                                      Color(0xFF46AEF7), // #46aef7 at 100%
+                                    ],
+                                    stops: [0.0, 0.47, 1.0],
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1026,8 +1179,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print('@@---NGOsAPProved--1');
@@ -1043,7 +1196,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1052,8 +1205,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1070,7 +1223,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1083,15 +1236,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ngoCountApproved}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1099,15 +1252,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ngoCountPending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1129,17 +1282,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.bottomCenter,
-                                        end: Alignment.topCenter,
-                                        colors: [
-                                          Color(0xFF0BA360), // #0ba360 at 0%
-                                          Color(0xFF3CBA92), // #3cba92 at 100%
-                                        ],
-                                        stops: [
-                                          0.0,
-                                          1.0
-                                        ], // Define the color stops
-                                      )),
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.topCenter,
+                                    colors: [
+                                      Color(0xFF0BA360), // #0ba360 at 0%
+                                      Color(0xFF3CBA92), // #3cba92 at 100%
+                                    ],
+                                    stops: [0.0, 1.0], // Define the color stops
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1159,23 +1309,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---Government_approved--1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
                                                 child: new Text('Approved',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1184,23 +1332,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---Government_Pending--1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
                                                 child: new Text('Pending',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1213,14 +1359,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text('${gH_CHC_Count}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1228,15 +1374,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${gH_CHC_Count_Pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1258,17 +1404,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.bottomLeft,
-                                        end: Alignment.topRight,
-                                        colors: [
-                                          Color(0xFFBF7DFF), // #bf7dff at 0%
-                                          Color(0xFF5DA7F1), // #5da7f1 at 100%
-                                        ],
-                                        stops: [
-                                          0.0,
-                                          1.0
-                                        ], // Define the color stops
-                                      )),
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    colors: [
+                                      Color(0xFFBF7DFF), // #bf7dff at 0%
+                                      Color(0xFF5DA7F1), // #5da7f1 at 100%
+                                    ],
+                                    stops: [0.0, 1.0], // Define the color stops
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1287,16 +1430,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---GetDPM_PrivatePartitionPorovedClickShowData--1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
 
                                                   // GetDPM_NGOApprovedPending();
                                                 },
@@ -1305,7 +1446,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1314,23 +1455,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---Pending here work----1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
                                                 child: new Text('Pending',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1343,14 +1482,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text('${ppCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1358,15 +1497,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1388,17 +1527,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.bottomLeft,
-                                        end: Alignment.topRight,
-                                        colors: [
-                                          Color(0xFFE465F3), // #e465f3 at 0%
-                                          Color(0xFFF5576C), // #f5576c at 100%
-                                        ],
-                                        stops: [
-                                          0.0,
-                                          1.0
-                                        ], // Define the color stops
-                                      )),
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    colors: [
+                                      Color(0xFFE465F3), // #e465f3 at 0%
+                                      Color(0xFFF5576C), // #f5576c at 100%
+                                    ],
+                                    stops: [0.0, 1.0], // Define the color stops
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1418,23 +1554,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---APProved here work----1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
                                                 child: new Text('Approved',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1443,23 +1577,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---DPM_privateMEdicalCollegePendingData here work----1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
                                                 child: new Text('Pending',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1472,14 +1604,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text('${pmcCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1487,15 +1619,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1517,17 +1649,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.bottomRight,
-                                        end: Alignment.topLeft,
-                                        colors: [
-                                          Color(0xFF667EEA), // #667eea at 0%
-                                          Color(0xFF764BA2), // #764ba2 at 100%
-                                        ],
-                                        stops: [
-                                          0.0,
-                                          1.0
-                                        ], // Define the color stops
-                                      )),
+                                    begin: Alignment.bottomRight,
+                                    end: Alignment.topLeft,
+                                    colors: [
+                                      Color(0xFF667EEA), // #667eea at 0%
+                                      Color(0xFF764BA2), // #764ba2 at 100%
+                                    ],
+                                    stops: [0.0, 1.0], // Define the color stops
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1546,24 +1675,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---Screening here work----1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
-
                                                 child: new Text('Completed',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1572,23 +1698,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---Screening here work----1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
                                                 child: new Text('Ongoing',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1597,23 +1721,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---Screening here work----1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
                                                 child: new Text('Coming',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1626,15 +1748,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${campCompletedCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1642,15 +1764,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${campongoingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1658,15 +1780,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 10, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 10, 20.0, 0),
                                               child: new Text(
                                                   '${campCommingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
                                                       fontWeight:
-                                                      FontWeight.bold,
+                                                          FontWeight.bold,
                                                       color: Colors.white)),
                                             ),
                                           ),
@@ -1688,17 +1810,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.bottomLeft,
-                                        end: Alignment.topRight,
-                                        colors: [
-                                          Color(0xFFFFC91E), // #ffc91e at 0%
-                                          Color(0xFFFF7249), // #ff7249 at 100%
-                                        ],
-                                        stops: [
-                                          0.0,
-                                          1.0
-                                        ], // Define the color stops
-                                      )),
+                                    begin: Alignment.bottomLeft,
+                                    end: Alignment.topRight,
+                                    colors: [
+                                      Color(0xFFFFC91E), // #ffc91e at 0%
+                                      Color(0xFFFF7249), // #ff7249 at 100%
+                                    ],
+                                    stops: [0.0, 1.0], // Define the color stops
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1717,16 +1836,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
                                                       '@@---satelliteCentreShowData here work----1');
 
-                                                  setState(() {
-
-                                                  });
+                                                  setState(() {});
                                                 },
                                                 child: new Text(
                                                     '${satellitecentreCount}',
@@ -1734,7 +1851,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1743,8 +1860,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -1756,7 +1873,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1779,17 +1896,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   width: double.infinity,
                                   decoration: new BoxDecoration(
                                       gradient: new LinearGradient(
-                                        begin: Alignment.topRight,
-                                        end: Alignment.bottomLeft,
-                                        colors: [
-                                          Color(0xFF2B5876), // #2b5876 at 0%
-                                          Color(0xFF4E4376), // #4e4376 at 100%
-                                        ],
-                                        stops: [
-                                          0.0,
-                                          1.0
-                                        ], // Define the color stops
-                                      )),
+                                    begin: Alignment.topRight,
+                                    end: Alignment.bottomLeft,
+                                    colors: [
+                                      Color(0xFF2B5876), // #2b5876 at 0%
+                                      Color(0xFF4E4376), // #4e4376 at 100%
+                                    ],
+                                    stops: [0.0, 1.0], // Define the color stops
+                                  )),
                                   child: Column(
                                     children: [
                                       Padding(
@@ -1808,8 +1922,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -1822,7 +1936,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1831,8 +1945,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             flex: 1,
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.fromLTRB(
-                                                  20, 30, 20.0, 0),
+                                                  const EdgeInsets.fromLTRB(
+                                                      20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   Utils.showToast(
@@ -1844,7 +1958,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     style: TextStyle(
                                                         fontSize: 17,
                                                         fontWeight:
-                                                        FontWeight.bold,
+                                                            FontWeight.bold,
                                                         color: Colors.white)),
                                               ),
                                             ),
@@ -1864,7 +1978,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                             flex: 1,
                             child: Padding(
                               padding:
-                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: new Text(
                                   'Disease-wise Patient Statistics( Since FY: $currentFinancialYear )',
                                   textAlign: TextAlign.center,
@@ -1878,7 +1992,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                             flex: 1,
                             child: Padding(
                               padding:
-                              const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                  const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                               child: new Text(
                                   'Disease-wise Registered Patient(Since FY: $currentFinancialYear',
                                   textAlign: TextAlign.center,
@@ -1900,8 +2014,8 @@ class _SpoDashboard extends State<SpoDashboard> {
             RegisteredEyesurgeonsEstimateTargetAllocation(),
             eyeBankApproval(),
             eyeBankDonationApproval(),
-        eyeBankCollection(),
-         //   ListGetSPO_DistrictNgoApproval_(),
+            eyeBankCollection(),
+            //   ListGetSPO_DistrictNgoApproval_(),
             // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
         ),
@@ -2005,8 +2119,8 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  Widget _buildUserInfoItem(String label, String value, Color labelColor,
-      Color valueColor) {
+  Widget _buildUserInfoItem(
+      String label, String value, Color labelColor, Color valueColor) {
     return Row(
       children: [
         Text(label,
@@ -2031,9 +2145,14 @@ class _SpoDashboard extends State<SpoDashboard> {
               TextField(
                 decoration: InputDecoration(
                   labelText: 'Old Password',
-                  border: OutlineInputBorder(  // Adds a border around the TextField
-                    borderRadius: BorderRadius.circular(12), // Optional: Makes the border rounded
-                    borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0), // Optional: Sets the border color and width
+                  border: OutlineInputBorder(
+                    // Adds a border around the TextField
+                    borderRadius: BorderRadius.circular(12),
+                    // Optional: Makes the border rounded
+                    borderSide: BorderSide(
+                        color: Colors.grey.shade300,
+                        width:
+                            1.0), // Optional: Sets the border color and width
                   ),
                 ),
                 controller: _oldPasswordControllere,
@@ -2044,9 +2163,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                 controller: _newPasswordontrollere,
                 decoration: InputDecoration(
                   labelText: 'New Password',
-                  border: OutlineInputBorder(  // Adds a border around the TextField
-                    borderRadius: BorderRadius.circular(12), // Optional: Makes the border rounded
-                    borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0), // Optional: Sets the border color and width
+                  border: OutlineInputBorder(
+                    // Adds a border around the TextField
+                    borderRadius: BorderRadius.circular(12),
+                    // Optional: Makes the border rounded
+                    borderSide: BorderSide(
+                        color: Colors.grey.shade300,
+                        width:
+                            1.0), // Optional: Sets the border color and width
                   ),
                 ),
                 obscureText: true,
@@ -2056,9 +2180,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                 controller: _confirmnPasswordontrollere,
                 decoration: InputDecoration(
                   labelText: 'Confirm New Password',
-                  border: OutlineInputBorder(  // Adds a border around the TextField
-                    borderRadius: BorderRadius.circular(12), // Optional: Makes the border rounded
-                    borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0), // Optional: Sets the border color and width
+                  border: OutlineInputBorder(
+                    // Adds a border around the TextField
+                    borderRadius: BorderRadius.circular(12),
+                    // Optional: Makes the border rounded
+                    borderSide: BorderSide(
+                        color: Colors.grey.shade300,
+                        width:
+                            1.0), // Optional: Sets the border color and width
                   ),
                 ),
                 obscureText: true,
@@ -2202,7 +2331,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                       return CircularProgressIndicator();
                     }
                     List list =
-                    snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
+                        snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
                       return district;
                     }).toList();
                     if (_selectedUser == null ||
@@ -2249,7 +2378,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   vertical: 15.0, horizontal: 10.0),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                BorderSide(color: Colors.blue, width: 2.0),
+                                    BorderSide(color: Colors.blue, width: 2.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -2263,7 +2392,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                             dropdownColor: Colors.blue[50],
                             style: TextStyle(color: Colors.black),
                             icon:
-                            Icon(Icons.arrow_drop_down, color: Colors.blue),
+                                Icon(Icons.arrow_drop_down, color: Colors.blue),
                           ),
                         ],
                       ),
@@ -2326,18 +2455,19 @@ class _SpoDashboard extends State<SpoDashboard> {
                       // Text color
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blue,
-                              width: 2.0), // Border color
+                          borderSide: BorderSide(
+                              color: Colors.blue, width: 2.0), // Border color
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.blueAccent,
+                          borderSide: BorderSide(
+                              color: Colors.blueAccent,
                               width: 2.0), // Border color when focused
                           borderRadius: BorderRadius.circular(5.0),
                         ),
                         hintText: 'All',
-                        hintStyle: TextStyle(
-                            color: Colors.black), // Hint text color
+                        hintStyle:
+                            TextStyle(color: Colors.black), // Hint text color
                       ),
                       items: <String>[
                         'Hospitals',
@@ -2371,10 +2501,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                   ),
                 ),
               ),
-
               Padding(
                 padding:
-                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                 child: ElevatedButton(
                   onPressed: () {
                     print(
@@ -2414,8 +2543,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         return CircularProgressIndicator();
                       }
 
-                      List<DataGetDPM_ScreeningYear> list = snapshot.data.map((
-                          district) {
+                      List<DataGetDPM_ScreeningYear> list =
+                          snapshot.data.map((district) {
                         return district;
                       }).toList();
 
@@ -2473,8 +2602,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                               ),
                               dropdownColor: Colors.blue[50],
                               style: TextStyle(color: Colors.black),
-                              icon: Icon(
-                                  Icons.arrow_drop_down, color: Colors.blue),
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.blue),
                             ),
                           ],
                         ),
@@ -2599,8 +2728,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         children: [
                           const SizedBox(width: 10),
                           Container(
-                            margin: const EdgeInsets.symmetric(
-                                horizontal: 10.0),
+                            margin:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
                             width: 250.0,
                             child: const Text(
                               'District Programme Manager Details',
@@ -2670,13 +2799,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                             ),
                           );
                         } else {
-                          List<SPODashboardDPMClickViewData> ddata = snapshot
-                              .data;
+                          List<SPODashboardDPMClickViewData> ddata =
+                              snapshot.data;
                           return Column(
                             children: ddata.map((offer) {
                               return Row(
-                                mainAxisAlignment: MainAxisAlignment
-                                    .spaceEvenly,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
@@ -2781,7 +2910,6 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-
   Widget RegisteredEyesurgeons() {
     return Column(
       children: [
@@ -2821,17 +2949,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                         _buildDataCellSrNoeyeSereonsss('Action'),
                         _buildDataCellSrNoeyeSereonsss('In Government Sector'),
                         _buildDataCellSrNoeyeSereonsss('In NGO Sector'),
-                        _buildDataCellSrNoeyeSereonsss('In Private Medical College'),
-                        _buildDataCellSrNoeyeSereonsss('In Private Practitioner'),
+                        _buildDataCellSrNoeyeSereonsss(
+                            'In Private Medical College'),
+                        _buildDataCellSrNoeyeSereonsss(
+                            'In Private Practitioner'),
                       ],
                     ),
                     const Divider(color: Colors.blue, height: 1.0),
                     FutureBuilder<List<EyeSurgeonsData>>(
                       future: _futures, // Cached future
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           Utils.showProgressDialog(context);
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           Utils.hideProgressDialog(context);
                           return Padding(
@@ -2843,7 +2975,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                           return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: _buildDataCellSrNoeyeSereonsss('No data found'),
+                            child:
+                                _buildDataCellSrNoeyeSereonsss('No data found'),
                           );
                         }
 
@@ -2854,14 +2987,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                           children: ddata.map((offer) {
                             return Row(
                               children: [
-                                _buildDataCellSrNoeyeSereonsss((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCellSrNoeyeSereonsss(
+                                    (ddata.indexOf(offer) + 1).toString()),
                                 SizedBox(
                                   height: 60,
                                   width: 150,
                                   child: createButton(
                                     text: 'Submit',
                                     onPressed: () {
-                                    Utils.showToast("Next Sprint add!", true);
+                                      Utils.showToast("Next Sprint add!", true);
                                     },
                                   ),
                                 ),
@@ -2872,7 +3006,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   },
                                 ),
                                 _buildEditableDataCell(
-
                                   offer.totalngo.toString(),
                                   onChanged: (value) {
                                     print('@@Edited value: $value');
@@ -2890,7 +3023,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     print('@@Edited value: $value');
                                   },
                                 ),
-
                               ],
                             );
                           }).toList(),
@@ -2942,6 +3074,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       ],
     );
   }
+
   Widget _buildDataCellSrNoeyeSereonsSrNo(String text) {
     return Container(
       height: 60,
@@ -2955,7 +3088,6 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
       child: Center(
         child: Text(
-
           text,
           style: const TextStyle(
             fontWeight: FontWeight.normal,
@@ -2964,6 +3096,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+
   Widget _buildDataCellSrNoeyeSereonss(String text) {
     return Container(
       height: cellHeight,
@@ -2977,7 +3110,6 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
       child: Center(
         child: Text(
-
           text,
           style: const TextStyle(
             fontWeight: FontWeight.normal,
@@ -2986,9 +3118,9 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+
   Widget _buildDataCellSrNoeyeSereons(/*String text*/) {
     return Container(
-
       height: 60,
       width: 150,
       decoration: BoxDecoration(
@@ -3008,6 +3140,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+
   Widget _buildDataCellSrNoeyeSereonsss(String text) {
     return Container(
       height: 60,
@@ -3030,8 +3163,10 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  Widget _buildEditableDataCell(String initialValue, {Function(String) onChanged}) {
-    TextEditingController controller = TextEditingController(text: initialValue);
+  Widget _buildEditableDataCell(String initialValue,
+      {Function(String) onChanged}) {
+    TextEditingController controller =
+        TextEditingController(text: initialValue);
 
     return Container(
       height: 60,
@@ -3045,11 +3180,13 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
       child: TextField(
         controller: controller,
-        keyboardType: TextInputType.number, // Set keyboard type to number
+        keyboardType: TextInputType.number,
+        // Set keyboard type to number
         inputFormatters: [
           FilteringTextInputFormatter.digitsOnly, // Allow only digits
         ],
-        onChanged: onChanged, // Callback to handle changes if needed
+        onChanged: onChanged,
+        // Callback to handle changes if needed
         decoration: const InputDecoration(
           border: InputBorder.none, // Remove default border
           contentPadding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
@@ -3060,8 +3197,6 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
-
-
 
 // Method to create button inside a DataCell
 
@@ -3255,7 +3390,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         children: <Widget>[
                           const Text(
                             'Select District:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Center(
                             child: FutureBuilder<List<DataDsiricst>>(
@@ -3274,19 +3410,27 @@ class _SpoDashboard extends State<SpoDashboard> {
                                 List<DataDsiricst> districtList = snapshot.data;
 
                                 // Ensure selected district is in the list, otherwise select the first
-                                if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
-                                  _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
+                                if (_selectedUserDistrict == null ||
+                                    !districtList
+                                        .contains(_selectedUserDistrict)) {
+                                  _selectedUserDistrict =
+                                      districtList.isNotEmpty
+                                          ? districtList.first
+                                          : null;
                                 }
 
                                 return DropdownButtonFormField<DataDsiricst>(
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -3295,12 +3439,16 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   onChanged: (districtUser) {
                                     setState(() {
                                       _selectedUserDistrict = districtUser;
-                                      distCodeDPM = int.parse(districtUser.districtCode.toString());
-                                      print('@@@Districtuser: ${districtUser.districtName}');
+                                      distCodeDPM = int.parse(
+                                          districtUser.districtCode.toString());
+                                      print(
+                                          '@@@Districtuser: ${districtUser.districtName}');
                                     });
                                   },
                                   value: _selectedUserDistrict,
-                                  items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                  items: districtList
+                                      .map<DropdownMenuItem<DataDsiricst>>(
+                                          (DataDsiricst district) {
                                     return DropdownMenuItem<DataDsiricst>(
                                       value: district,
                                       child: Text(district.districtName),
@@ -3329,8 +3477,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                               isSubmitPressed = true; // Mark as submit pressed
                             });
                             print('@@DPMMMM Hit here-----Api---------');
-                          }
-                      ),
+                          }),
                     ),
 
                     // Display SingleChildScrollView only if submit is pressed and district is selected
@@ -3351,18 +3498,23 @@ class _SpoDashboard extends State<SpoDashboard> {
                             const Divider(color: Colors.blue, height: 1.0),
                             //eyeBankingRole_id=15 in case of Eye Bank Static send
                             FutureBuilder<List<EyeBankApprovalDataData>>(
-                              future: ApiController.getSPO_EyeBankApplicationApproval(0,15,state_code_login,district_code_login),
+                              future: ApiController
+                                  .getSPO_EyeBankApplicationApproval(0, 15,
+                                      state_code_login, district_code_login),
                               builder: (context, snapshot) {
                                 // Show progress dialog when the request is in progress
-                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   Utils.showProgressDialog(context);
                                 } else {
-                                  if (snapshot.connectionState != ConnectionState.waiting) {
+                                  if (snapshot.connectionState !=
+                                      ConnectionState.waiting) {
                                     Utils.hideProgressDialog(context);
                                   }
                                 }
 
-                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   return const Center(
                                     child: CircularProgressIndicator(),
                                   );
@@ -3373,7 +3525,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       child: Text("Error: ${snapshot.error}"),
                                     ),
                                   );
-                                } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data.isEmpty) {
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
@@ -3383,17 +3536,26 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     ),
                                   );
                                 } else {
-                                  List<EyeBankApprovalDataData> ddata = snapshot.data;
+                                  List<EyeBankApprovalDataData> ddata =
+                                      snapshot.data;
                                   return Column(
                                     children: ddata.map((offer) {
                                       return Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
-                                          _buildDataCell(offer.eyeBankUniqueID ?? 'N/A'),
-                                          _buildDataCell(offer.eyebankName ?? 'N/A'),
-                                          _buildDataCell(offer.officername ?? 'N/A'),
-                                          _buildDataCell(offer.emailid?.toString() ?? 'N/A'),
+                                          _buildDataCellSrNo(
+                                              (ddata.indexOf(offer) + 1)
+                                                  .toString()),
+                                          _buildDataCell(
+                                              offer.eyeBankUniqueID ?? 'N/A'),
+                                          _buildDataCell(
+                                              offer.eyebankName ?? 'N/A'),
+                                          _buildDataCell(
+                                              offer.officername ?? 'N/A'),
+                                          _buildDataCell(
+                                              offer.emailid?.toString() ??
+                                                  'N/A'),
                                         ],
                                       );
                                     }).toList(),
@@ -3415,7 +3577,6 @@ class _SpoDashboard extends State<SpoDashboard> {
   }
 
   Widget eyeBankDonationApproval() {
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -3451,7 +3612,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         children: <Widget>[
                           const Text(
                             'Select District:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Center(
                             child: FutureBuilder<List<DataDsiricst>>(
@@ -3470,19 +3632,27 @@ class _SpoDashboard extends State<SpoDashboard> {
                                 List<DataDsiricst> districtList = snapshot.data;
 
                                 // Ensure selected district is in the list, otherwise select the first
-                                if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
-                                  _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
+                                if (_selectedUserDistrict == null ||
+                                    !districtList
+                                        .contains(_selectedUserDistrict)) {
+                                  _selectedUserDistrict =
+                                      districtList.isNotEmpty
+                                          ? districtList.first
+                                          : null;
                                 }
 
                                 return DropdownButtonFormField<DataDsiricst>(
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -3491,12 +3661,16 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   onChanged: (districtUser) {
                                     setState(() {
                                       _selectedUserDistrict = districtUser;
-                                      distCodeDPM = int.parse(districtUser.districtCode.toString());
-                                      print('@@@Districtuser: ${districtUser.districtName}');
+                                      distCodeDPM = int.parse(
+                                          districtUser.districtCode.toString());
+                                      print(
+                                          '@@@Districtuser: ${districtUser.districtName}');
                                     });
                                   },
                                   value: _selectedUserDistrict,
-                                  items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                  items: districtList
+                                      .map<DropdownMenuItem<DataDsiricst>>(
+                                          (DataDsiricst district) {
                                     return DropdownMenuItem<DataDsiricst>(
                                       value: district,
                                       child: Text(district.districtName),
@@ -3525,8 +3699,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                               isSubmitPressed = true; // Mark as submit pressed
                             });
                             print('@@DPMMMM Hit here-----Api---------');
-                          }
-                      ),
+                          }),
                     ),
 
                     // Display SingleChildScrollView only if submit is pressed and district is selected
@@ -3547,18 +3720,23 @@ class _SpoDashboard extends State<SpoDashboard> {
                             const Divider(color: Colors.blue, height: 1.0),
                             //eyeBankingRole_id=16 in case of Eye Donation Static send
                             FutureBuilder<List<EyeBankDonationApprovalData>>(
-                              future: ApiController.getSPO_EyeDonationApplicationApproval(0,16,29,630),
+                              future: ApiController
+                                  .getSPO_EyeDonationApplicationApproval(
+                                      0, 16, 29, 630),
                               builder: (context, snapshot) {
                                 // Show progress dialog when the request is in progress
-                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   Utils.showProgressDialog(context);
                                 } else {
-                                  if (snapshot.connectionState != ConnectionState.waiting) {
+                                  if (snapshot.connectionState !=
+                                      ConnectionState.waiting) {
                                     Utils.hideProgressDialog(context);
                                   }
                                 }
 
-                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   return const Center(
                                     child: CircularProgressIndicator(),
                                   );
@@ -3569,7 +3747,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       child: Text("Error: ${snapshot.error}"),
                                     ),
                                   );
-                                } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data.isEmpty) {
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Row(
@@ -3579,17 +3758,26 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     ),
                                   );
                                 } else {
-                                  List<EyeBankDonationApprovalData> ddata = snapshot.data;
+                                  List<EyeBankDonationApprovalData> ddata =
+                                      snapshot.data;
                                   return Column(
                                     children: ddata.map((offer) {
                                       return Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
-                                          _buildDataCell(offer.eyeBankUniqueID ?? 'N/A'),
-                                          _buildDataCell(offer.eyebankName ?? 'N/A'),
-                                          _buildDataCell(offer.officername ?? 'N/A'),
-                                          _buildDataCell(offer.emailid?.toString() ?? 'N/A'),
+                                          _buildDataCellSrNo(
+                                              (ddata.indexOf(offer) + 1)
+                                                  .toString()),
+                                          _buildDataCell(
+                                              offer.eyeBankUniqueID ?? 'N/A'),
+                                          _buildDataCell(
+                                              offer.eyebankName ?? 'N/A'),
+                                          _buildDataCell(
+                                              offer.officername ?? 'N/A'),
+                                          _buildDataCell(
+                                              offer.emailid?.toString() ??
+                                                  'N/A'),
                                         ],
                                       );
                                     }).toList(),
@@ -3611,7 +3799,6 @@ class _SpoDashboard extends State<SpoDashboard> {
   }
 
   Widget eyeBankCollection() {
-
     return SingleChildScrollView(
       child: Column(
         children: [
@@ -3640,7 +3827,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                       ),
                     ),
 
-                   /* Padding(
+                    /* Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -3805,7 +3992,6 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-
   Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
     DashboardDistrictModel dashboardDistrictModel = DashboardDistrictModel();
 
@@ -3823,7 +4009,8 @@ class _SpoDashboard extends State<SpoDashboard> {
         ),
       );
       print("@@Response--Api" + body.toString());
-      dashboardDistrictModel = DashboardDistrictModel.fromJson(json.decode(response1.data));
+      dashboardDistrictModel =
+          DashboardDistrictModel.fromJson(json.decode(response1.data));
       if (dashboardDistrictModel.status) {
         print("@@dashboardDistrictModel----getting of size +++--" +
             dashboardDistrictModel.data.length.toString());
@@ -3872,46 +4059,56 @@ class _SpoDashboard extends State<SpoDashboard> {
                         FutureBuilder<List<ApprovedclickPatientsData>>(
                           future: ApiController.getSPO_PatientApproval(
                             //568, 33, "2024-2025", statusApproved,
-                            district_code_login, state_code_login, currentFinancialYear, statusApproved,
-
+                            district_code_login, state_code_login,
+                            currentFinancialYear, statusApproved,
                           ),
                           builder: (context, snapshot) {
                             // Show loader while waiting for response
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               Utils.showProgressDialog(context);
                             } else {
-                              if (snapshot.connectionState != ConnectionState.waiting) {
+                              if (snapshot.connectionState !=
+                                  ConnectionState.waiting) {
                                 Utils.hideProgressDialog(context);
                               }
                             }
 
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             } else if (snapshot.hasError) {
-                              return Utils.getEmptyView("Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
                               return Utils.getEmptyView("No data found");
                             } else {
-                              List<ApprovedclickPatientsData> ddata = snapshot.data;
+                              List<ApprovedclickPatientsData> ddata =
+                                  snapshot.data;
                               return Column(
                                 children: ddata.map((offer) {
                                   return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCellSrNo(
+                                          (ddata.indexOf(offer) + 1)
+                                              .toString()),
                                       _buildDataCell(offer.districtName),
-                                      _buildDataCell(offer.totalCount.toString()),
+                                      _buildDataCell(
+                                          offer.totalCount.toString()),
                                       _buildDataCellViewBlue("View", () {
-                                        print('@@Edit clicked for item: ${offer.districtName}');
+                                        print(
+                                            '@@Edit clicked for item: ${offer.districtName}');
                                         // You can add further actions here if needed
                                         showDiseaseApprovedPatintViewClick();
                                       }),
                                     ],
                                   );
                                 }).toList(),
-
                               );
                             }
                           },
@@ -3936,8 +4133,7 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-
-void showDiseaseApprovedPatintViewClick() {
+  void showDiseaseApprovedPatintViewClick() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -3971,15 +4167,16 @@ void showDiseaseApprovedPatintViewClick() {
                         // Data Rows
                         FutureBuilder<
                             List<GetSPO_DiseasewiseRecordsApprovalData>>(
-                          future: ApiController.getSPO_DiseasewiseRecordsApproval(
-                         /*   district_code_login,
+                          future:
+                              ApiController.getSPO_DiseasewiseRecordsApproval(
+                            /*   district_code_login,
                             state_code_login,
                             currentFinancialYear,
                             "",
                             diseaseid,*/
-                           // 568, 33, "2024-2025", statusApproved,
-                            district_code_login, state_code_login, currentFinancialYear, statusApproved,
-
+                            // 568, 33, "2024-2025", statusApproved,
+                            district_code_login, state_code_login,
+                            currentFinancialYear, statusApproved,
                           ),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
@@ -3992,23 +4189,26 @@ void showDiseaseApprovedPatintViewClick() {
                                 snapshot.data.isEmpty) {
                               return Utils.getEmptyView("No data found");
                             } else {
-                              List<GetSPO_DiseasewiseRecordsApprovalData> ddata =
-                                  snapshot.data;
+                              List<GetSPO_DiseasewiseRecordsApprovalData>
+                                  ddata = snapshot.data;
                               print('@@---ddata: ' + ddata.length.toString());
                               return Column(
                                 children: ddata.map((offer) {
                                   return Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
                                       _buildDataCell(offer.diseaseName),
-                                      _buildDataCell(offer.totalApproPending.toString()),
+                                      _buildDataCell(
+                                          offer.totalApproPending.toString()),
                                       _buildDataCellViewBlue("View", () {
-                                        print("@@npcbNo: " + offer.diseaseId.toString());
-                                        showDiseaseGetSPO_Patients_Approved_View(offer.diseaseId);
+                                        print("@@npcbNo: " +
+                                            offer.diseaseId.toString());
+                                        showDiseaseGetSPO_Patients_Approved_View(
+                                            offer.diseaseId);
                                       }),
                                     ],
                                   );
@@ -4071,15 +4271,16 @@ void showDiseaseApprovedPatintViewClick() {
                         // Data Rows
                         FutureBuilder<
                             List<GetSPO_DiseasewiseRecordsApprovalData>>(
-                          future: ApiController.getSPO_DiseasewiseRecordsApproval(
+                          future:
+                              ApiController.getSPO_DiseasewiseRecordsApproval(
                             /*   district_code_login,
                             state_code_login,
                             currentFinancialYear,
                             "",
                             diseaseid,*/
                             // 568, 33, "2024-2025", statusPending, in case of pending
-                            district_code_login, state_code_login, currentFinancialYear, statusPending,
-
+                            district_code_login, state_code_login,
+                            currentFinancialYear, statusPending,
                           ),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
@@ -4092,23 +4293,26 @@ void showDiseaseApprovedPatintViewClick() {
                                 snapshot.data.isEmpty) {
                               return Utils.getEmptyView("No data found");
                             } else {
-                              List<GetSPO_DiseasewiseRecordsApprovalData> ddata =
-                                  snapshot.data;
+                              List<GetSPO_DiseasewiseRecordsApprovalData>
+                                  ddata = snapshot.data;
                               print('@@---ddata: ' + ddata.length.toString());
                               return Column(
                                 children: ddata.map((offer) {
                                   return Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
                                       _buildDataCell(offer.diseaseName),
-                                      _buildDataCell(offer.totalApproPending.toString()),
+                                      _buildDataCell(
+                                          offer.totalApproPending.toString()),
                                       _buildDataCellViewBlue("View", () {
-                                        print("@@npcbNo: " + offer.diseaseId.toString());
-                                        showDiseaseGetSPO_Patients_Pending_View(offer.diseaseId);
+                                        print("@@npcbNo: " +
+                                            offer.diseaseId.toString());
+                                        showDiseaseGetSPO_Patients_Pending_View(
+                                            offer.diseaseId);
                                       }),
                                     ],
                                   );
@@ -4169,17 +4373,16 @@ void showDiseaseApprovedPatintViewClick() {
                         ),
                         Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
-                        FutureBuilder<
-                            List<GetSPO_Patients_Approved_ViewData>>(
+                        FutureBuilder<List<GetSPO_Patients_Approved_ViewData>>(
                           future: ApiController.getSPO_Patients_Approved_View(
                             /*   district_code_login,
                             state_code_login,
                             currentFinancialYear,
                             "",
                             diseaseid,*/
-                       //     568, 33, "2024-2025", statusApproved,diseaseId,
-                            district_code_login,state_code_login, currentFinancialYear,statusApproved,diseaseId,
-
+                            //     568, 33, "2024-2025", statusApproved,diseaseId,
+                            district_code_login, state_code_login,
+                            currentFinancialYear, statusApproved, diseaseId,
                           ),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
@@ -4199,7 +4402,7 @@ void showDiseaseApprovedPatintViewClick() {
                                 children: ddata.map((offer) {
                                   return Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
                                       _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
@@ -4207,8 +4410,8 @@ void showDiseaseApprovedPatintViewClick() {
                                       _buildDataCell(offer.ngoname),
                                       _buildDataCell(offer.total.toString()),
                                       _buildDataCellViewBlue("View", () {
-                                        print("@@npcbNo: " + offer.ngoname.toString());
-
+                                        print("@@npcbNo: " +
+                                            offer.ngoname.toString());
                                       }),
                                     ],
                                   );
@@ -4236,6 +4439,7 @@ void showDiseaseApprovedPatintViewClick() {
       },
     );
   }
+
   void showDiseaseGetSPO_Patients_Pending_View(int diseaseId) {
     showDialog(
       context: context,
@@ -4277,11 +4481,14 @@ void showDiseaseApprovedPatintViewClick() {
                             diseaseId,
                           ),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
-                              return Utils.getEmptyView("Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
                               // Return a TextField displaying 'No data found'
                               return Align(
                                 alignment: Alignment.centerLeft,
@@ -4289,20 +4496,26 @@ void showDiseaseApprovedPatintViewClick() {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     "No data found",
-                                    style: TextStyle(fontSize: 16, color: Colors.black54,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.black54,
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               );
                             } else {
-                              List<GetSPO_Patients_Approved_ViewData> ddata = snapshot.data;
+                              List<GetSPO_Patients_Approved_ViewData> ddata =
+                                  snapshot.data;
                               print('@@---ddata: ${ddata.length}');
                               return Column(
                                 children: ddata.map((offer) {
                                   return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCellSrNo(
+                                          (ddata.indexOf(offer) + 1)
+                                              .toString()),
                                       _buildDataCell(offer.ngoname),
                                       _buildDataCell(offer.total.toString()),
                                       _buildDataCellViewBlue("View", () {
@@ -4334,7 +4547,6 @@ void showDiseaseApprovedPatintViewClick() {
       },
     );
   }
-
 
   void showDiseaseDialogPendingPatintFinance() {
     showDialog(
@@ -4372,46 +4584,56 @@ void showDiseaseApprovedPatintViewClick() {
                           future: ApiController.getSPO_PatientApproval(
                             //568, 33, "2024-2025", 1,// in case of pending rest same
 
-                           district_code_login, state_code_login, currentFinancialYear, statusPending,
-
+                            district_code_login, state_code_login,
+                            currentFinancialYear, statusPending,
                           ),
                           builder: (context, snapshot) {
                             // Show loader while waiting for response
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               Utils.showProgressDialog(context);
                             } else {
-                              if (snapshot.connectionState != ConnectionState.waiting) {
+                              if (snapshot.connectionState !=
+                                  ConnectionState.waiting) {
                                 Utils.hideProgressDialog(context);
                               }
                             }
 
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             } else if (snapshot.hasError) {
-                              return Utils.getEmptyView("Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
                               return Utils.getEmptyView("No data found");
                             } else {
-                              List<ApprovedclickPatientsData> ddata = snapshot.data;
+                              List<ApprovedclickPatientsData> ddata =
+                                  snapshot.data;
                               return Column(
                                 children: ddata.map((offer) {
                                   return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCellSrNo(
+                                          (ddata.indexOf(offer) + 1)
+                                              .toString()),
                                       _buildDataCell(offer.districtName),
-                                      _buildDataCell(offer.totalCount.toString()),
+                                      _buildDataCell(
+                                          offer.totalCount.toString()),
                                       _buildDataCellViewBlue("View", () {
-                                        print('@@Edit clicked for item: ${offer.districtName}');
+                                        print(
+                                            '@@Edit clicked for item: ${offer.districtName}');
                                         // You can add further actions here if needed
                                         showDiseasePendingPatintViewClick();
                                       }),
                                     ],
                                   );
                                 }).toList(),
-
                               );
                             }
                           },
@@ -4435,6 +4657,7 @@ void showDiseaseApprovedPatintViewClick() {
       },
     );
   }
+
 //here click of NGO(s) approved
   void showDiseaseDialogNGOApproved() {
     showDialog(
@@ -4472,38 +4695,47 @@ void showDiseaseApprovedPatintViewClick() {
                           future: ApiController.getSPO_DistrictNgoApproval(
                             568, 33, "2024-2025", statusApproved,
                             //district_code_login, state_code_login, currentFinancialYear, statusApproved,
-
                           ),
                           builder: (context, snapshot) {
                             // Show loader while waiting for response
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               Utils.showProgressDialog(context);
                             } else {
-                              if (snapshot.connectionState != ConnectionState.waiting) {
+                              if (snapshot.connectionState !=
+                                  ConnectionState.waiting) {
                                 Utils.hideProgressDialog(context);
                               }
                             }
 
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             } else if (snapshot.hasError) {
-                              return Utils.getEmptyView("Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
                               return Utils.getEmptyView("No data found");
                             } else {
                               List<NGOApprovalClickData> ddata = snapshot.data;
                               return Column(
                                 children: ddata.map((offer) {
                                   return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCellSrNo(
+                                          (ddata.indexOf(offer) + 1)
+                                              .toString()),
                                       _buildDataCell(offer.districtName),
-                                      _buildDataCell(offer.countstate.toString()),
+                                      _buildDataCell(
+                                          offer.countstate.toString()),
                                       _buildDataCellViewBlue("View", () {
-                                        print('@@Edit clicked for item: ${offer.districtName}');
+                                        print(
+                                            '@@Edit clicked for item: ${offer.districtName}');
                                         // Example Usage
                                         // Close the dialog before navigating
                                         Navigator.of(context).pop();
@@ -4512,15 +4744,15 @@ void showDiseaseApprovedPatintViewClick() {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ListNGOApprovalWidget(districtName: offer.districtName),
+                                                ListNGOApprovalWidget(
+                                                    districtName:
+                                                        offer.districtName),
                                           ),
                                         );
-
                                       }),
                                     ],
                                   );
                                 }).toList(),
-
                               );
                             }
                           },
@@ -4580,40 +4812,50 @@ void showDiseaseApprovedPatintViewClick() {
                         // Data Rows
                         FutureBuilder<List<NGOApprovalClickData>>(
                           future: ApiController.getSPO_DistrictNgoApproval(
-                            568, 33, "2024-2025", statusPending
-                            //district_code_login, state_code_login, currentFinancialYear, statusApproved,
+                              568, 33, "2024-2025", statusPending
+                              //district_code_login, state_code_login, currentFinancialYear, statusApproved,
 
-                          ),
+                              ),
                           builder: (context, snapshot) {
                             // Show loader while waiting for response
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               Utils.showProgressDialog(context);
                             } else {
-                              if (snapshot.connectionState != ConnectionState.waiting) {
+                              if (snapshot.connectionState !=
+                                  ConnectionState.waiting) {
                                 Utils.hideProgressDialog(context);
                               }
                             }
 
-                            if (snapshot.connectionState == ConnectionState.waiting) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
                               return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             } else if (snapshot.hasError) {
-                              return Utils.getEmptyView("Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
                               return Utils.getEmptyView("No data found");
                             } else {
                               List<NGOApprovalClickData> ddata = snapshot.data;
                               return Column(
                                 children: ddata.map((offer) {
                                   return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCellSrNo(
+                                          (ddata.indexOf(offer) + 1)
+                                              .toString()),
                                       _buildDataCell(offer.districtName),
-                                      _buildDataCell(offer.countstate.toString()),
+                                      _buildDataCell(
+                                          offer.countstate.toString()),
                                       _buildDataCellViewBlue("View", () {
-                                        print('@@Edit clicked for item: ${offer.districtName}');
+                                        print(
+                                            '@@Edit clicked for item: ${offer.districtName}');
                                         // Example Usage
                                         // Close the dialog before navigating
                                         Navigator.of(context).pop();
@@ -4622,15 +4864,15 @@ void showDiseaseApprovedPatintViewClick() {
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ListNGOPendingWidget(districtName: offer.districtName),
+                                                ListNGOPendingWidget(
+                                                    districtName:
+                                                        offer.districtName),
                                           ),
                                         );
-
                                       }),
                                     ],
                                   );
                                 }).toList(),
-
                               );
                             }
                           },
@@ -4658,7 +4900,8 @@ void showDiseaseApprovedPatintViewClick() {
   Future<void> showLogoutDialog() async {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      barrierDismissible: false,
+      // Prevent closing the dialog by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -4692,7 +4935,7 @@ void showDiseaseApprovedPatintViewClick() {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
-                logoutUserStatic();  // Call the logout function
+                logoutUserStatic(); // Call the logout function
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -4709,6 +4952,7 @@ void showDiseaseApprovedPatintViewClick() {
       },
     );
   }
+
   Future<void> logoutUserStatic() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -4717,11 +4961,100 @@ void showDiseaseApprovedPatintViewClick() {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),
-          (route) => false,
+      (route) => false,
     );
   }
 
+  Widget _buildMenuItem({
+    IconData icon,
+    String title,
+    Function() onTap,
+  }) {
+    double size = 14.0; // You can set a consistent size for both the icon and text
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0), // Reduce the vertical padding
+      title: Row(
+        children: [
+          Icon(icon, color: Colors.black, size: size), // Set icon size
+          SizedBox(width: 8.0,height: 4.0,), // Add space between the icon and the text
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: size,
+              fontWeight: FontWeight.normal,  // Explicitly set fontWeight to normal
+            ),
+          )
+
+        ],
+      ),
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildDropdownItem({
+    String value,
+    String hint,
+    List<Map<String, dynamic>> items, // List of maps to hold both item text and icon data
+    Function(String) onChanged,
+    Icon hintIcon, // Make hintIcon nullable
+  }) {
+    double size = 14.0; // Consistent size for both text and icon
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(vertical: 0), // Remove extra padding
+      title: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: value,
+          style: TextStyle(color: Colors.black),
+          dropdownColor: Colors.white,
+          items: items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
+            return DropdownMenuItem<String>(
+              value: item['value'],
+              child: Row(
+                children: [
+                  Icon(
+                    item['icon'], // Icon from the map
+                    color: Colors.black,
+                    size: size, // Set icon size
+                  ),
+                  SizedBox(width: 8.0), // Add space between the icon and text
+                  Text(
+                    item['value'],
+                    style: TextStyle(color: Colors.black, fontSize: size), // Set text size
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          hint: hintIcon != null
+              ? Row(
+            children: [
+              hintIcon, // Only add the icon if it's not null
+              SizedBox(width: 8.0), // Add space between the icon and hint text
+              Text(
+                hint,
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+              ),
+            ],
+          )
+              : Text(
+            hint,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+          ),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
+
+
+
+
 }
+
 class GetChangeAPsswordFieldsss {
   String userid;
   String oldPassword;
