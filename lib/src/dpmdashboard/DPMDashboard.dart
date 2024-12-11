@@ -6101,9 +6101,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                             } else if (snapshot.hasError) {
                               return Utils.getEmptyView(
                                   "Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData ||
-                                snapshot.data.isEmpty) {
-                              return Utils.getEmptyView("No data found");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              // Align "No data found" message to the left
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "No data found",
+                                    style: TextStyle(fontSize: 16, color: Colors.black54),
+                                  ),
+                                ),
+                              );
                             } else {
                               List<DataGetPatientAPprovedwithFinanceYear>
                                   ddata = snapshot.data;
@@ -6296,9 +6305,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                             } else if (snapshot.hasError) {
                               return Utils.getEmptyView(
                                   "Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData ||
-                                snapshot.data.isEmpty) {
-                              return Utils.getEmptyView("No data found");
+                            }else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              // Return a TextField displaying 'No data found'
+                              return Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    "No data found",
+                                    style: TextStyle(fontSize: 16, color: Colors.blue,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              );
                             } else {
                               List<DataPatientapprovedSisesesViewclick> ddata =
                                   snapshot.data;
@@ -6683,11 +6702,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData ||
-                            snapshot.data == null ||
-                            snapshot.data.isEmpty) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
+                        }else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          // Return a TextField displaying 'No data found'
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(fontSize: 16, color: Colors.blue,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          );
+                        }  else {
                           List<DataGetDPM_NGOAPProved_pending> ddata =
                               snapshot.data;
                           return Column(
@@ -6876,11 +6904,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
+                  }  else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  }else {
                     List<DatagetDPMGH_clickAPProved> ddata = snapshot.data;
                     print('@@---getDPM_GetDPM_GHAPProved_pendings' +
                         ddata.length.toString());
@@ -7068,11 +7104,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
+                  }else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  }else {
                     List<DatagetDPMGH_clickAPProved> ddata = snapshot.data;
                     print('@@---getDPM_GetDPM_GHAPProved_pendings' +
                         ddata.length.toString());
@@ -7262,10 +7306,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
+                  }else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
                   } else {
                     List<DataGetDPM_PrivatePartition> ddata = snapshot.data;
                     print('@@---getDPM_GetDPM_GHAPProved_pendings' +
@@ -7453,10 +7505,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
                   } else {
                     List<DataGetDPM_PrivatePartition> ddata = snapshot.data;
                     print('@@---DataGetDPM_PrivatePartition' +
@@ -7643,11 +7703,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  }else {
                     List<DataDPMRivateMEdicalColleges> ddata = snapshot.data;
                     print('@@---DataDPMRivateMEdicalColleges' +
                         ddata.length.toString());
@@ -7832,11 +7900,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
+                  }else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  }else {
                     List<DataDPMRivateMEdicalColleges> ddata = snapshot.data;
                     print('@@---DataDPMRivateMEdicalColleges--' +
                         ddata.length.toString());
@@ -8019,10 +8095,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
                   } else {
                     List<DataDPMScreeningCamp> ddata = snapshot.data;
                     print('@@---DataDPMScreeningCamp--' +
@@ -8209,11 +8293,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  }else {
                     List<DataDPMScreeningCamp> ddata = snapshot.data;
                     print('@@---DataDPMScreeningCamp--' +
                         ddata.length.toString());
@@ -8399,11 +8491,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
-                  } else {
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  }else {
                     List<DataDPMScreeningCamp> ddata = snapshot.data;
                     print('@@---DataDPMScreeningCamp--' +
                         ddata.length.toString());
@@ -8584,10 +8684,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData ||
-                      snapshot.data == null ||
-                      snapshot.data.isEmpty) {
-                    return Utils.getEmptyView("No data found");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
                   } else {
                     List<DataDPMsatteliteCenter> ddata = snapshot.data;
                     print('@@---DataDPMsatteliteCenter--' +
@@ -12289,8 +12397,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
+                          // Align "No data found" message to the left
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(fontSize: 16, color: Colors.blue),
+                              ),
+                            ),
+                          );
+                        }else {
                           List<DatalowvisionCornealBlindness> ddata =
                               snapshot.data;
 
@@ -13074,9 +13192,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
+                        }else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          // Align "No data found" message to the left
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(fontSize: 16, color: Colors.blue),
+                              ),
+                            ),
+                          );
+                        }else {
                           List<DatalowvisionVRSurgery> ddata = snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());
@@ -14040,8 +14168,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
+                          // Align "No data found" message to the left
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(fontSize: 16, color: Colors.blue),
+                              ),
+                            ),
+                          );
+                        }else {
                           List<DataGetDPMCongenitalPtosis> ddata =
                               snapshot.data;
 
@@ -14843,8 +14981,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
+                          // Align "No data found" message to the left
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(fontSize: 16, color: Colors.blue),
+                              ),
+                            ),
+                          );
+                        }else {
                           List<DataGetDPMTraumaChildren> ddata = snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());
@@ -15642,8 +15790,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
+                          // Align "No data found" message to the left
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(fontSize: 16, color: Colors.blue),
+                              ),
+                            ),
+                          );
+                        }else {
                           List<DataGetDPMSquint> ddata = snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());
@@ -16398,8 +16556,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
+                          // Align "No data found" message to the left
+                          return Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(fontSize: 16, color: Colors.blue),
+                              ),
+                            ),
+                          );
+                        }else {
                           List<DataGetDPMSquint> ddata = snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());

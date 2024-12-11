@@ -29,7 +29,7 @@ class _MainDashboard extends State<MainDashboard> {
         Utils.hideProgressDialog1(context);
         if (value.status) {
           setState(() {
-            ngoCount = value.data.ngoCount ?? 'null';
+            ngoCount = value.data.ngoCount ?? '0';
             gH_CHC_Count = value.data.gHCHCCount ?? 'null';
             ppCount = value.data.ppCount ?? 'null';
             campCount = value.data.campCount ?? 'null';
@@ -146,7 +146,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${ngoCount}',
+                                          ngoCount != null ? '${ngoCount}' : '0',  // If ngoCount is null, show '0'
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -230,7 +230,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${gH_CHC_Count}',
+                                          gH_CHC_Count != null ? '${gH_CHC_Count}' : '0',  // If ngoCount is null, show '0'
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -314,7 +314,8 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${pmcCount}',
+                                          pmcCount != null ? '${pmcCount}' : '0',  // If ngoCount is null, show '0'
+
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -398,7 +399,8 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${ppCount}',
+                                          ppCount != null ? '${ppCount}' : '0',  // If ngoCount is null, show '0'
+
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -482,7 +484,8 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${patientCount}',
+                                          patientCount != null ? '${patientCount}' : '0',  // If ngoCount is null, show '0'
+
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -561,7 +564,8 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${satellitecentreCount}',
+                                          satellitecentreCount != null ? '${satellitecentreCount}' : '0',  // If ngoCount is null, show '0'
+
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -640,7 +644,8 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${campCount}',
+                                          campCount != null ? '${campCount}' : '0',  // If ngoCount is null, show '0'
+
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -719,7 +724,8 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${dpm}',
+                                          dpm != null ? '${dpm}' : '0',  // If ngoCount is null, show '0'
+
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -798,7 +804,8 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${spo}',
+                                          spo != null ? '${spo}' : '0',  // If ngoCount is null, show '0'
+
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -877,7 +884,8 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${totalEB}',
+                                          totalEB != null ? '${totalEB}' : '0',  // If ngoCount is null, show '0'
+
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,
@@ -956,7 +964,8 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.topLeft,
                                       child: Container(
                                         child: Text(
-                                          '${totalEd}',
+                                          totalEd != null ? '${totalEd}' : '0',  // If ngoCount is null, show '0'
+
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 16,

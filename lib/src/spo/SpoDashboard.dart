@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMEyeSchoolScreens.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
@@ -20,10 +21,13 @@ import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_Pati
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOApprovalClick.dart';
 import 'package:mohfw_npcbvi/src/spo/ListNGOApprovalWidget.dart';
+import 'package:mohfw_npcbvi/src/spo/ListNGOPendingWidget.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SpoDashboard extends StatefulWidget {
   @override
@@ -465,6 +469,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                 // Implement User Manual action
               } else if (value == 3) {
                 setState(() {
+                  showLogoutDialog();
+
                   /* dashboardviewReplace = false;
                   chnagePAsswordView = true;*/
                 });
@@ -1054,7 +1060,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                       '@@---ngo_PendingTask--1');
 
                                                   setState(() {
-
+                                                    showDiseaseDialogNGOPending();
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -4538,134 +4544,183 @@ void showDiseaseApprovedPatintViewClick() {
       },
     );
   }
- /* Widget ListGetSPO_DistrictNgoApproval_() {
-    return Column(
-      children: [
-        Visibility(
-          visible: LsitNGO_APPorovedClickShowData,
-          child: Column(
-            children: [
-              // Horizontal Scrolling for both Header and Data Rows
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Column(
-                  children: [
-                    // Top Info Bar
-                    Container(
-                      color: Colors.white70,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text('District:',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500)),
-                          const SizedBox(width: 10),
-                          Text(districtNames,
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500)),
-                          const SizedBox(width: 10),
-                          Text('State:',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500)),
-                          const SizedBox(width: 10),
-                          Text(stateNames,
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500)),
-                          const SizedBox(width: 10),
-                          Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10.0),
-                            width: 150.0,
-                            child: Text('NGO(s) (Approved)',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w500)),
-                          ),
-                          const SizedBox(width: 10),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                               *//* dashboardviewReplace = true;
-                                NGO_APPorovedClickShowData = false;
-                                NGO_PendingClickShowData = false;*//*
-                              });
-                            },
-                            child: Container(
-                              width: 80.0,
-                              child: Text('Back',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.w500)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    // Data Table Header
-                    Row(
+
+  // here click of NGO(s) approved
+  void showDiseaseDialogNGOPending() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Get screen size
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Text('District-wise NGO(s) (Pending)'),
+          content: Container(
+            width: screenWidth * 0.9, // 90% of screen width
+            height: screenHeight * 0.7, // 70% of screen height
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Horizontal Scrolling for both Header and Data Rows
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('NGO Name'),
-                        _buildHeaderCell('Member Name'),
-                        _buildHeaderCell('Hospital Name'),
-                        _buildHeaderCell('Address'),
-                        _buildHeaderCell('Nodal Officer Name'),
-                        _buildHeaderCell('Mobile No'),
-                        _buildHeaderCell('Email Id'),
+                        // Header Row
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('District'),
+                            _buildHeaderCell('Total'),
+                            _buildHeaderCell('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<NGOApprovalClickData>>(
+                          future: ApiController.getSPO_DistrictNgoApproval(
+                            568, 33, "2024-2025", statusPending
+                            //district_code_login, state_code_login, currentFinancialYear, statusApproved,
+
+                          ),
+                          builder: (context, snapshot) {
+                            // Show loader while waiting for response
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              Utils.showProgressDialog(context);
+                            } else {
+                              if (snapshot.connectionState != ConnectionState.waiting) {
+                                Utils.hideProgressDialog(context);
+                              }
+                            }
+
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Utils.getEmptyView("No data found");
+                            } else {
+                              List<NGOApprovalClickData> ddata = snapshot.data;
+                              return Column(
+                                children: ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.districtName),
+                                      _buildDataCell(offer.countstate.toString()),
+                                      _buildDataCellViewBlue("View", () {
+                                        print('@@Edit clicked for item: ${offer.districtName}');
+                                        // Example Usage
+                                        // Close the dialog before navigating
+                                        Navigator.of(context).pop();
+
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ListNGOPendingWidget(districtName: offer.districtName),
+                                          ),
+                                        );
+
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+
+                              );
+                            }
+                          },
+                        ),
                       ],
                     ),
-                    Divider(color: Colors.blue, height: 1.0),
-                    // Data Rows
-                    FutureBuilder<List<NGOAPPRovedClickListDetailData>>(
-                      future: ApiController.getSPO_DistrictNgoApproval_lists(
-                        568, 33, "2024-2025", statusApproved,),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Utils.getEmptyView("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
-                          List<NGOAPPRovedClickListDetailData> ddata =
-                              snapshot.data;
-                          return Column(
-                            children: ddata.map((offer) {
-                              return Row(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _buildDataCellSrNo(
-                                      (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.name),
-                                  _buildDataCell(offer.memberName),
-                                  _buildDataCell(offer.hName),
-                                  _buildDataCell(offer.address),
-                                  _buildDataCell(offer.nodalOfficerName),
-                                  _buildDataCell(offer.mobile.toString()),
-                                  _buildDataCell(offer.emailid.toString()),
-                                ],
-                              );
-                            }).toList(),
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> showLogoutDialog() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15), // Rounded corners
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.logout, color: Colors.redAccent),
+              SizedBox(width: 8),
+              Text("Logout"),
             ],
           ),
-        ),
-      ],
+          content: Text(
+            "Are you sure you want to logout?",
+            style: TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                logoutUserStatic();  // Call the logout function
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                "Logout",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        );
+      },
     );
-  }*/
+  }
+  Future<void> logoutUserStatic() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Utils.showToast("You have been logged out!", false);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false,
+    );
+  }
+
 }
 class GetChangeAPsswordFieldsss {
   String userid;

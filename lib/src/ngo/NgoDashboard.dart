@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/GetHospitalForDDL/GethospitalForDDL.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
@@ -33,6 +34,7 @@ import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.d
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
 
 import '../model/DashboardStateModel.dart';
@@ -774,16 +776,17 @@ class _NgoDashboard extends State<NgoDashboard> {
             color: Colors.white,
             elevation: 2,
             onSelected: (value) {
-              switch (value) {
-                case 1:
-                  _showChangePasswordDialog();
-                  break;
-                case 2:
-                  // Implement User Manual action
-                  break;
-                case 3:
-                  // Handle Logout
-                  break;
+              if (value == 1) {
+                _showChangePasswordDialog();
+              } else if (value == 2) {
+                // Implement User Manual action
+              } else if (value == 3) {
+                setState(() {
+                  showLogoutDialog();
+
+                  /* dashboardviewReplace = false;
+                  chnagePAsswordView = true;*/
+                });
               }
             },
           ),
@@ -6957,6 +6960,72 @@ SizedBox(height: 10,),
       // Handle the case where the list is null or empty
       Utils.showToast("Not created succesfully", true);
     }
+  }
+
+  Future<void> showLogoutDialog() async {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15), // Rounded corners
+          ),
+          title: Row(
+            children: [
+              Icon(Icons.logout, color: Colors.redAccent),
+              SizedBox(width: 8),
+              Text("Logout"),
+            ],
+          ),
+          content: Text(
+            "Are you sure you want to logout?",
+            style: TextStyle(fontSize: 16, color: Colors.black87),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                  color: Colors.grey[700],
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+                logoutUserStatic();  // Call the logout function
+              },
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                "Logout",
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  Future<void> logoutUserStatic() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Utils.showToast("You have been logged out!", false);
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+          (route) => false,
+    );
   }
 }
 

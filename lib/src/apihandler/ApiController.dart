@@ -139,7 +139,7 @@ class ApiController {
         if (result.status) {
           SharedPrefs.saveUser(loginModel.result.data);
 
-          Utils.showToast(result.message, true);
+         // Utils.showToast(result.message, true);
         }
         return loginModel;
       } catch (e) {
@@ -1416,7 +1416,7 @@ class ApiController {
       DPMsatteliteCenter data = DPMsatteliteCenter.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -1424,7 +1424,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1544,7 +1544,7 @@ class ApiController {
       DPMScreeningCamp data = DPMScreeningCamp.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.dataw;
       } else {

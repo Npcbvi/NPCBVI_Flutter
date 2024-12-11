@@ -4,16 +4,16 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class ListNGOApprovalWidget extends StatefulWidget {
+class ListNGOPendingWidget extends StatefulWidget {
   final String districtName;
 
   // Constructor to accept districtName
-  ListNGOApprovalWidget({Key key,  this.districtName}) : super(key: key);
+  ListNGOPendingWidget({Key key,  this.districtName}) : super(key: key);
   @override
-  _ListNGOApprovalWidget createState() => _ListNGOApprovalWidget();
+  _ListNGOPendingWidget createState() => _ListNGOPendingWidget();
 }
 
-class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
+class _ListNGOPendingWidget extends State<ListNGOPendingWidget> {
   String districtNames = '';
   String stateNames = '';
   Function onBackPressed;
@@ -113,7 +113,7 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
 
                   // Data Rows
                   FutureBuilder<List<NGOAPPRovedClickListDetailData>>(
-                    future: ApiController.getSPO_DistrictNgoApproval_lists(568, 33, "2024-2025", statusApproved),
+                    future: ApiController.getSPO_DistrictNgoApproval_lists(568, 33, "2024-2025", statusPending),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
