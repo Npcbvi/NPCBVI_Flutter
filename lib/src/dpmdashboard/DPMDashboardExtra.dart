@@ -407,461 +407,545 @@ class _DPMDashboard extends State<DPMDashboard> {
           ),
         ],
       ),
-      drawer: Drawer(
-        child: Container(
-          width: 100.0,  // Set the width of the drawer
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.white70, Colors.white70],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          child: Container(
-            margin: EdgeInsets.all(8.0), // Reduce the margin to decrease space// Set the margin here
-            child: ListView(
-              children: [
-
-
-                _buildMenuItem(
-                  icon: Icons.dashboard,
-                  title: 'Dashboard',
-                  onTap: () {
-                    setState(() {
-                      NGOlistDropDownDisplayDatas = false;
-
-                      dashboardviewReplace = true;
-                      NGO_APPorovedClickShowData = false;
-                      NGO_PendingClickShowData = false;
-                      GetDPM_GH_APPorovedClickShowData = false;
-                      GetDPM_GH_PendingClickShowData = false;
-                      GetDPM_PrivatePartitionPorovedClickShowData = false;
-                      DPM_PrivatePartitionP_PendingClickShowData = false;
-                      DPM_privateMEdicalCollegeApprovedData = false;
-                      DPM_privateMEdicalCollegePendingData = false;
-                      ScreeningCamp = false;
-                      ScreeningCampOngoing = false;
-                      ScreeningCampComing = false;
-                      satelliteCentreShowData = false;
-                      ngoApproveRevenueMOU = false;
-
-                      NGOlistDropDownDisplayDatas = false;
-                      ngoGovtPrivateOthereHosdpitalDataShow = false;
-                      ngolistNewHosdpitalDropDown = false;
-                      LowVisionRegisterCatracts = false;
-                      LowVisionRegisterGlaucoma = false;
-                      LowVisionRegisterDiabitic = false;
-                      LowVisionRegisterCornealBlindness = false;
-                      LowVisionRegisterVRSurgery = false;
-                      ngoEyeScreeningdataShow = false;
-                      LowVisionRegisterChildhoodCongenitalPtosiss = false;
-                      LowVisionRegisterChildhoodTrauma = false;
-                      LowVisionRegisterSquint = false;
-                      satelliteCentreShowData =
-                      false;
-                    });
-                    Navigator.pop(context);
-                  },
-                ),
-
-                _buildDropdownItem(
-                  value: _chosenValue,
-                  hint: 'Approve Application',
-                  hintIcon: Icon(Icons.update, color: Colors.black), // Add an icon to the hint
-                  items: [
-                    {'value': 'NGO Application', 'icon': Icons.person},
-                    {'value': 'New Hospital', 'icon': Icons.local_hospital},
-                    {'value': 'Govt/private/Other', 'icon': Icons.business},
-                    {'value': 'Approve Renew MOU', 'icon': Icons.refresh},
-
-
-                  ],
-                  onChanged: (String value) {
-                    setState(() {
-                      _chosenValue = value;
-                      //  print('@@spinnerChooseValue--' + _chosenValue);
-                      if (_chosenValue == "NGO Application") {
-                        print('@@NGO--1' + _chosenValue);
-                        dashboardviewReplace = false;
-                        NGO_APPorovedClickShowData = false;
-                        NGO_PendingClickShowData = false;
-                        GetDPM_GH_APPorovedClickShowData = false;
-                        GetDPM_GH_PendingClickShowData = false;
-                        GetDPM_PrivatePartitionPorovedClickShowData =
-                        false;
-                        DPM_PrivatePartitionP_PendingClickShowData =
-                        false;
-                        DPM_privateMEdicalCollegeApprovedData =
-                        false;
-                        DPM_privateMEdicalCollegePendingData =
-                        false;
-                        ScreeningCamp = false;
-                        ScreeningCampOngoing = false;
-                        ScreeningCampComing = false;
-                        satelliteCentreShowData = false;
-                        ngoApproveRevenueMOU = false;
-                        NGOlistDropDownDisplayDatas = true;
-                        ngolistNewHosdpitalDropDown = false;
-                        ngoGovtPrivateOthereHosdpitalDataShow =
-                        false;
-                        ngoApproveRevenueMOU = false;
-                        LowVisionRegisterCatracts = false;
-                        LowVisionRegisterGlaucoma = false;
-                        LowVisionRegisterDiabitic = false;
-                        LowVisionRegisterCornealBlindness = false;
-                        LowVisionRegisterVRSurgery = false;
-                        ngoEyeScreeningdataShow = false;
-                        LowVisionRegisterChildhoodCongenitalPtosiss =
-                        false;
-                        LowVisionRegisterChildhoodTrauma = false;
-                        LowVisionRegisterSquint = false;
-                      } else if (_chosenValue == "New Hospital") {
-                        dashboardviewReplace = false;
-                        NGO_APPorovedClickShowData = false;
-                        NGO_PendingClickShowData = false;
-                        GetDPM_GH_APPorovedClickShowData = false;
-                        GetDPM_GH_PendingClickShowData = false;
-                        GetDPM_PrivatePartitionPorovedClickShowData =
-                        false;
-                        DPM_PrivatePartitionP_PendingClickShowData =
-                        false;
-                        DPM_privateMEdicalCollegeApprovedData =
-                        false;
-                        DPM_privateMEdicalCollegePendingData =
-                        false;
-                        ScreeningCamp = false;
-                        ScreeningCampOngoing = false;
-                        ScreeningCampComing = false;
-                        satelliteCentreShowData = false;
-                        ngoApproveRevenueMOU = false;
-                        NGOlistDropDownDisplayDatas = false;
-                        ngoGovtPrivateOthereHosdpitalDataShow =
-                        false;
-                        ngolistNewHosdpitalDropDown = true;
-                        LowVisionRegisterCatracts = false;
-                        LowVisionRegisterGlaucoma = false;
-                        LowVisionRegisterDiabitic = false;
-                        LowVisionRegisterCornealBlindness = false;
-                        LowVisionRegisterVRSurgery = false;
-                        ngoEyeScreeningdataShow = false;
-
-                        LowVisionRegisterChildhoodCongenitalPtosiss =
-                        false;
-                        LowVisionRegisterChildhoodTrauma = false;
-                        LowVisionRegisterSquint = false;
-                      } else if (_chosenValue ==
-                          "Govt/private/Other") {
-                        dashboardviewReplace = false;
-                        NGO_APPorovedClickShowData = false;
-                        NGO_PendingClickShowData = false;
-                        GetDPM_GH_APPorovedClickShowData = false;
-                        GetDPM_GH_PendingClickShowData = false;
-                        GetDPM_PrivatePartitionPorovedClickShowData =
-                        false;
-                        DPM_PrivatePartitionP_PendingClickShowData =
-                        false;
-                        DPM_privateMEdicalCollegeApprovedData =
-                        false;
-                        DPM_privateMEdicalCollegePendingData =
-                        false;
-                        ScreeningCamp = false;
-                        ScreeningCampOngoing = false;
-                        ScreeningCampComing = false;
-                        satelliteCentreShowData = false;
-                        ngoApproveRevenueMOU = false;
-
-                        ngolistNewHosdpitalDropDown = false;
-                        NGOlistDropDownDisplayDatas = false;
-                        ngoApproveRevenueMOU = false;
-                        ngoGovtPrivateOthereHosdpitalDataShow =
-                        true;
-                        LowVisionRegisterCatracts = false;
-                        LowVisionRegisterGlaucoma = false;
-                        LowVisionRegisterDiabitic = false;
-                        LowVisionRegisterCornealBlindness = false;
-                        LowVisionRegisterVRSurgery = false;
-                        ngoEyeScreeningdataShow = false;
-                        LowVisionRegisterChildhoodCongenitalPtosiss =
-                        false;
-                        LowVisionRegisterChildhoodTrauma = false;
-                        LowVisionRegisterSquint = false;
-                      }
-                      if (_chosenValue == "Approve Renew MOU") {
-                        dashboardviewReplace = false;
-                        NGO_APPorovedClickShowData = false;
-                        NGO_PendingClickShowData = false;
-                        GetDPM_GH_APPorovedClickShowData = false;
-                        GetDPM_GH_PendingClickShowData = false;
-                        GetDPM_PrivatePartitionPorovedClickShowData =
-                        false;
-                        DPM_PrivatePartitionP_PendingClickShowData =
-                        false;
-                        DPM_privateMEdicalCollegeApprovedData =
-                        false;
-                        DPM_privateMEdicalCollegePendingData =
-                        false;
-                        ScreeningCamp = false;
-                        ScreeningCampOngoing = false;
-                        ScreeningCampComing = false;
-                        satelliteCentreShowData = false;
-                        ngoApproveRevenueMOU = false;
-
-                        ngolistNewHosdpitalDropDown = false;
-                        NGOlistDropDownDisplayDatas = false;
-                        ngoApproveRevenueMOU = true;
-                        ngoGovtPrivateOthereHosdpitalDataShow =
-                        false;
-                        LowVisionRegisterCatracts = false;
-                        LowVisionRegisterGlaucoma = false;
-                        LowVisionRegisterDiabitic = false;
-                        LowVisionRegisterCornealBlindness = false;
-                        LowVisionRegisterVRSurgery = false;
-                        ngoEyeScreeningdataShow = false;
-                        LowVisionRegisterChildhoodCongenitalPtosiss =
-                        false;
-                        LowVisionRegisterChildhoodTrauma = false;
-                        LowVisionRegisterSquint = false;
-                      }
-                    });
-
-                    Navigator.pop(context);
-                  },
-                ),
-                _buildDropdownItem(
-                  value: _chosenValueLOWVision,
-                  hint: 'Low Vision Register',
-                  hintIcon: Icon(Icons.local_hospital, color: Colors.black), // Add an icon to the hint
-                  items: [
-                    {'value': 'Cataract', 'icon': Icons.local_hospital},
-                    // Add an icon here
-                    {'value': 'Diabetic', 'icon': Icons.healing},
-                    {'value': 'Glaucoma', 'icon': Icons.healing},
-                    {'value': 'Corneal Blindness', 'icon': Icons.healing},
-                    {'value': 'VR Surgery', 'icon': Icons.healing},
-                    {'value': 'Childhood Blindness', 'icon': Icons.child_care},
-
-                  ],
-                  onChanged: (String value) {
-                    setState(() {
-                      _chosenValueLOWVision = value;
-                      //  print('@@spinnerChooseValue--' + _chosenValue);
-                      if (_chosenValueLOWVision == "Cataract") {
-                        _futureCataract = getDPM_ScreeningYear();
-                        _futureBindOrgan = GetDPM_Bindorg();
-                        _futureDataBindOrganValuebiggerFive =
-                            GetDPM_Bindorg_New();
-                        dashboardviewReplace = false;
-                        LowVisionRegisterCatracts = true;
-                        LowVisionRegisterDiabitic = false;
-                        LowVisionRegisterGlaucoma = false;
-                        LowVisionRegisterCornealBlindness = false;
-                        LowVisionRegisterVRSurgery = false;
-                        ngolistNewHosdpitalDropDown = false;
-                        NGOlistDropDownDisplayDatas = false;
-                        ngoApproveRevenueMOU = false;
-                        ngoGovtPrivateOthereHosdpitalDataShow =
-                        false;
-                        ngoEyeScreeningdataShow = false;
-                        LowVisionRegisterChildhoodCongenitalPtosiss =
-                        false;
-                        LowVisionRegisterSquint = false;
-                        LowVisionRegisterChildhoodTrauma = false;
-                        ngoEyeScreeningdataShow = false;
-                        dpmEyeScreeningSchoolDataShowADDNewRecord =
-                        false;
-                        print('@@NGO--1' + _chosenValueLOWVision);
-                      } else if (_chosenValueLOWVision ==
-                          "Diabetic") {
-                        _futureDiabetic = getDPM_ScreeningYear();
-                        _futureBindOrgan = GetDPM_Bindorg();
-                        dashboardviewReplace = false;
-                        LowVisionRegisterCatracts = false;
-                        LowVisionRegisterDiabitic = true;
-                        LowVisionRegisterGlaucoma = false;
-                        LowVisionRegisterCornealBlindness = false;
-                        LowVisionRegisterVRSurgery = false;
-                        ngolistNewHosdpitalDropDown = false;
-                        NGOlistDropDownDisplayDatas = false;
-                        ngoApproveRevenueMOU = false;
-                        ngoGovtPrivateOthereHosdpitalDataShow =
-                        false;
-                        ngoEyeScreeningdataShow = false;
-                        LowVisionRegisterChildhoodCongenitalPtosiss =
-                        false;
-                        LowVisionRegisterChildhoodTrauma = false;
-                        LowVisionRegisterSquint = false;
-                        ngoEyeScreeningdataShow = false;
-                        dpmEyeScreeningSchoolDataShowADDNewRecord =
-                        false;
-                      } else if (_chosenValueLOWVision ==
-                          "Glaucoma") {
-                        _future = getDPM_ScreeningYear();
-                        _futureBindOrgan = GetDPM_Bindorg();
-                        dashboardviewReplace = false;
-                        LowVisionRegisterCatracts = false;
-                        LowVisionRegisterGlaucoma = true;
-                        LowVisionRegisterDiabitic = false;
-                        LowVisionRegisterCornealBlindness = false;
-                        LowVisionRegisterVRSurgery = false;
-                        ngolistNewHosdpitalDropDown = false;
-                        NGOlistDropDownDisplayDatas = false;
-                        ngoApproveRevenueMOU = false;
-                        ngoGovtPrivateOthereHosdpitalDataShow =
-                        false;
-                        ngoEyeScreeningdataShow = false;
-                        LowVisionRegisterChildhoodCongenitalPtosiss =
-                        false;
-                        LowVisionRegisterChildhoodTrauma = false;
-                        LowVisionRegisterSquint = false;
-                        ngoEyeScreeningdataShow = false;
-                        dpmEyeScreeningSchoolDataShowADDNewRecord =
-                        false;
-                      } else if (_chosenValueLOWVision ==
-                          "Corneal Blindness") {
-                        _future = getDPM_ScreeningYear();
-                        _futureBindOrgan = GetDPM_Bindorg();
-                        dashboardviewReplace = false;
-                        LowVisionRegisterCatracts = false;
-                        LowVisionRegisterGlaucoma = false;
-                        LowVisionRegisterDiabitic = false;
-                        LowVisionRegisterCornealBlindness = true;
-                        LowVisionRegisterVRSurgery = false;
-                        ngolistNewHosdpitalDropDown = false;
-                        NGOlistDropDownDisplayDatas = false;
-                        ngoApproveRevenueMOU = false;
-                        ngoGovtPrivateOthereHosdpitalDataShow =
-                        false;
-                        ngoEyeScreeningdataShow = false;
-                        LowVisionRegisterChildhoodCongenitalPtosiss =
-                        false;
-                        LowVisionRegisterChildhoodTrauma = false;
-                        LowVisionRegisterSquint = false;
-                        ngoEyeScreeningdataShow = false;
-                        dpmEyeScreeningSchoolDataShowADDNewRecord =
-                        false;
-                      } else if (_chosenValueLOWVision ==
-                          "VR Surgery") {
-                        print('@@Childhood--' +
-                            _chosenValueLOWVision);
-                        _future = getDPM_ScreeningYear();
-                        _futureBindOrgan = GetDPM_Bindorg();
-                        dashboardviewReplace = false;
-                        LowVisionRegisterCatracts = false;
-                        LowVisionRegisterGlaucoma = false;
-                        LowVisionRegisterDiabitic = false;
-                        LowVisionRegisterCornealBlindness = false;
-                        LowVisionRegisterVRSurgery = true;
-                        ngolistNewHosdpitalDropDown = false;
-                        NGOlistDropDownDisplayDatas = false;
-                        ngoApproveRevenueMOU = false;
-                        ngoGovtPrivateOthereHosdpitalDataShow =
-                        false;
-                        ngoEyeScreeningdataShow = false;
-                        LowVisionRegisterChildhoodCongenitalPtosiss =
-                        false;
-                        LowVisionRegisterChildhoodTrauma = false;
-                        LowVisionRegisterSquint = false;
-                        ngoEyeScreeningdataShow = false;
-                        dpmEyeScreeningSchoolDataShowADDNewRecord =
-                        false;
-                      } else if (_chosenValueLOWVision ==
-                          "Childhood Blindness") {
-                        print('@@Childhood--' +
-                            _chosenValueLOWVision);
-                        if (_chosenValueLOWVision ==
-                            "Childhood Blindness") {
-                          print('@@Childhood--1' +
-                              _chosenValueLOWVision);
-                          dashboardviewReplace = false;
-                          LowVisionRegisterCatracts = false;
-                          LowVisionRegisterGlaucoma = false;
-                          LowVisionRegisterDiabitic = false;
-                          LowVisionRegisterCornealBlindness = false;
-                          LowVisionRegisterVRSurgery = false;
-                          ngolistNewHosdpitalDropDown = false;
-                          NGOlistDropDownDisplayDatas = false;
-                          ngoApproveRevenueMOU = false;
-                          ngoGovtPrivateOthereHosdpitalDataShow =
-                          false;
-                          ngoEyeScreeningdataShow = false;
-                          ngoEyeScreeningdataShow = false;
-                          dpmEyeScreeningSchoolDataShowADDNewRecord =
-                          false;
-                          _showPopupMenuChildhoodBlindness();
-                        } else {
-                          print('@@Childhood--2' +
-                              _chosenValueLOWVision);
-                        }
-                      }
-                    });
-                    Navigator.pop(context);
-                  },
-                ),
-                _buildMenuItem(
-                  icon: Icons.remove_red_eye,
-                  title: 'Eye Screening',
-                  onTap: () {
-                    setState(() {
-                      dashboardviewReplace = false;
-                      ngoEyeScreeningdataShow = true;
-                      dpmEyeScreeningSchoolDataShowADDNewRecord =
-                      false;
-                      ngolistNewHosdpitalDropDown = false;
-                      NGOlistDropDownDisplayDatas = false;
-                      ngoApproveRevenueMOU = false;
-                      ngoGovtPrivateOthereHosdpitalDataShow = false;
-                      LowVisionRegisterCatracts = false;
-                      LowVisionRegisterGlaucoma = false;
-                      LowVisionRegisterDiabitic = false;
-                      LowVisionRegisterCornealBlindness = false;
-                      LowVisionRegisterVRSurgery = false;
-                    });
-                    Navigator.pop(context);
-                  },
-                ),
-                _buildDropdownItem(
-                  value: _chosenEyeBank,
-                  hint: 'Eye Blink',
-                  hintIcon: Icon(Icons.remove_red_eye), // Add an icon to the hint
-                  items: [
-                    {'value': 'Eye Bank Collection', 'icon': Icons.collections},
-                    {'value': 'Eye Donation', 'icon': Icons.healing},
-                    {
-                      'value': 'Eyeball Collection Via Eye Bank',
-                      'icon': Icons.add_circle_outline
-                    },
-                    {
-                      'value': 'Eyeball Collection Via Eye Center',
-                      'icon': Icons.center_focus_weak
-                    },
-                  ],
-                  onChanged: (String value) {
-                    setState(() {
-                      _chosenEyeBank = value;
-                      //  print('@@spinnerChooseValue--' + _chosenValue);
-                      if (_chosenEyeBank == "Eye Bank Collection") {
-                        print('@@NGO--1' + _chosenEyeBank);
-
-                      } else if (_chosenEyeBank == "Eye Donation") {
-
-                      } else if (_chosenEyeBank ==
-                          "Eyeball Collection Via Eye Bank") {
-                        dashboardviewReplace = false;
-
-
-                      }
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Container(
+              color: Colors.blue,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          print('@@dashboardviewReplace----display---');
+                          //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                          setState(() {
+                            NGOlistDropDownDisplayDatas = false;
+
+                            dashboardviewReplace = true;
+                            NGO_APPorovedClickShowData = false;
+                            NGO_PendingClickShowData = false;
+                            GetDPM_GH_APPorovedClickShowData = false;
+                            GetDPM_GH_PendingClickShowData = false;
+                            GetDPM_PrivatePartitionPorovedClickShowData = false;
+                            DPM_PrivatePartitionP_PendingClickShowData = false;
+                            DPM_privateMEdicalCollegeApprovedData = false;
+                            DPM_privateMEdicalCollegePendingData = false;
+                            ScreeningCamp = false;
+                            ScreeningCampOngoing = false;
+                            ScreeningCampComing = false;
+                            satelliteCentreShowData = false;
+                            ngoApproveRevenueMOU = false;
+
+                            NGOlistDropDownDisplayDatas = false;
+                            ngoGovtPrivateOthereHosdpitalDataShow = false;
+                            ngolistNewHosdpitalDropDown = false;
+                            LowVisionRegisterCatracts = false;
+                            LowVisionRegisterGlaucoma = false;
+                            LowVisionRegisterDiabitic = false;
+                            LowVisionRegisterCornealBlindness = false;
+                            LowVisionRegisterVRSurgery = false;
+                            ngoEyeScreeningdataShow = false;
+                            LowVisionRegisterChildhoodCongenitalPtosiss = false;
+                            LowVisionRegisterChildhoodTrauma = false;
+                            LowVisionRegisterSquint = false;
+                            satelliteCentreShowData =
+                            false;
+                          });
+                        },
+                        child: Container(
+                          width: 80.0,
+                          child: Text(
+                            'Dashboard',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(width: 8.0), // Add spacing between widgets
+                      Container(
+                        width: 170.0,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: _chosenValue,
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.white,
+                              items: <String>[
+                                'NGO Application',
+                                'New Hospital',
+                                'Govt/private/Other',
+                                'Approve Renew MOU',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Approve Application",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _chosenValue = value;
+                                  //  print('@@spinnerChooseValue--' + _chosenValue);
+                                  if (_chosenValue == "NGO Application") {
+                                    print('@@NGO--1' + _chosenValue);
+                                    dashboardviewReplace = false;
+                                    NGO_APPorovedClickShowData = false;
+                                    NGO_PendingClickShowData = false;
+                                    GetDPM_GH_APPorovedClickShowData = false;
+                                    GetDPM_GH_PendingClickShowData = false;
+                                    GetDPM_PrivatePartitionPorovedClickShowData =
+                                        false;
+                                    DPM_PrivatePartitionP_PendingClickShowData =
+                                        false;
+                                    DPM_privateMEdicalCollegeApprovedData =
+                                        false;
+                                    DPM_privateMEdicalCollegePendingData =
+                                        false;
+                                    ScreeningCamp = false;
+                                    ScreeningCampOngoing = false;
+                                    ScreeningCampComing = false;
+                                    satelliteCentreShowData = false;
+                                    ngoApproveRevenueMOU = false;
+                                    NGOlistDropDownDisplayDatas = true;
+                                    ngolistNewHosdpitalDropDown = false;
+                                    ngoGovtPrivateOthereHosdpitalDataShow =
+                                        false;
+                                    ngoApproveRevenueMOU = false;
+                                    LowVisionRegisterCatracts = false;
+                                    LowVisionRegisterGlaucoma = false;
+                                    LowVisionRegisterDiabitic = false;
+                                    LowVisionRegisterCornealBlindness = false;
+                                    LowVisionRegisterVRSurgery = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    LowVisionRegisterChildhoodCongenitalPtosiss =
+                                        false;
+                                    LowVisionRegisterChildhoodTrauma = false;
+                                    LowVisionRegisterSquint = false;
+                                  } else if (_chosenValue == "New Hospital") {
+                                    dashboardviewReplace = false;
+                                    NGO_APPorovedClickShowData = false;
+                                    NGO_PendingClickShowData = false;
+                                    GetDPM_GH_APPorovedClickShowData = false;
+                                    GetDPM_GH_PendingClickShowData = false;
+                                    GetDPM_PrivatePartitionPorovedClickShowData =
+                                        false;
+                                    DPM_PrivatePartitionP_PendingClickShowData =
+                                        false;
+                                    DPM_privateMEdicalCollegeApprovedData =
+                                        false;
+                                    DPM_privateMEdicalCollegePendingData =
+                                        false;
+                                    ScreeningCamp = false;
+                                    ScreeningCampOngoing = false;
+                                    ScreeningCampComing = false;
+                                    satelliteCentreShowData = false;
+                                    ngoApproveRevenueMOU = false;
+                                    NGOlistDropDownDisplayDatas = false;
+                                    ngoGovtPrivateOthereHosdpitalDataShow =
+                                        false;
+                                    ngolistNewHosdpitalDropDown = true;
+                                    LowVisionRegisterCatracts = false;
+                                    LowVisionRegisterGlaucoma = false;
+                                    LowVisionRegisterDiabitic = false;
+                                    LowVisionRegisterCornealBlindness = false;
+                                    LowVisionRegisterVRSurgery = false;
+                                    ngoEyeScreeningdataShow = false;
+
+                                    LowVisionRegisterChildhoodCongenitalPtosiss =
+                                        false;
+                                    LowVisionRegisterChildhoodTrauma = false;
+                                    LowVisionRegisterSquint = false;
+                                  } else if (_chosenValue ==
+                                      "Govt/private/Other") {
+                                    dashboardviewReplace = false;
+                                    NGO_APPorovedClickShowData = false;
+                                    NGO_PendingClickShowData = false;
+                                    GetDPM_GH_APPorovedClickShowData = false;
+                                    GetDPM_GH_PendingClickShowData = false;
+                                    GetDPM_PrivatePartitionPorovedClickShowData =
+                                        false;
+                                    DPM_PrivatePartitionP_PendingClickShowData =
+                                        false;
+                                    DPM_privateMEdicalCollegeApprovedData =
+                                        false;
+                                    DPM_privateMEdicalCollegePendingData =
+                                        false;
+                                    ScreeningCamp = false;
+                                    ScreeningCampOngoing = false;
+                                    ScreeningCampComing = false;
+                                    satelliteCentreShowData = false;
+                                    ngoApproveRevenueMOU = false;
+
+                                    ngolistNewHosdpitalDropDown = false;
+                                    NGOlistDropDownDisplayDatas = false;
+                                    ngoApproveRevenueMOU = false;
+                                    ngoGovtPrivateOthereHosdpitalDataShow =
+                                        true;
+                                    LowVisionRegisterCatracts = false;
+                                    LowVisionRegisterGlaucoma = false;
+                                    LowVisionRegisterDiabitic = false;
+                                    LowVisionRegisterCornealBlindness = false;
+                                    LowVisionRegisterVRSurgery = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    LowVisionRegisterChildhoodCongenitalPtosiss =
+                                        false;
+                                    LowVisionRegisterChildhoodTrauma = false;
+                                    LowVisionRegisterSquint = false;
+                                  }
+                                  if (_chosenValue == "Approve Renew MOU") {
+                                    dashboardviewReplace = false;
+                                    NGO_APPorovedClickShowData = false;
+                                    NGO_PendingClickShowData = false;
+                                    GetDPM_GH_APPorovedClickShowData = false;
+                                    GetDPM_GH_PendingClickShowData = false;
+                                    GetDPM_PrivatePartitionPorovedClickShowData =
+                                        false;
+                                    DPM_PrivatePartitionP_PendingClickShowData =
+                                        false;
+                                    DPM_privateMEdicalCollegeApprovedData =
+                                        false;
+                                    DPM_privateMEdicalCollegePendingData =
+                                        false;
+                                    ScreeningCamp = false;
+                                    ScreeningCampOngoing = false;
+                                    ScreeningCampComing = false;
+                                    satelliteCentreShowData = false;
+                                    ngoApproveRevenueMOU = false;
+
+                                    ngolistNewHosdpitalDropDown = false;
+                                    NGOlistDropDownDisplayDatas = false;
+                                    ngoApproveRevenueMOU = true;
+                                    ngoGovtPrivateOthereHosdpitalDataShow =
+                                        false;
+                                    LowVisionRegisterCatracts = false;
+                                    LowVisionRegisterGlaucoma = false;
+                                    LowVisionRegisterDiabitic = false;
+                                    LowVisionRegisterCornealBlindness = false;
+                                    LowVisionRegisterVRSurgery = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    LowVisionRegisterChildhoodCongenitalPtosiss =
+                                        false;
+                                    LowVisionRegisterChildhoodTrauma = false;
+                                    LowVisionRegisterSquint = false;
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8.0),
+                      Container(
+                        width: 170.0,
+                        key: _dropdownKey,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: _chosenValueLOWVision,
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.white,
+                              items: <String>[
+                                'Cataract',
+                                'Diabetic',
+                                'Glaucoma',
+                                'Corneal Blindness',
+                                'VR Surgery',
+                                'Childhood Blindness',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Low Vision Register",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _chosenValueLOWVision = value;
+                                  //  print('@@spinnerChooseValue--' + _chosenValue);
+                                  if (_chosenValueLOWVision == "Cataract") {
+                                    _futureCataract = getDPM_ScreeningYear();
+                                    _futureBindOrgan = GetDPM_Bindorg();
+                                    _futureDataBindOrganValuebiggerFive =
+                                        GetDPM_Bindorg_New();
+                                    dashboardviewReplace = false;
+                                    LowVisionRegisterCatracts = true;
+                                    LowVisionRegisterDiabitic = false;
+                                    LowVisionRegisterGlaucoma = false;
+                                    LowVisionRegisterCornealBlindness = false;
+                                    LowVisionRegisterVRSurgery = false;
+                                    ngolistNewHosdpitalDropDown = false;
+                                    NGOlistDropDownDisplayDatas = false;
+                                    ngoApproveRevenueMOU = false;
+                                    ngoGovtPrivateOthereHosdpitalDataShow =
+                                        false;
+                                    ngoEyeScreeningdataShow = false;
+                                    LowVisionRegisterChildhoodCongenitalPtosiss =
+                                        false;
+                                    LowVisionRegisterSquint = false;
+                                    LowVisionRegisterChildhoodTrauma = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
+                                    print('@@NGO--1' + _chosenValueLOWVision);
+                                  } else if (_chosenValueLOWVision ==
+                                      "Diabetic") {
+                                    _futureDiabetic = getDPM_ScreeningYear();
+                                    _futureBindOrgan = GetDPM_Bindorg();
+                                    dashboardviewReplace = false;
+                                    LowVisionRegisterCatracts = false;
+                                    LowVisionRegisterDiabitic = true;
+                                    LowVisionRegisterGlaucoma = false;
+                                    LowVisionRegisterCornealBlindness = false;
+                                    LowVisionRegisterVRSurgery = false;
+                                    ngolistNewHosdpitalDropDown = false;
+                                    NGOlistDropDownDisplayDatas = false;
+                                    ngoApproveRevenueMOU = false;
+                                    ngoGovtPrivateOthereHosdpitalDataShow =
+                                        false;
+                                    ngoEyeScreeningdataShow = false;
+                                    LowVisionRegisterChildhoodCongenitalPtosiss =
+                                        false;
+                                    LowVisionRegisterChildhoodTrauma = false;
+                                    LowVisionRegisterSquint = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
+                                  } else if (_chosenValueLOWVision ==
+                                      "Glaucoma") {
+                                    _future = getDPM_ScreeningYear();
+                                    _futureBindOrgan = GetDPM_Bindorg();
+                                    dashboardviewReplace = false;
+                                    LowVisionRegisterCatracts = false;
+                                    LowVisionRegisterGlaucoma = true;
+                                    LowVisionRegisterDiabitic = false;
+                                    LowVisionRegisterCornealBlindness = false;
+                                    LowVisionRegisterVRSurgery = false;
+                                    ngolistNewHosdpitalDropDown = false;
+                                    NGOlistDropDownDisplayDatas = false;
+                                    ngoApproveRevenueMOU = false;
+                                    ngoGovtPrivateOthereHosdpitalDataShow =
+                                        false;
+                                    ngoEyeScreeningdataShow = false;
+                                    LowVisionRegisterChildhoodCongenitalPtosiss =
+                                        false;
+                                    LowVisionRegisterChildhoodTrauma = false;
+                                    LowVisionRegisterSquint = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
+                                  } else if (_chosenValueLOWVision ==
+                                      "Corneal Blindness") {
+                                    _future = getDPM_ScreeningYear();
+                                    _futureBindOrgan = GetDPM_Bindorg();
+                                    dashboardviewReplace = false;
+                                    LowVisionRegisterCatracts = false;
+                                    LowVisionRegisterGlaucoma = false;
+                                    LowVisionRegisterDiabitic = false;
+                                    LowVisionRegisterCornealBlindness = true;
+                                    LowVisionRegisterVRSurgery = false;
+                                    ngolistNewHosdpitalDropDown = false;
+                                    NGOlistDropDownDisplayDatas = false;
+                                    ngoApproveRevenueMOU = false;
+                                    ngoGovtPrivateOthereHosdpitalDataShow =
+                                        false;
+                                    ngoEyeScreeningdataShow = false;
+                                    LowVisionRegisterChildhoodCongenitalPtosiss =
+                                        false;
+                                    LowVisionRegisterChildhoodTrauma = false;
+                                    LowVisionRegisterSquint = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
+                                  } else if (_chosenValueLOWVision ==
+                                      "VR Surgery") {
+                                    print('@@Childhood--' +
+                                        _chosenValueLOWVision);
+                                    _future = getDPM_ScreeningYear();
+                                    _futureBindOrgan = GetDPM_Bindorg();
+                                    dashboardviewReplace = false;
+                                    LowVisionRegisterCatracts = false;
+                                    LowVisionRegisterGlaucoma = false;
+                                    LowVisionRegisterDiabitic = false;
+                                    LowVisionRegisterCornealBlindness = false;
+                                    LowVisionRegisterVRSurgery = true;
+                                    ngolistNewHosdpitalDropDown = false;
+                                    NGOlistDropDownDisplayDatas = false;
+                                    ngoApproveRevenueMOU = false;
+                                    ngoGovtPrivateOthereHosdpitalDataShow =
+                                        false;
+                                    ngoEyeScreeningdataShow = false;
+                                    LowVisionRegisterChildhoodCongenitalPtosiss =
+                                        false;
+                                    LowVisionRegisterChildhoodTrauma = false;
+                                    LowVisionRegisterSquint = false;
+                                    ngoEyeScreeningdataShow = false;
+                                    dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                    false;
+                                  } else if (_chosenValueLOWVision ==
+                                      "Childhood Blindness") {
+                                    print('@@Childhood--' +
+                                        _chosenValueLOWVision);
+                                    if (_chosenValueLOWVision ==
+                                        "Childhood Blindness") {
+                                      print('@@Childhood--1' +
+                                          _chosenValueLOWVision);
+                                      dashboardviewReplace = false;
+                                      LowVisionRegisterCatracts = false;
+                                      LowVisionRegisterGlaucoma = false;
+                                      LowVisionRegisterDiabitic = false;
+                                      LowVisionRegisterCornealBlindness = false;
+                                      LowVisionRegisterVRSurgery = false;
+                                      ngolistNewHosdpitalDropDown = false;
+                                      NGOlistDropDownDisplayDatas = false;
+                                      ngoApproveRevenueMOU = false;
+                                      ngoGovtPrivateOthereHosdpitalDataShow =
+                                          false;
+                                      ngoEyeScreeningdataShow = false;
+                                      ngoEyeScreeningdataShow = false;
+                                      dpmEyeScreeningSchoolDataShowADDNewRecord =
+                                      false;
+                                      _showPopupMenuChildhoodBlindness();
+                                    } else {
+                                      print('@@Childhood--2' +
+                                          _chosenValueLOWVision);
+                                    }
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(width: 8.0),
+                      InkWell(
+                        onTap: () {
+                          print('@@EyeScreening----click here---');
+                          setState(() {
+                            dashboardviewReplace = false;
+                            ngoEyeScreeningdataShow = true;
+                            dpmEyeScreeningSchoolDataShowADDNewRecord =
+                            false;
+                            ngolistNewHosdpitalDropDown = false;
+                            NGOlistDropDownDisplayDatas = false;
+                            ngoApproveRevenueMOU = false;
+                            ngoGovtPrivateOthereHosdpitalDataShow = false;
+                            LowVisionRegisterCatracts = false;
+                            LowVisionRegisterGlaucoma = false;
+                            LowVisionRegisterDiabitic = false;
+                            LowVisionRegisterCornealBlindness = false;
+                            LowVisionRegisterVRSurgery = false;
+
+
+                          });
+                        },
+                        child: Container(
+                          width: 100.0,
+                          child: Text(
+                            'Eye Screening',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8.0),
+                      Container(
+                        width: 300,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: _chosenEyeBank,
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.white,
+                              items: <String>[
+                                'Eye Bank Collection',
+                                'Eye Donation',
+                                'Eyeball Collection Via Eye Bank',
+                                'Eyeball Collection Via Eye Donation Center',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Eye Blink",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _chosenEyeBank = value;
+                                  //  print('@@spinnerChooseValue--' + _chosenValue);
+                                  if (_chosenEyeBank == "Eye Bank Collection") {
+                                    print('@@NGO--1' + _chosenEyeBank);
+                                  } else if (_chosenEyeBank == "Eye Donation") {
+                                  } else if (_chosenEyeBank ==
+                                      "Eyeball Collection Via Eye Bank") {}
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
@@ -8841,7 +8925,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       Utils.showToast("Please enter confirm Password !", false);
       return;
     } else {
-      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+     /* Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
           Utils.showProgressDialog1(context);
           ApiController.changePAssword(getchangePwd).then((response) async {
@@ -8858,7 +8942,7 @@ class _DPMDashboard extends State<DPMDashboard> {
         } else {
           Utils.showToast(AppConstant.noInternet, true);
         }
-      });
+      });*/
     }
   }
 
@@ -8939,7 +9023,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       return;
     }
 
-    Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+  /*  Utils.isNetworkAvailable().then((isNetworkAvailable) async {
       if (isNetworkAvailable) {
         Utils.showProgressDialog1(context);
         ApiController.getSchoolEyeScreening_Registration(
@@ -8963,7 +9047,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       } else {
         Utils.showToast(AppConstant.noInternet, false);
       }
-    });
+    });*/
   }
 
   Future<void> _SchoolEyeScreening_RegistrationADDnewRecord() async {
@@ -9043,7 +9127,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       return;
     }
 
-    Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+    /*Utils.isNetworkAvailable().then((isNetworkAvailable) async {
       if (isNetworkAvailable) {
         Utils.showProgressDialog1(context);
         ApiController.getSchoolEyeScreening_Registration(
@@ -9067,7 +9151,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       } else {
         Utils.showToast(AppConstant.noInternet, false);
       }
-    });
+    });*/
   }
 
   Widget LowVisionRegisterCatract() {
@@ -16592,91 +16676,6 @@ class _DPMDashboard extends State<DPMDashboard> {
           (route) => false,
     );
   }
-  Widget _buildMenuItem({
-    IconData icon,
-    String title,
-    Function() onTap,
-  }) {
-    double size = 14.0; // You can set a consistent size for both the icon and text
-
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0), // Reduce the vertical padding
-      title: Row(
-        children: [
-          Icon(icon, color: Colors.black, size: size), // Set icon size
-          SizedBox(width: 8.0,height: 4.0,), // Add space between the icon and the text
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: size,
-              fontWeight: FontWeight.normal,  // Explicitly set fontWeight to normal
-            ),
-          )
-
-        ],
-      ),
-      onTap: onTap,
-    );
-  }
-
-  Widget _buildDropdownItem({
-    String value,
-    String hint,
-    List<Map<String, dynamic>> items, // List of maps to hold both item text and icon data
-    Function(String) onChanged,
-    Icon hintIcon, // Make hintIcon nullable
-  }) {
-    double size = 14.0; // Consistent size for both text and icon
-
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(vertical: 0), // Remove extra padding
-      title: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: value,
-          style: TextStyle(color: Colors.black),
-          dropdownColor: Colors.white,
-          items: items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
-            return DropdownMenuItem<String>(
-              value: item['value'],
-              child: Row(
-                children: [
-                  Icon(
-                    item['icon'], // Icon from the map
-                    color: Colors.black,
-                    size: size, // Set icon size
-                  ),
-                  SizedBox(width: 8.0), // Add space between the icon and text
-                  Text(
-                    item['value'],
-                    style: TextStyle(color: Colors.black, fontSize: size), // Set text size
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
-          hint: hintIcon != null
-              ? Row(
-            children: [
-              hintIcon, // Only add the icon if it's not null
-              SizedBox(width: 8.0), // Add space between the icon and hint text
-              Text(
-                hint,
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-              ),
-            ],
-          )
-              : Text(
-            hint,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-          ),
-          onChanged: onChanged,
-        ),
-      ),
-    );
-  }
-
-
 
 }
 

@@ -588,8 +588,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankApprovals=false;
                         eyeBankDonationApprovals=false;
                         eyeBankCollections=false;
+
                       }
                     });
+
                     Navigator.pop(context);
                   },
                 ),
