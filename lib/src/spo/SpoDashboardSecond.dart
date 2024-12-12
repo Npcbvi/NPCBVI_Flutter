@@ -29,12 +29,12 @@ import 'dart:developer' as developer;
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SpoDashboard extends StatefulWidget {
+class SpoDashboardSecond extends StatefulWidget {
   @override
-  _SpoDashboard createState() => _SpoDashboard();
+  _SpoDashboardSecond createState() => _SpoDashboardSecond();
 }
 
-class _SpoDashboard extends State<SpoDashboard> {
+class _SpoDashboardSecond extends State<SpoDashboardSecond> {
   int statusApproved = 2;
   int statusPending = 1;
   DataDsiricst _selectedUserDistrict;
@@ -98,7 +98,7 @@ class _SpoDashboard extends State<SpoDashboard> {
   String ngo_application_name;
   Future<List<EyeSurgeonsData>> _futures;
   bool isSubmitPressed = false; // Track button press
-  int selectedUserId; // Define the variable to store the selected user ID
+
   @override
   void initState() {
     // TODO: implement initState
@@ -420,9 +420,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                 value: 1,
                 child: Row(
                   children: [
-                    Icon(Icons.lock, color: Colors.black), // Black icon color
+                    Icon(Icons.lock),
                     SizedBox(width: 10),
-                    Text("Change Password", style: TextStyle(color: Colors.black)), // Black text color
+                    Text("Change Password")
                   ],
                 ),
               ),
@@ -430,9 +430,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                 value: 2,
                 child: Row(
                   children: [
-                    Icon(Icons.book, color: Colors.black), // Black icon color
+                    Icon(Icons.book),
                     SizedBox(width: 10),
-                    Text("User Manual", style: TextStyle(color: Colors.black)), // Black text color
+                    Text("User Manual")
                   ],
                 ),
               ),
@@ -440,15 +440,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                 value: 3,
                 child: Row(
                   children: [
-                    Icon(Icons.logout, color: Colors.black), // Black icon color
+                    Icon(Icons.logout),
                     SizedBox(width: 10),
-                    Text("Logout", style: TextStyle(color: Colors.black)), // Black text color
+                    Text("Logout")
                   ],
                 ),
               ),
             ],
             offset: const Offset(0, 50),
-            color: Colors.white, // White background color
+            color: Colors.white,
             elevation: 2,
             onSelected: (value) {
               if (value == 1) {
@@ -458,12 +458,14 @@ class _SpoDashboard extends State<SpoDashboard> {
               } else if (value == 3) {
                 setState(() {
                   showLogoutDialog();
+
+                  /* dashboardviewReplace = false;
+                  chnagePAsswordView = true;*/
                 });
               }
             },
           ),
         ],
-
       ),
       drawer: Drawer(
         child: Container(
@@ -479,54 +481,7 @@ class _SpoDashboard extends State<SpoDashboard> {
             margin: EdgeInsets.all(8.0), // Reduce the margin to decrease space// Set the margin here
             child: ListView(
               children: [
-                _buildMenuItem(
-                  icon: Icons.table_chart,
-                  title: 'PNJA Dahboard',
-                  onTap: () {
-                    setState(() {
-                      Utils.showToast("PNJA Dashboard APi is pending!", true);
-                      Navigator.pop(context);
-                    });
 
-                  },
-                ),
-                /*_buildDropdownItem(
-                  value: _chosenValue,
-                  hint: 'PNJA',
-                  hintIcon: Icon(Icons.update, color: Colors.black), // Add an icon to the hint
-                  items: [
-                    {'value': 'Eye Care Facilities', 'icon': Icons.person},
-                    {'value': 'Patient Registration & Surgery', 'icon': Icons.assignment},
-                    {'value': 'Eye Surgerons', 'icon': Icons.assignment},
-                  ],
-                  onChanged: (String value) {
-             *//*       setState(() {
-                      _chosenValue = value;
-                      //  print('@@spinnerChooseValue--' + _chosenValue);
-                      if (_chosenValue == "Eye Care Facilities") {
-                        print('@@NGO--1' + _chosenValue);
-
-                      } else if (_chosenValue ==
-                          "Patient Registration & Surgery") {
-                        dashboardviewReplace = false;
-                        RegisteredEyesurgeon = false;
-                        RegisteredEyesurgeonsEstimateTargetAllocations=true;
-                        eyeBankApprovals=false;
-                        eyeBankDonationApprovals=false;
-                        eyeBankCollections=false;
-                      }
-                      else if (_chosenValue ==
-                          "Eye Surgerons") {
-                        dashboardviewReplace = false;
-                        RegisteredEyesurgeon = false;
-                        RegisteredEyesurgeonsEstimateTargetAllocations=true;
-                        eyeBankApprovals=false;
-                        eyeBankDonationApprovals=false;
-                        eyeBankCollections=false;
-                      }
-                    });*//*
-                  },
-                ),*/
                 _buildMenuItem(
                   icon: Icons.dashboard,
                   title: 'Dashboard',
@@ -535,10 +490,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                       dashboardviewReplace = true;
                       SPOLcikONDPMMEnus = false;
                       RegisteredEyesurgeon = false;
-                      eyeBankDonationApprovals=false;
                       RegisteredEyesurgeonsEstimateTargetAllocations=false;
-                      eyeBankApprovals=false;
-                      eyeBankCollections=false;
                     });
                     Navigator.pop(context);
                   },
@@ -579,7 +531,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankApprovals=false;
                         eyeBankDonationApprovals=false;
                         eyeBankCollections=false;
-                        RegisteredEyesurgeonsEstimateTargetAllocations=false;
                       } else if (_chosenValue ==
                           "Estimate Target Allocation") {
                         dashboardviewReplace = false;
@@ -590,7 +541,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankCollections=false;
                       }
                     });
-                    Navigator.pop(context);
                   },
                 ),
                 _buildDropdownItem(
@@ -625,7 +575,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankCollections=false;
                       }
                     });
-                    Navigator.pop(context);
                   },
                 ),
                 _buildDropdownItem(
@@ -640,7 +589,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                       'icon': Icons.add_circle_outline
                     },
                     {
-                      'value': 'Eyeball Collection Via Eye Center',
+                      'value': 'Eyeball Collection Via Eye Donation Center',
                       'icon': Icons.center_focus_weak
                     },
                   ],
@@ -670,7 +619,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                       } else if (_chosenEyeBank ==
                           "Eyeball Collection Via Eye Bank") {
                         dashboardviewReplace = false;
-
                         eyeBankApprovals=false;
                         dashboardviewReplace = false;
                         RegisteredEyesurgeon = false;
@@ -690,112 +638,391 @@ class _SpoDashboard extends State<SpoDashboard> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-              color: Colors.white70,
+            /* Container(
+              color: Colors.blue,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // First Row Container
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-
-                          Text(
-                            'Login ID:',
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          print('@@SpoDashboardview----display---');
+                          //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                          setState(() {
+                            dashboardviewReplace = true;
+                            SPOLcikONDPMMEnus = false;
+                            RegisteredEyesurgeon = false;
+                            RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                          });
+                        },
+                        child: Container(
+                          width: 80.0,
+                          child: Text(
+                            'Dashboard',
+                            overflow: TextOverflow.ellipsis,
                             style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            '${userId}',
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 10), // Add spacing between the sections
-
-                          // State
-                          Row(
-                            children: [
-                              Text(
-                                'State:',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Text(
-                                '${stateNames}',
-                                style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    // Second Column Container
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      color: Colors.white70,
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Login ID
-                            Row(
-                              children: [
-                                Text(
-                                  'Login Type:',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  'STATE PROGRAM OFFICER',
-
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
                             ),
-
-                          ],
+                          ),
                         ),
                       ),
+
+                      SizedBox(width: 10.0),
+                      InkWell(
+                        onTap: () {
+                          print('@@DPMClickSPo----display---');
+                          //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
+                          setState(() {
+                            dashboardviewReplace = false;
+                            SPOLcikONDPMMEnus = true;
+                            RegisteredEyesurgeon = false;
+                            RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                            eyeBankApprovals=false;
+                            eyeBankDonationApprovals=false;
+                            eyeBankCollections=false;
+                          });
+                        },
+                        child: Container(
+                          width: 80.0,
+                          child: Text(
+                            'DPMs',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(width: 10.0), // Add spacing between widgets
+                      Container(
+                        width: 190.0,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: _chosenValue,
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.white,
+                              items: <String>[
+                                'Eye surgeons',
+                                'Estimate Target Allocation',
+
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Update",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _chosenValue = value;
+                                  //  print('@@spinnerChooseValue--' + _chosenValue);
+                                  if (_chosenValue == "Eye surgeons") {
+                                    print('@@NGO--1' + _chosenValue);
+                                    dashboardviewReplace = false;
+                                    SPOLcikONDPMMEnus = false;
+                                    RegisteredEyesurgeon = true;
+                                    eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=false;
+                                  } else if (_chosenValue ==
+                                      "Estimate Target Allocation") {
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=true;
+                                    eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=false;
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 8.0),
+
+
+                      Container(
+                        width: 170.0,
+                        key: _dropdownKey,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: _chosenValueLOWVision,
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.white,
+                              items: <String>[
+                                'Eye Bank',
+                                'Eye Donation',
+
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Eye Bank Approval",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _chosenValueLOWVision = value;
+                                  //  print('@@spinnerChooseValue--' + _chosenValue);
+                                  if (_chosenValueLOWVision == "Eye Bank") {
+                                    print('@@NGO--1' + _chosenValueLOWVision);
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=true;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=false;
+                                  } else if (_chosenValueLOWVision ==
+                                      "Eye Donation") {
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=true;
+                                    eyeBankCollections=false;
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(width: 8.0),
+                      Container(
+                        width: 300,
+                        child: new Theme(
+                          data: Theme.of(context).copyWith(
+                            canvasColor: Colors.blue.shade200,
+                          ),
+                          child: DropdownButtonHideUnderline(
+
+                            child: DropdownButton<String>(
+                              focusColor: Colors.white,
+                              value: _chosenEyeBank,
+                              style: TextStyle(color: Colors.white),
+                              iconEnabledColor: Colors.white,
+                              items: <String>[
+                                'Eye Bank Collection',
+                                'Eye Donation',
+                                'Eyeball Collection Via Eye Bank',
+                                'Eyeball Collection Via Eye Donation Center',
+                              ].map<DropdownMenuItem<String>>((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                );
+                              }).toList(),
+                              hint: Text(
+                                "Application(s)",
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onChanged: (String value) {
+                                setState(() {
+                                  _chosenEyeBank = value;
+                                  //  print('@@spinnerChooseValue--' + _chosenValue);
+                                  if (_chosenEyeBank == "Eye Bank Collection") {
+                                    print('@@NGO--1' + _chosenEyeBank);
+                                    dashboardviewReplace = false;
+                                    eyeBankApprovals=false;
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=true;
+                                  } else if (_chosenEyeBank == "Eye Donation") {
+                                    dashboardviewReplace = false;
+                                    eyeBankApprovals=false;
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=true;
+                                  } else if (_chosenEyeBank ==
+                                      "Eyeball Collection Via Eye Bank") {
+                                    dashboardviewReplace = false;
+                                    eyeBankApprovals=false;
+                                    dashboardviewReplace = false;
+                                    RegisteredEyesurgeon = false;
+                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                    eyeBankApprovals=false;
+                                    eyeBankDonationApprovals=false;
+                                    eyeBankCollections=true;
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),*/
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Container(
+                  color: Colors.white70,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        // Shown Captcha value to user
+                        Container(
+                          child: GestureDetector(
+                            onTap: () {
+                              print('Text clicked!');
+                              // Add your desired action here, e.g., navigation, alert, etc.
+                            },
+                            child: Text(
+                              'PNJA Dashboard:',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 20,
+                        ),
+                        Container(
+                            child: Text(
+                          'Login Type:',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w500),
+                        )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Container(
+                            child: Text(
+                          'STATE PROGRAM OFFICER',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w500),
+                        )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+
+                        Container(
+                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                          child: Container(
+                            color: Colors.white70,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  // Shown Captcha value to user
+                                  Container(
+                                      child: Text(
+                                    'Login ID:',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                      child: Text(
+                                    '${userId}',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+
+                                  Container(
+                                      child: Text(
+                                    'State :',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Container(
+                                      child: Text(
+                                    '${stateNames}',
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500),
+                                  )),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                      ],
                     ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      color: Colors.white70,
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Login ID
-
-                            // State
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
+                  ),
                 ),
               ),
             ),
-
             Visibility(
               visible: dashboardviewReplace,
               child: Container(
@@ -2015,7 +2242,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       Utils.showToast("Please enter confirm Password !", false);
       return;
     } else {
-      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+   /*   Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
           Utils.showProgressDialog1(context);
           ApiController.sPOchangePAssword(getchangePwds).then((response) async {
@@ -2032,7 +2259,7 @@ class _SpoDashboard extends State<SpoDashboard> {
         } else {
           Utils.showToast(AppConstant.noInternet, true);
         }
-      });
+      });*/
     }
   }
 
@@ -2522,14 +2749,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                         _buildHeaderCellSrNo('S.No.'),
                         _buildHeaderCell('District'),
                         _buildHeaderCell('User ID'),
-                        /*_buildHeaderCell('Name'),
+                        _buildHeaderCell('Name'),
                         _buildHeaderCell('Address'),
                         _buildHeaderCell('Mobile No.'),
                         _buildHeaderCell('Email ID'),
                         _buildHeaderCell('Status'),
-                        _buildHeaderCellACtiveDeactive('Activate/Deactivate'),*/
+                        _buildHeaderCellACtiveDeactive('Activate/Deactivate'),
                         //in comment next sprint
-                         _buildHeaderCell('Action'),
+                        // _buildHeaderCell('Select'),
                       ],
                     ),
                     const Divider(color: Colors.blue, height: 1.0),
@@ -2586,20 +2813,17 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   // Handle null
                                   _buildDataCell(offer.userId ?? 'N/A'),
                                   // Add field if necessary
-                                  /* _buildDataCell(offer.name ?? 'N/A'),
-                                 _buildDataCell(offer.address ?? 'N/A'),
+                                  _buildDataCell(offer.name ?? 'N/A'),
+                                  _buildDataCell(offer.address ?? 'N/A'),
                                   _buildDataCell(
                                       offer.mobile?.toString() ?? 'N/A'),
                                   _buildDataCell(
                                       offer.emailId?.toString() ?? 'N/A'),
                                   _buildDataCell(
                                       offer.status?.toString() ?? 'N/A'),
-                                  _buildRadioCell(offer),*/
+                                  _buildRadioCell(offer),
                                   //in comment next sprint
-                                 //   _buildHeaderCell('View more'),
-                                  _buildDataCellViewBlue("View More", () {
-                                    _showDetailsDialogDPMsDataShow(context, offer); // Pass the current `offer` to the dialog
-                                  }),
+                                  /*  _buildHeaderCell('Select'),*/
                                   // Add Radio Button Cell
                                 ],
                               );
@@ -2617,161 +2841,6 @@ class _SpoDashboard extends State<SpoDashboard> {
       ],
     );
   }
-  void _showDetailsDialogDPMsDataShow(BuildContext context, SPODashboardDPMClickViewData offer) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Details for ${offer.districtName}'),
-          content: SingleChildScrollView(
-            child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1), // Adds borders to the table
-              children: [
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('District:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(offer.districtName ?? 'N/A'),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('User ID:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(offer.userId?.toString() ?? 'N/A'), // Convert to string if it's int
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Name:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(offer.name ?? 'N/A'),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Address:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(offer.address ?? 'N/A'),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Mobile No:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(offer.mobile?.toString() ?? 'N/A'), // Convert to string if it's int
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Email ID:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(offer.emailId ?? 'N/A'),
-                      ),
-                    ),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Status:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(offer.status?.toString() ?? 'N/A'), // Convert to string if it's int
-                      ),
-                    ),
-                  ],
-                ),
-               /* TableRow(
-                  children: [
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text('Selection:', style: TextStyle(fontWeight: FontWeight.bold)),
-                      ),
-                    ),
-                    TableCell(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: _buildRadioCell(offer), // Add your radio cell here
-                      ),
-                    ),
-                  ],
-                ),*/
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-
 
   Widget _buildHeaderCellACtiveDeactive(String text) {
     return Container(
@@ -2851,18 +2920,22 @@ class _SpoDashboard extends State<SpoDashboard> {
               // Top Info Bar
               Container(
                 color: Colors.white70,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Registered Eye Surgeon',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                padding: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: const [
+                      Text(
+                        'Registered Eye Surgeon',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
               // Data Rows
@@ -2872,14 +2945,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                   children: [
                     Row(
                       children: [
-                        _buildDataCellSrNoeyeSereonsssSrNo('S.No.'),
+                        _buildDataCellSrNoeyeSereonsss('S.No.'),
                         _buildDataCellSrNoeyeSereonsss('Action'),
-                      // _buildDataCellSrNoeyeSereonsss('In Government Sector'),
-                        _buildDataCellSrNoeyeSereonsss('View'),
-                        /* _buildDataCellSrNoeyeSereonsss(
+                        _buildDataCellSrNoeyeSereonsss('In Government Sector'),
+                        _buildDataCellSrNoeyeSereonsss('In NGO Sector'),
+                        _buildDataCellSrNoeyeSereonsss(
                             'In Private Medical College'),
                         _buildDataCellSrNoeyeSereonsss(
-                            'In Private Practitioner'),*/
+                            'In Private Practitioner'),
                       ],
                     ),
                     const Divider(color: Colors.blue, height: 1.0),
@@ -2914,10 +2987,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                           children: ddata.map((offer) {
                             return Row(
                               children: [
-                                _buildDataCellSrNoeyeSereonsssSrNo(
+                                _buildDataCellSrNoeyeSereonsss(
                                     (ddata.indexOf(offer) + 1).toString()),
                                 SizedBox(
-                                  height: 40,
+                                  height: 60,
                                   width: 150,
                                   child: createButton(
                                     text: 'Submit',
@@ -2926,7 +2999,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     },
                                   ),
                                 ),
-                            /*    _buildEditableDataCell(
+                                _buildEditableDataCell(
                                   offer.totalGov.toString(),
                                   onChanged: (value) {
                                     print('@@Edited value: $value');
@@ -2949,10 +3022,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   onChanged: (value) {
                                     print('@@Edited value: $value');
                                   },
-                                ),*/
-                                _buildDataCellViewBlueEyeSurgeons("View More", () {
-                                  _showEyeSurgeonDetailsDialog(context, offer);
-                                }),
+                                ),
                               ],
                             );
                           }).toList(),
@@ -2966,170 +3036,6 @@ class _SpoDashboard extends State<SpoDashboard> {
           ),
         ),
       ],
-    );
-  }
-  void _showEyeSurgeonDetailsDialog(BuildContext context, EyeSurgeonsData offer) {
-    // Controllers for fields
-    TextEditingController govController =
-    TextEditingController(text: offer.totalGov?.toString() ?? '');
-    TextEditingController ngoController =
-    TextEditingController(text: offer.totalngo?.toString() ?? '');
-    TextEditingController pmcController =
-    TextEditingController(text: offer.totalPMC?.toString() ?? '');
-    TextEditingController ppController =
-    TextEditingController(text: offer.totalPP?.toString() ?? '');
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Edit Details for Eye Surgeon'),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                SizedBox(
-                  height: 40,
-                  width: 150,
-                  child: createButton(
-                    text: 'Submit',
-                    onPressed: () {
-                      Utils.showToast("Next Sprint add!", true);
-                    },
-                  ),
-                ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildEditableDataCellWithPlaceholder(
-                        placeholder: "In Government Sector",
-                        initialValue: offer.totalGov?.toString() ?? '',
-                        onChanged: (value) {
-                          offer.totalGov = int.tryParse(value) ?? 0;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildEditableDataCellWithPlaceholder(
-                        placeholder: "NGO/Non-Government",
-                        initialValue: offer.totalngo?.toString() ?? '',
-                        onChanged: (value) {
-                          offer.totalngo = int.tryParse(value) ?? 0;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildEditableDataCellWithPlaceholder(
-                        placeholder: "In Private Medical College",
-                        initialValue: offer.totalPMC?.toString() ?? '',
-                        onChanged: (value) {
-                          offer.totalPMC = int.tryParse(value) ?? 0;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildEditableDataCellWithPlaceholder(
-                        placeholder: "In Private Practitioner",
-                        initialValue: offer.totalPP?.toString() ?? '',
-                        onChanged: (value) {
-                          offer.totalPP = int.tryParse(value) ?? 0;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Close'),
-            ),
-            TextButton(
-              onPressed: () {
-                // Save changes logic here
-                print("Updated Data: $offer");
-                Navigator.of(context).pop();
-              },
-              child: const Text('Save'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-  Widget _buildEditableDataCellWithPlaceholder({
-     String placeholder,
-     String initialValue,
-     Function(String) onChanged,
-  }) {
-    TextEditingController controller = TextEditingController(text: initialValue);
-
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          width: 0.5,
-          color: Colors.black,
-        ),
-      ),
-      child: TextField(
-        controller: controller,
-        keyboardType: TextInputType.number,
-        inputFormatters: [
-          FilteringTextInputFormatter.digitsOnly, // Allow only digits
-        ],
-        onChanged: onChanged,
-        decoration: InputDecoration(
-          hintText: placeholder, // Use placeholder as hint text
-          hintStyle: const TextStyle(color: Colors.grey),
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
-        ),
-        style: const TextStyle(
-          fontWeight: FontWeight.normal,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String title, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            '$title: ',
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Expanded(
-            child: Text(value),
-          ),
-        ],
-      ),
     );
   }
 
@@ -3235,43 +3141,22 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  Widget _buildDataCellSrNoeyeSereonsssSrNo(String text) {
-    return Container(
-      height: 40,
-      width: 50, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
   Widget _buildDataCellSrNoeyeSereonsss(String text) {
     return Container(
-      height: 40,
-      width:150, // Fixed width to ensure horizontal scrolling
+      height: 60,
+      width: 150,
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
+        color: Colors.white,
         border: Border.all(
           width: 0.5,
+          color: Colors.grey,
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
       child: Center(
         child: Text(
           text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+          style: const TextStyle(
+            fontWeight: FontWeight.normal,
           ),
         ),
       ),
@@ -3284,13 +3169,13 @@ class _SpoDashboard extends State<SpoDashboard> {
         TextEditingController(text: initialValue);
 
     return Container(
-      height: 40,
+      height: 60,
       width: 150,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border.all(
           width: 0.5,
-          color: Colors.black,
+          color: Colors.grey,
         ),
       ),
       child: TextField(
@@ -3356,7 +3241,7 @@ class _SpoDashboard extends State<SpoDashboard> {
   Widget _buildHeaderCellSrNo(String text) {
     return Container(
       height: 40,
-      width: 50, // Fixed width to ensure horizontal scrolling
+      width: 80, // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
         border: Border.all(
@@ -3374,175 +3259,11 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
-
-  Widget _buildHeaderCellSrNoDashboard(String text) {
-    return Container(
-      height: 40,
-      width: 45, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-  Widget _buildDataCellSrNoDashboards(String text) {
-    return Container(
-      height: 40,
-      width: 45,
-      // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellDashboardDistrict(String text) {
-    return Container(
-      height: 40,
-      width:80, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-  Widget _buildDataCellDistrict(String text) {
-    return Container(
-        height: 40,
-        width:80,
-      // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          maxLines: 3,
-          style: TextStyle(
-            fontSize: 11.0, // Set font size here
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ),
-    );
-  }
-
-
-  Widget _buildHeaderCellDashboardsTotal(String text) {
-    return Container(
-      height: 40,
-      width:50, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-
-  Widget _buildHeaderCellDashboardsAction(String text) {
-    return Container(
-      height: 40,
-      width:60,
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-  Widget _buildDataCellDashboardTotal(String text) {
-    return Container(
-      height: 40,
-      width:50,
-      // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          maxLines: 3,
-          style: TextStyle(
-            fontSize: 11.0, // Set font size here
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ),
-    );
-  }
-
 
   Widget _buildHeaderCell(String text) {
     return Container(
       height: 40,
-      width:100, // Fixed width to ensure horizontal scrolling
+      width: 150, // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
         border: Border.all(
@@ -3562,11 +3283,10 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-
   Widget _buildDataCell(String text) {
     return Container(
-      height: 40,
-      width:100,
+      height: 80,
+      width: 150,
       // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
@@ -3578,71 +3298,20 @@ class _SpoDashboard extends State<SpoDashboard> {
       child: Center(
         child: Text(
           text,
-          maxLines: 3,
           style: TextStyle(
-            fontSize: 11.0, // Set font size here
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
   }
 
-  Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 40,
-        width:60, // Fixed width to ensure horizontal scrolling
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            width: 0.1,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
   Widget _buildDataCellViewBlue(String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap, // Trigger the callback when the cell is clicked
       child: Container(
-        height: 40,
-        width:100, // Fixed width to ensure horizontal scrolling
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            width: 0.1,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellViewBlueEyeSurgeons(String text, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 40,
-        width:150, // Fixed width to ensure horizontal scrolling
+        height: 80,
+        width: 150,
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(
@@ -3664,8 +3333,8 @@ class _SpoDashboard extends State<SpoDashboard> {
 
   Widget _buildDataCellSrNo(String text) {
     return Container(
-      height: 40,
-      width: 50,
+      height: 80,
+      width: 80, //
       // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
@@ -3678,12 +3347,13 @@ class _SpoDashboard extends State<SpoDashboard> {
         child: Text(
           text,
           style: TextStyle(
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
     );
   }
+
   Widget eyeBankApproval() {
     return SingleChildScrollView(
       child: Column(
@@ -3701,11 +3371,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                       height: 40,
                       color: Colors.blue,
                       child: Center(
-                        child: const Text(
-                          'District Programme Manager Details',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w500),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          child: const Text(
+                            'District Programme Manager Details',
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                     ),
@@ -3717,37 +3390,47 @@ class _SpoDashboard extends State<SpoDashboard> {
                         children: <Widget>[
                           const Text(
                             'Select District:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Center(
                             child: FutureBuilder<List<DataDsiricst>>(
-                              future: _getDistrictData(state_code_login), // API call to get districts
+                              future: _getDistrictData(29),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
                                 }
                                 if (!snapshot.hasData) {
-                                  return const CircularProgressIndicator(); // Loading indicator
+                                  return const CircularProgressIndicator();
                                 }
+
+                                // Logging for debugging
+                                developer.log('@@snapshot: ${snapshot.data}');
 
                                 List<DataDsiricst> districtList = snapshot.data;
 
-                                // Ensure selected district is in the list, otherwise select the first one
+                                // Ensure selected district is in the list, otherwise select the first
                                 if (_selectedUserDistrict == null ||
-                                    !districtList.contains(_selectedUserDistrict)) {
+                                    !districtList
+                                        .contains(_selectedUserDistrict)) {
                                   _selectedUserDistrict =
-                                  districtList.isNotEmpty ? districtList.first : null;
+                                      districtList.isNotEmpty
+                                          ? districtList.first
+                                          : null;
                                 }
 
                                 return DropdownButtonFormField<DataDsiricst>(
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -3756,25 +3439,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   onChanged: (districtUser) {
                                     setState(() {
                                       _selectedUserDistrict = districtUser;
-                                      distCodeDPM = int.parse(districtUser.districtCode.toString());
-                                      print('@@@Districtuser: ${districtUser.districtName}');
+                                      distCodeDPM = int.parse(
+                                          districtUser.districtCode.toString());
+                                      print(
+                                          '@@@Districtuser: ${districtUser.districtName}');
                                     });
                                   },
                                   value: _selectedUserDistrict,
-                                  items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                  items: districtList
+                                      .map<DropdownMenuItem<DataDsiricst>>(
+                                          (DataDsiricst district) {
                                     return DropdownMenuItem<DataDsiricst>(
                                       value: district,
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.location_city, color: Colors.blue), // Icon for each item
-                                          SizedBox(width: 10),
-                                          Text(district.districtName),
-                                        ],
-                                      ),
+                                      child: Text(district.districtName),
                                     );
                                   }).toList(),
-                                  icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Custom drop-down icon
-                                  iconSize: 30, // Customize the icon size
                                 );
                               },
                             ),
@@ -3784,10 +3463,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                     ),
 
                     const SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 5, 20.0, 0),
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                       child: ElevatedButton(
                           child: Text('Submit'),
                           style: ElevatedButton.styleFrom(
@@ -3812,16 +3491,16 @@ class _SpoDashboard extends State<SpoDashboard> {
                                 _buildDataCellSrNo('S.No.'),
                                 _buildDataCell('Id'),
                                 _buildDataCell('Eye Bank Name'),
-                                _buildHeaderCell('Action'),
+                                _buildDataCell('Member Name'),
+                                _buildDataCell('Email'),
                               ],
                             ),
                             const Divider(color: Colors.blue, height: 1.0),
                             //eyeBankingRole_id=15 in case of Eye Bank Static send
                             FutureBuilder<List<EyeBankApprovalDataData>>(
                               future: ApiController
-                                  .getSPO_EyeBankApplicationApproval(0,15,state_code_login,district_code_login),
-                                  //0, 15,
-                                    //  state_code_login, district_code_login),
+                                  .getSPO_EyeBankApplicationApproval(0, 15,
+                                      state_code_login, district_code_login),
                               builder: (context, snapshot) {
                                 // Show progress dialog when the request is in progress
                                 if (snapshot.connectionState ==
@@ -3872,10 +3551,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                               offer.eyeBankUniqueID ?? 'N/A'),
                                           _buildDataCell(
                                               offer.eyebankName ?? 'N/A'),
-
-                                          _buildDataCellViewBlue("View More", () {
-                                            _showViewMoreDialog(context, offer);
-                                          }),
+                                          _buildDataCell(
+                                              offer.officername ?? 'N/A'),
+                                          _buildDataCell(
+                                              offer.emailid?.toString() ??
+                                                  'N/A'),
                                         ],
                                       );
                                     }).toList(),
@@ -3892,68 +3572,6 @@ class _SpoDashboard extends State<SpoDashboard> {
             ),
           ),
         ],
-      ),
-    );
-  }
-// Method to show the dialog
-  void _showViewMoreDialog(BuildContext context, EyeBankApprovalDataData offer) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Details for ${offer.eyebankName ?? 'N/A'}'),
-          content: SingleChildScrollView(
-            child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1),
-              children: [
-                TableRow(
-                  children: [
-                    _buildTableCell('ID'),
-                    _buildTableCell(offer.eyeBankUniqueID ?? 'N/A'),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    _buildTableCell('Eye Bank Name'),
-                    _buildTableCell(offer.eyebankName ?? 'N/A'),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    _buildTableCell('Member Name'),
-                    _buildTableCell(offer.officername ?? 'N/A'),
-                  ],
-                ),
-                TableRow(
-                  children: [
-                    _buildTableCell('Email'),
-                    _buildTableCell(offer.emailid ?? 'N/A'),
-                  ],
-                ),
-                // Add other rows as needed for additional fields
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-// Helper method to build table cells
-  Widget _buildTableCell(String text) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -3994,37 +3612,47 @@ class _SpoDashboard extends State<SpoDashboard> {
                         children: <Widget>[
                           const Text(
                             'Select District:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           Center(
                             child: FutureBuilder<List<DataDsiricst>>(
-                              future: _getDistrictData(state_code_login), // API call to get districts
+                              future: _getDistrictData(29),
                               builder: (context, snapshot) {
                                 if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
                                 }
                                 if (!snapshot.hasData) {
-                                  return const CircularProgressIndicator(); // Loading indicator
+                                  return const CircularProgressIndicator();
                                 }
+
+                                // Logging for debugging
+                                developer.log('@@snapshot: ${snapshot.data}');
 
                                 List<DataDsiricst> districtList = snapshot.data;
 
-                                // Ensure selected district is in the list, otherwise select the first one
+                                // Ensure selected district is in the list, otherwise select the first
                                 if (_selectedUserDistrict == null ||
-                                    !districtList.contains(_selectedUserDistrict)) {
+                                    !districtList
+                                        .contains(_selectedUserDistrict)) {
                                   _selectedUserDistrict =
-                                  districtList.isNotEmpty ? districtList.first : null;
+                                      districtList.isNotEmpty
+                                          ? districtList.first
+                                          : null;
                                 }
 
                                 return DropdownButtonFormField<DataDsiricst>(
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.blue, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.blueAccent, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -4033,25 +3661,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   onChanged: (districtUser) {
                                     setState(() {
                                       _selectedUserDistrict = districtUser;
-                                      distCodeDPM = int.parse(districtUser.districtCode.toString());
-                                      print('@@@Districtuser: ${districtUser.districtName}');
+                                      distCodeDPM = int.parse(
+                                          districtUser.districtCode.toString());
+                                      print(
+                                          '@@@Districtuser: ${districtUser.districtName}');
                                     });
                                   },
                                   value: _selectedUserDistrict,
-                                  items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                  items: districtList
+                                      .map<DropdownMenuItem<DataDsiricst>>(
+                                          (DataDsiricst district) {
                                     return DropdownMenuItem<DataDsiricst>(
                                       value: district,
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.location_city, color: Colors.blue), // Icon for each item
-                                          SizedBox(width: 10),
-                                          Text(district.districtName),
-                                        ],
-                                      ),
+                                      child: Text(district.districtName),
                                     );
                                   }).toList(),
-                                  icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Custom drop-down icon
-                                  iconSize: 30, // Customize the icon size
                                 );
                               },
                             ),
@@ -4060,12 +3684,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                       ),
                     ),
 
-
                     const SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 5, 20.0, 0),
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                       child: ElevatedButton(
                           child: Text('Submit'),
                           style: ElevatedButton.styleFrom(
@@ -4090,7 +3713,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                 _buildDataCellSrNo('S.No.'),
                                 _buildDataCell('Id'),
                                 _buildDataCell('Eye Bank Name'),
-                                _buildHeaderCell('Action'),
+                                _buildDataCell('Member Name'),
+                                _buildDataCell('Email'),
                               ],
                             ),
                             const Divider(color: Colors.blue, height: 1.0),
@@ -4098,7 +3722,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                             FutureBuilder<List<EyeBankDonationApprovalData>>(
                               future: ApiController
                                   .getSPO_EyeDonationApplicationApproval(
-                                   /*   0, 2, 100, 1001*/0,16,state_code_login,district_code_login),
+                                      0, 16, 29, 630),
                               builder: (context, snapshot) {
                                 // Show progress dialog when the request is in progress
                                 if (snapshot.connectionState ==
@@ -4149,9 +3773,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                               offer.eyeBankUniqueID ?? 'N/A'),
                                           _buildDataCell(
                                               offer.eyebankName ?? 'N/A'),
-                                          _buildDataCellViewBlue("View More", () {
-                                            _showViewMoreDialogEyeDonation(context, offer);
-                                          }),
+                                          _buildDataCell(
+                                              offer.officername ?? 'N/A'),
+                                          _buildDataCell(
+                                              offer.emailid?.toString() ??
+                                                  'N/A'),
                                         ],
                                       );
                                     }).toList(),
@@ -4169,56 +3795,6 @@ class _SpoDashboard extends State<SpoDashboard> {
           ),
         ],
       ),
-    );
-  }
-  void _showViewMoreDialogEyeDonation(BuildContext context, EyeBankDonationApprovalData offer) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Details for ${offer.eyebankName ?? 'N/A'}'),
-          content: SingleChildScrollView(
-            scrollDirection: Axis.vertical,  // Make the content scrollable if it's long
-            child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1),  // Table border color and width
-              children: [
-                _buildTableRow('ID', offer.eyeBankUniqueID ?? 'N/A'),
-                _buildTableRow('Eye Bank Name', offer.eyebankName ?? 'N/A'),
-                _buildTableRow('Member Name', offer.officername ?? 'N/A'),
-                _buildTableRow('Email', offer.emailid ?? 'N/A'),
-                // Add more fields as necessary
-                // Add more fields as necessary
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Close'),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  TableRow _buildTableRow(String label, String value) {
-    return TableRow(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            label,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(value),
-        ),
-      ],
     );
   }
 
@@ -4459,7 +4035,7 @@ class _SpoDashboard extends State<SpoDashboard> {
         return AlertDialog(
           title: Text('District-wise Records (Approved)'),
           content: Container(
-            width: screenWidth * 0.99, // 90% of screen width
+            width: screenWidth * 0.9, // 90% of screen width
             height: screenHeight * 0.7, // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
@@ -4472,10 +4048,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('District'),
-                            _buildHeaderCellDashboardsTotal('Total'),
-                            _buildHeaderCellDashboardsAction('Action'),
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('District Name'),
+                            _buildHeaderCell('Total'),
+                            _buildHeaderCell('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -4518,13 +4094,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNoDashboards(
+                                      _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.districtName),
-                                      _buildDataCellDashboardTotal(
+                                      _buildDataCell(offer.districtName),
+                                      _buildDataCell(
                                           offer.totalCount.toString()),
-                                      _buildDataCellViewBlueDashboard("View", () {
+                                      _buildDataCellViewBlue("View", () {
                                         print(
                                             '@@Edit clicked for item: ${offer.districtName}');
                                         // You can add further actions here if needed
@@ -4568,7 +4144,7 @@ class _SpoDashboard extends State<SpoDashboard> {
         return AlertDialog(
           title: Text('Disease-wise Records (Approved)'),
           content: Container(
-            width: screenWidth * 0.99, // 90% of screen width
+            width: screenWidth * 0.9, // 90% of screen width
             height: screenHeight * 0.7, // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
@@ -4581,10 +4157,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('Disease '),
-                            _buildHeaderCellDashboardsTotal('Total'),
-                            _buildHeaderCellDashboardsAction('Action'),
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('NGO'),
+                            _buildHeaderCell('Approved'),
+                            _buildHeaderCell('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -4622,13 +4198,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNoDashboards(
+                                      _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.diseaseName),
-                                      _buildDataCellDashboardTotal(
+                                      _buildDataCell(offer.diseaseName),
+                                      _buildDataCell(
                                           offer.totalApproPending.toString()),
-                                      _buildDataCellViewBlueDashboard("View", () {
+                                      _buildDataCellViewBlue("View", () {
                                         print("@@npcbNo: " +
                                             offer.diseaseId.toString());
                                         showDiseaseGetSPO_Patients_Approved_View(
@@ -4685,10 +4261,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('Disease '),
-                            _buildHeaderCellDashboardsTotal('Total'),
-                            _buildHeaderCellDashboardsAction('Action'),
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('NGO'),
+                            _buildHeaderCell('Approved'),
+                            _buildHeaderCell('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -4726,13 +4302,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNoDashboards(
+                                      _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.diseaseName),
-                                      _buildDataCellDashboardTotal(
+                                      _buildDataCell(offer.diseaseName),
+                                      _buildDataCell(
                                           offer.totalApproPending.toString()),
-                                      _buildDataCellViewBlueDashboard("View", () {
+                                      _buildDataCellViewBlue("View", () {
                                         print("@@npcbNo: " +
                                             offer.diseaseId.toString());
                                         showDiseaseGetSPO_Patients_Pending_View(
@@ -4804,7 +4380,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                             currentFinancialYear,
                             "",
                             diseaseid,*/
-                               //  568, 33, "2024-2025", statusApproved,diseaseId,
+                            //     568, 33, "2024-2025", statusApproved,diseaseId,
                             district_code_login, state_code_login,
                             currentFinancialYear, statusApproved, diseaseId,
                           ),
@@ -4817,21 +4393,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   "Error: ${snapshot.error}");
                             } else if (!snapshot.hasData ||
                                 snapshot.data.isEmpty) {
-                              // Return a TextField displaying 'No data found'
-                              return Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "No data found",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black54,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              );
-                            }else {
+                              return Utils.getEmptyView("No data found");
+                            } else {
                               List<GetSPO_Patients_Approved_ViewData> ddata =
                                   snapshot.data;
                               print('@@---ddata: ' + ddata.length.toString());
@@ -4928,7 +4491,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                                 snapshot.data.isEmpty) {
                               // Return a TextField displaying 'No data found'
                               return Align(
-
                                 alignment: Alignment.centerLeft,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -5010,10 +4572,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('District Name'),
-                            _buildHeaderCellDashboardsTotal('Total'),
-                            _buildHeaderCellDashboardsAction('Action'),
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('District Name'),
+                            _buildHeaderCell('Total'),
+                            _buildHeaderCell('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -5057,13 +4619,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNoDashboards(
+                                      _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.districtName),
-                                      _buildDataCellDashboardTotal(
+                                      _buildDataCell(offer.districtName),
+                                      _buildDataCell(
                                           offer.totalCount.toString()),
-                                      _buildDataCellViewBlueDashboard("View", () {
+                                      _buildDataCellViewBlue("View", () {
                                         print(
                                             '@@Edit clicked for item: ${offer.districtName}');
                                         // You can add further actions here if needed
@@ -5121,10 +4683,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('District'),
-                            _buildHeaderCellDashboardsTotal('Total'),
-                            _buildHeaderCellDashboardsAction('Action'),
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('District'),
+                            _buildHeaderCell('Total'),
+                            _buildHeaderCell('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -5165,13 +4727,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNoDashboards(
+                                      _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.districtName),
-                                      _buildDataCellDashboardTotal(
+                                      _buildDataCell(offer.districtName),
+                                      _buildDataCell(
                                           offer.countstate.toString()),
-                                      _buildDataCellViewBlueDashboard("View", () {
+                                      _buildDataCellViewBlue("View", () {
                                         print(
                                             '@@Edit clicked for item: ${offer.districtName}');
                                         // Example Usage
@@ -5179,7 +4741,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                                         Navigator.of(context).pop();
 
                                         Navigator.push(
-
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
@@ -5241,10 +4802,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('District'),
-                            _buildHeaderCellDashboardsTotal('Total'),
-                            _buildHeaderCellDashboardsAction('Action'),
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('District'),
+                            _buildHeaderCell('Total'),
+                            _buildHeaderCell('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -5286,13 +4847,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNoDashboards(
+                                      _buildDataCellSrNo(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.districtName),
-                                      _buildDataCellDashboardTotal(
+                                      _buildDataCell(offer.districtName),
+                                      _buildDataCell(
                                           offer.countstate.toString()),
-                                      _buildDataCellViewBlueDashboard("View", () {
+                                      _buildDataCellViewBlue("View", () {
                                         print(
                                             '@@Edit clicked for item: ${offer.districtName}');
                                         // Example Usage

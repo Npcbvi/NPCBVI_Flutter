@@ -93,20 +93,23 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
             // Data Table (Header and Rows in Single ScrollView)
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.zero, // Remove any horizontal padding
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start, // Ensure left alignment
+                crossAxisAlignment: CrossAxisAlignment.start, // Align children to the left
                 children: [
                   // Header Row
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.start, // Ensure items align to the left
                     children: [
                       _buildHeaderCellSrNo('S.No.'),
                       _buildHeaderCell('NGO Name'),
-                      _buildHeaderCell('Member Name'),
-                      _buildHeaderCell('Hospital Name'),
-                      _buildHeaderCell('Address'),
-                      _buildHeaderCell('Nodal Officer Name'),
-                      _buildHeaderCell('Mobile No'),
-                      _buildHeaderCell('Email Id'),
+                      // _buildHeaderCell('Member Name'),
+                      /* _buildHeaderCell('Hospital Name'),
+          _buildHeaderCell('Address'),
+          _buildHeaderCell('Nodal Officer Name'),
+          _buildHeaderCell('Mobile No'),
+          _buildHeaderCell('Email Id'), */
+                      _buildHeaderCellDashboardsAction('Action'),
                     ],
                   ),
                   Divider(color: Colors.blue, height: 1.0),
@@ -140,15 +143,20 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
                         return Column(
                           children: ddata.map((offer) {
                             return Row(
+                              mainAxisAlignment: MainAxisAlignment.start, // Ensure items align to the left
                               children: [
                                 _buildDataCellCellSrNo((ddata.indexOf(offer) + 1).toString()),
                                 _buildDataCell(offer.name),
-                                _buildDataCell(offer.memberName),
-                                _buildDataCell(offer.hName),
-                                _buildDataCell(offer.address),
-                                _buildDataCell(offer.nodalOfficerName),
-                                _buildDataCell(offer.mobile.toString()),
-                                _buildDataCell(offer.emailid.toString()),
+                                // _buildDataCell(offer.memberName),
+                                /* _buildDataCell(offer.hName),
+                    _buildDataCell(offer.address),
+                    _buildDataCell(offer.nodalOfficerName),
+                    _buildDataCell(offer.mobile.toString()),
+                    _buildDataCell(offer.emailid.toString()), */
+                                _buildDataCellViewBlueDashboard("View", () {
+                                  // Pass the offer object to the function that shows the details in a dialog
+                                  _showDetailsDialog(context, offer);
+                                }),
                               ],
                             );
                           }).toList(),
@@ -159,7 +167,92 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
                 ],
               ),
             ),
+
           ],
+        ),
+      ),
+    );
+  }
+
+  void _showDetailsDialog(BuildContext context, NGOAPPRovedClickListDetailData offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Details for ${offer.name}'), // Title showing the NGO Name or relevant field
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical, // Allow vertical scrolling
+            child: Table(
+              border: TableBorder.all(color: Colors.blue, width: 1), // Table border color and width
+              columnWidths: {
+                0: FlexColumnWidth(2), // First column (labels) takes more space
+                1: FlexColumnWidth(3), // Second column (values) takes more space
+              },
+              children: [
+                _buildTableRow('NGO Name', offer.name),
+                _buildTableRow('Member Name', offer.memberName),
+                _buildTableRow('Hospital Name', offer.hName),
+                _buildTableRow('Address', offer.address),
+                _buildTableRow('Nodal Officer Name', offer.nodalOfficerName),
+                _buildTableRow('Mobile No', offer.mobile.toString()),
+                _buildTableRow('Email Id', offer.emailid.toString()),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+// Helper method to build each row in the table
+  TableRow _buildTableRow(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(value),
+        ),
+      ],
+    );
+  }
+
+
+
+  Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 50,
+        width:60, // Fixed width to ensure horizontal scrolling
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
         ),
       ),
     );
@@ -173,11 +266,33 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
   TextStyle _highlightTextStyle() {
     return const TextStyle(color: Colors.red, fontWeight: FontWeight.w500);
   }
+  Widget _buildHeaderCellDashboardsAction(String text) {
+    return Container(
+      height: 50,
+      width:60,
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildHeaderCell(String title) {
     return Container(
       width: 150,
-      height: 40,
+      height: 50,
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
         border: Border.all(
@@ -192,7 +307,7 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
   Widget _buildDataCell(String value) {
     return Container(
       width: 150,
-      height: 40,
+      height: 50,
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
         border: Border.all(
@@ -205,7 +320,7 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
   Widget _buildDataCellCellSrNo(String value) {
     return Container(
       width: 50,
-      height: 40,
+      height: 50,
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
         border: Border.all(
@@ -217,7 +332,7 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
   }
   Widget _buildHeaderCellSrNo(String title) {
     return Container(
-      height: 40,
+      height: 50,
       width: 50,
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
