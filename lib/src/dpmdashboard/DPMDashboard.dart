@@ -3907,14 +3907,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                     Row(
                       children: [
                         _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('Year'),
-                        _buildHeaderCell('Month'),
+                        //_buildHeaderCell('Year'),
+                        //_buildHeaderCell('Month'),
                         _buildHeaderCell('School name'),
-                        _buildHeaderCell('Teacher Trained'),
-                        _buildHeaderCell('Children screened'),
-                        _buildHeaderCell('Children detected with Refractive Errors'),
-                        _buildHeaderCell('Free Glasses Provided by Organization'),
+                        //_buildHeaderCell('Teacher Trained'),
+                        //_buildHeaderCell('Children screened'),
+                       // _buildHeaderCell('Children detected with Refractive Errors'),
+                       // _buildHeaderCell('Free Glasses Provided by Organization'),
                         _buildHeaderCell('Action'),
+                        _buildHeaderCell('Update'),
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -3937,13 +3938,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
                                   _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.yearname),
-                                  _buildDataCell(offer.monthname),
+                                //  _buildDataCell(offer.yearname),
+                               //   _buildDataCell(offer.monthname),
                                   _buildDataCell(offer.schoolName),
-                                  _buildDataCell(offer.trainedTeacher.toString()),
-                                  _buildDataCell(offer.childScreen.toString()),
-                                  _buildDataCell(offer.childDetect.toString()),
-                                  _buildDataCell(offer.freeglass.toString()),
+                                 // _buildDataCell(offer.trainedTeacher.toString()),
+                               //   _buildDataCell(offer.childScreen.toString()),
+                                 // _buildDataCell(offer.childDetect.toString()),
+                                  //_buildDataCell(offer.freeglass.toString()),
+                              _buildDataCellViewBlue("View Detail", () {
+                                _showDetailDialogEyeScreening(context, offer);
+                              }),
                                   _buildDataCellViewBlue("Edit", () {
                                     // Handle the edit action here
                                     print('@@Edit clicked for item: ${offer.schoolid}');
@@ -3972,6 +3976,111 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+  void _showDetailDialogEyeScreening(BuildContext context, DataGetEyeScreening offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Eye Screening Details',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          contentPadding: EdgeInsets.all(16.0), // Add padding for better readability
+          content: SingleChildScrollView(
+            scrollDirection: Axis.horizontal, // Enable horizontal scrolling if the table is wide
+            child: DataTable(
+              columns: const <DataColumn>[
+                DataColumn(
+                  label: Text(
+                    'Field',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Value',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+              rows: <DataRow>[
+                DataRow(cells: [
+                  DataCell(Text('Year Name:')),
+                  DataCell(Text(offer.yearname ?? 'N/A')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('Month Name:')),
+                  DataCell(Text(offer.monthname ?? 'N/A')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('School Name:')),
+                  DataCell(Text(offer.schoolName ?? 'N/A')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('Address:')),
+                  DataCell(Text(offer.schoolAddress ?? 'N/A')),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('Trained Teacher:')),
+                  DataCell(Text(offer.trainedTeacher.toString())),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('Child Screened:')),
+                  DataCell(Text(offer.childScreen.toString())),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('Child Detected:')),
+                  DataCell(Text(offer.childDetect.toString())),
+                ]),
+                DataRow(cells: [
+                  DataCell(Text('Free Glasses:')),
+                  DataCell(Text(offer.freeglass.toString())),
+                ]),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+  Widget _buildTableRowss(String label, String value) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Text(
+            value,
+            style: TextStyle(color: Colors.black),
+          ),
+        ),
+      ],
+    );
+  }
+
 
 // This is where you manually handle the progress dialog
   Future<List<DataGetEyeScreening>> _fetchDataWithProgressDialog(BuildContext context) async {
@@ -4243,317 +4352,118 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                           return Column(
                             children: [
-                              Row(
-                                children: [
-                                  // First TextField with flex: 1
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 10.0),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.0, vertical: 12.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.blueGrey,
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Text(
-                                            'School name *',
-                                            style: TextStyle(
-                                              color: Colors.blueGrey,
-                                              fontSize: 16.0,
-                                              // Adjust font size as needed
-                                              fontWeight: FontWeight
-                                                  .bold, // Make the text bold if needed
-                                            ),
-                                          ),
-                                        )),
-                                  ),
-                                  // Second TextField with flex: 2
-                                  Expanded(
-                                    flex: 2,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 10.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          // Background color of the container
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          // Rounded corners
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              offset: Offset(0, 2),
-                                              blurRadius: 6.0,
-                                            ),
-                                          ],
-                                        ),
-                                        child: TextField(
-                                          controller: _controllerNameofSchool,
-                                          decoration: InputDecoration(
-                                            floatingLabelBehavior:
-                                                FloatingLabelBehavior.never,
-                                            labelText: offer.schoolName,
-                                            // Assuming 'offer.schoolName' is a dynamic value
-                                            labelStyle: TextStyle(
-                                                color: Colors.blueGrey),
-                                            // Color of the label
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.0), // Rounded border
-                                            ),
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 15.0,
-                                                vertical:
-                                                    12.0), // Padding inside the TextField
-                                          ),
-                                        ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
                                       ),
+                                    ],
+                                  ),
+                                  child:  TextField(
+                                    controller: _controllerNameofSchool,
+                                    decoration: InputDecoration(
+                                      labelText: 'Enter School Name',
+                                      hintText: offer.schoolName,
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(8.0)),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  // First TextField with flex: 1
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 10.0),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.0, vertical: 12.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.blueGrey,
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Text(
-                                            'Address of School*',
-                                            style: TextStyle(
-                                              color: Colors.blueGrey,
-                                              fontSize: 16.0,
-                                              // Adjust font size as needed
-                                              fontWeight: FontWeight
-                                                  .bold, // Make the text bold if needed
-                                            ),
-                                          ),
-                                        )),
-                                  ),
-                                  // Second TextField with flex: 2
-                                  Expanded(
-                                    flex: 2,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 10.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          // Background color of the container
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          // Rounded corners
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              offset: Offset(0, 2),
-                                              blurRadius: 6.0,
-                                            ),
-                                          ],
-                                        ),
-                                        child: TextField(
-                                          controller:
-                                              _controllerAddressofSchool,
-                                          decoration: InputDecoration(
-                                            floatingLabelBehavior:
-                                                FloatingLabelBehavior.never,
-                                            labelText: offer.schoolAddress,
-                                            // Assuming 'offer.schoolName' is a dynamic value
-                                            labelStyle: TextStyle(
-                                                color: Colors.blueGrey),
-                                            // Color of the label
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.0), // Rounded border
-                                            ),
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 15.0,
-                                                vertical:
-                                                    12.0), // Padding inside the TextField
-                                          ),
-                                        ),
+
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                  child: TextField(
+                                    controller: _controllerAddressofSchool,
+                                    decoration: InputDecoration(
+                                      labelText: 'Enter School address',
+                                      hintText: offer.schoolAddress,
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(8.0)),
+                                    ),
+
+                                  ),
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  // First TextField with flex: 1
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 10.0),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.0, vertical: 12.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.blueGrey,
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Text(
-                                            'Name of Principal*',
-                                            style: TextStyle(
-                                              color: Colors.blueGrey,
-                                              fontSize: 16.0,
-                                              // Adjust font size as needed
-                                              fontWeight: FontWeight
-                                                  .bold, // Make the text bold if needed
-                                            ),
-                                          ),
-                                        )),
-                                  ),
-                                  // Second TextField with flex: 2
-                                  Expanded(
-                                    flex: 2,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 10.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          // Background color of the container
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          // Rounded corners
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              offset: Offset(0, 2),
-                                              blurRadius: 6.0,
-                                            ),
-                                          ],
-                                        ),
-                                        child: TextField(
-                                          controller:
-                                              _controllerNameofPrincipal,
-                                          decoration: InputDecoration(
-                                            floatingLabelBehavior:
-                                                FloatingLabelBehavior.never,
-                                            labelText: offer.principal,
-                                            // Assuming 'offer.schoolName' is a dynamic value
-                                            labelStyle: TextStyle(
-                                                color: Colors.blueGrey),
-                                            // Color of the label
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.0), // Rounded border
-                                            ),
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 15.0,
-                                                vertical:
-                                                    12.0), // Padding inside the TextField
-                                          ),
-                                        ),
+
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                  child: TextField(
+                                    controller: _controllerNameofPrincipal,
+                                    decoration: InputDecoration(
+                                      labelText: 'Enter principal name',
+                                      hintText: offer.principal,
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(8.0)),
+                                    ),
+
+
+
+                                  ),
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  // First TextField with flex: 1
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 10.0),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.0, vertical: 12.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.blueGrey,
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Text(
-                                            'Teacher Trained in screening for refractive errors *',
-                                            style: TextStyle(
-                                              color: Colors.blueGrey,
-                                              fontSize: 16.0,
-                                              // Adjust font size as needed
-                                              fontWeight: FontWeight
-                                                  .bold, // Make the text bold if needed
-                                            ),
-                                          ),
-                                        )),
-                                  ),
-                                  // Second TextField with flex: 2
-                                  Expanded(
-                                    flex: 2,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 10.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          // Background color of the container
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          // Rounded corners
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              offset: Offset(0, 2),
-                                              blurRadius: 6.0,
-                                            ),
-                                          ],
-                                        ),
-                                        child: TextField(
-                                          controller: _controllerTeacherTrained,
-                                          keyboardType: TextInputType.number,
-                                          decoration: InputDecoration(
-                                            floatingLabelBehavior:
-                                                FloatingLabelBehavior.never,
-                                            hintText:
-                                                offer.trainedTeacher.toString(),
-                                            // Assuming 'offer.schoolName' is a dynamic value
-                                            labelStyle: TextStyle(
-                                                color: Colors.blueGrey),
-                                            // Color of the label
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.0), // Rounded border
-                                            ),
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 15.0,
-                                                vertical:
-                                                    12.0), // Padding inside the TextField
-                                          ),
-                                        ),
+
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 10.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    // Background color of the container
+                                    borderRadius:
+                                        BorderRadius.circular(10.0),
+                                    // Rounded corners
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                  child: TextField(
+                                    controller: _controllerTeacherTrained,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      labelText: 'Enter Trainer Teacher',
+                                      hintText: offer.trainedTeacher.toString(),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(8.0)),
+                                    ),
+
+                                  ),
+                                ),
                               ),
                               Container(
                                 color: Colors.blue,
@@ -4574,245 +4484,100 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   ),
                                 ),
                               ),
-                              Row(
-                                children: [
-                                  // First TextField with flex: 1
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 10.0),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.0, vertical: 12.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.blueGrey,
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Text(
-                                            'Number of children screening *',
-                                            style: TextStyle(
-                                              color: Colors.blueGrey,
-                                              fontSize: 16.0,
-                                              // Adjust font size as needed
-                                              fontWeight: FontWeight
-                                                  .bold, // Make the text bold if needed
-                                            ),
-                                          ),
-                                        )),
-                                  ),
-                                  // Second TextField with flex: 2
-                                  Expanded(
-                                    flex: 2,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 10.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          // Background color of the container
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          // Rounded corners
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              offset: Offset(0, 2),
-                                              blurRadius: 6.0,
-                                            ),
-                                          ],
-                                        ),
-                                        child: TextField(
-                                          controller:
-                                              _controllerNumberofchildrenscreening,
-                                          keyboardType: TextInputType.number,
-                                          decoration: InputDecoration(
-                                            floatingLabelBehavior:
-                                                FloatingLabelBehavior.never,
-                                            hintText:
-                                                offer.childScreen.toString(),
-                                            // Assuming 'offer.schoolName' is a dynamic value
-                                            labelStyle: TextStyle(
-                                                color: Colors.blueGrey),
-                                            // Color of the label
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.0), // Rounded border
-                                            ),
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 15.0,
-                                                vertical:
-                                                    12.0), // Padding inside the TextField
-                                          ),
-                                        ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 10.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    // Background color of the container
+                                    borderRadius:
+                                        BorderRadius.circular(10.0),
+                                    // Rounded corners
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
+                                  child: TextField(
+                                    controller:
+                                        _controllerNumberofchildrenscreening,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      labelText: 'Enter Child Screen',
+                                      hintText: offer.childScreen.toString(),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(8.0)),
+                                    ),
+
+
+                                  ),
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  // First TextField with flex: 1
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 10.0),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.0, vertical: 12.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.blueGrey,
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Text(
-                                            'Children detected with Refractive Errors *',
-                                            style: TextStyle(
-                                              color: Colors.blueGrey,
-                                              fontSize: 16.0,
-                                              // Adjust font size as needed
-                                              fontWeight: FontWeight
-                                                  .bold, // Make the text bold if needed
-                                            ),
-                                          ),
-                                        )),
-                                  ),
-                                  // Second TextField with flex: 2
-                                  Expanded(
-                                    flex: 2,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 10.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          // Background color of the container
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          // Rounded corners
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              offset: Offset(0, 2),
-                                              blurRadius: 6.0,
-                                            ),
-                                          ],
-                                        ),
-                                        child: TextField(
-                                          controller:
-                                              _controllerChildrendetectedwithRefractive,
-                                          keyboardType: TextInputType.number,
-                                          decoration: InputDecoration(
-                                            floatingLabelBehavior:
-                                                FloatingLabelBehavior.never,
-                                            hintText:
-                                                offer.childDetect.toString(),
-                                            // Assuming 'offer.schoolName' is a dynamic value
-                                            labelStyle: TextStyle(
-                                                color: Colors.blueGrey),
-                                            // Color of the label
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.0), // Rounded border
-                                            ),
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 15.0,
-                                                vertical:
-                                                    12.0), // Padding inside the TextField
-                                          ),
-                                        ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 10.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    // Background color of the container
+                                    borderRadius:
+                                        BorderRadius.circular(10.0),
+                                    // Rounded corners
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
                                       ),
+                                    ],
+                                  ),
+                                  child: TextField(
+                                    controller:
+                                        _controllerChildrendetectedwithRefractive,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      labelText: 'Enter Child Detect',
+                                      hintText: offer.childDetect.toString(),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(8.0)),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
-                              Row(
-                                children: [
-                                  // First TextField with flex: 1
-                                  Expanded(
-                                    flex: 1,
-                                    child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 8.0, vertical: 10.0),
-                                        child: Container(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 15.0, vertical: 12.0),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: Colors.blueGrey,
-                                                width: 1.0),
-                                            borderRadius:
-                                                BorderRadius.circular(10.0),
-                                          ),
-                                          child: Text(
-                                            'Number of free Glasses *',
-                                            style: TextStyle(
-                                              color: Colors.blueGrey,
-                                              fontSize: 16.0,
-                                              // Adjust font size as needed
-                                              fontWeight: FontWeight
-                                                  .bold, // Make the text bold if needed
-                                            ),
-                                          ),
-                                        )),
-                                  ),
-                                  // Second TextField with flex: 2
-                                  Expanded(
-                                    flex: 2,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 8.0, vertical: 10.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          // Background color of the container
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          // Rounded corners
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black26,
-                                              offset: Offset(0, 2),
-                                              blurRadius: 6.0,
-                                            ),
-                                          ],
-                                        ),
-                                        child: TextField(
-                                          controller:
-                                              _controllerNumberoffreeGlasses,
-                                          keyboardType: TextInputType.number,
-                                          decoration: InputDecoration(
-                                            floatingLabelBehavior:
-                                                FloatingLabelBehavior.never,
-                                            hintText:
-                                                offer.freeglass.toString(),
-                                            // Assuming 'offer.schoolName' is a dynamic value
-                                            labelStyle: TextStyle(
-                                                color: Colors.blueGrey),
-                                            // Color of the label
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                      10.0), // Rounded border
-                                            ),
-                                            contentPadding: EdgeInsets.symmetric(
-                                                horizontal: 15.0,
-                                                vertical:
-                                                    12.0), // Padding inside the TextField
-                                          ),
-                                        ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 10.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    // Background color of the container
+                                    borderRadius:
+                                        BorderRadius.circular(10.0),
+                                    // Rounded corners
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6.0,
                                       ),
+                                    ],
+                                  ),
+                                  child: TextField(
+                                    controller:
+                                        _controllerNumberoffreeGlasses,
+                                    keyboardType: TextInputType.number,
+                                    decoration: InputDecoration(
+                                      labelText: 'Enter Free Glasses ',
+                                      hintText: offer.freeglass.toString(),
+                                      border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(8.0)),
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                               Row(
                                 mainAxisAlignment:
