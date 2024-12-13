@@ -951,8 +951,8 @@ class ApiController {
 
       // Define the request body
       var body = json.encode({
-        "district_code": 536,
-        "state_code": 29,
+        "district_code": district_code,
+        "state_code": state_code,
       });
       print(
           "@@getDPM_NGOApplicationDropDown--bodyprint--: ${url +

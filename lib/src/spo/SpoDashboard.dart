@@ -5133,7 +5133,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Data Rows
                         FutureBuilder<List<NGOApprovalClickData>>(
                           future: ApiController.getSPO_DistrictNgoApproval(
-                            568, 33, "2024-2025", statusApproved,
+                            568, 33, currentFinancialYear, statusApproved,
                             //district_code_login, state_code_login, currentFinancialYear, statusApproved,
                           ),
                           builder: (context, snapshot) {
@@ -5253,7 +5253,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Data Rows
                         FutureBuilder<List<NGOApprovalClickData>>(
                           future: ApiController.getSPO_DistrictNgoApproval(
-                              568, 33, "2024-2025", statusPending
+                              568, 33, currentFinancialYear, statusPending
                               //district_code_login, state_code_login, currentFinancialYear, statusApproved,
 
                               ),

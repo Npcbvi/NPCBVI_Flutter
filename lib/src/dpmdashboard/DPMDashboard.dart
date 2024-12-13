@@ -2605,15 +2605,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                       children: [
                         _buildHeaderCellSrNo('S.No.'),
                         _buildHeaderCell('NGO Darpan No.'),
-                        _buildHeaderCell('Member Name'),
-                        _buildHeaderCell('Email'),
-                        //_buildHeaderCell('Action'), //comment for first sprint
+                        //_buildHeaderCell('Member Name'),
+                       // _buildHeaderCell('Email'),
+                        _buildHeaderCell('Action'), //comment for first sprint
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
                     // Data Rows
                     FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
                       future: ApiController.getDPM_NGOApplicationDropDown(
+                         // 512, 36,
                           district_code_login, state_code_login),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
@@ -2645,12 +2646,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.darpanNo),
-                                  _buildDataCell(offer.memberName),
-                                  _buildDataCell(offer.emailid),
+                                 // _buildDataCell(offer.memberName),
+                                 // _buildDataCell(offer.emailid),
                                   //comment for first sprint
-                                  /*   _buildDataCellViewBlue("Edit", () {
-                                    // Handle the edit action here
-                                  }),*/
+                                     _buildDataCellViewBlue("View Detail", () {
+                                       _showDetailDialogNGOlistApprove(context, offer);
+                                  }),
                                 ],
                               );
                             }).toList(),
@@ -2665,6 +2666,50 @@ class _DPMDashboard extends State<DPMDashboard> {
           ),
         ),
       ],
+    );
+  }
+  void _showDetailDialogNGOlistApprove(BuildContext context, DataNGOAPPlicationDropDownDPm offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'NGO List for Approval',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Table(
+              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              columnWidths: {
+                0: FixedColumnWidth(120.0), // Label column width
+                1: FlexColumnWidth(),      // Value column width
+              },
+              children: [
+                _buildTableRow('Darpan No:', offer.darpanNo),
+                _buildTableRow('Ngo Name:', offer.name),
+                _buildTableRow('Member Name:', offer.memberName),
+                _buildTableRow('Email:', offer.emailid),
+                // Add more fields as needed
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -2707,11 +2752,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                       children: [
                         _buildHeaderCellSrNo('S.No.'),
                         _buildHeaderCell('NGO Dapan No.'),
-                        _buildHeaderCell('NGO Name'),
-                        _buildHeaderCell('Hospital ID'),
-                        _buildHeaderCell('Hospital Name'),
+                        //_buildHeaderCell('NGO Name'),
+                        //_buildHeaderCell('Hospital ID'),
+                       // _buildHeaderCell('Hospital Name'),
                         //comment for first sprint
-                        // _buildHeaderCell('Action'),
+                         _buildHeaderCell('Action'),
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -2752,13 +2797,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.darpanNo),
-                                  _buildDataCell(offer.name),
-                                  _buildDataCell(offer.hRegID),
-                                  _buildDataCell(offer.hName),
+                                 // _buildDataCell(offer.name),
+                                //  _buildDataCell(offer.hRegID),
+                                //  _buildDataCell(offer.hName),
                                   //comment for first sprint
-                                  /*  _buildDataCellViewBlue("Edit", () {
-                                    // Handle the edit action here
-                                  }),*/
+                                    _buildDataCellViewBlue("View Detail", () {
+                                      _showDetailDialogHospitalDataApprove(context, offer);
+                                  }),
                                 ],
                               );
                             }).toList(),
@@ -2770,6 +2815,72 @@ class _DPMDashboard extends State<DPMDashboard> {
                 ),
               ),
             ],
+          ),
+        ),
+      ],
+    );
+  }
+  void _showDetailDialogHospitalDataApprove(BuildContext context, DataGetNewHospitalData offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Hospital list for Approval',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Table(
+              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              columnWidths: {
+                0: FixedColumnWidth(120.0), // Label column width
+                1: FlexColumnWidth(),      // Value column width
+              },
+              children: [
+                _buildTableRow('Darpan No:', offer.darpanNo),
+                _buildTableRow('Name:', offer.name),
+                _buildTableRow('Hospital ID:', offer.hRegID),
+                _buildTableRow('Hospital Name:', offer.hName),
+                // Add more fields as needed
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  TableRow _buildTableRow(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            value ?? 'N/A',
           ),
         ),
       ],
@@ -2805,7 +2916,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               SizedBox(height: 8.0),
 
               // Dropdown for selecting organisation type
-              Padding(
+           /*   Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
@@ -2850,11 +2961,81 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ),
                 ),
+              ),*/
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.lightBlue,
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blueAccent.withOpacity(0.2),
+                        blurRadius: 8,
+                        spreadRadius: 1,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: oganisationTypeGovtPrivateDRopDown,
+                      icon: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(Icons.arrow_drop_down, color: Colors.white),
+                        ],
+                      ),
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                      dropdownColor: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      items: [
+                        'Govt. District Hospital/Govt. Medical College',
+                        'CHC/Govt. Sub-Dist. Hospital',
+                        'Private Practitioner',
+                        'Private Medical College',
+                        'Other (Institution not claiming fund from NPCBVI)',
+                      ].map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.apartment, // You can use a specific icon for each type
+                                color: Colors.blue,
+                              ),
+                              SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  value,
+                                  style: TextStyle(color: Colors.black, fontSize: 14),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      hint: Text(
+                        "Select Organisation Type",
+                        style: TextStyle(
+                            color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      onChanged: (String newValue) {
+                        setState(() {
+                          oganisationTypeGovtPrivateDRopDown = newValue;
+                          updateDropDownSelection();
+                        });
+                      },
+                    ),
+                  ),
+                ),
               ),
 
               // Submit Button
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                padding: const EdgeInsets.fromLTRB(20, 5, 20.0, 0),
                 child: ElevatedButton(
                   child: Text('Submit'),
                   style: ElevatedButton.styleFrom(
@@ -2891,11 +3072,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                             children: [
                               _buildHeaderCellSrNo('S.No.'),
                               _buildHeaderCell('NGO Dapan No.'),
-                              _buildHeaderCell('Ngo Name'),
-                              _buildHeaderCell('Hospital ID'),
-                              _buildHeaderCell('Hospital Name'),
+                            //  _buildHeaderCell('Ngo Name'),
+                              //_buildHeaderCell('Hospital ID'),
+                              //_buildHeaderCell('Hospital Name'),
                               //Comment for first sprint
-                              // _buildHeaderCell('Action'),
+                               _buildHeaderCell('Action'),
                             ],
                           ),
                           Divider(color: Colors.blue, height: 1.0),
@@ -2943,13 +3124,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             (ddata.indexOf(offer) + 1)
                                                 .toString()),
                                         _buildDataCell(offer.npcbNo),
-                                        _buildDataCell(offer.oName),
-                                        _buildDataCell(offer.nodalOfficerName),
-                                        _buildDataCell(offer.emailId),
+                                     //   _buildDataCell(offer.oName),
+                                       // _buildDataCell(offer.nodalOfficerName),
+                                        //_buildDataCell(offer.emailId),
                                         //Comment for first sprint
-                                        /*  _buildDataCellViewBlue("View", () {
-                                          // Handle the view action here
-                                        }),*/
+                                          _buildDataCellViewBlue("View Detail", () {
+                                            _showDetailDialogGovernmentDistrictHospita(context, offer);
+
+                                        }),
                                       ],
                                     );
                                   }).toList(),
@@ -2969,6 +3151,56 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+  void _showDetailDialogGovernmentDistrictHospita(BuildContext context, DataDPMGovtPrivateOrganisationTypeData offer) {
+    print("Opening dialog for offer: ${offer.npcbNo}");
+    print("Opening dialog for offer: ${offer.oName}");
+    print("Opening dialog for offer: ${offer.nodalOfficerName}");
+    print("Opening dialog for offer: ${offer.emailId}");
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Government / District Hospital list for Approval',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Table(
+              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              columnWidths: {
+                0: FixedColumnWidth(120.0), // Label column width
+                1: FlexColumnWidth(),      // Value column width
+              },
+              children: [
+                _buildTableRow('NPCB No:', offer.npcbNo),
+                _buildTableRow('Organisation Name:', offer.oName),
+                _buildTableRow('Member Name:', offer.nodalOfficerName),
+                _buildTableRow('Email:', offer.emailId),
+                // Add more fields as needed
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   void updateDropDownSelection() {
     if (oganisationTypeGovtPrivateDRopDown ==
@@ -3166,15 +3398,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                     children: [
                       _buildHeaderCellSrNo('S.No.'),
                       _buildHeaderCell('Hospital Id'),
-                      _buildHeaderCell('Hospital Name'),
+                     /* _buildHeaderCell('Hospital Name'),
                       _buildHeaderCell('Mobile'),
                       _buildHeaderCell('Email'),
                       _buildHeaderCell('From Date'),
                       _buildHeaderCell('To Date'),
                       _buildHeaderCell('Status'),
-                      _buildHeaderCell('MOU'),
+                      _buildHeaderCell('MOU'),*/
                       //comment for first sprint
-                      //_buildHeaderCell('Action'),
+                      _buildHeaderCell('Action'),
                     ],
                   ),
                   Divider(color: Colors.blue, height: 1.0),
@@ -3222,7 +3454,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.hRegID),
-                                  _buildDataCell(offer.hName),
+                                /*  _buildDataCell(offer.hName),
                                   _buildDataCell(offer.mobile.toString()),
                                   _buildDataCell(offer.emailId),
                                   _buildDataCell(
@@ -3232,11 +3464,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   _buildDataCell(offer.vstatus.toString()),
                                   _buildDataCellViewBlue(offer.file, () {
                                     // Handle the view/download action here
-                                  }),
+                                  }),*/
                                   //comment for first sprint
-                                  /*  _buildDataCellViewBlue(" ", () {
-                                // Handle the edit action here
-                              }),*/
+                                   _buildDataCellViewBlue("View Detail", () {
+                                     _showDetailDialogMOU(context, offer);
+                              }),
                                 ],
                               );
                             }).toList(),
@@ -3254,6 +3486,80 @@ class _DPMDashboard extends State<DPMDashboard> {
 
 
             ],
+          ),
+        ),
+      ],
+    );
+  }
+  void _showDetailDialogMOU(BuildContext context, DataGetDPM_MOUApprove offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'MOU Approval Details',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildTableRows('Hospital Id:', offer.hRegID),
+                SizedBox(height: 8),
+                _buildTableRows('Hospital Name:', offer.hName),
+                SizedBox(height: 8),
+                _buildTableRows('Mobile:', offer.mobile.toString()),
+                SizedBox(height: 8),
+                _buildTableRows('Email ID:', offer.emailId),
+                SizedBox(height: 8),
+                _buildTableRows(
+                    'From Date:', Utils.formatDateString(offer.fromDate)),
+                SizedBox(height: 8),
+                _buildTableRows(
+                    'To Date:', Utils.formatDateString(offer.toDate)),
+                SizedBox(height: 8),
+                _buildTableRows('Status:', offer.vstatus.toString()),
+                SizedBox(height: 8),
+                _buildDataCellViewBlue(offer.file, () {
+                  // Handle the view/download action here
+                }),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildTableRows(String label, String value) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            label,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Expanded(
+          flex: 3,
+          child: Text(
+            value ?? 'N/A',
+            style: TextStyle(color: Colors.black),
           ),
         ),
       ],
@@ -8647,7 +8953,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   Widget _buildHeaderCellSrNo(String text) {
     return Container(
-      height: 40,
+      height: 35,
       width: 80, // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
@@ -8669,7 +8975,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   Widget _buildHeaderCell(String text) {
     return Container(
-      height: 40,
+      height: 35,
       width: 150, // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
@@ -8692,7 +8998,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   Widget _buildDataCell(String text) {
     return Container(
-      height: 80,
+      height: 35,
       width: 150,
       // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
@@ -8717,7 +9023,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     return GestureDetector(
       onTap: onTap, // Trigger the callback when the cell is clicked
       child: Container(
-        height: 80,
+        height: 35,
         width: 150,
         decoration: BoxDecoration(
           color: Colors.white,
@@ -8740,7 +9046,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   Widget _buildDataCellSrNo(String text) {
     return Container(
-      height: 80,
+      height: 35,
       width: 80, //
       // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
@@ -16675,6 +16981,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+
 
 
 
