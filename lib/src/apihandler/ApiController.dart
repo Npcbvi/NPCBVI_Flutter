@@ -1537,7 +1537,7 @@ class ApiController {
         ),
       );
 
-      print("@@GetDPM_SatelliteCentre--Api Response: ${response.toString()}");
+      print("@@GetDPM_SatelliteCentre--Api Response yaha se--: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
@@ -1548,11 +1548,11 @@ class ApiController {
         // Return the list of data
         return data.dataw;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
