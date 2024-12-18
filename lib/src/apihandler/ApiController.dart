@@ -3482,7 +3482,7 @@ class ApiController {
         "sR_No": sR_No,
         "entryBy": entryBy
       });
-      print("@@getCampManagerDetailsById--bodyprint--: ${body.toString()}");
+      print("@@getCampManagerDetailsById--bodyprint--: ${url+body.toString()}");
 
       // Create Dio instance and make the request
       Dio dio = Dio();
