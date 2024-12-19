@@ -1388,6 +1388,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                           return Utils.getEmptyView("No data found");
                         } else {
                           List<DataGetHospitalList> ddata = snapshot.data;
+
                           print('@@---ddata' + ddata.length.toString());
                           return Column(
                             children: ddata.map((offer) {
