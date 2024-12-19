@@ -1539,9 +1539,23 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Column(
             children: [
               Container(
-                color: Colors.blue,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.blue, Colors.blueAccent], // Gradient background
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(15), // Rounded corners
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(2, 4),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(16.0), // Increased padding for better spacing
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -1551,8 +1565,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                           child: Text(
                             'Eye Bank Application',
                             style: TextStyle(
+                              fontSize: 16, // Larger font size for prominence
                               color: Colors.white,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.w900, // Bolder font weight
+                              letterSpacing: 1.5, // Adding space between letters for a modern touch
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -1562,6 +1578,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                   ),
                 ),
               ),
+
               // Horizontal Scrolling Table with Header and Data
               SizedBox(width: 10.0),
               SingleChildScrollView(
@@ -1575,10 +1592,12 @@ class _NgoDashboard extends State<NgoDashboard> {
                         _buildHeaderCellSrNo('S.No.'),
                         _buildHeaderCell('Eye Bank ID'),
                         _buildHeaderCell('Eye Bank Name'),
-                        _buildHeaderCell('Member Name'),
+                       /* _buildHeaderCell('Member Name'),
                         _buildHeaderCell('Email'),
-                        _buildHeaderCell('Status'),
-                        _buildHeaderCellAction('Action'),
+                        _buildHeaderCell('Status'),*/
+                _buildHeaderCellAction('View Details'),
+                        //_buildHeaderCellAction('Action'),
+
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -1617,10 +1636,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.eyeBankUniqueID),
                                   _buildDataCell(offer.eyebankName),
-                                  _buildDataCell(offer.officername),
+                               /*   _buildDataCell(offer.officername),
                                   _buildDataCell(offer.emailid),
                                   _buildDataCell(offer.status.toString()),
-                                  _buildMAnageEyeDonationMOUUI(),
+                                  _buildMAnageEyeDonationMOUUI(),*/
+                                  _buildDataCellViewBlue("View Detail", () {
+                                    // Show the dialog with hospital details when the "View Detail" button is pressed
+                                    _showDetailsDialogEyeBankApplication(offer);
+                                  }),
                                 ],
                               );
                             }).toList(),
@@ -1637,6 +1660,72 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
+  void _showDetailsDialogEyeBankApplication(DataAddEyeBank offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title
+                  Text(
+                    'Eye Bank Application Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+
+                  // Table for the data
+                  Table(
+                    border: TableBorder.all(color: Colors.grey.shade300, width: 1.0),
+                    children: [
+                      _buildTableRow('Eye Bank ID', offer.eyeBankUniqueID),
+                      _buildTableRow('Eye Bank Name', offer.eyebankName),
+                      _buildTableRow('Member Name', offer.officername),
+                      _buildTableRow('Email', offer.emailid),
+                      _buildTableRow('Status', offer.status.toString()),
+                    ],
+                  ),
+                  SizedBox(height: 16.0),
+
+                  // Action Row (with buttons like MOU and Manage Eye Donation)
+                  _buildMAnageEyeDonationMOUUI(),
+
+                  SizedBox(height: 16.0),
+
+                  // Close Button
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context); // Close dialog
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                      ),
+                      child: Text('Close'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 
   Widget ngoCampManagerList() {
     return Column(
@@ -1897,6 +1986,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   satelliteCenterMenuListdisplay = false;
                                   AddSatelliteCenterRedOptionFields = false;
                                 });
+                                // Dismiss the dialog
+                                Navigator.pop(context); // Dismiss the dialog after editing
                               });
                             } else {
                               Utils.showToast(
@@ -2025,6 +2116,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       satelliteCenterMenuListdisplay = false;
                       AddSatelliteCenterRedOptionFields = false;
                     });
+                    Navigator.pop(context);
                   });
 
                   // Prepare documents for display
@@ -3047,12 +3139,24 @@ class _NgoDashboard extends State<NgoDashboard> {
   Widget _buildButton(String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Text(
-        text,
-        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0), // Padding around the text
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.blue, width: 1.0), // Border color and width
+          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+        ),
+        child: Text(
+          text,
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: Colors.blue, // Text color
+          ),
+        ),
       ),
     );
   }
+
 
   Widget _buildSeparator() {
     return Text(
@@ -3063,49 +3167,59 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   Widget _buildMAnageEyeDonationMOUUI() {
     return Container(
-        height: 80,
-        width: 200,
-        // Fixed width to ensure horizontal scrolling
-        decoration: BoxDecoration(
-          color: Colors.white, // Background color for header cells
-          border: Border.all(
-            width: 0.1,
-          ),
-        ),
-        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          // Spaces the buttons evenly
-          children: [
-            // "View" Text Button
-            GestureDetector(
-              onTap: () {
-                print('MOU pressed');
-              },
+      height: 80,
+      width: double.infinity, // Use full width for better space
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for the action section
+        border: Border.all(width: 0.1),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // MOU Button with Border
+          GestureDetector(
+            onTap: () {
+              print('MOU pressed');
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.blue, width: 1.5), // Border design
+                borderRadius: BorderRadius.circular(5.0), // Rounded corners
+              ),
               child: Text(
                 'MOU',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
             ),
-            // Separator "||"
-            Text(
-              '||',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-            ),
-            // "Manage Doctor" Text Button
-            GestureDetector(
-              onTap: () {
-                print('Manage Eye Donation');
-              },
+          ),
+
+          // Separator "||" with Border
+
+
+          // Manage Eye Donation Button with Border
+          GestureDetector(
+            onTap: () {
+              print('Manage Eye Donation');
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.blue, width: 1.5), // Border design
+                borderRadius: BorderRadius.circular(5.0), // Rounded corners
+              ),
               child: Text(
                 'Manage Eye Donation',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
             ),
-            // Separator "||"
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
+
+
 
   Widget _buildMAnageEDITDELETE() {
     return Container(
@@ -3199,22 +3313,19 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   Widget _buildSatelliteManagerEditBlocked(int sR_No) {
     return Container(
-      height: 80,
-      width: 200, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(width: 0.1),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      height: 80, // Increased height to accommodate vertical layout
+      width: 60, // Fixed width to ensure the widget is not too wide
+
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // Centering content vertically
+        crossAxisAlignment: CrossAxisAlignment.center, // Centering content horizontally
         children: [
           _buildButton('Edit', () async {
             print('@@Edit Ka click');
-
             try {
               // Call the API to view camp manager details
               GetSatelliteManagerById getSatelliteManagerByIds =
-                  await ApiController.getSatelliteManagerById(
+              await ApiController.getSatelliteManagerById(
                 sR_No,
                 entryby, // Assuming `entryby` is correct
               );
@@ -3256,6 +3367,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     satelliteCenterMenuListdisplay = false;
                     AddSatelliteCenterRedOptionFields = false;
                   });
+                  Navigator.pop(context);
                 } else {
                   Utils.showToast("No satellite manager details found", true);
                 }
@@ -3270,23 +3382,25 @@ class _NgoDashboard extends State<NgoDashboard> {
                   true);
             }
           }),
-         /* Text(
-            '||',
-            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-          ),*/
-          GestureDetector(
-            onTap: () {
-              print('Manage Eye Donation Blocked');
-            },
-            child: Text(
-              'Blocked',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-            ),
-          ),
+
+          SizedBox(height: 5.0), // Space between buttons
+
+          _buildButton('Blocked', () async {
+            print('@@Edit Ka click');
+            try {
+              // Call the API to view camp manager details
+
+
+
+            } catch (e) {
+              print('Error fetching satellite manager details: $e');
+            }
+          }),
         ],
       ),
     );
   }
+
 
   Widget _buildViewManageDoctorUploadMOUUI(String hospitalId) {
     return Container(
@@ -7946,20 +8060,37 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Column(
             children: [
               Container(
-                color: Colors.blue,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.blue, Colors.blueAccent], // Gradient effect
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(12), // Rounded corners
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.2),
+                      spreadRadius: 2,
+                      blurRadius: 5,
+                      offset: Offset(0, 3), // Shadow position
+                    ),
+                  ],
+                ),
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(12.0), // Added padding for spacing
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between the texts
                     children: [
                       Flexible(
                         child: Align(
-                          alignment: Alignment.center,
+                          alignment: Alignment.centerLeft,
                           child: Text(
                             'SATELLITE CENTRE MANAGER DETAILS',
                             style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.w800,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16, // Increased font size for better visibility
+                              letterSpacing: 1.2, // Added letter spacing for style
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -7969,12 +8100,15 @@ class _NgoDashboard extends State<NgoDashboard> {
                         child: GestureDetector(
                           onTap: _addSatelliteCenterRedOtionclick,
                           child: Align(
-                            alignment: Alignment.center,
+                            alignment: Alignment.centerRight,
                             child: Text(
                               'Add Satellite Centre',
                               style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w800,
+                                color: Colors.redAccent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16, // Increased font size
+                                letterSpacing: 1.2, // Letter spacing for consistency
+                                decoration: TextDecoration.underline, // Underlined for emphasis
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -7985,6 +8119,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                   ),
                 ),
               ),
+
               // Horizontal Scrolling Table with Header and Data
               SizedBox(width: 8.0),
               SingleChildScrollView(
@@ -7998,10 +8133,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                         _buildHeaderCellSrNo('S.No.'),
                         _buildHeaderCell('Officer Name'),
                         _buildHeaderCell('Hospital'),
-                        _buildHeaderCell('Designation'),
+                      /*  _buildHeaderCell('Designation'),
                         _buildHeaderCell('Mobile Number'),
                         _buildHeaderCell('Email id'),
-                        _buildHeaderCell('Update/Block'),
+*/
+
+                  _buildHeaderCellAction('View Details'),
+                       // _buildHeaderCell('Update/Block'),
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -8029,11 +8167,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.name),
                                   _buildDataCell(offer.hName),
-                                  _buildDataCell(offer.designation),
+                                 /* _buildDataCell(offer.designation),
                                   _buildDataCell(offer.mobile),
                                   _buildDataCell(offer.emailId),
                                   _buildSatelliteManagerEditBlocked(
-                                      int.parse(offer.srNo))
+                                      int.parse(offer.srNo)),*/
+                                  _buildDataCellViewBlue("View Detail", () {
+                                    // Show the dialog with hospital details when the "View Detail" button is pressed
+                                    // Show the dialog with hospital details when the "View Detail" button is pressed
+                                    _showHospitalDetailsDialogSATELLITECENTREDATA(offer);
+                                  }),
                                 ],
                               );
                             }).toList(),
@@ -8050,6 +8193,83 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
+  void _showHospitalDetailsDialogSATELLITECENTREDATA(DataGetSatelliteCenterList offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title
+                  Text(
+                    'Satellite Center Details',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                      color: Colors.blue,
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+
+                  // Table for the data
+                  Table(
+                    border: TableBorder.all(color: Colors.grey.shade300, width: 1.0),
+                    children: [
+                      _buildTableRow('S.No.', offer.srNo.toString()),
+                      _buildTableRow('Officer Name', offer.name),
+                      _buildTableRow('Hospital', offer.hName),
+                      _buildTableRow('Designation', offer.designation),
+                      _buildTableRow('Mobile Number', offer.mobile),
+                      _buildTableRow('Email ID', offer.emailId),
+                      // Wrap the widget returned by _buildSatelliteManagerEditBlocked inside a TableRow
+                      TableRow(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text('Action', style: TextStyle(fontWeight: FontWeight.bold)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: _buildSatelliteManagerEditBlocked(int.parse(offer.srNo)),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 16.0),
+
+                  // Close Button
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                      ),
+                      child: Text('Close'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
 
   void _addSatelliteCenterRedOtionclick() {
     // Handle the tap event here
