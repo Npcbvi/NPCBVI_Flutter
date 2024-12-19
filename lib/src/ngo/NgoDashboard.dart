@@ -3798,8 +3798,8 @@ class _NgoDashboard extends State<NgoDashboard> {
           ),
           content: SingleChildScrollView(
             child: Container(
-              width: 800, // Set width as per your requirement
-              constraints: BoxConstraints(maxHeight: 600), // Adjust max height
+              width: 900, // Set width as per your requirement
+              constraints: BoxConstraints(maxHeight: 1000), // Adjust max height
               child: Column(
                 mainAxisSize: MainAxisSize.min, // Ensure minimal height
                 children: [

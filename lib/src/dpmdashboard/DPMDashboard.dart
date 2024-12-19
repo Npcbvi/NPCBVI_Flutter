@@ -558,7 +558,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         LowVisionRegisterCornealBlindness = false;
                         LowVisionRegisterVRSurgery = false;
                         ngoEyeScreeningdataShow = false;
-
+                        dpmEyeScreeningSchoolDataShow = false;
                         LowVisionRegisterChildhoodCongenitalPtosiss =
                         false;
                         LowVisionRegisterChildhoodTrauma = false;
@@ -686,9 +686,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                         ngoEyeScreeningdataShow = false;
                         dpmEyeScreeningSchoolDataShowADDNewRecord =
                         false;
+                        dpmEyeScreeningSchoolDataShow=false;
                         print('@@NGO--1' + _chosenValueLOWVision);
                       } else if (_chosenValueLOWVision ==
                           "Diabetic") {
+                        dpmEyeScreeningSchoolDataShow=false;
                         _futureDiabetic = getDPM_ScreeningYear();
                         _futureBindOrgan = GetDPM_Bindorg();
                         dashboardviewReplace = false;
@@ -733,8 +735,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                         ngoEyeScreeningdataShow = false;
                         dpmEyeScreeningSchoolDataShowADDNewRecord =
                         false;
+                        dpmEyeScreeningSchoolDataShow=false;
                       } else if (_chosenValueLOWVision ==
                           "Corneal Blindness") {
+                        dpmEyeScreeningSchoolDataShow=false;
                         _future = getDPM_ScreeningYear();
                         _futureBindOrgan = GetDPM_Bindorg();
                         dashboardviewReplace = false;
@@ -760,6 +764,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           "VR Surgery") {
                         print('@@Childhood--' +
                             _chosenValueLOWVision);
+                        dpmEyeScreeningSchoolDataShow=false;
                         _future = getDPM_ScreeningYear();
                         _futureBindOrgan = GetDPM_Bindorg();
                         dashboardviewReplace = false;
@@ -3905,16 +3910,17 @@ class _DPMDashboard extends State<DPMDashboard> {
                   children: [
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
+
+                        _buildHeaderCellSrNoEyeScreen('S.No.'),
                         //_buildHeaderCell('Year'),
                         //_buildHeaderCell('Month'),
-                        _buildHeaderCell('School name'),
+                        _buildHeaderCellEyeScreen('School name'),
                         //_buildHeaderCell('Teacher Trained'),
                         //_buildHeaderCell('Children screened'),
                        // _buildHeaderCell('Children detected with Refractive Errors'),
                        // _buildHeaderCell('Free Glasses Provided by Organization'),
-                        _buildHeaderCell('Action'),
-                        _buildHeaderCell('Update'),
+                        _buildHeaderCellEyeScreen('Action'),
+                        _buildHeaderCellEyeScreen('Update'),
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -3936,19 +3942,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCellSrNoEyScreen((ddata.indexOf(offer) + 1).toString()),
                                 //  _buildDataCell(offer.yearname),
                                //   _buildDataCell(offer.monthname),
-                                  _buildDataCell(offer.schoolName),
+                                  _buildDataCellEyeScreen(offer.schoolName),
                                  // _buildDataCell(offer.trainedTeacher.toString()),
                                //   _buildDataCell(offer.childScreen.toString()),
                                  // _buildDataCell(offer.childDetect.toString()),
                                   //_buildDataCell(offer.freeglass.toString()),
-                              _buildDataCellViewBlue("View Detail", () {
+                                  _buildDataCellViewBlueEyeScreen("View", () {
                                 _showDetailDialogEyeScreening(context, offer);
                               }),
 
-                              _buildDataCellViewBlue("Edit", () async {
+                                  _buildDataCellViewBlueEyeScreen("Edit", () async {
                               // Check if API call is already in progress
                               if (_isLoadings) return;
 
@@ -8537,6 +8543,51 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+  Widget _buildHeaderCellSrNoEyeScreen(String text) {
+    return Container(
+      height: 35,
+      width: 50, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCellEyeScreen(String text) {
+    return Container(
+      height: 35,
+      width: 90, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
 
   Widget _buildHeaderCellSrNo(String text) {
     return Container(
@@ -8582,7 +8633,29 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
-
+  Widget _buildDataCellEyeScreen(String text) {
+    return Container(
+      height: 35,
+      width: 90,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 3,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
   Widget _buildDataCell(String text) {
     return Container(
       height: 35,
@@ -8630,7 +8703,53 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+  Widget _buildDataCellViewBlueEyeScreen(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: 90,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
+  Widget _buildDataCellSrNoEyScreen(String text) {
+    return Container(
+      height: 35,
+      width: 50, //
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
   Widget _buildDataCellSrNo(String text) {
     return Container(
       height: 35,
@@ -10411,6 +10530,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         print('@@lowvisionGlucomaDataDispla-- click------');
                         setState(() {
                           lowvisionGlucomaDataDispla = true;
+                          ngoEyeScreeningdataShow = false;
+
                         });
                       },
                       child: Text('Submit'),
