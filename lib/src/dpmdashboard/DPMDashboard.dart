@@ -1075,7 +1075,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             20, 10, 20.0, 0),
-                                        child: new Text('$totalPatientApproved',
+                                        child: new Text(
+                                            totalPatientApproved != null ? '${totalPatientApproved}' : '0',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontSize: 17,
@@ -2744,25 +2745,31 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Header Text
-              Container(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Hospital list for Approval',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                    ],
+            Container(
+            color: Colors.blue,
+            padding: const EdgeInsets.all(12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.local_hospital, // Hospital icon
+                  color: Colors.white,
+                  size: 16, // Icon size
+                ),
+                SizedBox(width: 8), // Space between icon and text
+                Text(
+                  'Hospital List for Approval',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18, // Larger font size for emphasis
                   ),
                 ),
-              ),
-              SizedBox(height: 8.0),
+              ],
+            ),
+          ),
+
+            SizedBox(height: 8.0),
 
               // Horizontal Scrolling for both Header and Data
               SingleChildScrollView(
@@ -3769,142 +3776,124 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: ngoEyeScreeningdataShow,
           child: Column(
             children: [
-              Container(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            onTap: () {
-                              // Handle the tap event here
-                              print('@@Add New Record clicked lin enumber 3768');
+            Container(
+            color: Colors.blue,
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between items
+              children: [
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      // Handle the tap event here
+                      print('@@School Eye Screening clicked');
+                      setState(() {
+                        ngoEyeScreeningdataShow = false;
+                        dpmEyeScreeningSchoolDataShowADDNewRecord = true;
 
-                              // Update state and perform actions
-                              setState(() {
-                                ngoEyeScreeningdataShow = false;
-                                dpmEyeScreeningSchoolDataShowADDNewRecord = true;
-
-                                // Flags reset here
-                                DPM_privateMEdicalCollegePendingData = false;
-                                NGO_APPorovedClickShowData = false;
-                                NGO_PendingClickShowData = false;
-                                GetDPM_GH_APPorovedClickShowData = false;
-                                GetDPM_GH_PendingClickShowData = false;
-                                GetDPM_PrivatePartitionPorovedClickShowData = false;
-                                DPM_PrivatePartitionP_PendingClickShowData = false;
-                                DPM_privateMEdicalCollegeApprovedData = false;
-                                ScreeningCamp = false;
-                                ScreeningCampOngoing = false;
-                                ScreeningCampComing = false;
-                                satelliteCentreShowData = false;
-                                ngoApproveRevenueMOU = false;
-                                NGOlistDropDownDisplayDatas = false;
-                                ngoGovtPrivateOthereHosdpitalDataShow = false;
-                                ngolistNewHosdpitalDropDown = false;
-                                LowVisionRegisterCatracts = false;
-                                LowVisionRegisterGlaucoma = false;
-                                LowVisionRegisterDiabitic = false;
-                                LowVisionRegisterCornealBlindness = false;
-                                LowVisionRegisterVRSurgery = false;
-
-                                // Do NOT reset API futures here
-                                // _future = getDPM_ScreeningYear();
-                                // _futureMonth = getDPM_ScreeningMonth();
-
-                              });
-                            },
-                            child: Text(
-                              'School Eye Screening',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800,
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                        // Reset other flags here
+                        DPM_privateMEdicalCollegePendingData = false;
+                        NGO_APPorovedClickShowData = false;
+                        NGO_PendingClickShowData = false;
+                        GetDPM_GH_APPorovedClickShowData = false;
+                        GetDPM_GH_PendingClickShowData = false;
+                        GetDPM_PrivatePartitionPorovedClickShowData = false;
+                        DPM_PrivatePartitionP_PendingClickShowData = false;
+                        DPM_privateMEdicalCollegeApprovedData = false;
+                        ScreeningCamp = false;
+                        ScreeningCampOngoing = false;
+                        ScreeningCampComing = false;
+                        satelliteCentreShowData = false;
+                        ngoApproveRevenueMOU = false;
+                        NGOlistDropDownDisplayDatas = false;
+                        ngoGovtPrivateOthereHosdpitalDataShow = false;
+                        ngolistNewHosdpitalDropDown = false;
+                        LowVisionRegisterCatracts = false;
+                        LowVisionRegisterGlaucoma = false;
+                        LowVisionRegisterDiabitic = false;
+                        LowVisionRegisterCornealBlindness = false;
+                        LowVisionRegisterVRSurgery = false;
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Icon(Icons.school, color: Colors.white), // Icon for 'School Eye Screening'
+                        SizedBox(width: 8), // Space between icon and text
+                        Expanded(
+                          child: Text(
+                            'School Eye Screening',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16,
                             ),
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                      ),
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              // Handle the tap event here
-                              print('@@Add New Record clicked');
-
-                              // Update state and perform actions
-                              setState(() {
-                                _future = getDPM_ScreeningYear();
-                                _futureMonth = getDPM_ScreeningMonth();
-                                ngoEyeScreeningdataShow = false;
-                                dpmEyeScreeningSchoolDataShowADDNewRecord = true;
-
-
-
-                                DPM_privateMEdicalCollegePendingData =
-                                false;
-                                NGO_APPorovedClickShowData =
-                                false;
-                                NGO_PendingClickShowData =
-                                false;
-                                GetDPM_GH_APPorovedClickShowData =
-                                false;
-                                GetDPM_GH_PendingClickShowData =
-                                false;
-                                GetDPM_PrivatePartitionPorovedClickShowData =
-                                false;
-                                DPM_PrivatePartitionP_PendingClickShowData =
-                                false;
-                                DPM_privateMEdicalCollegeApprovedData =
-                                false;
-                                ScreeningCamp = false;
-                                ScreeningCampOngoing =
-                                false;
-                                ScreeningCampComing = false;
-                                satelliteCentreShowData =
-                                false;
-                                ngoApproveRevenueMOU =
-                                false;
-                                NGOlistDropDownDisplayDatas =
-                                false;
-                                ngoGovtPrivateOthereHosdpitalDataShow =
-                                false;
-                                ngolistNewHosdpitalDropDown =
-                                false;
-                                LowVisionRegisterCatracts =
-                                false;
-                                LowVisionRegisterGlaucoma =
-                                false;
-                                LowVisionRegisterDiabitic =
-                                false;
-                                LowVisionRegisterCornealBlindness =
-                                false;
-                                LowVisionRegisterVRSurgery =
-                                false;
-
-                              });
-                            },
-                            child: Text(
-                              'Add New Record',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w800,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              SingleChildScrollView(
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      // Handle the tap event here
+                      print('@@Add New Record clicked');
+                      setState(() {
+                        _future = getDPM_ScreeningYear();
+                        _futureMonth = getDPM_ScreeningMonth();
+                        ngoEyeScreeningdataShow = false;
+                        dpmEyeScreeningSchoolDataShowADDNewRecord = true;
+
+                        // Reset other flags here
+                        DPM_privateMEdicalCollegePendingData = false;
+                        NGO_APPorovedClickShowData = false;
+                        NGO_PendingClickShowData = false;
+                        GetDPM_GH_APPorovedClickShowData = false;
+                        GetDPM_GH_PendingClickShowData = false;
+                        GetDPM_PrivatePartitionPorovedClickShowData = false;
+                        DPM_PrivatePartitionP_PendingClickShowData = false;
+                        DPM_privateMEdicalCollegeApprovedData = false;
+                        ScreeningCamp = false;
+                        ScreeningCampOngoing = false;
+                        ScreeningCampComing = false;
+                        satelliteCentreShowData = false;
+                        ngoApproveRevenueMOU = false;
+                        NGOlistDropDownDisplayDatas = false;
+                        ngoGovtPrivateOthereHosdpitalDataShow = false;
+                        ngolistNewHosdpitalDropDown = false;
+                        LowVisionRegisterCatracts = false;
+                        LowVisionRegisterGlaucoma = false;
+                        LowVisionRegisterDiabitic = false;
+                        LowVisionRegisterCornealBlindness = false;
+                        LowVisionRegisterVRSurgery = false;
+                      });
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end, // Align to the right
+                      children: [
+                        Icon(Icons.add_circle, color: Colors.white), // Icon for 'Add New Record'
+                        SizedBox(width: 8), // Space between icon and text
+                        Expanded(
+                          child: Text(
+                            'Add New Record',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Column(
                   children: [
@@ -8986,124 +8975,132 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: LowVisionRegisterCatracts,
           child: Column(
             children: [
-              Container(
-                color: Colors.blue,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print('Cataract Data for approval clicked');
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Cataract Data for approval',
-                                style: TextStyle(
-                                    color: Colors.white), // White text color
+            Container(
+            color: Colors.blue,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Cataract Data for Approval Button
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Cataract Data for approval clicked');
+                      // Add your functionality here
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.approval, color: Colors.blue), // Approval icon
+                          SizedBox(width: 8), // Space between icon and text
+                          Expanded(
+                            child: Text(
+                              'Cataract Data for Approval',
+                              maxLines: 3,
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print('@@Cataract Data for approval clicked');
-                            setState(() {
-                              dashboardviewReplace = true;
+                  ),
+                ),
+                SizedBox(width: 20), // Space between buttons
+                // Back Button
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Back button clicked');
+                      setState(() {
+                        dashboardviewReplace = true;
 
-                              DPM_privateMEdicalCollegePendingData =
-                              false;
-                              NGO_APPorovedClickShowData =
-                              false;
-                              NGO_PendingClickShowData =
-                              false;
-                              GetDPM_GH_APPorovedClickShowData =
-                              false;
-                              GetDPM_GH_PendingClickShowData =
-                              false;
-                              GetDPM_PrivatePartitionPorovedClickShowData =
-                              false;
-                              DPM_PrivatePartitionP_PendingClickShowData =
-                              false;
-                              DPM_privateMEdicalCollegeApprovedData =
-                              false;
-                              ScreeningCamp = false;
-                              ScreeningCampOngoing =
-                              false;
-                              ScreeningCampComing = false;
-                              satelliteCentreShowData =
-                              false;
-                              ngoApproveRevenueMOU =
-                              false;
-                              NGOlistDropDownDisplayDatas =
-                              false;
-                              ngoGovtPrivateOthereHosdpitalDataShow =
-                              false;
-                              ngolistNewHosdpitalDropDown =
-                              false;
-                              LowVisionRegisterCatracts =
-                              false;
-                              LowVisionRegisterGlaucoma =
-                              false;
-                              LowVisionRegisterDiabitic =
-                              false;
-                              LowVisionRegisterCornealBlindness =
-                              false;
-                              LowVisionRegisterVRSurgery =
-                              false;
-                              ngoEyeScreeningdataShow =
-                              false;
-
-                            });
-
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Back',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ), // White text color
+                        // Reset necessary flags
+                        DPM_privateMEdicalCollegePendingData = false;
+                        NGO_APPorovedClickShowData = false;
+                        NGO_PendingClickShowData = false;
+                        GetDPM_GH_APPorovedClickShowData = false;
+                        GetDPM_GH_PendingClickShowData = false;
+                        GetDPM_PrivatePartitionPorovedClickShowData = false;
+                        DPM_PrivatePartitionP_PendingClickShowData = false;
+                        DPM_privateMEdicalCollegeApprovedData = false;
+                        ScreeningCamp = false;
+                        ScreeningCampOngoing = false;
+                        ScreeningCampComing = false;
+                        satelliteCentreShowData = false;
+                        ngoApproveRevenueMOU = false;
+                        NGOlistDropDownDisplayDatas = false;
+                        ngoGovtPrivateOthereHosdpitalDataShow = false;
+                        ngolistNewHosdpitalDropDown = false;
+                        LowVisionRegisterCatracts = false;
+                        LowVisionRegisterGlaucoma = false;
+                        LowVisionRegisterDiabitic = false;
+                        LowVisionRegisterCornealBlindness = false;
+                        LowVisionRegisterVRSurgery = false;
+                        ngoEyeScreeningdataShow = false;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.arrow_back, color: Colors.blue), // Back icon
+                          SizedBox(width: 8), // Space between icon and text
+                          Expanded(
+                            child: Text(
+                              'Back',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
+            ),
+          ),
 
-              // Horizontal Scrolling Header Row
+
+            // Horizontal Scrolling Header Row
               SizedBox(width: 8.0),
         Center(
           child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
@@ -9839,83 +9836,114 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: LowVisionRegisterGlaucoma,
           child: Column(
             children: [
-              Container(
-                color: Colors.blue,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print('Cataract Data for approval clicked');
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Glaucoma Data for approval',
-                                style: TextStyle(
-                                    color: Colors.white), // White text color
+            Container(
+            color: Colors.blue,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Glaucoma Data for Approval Button
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Glaucoma Data for approval clicked');
+                      // Add your functionality here
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.visibility, color: Colors.blue), // Approval icon
+                          SizedBox(width: 8), // Space between icon and text
+                          Expanded(
+                            child: Text(
+                              'Glaucoma Data for Approval',
+                              maxLines: 3,
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print('@@Cataract Data for approval clicked');
-                            setState(() {
-                              dashboardviewReplace = true;
+                  ),
+                ),
+                SizedBox(width: 20), // Space between buttons
+                // Back Button
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Back button clicked');
+                      setState(() {
+                        dashboardviewReplace = true;
 
-                              LowVisionRegisterCatracts = false;
-                              LowVisionRegisterDiabitic = false;
-                              LowVisionRegisterGlaucoma = false;
-                              LowVisionRegisterCornealBlindness = false;
-                            });
-
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Back',
-                                style: TextStyle(
-                                    color: Colors.white,fontWeight: FontWeight.bold), // White text color
+                        // Reset flags
+                        LowVisionRegisterCatracts = false;
+                        LowVisionRegisterDiabitic = false;
+                        LowVisionRegisterGlaucoma = false;
+                        LowVisionRegisterCornealBlindness = false;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26,
+                            blurRadius: 4,
+                            offset: Offset(2, 2),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.arrow_back, color: Colors.blue), // Back icon
+                          SizedBox(width: 8), // Space between icon and text
+                          Expanded(
+                            child: Text(
+                              'Back',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
+            ),
+          ),
 
-              // Horizontal Scrolling Header Row
+
+            // Horizontal Scrolling Header Row
               SizedBox(width: 8.0),
               Center(
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
@@ -10654,84 +10682,113 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: LowVisionRegisterDiabitic,
           child: Column(
             children: [
-              Container(
-                color: Colors.blue,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print('Diabetic Data for approval clicked');
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Diabetic Data for approval',
-                                style: TextStyle(
-                                    color: Colors.white), // White text color
+            Container(
+            color: Colors.blue,
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Diabetic Data for Approval Button
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Diabetic Data for approval clicked');
+                      // Handle actions here
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white, // White background for better contrast
+                        borderRadius: BorderRadius.circular(10), // Rounded corners
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26, // Shadow color
+                            blurRadius: 4, // Shadow blur radius
+                            offset: Offset(2, 2), // Shadow offset
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.approval, color: Colors.blue), // Approval icon
+                          SizedBox(width: 8), // Space between icon and text
+                          Expanded(
+                            child: Text(
+                              'Diabetic Data for Approval',
+                              maxLines: 3,
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print('@@Diabetic Data for approval clicked');
-                            setState(() {
-                              dashboardviewReplace = true;
+                  ),
+                ),
+                SizedBox(width: 20), // Space between the two buttons
+                // Back Button
+                Expanded(
+                  flex: 1,
+                  child: GestureDetector(
+                    onTap: () {
+                      print('Back button clicked');
+                      setState(() {
+                        dashboardviewReplace = true;
 
-                              LowVisionRegisterCatracts = false;
-                              LowVisionRegisterDiabitic = false;
-                              LowVisionRegisterGlaucoma = false;
-                              LowVisionRegisterCornealBlindness = false;
-                            });
-
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Back',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                  fontWeight: FontWeight.bold,), // White text color
+                        LowVisionRegisterCatracts = false;
+                        LowVisionRegisterDiabitic = false;
+                        LowVisionRegisterGlaucoma = false;
+                        LowVisionRegisterCornealBlindness = false;
+                      });
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: Colors.white, // White background for better contrast
+                        borderRadius: BorderRadius.circular(10), // Rounded corners
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black26, // Shadow color
+                            blurRadius: 4, // Shadow blur radius
+                            offset: Offset(2, 2), // Shadow offset
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.arrow_back, color: Colors.blue), // Back icon
+                          SizedBox(width: 8), // Space between icon and text
+                          Expanded(
+                            child: Text(
+                              'Back',
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
                               ),
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    )
-                  ],
+                    ),
+                  ),
                 ),
-              ),
+              ],
+            ),
+          ),
 
-              // Horizontal Scrolling Header Row
+
+            // Horizontal Scrolling Header Row
               SizedBox(width: 8.0),
               Center(
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
