@@ -192,7 +192,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
           backgroundColor: Colors.blue,
           title: new Text('welcome ' +'${fullnameController}',
               style: new TextStyle(
-                color: Colors.black,
+                color: Colors.white,
               )),
           centerTitle: true,
           leading: IconButton(
@@ -431,78 +431,95 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
               ),
             ),
 
-            Container(
-              color: Colors.blue,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: GestureDetector(
-                        onTap: () {
-                          // Handle approval action
-                          print('Cataract Data for approval');
-                          // You can also navigate or update some data here
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.blue, // Blue background color
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                            child: Text(
-                              '${_chosenValueLOWVision} Data Report',
-                              style: TextStyle(
-                                  color: Colors.white), // White text color
-                            ),
+        Container(
+          color: Colors.blue.shade700, // Slightly darker blue for better contrast
+          padding: const EdgeInsets.symmetric(vertical: 15), // Add vertical padding
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              // First Button with Icon and Text
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    print('Cataract Data for approval');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent, // Button background color
+                      borderRadius: BorderRadius.circular(8), // Rounded corners
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2), // Subtle shadow
+                          offset: Offset(0, 3),
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.file_copy, color: Colors.white), // Icon
+                        SizedBox(width: 8), // Spacing between icon and text
+                        Text(
+                          '${_chosenValueLOWVision} Data Report',
+                          maxLines: 3,
+                          style: TextStyle(
+
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: GestureDetector(
-                        onTap: () {
-                          // Handle approval action
-                          print('@@Cataract Data for approval clicked');
-                          setState(() {
-
-                          });
-
-                          // You can also navigate or update some data here
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.blue, // Blue background color
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                            child: Text(
-                              'Back',
-                              style: TextStyle(
-                                  color: Colors.white), // White text color
-                            ),
+                ),
+              ),
+              SizedBox(width: 10), // Space between buttons
+              // Second Button with Icon and Text
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    print('Back button clicked');
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.redAccent, // Different color for distinction
+                      borderRadius: BorderRadius.circular(8), // Rounded corners
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.2), // Subtle shadow
+                          offset: Offset(0, 3),
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.arrow_back, color: Colors.white), // Icon
+                        SizedBox(width: 8), // Spacing between icon and text
+                        Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  )
-                ],
+                  ),
+                ),
               ),
-            ),
+            ],
+          ),
+        ),
 
-            // Horizontal Scrolling Header Row
+
+        // Horizontal Scrolling Header Row
             SizedBox(width: 8.0),
             reportviewCatract(),
           ],

@@ -1090,7 +1090,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         padding: const EdgeInsets.fromLTRB(
                                             20, 10, 20.0, 0),
                                         child: new Text(
-                                            '${totalPatientPending}',
+                                            totalPatientPending != null ? '${totalPatientPending}' : '0',
+
+                                          //  '${totalPatientPending}',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontSize: 17,
@@ -1284,7 +1286,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${ngoCountApproved}',
+                                                  ngoCountApproved != null ? '${ngoCountApproved}' : '0',
+
+                                                //  '${ngoCountApproved}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1300,7 +1304,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${ngoCountPending}',
+                                                  ngoCountPending != null ? '${ngoCountPending}' : '0',
+
+                                                 // '${ngoCountPending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1496,7 +1502,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
-                                              child: new Text('${gH_CHC_Count}',
+                                              child: new Text(
+                                                  gH_CHC_Count != null ? '${gH_CHC_Count}' : '0',
+
+                                                  //'${gH_CHC_Count}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1512,7 +1521,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${gH_CHC_Count_Pending}',
+                                                  gH_CHC_Count_Pending != null ? '${gH_CHC_Count_Pending}' : '0',
+
+
+                                                  //'${gH_CHC_Count_Pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1709,7 +1721,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
-                                              child: new Text('${ppCount}',
+                                              child: new Text(
+                                                  ppCount != null ? '${ppCount}' : '0',
+
+                                                 // '${ppCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1725,7 +1740,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${ppCount_pending}',
+                                                  ppCount_pending != null ? '${ppCount_pending}' : '0',
+
+                                              //    '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1921,7 +1938,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
-                                              child: new Text('${pmcCount}',
+                                              child: new Text(
+                                                  pmcCount != null ? '${pmcCount}' : '0',
+
+                                                  //'${pmcCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1937,7 +1957,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${ppCount_pending}',
+                                                  ppCount_pending != null ? '${ppCount_pending}' : '0',
+
+
+                                                //  '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -2201,7 +2224,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${campCompletedCount}',
+                                                  campCompletedCount != null ? '${campCompletedCount}' : '0',
+
+                                                //  '${campCompletedCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -2217,7 +2242,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${campongoingCount}',
+                                                  campongoingCount != null ? '${campongoingCount}' : '0',
+
+                                                 // '${campongoingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -2233,7 +2260,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${campCommingCount}',
+                                                  campCommingCount != null ? '${campCommingCount}' : '0',
+
+                                                 // '${campCommingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -2341,7 +2370,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   });
                                                 },
                                                 child: new Text(
-                                                    '${satellitecentreCount}',
+                                                    satellitecentreCount != null ? '${satellitecentreCount}' : '0',
+
+                                                  //  '${satellitecentreCount}',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
@@ -2426,7 +2457,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       true);
                                                 },
                                                 child: new Text(
-                                                    '${patientCount}',
+                                                    patientCount != null ? '${patientCount}' : '0',
+
+                                                   // '${patientCount}',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
@@ -5882,10 +5915,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('Disease Name'),
-                            _buildHeaderCell('Total'),
-                            _buildHeaderCell('Action'),
+
+                            _buildHeaderCellSrNoDiseaseData('S.No.'),
+                            _buildHeaderCellDiseaseData('Disease Name'),
+                            _buildHeaderCellSrNoDiseaseDataTotal('Total'),
+                            _buildHeaderCellDiseaseDataAction('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -5926,13 +5960,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo(
+                                      _buildDataCellSrNoDiseaseData(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCell(offer.diseaseName),
-                                      _buildDataCell(
+                                      _buildDataCellDiseaseData(offer.diseaseName),
+                                      _buildDataCellDiseaseTotal(
                                           offer.totalApproPending.toString()),
-                                      _buildDataCellViewBlue("View", () {
+                                      _buildDataCellViewBlueDiseaseDataAction("View", () {
                                         print(
                                             '@@Edit clicked for item: ${offer.diseaseId}');
                                         showDiseaseApprovedPatintViewClick(
@@ -5977,7 +6011,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           title: Text('Disease Data'),
           content: Container(
             width: screenWidth * 0.9, // 90% of screen width
-            height: screenHeight * 0.7, // 70% of screen height
+            height: screenHeight * 0.8, // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -5989,10 +6023,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('Disease Name'),
-                            _buildHeaderCell('Total'),
-                            _buildHeaderCell('Action'),
+                            _buildHeaderCellSrNoDiseaseData('S.No.'),
+                            _buildHeaderCellDiseaseData('Disease Name'),
+                            _buildHeaderCellSrNoDiseaseDataTotal('Total'),
+                            _buildHeaderCellDiseaseDataAction('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -6022,13 +6056,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo(
+                                      _buildDataCellSrNoDiseaseData(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCell(offer.diseaseName),
-                                      _buildDataCell(
+                                      _buildDataCellDiseaseData(offer.diseaseName),
+                                      _buildDataCellDiseaseTotal(
                                           offer.totalApproPending.toString()),
-                                      _buildDataCellViewBlue("View", () {
+                                      _buildDataCellViewBlueDiseaseDataAction("View", () {
                                         print(
                                             '@@Edit clicked for item: ${offer.diseaseName}');
                                         showDiseasePatintPendingClickFlow(
@@ -6085,10 +6119,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('NGO'),
-                            _buildHeaderCell('Approved'),
-                            _buildHeaderCell('Action'),
+                            _buildHeaderCellSrNoDiseaseData('S.No.'),
+                            _buildHeaderCellDiseaseData('NGO'),
+                            _buildHeaderCellSrNoDiseaseDataTotal('Total'),
+                            _buildHeaderCellDiseaseDataAction('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -6132,12 +6166,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo(
+                                      _buildDataCellSrNoDiseaseData(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCell(offer.ngoname),
-                                      _buildDataCell(offer.approved.toString()),
-                                      _buildDataCellViewBlue("View", () {
+                                      _buildDataCellDiseaseData(offer.ngoname),
+                                      _buildDataCellDiseaseTotal(offer.approved.toString()),
+                                      _buildDataCellViewBlueDiseaseDataAction("View", () {
                                         print("@@npcbNo: " + offer.npcbNo);
                                         Navigator.push(
                                           context,
@@ -6198,10 +6232,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('NGO'),
-                            _buildHeaderCell('Approved'),
-                            _buildHeaderCell('Action'),
+                            _buildHeaderCellSrNoDiseaseData('S.No.'),
+                            _buildHeaderCellDiseaseData('NGO'),
+                            _buildHeaderCellSrNoDiseaseDataTotal('Total'),
+                            _buildHeaderCellDiseaseDataAction('Action'),
                           ],
                         ),
                         Divider(color: Colors.blue, height: 1.0),
@@ -6209,11 +6243,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                         FutureBuilder<
                             List<DataPatientapprovedSisesesViewclick>>(
                           future: ApiController.GetDPM_Patients_Approved_View(
-                              30, // district_code_login
-                              3, // state_code_login
-                              "2022-2023",
+                              district_code_login,
+                             state_code_login,
+                             currentFinancialYear,
                               "",
-                              diseaseid),
+                              diseaseid,
+                         /* 30,3, "2022-2023", "",diseaseid*/),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
@@ -6234,12 +6269,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo(
+                                      _buildDataCellSrNoDiseaseData(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCell(offer.ngoname),
-                                      _buildDataCell(offer.approved.toString()),
-                                      _buildDataCellViewBlue("View", () {
+                                      _buildDataCellDiseaseData(offer.ngoname),
+                                      _buildDataCellDiseaseTotal(offer.approved.toString()),
+                                      _buildDataCellViewBlueDiseaseDataAction("View", () {
                                         print(
                                             "@@Different TypeShowData--here===");
                                         Navigator.push(
@@ -6297,7 +6332,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('District:',
+                         /* Text('District:',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500)),
@@ -6316,15 +6351,36 @@ class _DPMDashboard extends State<DPMDashboard> {
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.w500)),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 10),*/
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 10.0),
-                            width: 150.0,
-                            child: Text('NGO(s) (Approved)',
-                                style: TextStyle(
+                            padding: EdgeInsets.all(8.0), // Added padding for inner spacing
+                            decoration: BoxDecoration(
+                              color: Colors.red.withOpacity(0.1), // Light red background
+                              borderRadius: BorderRadius.circular(8), // Rounded corners
+                              border: Border.all(color: Colors.red, width: 1), // Optional border
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.approval, // Icon representing approval
+                                  color: Colors.red,
+                                ),
+                                SizedBox(width: 8), // Spacing between icon and text
+                                Text(
+                                  'NGO(s) (Approved)',
+                                  maxLines: 3,
+                                  style: TextStyle(
                                     color: Colors.red,
-                                    fontWeight: FontWeight.w500)),
+                                    fontWeight: FontWeight.bold, // Enhanced for better emphasis
+                                    fontSize: 16, // Slightly increased font size for readability
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+
                           const SizedBox(width: 10),
                           InkWell(
                             onTap: () {
@@ -6335,28 +6391,52 @@ class _DPMDashboard extends State<DPMDashboard> {
                               });
                             },
                             child: Container(
-                              width: 80.0,
-                              child: Text('Back',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                              width: 100.0, // Slightly increased for better button visibility
+                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0), // Added padding for a better click area
+                              decoration: BoxDecoration(
+                                color: Colors.red.withOpacity(0.1), // Light red background for visual cue
+                                borderRadius: BorderRadius.circular(8), // Rounded corners
+                                border: Border.all(color: Colors.red, width: 1), // Thin border for definition
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.arrow_back, // Back arrow icon
+                                    color: Colors.red,
+                                    size: 16, // Adjust icon size for balance
+                                  ),
+                                  SizedBox(width: 5), // Spacing between icon and text
+                                  Text(
+                                    'Back',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
                                       color: Colors.red,
-                                      fontWeight: FontWeight.w500)),
+                                      fontWeight: FontWeight.bold, // Enhanced emphasis
+                                      fontSize: 14, // Adjusted font size for better readability
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
+
                         ],
                       ),
                     ),
                     // Data Table Header
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
+
+                        _buildHeaderCellSrNoDiseaseData('S.No.'),
                         _buildHeaderCell('NGO Name'),
-                        _buildHeaderCell('Member Name'),
+                       /* _buildHeaderCell('Member Name'),
                         _buildHeaderCell('Hospital Name'),
                         _buildHeaderCell('Address'),
                         _buildHeaderCell('Nodal Officer Name'),
                         _buildHeaderCell('Mobile No'),
-                        _buildHeaderCell('Email Id'),
+                        _buildHeaderCell('Email Id'),*/
+                    _buildHeaderCell('Action'), //comment for first sprint
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -6383,15 +6463,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  _buildDataCellSrNo(
+                                  _buildDataCellSrNoDiseaseData(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.name),
-                                  _buildDataCell(offer.memberName),
+                                  /*_buildDataCell(offer.memberName),
                                   _buildDataCell(offer.hName),
                                   _buildDataCell(offer.address),
                                   _buildDataCell(offer.nodalOfficerName),
                                   _buildDataCell(offer.mobile.toString()),
-                                  _buildDataCell(offer.emailid.toString()),
+                                  _buildDataCell(offer.emailid.toString()),*/
+                                  _buildDataCellViewBlue("View Detail", () {
+                                    _showDetailDialogNGOsApprovedClick(context, offer);
+                                  }),
                                 ],
                               );
                             }).toList(),
@@ -6408,6 +6491,47 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+  void _showDetailDialogNGOsApprovedClick(
+      BuildContext context, DataGetDPM_NGOAPProved_pending offer) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "NGO Detail",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          content: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.grey, width: 1),
+              columnWidths: {
+                0: FixedColumnWidth(120), // Adjust column width
+                1: FlexColumnWidth(),
+              },
+              children: [
+                _buildTableRow("Name", offer.name),
+                _buildTableRow("Member Name", offer.memberName),
+                _buildTableRow("Hospital Name", offer.hName),
+                _buildTableRow("Address", offer.address),
+                _buildTableRow("Nodal Officer", offer.nodalOfficerName),
+                _buildTableRow("Mobile", offer.mobile.toString()),
+                _buildTableRow("Email", offer.emailid.toString()),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   Widget NGOClickPendingDisplayDatas() {
     return Column(
@@ -6428,7 +6552,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('District:',
+                     /*     Text('District:',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500)),
@@ -6447,15 +6571,35 @@ class _DPMDashboard extends State<DPMDashboard> {
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.w500)),
-                          const SizedBox(width: 10),
+                          const SizedBox(width: 10),*/
                           Container(
                             margin: EdgeInsets.symmetric(horizontal: 10.0),
-                            width: 150.0,
-                            child: Text('NGO(s) (Approved)',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w500)),
+                            padding: EdgeInsets.all(8.0), // Added padding for inner spacing
+                            decoration: BoxDecoration(
+                              color: Colors.orange.withOpacity(0.1), // Light orange background
+                              borderRadius: BorderRadius.circular(8), // Rounded corners
+                              border: Border.all(color: Colors.orange, width: 1), // Thin orange border
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.hourglass_top, // Icon to represent "Pending" status
+                                  color: Colors.orange,
+                                ),
+                                SizedBox(width: 8), // Spacing between icon and text
+                                Text(
+                                  'NGO(s) (Pending)',
+                                  style: TextStyle(
+                                    color: Colors.orange,
+                                    fontWeight: FontWeight.bold, // Enhanced emphasis
+                                    fontSize: 14, // Increased font size for better readability
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+
                           const SizedBox(width: 10),
                           InkWell(
                             onTap: () {
@@ -6466,14 +6610,36 @@ class _DPMDashboard extends State<DPMDashboard> {
                               });
                             },
                             child: Container(
-                              width: 80.0,
-                              child: Text('Back',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
+                              width: 100.0, // Adjusted width for better visibility
+                              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0), // Added padding for better click area
+                              decoration: BoxDecoration(
+                                color: Colors.red.withOpacity(0.1), // Light red background
+                                borderRadius: BorderRadius.circular(8), // Rounded corners
+                                border: Border.all(color: Colors.red, width: 1), // Thin red border
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.arrow_back, // Back arrow icon
+                                    color: Colors.red,
+                                    size: 16, // Adjust icon size
+                                  ),
+                                  SizedBox(width: 5), // Spacing between icon and text
+                                  Text(
+                                    'Back',
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
                                       color: Colors.red,
-                                      fontWeight: FontWeight.w500)),
+                                      fontWeight: FontWeight.bold, // Bold for emphasis
+                                      fontSize: 14, // Adjusted font size for better readability
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
+
                         ],
                       ),
                     ),
@@ -6483,12 +6649,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                       children: [
                         _buildHeaderCellSrNo('S.No.'),
                         _buildHeaderCell('NGO Name'),
-                        _buildHeaderCell('Member Name'),
+            /*            _buildHeaderCell('Member Name'),
                         _buildHeaderCell('Hospital Name'),
                         _buildHeaderCell('Address'),
                         _buildHeaderCell('Nodal Officer Name'),
                         _buildHeaderCell('Mobile No'),
-                        _buildHeaderCell('Email Id'),
+                        _buildHeaderCell('Email Id'),*/
+                        _buildHeaderCell('Action'),
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -6531,12 +6698,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.name),
-                                  _buildDataCell(offer.memberName),
+                              /*    _buildDataCell(offer.memberName),
                                   _buildDataCell(offer.hName),
                                   _buildDataCell(offer.address),
                                   _buildDataCell(offer.nodalOfficerName),
                                   _buildDataCell(offer.mobile.toString()),
-                                  _buildDataCell(offer.emailid.toString()),
+                                  _buildDataCell(offer.emailid.toString()),*/
+                                  _buildDataCellViewBlue("View Detail", () {
+                                    _showDetailDialogNGOsPendingClick(context, offer);
+                                  }),
                                 ],
                               );
                             }).toList(),
@@ -6551,6 +6721,46 @@ class _DPMDashboard extends State<DPMDashboard> {
           ),
         ),
       ],
+    );
+  }
+  void _showDetailDialogNGOsPendingClick(
+      BuildContext context, DataGetDPM_NGOAPProved_pending offer) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "NGO Detail",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          content: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.grey, width: 1),
+              columnWidths: {
+                0: FixedColumnWidth(120), // Adjust column width
+                1: FlexColumnWidth(),
+              },
+              children: [
+                _buildTableRow("Name", offer.name),
+                _buildTableRow("Member Name", offer.memberName),
+                _buildTableRow("Hospital Name", offer.hName),
+                _buildTableRow("Address", offer.address),
+                _buildTableRow("Nodal Officer", offer.nodalOfficerName),
+                _buildTableRow("Mobile", offer.mobile.toString()),
+                _buildTableRow("Email", offer.emailid.toString()),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -8548,6 +8758,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
           ),
         ),
       ),
@@ -8571,6 +8782,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
           ),
         ),
       ),
@@ -8640,6 +8852,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           maxLines: 3,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
           ),
         ),
       ),
@@ -8710,6 +8923,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.blue,
+              fontSize: 14, // Set font size to 16 pixels
             ),
           ),
         ),
@@ -8734,6 +8948,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
           ),
         ),
       ),
@@ -8756,6 +8971,198 @@ class _DPMDashboard extends State<DPMDashboard> {
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  //related disease Data view
+  Widget _buildHeaderCellSrNoDiseaseData(String text) {
+    return Container(
+      height: 35,
+      width: 40, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCellDiseaseData(String text) {
+    return Container(
+      height: 35,
+      width: 90, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 4,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCellSrNoDiseaseDataTotal(String text) {
+    return Container(
+      height: 35,
+        width: 40,
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCellDiseaseDataAction(String text) {
+    return Container(
+      height: 35,
+      width: 80, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellSrNoDiseaseData(String text) {
+    return Container(
+      height: 35,
+        width: 40,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellDiseaseData(String text) {
+    return Container(
+      height: 35,
+      width: 90,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 3,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellDiseaseTotal(String text) {
+    return Container(
+      height: 35,
+      width: 40, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellViewBlueDiseaseDataAction(String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: 80,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+              fontSize: 14, // Set font size to 16 pixels
+            ),
           ),
         ),
       ),
