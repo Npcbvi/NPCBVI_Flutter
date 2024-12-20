@@ -7382,7 +7382,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     // Shown Captcha value to user
-                                    Container(
+                              /*      Container(
                                         child: Text(
                                       'District:',
                                       style: TextStyle(
@@ -7422,45 +7422,62 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     )),
                                     const SizedBox(
                                       width: 10,
-                                    ),
+                                    ),*/
                                     Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      width: 150.0,
+                                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                      padding: EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.red.withOpacity(0.1), // Light red background
+                                        border: Border.all(color: Colors.red, width: 1), // Red border
+                                      ),
                                       child: Text(
                                         'Private Practitioners (Approved)',
                                         style: TextStyle(
+                                          fontSize: 14, // Set a font size for better readability
                                           color: Colors.red,
                                           fontWeight: FontWeight.w500,
                                         ),
+                                        overflow: TextOverflow.ellipsis, // Handle text overflow
                                       ),
                                     ),
+
                                     const SizedBox(
-                                      width: 10,
+                                      width: 5,
                                     ),
                                     InkWell(
                                       onTap: () {
                                         print('@@back Pressed----display---');
-                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          GetDPM_PrivatePartitionPorovedClickShowData =
-                                              false;
-                                          DPM_PrivatePartitionP_PendingClickShowData =
-                                              false;
+                                          GetDPM_PrivatePartitionPorovedClickShowData = false;
+                                          DPM_PrivatePartitionP_PendingClickShowData = false;
                                         });
                                       },
                                       child: Container(
-                                        width: 80.0,
-                                        child: Text(
-                                          'Back',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red.withOpacity(0.1), // Light red background
+                                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                                          border: Border.all(color: Colors.red, width: 1), // Red border
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                                          children: [
+                                           // Space between the icon and text
+                                            Text(
+                                              'Back',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
+
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -7485,12 +7502,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
-                    _buildHeaderCell('Member Name'),
+                    //_buildHeaderCell('Member Name'),
                     //  _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Address'),
+              /*      _buildHeaderCell('Address'),
                     _buildHeaderCell('Nodal Officer Name'),
                     _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),
+                    _buildHeaderCell('Email Id'),*/
+                    _buildHeaderCellDiseaseDataAction('Action'),
                   ],
                 ),
               ),
@@ -7532,12 +7550,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.oName),
-                              _buildDataCell(offer.ngoName),
+                              //_buildDataCell(offer.ngoName),
                               // _buildDataCell(offer.hName),
-                              _buildDataCell(offer.address),
+                            /*  _buildDataCell(offer.address),
                               _buildDataCell(offer.nodalOfficerName),
                               _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),
+                              _buildDataCell(offer.emailId.toString()),*/
+                              _buildDataCellViewBlueDiseaseDataAction('View Detail', () {
+                                _showDetailDialogPrivatePractitionerApproval(context, offer);
+                              }),
                             ],
                           );
                         }).toList(),
@@ -7552,6 +7573,48 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+  void _showDetailDialogPrivatePractitionerApproval(
+      BuildContext context, DataGetDPM_PrivatePartition offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Private Practitioner Approval Details"),
+          content: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.blue, width: 1),
+              columnWidths: {
+                0: FlexColumnWidth(2),
+                1: FlexColumnWidth(3),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    _buildTableHeader("Field"),
+                    _buildTableHeader("Value"),
+                  ],
+                ),
+                _buildTableRow("Organization Name", offer.oName),
+                _buildTableRow("Nodal Officer", offer.nodalOfficerName),
+                _buildTableRow("Address", offer.address),
+                _buildTableRow("Mobile", offer.mobile.toString()),
+                _buildTableRow("Email", offer.emailId ?? "N/A"),
+                // Add more fields as necessary
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   Widget DPM_PrivatePartitionPEndingDisplayDatas() {
     return Column(
@@ -7582,7 +7645,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     // Shown Captcha value to user
-                                    Container(
+                                  /*  Container(
                                         child: Text(
                                       'District:',
                                       style: TextStyle(
@@ -7622,45 +7685,56 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     )),
                                     const SizedBox(
                                       width: 10,
-                                    ),
+                                    ),*/
                                     Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      width: 150.0,
+                                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.red.withOpacity(0.1), // Light red background
+                                        border: Border.all(color: Colors.red, width: 1), // Red border
+                                      ),
                                       child: Text(
                                         'Private Practitioner(s) (Pending)',
+                                        maxLines: 2,
                                         style: TextStyle(
+                                          fontSize: 14,
                                           color: Colors.red,
                                           fontWeight: FontWeight.w500,
                                         ),
+                                        overflow: TextOverflow.ellipsis, // Handles text overflow gracefully
                                       ),
                                     ),
+
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     InkWell(
                                       onTap: () {
                                         print('@@back Pressed----display---');
-                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          GetDPM_PrivatePartitionPorovedClickShowData =
-                                              false;
-                                          DPM_PrivatePartitionP_PendingClickShowData =
-                                              false;
+                                          GetDPM_PrivatePartitionPorovedClickShowData = false;
+                                          DPM_PrivatePartitionP_PendingClickShowData = false;
                                         });
                                       },
                                       child: Container(
-                                        width: 80.0,
+                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red, // Red background for the button
+                                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                                        ),
                                         child: Text(
                                           'Back',
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                            color: Colors.red,
+                                            color: Colors.white, // White text for contrast
                                             fontWeight: FontWeight.w500,
                                           ),
                                         ),
                                       ),
                                     ),
+
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -7684,12 +7758,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                 child: Row(
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('Organisation Name'),
-                    _buildHeaderCell('Nodal Officer Name'),
+                    _buildHeaderCell('Organisation'),
+                    //_buildHeaderCell('Nodal Officer Name'),
                     // _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Hospital Address'),
+                  /*  _buildHeaderCell('Hospital Address'),
                     _buildHeaderCell('Contact No'),
-                    _buildHeaderCell('Email Id'),
+                    _buildHeaderCell('Email Id'),*/
+                    _buildHeaderCellDiseaseDataAction('Action'),
                   ],
                 ),
               ),
@@ -7731,10 +7806,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.oName),
-                              _buildDataCell(offer.nodalOfficerName),
+                            /*  _buildDataCell(offer.nodalOfficerName),
                               _buildDataCell(offer.address),
                               _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),
+                              _buildDataCell(offer.emailId.toString()),*/
+                              _buildDataCellViewBlueDiseaseDataAction('View Detail', () {
+                                _showDetailDialogPrivatePractitionerPending(context, offer);
+                              }),
                             ],
                           );
                         }).toList(),
@@ -7749,6 +7827,48 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+  void _showDetailDialogPrivatePractitionerPending(
+      BuildContext context, DataGetDPM_PrivatePartition offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Private Practitioner Pending Details"),
+          content: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.blue, width: 1),
+              columnWidths: {
+                0: FlexColumnWidth(2),
+                1: FlexColumnWidth(3),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    _buildTableHeader("Field"),
+                    _buildTableHeader("Value"),
+                  ],
+                ),
+                _buildTableRow("Organization Name", offer.oName),
+                _buildTableRow("Nodal Officer", offer.nodalOfficerName),
+                _buildTableRow("Address", offer.address),
+                _buildTableRow("Mobile", offer.mobile.toString()),
+                _buildTableRow("Email", offer.emailId ?? "N/A"),
+                // Add more fields as needed
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 
   /// here we are showing the PrivateMedical Datq aon DPm Dashboard.
   Widget DPM_PrivateMedicalAPProvedDisplayDatas() {
@@ -7780,7 +7900,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     // Shown Captcha value to user
-                                    Container(
+                                   /* Container(
                                         child: Text(
                                       'District:',
                                       style: TextStyle(
@@ -7820,46 +7940,77 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     )),
                                     const SizedBox(
                                       width: 10,
+                                    ),*/
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                padding: EdgeInsets.all(12),
+                                width: 180.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      width: 150.0,
-                                      child: Text(
-                                        'NGO(s) (Approved)',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
+                                  ],
+                                  border: Border.all(color: Colors.red, width: 1.5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Private Practitioner(s) (Approved)',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
                                     ),
-                                    const SizedBox(
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(
                                       width: 10,
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          DPM_privateMEdicalCollegeApprovedData =
-                                              false;
-                                          DPM_privateMEdicalCollegePendingData =
-                                              false;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 80.0,
-                                        child: Text(
-                                          'Back',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
+                              InkWell(
+                                onTap: () {
+                                  print('@@back Pressed----display---');
+                                  setState(() {
+                                    dashboardviewReplace = true;
+                                    DPM_privateMEdicalCollegeApprovedData = false;
+                                    DPM_privateMEdicalCollegePendingData = false;
+                                  });
+                                },
+                                child: Container(
+                                  width: 100.0,
+                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                                  decoration: BoxDecoration(
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(8),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 6,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'Back',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
                                       ),
                                     ),
-                                    const SizedBox(
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(
                                       width: 10,
                                     ),
                                     //widgets that follow the Material Design guidelines display a ripple animation when tapped.
@@ -7883,11 +8034,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('Organisation Name'),
-                    _buildHeaderCell('Nodal Officer Name'),
+            /*        _buildHeaderCell('Nodal Officer Name'),
                     // _buildHeaderCell('Hospital Name'),
                     _buildHeaderCell('Hospital Address'),
                     _buildHeaderCell('Contact No'),
-                    _buildHeaderCell('Email Id'),
+                    _buildHeaderCell('Email Id'),*/
+                    _buildHeaderCell('Action'),
                   ],
                 ),
               ),
@@ -7929,10 +8081,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.oName),
-                              _buildDataCell(offer.nodalOfficerName),
+                       /*       _buildDataCell(offer.nodalOfficerName),
                               _buildDataCell(offer.address),
                               _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),
+                              _buildDataCell(offer.emailId.toString()),*/
+                              _buildDataCellViewBlueDiseaseDataAction('View Detail', () {
+                               // _showDetailDialogPrivateMedicalAPProved(context, offer);
+                              }),
                             ],
                           );
                         }).toList(),
@@ -7947,6 +8102,9 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+
+
 
   Widget DPM_PrivateMedicalPendingDisplayDatas() {
     return Column(
