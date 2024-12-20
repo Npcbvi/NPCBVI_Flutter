@@ -2935,6 +2935,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           padding: const EdgeInsets.all(8.0),
           child: Text(
             label,
+
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -6794,7 +6795,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     // Shown Captcha value to user
-                                    Container(
+                            /*        Container(
                                         child: Text(
                                       'District:',
                                       style: TextStyle(
@@ -6834,45 +6835,84 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     )),
                                     const SizedBox(
                                       width: 10,
+                                    ),*/
+                                Container(
+                                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                padding: EdgeInsets.all(10),
+                                width: 160.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      width: 150.0,
-                                      child: Text(
-                                        'NGO(s) (Approved)',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
+                                  ],
+                                  border: Border.all(color: Colors.red, width: 1.5),
+                                ),
+                                child: Text(
+                                  'Govt. / CHC / Other Hospitals (Approved)',
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(
                                       width: 10,
                                     ),
                                     InkWell(
                                       onTap: () {
                                         print('@@back Pressed----display---');
-                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          GetDPM_GH_PendingClickShowData =
-                                              false;
-                                          GetDPM_GH_APPorovedClickShowData =
-                                              false;
+                                          GetDPM_GH_PendingClickShowData = false;
+                                          GetDPM_GH_APPorovedClickShowData = false;
                                         });
                                       },
                                       child: Container(
-                                        width: 80.0,
-                                        child: Text(
-                                          'Back',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(8),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(0.1),
+                                              blurRadius: 6,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
+                                          border: Border.all(color: Colors.red, width: 1.5),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.arrow_back_ios_new,
+                                              color: Colors.red,
+                                              size: 18,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'Back',
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
+
                                     const SizedBox(
                                       width: 10,
                                     ),
@@ -6897,12 +6937,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
-                    _buildHeaderCell('Member Name'),
+             /*       _buildHeaderCell('Member Name'),
                     //  _buildHeaderCell('Hospital Name'),
                     _buildHeaderCell('Address'),
                     _buildHeaderCell('Nodal Officer Name'),
                     _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),
+                    _buildHeaderCell('Email Id'),*/
+                    _buildHeaderCell('Action'),
                   ],
                 ),
               ),
@@ -6944,12 +6985,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.oName),
-                              _buildDataCell(offer.ngoName),
+                              /*  _buildDataCell(offer.ngoName),
                               // _buildDataCell(offer.hName),
-                              _buildDataCell(offer.address),
+                            _buildDataCell(offer.address),
                               _buildDataCell(offer.nodalOfficerName),
                               _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),
+                              _buildDataCell(offer.emailId.toString()),*/
+                              _buildDataCellViewBlue("View Detail", () {
+                                _showDetailDialogGovtCHCHospitalClick(context, offer);
+                              }),
                             ],
                           );
                         }).toList(),
@@ -6964,6 +7008,56 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+  void _showDetailDialogGovtCHCHospitalClick(BuildContext context, DatagetDPMGH_clickAPProved offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Hospital Details"),
+          content: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.blue, width: 1),
+              columnWidths: {
+                0: FlexColumnWidth(1),
+                1: FlexColumnWidth(2),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    _buildTableHeader("Field"),
+                    _buildTableHeader("Value"),
+                  ],
+                ),
+                _buildTableRow("Organization Name", offer.oName),
+                _buildTableRow("NGO Name", offer.ngoName),
+                _buildTableRow("Address", offer.address),
+                _buildTableRow("Nodal Officer", offer.nodalOfficerName),
+                _buildTableRow("Mobile", offer.mobile.toString()),
+                _buildTableRow("Email", offer.emailId ?? "N/A"),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildTableHeader(String text) {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Text(
+        text,
+        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+      ),
+    );
+  }
+
 
   Widget DPMGetDPM_GHA_Click_PendingDisplayDatas() {
     return Column(
@@ -6994,7 +7088,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     // Shown Captcha value to user
-                                    Container(
+                              /*      Container(
                                         child: Text(
                                       'District:',
                                       style: TextStyle(
@@ -7034,46 +7128,87 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     )),
                                     const SizedBox(
                                       width: 10,
+                                    ),*/
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                padding: EdgeInsets.all(10),
+                                width: 180.0,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.1),
+                                      blurRadius: 8,
+                                      offset: Offset(0, 4),
                                     ),
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      width: 150.0,
-                                      child: Text(
-                                        'NGO(s) (Approved)',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
+                                  ],
+                                  border: Border.all(color: Colors.red, width: 1.5),
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'GOVT.CHC Hospital (Pending)',
+                                    maxLines: 3,
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
                                     ),
-                                    const SizedBox(
+                                  ),
+                                ),
+                              ),
+
+                              const SizedBox(
                                       width: 10,
                                     ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          GetDPM_GH_PendingClickShowData =
-                                              false;
-                                          GetDPM_GH_APPorovedClickShowData =
-                                              false;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 80.0,
-                                        child: Text(
-                                          'Back',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
+                      InkWell(
+                        onTap: () {
+                          print('@@back Pressed----display---');
+                          setState(() {
+                            dashboardviewReplace = true;
+                            GetDPM_GH_PendingClickShowData = false;
+                            GetDPM_GH_APPorovedClickShowData = false;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(color: Colors.red, width: 1.5),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 6,
+                                offset: Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.arrow_back_ios_new,
+                                color: Colors.red,
+                                size: 16,
+                              ),
+                              SizedBox(width: 8),
+                              Text(
+                                'Back',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(
                                       width: 10,
                                     ),
                                     //widgets that follow the Material Design guidelines display a ripple animation when tapped.
@@ -7097,12 +7232,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('NGO Name'),
-                    _buildHeaderCell('Member Name'),
+                 /*   _buildHeaderCell('Member Name'),
                     // _buildHeaderCell('Hospital Name'),
                     _buildHeaderCell('Address'),
                     _buildHeaderCell('Nodal Officer Name'),
                     _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),
+                    _buildHeaderCell('Email Id'),*/
+                    _buildHeaderCell('Action'),
                   ],
                 ),
               ),
@@ -7146,10 +7282,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCell(offer.oName),
                               _buildDataCell(offer.ngoName),
                               //_buildDataCell(offer.hName),
-                              _buildDataCell(offer.address),
+                             /* _buildDataCell(offer.address),
                               _buildDataCell(offer.nodalOfficerName),
                               _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),
+                              _buildDataCell(offer.emailId.toString()),*/
+    _buildDataCellViewBlueDiseaseDataAction('View Detail', () {
+      _showDetailDialogGHCCHCPendingHospital(context, offer);
+    }),
                             ],
                           );
                         }).toList(),
@@ -7164,6 +7303,53 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+  void _showDetailDialogGHCCHCPendingHospital(BuildContext context, DatagetDPMGH_clickAPProved offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Pending Hospital Details"),
+          content: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.blue, width: 1),
+              columnWidths: {
+                0: FlexColumnWidth(2),
+                1: FlexColumnWidth(3),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    _buildTableHeader("Field"),
+                    _buildTableHeader("Value"),
+                  ],
+                ),
+                _buildTableRow("Organization Name", offer.oName),
+                _buildTableRow("NGO Name", offer.ngoName),
+                _buildTableRow("Address", offer.address),
+                _buildTableRow("Nodal Officer", offer.nodalOfficerName),
+                _buildTableRow("Mobile", offer.mobile.toString()),
+                _buildTableRow("Email", offer.emailId ?? "N/A"),
+                // Add more fields as needed
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
+
+
+
+
 
   /// here we are showing the PrivatePartition Dat aon DPm Dashboard.
 
@@ -8873,6 +9059,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       child: Center(
         child: Text(
           text,
+          maxLines: 3,
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
