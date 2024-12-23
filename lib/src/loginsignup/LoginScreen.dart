@@ -329,17 +329,33 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
-                isVerified = _captchaController.text == randomString;
-                if (isVerified) {
-                  _submitForm();
-                } else {
-                  Utils.showToast("Captcha does not match!", false);
+                // Step 1: Check if the username is entered and valid
+                if (_loginIdController.text.isEmpty) {
+                  Utils.showToast("Username cannot be empty", false);
+                  return;  // Exit if username is not entered
                 }
+
+                // Step 2: Check if the password is entered and valid
+                if (_passwordController.text.isEmpty) {
+                  Utils.showToast("Password cannot be empty", false);
+                  return;  // Exit if password is not entered
+                }
+
+                // Step 3: Check if captcha is correct
+                isVerified = _captchaController.text == randomString;
+                if (!isVerified) {
+                  Utils.showToast("Captcha does not match!", false);
+                  return;  // Exit if captcha is incorrect
+                }
+
+                // If all checks pass, submit the form
+                _submitForm();
               },
               child: Text('Sign In'),
               style: ElevatedButton.styleFrom(primary: Colors.blue),
             ),
-           // SizedBox(height: 10),
+
+            // SizedBox(height: 10),
           //comment code for next sprint
           /*  InkWell(
               onTap: () {

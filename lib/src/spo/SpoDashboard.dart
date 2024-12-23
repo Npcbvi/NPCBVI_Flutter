@@ -892,7 +892,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       child: Padding(
                                         padding: const EdgeInsets.fromLTRB(
                                             20, 10, 20.0, 0),
-                                        child: new Text('$totalPatientApproved',
+                                        child: new Text(
+                                            totalPatientApproved != null
+                                                ? '${totalPatientApproved}'
+                                                : '0',
+                                          //  '$totalPatientApproved',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontSize: 17,
@@ -906,7 +910,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                                         padding: const EdgeInsets.fromLTRB(
                                             20, 10, 20.0, 0),
                                         child: new Text(
-                                            '${totalPatientPending}',
+                                            totalPatientPending != null
+                                                ? '${totalPatientPending}'
+                                                : '0',
+                                          //  '${totalPatientPending}',
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
                                                 fontSize: 17,
@@ -1014,7 +1021,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${ngoCountApproved}',
+                                                  ngoCountApproved != null
+                                                      ? '${ngoCountApproved}'
+                                                      : '0',
+
+                                                  //  '${ngoCountApproved}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1030,7 +1041,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${ngoCountPending}',
+                                                  ngoCountPending != null
+                                                      ? '${ngoCountPending}'
+                                                      : '0',
+
+                                                  // '${ngoCountPending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1136,7 +1151,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
-                                              child: new Text('${gH_CHC_Count}',
+                                              child: new Text(   gH_CHC_Count != null
+                                                  ? '${gH_CHC_Count}'
+                                                  : '0',
+
+                                                  //'${gH_CHC_Count}',',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1152,7 +1171,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${gH_CHC_Count_Pending}',
+                                                  gH_CHC_Count_Pending != null
+                                                      ? '${gH_CHC_Count_Pending}'
+                                                      : '0',
+
+                                                  //'${gH_CHC_Count_Pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1259,7 +1282,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
-                                              child: new Text('${ppCount}',
+                                              child: new Text(   ppCount != null
+                                                  ? '${ppCount}'
+                                                  : '0',
+
+                                                  // '${ppCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1275,7 +1302,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${ppCount_pending}',
+                                                  ppCount_pending != null
+                                                      ? '${ppCount_pending}'
+                                                      : '0',
+
+                                                  //    '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1381,7 +1412,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                               padding:
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
-                                              child: new Text('${pmcCount}',
+                                              child: new Text(  pmcCount != null
+                                                  ? '${pmcCount}'
+                                                  : '0',
+
+                                                  //'${pmcCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1397,7 +1432,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${ppCount_pending}',
+                                                  ppCount_pending != null
+                                                      ? '${ppCount_pending}'
+                                                      : '0',
+
+                                                  //  '${ppCount_pending}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1526,7 +1565,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${campCompletedCount}',
+                                                  campCompletedCount != null
+                                                      ? '${campCompletedCount}'
+                                                      : '0',
+
+                                                  //  '${campCompletedCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1542,7 +1585,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${campongoingCount}',
+                                                  campongoingCount != null
+                                                      ? '${campongoingCount}'
+                                                      : '0',
+
+                                                  // '${campongoingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1558,7 +1605,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  '${campCommingCount}',
+                                                  campCommingCount != null
+                                                      ? '${campCommingCount}'
+                                                      : '0',
+
+                                                  // '${campCommingCount}',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontSize: 17,
@@ -1621,7 +1672,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   setState(() {});
                                                 },
                                                 child: new Text(
-                                                    '${satellitecentreCount}',
+                                                    satellitecentreCount != null
+                                                        ? '${satellitecentreCount}'
+                                                        : '0',
+
+                                                    //  '${satellitecentreCount}',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
@@ -1706,7 +1761,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                       true);
                                                 },
                                                 child: new Text(
-                                                    '${patientCount}',
+                                                    patientCount != null
+                                                        ? '${patientCount}'
+                                                        : '0',
+
+                                                    // '${patientCount}',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
                                                         fontSize: 17,
