@@ -244,9 +244,9 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                 value: 1,
                 child: Row(
                   children: [
-                    Icon(Icons.lock),
+                    Icon(Icons.lock, color: Colors.black), // Black icon color
                     SizedBox(width: 10),
-                    Text("Change Password"),
+                    Text("Change Password", style: TextStyle(color: Colors.black)), // Black text color
                   ],
                 ),
               ),
@@ -254,9 +254,9 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                 value: 2,
                 child: Row(
                   children: [
-                    Icon(Icons.book),
+                    Icon(Icons.book, color: Colors.black), // Black icon color
                     SizedBox(width: 10),
-                    Text("User Manual"),
+                    Text("User Manual", style: TextStyle(color: Colors.black)), // Black text color
                   ],
                 ),
               ),
@@ -264,36 +264,197 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                 value: 3,
                 child: Row(
                   children: [
-                    Icon(Icons.logout),
+                    Icon(Icons.logout, color: Colors.black), // Black icon color
                     SizedBox(width: 10),
-                    Text("Logout"),
+                    Text("Logout", style: TextStyle(color: Colors.black)), // Black text color
                   ],
                 ),
               ),
             ],
-            offset: Offset(0, 50),
-            color: Colors.white,
+            offset: const Offset(0, 50),
+            color: Colors.white, // White background color
             elevation: 2,
             onSelected: (value) {
-              switch (value) {
-                case 1:
-                  //  _showChangePasswordDialog();
-                  break;
-                case 2:
-                  // Implement User Manual action
-                  break;
-                case 3:
-                  // Handle Logout
-                  break;
+              if (value == 1) {
+               // _showChangePasswordDialog();
+              } else if (value == 2) {
+                // Implement User Manual action
+              } else if (value == 3) {
+                setState(() {
+                  showLogoutDialog();
+                });
               }
             },
           ),
         ],
       ),
+      drawer: Drawer(
+        child: Container(
+          width: 100.0,  // Set the width of the drawer
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white70, Colors.white70],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Container(
+            margin: EdgeInsets.all(8.0), // Reduce the margin to decrease space// Set the margin here
+            child: ListView(
+              children: [
+
+
+                _buildMenuItem(
+                  icon: Icons.dashboard,
+                  title: 'Dashboard',
+                  onTap: () {
+                    setState(() {
+                      print('@@dashboardviewReplace----display---');
+                      _future = getDPM_ScreeningYear();
+                      hospitalDashboardclickDsiplay = true;
+                      hospitalAddPatientData = false;
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+                _buildDropdownItem(
+                  value: _chosenValue,
+                  hint: 'Register Patient',
+                  hintIcon: Icon(Icons.update, color: Colors.black), // Add an icon to the hint
+                  items: [
+                    {'value': 'Add Patient', 'icon': Icons.person_add},
+                    // Add an icon here
+                    {'value': 'Update Patient', 'icon': Icons.update},
+                    {'value': 'Screening Entry', 'icon': Icons.visibility},
+                  ],
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenValue = value ?? '';
+                      if (_chosenValue == "Add Patient") {
+                        print('@@NGO---Hospital--1 $_chosenValue');
+                        hospitalAddPatientData = true;
+                        hospitalDashboardclickDsiplay = false;
+                        //_showPopupMenu();
+                      } else if (_chosenValue == "Update Patient") {
+                        print('@@Screening--1 $_chosenValue');
+                        //  _showPopupMenuScreeningCamp();
+                      } else if (_chosenValue == "Screening Entry") {
+                        print('@@Sattelite--1 $_chosenValue');
+                        //  _showPopupMenuSatteliteCenter();
+                      }
+                    });
+
+
+                    Navigator.pop(context);
+                  },
+                ),
+
+                _buildMenuItem(
+                  icon: Icons.assignment,
+                  title: 'Add PNJA',
+                  onTap: () {
+                    print('@@Add PNJA');
+                    setState(() {});
+                    Navigator.pop(context);
+                  },
+                ),
+                _buildDropdownItem(
+                  key: _dropdownKey,
+                  value: _chosenValueLOWVision,
+                  hint: 'Low Vision Register',
+                  hintIcon: Icon(Icons.update, color: Colors.black), // Add an icon to the hint
+                  items: [
+                    {'value': 'Cataract', 'icon': Icons.local_hospital},
+                    // Add an icon here
+                    {'value': 'Diabetic', 'icon': Icons.healing},
+                    {'value': 'Glaucoma', 'icon': Icons.healing},
+                    {'value': 'Corneal Blindness', 'icon': Icons.healing},
+                    {'value': 'VR Surgery', 'icon': Icons.healing},
+                    {'value': 'Childhood Blindness', 'icon': Icons.child_care},
+                  ],
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenValueLOWVision = value;
+                      //  print('@@spinnerChooseValue--' + _chosenValue);
+                      if (_chosenValueLOWVision == "Cataract") {
+                        print('@@NGO--1' + _chosenValueLOWVision);
+                      } else if (_chosenValueLOWVision ==
+                          "Diabetic") {
+                      } else if (_chosenValueLOWVision ==
+                          "Glaucoma") {
+                      } else if (_chosenValueLOWVision ==
+                          "Corneal Blindness") {
+                      } else if (_chosenValueLOWVision ==
+                          "VR Surgery") {
+                        print('@@Childhood--' +
+                            _chosenValueLOWVision);
+                      } else if (_chosenValueLOWVision ==
+                          "Childhood Blindness") {
+                        print('@@Childhood--' +
+                            _chosenValueLOWVision);
+                      } else {
+                        print('@@Childhood--2' +
+                            _chosenValueLOWVision);
+                      }
+                    });
+
+
+                    Navigator.pop(context);
+                  },
+                ),
+                _buildDropdownItem(
+                  key: _dropdownKeySenTODPM,
+                  value: _chosenValueLOWVision,
+                  hint: 'Send to DPM',
+                  hintIcon: Icon(Icons.local_hospital, color: Colors.black), // Add an icon to the hint
+                  items: [
+                    {'value': 'Cataract', 'icon': Icons.local_hospital},
+                    // Add an icon here
+                    {'value': 'Diabetic', 'icon': Icons.healing},
+                    {'value': 'Glaucoma', 'icon': Icons.healing},
+                    {'value': 'Corneal Blindness', 'icon': Icons.healing},
+                    {'value': 'VR Surgery', 'icon': Icons.healing},
+                    {'value': 'Childhood Blindness', 'icon': Icons.child_care},
+                  ],
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenValueLOWVision = value;
+                      //  print('@@spinnerChooseValue--' + _chosenValue);
+                      if (_chosenValueLOWVision == "Cataract") {
+                        print('@@NGO--1' + _chosenValueLOWVision);
+                      } else if (_chosenValueLOWVision ==
+                          "Diabetic") {
+                      } else if (_chosenValueLOWVision ==
+                          "Glaucoma") {
+                      } else if (_chosenValueLOWVision ==
+                          "Corneal Blindness") {
+                      } else if (_chosenValueLOWVision ==
+                          "VR Surgery") {
+                        print('@@Childhood--' +
+                            _chosenValueLOWVision);
+                      } else if (_chosenValueLOWVision ==
+                          "Childhood Blindness") {
+                        print('@@Childhood--' +
+                            _chosenValueLOWVision);
+                      } else {
+                        print('@@Childhood--2' +
+                            _chosenValueLOWVision);
+                      }
+                    });
+
+                    Navigator.pop(context);
+                  },
+                ),
+
+              ],
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
+          /*  Container(
               width: double.infinity,
               color: Colors.blue,
               child: Padding(
@@ -459,7 +620,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                   ),
                 ),
               ),
-            ),
+            ),*/
             _buildUserInfo(),
             hospitalDashboardclick(),
             HospitalAddPatientData()
@@ -574,13 +735,10 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              _buildUserInfoItem(
-                  'Login Type:', 'Hospital', Colors.black, Colors.red),
-              _buildUserInfoItem('Login Id:', userId, Colors.black, Colors.red),
-              _buildUserInfoItem(
-                  'District:', districtNames, Colors.black, Colors.red),
-              _buildUserInfoItem(
-                  'State:', stateNames, Colors.black, Colors.red),
+              _buildUserInfoGrid('Login Type:', 'Hospital', Colors.black, Colors.red),
+              _buildUserInfoGrid('Login Id:', userId, Colors.black, Colors.red),
+              _buildUserInfoGrid('District:', districtNames, Colors.black, Colors.red),
+              _buildUserInfoGrid('State:', stateNames, Colors.black, Colors.red),
             ],
           ),
         ),
@@ -588,19 +746,29 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
     );
   }
 
-  Widget _buildUserInfoItem(
-      String label, String value, Color labelColor, Color valueColor) {
-    return Row(
-      children: [
-        Text(label,
-            style: TextStyle(color: labelColor, fontWeight: FontWeight.w500)),
-        SizedBox(width: 10),
-        Text(value,
-            style: TextStyle(color: valueColor, fontWeight: FontWeight.w500)),
-        SizedBox(width: 10),
-      ],
+  Widget _buildUserInfoGrid(String label, String value, Color labelColor, Color valueColor) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 4.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(color: labelColor, fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: 5),
+          Text(
+            value,
+            style: TextStyle(color: valueColor, fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
     );
   }
+
+
+
+
 
   Widget hospitalDashboardclick() {
     return Row(
@@ -611,93 +779,84 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                    future: _future,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
 
-                      if (!snapshot.hasData) {
-                        return CircularProgressIndicator();
-                      }
+                FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
 
-                      List<DataGetDPM_ScreeningYear> list =
-                          snapshot.data.toList();
+                    if (!snapshot.hasData) {
+                      return CircularProgressIndicator();
+                    }
 
-                      // Check if _selectedUser is null or not part of the list anymore
-                      if (_selectedUser == null ||
-                          !list.contains(_selectedUser)) {
-                        _selectedUser =
-                            list.first; // Set the first item as default
-                      }
+                    List<DataGetDPM_ScreeningYear> list = snapshot.data.toList();
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Select year:',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 10),
-                            DropdownButtonFormField<DataGetDPM_ScreeningYear>(
-                              value: _selectedUser,
-                              onChanged: (userc) {
-                                setState(() {
-                                  _selectedUser = userc;
-                                  getYearNgoHopital = userc?.name ?? '';
-                                  getfyidNgoHospital = userc?.fyid ?? '';
-                                  print('@@Selected Year: $getYearNgoHopital');
-                                  print('@@FYID: $getfyidNgoHospital');
-                                });
-                              },
-                              items: list.map((user) {
-                                return DropdownMenuItem<
-                                    DataGetDPM_ScreeningYear>(
-                                  value: user,
-                                  child: Text(user.name,
-                                      style: TextStyle(fontSize: 16)),
-                                );
-                              }).toList(),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blueAccent, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.blue[50],
+                    // Ensure a default selection
+                    if (_selectedUser == null || !list.contains(_selectedUser)) {
+                      _selectedUser = list.first; // Set the first item as default
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                      child: SizedBox(
+                        width: 300, // Set the desired width
+                        height: 60,  // Set the desired height
+                        child: DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                          value: _selectedUser,
+                          onChanged: (userc) {
+                            setState(() {
+                              _selectedUser = userc;
+                              getYearNgoHopital = userc?.name ?? '';
+                              getfyidNgoHospital = userc?.fyid ?? '';
+                              print('@@Selected Year: $getYearNgoHopital');
+                              print('@@FYID: $getfyidNgoHospital');
+                            });
+                          },
+                          items: list.map((user) {
+                            return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                              value: user,
+                              child: Text(
+                                user.name,
+                                style: TextStyle(fontSize: 16),
                               ),
-                              dropdownColor: Colors.blue[50],
-                              style: TextStyle(color: Colors.black),
-                              icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.blue),
+                            );
+                          }).toList(),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            hintText: 'Select Year', // Add hint text
+                            hintStyle: TextStyle(color: Colors.grey),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                          ],
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                              BorderSide(color: Colors.blueAccent, width: 2.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            fillColor: Colors.blue[50],
+                          ),
+                          dropdownColor: Colors.blue[50],
+                          style: TextStyle(color: Colors.black),
+                          icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
-                SizedBox(height: 10),
+
+
+                SizedBox(height: 5),
                 buildInfoContainer(stateNames),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 buildInfoContainer(districtNames),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 buildDropdownHospitalType(),
-                SizedBox(height: 10),
+                SizedBox(height: 5),
                 buildInfoContainer(fullnameController),
                 Padding(
                   padding: const EdgeInsets.symmetric(
@@ -754,9 +913,9 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                             // Header Row
                             Row(
                               children: [
-                                _buildHeaderCell('Disease Type'),
-                                _buildHeaderCell('Registered'),
-                                _buildHeaderCell('Operated'),
+                                _buildHeaderCellDiseaseData('Disease Type'),
+                                _buildHeaderCellDiseaseData('Registered'),
+                                _buildHeaderCellDiseaseData('Operated'),
                               ],
                             ),
                             Divider(color: Colors.blue, height: 1.0),
@@ -791,9 +950,9 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                          _buildDataCell(offer.status),
-                                          _buildDataCellblue(offer.registered),
-                                          _buildDataCellblue(offer.operated),
+                                          _buildDataCellDiseaseData(offer.status),
+                                          _buildDataCellDiseaseData(offer.registered),
+                                          _buildDataCellDiseaseData(offer.operated),
                                         ],
                                       );
                                     }).toList(),
@@ -1043,9 +1202,9 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
               children: [
                 _sectionHeader('Patient Registration'),
                 _patientInfoRow(),
-                SizedBox(height: 5.0),
+                SizedBox(height: 2.0),
                 _sectionTitle('Registration Type'),
-                _radioButtonRow(
+                _radioButtonColumn(
                   options: [
                     'Screening Camp',
                     'Satellite Centre',
@@ -2580,7 +2739,39 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
       ),
     );
   }
-
+  Widget _radioButtonColumn({
+    List<String> options,
+    String groupValue,
+    Function(String) onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: options
+          .map((option) => Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4.0), // Equal vertical spacing
+        child: Row(
+          children: [
+            Radio<String>(
+              value: option,
+              groupValue: groupValue,
+              onChanged: onChanged,
+            ),
+            Expanded(
+              child: Text(
+                option,
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ))
+          .toList(),
+    );
+  }
   Widget _textInputField({
     TextEditingController controller,
     String labelText,
@@ -2860,6 +3051,286 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),
           (route) => false,
+    );
+  }
+  Widget _buildMenuItem({
+    IconData icon,
+    String title,
+    Function() onTap,
+  }) {
+    double size = 14.0; // You can set a consistent size for both the icon and text
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0), // Reduce the vertical padding
+      title: Row(
+        children: [
+          Icon(icon, color: Colors.black, size: size), // Set icon size
+          SizedBox(width: 8.0,height: 4.0,), // Add space between the icon and the text
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: size,
+              fontWeight: FontWeight.normal,  // Explicitly set fontWeight to normal
+            ),
+          )
+
+        ],
+      ),
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildDropdownItem({
+    GlobalKey key,
+    String value,
+    String hint,
+    List<Map<String, dynamic>> items, // List of maps to hold both item text and icon data
+    Function(String) onChanged,
+    Icon hintIcon, // Make hintIcon nullable
+  }) {
+    double size = 14.0; // Consistent size for both text and icon
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(vertical: 0), // Remove extra padding
+      title: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          key: key, // Assign the key here
+          value: value,
+          style: TextStyle(color: Colors.black),
+          dropdownColor: Colors.white,
+          items: items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
+            return DropdownMenuItem<String>(
+              value: item['value'],
+              child: Row(
+                children: [
+                  Icon(
+                    item['icon'], // Icon from the map
+                    color: Colors.black,
+                    size: size, // Set icon size
+                  ),
+                  SizedBox(width: 8.0), // Add space between the icon and text
+                  Text(
+                    item['value'],
+                    style: TextStyle(color: Colors.black, fontSize: size), // Set text size
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          hint: hintIcon != null
+              ? Row(
+            children: [
+              hintIcon, // Only add the icon if it's not null
+              SizedBox(width: 8.0), // Add space between the icon and hint text
+              Text(
+                hint,
+                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+              ),
+            ],
+          )
+              : Text(
+            hint,
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+          ),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+  //related disease Data view
+  Widget _buildHeaderCellSrNoDiseaseData(String text) {
+    return Container(
+      height: 35,
+      width: 40, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellDiseaseData(String text) {
+    return Container(
+      height: 35,
+      width: 90, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 4,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellSrNoDiseaseDataTotal(String text) {
+    return Container(
+      height: 35,
+      width: 40,
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellDiseaseDataAction(String text) {
+    return Container(
+      height: 35,
+      width: 80, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellSrNoDiseaseData(String text) {
+    return Container(
+      height: 35,
+      width: 40,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellDiseaseData(String text) {
+    return Container(
+      height: 35,
+      width: 90,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 3,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellDiseaseTotal(String text) {
+    return Container(
+      height: 35,
+      width: 40, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellViewBlueDiseaseDataAction(
+      String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: 80,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+              fontSize: 14, // Set font size to 16 pixels
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
