@@ -16,6 +16,7 @@ import 'package:mohfw_npcbvi/src/model/changePassword/ChangePassword.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/AddEyeBank.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/etEyeDonationCenterListByNOG.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetDoctorDetailsById.dart';
@@ -3250,7 +3251,7 @@ class ApiController {
 
 
       });
-      print("@@getEyeBankDonationList--bodyprint--: ${body.toString()}");
+      print("@@getEyeBankDonationList--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -3269,6 +3270,73 @@ class ApiController {
       // Parse the response
       var responseData = json.decode(response.data);
       AddEyeBank data = AddEyeBank.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+  static Future<List<etEyeDonationCenterListByNOGData>>
+  getEyeDonationCenterListByNGO(int stateId, int districtid, String userId,String eyeBankById) async {
+    print("@@getEyeDonationCenterListByNGO" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.GetEyeDonationCenterListByNGO;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+"eyeBankById":eyeBankById,
+        "stateId": stateId,
+        "districtId": districtid,
+
+        "userId": userId,
+
+
+      });
+      print("@@getEyeDonationCenterListByNGO--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getEyeDonationCenterListByNGO--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      etEyeDonationCenterListByNOG data = etEyeDonationCenterListByNOG.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);

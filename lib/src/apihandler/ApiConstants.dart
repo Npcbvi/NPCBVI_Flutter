@@ -77,8 +77,10 @@ class ApiConstants {
   static String GetAllNgoService = 'GetAllNgoService';
 
   static String GetUploadedMouList = 'GetUploadedMouList';
-  static String GetEyeBankDonationList = 'GetEyeBankDonationList';
+  /*static String GetEyeBankDonationList = 'GetEyeBankDonationList';*/
+  static String GetEyeBankDonationList = 'GetEyeBankListByNGO';
 
+  static String GetEyeDonationCenterListByNGO = 'GetEyeDonationCenterListByNGO';
   static String GetCampManagerList = 'GetCampManagerList';
   static String GetDoctorListByHId = 'GetDoctorListByHId';
   static String CampManagerRegistration = 'CampManagerRegistration';

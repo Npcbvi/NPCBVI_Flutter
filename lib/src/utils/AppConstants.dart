@@ -16,4 +16,5 @@ class AppConstant {
   static final String ngoName = "ngoName";
 
   static final String loggedInNgoId = "loggedInNgoId";
+  static final String eyeBankById = "eyeBankById";
 }

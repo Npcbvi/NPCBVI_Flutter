@@ -12,6 +12,7 @@ import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/city/GetCity.dart';
 import 'package:mohfw_npcbvi/src/model/city/GetVillage.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/AddEyeBank.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/etEyeDonationCenterListByNOG.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetDoctorDetailsById.dart';
@@ -77,7 +78,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   DataDropDownHospitalSelected _selectHospitalSelected;
   String hospitalNameFetch, reghospitalNameFetch;
   int status, district_code_login, state_code_login;
-  String role_id, darpan_nos, entryby, ngoNames;
+  String role_id, darpan_nos, entryby, ngoNames,eyeBankById;
   bool ngoDashboardDatas = false;
   String selectedHospitalName = ''; // String to save the selected value's name
   String selectedHRegID;
@@ -205,7 +206,17 @@ class _NgoDashboard extends State<NgoDashboard> {
   TextEditingController _hospitalControllerStatelliteMangerRegCenter =
       TextEditingController();
   Future<List<DataGetHospitalList>> _hospitalListFuture;
+  bool mangeEyDonationClick = false;
 
+  TextEditingController _dpmNAmeController = new TextEditingController();
+  TextEditingController _dpmMobileController = new TextEditingController();
+  TextEditingController _dpmEmailIdController = new TextEditingController();
+  TextEditingController _dpmDestinationController = new TextEditingController();
+  TextEditingController _dpmPhoneNumberController = new TextEditingController();
+
+  TextEditingController stdControllerDPM = new TextEditingController();
+  TextEditingController stdControllerSpo = new TextEditingController();
+  bool EyeDonationCentreRegistrationClickONAddDontaions=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -214,9 +225,11 @@ class _NgoDashboard extends State<NgoDashboard> {
 
     getUserData();
 // Cache the Future to avoid redundant API calls
+    EyeDonationCentreRegistrationClickONAddDontaions=false;
 
     ngoDashboardclicks = true;
     EyeBankApplication = false;
+    mangeEyDonationClick=false;
     ngoCampManagerLists = false;
     CampManagerRegisterartions = false;
     CampManagerRegisterartionsEdit = false;
@@ -397,7 +410,10 @@ class _NgoDashboard extends State<NgoDashboard> {
         );
         ManageUSerNGOHospt = true;
         ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
+
         EyeBankApplication = false;
+        mangeEyDonationClick=false;
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
@@ -425,7 +441,10 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Camp Manager");
         _future = getDPM_ScreeningYear();
         EyeBankApplication = false;
+        mangeEyDonationClick=false;
         ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
+
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
@@ -445,7 +464,10 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Screeniong Camp");
         _future = getDPM_ScreeningYear();
         EyeBankApplication = false;
+        mangeEyDonationClick=false;
         ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
+
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
@@ -554,8 +576,11 @@ class _NgoDashboard extends State<NgoDashboard> {
 
         _future = getDPM_ScreeningYear();
         EyeBankApplication = false;
+        mangeEyDonationClick=false;
         ngoDashboardclicks = false;
         ManageUSerNGOHospt = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
+
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
@@ -574,10 +599,13 @@ class _NgoDashboard extends State<NgoDashboard> {
         _future = getDPM_ScreeningYear();
         ManageUSerNGOHospt = false;
         EyeBankApplication = false;
+        mangeEyDonationClick=false;
         CampManagerRegisterartions = false;
         CampManagerRegisterartionsEdit = false;
         SatelliteManagerRegisterartionsEdit = false;
         ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
+
         ngoScreeningCampListss = false;
         ngoSATELLITECENTREMANAGERLists = false;
         AddSatelliteManagers = false;
@@ -851,8 +879,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                       print('@@dashboardviewReplace----display---');
                       _future = getDPM_ScreeningYear();
                       ngoDashboardclicks = true;
+                      EyeDonationCentreRegistrationClickONAddDontaions=false;
+
                       ManageUSerNGOHospt = false;
                       EyeBankApplication = false;
+                      mangeEyDonationClick=false;
                       ngoCampManagerLists = false;
                       CampManagerRegisterartions = false;
                       CampManagerRegisterartionsEdit = false;
@@ -875,8 +906,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                   onTap: () {
                     setState(() {
                       print('@@dashboardviewReplace----display---');
+                      mangeEyDonationClick=false;
                       EyeBankApplication = true;
                       ngoDashboardclicks = false;
+                      EyeDonationCentreRegistrationClickONAddDontaions=false;
+
                       ManageUSerNGOHospt = false;
                       ngoCampManagerLists = false;
                       CampManagerRegisterartions = false;
@@ -970,6 +1004,8 @@ class _NgoDashboard extends State<NgoDashboard> {
             EditSatelliteManager(),
             satelliteCenterMenuList(),
             AddSatelliteCenterRedOptionField(),
+            ManageEyeDonationclicks(),
+            EyeDonationCentreRegistrationClickONAddDontaion(),
           ],
         ),
       ),
@@ -1541,7 +1577,8 @@ class _NgoDashboard extends State<NgoDashboard> {
               Container(
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.blue, Colors.blueAccent], // Gradient background
+                    colors: [Colors.blue, Colors.blueAccent],
+                    // Gradient background
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -1555,7 +1592,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(16.0), // Increased padding for better spacing
+                  padding: const EdgeInsets.all(16.0),
+                  // Increased padding for better spacing
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -1568,7 +1606,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                               fontSize: 16, // Larger font size for prominence
                               color: Colors.white,
                               fontWeight: FontWeight.w900, // Bolder font weight
-                              letterSpacing: 1.5, // Adding space between letters for a modern touch
+                              letterSpacing:
+                                  1.5, // Adding space between letters for a modern touch
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -1592,19 +1631,20 @@ class _NgoDashboard extends State<NgoDashboard> {
                         _buildHeaderCellSrNo('S.No.'),
                         _buildHeaderCell('Eye Bank ID'),
                         _buildHeaderCell('Eye Bank Name'),
-                       /* _buildHeaderCell('Member Name'),
+                        /* _buildHeaderCell('Member Name'),
                         _buildHeaderCell('Email'),
                         _buildHeaderCell('Status'),*/
-                _buildHeaderCellAction('View Details'),
+                        _buildHeaderCellAction('View Details'),
                         //_buildHeaderCellAction('Action'),
-
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
                     // Data Rows
                     FutureBuilder<List<DataAddEyeBank>>(
                       future: ApiController.getEyeBankDonationList(
-                          state_code_login, district_code_login, userId),
+                          state_code_login,
+                          district_code_login,
+                          userId /*  100,1001,"01840131001"*/),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -1636,7 +1676,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.eyeBankUniqueID),
                                   _buildDataCell(offer.eyebankName),
-                               /*   _buildDataCell(offer.officername),
+                                  /*   _buildDataCell(offer.officername),
                                   _buildDataCell(offer.emailid),
                                   _buildDataCell(offer.status.toString()),
                                   _buildMAnageEyeDonationMOUUI(),*/
@@ -1660,6 +1700,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
+
   void _showDetailsDialogEyeBankApplication(DataAddEyeBank offer) {
     showDialog(
       context: context,
@@ -1688,20 +1729,24 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                   // Table for the data
                   Table(
-                    border: TableBorder.all(color: Colors.grey.shade300, width: 1.0),
+                    border: TableBorder.all(
+                        color: Colors.grey.shade300, width: 1.0),
                     children: [
                       _buildTableRow('Eye Bank ID', offer.eyeBankUniqueID),
                       _buildTableRow('Eye Bank Name', offer.eyebankName),
                       _buildTableRow('Member Name', offer.officername),
                       _buildTableRow('Email', offer.emailid),
                       _buildTableRow('Status', offer.status.toString()),
+
                     ],
                   ),
                   SizedBox(height: 16.0),
 
                   // Action Row (with buttons like MOU and Manage Eye Donation)
-                  _buildMAnageEyeDonationMOUUI(),
+                //  _buildMAnageEyeDonationMOUUI(),
+                  // Manage Eye Donation Button
 
+                  _buildMAnageEyeDonationMOUUI(offer.eyeBankUniqueID),
                   SizedBox(height: 16.0),
 
                   // Close Button
@@ -1725,7 +1770,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
-
 
   Widget ngoCampManagerList() {
     return Column(
@@ -1976,6 +2020,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                                   ManageUSerNGOHospt = false;
                                   ngoDashboardclicks = false;
+                                  EyeDonationCentreRegistrationClickONAddDontaions=false;
+
                                   EyeBankApplication = false;
                                   ngoCampManagerLists = false;
                                   CampManagerRegisterartions = false;
@@ -1987,7 +2033,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   AddSatelliteCenterRedOptionFields = false;
                                 });
                                 // Dismiss the dialog
-                                Navigator.pop(context); // Dismiss the dialog after editing
+                                Navigator.pop(
+                                    context); // Dismiss the dialog after editing
                               });
                             } else {
                               Utils.showToast(
@@ -2103,6 +2150,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     setState(() {
                       CampManagerRegisterartionsEdit = true;
                       SatelliteManagerRegisterartionsEdit = false;
+                      EyeDonationCentreRegistrationClickONAddDontaions=false;
 
                       ManageUSerNGOHospt = false;
                       ngoDashboardclicks = false;
@@ -2142,6 +2190,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     setState(() {
       ManageUSerNGOHospt = false;
       ngoDashboardclicks = false;
+      EyeDonationCentreRegistrationClickONAddDontaions=false;
+
       EyeBankApplication = false;
       ngoCampManagerLists = false;
       CampManagerRegisterartions = true;
@@ -2163,6 +2213,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     setState(() {
       ManageUSerNGOHospt = false;
       ngoDashboardclicks = false;
+      EyeDonationCentreRegistrationClickONAddDontaions=false;
+
       EyeBankApplication = false;
       ngoCampManagerLists = false;
       CampManagerRegisterartions = false;
@@ -2185,6 +2237,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     print('@@AddSattelliteCenterclicked--');
     setState(() {
       ManageUSerNGOHospt = false;
+      EyeDonationCentreRegistrationClickONAddDontaions=false;
+
       ngoDashboardclicks = false;
       EyeBankApplication = false;
       ngoCampManagerLists = false;
@@ -3140,9 +3194,11 @@ class _NgoDashboard extends State<NgoDashboard> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0), // Padding around the text
+        padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+        // Padding around the text
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue, width: 1.0), // Border color and width
+          border: Border.all(color: Colors.blue, width: 1.0),
+          // Border color and width
           borderRadius: BorderRadius.circular(8.0), // Rounded corners
         ),
         child: Text(
@@ -3157,7 +3213,6 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-
   Widget _buildSeparator() {
     return Text(
       '||',
@@ -3165,7 +3220,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget _buildMAnageEyeDonationMOUUI() {
+  // Define the callback function that takes the ID
+  Widget _buildMAnageEyeDonationMOUUI(String eyeBankID) {
     return Container(
       height: 80,
       width: double.infinity, // Use full width for better space
@@ -3179,12 +3235,12 @@ class _NgoDashboard extends State<NgoDashboard> {
           // MOU Button with Border
           GestureDetector(
             onTap: () {
-              print('MOU pressed');
+              print('@@worked is pending on MOU pressed');
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue, width: 1.5), // Border design
+                border: Border.all(color: Colors.blue, width: 1.5),
                 borderRadius: BorderRadius.circular(5.0), // Rounded corners
               ),
               child: Text(
@@ -3196,16 +3252,42 @@ class _NgoDashboard extends State<NgoDashboard> {
 
           // Separator "||" with Border
 
-
           // Manage Eye Donation Button with Border
           GestureDetector(
             onTap: () {
-              print('Manage Eye Donation');
+              Navigator.pop(context);
+              geteyeBankById();
+              // Close the dialog
+              print('@@worked is pending on Manage Eye Donation');
+              setState(() {
+                print('@@worked is pending on Manage Eye Donation');
+                mangeEyDonationClick = true;
+                EyeBankApplication = false;
+                ngoDashboardclicks = false;
+                EyeDonationCentreRegistrationClickONAddDontaions=false;
+
+                ManageUSerNGOHospt = false;
+                ngoCampManagerLists = false;
+                CampManagerRegisterartions = false;
+                CampManagerRegisterartionsEdit = false;
+                SatelliteManagerRegisterartionsEdit = false;
+                ngoScreeningCampListss = false;
+                AddScreeningCamps = false;
+                ngoSATELLITECENTREMANAGERLists = false;
+                AddSatelliteManagers = false;
+                satelliteCenterMenuListdisplay = false;
+                AddSatelliteCenterRedOptionFields = false;
+
+                // Use the eyeBankID here as part of your state or logic
+                print("@@Eye Bank ID: $eyeBankID");
+                SharedPrefs.storeSharedValues(AppConstant.eyeBankById,
+                    eyeBankID.toString());
+              });
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue, width: 1.5), // Border design
+                border: Border.all(color: Colors.blue, width: 1.5),
                 borderRadius: BorderRadius.circular(5.0), // Rounded corners
               ),
               child: Text(
@@ -3219,7 +3301,726 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
+  Widget ManageEyeDonationclicks() {
+    return Column(
+      children: [
+        Visibility(
+          visible: mangeEyDonationClick,
+          child: Column(
+            children: [
 
+              Container(
+                margin: EdgeInsets.fromLTRB(5, 5, 5, 0),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.blue, Colors.blueAccent],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(5), // Rounded corners
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black26,
+                      offset: Offset(2, 4),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Distribute the text sections evenly
+                    children: [
+                      // First icon and text section
+                      Row(
+                        children: [
+                          Text(
+                            'Donation Centre',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1.5,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ],
+                      ),
+                      // Second icon and text section
+                      InkWell(
+                        onTap: () {
+                        //  Navigator.of(context).pop(); // Close the dialog
+                          setState(() {
+                            print('Button tapped: Add Eye Donation');
+                            _futureState = _getStatesDAta();
+                            EyeDonationCentreRegistrationClickONAddDontaions=true;
+                            ngoDashboardclicks = false;
+
+                            EyeBankApplication = false;
+                            mangeEyDonationClick=false;
+                            ngoCampManagerLists = false;
+                            CampManagerRegisterartions = false;
+                            CampManagerRegisterartionsEdit = false;
+                            SatelliteManagerRegisterartionsEdit = false;
+                            ngoScreeningCampListss = false;
+                            AddScreeningCamps = false;
+                            ngoSATELLITECENTREMANAGERLists = false;
+                            AddSatelliteManagers = false;
+                            satelliteCenterMenuListdisplay = false;
+                          });
+
+                          // Your action goes here
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 16.0),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.blue, Colors.blueAccent],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            borderRadius: BorderRadius.circular(5.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                offset: Offset(2, 4),
+                                blurRadius: 6,
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              Text(
+                                'Add Eye Donation',
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                  letterSpacing: 1.5,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+
+                    ],
+                  ),
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Header Row
+                    Row(
+                      children: [
+                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCell('Eye Bank ID'),
+                        _buildHeaderCell('Eye Bank Name'),
+                        /* _buildHeaderCell('Member Name'),
+                        _buildHeaderCell('Email'),
+                        _buildHeaderCell('Status'),*/
+                        _buildHeaderCellAction('View Details'),
+                        //_buildHeaderCellAction('Action'),
+                      ],
+                    ),
+                    Divider(color: Colors.blue, height: 1.0),
+                    // Data Rows
+                    FutureBuilder<List<etEyeDonationCenterListByNOGData>>(
+                      future: ApiController.getEyeDonationCenterListByNGO(
+
+                          state_code_login,
+                          district_code_login,
+                          userId ,eyeBankById),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          // Align "No data found" message to the left
+                          return Align(
+                            alignment: Alignment.centerLeft,
+
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black54),
+                              ),
+                            ),
+                          );
+                        } else {
+                          List<etEyeDonationCenterListByNOGData> ddata = snapshot.data;
+                          print('@@---ddata: ${ddata.length}');
+
+                          return Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.eyeDonationUniqueID),
+                                  _buildDataCell(offer.officername),
+                                  /*   _buildDataCell(offer.officername),
+                                  _buildDataCell(offer.emailid),
+                                  _buildDataCell(offer.status.toString()),
+                                  _buildMAnageEyeDonationMOUUI(),*/
+                                  _buildDataCellViewBlue("View Detail", () {
+                                    // Show the dialog with hospital details when the "View Detail" button is pressed
+                                    _showDetailseyeManageMouDetailsView(offer);
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          );
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+
+              // Data Rows
+
+
+
+
+              // Horizontal Scrolling Table with Header and Data
+
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  void _showDetailseyeManageMouDetailsView(
+      etEyeDonationCenterListByNOGData offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            "Eye Donation Center Details",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          content: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.blueAccent, width: 1.0),
+              children: [
+                _buildTableRowNew("Field", "Value", isHeader: true),
+                _buildTableRowNew("ID", offer.eyeDonationUniqueID ?? "N/A"),
+                _buildTableRowNew("Member Name", offer.officername ?? "N/A"),
+                _buildTableRowNew("Contact", offer.officermobile ?? "N/A"),
+                _buildTableRowNew("Email ID", offer.emailid ?? "N/A"),
+                _buildTableRowNew("Status", offer.status?.toString() ?? "N/A"),
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "Actions",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: InkWell(
+                        onTap: () {
+                          // Your edit action here
+                          Navigator.pop(context);
+                          print('@@Rest functionality is pending here ');
+
+                        },
+                        child: Text(
+                          "Edit",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                            decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  TableRow _buildTableRowNew(String field, String value, {bool isHeader = false}) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            field,
+            style: TextStyle(
+              fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+              fontSize: isHeader ? 16 : 14,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            value,
+            style: TextStyle(
+              fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+              fontSize: isHeader ? 16 : 14,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget EyeDonationCentreRegistrationClickONAddDontaion() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Visibility(
+            visible: EyeDonationCentreRegistrationClickONAddDontaions,
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: _dpmNAmeController,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Eye Donation Centre Name ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter Eye Donation Centre Name',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: TextField(
+                        controller: _dpmNAmeController,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Officer Name ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter Officer Name',
+                          hintStyle: TextStyle(color: Colors.grey), // Hint text style
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: TextField(
+                        controller: _dpmNAmeController,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Mobile No.',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter Mobile No. *',
+                          hintStyle: TextStyle(color: Colors.grey), // Hint text style
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: _dpmEmailIdController,
+                        keyboardType: TextInputType.emailAddress, // Keyboard optimized for email input
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'EmailID ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter your EmailID',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true, // Adds a background color to the field
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      // Padding applied directly to the Container
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              width: 1.5, color: Colors.grey[300]),
+                        ),
+                      ),
+                      child: SingleChildScrollView(
+                        // Wrap content in a SingleChildScrollView
+                        child: Center(
+                          child: FutureBuilder<List<Data>>(
+                            future: _futureState,
+                            // Future to fetch the data
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+
+                              if (!snapshot.hasData) {
+                                return const CircularProgressIndicator();
+                              }
+
+                              // Logging data for debugging
+                              developer.log('@@snapshot: ${snapshot.data}');
+
+                              List<Data> stateList = snapshot.data;
+
+                              // Ensure selected state is in the list, otherwise select the first
+                              if (_selectedUserState == null ||
+                                  !stateList.contains(_selectedUserState)) {
+                                _selectedUserState = stateList.first;
+                              }
+
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .start, // Align content to the left
+                                children: <Widget>[
+                                  const Text('Select State:'),
+                                  SizedBox(height: 10),
+                                  // Adds some space between label and dropdown
+                                  DropdownButtonFormField<Data>(
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blueAccent,
+                                            width: 2.0),
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    value: _selectedUserState,
+                                    onChanged: (user) => setState(() {
+                                      _selectedUserState = user;
+                                      stateCodeGovtPrivate = int.parse(
+                                          user.stateCode.toString());
+                                      CodeGovtPrivate = user.code;
+
+                                      if (stateCodeGovtPrivate != null) {
+                                        isVisibleDitrictGovt = true;
+                                        _getDistrictData(
+                                            stateCodeGovtPrivate);
+                                      } else {
+                                        isVisibleDitrictGovt = false;
+                                      }
+                                    }),
+                                    items: stateList
+                                        .map<DropdownMenuItem<Data>>(
+                                            (Data user) {
+                                          return DropdownMenuItem<Data>(
+                                            value: user,
+                                            child: Text(user.stateName),
+                                          );
+                                        }).toList(),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Visibility(
+                      visible: isVisibleDitrictGovt,
+                      child: Column(
+                        children: [
+                          Center(
+                            child: FutureBuilder<List<DataDsiricst>>(
+                              future:
+                              _getDistrictData(stateCodeGovtPrivate),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+                                if (!snapshot.hasData) {
+                                  return const CircularProgressIndicator();
+                                }
+
+                                // Logging for debugging
+                                developer
+                                    .log('@@snapshot: ${snapshot.data}');
+
+                                List<DataDsiricst> districtList =
+                                    snapshot.data;
+
+                                // Ensure selected district is in the list, otherwise select the first one
+                                if (_selectedUserDistrict == null ||
+                                    !districtList
+                                        .contains(_selectedUserDistrict)) {
+                                  _selectedUserDistrict =
+                                      districtList.first;
+                                }
+
+                                return Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      20, 10, 20.0, 0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      const Text('Select District:'),
+                                      DropdownButtonFormField<DataDsiricst>(
+                                        decoration: InputDecoration(
+                                          contentPadding:
+                                          EdgeInsets.symmetric(
+                                              vertical: 15.0,
+                                              horizontal: 10.0),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blue,
+                                                width: 2.0),
+                                            borderRadius:
+                                            BorderRadius.circular(10.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blueAccent,
+                                                width: 2.0),
+                                            borderRadius:
+                                            BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.blue[50],
+                                        ),
+                                        onChanged: (districtUser) =>
+                                            setState(() {
+                                              _selectedUserDistrict =
+                                                  districtUser;
+                                              distCodeGovtPrivate = int.parse(
+                                                  districtUser.districtCode
+                                                      .toString());
+                                              // Update state or further actions here
+                                              print(
+                                                  'Selected District: ${districtUser.districtName}');
+                                            }),
+                                        value: _selectedUserDistrict,
+                                        items: districtList
+                                            .map((DataDsiricst district) {
+                                          return DropdownMenuItem<
+                                              DataDsiricst>(
+                                            value: district,
+                                            child:
+                                            Text(district.districtName),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: _dpmDestinationController,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Address  ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          hintText: 'Enter Address ',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true, // Adds a background color to the field
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue, // Change border color when focused
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: _dpmDestinationController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Pin Code',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          hintText: 'Enter Pin Code * ',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true, // Adds a background color to the field
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue, // Change border color when focused
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                      child: ElevatedButton(
+                        child: Text('Add Donation Center'),
+                        style: ElevatedButton.styleFrom(primary: Colors.blue),
+                        onPressed: () {
+                          print('@@DPMMMM Hit here-----Api---------');
+
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildMAnageEDITDELETE() {
     return Container(
@@ -3317,15 +4118,17 @@ class _NgoDashboard extends State<NgoDashboard> {
       width: 60, // Fixed width to ensure the widget is not too wide
 
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // Centering content vertically
-        crossAxisAlignment: CrossAxisAlignment.center, // Centering content horizontally
+        mainAxisAlignment: MainAxisAlignment.center,
+        // Centering content vertically
+        crossAxisAlignment: CrossAxisAlignment.center,
+        // Centering content horizontally
         children: [
           _buildButton('Edit', () async {
             print('@@Edit Ka click');
             try {
               // Call the API to view camp manager details
               GetSatelliteManagerById getSatelliteManagerByIds =
-              await ApiController.getSatelliteManagerById(
+                  await ApiController.getSatelliteManagerById(
                 sR_No,
                 entryby, // Assuming `entryby` is correct
               );
@@ -3357,6 +4160,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     CampManagerRegisterartionsEdit = false;
                     ManageUSerNGOHospt = false;
                     ngoDashboardclicks = false;
+                    EyeDonationCentreRegistrationClickONAddDontaions=false;
                     EyeBankApplication = false;
                     ngoCampManagerLists = false;
                     CampManagerRegisterartions = false;
@@ -3390,8 +4194,6 @@ class _NgoDashboard extends State<NgoDashboard> {
             try {
               // Call the API to view camp manager details
 
-
-
             } catch (e) {
               print('Error fetching satellite manager details: $e');
             }
@@ -3400,7 +4202,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
-
 
   Widget _buildViewManageDoctorUploadMOUUI(String hospitalId) {
     return Container(
@@ -5738,55 +6539,78 @@ class _NgoDashboard extends State<NgoDashboard> {
                               return CircularProgressIndicator();
                             }
 
-                            List<DataScreeningCampManager> list = snapshot.data.toList();
+                            List<DataScreeningCampManager> list =
+                                snapshot.data.toList();
 
                             // Check if _selectedUser is null or not part of the list anymore
-                            if (_mangerUser == null || !list.contains(_mangerUser)) {
-                              _mangerUser = list.first; // Set the first item as default
+                            if (_mangerUser == null ||
+                                !list.contains(_mangerUser)) {
+                              _mangerUser =
+                                  list.first; // Set the first item as default
                             }
 
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Remove the label and set hint
                                   SizedBox(height: 10),
-                                  DropdownButtonFormField<DataScreeningCampManager>(
+                                  DropdownButtonFormField<
+                                      DataScreeningCampManager>(
                                     value: _mangerUser,
                                     onChanged: (userc) {
                                       setState(() {
                                         _mangerUser = userc;
-                                        getMAnagerNAme = userc?.managerName ?? '';
-                                        getmanagerSrNO = int.tryParse(userc?.srNo?.toString() ?? '') ?? 0;
-                                        print('getMAnagerNAme: $getMAnagerNAme');
-                                        print('getmanagerSrNO: $getmanagerSrNO');
+                                        getMAnagerNAme =
+                                            userc?.managerName ?? '';
+                                        getmanagerSrNO = int.tryParse(
+                                                userc?.srNo?.toString() ??
+                                                    '') ??
+                                            0;
+                                        print(
+                                            'getMAnagerNAme: $getMAnagerNAme');
+                                        print(
+                                            'getmanagerSrNO: $getmanagerSrNO');
                                       });
                                     },
                                     items: list.map((user) {
-                                      return DropdownMenuItem<DataScreeningCampManager>(
+                                      return DropdownMenuItem<
+                                          DataScreeningCampManager>(
                                         value: user,
-                                        child: Text(user.managerName, style: TextStyle(fontSize: 16)),
+                                        child: Text(user.managerName,
+                                            style: TextStyle(fontSize: 16)),
                                       );
                                     }).toList(),
                                     decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderSide: BorderSide(
+                                            color: Colors.blueAccent,
+                                            width: 2.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
                                       ),
                                       filled: true,
                                       fillColor: Colors.blue[50],
-                                      hintText: 'Select Camp Manager', // The hint text for the dropdown
-                                      hintStyle: TextStyle(color: Colors.grey), // Optional: Style the hint text
+                                      hintText: 'Select Camp Manager',
+                                      // The hint text for the dropdown
+                                      hintStyle: TextStyle(
+                                          color: Colors
+                                              .grey), // Optional: Style the hint text
                                     ),
                                     dropdownColor: Colors.blue[50],
                                     style: TextStyle(color: Colors.black),
-                                    icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Colors.blue),
                                   ),
                                 ],
                               ),
@@ -5796,7 +6620,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Gender Selection
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.center, // Center vertically
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          // Center vertically
                           children: [
                             // Center the Location Type Label
                             Text(
@@ -5807,20 +6632,30 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 color: Colors.blue.shade700, // Label color
                               ),
                             ),
-                            SizedBox(height: 10), // Add space between label and options
+                            SizedBox(height: 10),
+                            // Add space between label and options
 
                             // Use Row to center the radio buttons horizontally
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.center, // Center radio buttons horizontally
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              // Center radio buttons horizontally
                               children: [
                                 // Urban Radio Button
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
                                   decoration: BoxDecoration(
-                                    color: locationTypeValues == 'Urban' ? Colors.blue.shade100 : Colors.transparent, // Highlight selected option
-                                    borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                                    color: locationTypeValues == 'Urban'
+                                        ? Colors.blue.shade100
+                                        : Colors.transparent,
+                                    // Highlight selected option
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    // Rounded corners
                                     border: Border.all(
-                                      color: locationTypeValues == 'Urban' ? Colors.blue : Colors.grey, // Border color changes when selected
+                                      color: locationTypeValues == 'Urban'
+                                          ? Colors.blue
+                                          : Colors.grey,
+                                      // Border color changes when selected
                                       width: 1.5,
                                     ),
                                   ),
@@ -5835,13 +6670,17 @@ class _NgoDashboard extends State<NgoDashboard> {
                                             valuetype = 0;
                                           });
                                         },
-                                        activeColor: Colors.blue, // Active radio button color
+                                        activeColor: Colors
+                                            .blue, // Active radio button color
                                       ),
                                       Text(
                                         'Urban',
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: locationTypeValues == 'Urban' ? Colors.blue : Colors.black, // Text color based on selection
+                                          color: locationTypeValues == 'Urban'
+                                              ? Colors.blue
+                                              : Colors.black,
+                                          // Text color based on selection
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -5851,12 +6690,20 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 SizedBox(width: 20), // Space between options
                                 // Rural Radio Button
                                 Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
                                   decoration: BoxDecoration(
-                                    color: locationTypeValues == 'Rural' ? Colors.blue.shade100 : Colors.transparent, // Highlight selected option
-                                    borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                                    color: locationTypeValues == 'Rural'
+                                        ? Colors.blue.shade100
+                                        : Colors.transparent,
+                                    // Highlight selected option
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    // Rounded corners
                                     border: Border.all(
-                                      color: locationTypeValues == 'Rural' ? Colors.blue : Colors.grey, // Border color changes when selected
+                                      color: locationTypeValues == 'Rural'
+                                          ? Colors.blue
+                                          : Colors.grey,
+                                      // Border color changes when selected
                                       width: 1.5,
                                     ),
                                   ),
@@ -5871,13 +6718,17 @@ class _NgoDashboard extends State<NgoDashboard> {
                                             valuetype = 1;
                                           });
                                         },
-                                        activeColor: Colors.blue, // Active radio button color
+                                        activeColor: Colors
+                                            .blue, // Active radio button color
                                       ),
                                       Text(
                                         'Rural',
                                         style: TextStyle(
                                           fontSize: 16,
-                                          color: locationTypeValues == 'Rural' ? Colors.blue : Colors.black, // Text color based on selection
+                                          color: locationTypeValues == 'Rural'
+                                              ? Colors.blue
+                                              : Colors.black,
+                                          // Text color based on selection
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -5888,7 +6739,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                           ],
                         ),
-
 
                         SizedBox(height: 5.0),
                         // Show additional content based on the selected value
@@ -6183,47 +7033,56 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           text: 'Pin Code',
                                           style: TextStyle(
                                             fontSize: 16,
-                                            color: Colors.black, // Regular label text color
+                                            color: Colors
+                                                .black, // Regular label text color
                                           ),
                                         ),
                                         TextSpan(
-                                          text: ' *', // The asterisk for mandatory field
+                                          text: ' *',
+                                          // The asterisk for mandatory field
                                           style: TextStyle(
                                             fontSize: 16,
-                                            color: Colors.red, // Color for the asterisk
+                                            color: Colors
+                                                .red, // Color for the asterisk
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0), // Padding inside the TextFormField
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  // Padding inside the TextFormField
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.grey.shade300, // Border color when not focused
+                                      color: Colors.grey.shade300,
+                                      // Border color when not focused
                                       width: 1.5,
                                     ),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.blueAccent, // Border color when focused
+                                      color: Colors.blueAccent,
+                                      // Border color when focused
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   errorBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.red, // Border color when there's an error
+                                      color: Colors.red,
+                                      // Border color when there's an error
                                       width: 1.5,
                                     ),
                                     borderRadius: BorderRadius.circular(12),
                                   ),
                                   focusedErrorBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Colors.redAccent, // Border color when focused and there's an error
+                                      color: Colors.redAccent,
+                                      // Border color when focused and there's an error
                                       width: 2.0,
                                     ),
                                     borderRadius: BorderRadius.circular(12),
@@ -6237,8 +7096,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   return null;
                                 },
                               )
-
-
                             ],
                           ),
 
@@ -6254,14 +7111,17 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     text: 'Mobile No.',
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.black, // Regular label text color
+                                      color: Colors
+                                          .black, // Regular label text color
                                     ),
                                   ),
                                   TextSpan(
-                                    text: ' *', // The asterisk for mandatory field
+                                    text: ' *',
+                                    // The asterisk for mandatory field
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.red, // Color for the asterisk
+                                      color:
+                                          Colors.red, // Color for the asterisk
                                     ),
                                   ),
                                 ],
@@ -6301,47 +7161,56 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     text: 'Address',
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.black, // Regular label text color
+                                      color: Colors
+                                          .black, // Regular label text color
                                     ),
                                   ),
                                   TextSpan(
-                                    text: ' *', // The asterisk for mandatory field
+                                    text: ' *',
+                                    // The asterisk for mandatory field
                                     style: TextStyle(
                                       fontSize: 16,
-                                      color: Colors.red, // Color for the asterisk
+                                      color:
+                                          Colors.red, // Color for the asterisk
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0), // Padding inside the TextFormField
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 10.0),
+                            // Padding inside the TextFormField
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
                             ),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.grey.shade300, // Border color when not focused
+                                color: Colors.grey.shade300,
+                                // Border color when not focused
                                 width: 1.5,
                               ),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.blueAccent, // Border color when focused
+                                color: Colors.blueAccent,
+                                // Border color when focused
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             errorBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.red, // Border color when there's an error
+                                color: Colors.red,
+                                // Border color when there's an error
                                 width: 1.5,
                               ),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             focusedErrorBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                color: Colors.redAccent, // Border color when focused and there's an error
+                                color: Colors.redAccent,
+                                // Border color when focused and there's an error
                                 width: 2.0,
                               ),
                               borderRadius: BorderRadius.circular(12),
@@ -6358,16 +7227,20 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         SizedBox(height: 10.0),
                         Container(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0), // Padding applied directly to the Container
+                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          // Padding applied directly to the Container
                           decoration: BoxDecoration(
                             border: Border(
-                              bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                              bottom: BorderSide(
+                                  width: 1.5, color: Colors.grey[300]),
                             ),
                           ),
-                          child: SingleChildScrollView(  // Wrap content in a SingleChildScrollView
+                          child: SingleChildScrollView(
+                            // Wrap content in a SingleChildScrollView
                             child: Center(
                               child: FutureBuilder<List<Data>>(
-                                future: _futureState, // Future to fetch the data
+                                future: _futureState,
+                                // Future to fetch the data
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
@@ -6383,25 +7256,34 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   List<Data> stateList = snapshot.data;
 
                                   // Ensure selected state is in the list, otherwise select the first
-                                  if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
+                                  if (_selectedUserState == null ||
+                                      !stateList.contains(_selectedUserState)) {
                                     _selectedUserState = stateList.first;
                                   }
 
                                   return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start, // Align content to the left
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start, // Align content to the left
                                     children: <Widget>[
                                       const Text('Select State:'),
-                                      SizedBox(height: 10), // Adds some space between label and dropdown
+                                      SizedBox(height: 10),
+                                      // Adds some space between label and dropdown
                                       DropdownButtonFormField<Data>(
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 10.0),
                                           enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                            borderRadius: BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                                color: Colors.blue, width: 2.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                            borderRadius: BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                                color: Colors.blueAccent,
+                                                width: 2.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
                                           ),
                                           filled: true,
                                           fillColor: Colors.blue[50],
@@ -6409,17 +7291,21 @@ class _NgoDashboard extends State<NgoDashboard> {
                                         value: _selectedUserState,
                                         onChanged: (user) => setState(() {
                                           _selectedUserState = user;
-                                          stateCodeGovtPrivate = int.parse(user.stateCode.toString());
+                                          stateCodeGovtPrivate = int.parse(
+                                              user.stateCode.toString());
                                           CodeGovtPrivate = user.code;
 
                                           if (stateCodeGovtPrivate != null) {
                                             isVisibleDitrictGovt = true;
-                                            _getDistrictData(stateCodeGovtPrivate);
+                                            _getDistrictData(
+                                                stateCodeGovtPrivate);
                                           } else {
                                             isVisibleDitrictGovt = false;
                                           }
                                         }),
-                                        items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                                        items: stateList
+                                            .map<DropdownMenuItem<Data>>(
+                                                (Data user) {
                                           return DropdownMenuItem<Data>(
                                             value: user,
                                             child: Text(user.stateName),
@@ -6433,9 +7319,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                           ),
                         ),
-
-
-
 
                         Visibility(
                           visible: isVisibleDitrictGovt,
@@ -6596,6 +7479,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Result message----Class: " + response.message);
         EyeBankApplication = true;
         ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
+
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
         CampManagerRegisterartions = false;
@@ -6639,6 +7524,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Result message----Class: " + response.message);
         EyeBankApplication = false;
         ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
 
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
@@ -7085,10 +7971,12 @@ class _NgoDashboard extends State<NgoDashboard> {
       setState(() {
         EyeBankApplication = false;
         ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
+
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = false;
         CampManagerRegisterartions = false;
-        ngoScreeningCampListss=true;
+        ngoScreeningCampListss = true;
         AddScreeningCamps = false;
       });
     } else {
@@ -7105,16 +7993,20 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Column(
             children: [
               Container(
-                color: Colors.blue, // Background color for the container
-                padding: const EdgeInsets.all(16.0), // Padding inside the container
+                color: Colors.blue,
+                // Background color for the container
+                padding: const EdgeInsets.all(16.0),
+                // Padding inside the container
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between items
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between items
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Text to display the title
                     Flexible(
                       child: Align(
-                        alignment: Alignment.centerLeft, // Align text to the left
+                        alignment: Alignment.centerLeft,
+                        // Align text to the left
                         child: Text(
                           'SATELLITE CENTRE MANAGER DETAILS',
                           style: TextStyle(
@@ -7122,7 +8014,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                             fontWeight: FontWeight.bold,
                             fontSize: 16, // Increased font size for emphasis
                           ),
-                          overflow: TextOverflow.ellipsis, // Ensures text does not overflow
+                          overflow: TextOverflow
+                              .ellipsis, // Ensures text does not overflow
                         ),
                       ),
                     ),
@@ -7130,16 +8023,24 @@ class _NgoDashboard extends State<NgoDashboard> {
                     // Add Satellite Manager Button
                     Flexible(
                       child: ElevatedButton(
-                        onPressed: _addSatelliteCenterManager, // Trigger action on press
+                        onPressed: _addSatelliteCenterManager,
+                        // Trigger action on press
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent, // Transparent background for the button
-                          onPrimary: Colors.red, // Text color when not pressed
-                          shadowColor: Colors.red.withOpacity(0.4), // Shadow effect
-                          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+                          primary: Colors.transparent,
+                          // Transparent background for the button
+                          onPrimary: Colors.red,
+                          // Text color when not pressed
+                          shadowColor: Colors.red.withOpacity(0.4),
+                          // Shadow effect
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 12.0),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                            borderRadius:
+                                BorderRadius.circular(8.0), // Rounded corners
                           ),
-                          side: BorderSide(color: Colors.red, width: 2.0), // Red border around the button
+                          side: BorderSide(
+                              color: Colors.red,
+                              width: 2.0), // Red border around the button
                         ),
                         child: Text(
                           'Add Satellite Manager',
@@ -7148,7 +8049,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                             color: Colors.red, // Button text color
                             fontWeight: FontWeight.normal, // Text weight
                           ),
-                          overflow: TextOverflow.ellipsis, // Text overflow handling
+                          overflow:
+                              TextOverflow.ellipsis, // Text overflow handling
                         ),
                       ),
                     ),
@@ -7170,10 +8072,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                         _buildHeaderCell('Officer Name'),
                         _buildHeaderCell('Hospital'),
                         //_buildHeaderCell('Designation'),
-                       // _buildHeaderCell('Mobile Number'),
-                       // _buildHeaderCell('Email id'),
-                    _buildHeaderCellAction('View Details'),
-                       // _buildHeaderCellUpdateandBlock('Update/Block'),
+                        // _buildHeaderCell('Mobile Number'),
+                        // _buildHeaderCell('Email id'),
+                        _buildHeaderCellAction('View Details'),
+                        // _buildHeaderCellUpdateandBlock('Update/Block'),
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -7201,10 +8103,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.name),
                                   _buildDataCell(offer.hName),
-                               //   _buildDataCell(offer.designation),
-                                 // _buildDataCell(offer.mobile),
-                                 // _buildDataCell(offer.emailId),
-                                 /* _buildSatelliteManagerEditBlocked(
+                                  //   _buildDataCell(offer.designation),
+                                  // _buildDataCell(offer.mobile),
+                                  // _buildDataCell(offer.emailId),
+                                  /* _buildSatelliteManagerEditBlocked(
                                       int.parse(offer.srNo)),*/
                                   _buildDataCellViewBlue("View Detail", () {
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
@@ -7227,6 +8129,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
+
 // Function to show the dialog with hospital details
   void _showHospitalDetailsDialogSATELLITECENTREMANAGERDETAILS(
       DataGetSatelliteCenterList offer) {
@@ -7246,8 +8149,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                 _buildVerticalRow('Designation', offer.designation),
                 _buildVerticalRow('Mobile Number', offer.mobile),
                 _buildVerticalRow('Email id', offer.emailId),
-                _buildSatelliteManagerEditBlocked(
-                    int.parse(offer.srNo))
+                _buildSatelliteManagerEditBlocked(int.parse(offer.srNo))
               ],
             ),
           ),
@@ -7291,11 +8193,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
-
-
-
-
-
 
   Widget AddSatelliteManagerOption() {
     return Column(
@@ -7656,6 +8553,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             response.message);
         EyeBankApplication = false;
         ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
 
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = false;
@@ -7717,7 +8615,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                       children: [
                         // Username Field
                         TextFormField(
-                          controller: _userNameControllerStatelliteMangerReg, // Attach controller
+                          controller: _userNameControllerStatelliteMangerReg,
+                          // Attach controller
                           decoration: InputDecoration(
                             label: RichText(
                               text: TextSpan(
@@ -7725,13 +8624,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   TextSpan(
                                     text: 'User Name',
                                     style: TextStyle(
-                                      color: Colors.black, // Default label color
+                                      color:
+                                          Colors.black, // Default label color
                                     ),
                                   ),
                                   TextSpan(
-                                    text: ' *', // Asterisk indicating the field is required
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
                                     style: TextStyle(
-                                      color: Colors.red, // Color of the '*' to indicate it's mandatory
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
                                     ),
                                   ),
                                 ],
@@ -7739,7 +8641,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                             hintText: 'Enter your name',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), // Rounded corners for the border
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners for the border
                               borderSide: BorderSide(
                                 color: Colors.grey.shade300, // Border color
                                 width: 1.0, // Border width
@@ -7796,7 +8699,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Mobile Number Field
                         TextFormField(
-                          controller: _mobileNumberControllerStatelliteMangerReg, // Attach controller
+                          controller:
+                              _mobileNumberControllerStatelliteMangerReg,
+                          // Attach controller
                           decoration: InputDecoration(
                             label: RichText(
                               text: TextSpan(
@@ -7804,13 +8709,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   TextSpan(
                                     text: 'Mobile No.',
                                     style: TextStyle(
-                                      color: Colors.black, // Default label color
+                                      color:
+                                          Colors.black, // Default label color
                                     ),
                                   ),
                                   TextSpan(
-                                    text: ' *', // Asterisk indicating the field is required
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
                                     style: TextStyle(
-                                      color: Colors.red, // Color of the '*' to indicate it's mandatory
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
                                     ),
                                   ),
                                 ],
@@ -7818,14 +8726,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                             hintText: 'Enter your mobile number',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), // Rounded corners for the border
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners for the border
                               borderSide: BorderSide(
                                 color: Colors.grey.shade300, // Border color
                                 width: 1.0, // Border width
                               ),
                             ),
                           ),
-                          keyboardType: TextInputType.phone, // Ensures only numbers can be entered
+                          keyboardType: TextInputType.phone,
+                          // Ensures only numbers can be entered
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your mobile number'; // Validation message if field is empty
@@ -7840,7 +8750,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Email ID Field
                         TextFormField(
-                          controller: _emailIdControllerStatelliteMangerReg, // Attach controller
+                          controller: _emailIdControllerStatelliteMangerReg,
+                          // Attach controller
                           decoration: InputDecoration(
                             label: RichText(
                               text: TextSpan(
@@ -7848,13 +8759,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   TextSpan(
                                     text: 'Email ID',
                                     style: TextStyle(
-                                      color: Colors.black, // Default label color
+                                      color:
+                                          Colors.black, // Default label color
                                     ),
                                   ),
                                   TextSpan(
-                                    text: ' *', // Asterisk indicating the field is required
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
                                     style: TextStyle(
-                                      color: Colors.red, // Color of the '*' to indicate it's mandatory
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
                                     ),
                                   ),
                                 ],
@@ -7862,18 +8776,21 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                             hintText: 'Enter your email address',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), // Rounded corners for the border
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners for the border
                               borderSide: BorderSide(
                                 color: Colors.grey.shade300, // Border color
                                 width: 1.0, // Border width
                               ),
                             ),
                           ),
-                          keyboardType: TextInputType.emailAddress, // Ensures keyboard is optimized for email input
+                          keyboardType: TextInputType.emailAddress,
+                          // Ensures keyboard is optimized for email input
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email'; // Validation for empty field
-                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
                               return 'Please enter a valid email address'; // Validation for valid email format
                             }
                             return null;
@@ -7884,7 +8801,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Address Field
                         TextFormField(
-                          controller: _addressControllerStatelliteMangerReg, // Attach controller
+                          controller: _addressControllerStatelliteMangerReg,
+                          // Attach controller
                           decoration: InputDecoration(
                             label: RichText(
                               text: TextSpan(
@@ -7892,13 +8810,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   TextSpan(
                                     text: 'Address',
                                     style: TextStyle(
-                                      color: Colors.black, // Default label color
+                                      color:
+                                          Colors.black, // Default label color
                                     ),
                                   ),
                                   TextSpan(
-                                    text: ' *', // Asterisk indicating the field is required
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
                                     style: TextStyle(
-                                      color: Colors.red, // Color of the '*' to indicate it's mandatory
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
                                     ),
                                   ),
                                 ],
@@ -7906,14 +8827,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                             hintText: 'Enter your address',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), // Rounded corners for the border
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners for the border
                               borderSide: BorderSide(
                                 color: Colors.grey.shade300, // Border color
                                 width: 1.0, // Border width
                               ),
                             ),
                           ),
-                          maxLines: 3, // Allows for multi-line input
+                          maxLines: 3,
+                          // Allows for multi-line input
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your address'; // Validation for empty field
@@ -7926,22 +8849,25 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Designation Field
                         TextFormField(
-                          controller: _designationControllerStatelliteMangerReg, // Attach controller
+                          controller: _designationControllerStatelliteMangerReg,
+                          // Attach controller
                           decoration: InputDecoration(
-
                             label: RichText(
                               text: TextSpan(
                                 children: [
                                   TextSpan(
                                     text: 'Designation', // Label text
                                     style: TextStyle(
-                                      color: Colors.black, // Default label color
+                                      color:
+                                          Colors.black, // Default label color
                                     ),
                                   ),
                                   TextSpan(
-                                    text: ' *', // Asterisk to indicate the field is required
+                                    text: ' *',
+                                    // Asterisk to indicate the field is required
                                     style: TextStyle(
-                                      color: Colors.red, // Red color for the asterisk
+                                      color: Colors
+                                          .red, // Red color for the asterisk
                                     ),
                                   ),
                                 ],
@@ -7949,7 +8875,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                             hintText: 'Enter your designation',
                             border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12), // Rounded corners for the border
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners for the border
                               borderSide: BorderSide(
                                 color: Colors.grey.shade300, // Border color
                                 width: 1.0, // Border width
@@ -8033,6 +8960,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("@@Result message----Class: " + response.message);
         EyeBankApplication = false;
         ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions=false;
 
         ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
@@ -8077,9 +9005,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                   ],
                 ),
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0), // Added padding for spacing
+                  padding: const EdgeInsets.all(12.0),
+                  // Added padding for spacing
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between the texts
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // Space between the texts
                     children: [
                       Flexible(
                         child: Align(
@@ -8089,8 +9019,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
-                              fontSize: 16, // Increased font size for better visibility
-                              letterSpacing: 1.2, // Added letter spacing for style
+                              fontSize: 16,
+                              // Increased font size for better visibility
+                              letterSpacing:
+                                  1.2, // Added letter spacing for style
                             ),
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -8106,9 +9038,12 @@ class _NgoDashboard extends State<NgoDashboard> {
                               style: TextStyle(
                                 color: Colors.redAccent,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 16, // Increased font size
-                                letterSpacing: 1.2, // Letter spacing for consistency
-                                decoration: TextDecoration.underline, // Underlined for emphasis
+                                fontSize: 16,
+                                // Increased font size
+                                letterSpacing: 1.2,
+                                // Letter spacing for consistency
+                                decoration: TextDecoration
+                                    .underline, // Underlined for emphasis
                               ),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -8133,13 +9068,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                         _buildHeaderCellSrNo('S.No.'),
                         _buildHeaderCell('Officer Name'),
                         _buildHeaderCell('Hospital'),
-                      /*  _buildHeaderCell('Designation'),
+                        /*  _buildHeaderCell('Designation'),
                         _buildHeaderCell('Mobile Number'),
                         _buildHeaderCell('Email id'),
 */
 
-                  _buildHeaderCellAction('View Details'),
-                       // _buildHeaderCell('Update/Block'),
+                        _buildHeaderCellAction('View Details'),
+                        // _buildHeaderCell('Update/Block'),
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -8167,7 +9102,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.name),
                                   _buildDataCell(offer.hName),
-                                 /* _buildDataCell(offer.designation),
+                                  /* _buildDataCell(offer.designation),
                                   _buildDataCell(offer.mobile),
                                   _buildDataCell(offer.emailId),
                                   _buildSatelliteManagerEditBlocked(
@@ -8175,7 +9110,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildDataCellViewBlue("View Detail", () {
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
-                                    _showHospitalDetailsDialogSATELLITECENTREDATA(offer);
+                                    _showHospitalDetailsDialogSATELLITECENTREDATA(
+                                        offer);
                                   }),
                                 ],
                               );
@@ -8193,7 +9129,9 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
-  void _showHospitalDetailsDialogSATELLITECENTREDATA(DataGetSatelliteCenterList offer) {
+
+  void _showHospitalDetailsDialogSATELLITECENTREDATA(
+      DataGetSatelliteCenterList offer) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -8220,7 +9158,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                   // Table for the data
                   Table(
-                    border: TableBorder.all(color: Colors.grey.shade300, width: 1.0),
+                    border: TableBorder.all(
+                        color: Colors.grey.shade300, width: 1.0),
                     children: [
                       _buildTableRow('S.No.', offer.srNo.toString()),
                       _buildTableRow('Officer Name', offer.name),
@@ -8233,11 +9172,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Text('Action', style: TextStyle(fontWeight: FontWeight.bold)),
+                            child: Text('Action',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: _buildSatelliteManagerEditBlocked(int.parse(offer.srNo)),
+                            child: _buildSatelliteManagerEditBlocked(
+                                int.parse(offer.srNo)),
                           ),
                         ],
                       ),
@@ -8268,9 +9209,6 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-
-
-
   void _addSatelliteCenterRedOtionclick() {
     // Handle the tap event here
     print('@@_addSatelliteCenterRedOtion--');
@@ -8278,6 +9216,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       ManageUSerNGOHospt = false;
       ngoDashboardclicks = false;
       EyeBankApplication = false;
+      EyeDonationCentreRegistrationClickONAddDontaions=false;
+
       ngoCampManagerLists = false;
       CampManagerRegisterartions = false;
       CampManagerRegisterartionsEdit = false;
@@ -8682,6 +9622,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           // Update any relevant state variables here.
           EyeBankApplication = false;
           ngoDashboardclicks = false;
+          EyeDonationCentreRegistrationClickONAddDontaions=false;
 
           ManageUSerNGOHospt = false;
           ngoCampManagerLists = false;
@@ -8868,6 +9809,17 @@ class _NgoDashboard extends State<NgoDashboard> {
         ),
       ),
     );
+  }
+  Future<void> geteyeBankById() async {
+    // Use await to get the actual value from SharedPrefs
+    eyeBankById =
+    await SharedPrefs.getStoreSharedValue(AppConstant.eyeBankById) as String;
+
+    if (eyeBankById != null) {
+      print("eyeBankById Number: $eyeBankById");
+    } else {
+      print("No eyeBankById Number found in shared preferences.");
+    }
   }
 }
 

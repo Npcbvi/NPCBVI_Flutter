@@ -232,15 +232,18 @@ class _RegisterScreen extends State<RegisterScreen> {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
               child: Container(
                 color: Colors.blue,
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(5.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       // Shown Captcha value to user
+                      const SizedBox(
+                        width: 12,
+                      ),
                       Container(
                           child: Text(
                         'Home',
@@ -248,15 +251,25 @@ class _RegisterScreen extends State<RegisterScreen> {
                             color: Colors.white, fontWeight: FontWeight.w800),
                       )),
                       const SizedBox(
-                        width: 10,
+                        width: 12,
                       ),
                       new DropdownButtonHideUnderline(
                         child: DropdownButton<String>(
                           focusColor: Colors.white,
                           value: _chosenValue,
-                          //elevation: 5,
-                          style: TextStyle(color: Colors.white),
-                          iconEnabledColor: Colors.white,
+                          style: TextStyle(
+                            color: Colors.white, // Selected text color
+                          ),
+                          iconEnabledColor: Colors.white, // Color of the dropdown icon
+                          dropdownColor: Colors.blue, // Set the dropdown background to black
+                          hint: Text(
+                            "Registration",
+                            style: TextStyle(
+                              color: Colors.white, // Hint text color
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
                           items: <String>[
                             'NGO',
                             'Govt./Private /Other',
@@ -267,17 +280,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                               value: value,
                               child: Text(
                                 value,
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(
+                                  color: Colors.white, // Dropdown items text color
+                                ),
                               ),
                             );
                           }).toList(),
-                          hint: Text(
-                            "Registration",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
-                          ),
+
                           onChanged: (String value) {
                             setState(() {
                               _chosenValue = value;
@@ -332,6 +341,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                           },
                         ),
                       ),
+                      const SizedBox(
+                        width: 12,
+                      ),
                       //widgets that follow the Material Design guidelines display a ripple animation when tapped.
                       InkWell(
                         onTap: () {
@@ -347,6 +359,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.w800),
                         )),
+                      ),
+                      const SizedBox(
+                        width: 12,
                       ),
                     ],
                   ),
@@ -557,6 +572,9 @@ class _RegisterScreen extends State<RegisterScreen> {
   }
 
   //SPO Registyartion work here
+
+
+  //scroll issue resolve code
   Widget SPORegistration() {
     return SingleChildScrollView(
       child: Column(
@@ -569,7 +587,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    // FutureBuilder for the state dropdown
                     Center(
                       child: FutureBuilder<List<Data>>(
                         future: _future,
@@ -581,6 +598,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                           if (!snapshot.hasData) {
                             return const CircularProgressIndicator();
                           }
+
+                          // Logging for debugging
+                          developer.log('@@snapshot: ${snapshot.data}');
 
                           List<Data> stateList = snapshot.data;
 
@@ -594,12 +614,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                const Text(
-                                  'Select State:',
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
                                 DropdownButtonFormField<Data>(
                                   decoration: InputDecoration(
+                                    hintText: 'Select State',  // Set the hint text
                                     contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Colors.blue, width: 2.0),
@@ -617,6 +634,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                                       _selectedUser = user;
                                       stateCodeSPO = int.parse(user.stateCode.toString());
                                       CodeSPO = user.code;
+                                      print('@@statenameSPO: $stateCodeSPO');
+                                      print('@@CodeSPO: $CodeSPO');
                                     });
                                   },
                                   value: _selectedUser,
@@ -633,103 +652,207 @@ class _RegisterScreen extends State<RegisterScreen> {
                         },
                       ),
                     ),
-                    // TextField for Name
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: TextField(
+                      child: new TextField(
                         controller: _spoNAmeController,
                         decoration: InputDecoration(
-                          label: Text('Name'),
-                          hintText: 'Name',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                        ),
+                            label: Text('Name'),
+                            hintText: 'Name',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+                            //prefixIcon
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
-                    // TextField for Mobile Number
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: TextField(
+                      child: new TextField(
                         keyboardType: TextInputType.number,
                         controller: _spoMobileController,
                         maxLength: 10,
                         decoration: InputDecoration(
-                          label: Text('Mobile Number'),
-                          hintText: 'Mobile Number',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                        ),
+                            label: Text('Mobile Number'),
+                            hintText: 'Mobile Number',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
-                    // Other fields...
-                    // Example for Designation
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: TextField(
-                        controller: _spoDestinationController,
+                      child: new TextField(
+                        controller: _spoEmailIdController,
                         decoration: InputDecoration(
-                          label: Text('Designation'),
-                          hintText: 'Designation',
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                        ),
+                            label: Text('EmailID'),
+                            hintText: 'EmailID',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
-                    // Captcha Section
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: new TextField(
+                        controller: _spoDestinationController,
+                        decoration: InputDecoration(
+                            label: Text('Designation'),
+                            hintText: 'Designation',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
                     Row(
                       children: [
                         Expanded(
+                          flex: 1,
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                border: Border.all(width: 2, color: red1),
-                              ),
-                              child: Text(
-                                '${randomString}',
-                                style: TextStyle(color: red1, fontWeight: FontWeight.w500),
-                              ),
+                            child: new TextFormField(
+                              controller: stdControllerSpo,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.digitsOnly
+                              ],
+                              maxLength: 10,
+                              decoration: InputDecoration(
+                                  label: Text('Std'),
+                                  hintText: 'Std',
+                                  hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
+                                  //prefixIcon
+
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(5.0))),
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10),
-                        IconButton(
-                          onPressed: () {
-                            // Re-generate captcha logic here
-                          },
-                          icon: const Icon(Icons.refresh),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextField(
+                              keyboardType: TextInputType.number,
+                              controller: _spoPhoneNumberController,
+                              maxLength: 10,
+                              decoration: InputDecoration(
+                                  label: Text('Phone Number'),
+                                  hintText: 'Phone Number',
+                                  hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
+                                  border: OutlineInputBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(5.0))),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: new TextField(
+                        controller: _spoOfficeAddressController,
+                        decoration: InputDecoration(
+                            label: Text('Office Address'),
+                            hintText: 'Office Address',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: new TextField(
+                        controller: _spoPinCodeController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            label: Text('Pin Code'),
+                            hintText: 'Pin Code',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Shown Captcha value to user
+                          Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  border: Border.all(width: 2, color: red1)),
+                              child: Text(
+                                '${randomString}',
+                                style: TextStyle(
+                                    color: red1, fontWeight: FontWeight.w500),
+                              )),
+                          const SizedBox(
+                            width: 10,
+                          ),
+
+                          // Regenerate captcha value
+                          IconButton(
+                              onPressed: () {
+                                //  buildCaptcha();
+                              },
+                              icon: const Icon(Icons.refresh)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    // TextFormField to enter captcha value
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                       child: TextFormField(
                         controller: _spoCaptchaCodeEnterController,
+
+                        /*  onChanged: (value) {
+                        setState(() {
+                          isVerified = false;
+                        });
+                      },*/
                         decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Enter Captcha Value",
-                          labelText: "Enter Captcha Value",
-                        ),
+                            border: OutlineInputBorder(),
+                            hintText: "Enter Captcha Value",
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
+                            labelText: "Enter Captcha Value"),
                       ),
                     ),
-                    const SizedBox(height: 10),
-                    // Submit Button
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                       child: ElevatedButton(
-                        child: Text('Submit'),
-                        style: ElevatedButton.styleFrom(primary: Colors.blue),
-                        onPressed: () {
-                          print('@@Spo Submit Button');
-                          _spoRegistrationSubmit();
-                        },
-                      ),
+                          child: Text('Submit'),
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue,
+                          ),
+                          onPressed: () {
+                            print('@@Spo Submit Button');
+                            _spoRegistrationSubmit();
+                          }),
                     ),
-                    // Reset Button
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
                       child: ElevatedButton(
                         child: Text('Reset'),
-                        style: ElevatedButton.styleFrom(primary: Colors.blue),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.blue,
+                        ),
                         onPressed: () {
                           _spoNAmeController.clear();
                           _spoMobileController.clear();
@@ -752,7 +875,6 @@ class _RegisterScreen extends State<RegisterScreen> {
       ),
     );
   }
-
   Widget newUSerGovtPrivateRegisterRadio() {
     return Column(
       children: [
@@ -3166,6 +3288,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                         decoration: InputDecoration(
                             label: Text('Name'),
                             hintText: 'Name',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
@@ -3178,6 +3302,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                         decoration: InputDecoration(
                             label: Text('Mobile Number'),
                             hintText: 'Mobile Number',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
@@ -3188,6 +3314,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                         decoration: InputDecoration(
                             label: Text('EmailID'),
                             hintText: 'EmailID',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
@@ -3198,6 +3326,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                         decoration: InputDecoration(
                             label: Text('Designation'),
                             hintText: 'Designation',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
@@ -3243,6 +3373,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                         decoration: InputDecoration(
                             label: Text('Office Address'),
                             hintText: 'Office Address',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
@@ -3255,6 +3387,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                         decoration: InputDecoration(
                             label: Text('Pin Code'),
                             hintText: 'Pin Code',
+                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
+
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
