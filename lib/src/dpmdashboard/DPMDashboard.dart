@@ -9578,7 +9578,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         borderRadius: BorderRadius.circular(8),
                                         // Rounded corners
                                         border: Border.all(
-                                          color: Colors.blue, // Border color
+                                          color: Colors.red, // Border color
                                           width: 2, // Border thickness
                                         ),
                                       ),

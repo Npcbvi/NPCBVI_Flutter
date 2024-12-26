@@ -1142,7 +1142,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
         child: Container(
           width: 300,
           child: Theme(
-            data: Theme.of(context).copyWith(canvasColor: Colors.blue.shade200),
+            data: Theme.of(context).copyWith(canvasColor: Colors.white),
             child: Column(
               children: [
                 DropdownButtonFormField<String>(

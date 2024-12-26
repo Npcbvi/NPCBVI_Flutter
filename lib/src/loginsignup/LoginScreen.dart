@@ -183,6 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false, // Disables the back button
         centerTitle: true,
         title: Text('Login', style: TextStyle(color: Colors.white)),
         actions: [
