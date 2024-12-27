@@ -81,6 +81,8 @@ class ApiConstants {
   static String GetEyeBankDonationList = 'GetEyeBankListByNGO';
 
   static String GetEyeDonationCenterListByNGO = 'GetEyeDonationCenterListByNGO';
+  static String RegistrationEyeDonationCenterByNGO = 'RegistrationEyeDonationCenterByNGO';
+
   static String GetCampManagerList = 'GetCampManagerList';
   static String GetDoctorListByHId = 'GetDoctorListByHId';
   static String CampManagerRegistration = 'CampManagerRegistration';

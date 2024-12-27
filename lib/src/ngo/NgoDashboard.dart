@@ -78,7 +78,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   DataDropDownHospitalSelected _selectHospitalSelected;
   String hospitalNameFetch, reghospitalNameFetch;
   int status, district_code_login, state_code_login;
-  String role_id, darpan_nos, entryby, ngoNames,eyeBankById;
+  String role_id, darpan_nos, entryby, ngoNames,eyeBankById,fromlisteyeBankByIds;
   bool ngoDashboardDatas = false;
   String selectedHospitalName = ''; // String to save the selected value's name
   String selectedHRegID;
@@ -208,11 +208,12 @@ class _NgoDashboard extends State<NgoDashboard> {
   Future<List<DataGetHospitalList>> _hospitalListFuture;
   bool mangeEyDonationClick = false;
 
-  TextEditingController _dpmNAmeController = new TextEditingController();
-  TextEditingController _dpmMobileController = new TextEditingController();
-  TextEditingController _dpmEmailIdController = new TextEditingController();
-  TextEditingController _dpmDestinationController = new TextEditingController();
-  TextEditingController _dpmPhoneNumberController = new TextEditingController();
+  TextEditingController _eyeDonationCentreNameController = new TextEditingController();
+  TextEditingController _officerNameController  = new TextEditingController();
+  TextEditingController _mobileNoControllerss = new TextEditingController();
+  TextEditingController _emailIDControllerss = new TextEditingController();
+  TextEditingController _addressControllers = new TextEditingController();
+  TextEditingController _pinCodeController = new TextEditingController();
 
   TextEditingController stdControllerDPM = new TextEditingController();
   TextEditingController stdControllerSpo = new TextEditingController();
@@ -1682,6 +1683,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildMAnageEyeDonationMOUUI(),*/
                                   _buildDataCellViewBlue("View Detail", () {
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
+                                    SharedPrefs.storeSharedValues(AppConstant.fromlisteyeBankById,
+                                        offer.eyeBankUniqueID);
                                     _showDetailsDialogEyeBankApplication(offer);
                                   }),
                                 ],
@@ -3353,9 +3356,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                         //  Navigator.of(context).pop(); // Close the dialog
                           setState(() {
                             print('Button tapped: Add Eye Donation');
+                            fromListgeteyeBankById();
                             _futureState = _getStatesDAta();
                             EyeDonationCentreRegistrationClickONAddDontaions=true;
-                            ngoDashboardclicks = false;
+                            ngoDashboardclicks = false; 
 
                             EyeBankApplication = false;
                             mangeEyDonationClick=false;
@@ -3612,7 +3616,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: TextField(
-                        controller: _dpmNAmeController,
+                        controller: _eyeDonationCentreNameController,
                         decoration: InputDecoration(
                           label: RichText(
                             text: TextSpan(
@@ -3655,7 +3659,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                       child: TextField(
-                        controller: _dpmNAmeController,
+                        controller: _officerNameController,
                         decoration: InputDecoration(
                           label: RichText(
                             text: TextSpan(
@@ -3687,7 +3691,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                       child: TextField(
-                        controller: _dpmNAmeController,
+                        controller: _mobileNoControllerss,
                         decoration: InputDecoration(
                           label: RichText(
                             text: TextSpan(
@@ -3718,7 +3722,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: TextField(
-                        controller: _dpmEmailIdController,
+                        controller: _emailIDControllerss,
                         keyboardType: TextInputType.emailAddress, // Keyboard optimized for email input
                         decoration: InputDecoration(
                           label: RichText(
@@ -3940,7 +3944,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: TextField(
-                        controller: _dpmDestinationController,
+                        controller: _addressControllers,
                         decoration: InputDecoration(
                           label: RichText(
                             text: TextSpan(
@@ -3971,7 +3975,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: TextField(
-                        controller: _dpmDestinationController,
+                        controller: _pinCodeController,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           label: RichText(
@@ -4000,6 +4004,29 @@ class _NgoDashboard extends State<NgoDashboard> {
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: TextEditingController(text: fromlisteyeBankByIds), // Sets initial text
+                        readOnly: true, // Makes the field non-editable
+                        decoration: InputDecoration(
+                          labelText: fromlisteyeBankByIds, // Optional label
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true, // Adds a background color to the field
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue, // Change border color when focused
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
 
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
@@ -4009,6 +4036,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                         onPressed: () {
                           print('@@DPMMMM Hit here-----Api---------');
 
+_RegistrationEyeDonationCenterByNGO();
                         },
                       ),
                     ),
@@ -4020,6 +4048,59 @@ class _NgoDashboard extends State<NgoDashboard> {
         ],
       ),
     );
+  }
+
+  Future<void> _RegistrationEyeDonationCenterByNGO() async {
+    final _eyeDonations = _eyeDonationCentreNameController.text.trim();
+    final _officerNames = _officerNameController.text.trim();
+    final _mobileNumbers = _mobileNoControllerss.text.trim();
+    final _emailIDs = _emailIDControllerss.text.trim();
+    final _addresss = _addressControllers .text.trim();
+    final _pinCodes = _pinCodeController.text.trim();
+      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
+        if (isNetworkAvailable) {
+          Utils.showProgressDialog1(context);
+
+          ApiController.getRegistrationEyeDonationCenterByNGO(_eyeDonations,_officerNames,
+              _mobileNumbers,_emailIDs,state_code_login,district_code_login,_addresss,_pinCodes,eyeBankById,entryby,fromlisteyeBankByIds)
+              .then((response) async {
+            Utils.hideProgressDialog1(context);
+
+            if (response.status) {
+              setState(() {
+                //    Navigator.pop(context);
+                print("@@Add Data here--");
+                Utils.showToast(response.message, true);
+                _eyeDonationCentreNameController.clear();
+                _officerNameController.clear();
+                _mobileNoControllerss.clear();
+                _emailIDControllerss.clear();
+                _addressControllers.clear();
+                _pinCodeController.clear();
+                mangeEyDonationClick=true;
+                EyeDonationCentreRegistrationClickONAddDontaions=false;
+                ngoDashboardclicks = false;
+                EyeBankApplication = false;
+                ngoCampManagerLists = false;
+                CampManagerRegisterartions = false;
+                CampManagerRegisterartionsEdit = false;
+                SatelliteManagerRegisterartionsEdit = false;
+                ngoScreeningCampListss = false;
+                AddScreeningCamps = false;
+                ngoSATELLITECENTREMANAGERLists = false;
+                AddSatelliteManagers = false;
+                satelliteCenterMenuListdisplay = false;
+              });
+
+
+            } else {
+              Utils.showToast(response.message, true);
+            }
+          });
+        } else {
+          Utils.showToast(AppConstant.noInternet, true);
+        }
+      });
   }
 
   Widget _buildMAnageEDITDELETE() {
@@ -9819,6 +9900,18 @@ class _NgoDashboard extends State<NgoDashboard> {
       print("eyeBankById Number: $eyeBankById");
     } else {
       print("No eyeBankById Number found in shared preferences.");
+    }
+  }
+
+  Future<void> fromListgeteyeBankById() async {
+    // Use await to get the actual value from SharedPrefs
+    fromlisteyeBankByIds =
+    await SharedPrefs.getStoreSharedValue(AppConstant.fromlisteyeBankById) as String;
+
+    if (fromlisteyeBankByIds != null) {
+      print("@@fromListgeteyeBankById Number: $fromlisteyeBankByIds");
+    } else {
+      print("@@No fromListgeteyeBankById Number found in shared preferences.");
     }
   }
 }

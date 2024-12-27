@@ -16,6 +16,7 @@ import 'package:mohfw_npcbvi/src/model/changePassword/ChangePassword.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/dahbaord/GetDashboardModel.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/AddEyeBank.dart';
+import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/RegistryDonatiopnCenterClick.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/AddEyeBankNGO/etEyeDonationCenterListByNOG.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/DoctorlinkedwithHospital.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
@@ -3350,6 +3351,78 @@ class ApiController {
       Utils.showToast(e.toString(), true);
 
       return [];
+    }
+  }
+
+  static Future<RegistryDonatiopnCenterClick>
+  getRegistrationEyeDonationCenterByNGO(String eyeDonationCenterName,String officerName,
+      String mobileNo,String emailId,
+      int state, int district, String address,String pincode,
+      String eyeBankId,String entryBy,String eyeDonationCenter_ID) async {
+    print("@@getRegistrationEyeDonationCenterByNGO" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.RegistrationEyeDonationCenterByNGO;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "eyeDonationCenterName": eyeDonationCenterName,
+        "officerName": officerName,
+        "mobileNo": mobileNo,
+        "emailId":emailId,
+        "state": state,
+        "district": district,
+        "address": address,
+        "pincode": pincode,
+        "eyeBankId":eyeBankId,
+        "entryBy": entryBy,
+        "eyeDonationCenter_ID":eyeDonationCenter_ID,
+      });
+      print("@@getRegistrationEyeDonationCenterByNGO--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getRegistrationEyeDonationCenterByNGO--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      RegistryDonatiopnCenterClick data = RegistryDonatiopnCenterClick.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data;
+      } else {
+        Utils.showToast(data.message, true);
+      }
+    } catch (e) {
+      Utils.showToast("Eye Donation Center already exists Center", true);
+   //   Utils.showToast(e.toString(), true);
+
     }
   }
 
