@@ -132,5 +132,7 @@ class ApiConstants {
   static String GetSPO_DistrictNgoApproval = 'SpmDashboard/api/GetSPO_DistrictNgoApproval';
 
   static String getSPO_DistrictNgoApproval_list = 'SpmDashboard/api/GetSPO_DistrictNgoApproval_list';
+  static String GetSPO_GHCHCOtherApprovals = 'SpmDashboard/api/GetSPO_GHCHCOtherApproval';
 
+  static String GetSPO_GHCHCOtherApproval_list = 'SpmDashboard/api/GetSPO_GHCHCOtherApproval_list';
 }

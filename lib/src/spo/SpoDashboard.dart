@@ -17,6 +17,7 @@ import 'package:mohfw_npcbvi/src/model/spoModel/EyeSurgeons.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/ApprovedclickPatients.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_DiseasewiseRecordsApproval.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_GHCHCOtherApprovals.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_Patients_Approved_View.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOApprovalClick.dart';
@@ -28,6 +29,9 @@ import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'ListGovtCHGApprovalWidget.dart';
+import 'ListGovtCHGPending.dart';
 
 class SpoDashboard extends StatefulWidget {
   @override
@@ -99,6 +103,9 @@ class _SpoDashboard extends State<SpoDashboard> {
   Future<List<EyeSurgeonsData>> _futures;
   bool isSubmitPressed = false; // Track button press
   int selectedUserId; // Define the variable to store the selected user ID
+
+  bool GetSPO_GH_APPorovedClickShowData=false;
+ bool GetSPO_GHA_PendingClickShowData=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -1106,7 +1113,16 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print(
                                                       '@@---Government_approved--1');
 
-                                                  setState(() {});
+                                                  setState(() {
+                                                    dashboardviewReplace = false;
+                                                    SPOLcikONDPMMEnus = false;
+                                                    RegisteredEyesurgeon = false;
+                                                    eyeBankDonationApprovals=false;
+                                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                                    eyeBankApprovals=false;
+                                                    eyeBankCollections=false;
+                                                    GetSPO_GH_APPorovedClickShowData=true;
+                                                  });
                                                 },
                                                 child: new Text('Approved',
                                                     textAlign: TextAlign.center,
@@ -1129,7 +1145,18 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print(
                                                       '@@---Government_Pending--1');
 
-                                                  setState(() {});
+                                                  setState(() {
+                                                    dashboardviewReplace = false;
+                                                    SPOLcikONDPMMEnus = false;
+                                                    RegisteredEyesurgeon = false;
+                                                    eyeBankDonationApprovals=false;
+                                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                                    eyeBankApprovals=false;
+                                                    eyeBankCollections=false;
+                                                    GetSPO_GH_APPorovedClickShowData=false;
+                                                    GetSPO_GHA_PendingClickShowData=true;
+
+                                                  });
                                                 },
                                                 child: new Text('Pending',
                                                     textAlign: TextAlign.center,
@@ -1849,6 +1876,8 @@ class _SpoDashboard extends State<SpoDashboard> {
             eyeBankApproval(),
             eyeBankDonationApproval(),
             eyeBankCollection(),
+            SPOGetDPM_GHA_Click_prrovalDisplayDatas(),
+            SPOGet_GHA_Click_PendingDisplayDatas(),
             //   ListGetSPO_DistrictNgoApproval_(),
             // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
@@ -5450,6 +5479,483 @@ class _SpoDashboard extends State<SpoDashboard> {
           ],
         );
       },
+    );
+  }
+  Widget SPOGetDPM_GHA_Click_prrovalDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: GetSPO_GH_APPorovedClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
+                                      padding: EdgeInsets.all(10),
+                                      width: 160.0,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                            Colors.black.withOpacity(0.1),
+                                            blurRadius: 8,
+                                            offset: Offset(0, 4),
+                                          ),
+                                        ],
+                                        border: Border.all(
+                                            color: Colors.red, width: 1.5),
+                                      ),
+                                      child: Text(
+                                        'Govt. / CHC / Other Hospitals (Approved)',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        setState(() {
+                                          dashboardviewReplace = true;
+                                          /*   GetDPM_GH_PendingClickShowData =
+                                          false;*/
+                                          GetSPO_GH_APPorovedClickShowData =
+                                          false;
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                              Colors.black.withOpacity(0.1),
+                                              blurRadius: 6,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
+                                          border: Border.all(
+                                              color: Colors.red, width: 1.5),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.arrow_back_ios_new,
+                                              color: Colors.red,
+                                              size: 18,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'Back',
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNoDashboard('S.No.'),
+                    _buildHeaderCellDashboardDistrict('District'),
+                    _buildHeaderCellDashboardsTotal('Total'),
+                    _buildHeaderCellDashboardsAction('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<GetSPO_GHCHCOtherApprovalsData>>(
+                future: ApiController.GetSPO_GHCHCOtherApprovalsDatas(
+                    district_code_login,
+                    state_code_login,
+                    statusApproved,
+                    currentFinancialYear),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<GetSPO_GHCHCOtherApprovalsData> ddata = snapshot.data;
+                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                  (ddata.indexOf(offer) + 1)
+                                      .toString()),
+                              _buildDataCellDistrict(offer.districtName),
+                              _buildDataCellDashboardTotal(
+                                  offer.countstate.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                Navigator.of(context).pop();
+
+                                Navigator.push(
+
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ListGovtCHGApprovalWidget(
+                                            districtName:
+                                            offer.districtName),
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget SPOGet_GHA_Click_PendingDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: GetSPO_GHA_PendingClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 8),
+                                      padding: EdgeInsets.all(10),
+                                      width: 160.0,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(12),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color:
+                                            Colors.black.withOpacity(0.1),
+                                            blurRadius: 8,
+                                            offset: Offset(0, 4),
+                                          ),
+                                        ],
+                                        border: Border.all(
+                                            color: Colors.red, width: 1.5),
+                                      ),
+                                      child: Text(
+                                        'Govt. / CHC / Other Hospitals (Pending)',
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        setState(() {
+                                          dashboardviewReplace = true;
+                                          /*   GetDPM_GH_PendingClickShowData =
+                                          false;*/
+                                          GetSPO_GH_APPorovedClickShowData =
+                                          false;
+                                          GetSPO_GHA_PendingClickShowData=false;
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                          BorderRadius.circular(8),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                              Colors.black.withOpacity(0.1),
+                                              blurRadius: 6,
+                                              offset: Offset(0, 3),
+                                            ),
+                                          ],
+                                          border: Border.all(
+                                              color: Colors.red, width: 1.5),
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Icon(
+                                              Icons.arrow_back_ios_new,
+                                              color: Colors.red,
+                                              size: 18,
+                                            ),
+                                            SizedBox(width: 8),
+                                            Text(
+                                              'Back',
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 14,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNoDashboard('S.No.'),
+                    _buildHeaderCellDashboardDistrict('District'),
+                    _buildHeaderCellDashboardsTotal('Total'),
+                    _buildHeaderCellDashboardsAction('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<GetSPO_GHCHCOtherApprovalsData>>(
+                future: ApiController.GetSPO_GHCHCOtherApprovalsDatas(
+                    district_code_login,
+                    state_code_login,
+                    statusPending,
+                    currentFinancialYear),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<GetSPO_GHCHCOtherApprovalsData> ddata = snapshot.data;
+                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                  (ddata.indexOf(offer) + 1)
+                                      .toString()),
+                              _buildDataCellDistrict(offer.districtName),
+                              _buildDataCellDashboardTotal(
+                                  offer.countstate.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                Navigator.of(context).pop();
+
+                                Navigator.push(
+
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ListGovtCHGPending(
+                                            districtName:
+                                            offer.districtName),
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showDetailDialogGovtCHCHospitalClick(
+      BuildContext context, GetSPO_GHCHCOtherApprovalsData offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Hospital Details"),
+          content: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.blue, width: 1),
+              columnWidths: {
+                0: FlexColumnWidth(1),
+                1: FlexColumnWidth(2),
+              },
+              children: [
+                TableRow(
+                  children: [
+                    _buildTableHeader("Field"),
+                    _buildTableHeader("Value"),
+                  ],
+                ),
+                _buildTableRow("District", offer.districtName),
+                _buildTableRow("Total", offer.countstate.toString()),
+
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  Widget _buildTableHeader(String text) {
+    return Padding(
+      padding: EdgeInsets.all(8.0),
+      child: Text(
+        text,
+        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+      ),
     );
   }
 

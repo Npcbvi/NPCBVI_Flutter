@@ -80,7 +80,9 @@ import 'package:mohfw_npcbvi/src/model/spoModel/PatientRegistrations.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SpoDashobardData.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/ApprovedclickPatients.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GHC_approvalList.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_DiseasewiseRecordsApproval.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_GHCHCOtherApprovals.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_Patients_Approved_View.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOApprovalClick.dart';
@@ -5378,6 +5380,144 @@ class ApiController {
       var responseData = json.decode(response.data);
       NGOAPPRovedClickListDetail data =
       NGOAPPRovedClickListDetail.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+  static Future<List<GetSPO_GHCHCOtherApprovalsData>>
+  GetSPO_GHCHCOtherApprovalsDatas(int district_code, int state_code,
+      int status,String financialYear) async {
+    print("@@GetSPO_GHCHCOtherApprovalsDatas--APProvedWala--" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_GHCHCOtherApprovals;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "districtid": district_code,
+        "stateId": state_code,
+        "status": status, // for approved
+        "financialYear": financialYear, // for approved
+      });
+      print("@@GetSPO_GHCHCOtherApprovalsDatas--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetSPO_GHCHCOtherApprovalsDatas--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetSPO_GHCHCOtherApprovals data =
+      GetSPO_GHCHCOtherApprovals.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<List<GHC_approvalListData>>
+  getSPO_GHCHCOtherApproval_list(int district_code, int state_code,
+      String financialYear,int status) async {
+    print("@@getSPO_GHCHCOtherApproval_list" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_GHCHCOtherApproval_list;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "districtid": district_code,
+        "stateId": state_code,
+        "financialYear": financialYear,
+        "status": status,
+
+      });
+      print("@@getSPO_GHCHCOtherApproval_list--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getSPO_GHCHCOtherApproval_list--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GHC_approvalList data =
+      GHC_approvalList.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);

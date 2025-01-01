@@ -180,7 +180,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   Future<List<DataCenterOfficeNameSatelliteCenter>> _futureCenterOfficerName;
   DataCenterOfficeNameSatelliteCenter _dataCenterOfficeNameSatelliteCenter;
-
+  String clickonEditeyeDonationUniqueID,clickonEditofficername
+  ,clickonEditemailid,     clickonEditofficermobile;
   String gethospitalName,
       getCenterOfficerName,
       gethospitalNameSrNORegRedOption,
@@ -218,6 +219,10 @@ class _NgoDashboard extends State<NgoDashboard> {
   TextEditingController stdControllerDPM = new TextEditingController();
   TextEditingController stdControllerSpo = new TextEditingController();
   bool EyeDonationCentreRegistrationClickONAddDontaions=false;
+  bool EditClickEyeDonationCentreRegistrationClickONAddDontaions=false;
+
+
+  TextEditingController _eyeDonationCentreNameControllerEditclick = new TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -911,7 +916,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       EyeBankApplication = true;
                       ngoDashboardclicks = false;
                       EyeDonationCentreRegistrationClickONAddDontaions=false;
-
+                      EditClickEyeDonationCentreRegistrationClickONAddDontaions=false;
                       ManageUSerNGOHospt = false;
                       ngoCampManagerLists = false;
                       CampManagerRegisterartions = false;
@@ -1007,6 +1012,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             AddSatelliteCenterRedOptionField(),
             ManageEyeDonationclicks(),
             EyeDonationCentreRegistrationClickONAddDontaion(),
+            EditClickEyeDonationCentreRegistrationClickONAddDontaion(),
           ],
         ),
       ),
@@ -3480,8 +3486,15 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildMAnageEyeDonationMOUUI(),*/
                                   _buildDataCellViewBlue("View Detail", () {
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
+                                   clickonEditeyeDonationUniqueID=offer.eyeDonationUniqueID;
+                                   clickonEditofficername=offer.officername;
+                                   clickonEditemailid=offer.emailid;
+                                   clickonEditofficermobile=offer.officermobile;
+                                /*  String clickonEditemailid=offer.emailid;
+                                  String clickonEditemailid=offer.emailid;
+                                  String clickonEditemailid=offer.emailid;*/
                                     _showDetailseyeManageMouDetailsView(offer);
-                                  }),
+                        }),
                                 ],
                               );
                             }).toList(),
@@ -3539,9 +3552,27 @@ class _NgoDashboard extends State<NgoDashboard> {
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
                         onTap: () {
+
+                          setState(() {
+                            print('@@Rest functionality is pending here ');
+                            EyeDonationCentreRegistrationClickONAddDontaions=false;
+
+                            EditClickEyeDonationCentreRegistrationClickONAddDontaions=true;
+                            ngoDashboardclicks = false;
+                            EyeBankApplication = false;
+                            mangeEyDonationClick=false;
+                            ngoCampManagerLists = false;
+                            CampManagerRegisterartions = false;
+                            CampManagerRegisterartionsEdit = false;
+                            SatelliteManagerRegisterartionsEdit = false;
+                            ngoScreeningCampListss = false;
+                            AddScreeningCamps = false;
+                            ngoSATELLITECENTREMANAGERLists = false;
+                            AddSatelliteManagers = false;
+                            satelliteCenterMenuListdisplay = false;
+                          });
                           // Your edit action here
                           Navigator.pop(context);
-                          print('@@Rest functionality is pending here ');
 
                         },
                         child: Text(
@@ -3598,6 +3629,455 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
+  Widget EditClickEyeDonationCentreRegistrationClickONAddDontaion() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Visibility(
+            visible: EditClickEyeDonationCentreRegistrationClickONAddDontaions,
+            child: Center(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+                alignment: Alignment.center,
+                child: Column(
+                  children: [
+
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: _eyeDonationCentreNameControllerEditclick, // Assign the TextEditingController here
+                        decoration: InputDecoration(
+                          labelText: clickonEditeyeDonationUniqueID, // The label is always visible
+                          labelStyle: TextStyle(
+                            fontSize: 16,
+                            color: Colors.black,
+                          ),
+                          hintText: 'Enter Eye Donation Centre Name', // Floats when focused or typing
+                          hintStyle: TextStyle(color: Colors.grey),
+                          floatingLabelBehavior: FloatingLabelBehavior.never, // Prevent label from floating
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue,
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                        cursorColor: Colors.black, // Cursor color
+                        onChanged: (value) {
+                          // Triggered whenever the text changes
+                          print("Current value: $value");
+                        },
+                      ),
+                    ),
+
+
+
+
+
+
+
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: TextField(
+                        controller: _officerNameController,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Officer Name ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter Officer Name',
+                          hintStyle: TextStyle(color: Colors.grey), // Hint text style
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                      child: TextField(
+                        controller: _mobileNoControllerss,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Mobile No.',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter Mobile No. *',
+                          hintStyle: TextStyle(color: Colors.grey), // Hint text style
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: _emailIDControllerss,
+                        keyboardType: TextInputType.emailAddress, // Keyboard optimized for email input
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'EmailID ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                              children: [
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter your EmailID',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true, // Adds a background color to the field
+                          fillColor: Colors.white,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10.0),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      // Padding applied directly to the Container
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              width: 1.5, color: Colors.grey[300]),
+                        ),
+                      ),
+                      child: SingleChildScrollView(
+                        // Wrap content in a SingleChildScrollView
+                        child: Center(
+                          child: FutureBuilder<List<Data>>(
+                            future: _futureState,
+                            // Future to fetch the data
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+
+                              if (!snapshot.hasData) {
+                                return const CircularProgressIndicator();
+                              }
+
+                              // Logging data for debugging
+                              developer.log('@@snapshot: ${snapshot.data}');
+
+                              List<Data> stateList = snapshot.data;
+
+                              // Ensure selected state is in the list, otherwise select the first
+                              if (_selectedUserState == null ||
+                                  !stateList.contains(_selectedUserState)) {
+                                _selectedUserState = stateList.first;
+                              }
+
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment
+                                    .start, // Align content to the left
+                                children: <Widget>[
+                                  const Text('Select State:'),
+                                  SizedBox(height: 10),
+                                  // Adds some space between label and dropdown
+                                  DropdownButtonFormField<Data>(
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blue, width: 2.0),
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.blueAccent,
+                                            width: 2.0),
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.blue[50],
+                                    ),
+                                    value: _selectedUserState,
+                                    onChanged: (user) => setState(() {
+                                      _selectedUserState = user;
+                                      stateCodeGovtPrivate = int.parse(
+                                          user.stateCode.toString());
+                                      CodeGovtPrivate = user.code;
+
+                                      if (stateCodeGovtPrivate != null) {
+                                        isVisibleDitrictGovt = true;
+                                        _getDistrictData(
+                                            stateCodeGovtPrivate);
+                                      } else {
+                                        isVisibleDitrictGovt = false;
+                                      }
+                                    }),
+                                    items: stateList
+                                        .map<DropdownMenuItem<Data>>(
+                                            (Data user) {
+                                          return DropdownMenuItem<Data>(
+                                            value: user,
+                                            child: Text(user.stateName),
+                                          );
+                                        }).toList(),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    Visibility(
+                      visible: isVisibleDitrictGovt,
+                      child: Column(
+                        children: [
+                          Center(
+                            child: FutureBuilder<List<DataDsiricst>>(
+                              future:
+                              _getDistrictData(stateCodeGovtPrivate),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+                                if (!snapshot.hasData) {
+                                  return const CircularProgressIndicator();
+                                }
+
+                                // Logging for debugging
+                                developer
+                                    .log('@@snapshot: ${snapshot.data}');
+
+                                List<DataDsiricst> districtList =
+                                    snapshot.data;
+
+                                // Ensure selected district is in the list, otherwise select the first one
+                                if (_selectedUserDistrict == null ||
+                                    !districtList
+                                        .contains(_selectedUserDistrict)) {
+                                  _selectedUserDistrict =
+                                      districtList.first;
+                                }
+
+                                return Padding(
+                                  padding: const EdgeInsets.fromLTRB(
+                                      20, 10, 20.0, 0),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      const Text('Select District:'),
+                                      DropdownButtonFormField<DataDsiricst>(
+                                        decoration: InputDecoration(
+                                          contentPadding:
+                                          EdgeInsets.symmetric(
+                                              vertical: 15.0,
+                                              horizontal: 10.0),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blue,
+                                                width: 2.0),
+                                            borderRadius:
+                                            BorderRadius.circular(10.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.blueAccent,
+                                                width: 2.0),
+                                            borderRadius:
+                                            BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.blue[50],
+                                        ),
+                                        onChanged: (districtUser) =>
+                                            setState(() {
+                                              _selectedUserDistrict =
+                                                  districtUser;
+                                              distCodeGovtPrivate = int.parse(
+                                                  districtUser.districtCode
+                                                      .toString());
+                                              // Update state or further actions here
+                                              print(
+                                                  'Selected District: ${districtUser.districtName}');
+                                            }),
+                                        value: _selectedUserDistrict,
+                                        items: districtList
+                                            .map((DataDsiricst district) {
+                                          return DropdownMenuItem<
+                                              DataDsiricst>(
+                                            value: district,
+                                            child:
+                                            Text(district.districtName),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: _addressControllers,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Address  ',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          hintText: 'Enter Address ',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true, // Adds a background color to the field
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue, // Change border color when focused
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: _pinCodeController,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Pin Code',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                          hintText: 'Enter Pin Code * ',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true, // Adds a background color to the field
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue, // Change border color when focused
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: TextEditingController(text: fromlisteyeBankByIds), // Sets initial text
+                        readOnly: true, // Makes the field non-editable
+                        decoration: InputDecoration(
+                          labelText: fromlisteyeBankByIds, // Optional label
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          filled: true, // Adds a background color to the field
+                          fillColor: Colors.white,
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                            borderSide: BorderSide(
+                              color: Colors.blue, // Change border color when focused
+                              width: 2.0,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                      child: ElevatedButton(
+                        child: Text('Add Donation Center'),
+                        style: ElevatedButton.styleFrom(primary: Colors.blue),
+                        onPressed: () {
+                          print('@@DPMMMM Hit here-----Api---------');
+
+                          _RegistrationEyeDonationCenterByNGO();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
 
   Widget EyeDonationCentreRegistrationClickONAddDontaion() {
     return SingleChildScrollView(
@@ -4057,6 +4537,31 @@ _RegistrationEyeDonationCenterByNGO();
     final _emailIDs = _emailIDControllerss.text.trim();
     final _addresss = _addressControllers .text.trim();
     final _pinCodes = _pinCodeController.text.trim();
+    // Input validations
+    if (_eyeDonations.isEmpty) {
+      Utils.showToast("Please enter Eye Donation Centre Name!", false);
+      return;
+    }
+    if (_officerNames.isEmpty) {
+      Utils.showToast("Please enter Officer Name!", false);
+      return;
+    }
+    if (_mobileNumbers.isEmpty || _mobileNumbers.length != 10 || !RegExp(r'^\d{10}$').hasMatch(_mobileNumbers)) {
+      Utils.showToast("Please enter a valid 10-digit Mobile Number!", false);
+      return;
+    }
+    if (_emailIDs.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_emailIDs)) {
+      Utils.showToast("Please enter a valid Email ID!", false);
+      return;
+    }
+    if (_addresss.isEmpty) {
+      Utils.showToast("Please enter Address!", false);
+      return;
+    }
+    if (_pinCodes.isEmpty || _pinCodes.length != 6 || !RegExp(r'^\d{6}$').hasMatch(_pinCodes)) {
+      Utils.showToast("Please enter a valid 6-digit Pin Code!", false);
+      return;
+    }
       Utils.isNetworkAvailable().then((isNetworkAvailable) async {
         if (isNetworkAvailable) {
           Utils.showProgressDialog1(context);
