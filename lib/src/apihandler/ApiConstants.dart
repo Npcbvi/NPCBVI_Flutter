@@ -135,4 +135,10 @@ class ApiConstants {
   static String GetSPO_GHCHCOtherApprovals = 'SpmDashboard/api/GetSPO_GHCHCOtherApproval';
 
   static String GetSPO_GHCHCOtherApproval_list = 'SpmDashboard/api/GetSPO_GHCHCOtherApproval_list';
+
+
+  static String GetSPO_PrivatePractitionerApproval = 'SpmDashboard/api/GetSPO_PrivatePractitionerApproval';
+
+  static String GetSPO_PrivatePractitionerApproval_list = 'SpmDashboard/api/GetSPO_PrivatePractitionerApproval_list';
+
 }

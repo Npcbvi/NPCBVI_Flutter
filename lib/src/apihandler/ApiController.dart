@@ -86,6 +86,7 @@ import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_GHCH
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_Patients_Approved_View.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOApprovalClick.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/PrivatePractionries.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
@@ -93,6 +94,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/screeningCamp/ScreenCampRegister.dart';
+import '../model/spoModel/dahboardclickdetails/PrivateMedicalCollegeApproved.dart';
 import '../utils/Utils.dart';
 import 'dart:developer';
 import 'package:mohfw_npcbvi/src/model/cities_model.dart';
@@ -5538,5 +5540,146 @@ class ApiController {
       return [];
     }
   }
+
+
+  static Future<List<PrivateMedicalCollegeApprovedData>>
+  getSPO_PrivatePractitionerApproval(int district_code, int state_code,
+      int status,String financialYear) async {
+    print("@@getSPO_PrivatePractitionerApproval--APProvedWala--" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_PrivatePractitionerApproval;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "districtid": district_code,
+        "stateId": state_code,
+        "status": status, // for approved
+        "financialYear": financialYear, // for approved
+      });
+      print("@@getSPO_PrivatePractitionerApproval--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getSPO_PrivatePractitionerApproval--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      PrivateMedicalCollegeApproved data =
+      PrivateMedicalCollegeApproved.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<List<PrivatePractionriesData>>
+  getSPO_PrivatePractitionerApproval_list(int district_code, int state_code,
+      String financialYear,int status) async {
+    print("@@getSPO_PrivatePractitionerApproval_list" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_PrivatePractitionerApproval_list;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "districtid": district_code,
+        "stateId": state_code,
+        "financialYear": financialYear,
+        "status": status,
+
+      });
+      print("@@getSPO_PrivatePractitionerApproval_list--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getSPO_PrivatePractitionerApproval_list--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      PrivatePractionries data =
+      PrivatePractionries.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

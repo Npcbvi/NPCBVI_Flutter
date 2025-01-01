@@ -21,6 +21,7 @@ import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_GHCH
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_Patients_Approved_View.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOApprovalClick.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/PrivateMedicalCollegeApproved.dart';
 import 'package:mohfw_npcbvi/src/spo/ListNGOApprovalWidget.dart';
 import 'package:mohfw_npcbvi/src/spo/ListNGOPendingWidget.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -32,6 +33,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ListGovtCHGApprovalWidget.dart';
 import 'ListGovtCHGPending.dart';
+import 'ListPrivatePractionriesApproval.dart';
 
 class SpoDashboard extends StatefulWidget {
   @override
@@ -106,6 +108,7 @@ class _SpoDashboard extends State<SpoDashboard> {
 
   bool GetSPO_GH_APPorovedClickShowData=false;
  bool GetSPO_GHA_PendingClickShowData=false;
+ bool SPO_PrivatePartitionPorovedClickShowData=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -546,6 +549,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                       RegisteredEyesurgeonsEstimateTargetAllocations=false;
                       eyeBankApprovals=false;
                       eyeBankCollections=false;
+
+                      GetSPO_GH_APPorovedClickShowData=false;
+                      GetSPO_GHA_PendingClickShowData=false;
+                      SPO_PrivatePartitionPorovedClickShowData=false;
                     });
                     Navigator.pop(context);
                   },
@@ -562,6 +569,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                       eyeBankApprovals=false;
                       eyeBankDonationApprovals=false;
                       eyeBankCollections=false;
+                      GetSPO_GH_APPorovedClickShowData=false;
+                      GetSPO_GHA_PendingClickShowData=false;
+                      SPO_PrivatePartitionPorovedClickShowData=false;
                     });
                     Navigator.pop(context);
                   },
@@ -587,6 +597,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankDonationApprovals=false;
                         eyeBankCollections=false;
                         RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                        GetSPO_GH_APPorovedClickShowData=false;
+                        GetSPO_GHA_PendingClickShowData=false;
+                        SPO_PrivatePartitionPorovedClickShowData=false;
                       } else if (_chosenValue ==
                           "Estimate Target Allocation") {
                         dashboardviewReplace = false;
@@ -595,6 +608,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankApprovals=false;
                         eyeBankDonationApprovals=false;
                         eyeBankCollections=false;
+                        GetSPO_GH_APPorovedClickShowData=false;
+                        GetSPO_GHA_PendingClickShowData=false;
+                        SPO_PrivatePartitionPorovedClickShowData=false;
 
                       }
                     });
@@ -624,6 +640,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankApprovals=true;
                         eyeBankDonationApprovals=false;
                         eyeBankCollections=false;
+                        GetSPO_GH_APPorovedClickShowData=false;
+                        GetSPO_GHA_PendingClickShowData=false;
+                        SPO_PrivatePartitionPorovedClickShowData=false;
                       } else if (_chosenValueLOWVision ==
                           "Eye Donation") {
                         dashboardviewReplace = false;
@@ -632,6 +651,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankApprovals=false;
                         eyeBankDonationApprovals=true;
                         eyeBankCollections=false;
+                        GetSPO_GH_APPorovedClickShowData=false;
+                        GetSPO_GHA_PendingClickShowData=false;
+                        SPO_PrivatePartitionPorovedClickShowData=false;
                       }
                     });
                     Navigator.pop(context);
@@ -667,6 +689,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankApprovals=false;
                         eyeBankDonationApprovals=false;
                         eyeBankCollections=true;
+                        GetSPO_GH_APPorovedClickShowData=false;
+                        GetSPO_GHA_PendingClickShowData=false;
+                        SPO_PrivatePartitionPorovedClickShowData=false;
                       } else if (_chosenEyeBank == "Eye Donation") {
                         dashboardviewReplace = false;
                         eyeBankApprovals=false;
@@ -676,6 +701,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankApprovals=false;
                         eyeBankDonationApprovals=false;
                         eyeBankCollections=true;
+                        GetSPO_GH_APPorovedClickShowData=false;
+                        GetSPO_GHA_PendingClickShowData=false;
+                        SPO_PrivatePartitionPorovedClickShowData=false;
                       } else if (_chosenEyeBank ==
                           "Eyeball Collection Via Eye Bank") {
                         dashboardviewReplace = false;
@@ -687,6 +715,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                         eyeBankApprovals=false;
                         eyeBankDonationApprovals=false;
                         eyeBankCollections=true;
+                        GetSPO_GH_APPorovedClickShowData=false;
+                        GetSPO_GHA_PendingClickShowData=false;
+                        SPO_PrivatePartitionPorovedClickShowData=false;
                       }
                     });
                   },
@@ -1122,6 +1153,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     eyeBankApprovals=false;
                                                     eyeBankCollections=false;
                                                     GetSPO_GH_APPorovedClickShowData=true;
+                                                    GetSPO_GHA_PendingClickShowData=false;
+                                                     SPO_PrivatePartitionPorovedClickShowData=false;
                                                   });
                                                 },
                                                 child: new Text('Approved',
@@ -1155,6 +1188,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     eyeBankCollections=false;
                                                     GetSPO_GH_APPorovedClickShowData=false;
                                                     GetSPO_GHA_PendingClickShowData=true;
+                                                    SPO_PrivatePartitionPorovedClickShowData=false;
 
                                                   });
                                                 },
@@ -1262,7 +1296,18 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print(
                                                       '@@---GetDPM_PrivatePartitionPorovedClickShowData--1');
 
-                                                  setState(() {});
+                                                  setState(() {
+                                                    dashboardviewReplace = false;
+                                                    SPOLcikONDPMMEnus = false;
+                                                    RegisteredEyesurgeon = false;
+                                                    eyeBankDonationApprovals=false;
+                                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                                    eyeBankApprovals=false;
+                                                    eyeBankCollections=false;
+                                                    GetSPO_GH_APPorovedClickShowData=false;
+                                                    GetSPO_GHA_PendingClickShowData=false;
+                                                    SPO_PrivatePartitionPorovedClickShowData=true;
+                                                  });
 
                                                   // GetDPM_NGOApprovedPending();
                                                 },
@@ -1878,6 +1923,8 @@ class _SpoDashboard extends State<SpoDashboard> {
             eyeBankCollection(),
             SPOGetDPM_GHA_Click_prrovalDisplayDatas(),
             SPOGet_GHA_Click_PendingDisplayDatas(),
+            SPO_PrivatePartitionAPProvalDisplayDatas(),
+
             //   ListGetSPO_DistrictNgoApproval_(),
             // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
@@ -5550,10 +5597,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                         print('@@back Pressed----display---');
                                         setState(() {
                                           dashboardviewReplace = true;
-                                          /*   GetDPM_GH_PendingClickShowData =
-                                          false;*/
-                                          GetSPO_GH_APPorovedClickShowData =
-                                          false;
+                                          SPOLcikONDPMMEnus = false;
+                                          RegisteredEyesurgeon = false;
+                                          eyeBankDonationApprovals=false;
+                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                          eyeBankApprovals=false;
+                                          eyeBankCollections=false;
+                                          GetSPO_GH_APPorovedClickShowData=false;
+                                          GetSPO_GHA_PendingClickShowData=false;
+                                          SPO_PrivatePartitionPorovedClickShowData=false;
                                         });
                                       },
                                       child: Container(
@@ -5652,7 +5704,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                     );
                   } else {
                     List<GetSPO_GHCHCOtherApprovalsData> ddata = snapshot.data;
-                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
+                    print('@@---GetSPO_GHCHCOtherApprovalsData' +
                         ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -5767,9 +5819,16 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           dashboardviewReplace = true;
                                           /*   GetDPM_GH_PendingClickShowData =
                                           false;*/
-                                          GetSPO_GH_APPorovedClickShowData =
-                                          false;
+
                                           GetSPO_GHA_PendingClickShowData=false;
+                                          SPOLcikONDPMMEnus = false;
+                                          RegisteredEyesurgeon = false;
+                                          eyeBankDonationApprovals=false;
+                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                          eyeBankApprovals=false;
+                                          eyeBankCollections=false;
+                                          GetSPO_GH_APPorovedClickShowData=false;
+                                          SPO_PrivatePartitionPorovedClickShowData=false;
                                         });
                                       },
                                       child: Container(
@@ -5911,6 +5970,214 @@ class _SpoDashboard extends State<SpoDashboard> {
       ],
     );
   }
+
+
+  Widget SPO_PrivatePartitionAPProvalDisplayDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: SPO_PrivatePartitionPorovedClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 8),
+                                      padding: EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.red.withOpacity(0.1),
+                                        // Light red background
+                                        border: Border.all(
+                                            color: Colors.red,
+                                            width: 1), // Red border
+                                      ),
+                                      child: Text(
+                                        'Private Practitioners (Approved)',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          // Set a font size for better readability
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        overflow: TextOverflow
+                                            .ellipsis, // Handle text overflow
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        setState(() {
+                                          dashboardviewReplace = true;
+                                          GetSPO_GHA_PendingClickShowData=false;
+                                          SPOLcikONDPMMEnus = false;
+                                          RegisteredEyesurgeon = false;
+                                          eyeBankDonationApprovals=false;
+                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                          eyeBankApprovals=false;
+                                          eyeBankCollections=false;
+                                          GetSPO_GH_APPorovedClickShowData=false;
+                                          SPO_PrivatePartitionPorovedClickShowData=false;
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 16.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red.withOpacity(0.1),
+                                          // Light red background
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          // Rounded corners
+                                          border: Border.all(
+                                              color: Colors.red,
+                                              width: 1), // Red border
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center, // Center the content
+                                          children: [
+                                            // Space between the icon and text
+                                            Text(
+                                              'Back',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNoDashboard('S.No.'),
+                    _buildHeaderCellDashboardDistrict('District'),
+                    _buildHeaderCellDashboardsTotal('Total'),
+                    _buildHeaderCellDashboardsAction('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
+                future: ApiController.getSPO_PrivatePractitionerApproval(
+                    district_code_login,
+                    state_code_login,
+                    statusApproved,
+                    currentFinancialYear),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<PrivateMedicalCollegeApprovedData> ddata = snapshot.data;
+                    print('@@---PrivateMedicalCollegeApprovedData' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                  (ddata.indexOf(offer) + 1)
+                                      .toString()),
+                              _buildDataCellDistrict(offer.districtName),
+                              _buildDataCellDashboardTotal(
+                                  offer.countstate.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                Navigator.of(context).pop();
+
+                                Navigator.push(
+
+                                  context,
+                                  MaterialPageRoute(
+
+                                    builder: (context) =>
+                                        ListPrivatePractionriesApproval(
+                                            districtName:
+                                            offer.districtName),
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
 
   void _showDetailDialogGovtCHCHospitalClick(
       BuildContext context, GetSPO_GHCHCOtherApprovalsData offer) {
@@ -6057,8 +6324,58 @@ class _SpoDashboard extends State<SpoDashboard> {
 
 
 
+  Widget _buildHeaderCellDiseaseDataAction(String text) {
+    return Container(
+      height: 35,
+      width: 80, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
 
 
+  Widget _buildDataCellViewBlueDiseaseDataAction(
+      String text, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: 80,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(
+            width: 0.1,
+          ),
+        ),
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+              fontSize: 14, // Set font size to 16 pixels
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class GetChangeAPsswordFieldsss {
