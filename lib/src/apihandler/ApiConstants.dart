@@ -144,5 +144,9 @@ class ApiConstants {
   static String GetSPO_PrivateMedicalCollegeApproval = 'SpmDashboard/api/GetSPO_PrivateMedicalCollegeApproval';
 
   static String GetSPO_PrivateMedicalCollegeApproval_list = 'SpmDashboard/api/GetSPO_PrivateMedicalCollegeApproval_list';
+  static String GetSPO_ScreeningCampApproval = 'SpmDashboard/api/GetSPO_ScreeningCampApproval';
+
+  static String GetSPOScreeningCampApproval_list = 'SpmDashboard/api/GetSPOScreeningCampApproval_list';
+
 
 }

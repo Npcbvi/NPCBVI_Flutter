@@ -88,6 +88,8 @@ import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRoved
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOApprovalClick.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/PrivateMedicalCollgeAPProvalList.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/PrivatePractionries.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/ScreeningCampCompletedList.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/ScreeningCampComplted.dart';
 import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
@@ -5795,6 +5797,146 @@ class ApiController {
       var responseData = json.decode(response.data);
       PrivateMedicalCollgeAPProvalList data =
       PrivateMedicalCollgeAPProvalList.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+  static Future<List<ScreeningCampCompltedData>>
+  getSPO_ScreeningCampApproval(int district_code, int state_code,
+      String campType,String financialYear,String mode) async {
+    print("@@getSPO_ScreeningCampApproval--APProvedWala--" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_ScreeningCampApproval;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "campType": campType, // for approved
+        "financialYear": financialYear, // for approved
+        "mode": "", // for approved
+      });
+      print("@@getSPO_ScreeningCampApproval--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getSPO_ScreeningCampApproval--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ScreeningCampComplted data =
+      ScreeningCampComplted.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<List<ScreeningCampCompletedListData>>
+  getSPOScreeningCampApproval_list(int district_code, int state_code,
+      String campType,String financialYear,String mode) async {
+    print("@@getSPOScreeningCampApproval_list" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPOScreeningCampApproval_list;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "campType": campType, // for approved
+        "financialYear": financialYear, // for approved
+        "mode": "", // for approved
+
+      });
+      print("@@getSPOScreeningCampApproval_list--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getSPOScreeningCampApproval_list--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ScreeningCampCompletedList data =
+      ScreeningCampCompletedList.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
