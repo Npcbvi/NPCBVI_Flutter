@@ -7,16 +7,16 @@ import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/PrivatePrac
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class ListPrivatePractionriesApproval extends StatefulWidget {
+class ListPrivatePractionriesPending extends StatefulWidget {
   final String districtName;
 
   // Constructor to accept districtName
-  ListPrivatePractionriesApproval({Key key,  this.districtName}) : super(key: key);
+  ListPrivatePractionriesPending({Key key,  this.districtName}) : super(key: key);
   @override
-  _ListPrivatePractionriesApproval createState() => _ListPrivatePractionriesApproval();
+  _ListPrivatePractionriesPending createState() => _ListPrivatePractionriesPending();
 }
 
-class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesApproval> {
+class _ListPrivatePractionriesPending extends State<ListPrivatePractionriesPending> {
   String districtNames = '';
   String stateNames = '';
   Function onBackPressed;
@@ -55,7 +55,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
   Widget build(BuildContext context) {
     currentFinancialYear = getCurrentFinancialYear();
     return Scaffold(
-      appBar: AppBar(title: Text('Private Practitioner(s) (Approval)')),
+      appBar: AppBar(title: Text('Private Practitioner(s) (Pending)')),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -103,7 +103,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
                         SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Private Practitioner(s) (Approved)',
+                            'Private Practitioner(s) (Pending)',
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -164,7 +164,14 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
               ],
             ),
 
-            Divider(color: Colors.blue, height: 1.0),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 8.0), // Adjust vertical margin
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0, // Thickness of the line
+              ),
+            ),
+
 
             // Data Table (Header and Rows in Single ScrollView)
             SingleChildScrollView(
@@ -190,7 +197,9 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
 
                   // Data Rows
                   FutureBuilder<List<PrivatePractionriesData>>(
-                    future: ApiController.getSPO_PrivatePractitionerApproval_list(district_code_login, state_code_login,currentFinancialYear , 2),
+                    future: ApiController.getSPO_PrivatePractitionerApproval_list(district_code_login, state_code_login,currentFinancialYear , 1),
+                  //  future: ApiController.getSPO_PrivatePractitionerApproval_list(575, 33,"2022-2023" , 1),
+
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -221,8 +230,9 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
                               children: [
                                 _buildDataCellCellSrNo((ddata.indexOf(offer) + 1).toString()),
                                 _buildDataCell(offer.oName),
-                                _buildDataCell(offer.nodalOfficerName),
+                              //  _buildDataCell(offer.nodalOfficerName),
                                 /* _buildDataCell(offer.hName),
+
                     _buildDataCell(offer.address),
                     _buildDataCell(offer.nodalOfficerName),
                     _buildDataCell(offer.mobile.toString()),
@@ -336,7 +346,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
 
   Widget _buildHeaderCell(String title) {
     return Container(
-      width: 150,
+      width: 200,
       height: 50,
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
@@ -373,7 +383,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
 
   Widget _buildDataCell(String value) {
     return Container(
-      width: 150,
+      width: 200,
       height: 50,
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells

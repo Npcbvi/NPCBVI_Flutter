@@ -3,20 +3,21 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GHC_approvalList.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/PrivateMedicalCollgeAPProvalList.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/PrivatePractionries.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class ListPrivatePractionriesApproval extends StatefulWidget {
+class PrivateMedicalCollegePendingList extends StatefulWidget {
   final String districtName;
 
   // Constructor to accept districtName
-  ListPrivatePractionriesApproval({Key key,  this.districtName}) : super(key: key);
+  PrivateMedicalCollegePendingList({Key key,  this.districtName}) : super(key: key);
   @override
-  _ListPrivatePractionriesApproval createState() => _ListPrivatePractionriesApproval();
+  _PrivateMedicalCollegePendingList createState() => _PrivateMedicalCollegePendingList();
 }
 
-class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesApproval> {
+class _PrivateMedicalCollegePendingList extends State<PrivateMedicalCollegePendingList> {
   String districtNames = '';
   String stateNames = '';
   Function onBackPressed;
@@ -55,7 +56,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
   Widget build(BuildContext context) {
     currentFinancialYear = getCurrentFinancialYear();
     return Scaffold(
-      appBar: AppBar(title: Text('Private Practitioner(s) (Approval)')),
+      appBar: AppBar(title: Text('Private Medical College(Pending)')),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -103,7 +104,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
                         SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            'Private Practitioner(s) (Approved)',
+                            'Private Medical College(Pending)',
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -164,7 +165,14 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
               ],
             ),
 
-            Divider(color: Colors.blue, height: 1.0),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 8.0), // Adjust vertical margin
+              child: Divider(
+                color: Colors.grey,
+                height: 1.0, // Thickness of the line
+              ),
+            ),
+
 
             // Data Table (Header and Rows in Single ScrollView)
             SingleChildScrollView(
@@ -189,8 +197,10 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
                   Divider(color: Colors.blue, height: 1.0),
 
                   // Data Rows
-                  FutureBuilder<List<PrivatePractionriesData>>(
-                    future: ApiController.getSPO_PrivatePractitionerApproval_list(district_code_login, state_code_login,currentFinancialYear , 2),
+                  FutureBuilder<List<PrivateMedicalCollgeAPProvalListData>>(
+                     future: ApiController.getSPO_PrivateMedicalCollegeApproval_list(district_code_login, state_code_login,currentFinancialYear , 1),
+                    //future: ApiController.getSPO_PrivateMedicalCollegeApproval_list(575, 33,"2022-2023" , 1),
+
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
@@ -213,7 +223,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
                           ),
                         );
                       } else {
-                        List<PrivatePractionriesData> ddata = snapshot.data;
+                        List<PrivateMedicalCollgeAPProvalListData> ddata = snapshot.data;
                         return Column(
                           children: ddata.map((offer) {
                             return Row(
@@ -221,8 +231,9 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
                               children: [
                                 _buildDataCellCellSrNo((ddata.indexOf(offer) + 1).toString()),
                                 _buildDataCell(offer.oName),
-                                _buildDataCell(offer.nodalOfficerName),
+                                //  _buildDataCell(offer.nodalOfficerName),
                                 /* _buildDataCell(offer.hName),
+
                     _buildDataCell(offer.address),
                     _buildDataCell(offer.nodalOfficerName),
                     _buildDataCell(offer.mobile.toString()),
@@ -246,7 +257,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
       ),
     );
   }
-  void _showDetailsDialogprivatePractioneries(BuildContext context, PrivatePractionriesData offer) {
+  void _showDetailsDialogprivatePractioneries(BuildContext context, PrivateMedicalCollgeAPProvalListData offer) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -336,7 +347,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
 
   Widget _buildHeaderCell(String title) {
     return Container(
-      width: 150,
+      width: 200,
       height: 50,
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
@@ -373,7 +384,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
 
   Widget _buildDataCell(String value) {
     return Container(
-      width: 150,
+      width: 200,
       height: 50,
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells

@@ -24,6 +24,7 @@ import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOApproval
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/PrivateMedicalCollegeApproved.dart';
 import 'package:mohfw_npcbvi/src/spo/ListNGOApprovalWidget.dart';
 import 'package:mohfw_npcbvi/src/spo/ListNGOPendingWidget.dart';
+import 'package:mohfw_npcbvi/src/spo/ListPrivatePractionriesPending.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -34,6 +35,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'ListGovtCHGApprovalWidget.dart';
 import 'ListGovtCHGPending.dart';
 import 'ListPrivatePractionriesApproval.dart';
+import 'PrivateMedicalCollegeAPProvalList.dart';
+import 'PrivateMedicalCollegePendingList.dart';
 
 class SpoDashboard extends StatefulWidget {
   @override
@@ -109,6 +112,9 @@ class _SpoDashboard extends State<SpoDashboard> {
   bool GetSPO_GH_APPorovedClickShowData=false;
  bool GetSPO_GHA_PendingClickShowData=false;
  bool SPO_PrivatePartitionPorovedClickShowData=false;
+ bool SPO_PrivatePartitionPendingClickShowData=false;
+ bool SPO_PivateMEdicalColleges=false;
+ bool SPO_PivateMEdicalCollegesPending=false;
   @override
   void initState() {
     // TODO: implement initState
@@ -1332,7 +1338,19 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print(
                                                       '@@---Pending here work----1');
 
-                                                  setState(() {});
+                                                  setState(() {
+                                                    dashboardviewReplace = false;
+                                                    SPOLcikONDPMMEnus = false;
+                                                    RegisteredEyesurgeon = false;
+                                                    eyeBankDonationApprovals=false;
+                                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                                    eyeBankApprovals=false;
+                                                    eyeBankCollections=false;
+                                                    GetSPO_GH_APPorovedClickShowData=false;
+                                                    GetSPO_GHA_PendingClickShowData=false;
+                                                    SPO_PrivatePartitionPorovedClickShowData=false;
+                                                    SPO_PrivatePartitionPendingClickShowData=true;
+                                                  });
                                                 },
                                                 child: new Text('Pending',
                                                     textAlign: TextAlign.center,
@@ -1439,7 +1457,22 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print(
                                                       '@@---APProved here work----1');
 
-                                                  setState(() {});
+                                                  setState(() {
+
+                                                    dashboardviewReplace = false;
+                                                    GetSPO_GHA_PendingClickShowData=false;
+                                                    SPOLcikONDPMMEnus = false;
+                                                    RegisteredEyesurgeon = false;
+                                                    eyeBankDonationApprovals=false;
+                                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                                    eyeBankApprovals=false;
+                                                    eyeBankCollections=false;
+                                                    GetSPO_GH_APPorovedClickShowData=false;
+                                                    SPO_PrivatePartitionPorovedClickShowData=false;
+                                                    SPO_PrivatePartitionPendingClickShowData=false;
+                                                    SPO_PivateMEdicalColleges=true;
+                                                    SPO_PivateMEdicalCollegesPending=false;
+                                                  });
                                                 },
                                                 child: new Text('Approved',
                                                     textAlign: TextAlign.center,
@@ -1462,7 +1495,21 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print(
                                                       '@@---DPM_privateMEdicalCollegePendingData here work----1');
 
-                                                  setState(() {});
+                                                  setState(() {
+                                                    dashboardviewReplace = false;
+                                                    GetSPO_GHA_PendingClickShowData=false;
+                                                    SPOLcikONDPMMEnus = false;
+                                                    RegisteredEyesurgeon = false;
+                                                    eyeBankDonationApprovals=false;
+                                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                                    eyeBankApprovals=false;
+                                                    eyeBankCollections=false;
+                                                    GetSPO_GH_APPorovedClickShowData=false;
+                                                    SPO_PrivatePartitionPorovedClickShowData=false;
+                                                    SPO_PrivatePartitionPendingClickShowData=false;
+                                                    SPO_PivateMEdicalColleges=false;
+                                                    SPO_PivateMEdicalCollegesPending=true;
+                                                  });
                                                 },
                                                 child: new Text('Pending',
                                                     textAlign: TextAlign.center,
@@ -1924,6 +1971,9 @@ class _SpoDashboard extends State<SpoDashboard> {
             SPOGetDPM_GHA_Click_prrovalDisplayDatas(),
             SPOGet_GHA_Click_PendingDisplayDatas(),
             SPO_PrivatePartitionAPProvalDisplayDatas(),
+            SPO_PrivatePartitionPendingClickShowDatas(),
+            SPO_PivateMEdicalCollege(),
+            SPO_PivateMEdicalCollegePending(),
 
             //   ListGetSPO_DistrictNgoApproval_(),
             // ngowisePatientPendingInnerDisplayDataEidt(),
@@ -6176,7 +6226,619 @@ class _SpoDashboard extends State<SpoDashboard> {
       ],
     );
   }
+  Widget SPO_PrivatePartitionPendingClickShowDatas() {
+    return Column(
+      children: [
+        Visibility(
+          visible: SPO_PrivatePartitionPendingClickShowData,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
 
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 8),
+                                      padding: EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.red.withOpacity(0.1),
+                                        // Light red background
+                                        border: Border.all(
+                                            color: Colors.red,
+                                            width: 1), // Red border
+                                      ),
+                                      child: Text(
+                                        'Private Practitioners (Pendingh)',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          // Set a font size for better readability
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        overflow: TextOverflow
+                                            .ellipsis, // Handle text overflow
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        setState(() {
+                                          dashboardviewReplace = true;
+                                          GetSPO_GHA_PendingClickShowData=false;
+                                          SPOLcikONDPMMEnus = false;
+                                          RegisteredEyesurgeon = false;
+                                          eyeBankDonationApprovals=false;
+                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                          eyeBankApprovals=false;
+                                          eyeBankCollections=false;
+                                          GetSPO_GH_APPorovedClickShowData=false;
+                                          SPO_PrivatePartitionPorovedClickShowData=false;
+                                          SPO_PrivatePartitionPendingClickShowData=false;
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 16.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red.withOpacity(0.1),
+                                          // Light red background
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          // Rounded corners
+                                          border: Border.all(
+                                              color: Colors.red,
+                                              width: 1), // Red border
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center, // Center the content
+                                          children: [
+                                            // Space between the icon and text
+                                            Text(
+                                              'Back',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNoDashboard('S.No.'),
+                    _buildHeaderCellDashboardDistrict('District'),
+                    _buildHeaderCellDashboardsTotal('Total'),
+                    _buildHeaderCellDashboardsAction('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
+                future: ApiController.getSPO_PrivatePractitionerApproval(
+                    district_code_login,
+                    state_code_login,
+                    statusPending,
+                    currentFinancialYear),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<PrivateMedicalCollegeApprovedData> ddata = snapshot.data;
+                    print('@@---PrivateMedicalCollegeApprovedData' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                  (ddata.indexOf(offer) + 1)
+                                      .toString()),
+                              _buildDataCellDistrict(offer.districtName),
+                              _buildDataCellDashboardTotal(
+                                  offer.countstate.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                Navigator.of(context).pop();
+
+                                Navigator.push(
+
+                                  context,
+                                  MaterialPageRoute(
+
+                                    builder: (context) =>
+                                        ListPrivatePractionriesPending(
+                                            districtName:
+                                            offer.districtName),
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget SPO_PivateMEdicalCollege() {
+    return Column(
+      children: [
+        Visibility(
+          visible: SPO_PivateMEdicalColleges,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 8),
+                                      padding: EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.red.withOpacity(0.1),
+                                        // Light red background
+                                        border: Border.all(
+                                            color: Colors.red,
+                                            width: 1), // Red border
+                                      ),
+                                      child: Text(
+                                        'Private Medical College (Approved)',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          // Set a font size for better readability
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        overflow: TextOverflow
+                                            .ellipsis, // Handle text overflow
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        setState(() {
+                                          dashboardviewReplace = true;
+                                          GetSPO_GHA_PendingClickShowData=false;
+                                          SPOLcikONDPMMEnus = false;
+                                          RegisteredEyesurgeon = false;
+                                          eyeBankDonationApprovals=false;
+                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                          eyeBankApprovals=false;
+                                          eyeBankCollections=false;
+                                          GetSPO_GH_APPorovedClickShowData=false;
+                                          SPO_PrivatePartitionPorovedClickShowData=false;
+                                          SPO_PrivatePartitionPendingClickShowData=false;
+                                          SPO_PivateMEdicalColleges=false;
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 16.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red.withOpacity(0.1),
+                                          // Light red background
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          // Rounded corners
+                                          border: Border.all(
+                                              color: Colors.red,
+                                              width: 1), // Red border
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center, // Center the content
+                                          children: [
+                                            // Space between the icon and text
+                                            Text(
+                                              'Back',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNoDashboard('S.No.'),
+                    _buildHeaderCellDashboardDistrict('District'),
+                    _buildHeaderCellDashboardsTotal('Total'),
+                    _buildHeaderCellDashboardsAction('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
+                future: ApiController.getSPO_PrivateMedicalCollegeApproval(
+                    district_code_login,
+                    state_code_login,
+                    statusApproved,
+                    currentFinancialYear),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<PrivateMedicalCollegeApprovedData> ddata = snapshot.data;
+                    print('@@---PrivateMedicalCollegeApprovedData' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                  (ddata.indexOf(offer) + 1)
+                                      .toString()),
+                              _buildDataCellDistrict(offer.districtName),
+                              _buildDataCellDashboardTotal(
+                                  offer.countstate.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                Navigator.of(context).pop();
+
+                                Navigator.push(context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PrivateMedicalCollegeAPProvalList(
+                                            districtName:
+                                            offer.districtName),
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+  Widget SPO_PivateMEdicalCollegePending() {
+    return Column(
+      children: [
+        Visibility(
+          visible: SPO_PivateMEdicalCollegesPending,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                  child: Container(
+                    color: Colors.white70,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            child: Container(
+                              color: Colors.white70,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+
+                                    Container(
+                                      margin: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 8),
+                                      padding: EdgeInsets.all(12),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(8),
+                                        color: Colors.red.withOpacity(0.1),
+                                        // Light red background
+                                        border: Border.all(
+                                            color: Colors.red,
+                                            width: 1), // Red border
+                                      ),
+                                      child: Text(
+                                        'Private Medical College (Approved)',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          // Set a font size for better readability
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        overflow: TextOverflow
+                                            .ellipsis, // Handle text overflow
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        print('@@back Pressed----display---');
+                                        setState(() {
+                                          dashboardviewReplace = true;
+                                          GetSPO_GHA_PendingClickShowData=false;
+                                          SPOLcikONDPMMEnus = false;
+                                          RegisteredEyesurgeon = false;
+                                          eyeBankDonationApprovals=false;
+                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                          eyeBankApprovals=false;
+                                          eyeBankCollections=false;
+                                          GetSPO_GH_APPorovedClickShowData=false;
+                                          SPO_PrivatePartitionPorovedClickShowData=false;
+                                          SPO_PrivatePartitionPendingClickShowData=false;
+                                          SPO_PivateMEdicalColleges=false;
+                                          SPO_PivateMEdicalCollegesPending=false;
+                                        });
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 8.0, horizontal: 16.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.red.withOpacity(0.1),
+                                          // Light red background
+                                          borderRadius:
+                                          BorderRadius.circular(8.0),
+                                          // Rounded corners
+                                          border: Border.all(
+                                              color: Colors.red,
+                                              width: 1), // Red border
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center, // Center the content
+                                          children: [
+                                            // Space between the icon and text
+                                            Text(
+                                              'Back',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNoDashboard('S.No.'),
+                    _buildHeaderCellDashboardDistrict('District'),
+                    _buildHeaderCellDashboardsTotal('Total'),
+                    _buildHeaderCellDashboardsAction('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
+                future: ApiController.getSPO_PrivateMedicalCollegeApproval(
+                    district_code_login,
+                    state_code_login,
+                    statusPending,
+                    currentFinancialYear),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<PrivateMedicalCollegeApprovedData> ddata = snapshot.data;
+                    print('@@---PrivateMedicalCollegeApprovedData' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                  (ddata.indexOf(offer) + 1)
+                                      .toString()),
+                              _buildDataCellDistrict(offer.districtName),
+                              _buildDataCellDashboardTotal(
+                                  offer.countstate.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                Navigator.of(context).pop();
+
+                                Navigator.push(context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        PrivateMedicalCollegePendingList(
+                                            districtName:
+                                            offer.districtName),
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
 
   void _showDetailDialogGovtCHCHospitalClick(
