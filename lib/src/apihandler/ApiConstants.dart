@@ -147,6 +147,8 @@ class ApiConstants {
   static String GetSPO_ScreeningCampApproval = 'SpmDashboard/api/GetSPO_ScreeningCampApproval';
 
   static String GetSPOScreeningCampApproval_list = 'SpmDashboard/api/GetSPOScreeningCampApproval_list';
+  static String GetSPO_SatelliteCentreApproval = 'SpmDashboard/api/GetSPO_SatelliteCentreApproval';
 
+  static String GetSPO_SatelliteCentreApproval_list = 'SpmDashboard/api/GetSPO_SatelliteCentreApproval_list';
 
 }

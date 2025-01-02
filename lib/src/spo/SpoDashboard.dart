@@ -19,6 +19,7 @@ import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/Approvedcli
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_DiseasewiseRecordsApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_GHCHCOtherApprovals.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_Patients_Approved_View.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GetSPO_SatelliteCentreApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOApprovalClick.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/PrivateMedicalCollegeApproved.dart';
@@ -26,7 +27,9 @@ import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/ScreeningCa
 import 'package:mohfw_npcbvi/src/spo/ListNGOApprovalWidget.dart';
 import 'package:mohfw_npcbvi/src/spo/ListNGOPendingWidget.dart';
 import 'package:mohfw_npcbvi/src/spo/ListPrivatePractionriesPending.dart';
+import 'package:mohfw_npcbvi/src/spo/SatelliteCentresList.dart';
 import 'package:mohfw_npcbvi/src/spo/ScreeningCenterCompleted.dart';
+import 'package:mohfw_npcbvi/src/spo/ScreeningCenterUpComings.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -39,6 +42,7 @@ import 'ListGovtCHGPending.dart';
 import 'ListPrivatePractionriesApproval.dart';
 import 'PrivateMedicalCollegeAPProvalList.dart';
 import 'PrivateMedicalCollegePendingList.dart';
+import 'ScreeningCenterOngoing.dart';
 
 class SpoDashboard extends StatefulWidget {
   @override
@@ -118,11 +122,29 @@ class _SpoDashboard extends State<SpoDashboard> {
  bool SPO_PivateMEdicalColleges=false;
  bool SPO_PivateMEdicalCollegesPending=false;
  bool SPO_ScreeningCampCompleteds=false;
+ bool SPO_ScreeningCampOngoing=false;
+ bool SPO_SatelliteCentres=false;
+
+  bool SPO_ScreeningCampUpComing=false;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     dashboardviewReplace = true;
+    GetSPO_GHA_PendingClickShowData = false;
+    SPOLcikONDPMMEnus = false;
+    RegisteredEyesurgeon = false;
+    eyeBankDonationApprovals = false;
+    RegisteredEyesurgeonsEstimateTargetAllocations = false;
+    eyeBankApprovals = false;
+    eyeBankCollections = false;
+    GetSPO_GH_APPorovedClickShowData = false;
+    SPO_PrivatePartitionPorovedClickShowData = false;
+    SPO_PrivatePartitionPendingClickShowData = false;
+    SPO_PivateMEdicalColleges = false;
+    SPO_PivateMEdicalCollegesPending = false;
+    SPO_ScreeningCampCompleteds = false;
+    SPO_ScreeningCampOngoing=false;
 
     _getSPOashbnoardData();
     _futures = ApiController.getSPO_RegisteredEyesurgeonList(100, "NPCBTT");
@@ -1635,6 +1657,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     SPO_PrivatePartitionPendingClickShowData=false;
                                                     SPO_PivateMEdicalColleges=false;
                                                     SPO_PivateMEdicalCollegesPending=false;
+
+                                                    SPO_ScreeningCampCompleteds = false;
+                                                    SPO_ScreeningCampOngoing=false;
                                                   });
                                                 },
                                                 child: new Text('Completed',
@@ -1658,7 +1683,25 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print(
                                                       '@@---Screening here work----1');
 
-                                                  setState(() {});
+                                                  setState(() {
+                                                    SPO_ScreeningCampCompleteds=false;
+                                                    dashboardviewReplace = false;
+                                                    GetSPO_GHA_PendingClickShowData=false;
+                                                    SPOLcikONDPMMEnus = false;
+                                                    RegisteredEyesurgeon = false;
+                                                    eyeBankDonationApprovals=false;
+                                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                                    eyeBankApprovals=false;
+                                                    eyeBankCollections=false;
+                                                    GetSPO_GH_APPorovedClickShowData=false;
+                                                    SPO_PrivatePartitionPorovedClickShowData=false;
+                                                    SPO_PrivatePartitionPendingClickShowData=false;
+                                                    SPO_PivateMEdicalColleges=false;
+                                                    SPO_PivateMEdicalCollegesPending=false;
+
+                                                    SPO_ScreeningCampCompleteds = false;
+                                                    SPO_ScreeningCampOngoing=true;
+                                                  });
                                                 },
                                                 child: new Text('Ongoing',
                                                     textAlign: TextAlign.center,
@@ -1808,7 +1851,24 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print(
                                                       '@@---satelliteCentreShowData here work----1');
 
-                                                  setState(() {});
+                                                  setState(() {
+                                                    dashboardviewReplace = false;
+                                                    GetSPO_GHA_PendingClickShowData = false;
+                                                    SPOLcikONDPMMEnus = false;
+                                                    RegisteredEyesurgeon = false;
+                                                    eyeBankDonationApprovals = false;
+                                                    RegisteredEyesurgeonsEstimateTargetAllocations = false;
+                                                    eyeBankApprovals = false;
+                                                    eyeBankCollections = false;
+                                                    GetSPO_GH_APPorovedClickShowData = false;
+                                                    SPO_PrivatePartitionPorovedClickShowData = false;
+                                                    SPO_PrivatePartitionPendingClickShowData = false;
+                                                    SPO_PivateMEdicalColleges = false;
+                                                    SPO_PivateMEdicalCollegesPending = false;
+                                                    SPO_ScreeningCampCompleteds = false;
+                                                    SPO_ScreeningCampOngoing=false;
+                                                    SPO_SatelliteCentres=true;
+                                                  });
                                                 },
                                                 child: new Text(
                                                     satellitecentreCount != null
@@ -1833,9 +1893,25 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                       20, 30, 20.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
-                                                  Utils.showToast(
+                                                /*  Utils.showToast(
                                                       "Due to large amount of data",
-                                                      true);
+                                                      true);*/
+                                                  dashboardviewReplace = false;
+                                                  GetSPO_GHA_PendingClickShowData = false;
+                                                  SPOLcikONDPMMEnus = false;
+                                                  RegisteredEyesurgeon = false;
+                                                  eyeBankDonationApprovals = false;
+                                                  RegisteredEyesurgeonsEstimateTargetAllocations = false;
+                                                  eyeBankApprovals = false;
+                                                  eyeBankCollections = false;
+                                                  GetSPO_GH_APPorovedClickShowData = false;
+                                                  SPO_PrivatePartitionPorovedClickShowData = false;
+                                                  SPO_PrivatePartitionPendingClickShowData = false;
+                                                  SPO_PivateMEdicalColleges = false;
+                                                  SPO_PivateMEdicalCollegesPending = false;
+                                                  SPO_ScreeningCampCompleteds = false;
+                                                  SPO_ScreeningCampOngoing=false;
+                                                  SPO_SatelliteCentres=true;
                                                 },
                                                 child: new Text('more..',
                                                     textAlign: TextAlign.center,
@@ -1995,6 +2071,9 @@ class _SpoDashboard extends State<SpoDashboard> {
             SPO_PivateMEdicalCollege(),
             SPO_PivateMEdicalCollegePending(),
             SPO_ScreeningCampCompleted(),
+            SPO_ScreeningCampOnGoing(),
+            SPO_ScreeningCampUpComings(),
+            SPO_SatelliteCentre(),
 
             //   ListGetSPO_DistrictNgoApproval_(),
             // ngowisePatientPendingInnerDisplayDataEidt(),
@@ -7031,6 +7110,521 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
+  Widget SPO_ScreeningCampOnGoing() {
+    return Column(
+      children: [
+        Visibility(
+          visible: SPO_ScreeningCampOngoing,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              Container(
+                color: Colors.white70,
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text Container
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.red.withOpacity(0.1), // Light red background
+                          border: Border.all(
+                            color: Colors.red,
+                            width: 1, // Red border
+                          ),
+                        ),
+                        child: Text(
+                          'District-wise Screening Camp(s) (Onging)',
+                          style: TextStyle(
+                            fontSize: 14, // Set font size for better readability
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis, // Handle text overflow
+                          maxLines: 2, // Limit text to 2 lines
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // Back Button
+                    InkWell(
+                      onTap: () {
+                        print('@@back Pressed----display---');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetSPO_GHA_PendingClickShowData = false;
+                          SPOLcikONDPMMEnus = false;
+                          RegisteredEyesurgeon = false;
+                          eyeBankDonationApprovals = false;
+                          RegisteredEyesurgeonsEstimateTargetAllocations = false;
+                          eyeBankApprovals = false;
+                          eyeBankCollections = false;
+                          GetSPO_GH_APPorovedClickShowData = false;
+                          SPO_PrivatePartitionPorovedClickShowData = false;
+                          SPO_PrivatePartitionPendingClickShowData = false;
+                          SPO_PivateMEdicalColleges = false;
+                          SPO_PivateMEdicalCollegesPending = false;
+                          SPO_ScreeningCampCompleteds = false;
+                          SPO_ScreeningCampOngoing=false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.1), // Light red background
+                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                          border: Border.all(color: Colors.red, width: 1), // Red border
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNoDashboard('S.No.'),
+                    _buildHeaderCellDashboardDistrict('District'),
+                    _buildHeaderCellDashboardsTotal('Total'),
+                    _buildHeaderCellDashboardsAction('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<ScreeningCampCompltedData>>(
+                /*   future: ApiController.getSPO_ScreeningCampApproval(
+                    610,
+                    33,
+                    "Completed",
+
+                    "2019-2020",
+                    ""),*/
+                future: ApiController.getSPO_ScreeningCampApprovalOnGoing(
+                    district_code_login,
+                    state_code_login,
+                    "Ongoing",
+                    currentFinancialYear,
+                    ""),
+                builder: (context, snapshot) {
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<ScreeningCampCompltedData> ddata = snapshot.data;
+                    print('@@---PrivateMedicalCollegeApprovedData' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                  (ddata.indexOf(offer) + 1)
+                                      .toString()),
+                              _buildDataCellDistrict(offer.districtName),
+                              _buildDataCellDashboardTotal(
+                                  offer.countstate.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                Navigator.of(context).pop();
+
+                                Navigator.push(context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ScreeningCenterOngoing(
+                                            districtName:
+                                            offer.districtName),
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget SPO_ScreeningCampUpComings() {
+    return Column(
+      children: [
+        Visibility(
+          visible: SPO_ScreeningCampUpComing,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              Container(
+                color: Colors.white70,
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text Container
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.red.withOpacity(0.1), // Light red background
+                          border: Border.all(
+                            color: Colors.red,
+                            width: 1, // Red border
+                          ),
+                        ),
+                        child: Text(
+                          'District-wise Screening Camp(s) (UpComing)',
+                          style: TextStyle(
+                            fontSize: 14, // Set font size for better readability
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis, // Handle text overflow
+                          maxLines: 2, // Limit text to 2 lines
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // Back Button
+                    InkWell(
+                      onTap: () {
+                        print('@@back Pressed----display---');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetSPO_GHA_PendingClickShowData = false;
+                          SPOLcikONDPMMEnus = false;
+                          RegisteredEyesurgeon = false;
+                          eyeBankDonationApprovals = false;
+                          RegisteredEyesurgeonsEstimateTargetAllocations = false;
+                          eyeBankApprovals = false;
+                          eyeBankCollections = false;
+                          GetSPO_GH_APPorovedClickShowData = false;
+                          SPO_PrivatePartitionPorovedClickShowData = false;
+                          SPO_PrivatePartitionPendingClickShowData = false;
+                          SPO_PivateMEdicalColleges = false;
+                          SPO_PivateMEdicalCollegesPending = false;
+                          SPO_ScreeningCampCompleteds = false;
+                          SPO_ScreeningCampOngoing=false;
+                          SPO_ScreeningCampUpComing=false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.1), // Light red background
+                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                          border: Border.all(color: Colors.red, width: 1), // Red border
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNoDashboard('S.No.'),
+                    _buildHeaderCellDashboardDistrict('District'),
+                    _buildHeaderCellDashboardsTotal('Total'),
+                    _buildHeaderCellDashboardsAction('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<ScreeningCampCompltedData>>(
+                /*   future: ApiController.getSPO_ScreeningCampApproval(
+                    610,
+                    33,
+                    "Completed",
+
+                    "2019-2020",
+                    ""),*/
+                future: ApiController.getSPO_ScreeningCampApprovalUpComing(
+                    district_code_login,
+                    state_code_login,
+                    "UpComing",
+                    currentFinancialYear,
+                    ""),
+                builder: (context, snapshot) {
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<ScreeningCampCompltedData> ddata = snapshot.data;
+                    print('@@---PrivateMedicalCollegeApprovedData' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                  (ddata.indexOf(offer) + 1)
+                                      .toString()),
+                              _buildDataCellDistrict(offer.districtName),
+                              _buildDataCellDashboardTotal(
+                                  offer.countstate.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                Navigator.of(context).pop();
+
+                                Navigator.push(context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ScreeningCenterUpComings(
+
+                                            districtName:
+                                            offer.districtName),
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget SPO_SatelliteCentre() {
+    return Column(
+      children: [
+        Visibility(
+          visible: SPO_SatelliteCentres,
+          child: Column(
+            children: [
+              // Horizontal Scrolling Header Row
+              Container(
+                color: Colors.white70,
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // Text Container
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.red.withOpacity(0.1), // Light red background
+                          border: Border.all(
+                            color: Colors.red,
+                            width: 1, // Red border
+                          ),
+                        ),
+                        child: Text(
+                          'District-wise Satellite Centres',
+                          style: TextStyle(
+                            fontSize: 14, // Set font size for better readability
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis, // Handle text overflow
+                          maxLines: 2, // Limit text to 2 lines
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    // Back Button
+                    InkWell(
+                      onTap: () {
+                        print('@@back Pressed----display---');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetSPO_GHA_PendingClickShowData = false;
+                          SPOLcikONDPMMEnus = false;
+                          RegisteredEyesurgeon = false;
+                          eyeBankDonationApprovals = false;
+                          RegisteredEyesurgeonsEstimateTargetAllocations = false;
+                          eyeBankApprovals = false;
+                          eyeBankCollections = false;
+                          GetSPO_GH_APPorovedClickShowData = false;
+                          SPO_PrivatePartitionPorovedClickShowData = false;
+                          SPO_PrivatePartitionPendingClickShowData = false;
+                          SPO_PivateMEdicalColleges = false;
+                          SPO_PivateMEdicalCollegesPending = false;
+                          SPO_ScreeningCampCompleteds = false;
+                          SPO_ScreeningCampOngoing=false;
+                          SPO_SatelliteCentres=false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.1), // Light red background
+                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                          border: Border.all(color: Colors.red, width: 1), // Red border
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              SizedBox(width: 8.0),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    _buildHeaderCellSrNoDashboard('S.No.'),
+                    _buildHeaderCellDashboardDistrict('District'),
+                    _buildHeaderCellDashboardsTotal('Total'),
+                    _buildHeaderCellDashboardsAction('Action'),
+                  ],
+                ),
+              ),
+              Divider(color: Colors.blue, height: 1.0),
+              // Data Rows
+              FutureBuilder<List<GetSPO_SatelliteCentreApprovalData>>(
+                /*   future: ApiController.getSPO_ScreeningCampApproval(
+                    610,
+                    33,
+                    "Completed",
+
+                    "2019-2020",
+                    ""),*/
+                future: ApiController.getSPO_SatelliteCentreApproval(
+                    district_code_login,
+                    state_code_login,
+                   statusApproved,
+                    currentFinancialYear),
+                builder: (context, snapshot) {
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // Align "No data found" message to the left
+                    return Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<GetSPO_SatelliteCentreApprovalData> ddata = snapshot.data;
+                    print('@@---PrivateMedicalCollegeApprovedData' +
+                        ddata.length.toString());
+                    return SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                  (ddata.indexOf(offer) + 1)
+                                      .toString()),
+                              _buildDataCellDistrict(offer.districtName),
+                              _buildDataCellDashboardTotal(
+                                  offer.countstate.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                Navigator.of(context).pop();
+
+                                Navigator.push(context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SatelliteCentresList(
+                                            districtName:
+                                            offer.districtName),
+                                  ),
+                                );
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
   void _showDetailDialogGovtCHCHospitalClick(
       BuildContext context, GetSPO_GHCHCOtherApprovalsData offer) {
