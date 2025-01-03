@@ -7440,7 +7440,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                 future: ApiController.getSPO_ScreeningCampApprovalUpComing(
                     district_code_login,
                     state_code_login,
-                    "UpComing",
+                    "Comming",
                     currentFinancialYear,
                     ""),
                 builder: (context, snapshot) {
