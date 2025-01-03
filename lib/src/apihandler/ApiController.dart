@@ -67,6 +67,7 @@ import 'package:mohfw_npcbvi/src/model/govtprivate/GovtPRivateModel.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_Other_Hospital_model.dart';
 import 'package:mohfw_npcbvi/src/model/govtprivate/govtPrivateRegisterUSerId.dart';
 import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/HospitalDashboard.dart';
+import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/sendTODPM/SendTODPMCataract.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/GetSatelliteManagerById.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/SatelitteMangerDetails.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/ngoSatelliteManagerRegistration.dart';
@@ -6357,6 +6358,77 @@ class ApiController {
       var responseData = json.decode(response.data);
       SatelliteCenterListData data =
       SatelliteCenterListData.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<List<SendTODPMCataractData>>
+  getGovtPvtOther_Cataract(int district_code, int state_code,
+      String userid) async {
+    print("@@getGovtPvtOther_Cataract" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetGovtPvtOther_Cataract;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "userid": userid, // for approved
+
+      });
+      print("@@getGovtPvtOther_Cataract--bodyprint--: ${body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getGovtPvtOther_Cataract--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      SendTODPMCataract data =
+      SendTODPMCataract.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);

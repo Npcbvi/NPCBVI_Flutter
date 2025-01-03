@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMCatractListData.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
@@ -47,7 +48,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
   final GlobalKey _dropdownKeySenTODPM = GlobalKey();
 
-  String _chosenValueLOWVision, _chosenEyeBank, _chosenValueLgoutOption,lowVisionDatas,_chosenValueDiseses;
+  String _chosenValueLOWVision, _chosenValueLOWVisionSendTODM,_chosenEyeBank, _chosenValueLgoutOption,lowVisionDatas,_chosenValueDiseses;
 
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
@@ -402,51 +403,51 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     Navigator.pop(context);
                   },
                 ),
-                _buildDropdownItem(
-                  key: _dropdownKeySenTODPM,
-                  value: _chosenValueLOWVision,
-                  hint: 'Send to DPM',
-                  hintIcon: Icon(Icons.local_hospital, color: Colors.black), // Add an icon to the hint
-                  items: [
-                    {'value': 'Cataract', 'icon': Icons.local_hospital},
-                    // Add an icon here
-                    {'value': 'Diabetic', 'icon': Icons.healing},
-                    {'value': 'Glaucoma', 'icon': Icons.healing},
-                    {'value': 'Corneal Blindness', 'icon': Icons.healing},
-                    {'value': 'VR Surgery', 'icon': Icons.healing},
-                    {'value': 'Childhood Blindness', 'icon': Icons.child_care},
-                  ],
-                  onChanged: (String value) {
-                    setState(() {
-                      _chosenValueLOWVision = value;
-                      //  print('@@spinnerChooseValue--' + _chosenValue);
-                      if (_chosenValueLOWVision == "Cataract") {
-                        print('@@NGO--1' + _chosenValueLOWVision);
-                      } else if (_chosenValueLOWVision ==
-                          "Diabetic") {
-                      } else if (_chosenValueLOWVision ==
-                          "Glaucoma") {
-                      } else if (_chosenValueLOWVision ==
-                          "Corneal Blindness") {
-                      } else if (_chosenValueLOWVision ==
-                          "VR Surgery") {
-                        print('@@Childhood--' +
-                            _chosenValueLOWVision);
-                      } else if (_chosenValueLOWVision ==
-                          "Childhood Blindness") {
-                        print('@@Childhood--' +
-                            _chosenValueLOWVision);
-                      } else {
-                        print('@@Childhood--2' +
-                            _chosenValueLOWVision);
-                      }
-                    });
-
-                    Navigator.pop(context);
-                  },
-                ),
-
+            _buildDropdownItem(
+              key: _dropdownKeySenTODPM,
+              value: _chosenValueLOWVisionSendTODM,
+              hint: 'Send to DPM',
+              hintIcon: Icon(Icons.local_hospital, color: Colors.black), // Add an icon to the hint
+              items: [
+                {'value': 'Cataract', 'icon': Icons.local_hospital},
+                {'value': 'Diabetic', 'icon': Icons.healing},
+                {'value': 'Glaucoma', 'icon': Icons.healing},
+                {'value': 'Corneal Blindness', 'icon': Icons.healing},
+                {'value': 'VR Surgery', 'icon': Icons.healing},
+                {'value': 'Childhood Blindness', 'icon': Icons.child_care},
               ],
+              onChanged: (String value) {
+                setState(() {
+                  _chosenValueLOWVisionSendTODM = value;
+                  print('@@SelectedValue: $_chosenValueLOWVisionSendTODM');
+
+                  if (_chosenValueLOWVisionSendTODM == "Cataract") {
+                    print('@@Navigating to LoginScreen');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SenTODPMCatractListData(),
+                      ),
+                    );
+                  } else if (_chosenValueLOWVisionSendTODM == "Diabetic") {
+                    print('Diabetic selected');
+                  } else if (_chosenValueLOWVisionSendTODM == "Glaucoma") {
+                    print('Glaucoma selected');
+                  } else if (_chosenValueLOWVisionSendTODM == "Corneal Blindness") {
+                    print('Corneal Blindness selected');
+                  } else if (_chosenValueLOWVisionSendTODM == "VR Surgery") {
+                    print('VR Surgery selected');
+                  } else if (_chosenValueLOWVisionSendTODM == "Childhood Blindness") {
+                    print('Childhood Blindness selected');
+                  } else {
+                    print('Other value selected');
+                  }
+                });
+              },
+            )
+
+
+            ],
             ),
           ),
         ),

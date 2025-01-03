@@ -151,4 +151,6 @@ class ApiConstants {
 
   static String GetSPO_SatelliteCentreApproval_list = 'SpmDashboard/api/GetSPO_SatelliteCentreApproval_list';
 
+  static String GetGovtPvtOther_Cataract = 'SentToDpmGovtPvt/api/GetGovtPvtOther_Cataract';
+
 }
