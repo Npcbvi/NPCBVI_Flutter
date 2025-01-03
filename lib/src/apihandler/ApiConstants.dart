@@ -153,4 +153,6 @@ class ApiConstants {
 
   static String GetGovtPvtOther_Cataract = 'SentToDpmGovtPvt/api/GetGovtPvtOther_Cataract';
 
+  static String GetGovtPvtOther_Diabetic = 'SentToDpmGovtPvt/api/GetGovtPvtOther_Diabetic';
+
 }

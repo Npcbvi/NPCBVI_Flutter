@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMCatractListData.dart';
+import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMDiabeticListData.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
@@ -431,6 +432,12 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     );
                   } else if (_chosenValueLOWVisionSendTODM == "Diabetic") {
                     print('Diabetic selected');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SenTODPMDiabeticListData(),
+                      ),
+                    );
                   } else if (_chosenValueLOWVisionSendTODM == "Glaucoma") {
                     print('Glaucoma selected');
                   } else if (_chosenValueLOWVisionSendTODM == "Corneal Blindness") {

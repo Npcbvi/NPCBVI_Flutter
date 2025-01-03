@@ -4,14 +4,14 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/sendTODPM/SendTODPMCataract.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class SenTODPMCatractListData extends StatefulWidget {
+class SenTODPMDiabeticListData extends StatefulWidget {
 
 
   @override
-  _SenTODPMCatractListData createState() => _SenTODPMCatractListData();
+  _SenTODPMDiabeticListData createState() => _SenTODPMDiabeticListData();
 }
 
-class _SenTODPMCatractListData extends State<SenTODPMCatractListData> {
+class _SenTODPMDiabeticListData extends State<SenTODPMDiabeticListData> {
   String districtNames = '';
   String stateNames = '';
   String fullnameController, getYearNgoHopital, getfyidNgoHospital;
@@ -46,7 +46,7 @@ String Gender;
   Widget build(BuildContext context) {
     currentFinancialYear = getCurrentFinancialYear();
     return Scaffold(
-      appBar: AppBar(title: Text('Cataract Patient Records for DPM Approval')),
+      appBar: AppBar(title: Text('Diabetic patient records for DPM approval')),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -84,8 +84,8 @@ String Gender;
                   Divider(color: Colors.blue, height: 1.0),
                   // Data Rows
                   FutureBuilder<List<SendTODPMCataractData>>(
-                    future: ApiController.getGovtPvtOther_Cataract(district_code_login, state_code_login, userId),
-                  //  future: ApiController.getGovtPvtOther_Cataract(484, 27, "H201944681641"),
+                    future: ApiController.getGovtPvtOther_Diabetic(district_code_login, state_code_login, userId),
+                  //  future: ApiController.getGovtPvtOther_Diabetic(533, 29, "H202089135507"),
 
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
@@ -95,6 +95,7 @@ String Gender;
                       } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                         return Padding(
                           padding: const EdgeInsets.all(8.0),
+
                           child: Text(
                             "No data found",
                             style: TextStyle(color: Colors.blue, fontSize: 18.0, fontWeight: FontWeight.bold),
