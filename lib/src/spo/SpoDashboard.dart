@@ -145,6 +145,8 @@ class _SpoDashboard extends State<SpoDashboard> {
     SPO_PivateMEdicalCollegesPending = false;
     SPO_ScreeningCampCompleteds = false;
     SPO_ScreeningCampOngoing=false;
+    SPO_SatelliteCentres=false;
+    SPO_ScreeningCampUpComing=false;
 
     _getSPOashbnoardData();
     _futures = ApiController.getSPO_RegisteredEyesurgeonList(100, "NPCBTT");
@@ -584,6 +586,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                       GetSPO_GH_APPorovedClickShowData=false;
                       GetSPO_GHA_PendingClickShowData=false;
                       SPO_PrivatePartitionPorovedClickShowData=false;
+                      SPO_ScreeningCampUpComing=false;
+
                     });
                     Navigator.pop(context);
                   },
@@ -603,6 +607,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                       GetSPO_GH_APPorovedClickShowData=false;
                       GetSPO_GHA_PendingClickShowData=false;
                       SPO_PrivatePartitionPorovedClickShowData=false;
+                      SPO_ScreeningCampUpComing=false;
+
                     });
                     Navigator.pop(context);
                   },
@@ -631,6 +637,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         GetSPO_GH_APPorovedClickShowData=false;
                         GetSPO_GHA_PendingClickShowData=false;
                         SPO_PrivatePartitionPorovedClickShowData=false;
+                        SPO_ScreeningCampUpComing=false;
+
                       } else if (_chosenValue ==
                           "Estimate Target Allocation") {
                         dashboardviewReplace = false;
@@ -642,6 +650,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         GetSPO_GH_APPorovedClickShowData=false;
                         GetSPO_GHA_PendingClickShowData=false;
                         SPO_PrivatePartitionPorovedClickShowData=false;
+                        SPO_ScreeningCampUpComing=false;
+
 
                       }
                     });
@@ -674,6 +684,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         GetSPO_GH_APPorovedClickShowData=false;
                         GetSPO_GHA_PendingClickShowData=false;
                         SPO_PrivatePartitionPorovedClickShowData=false;
+                        SPO_ScreeningCampUpComing=false;
+
                       } else if (_chosenValueLOWVision ==
                           "Eye Donation") {
                         dashboardviewReplace = false;
@@ -685,6 +697,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         GetSPO_GH_APPorovedClickShowData=false;
                         GetSPO_GHA_PendingClickShowData=false;
                         SPO_PrivatePartitionPorovedClickShowData=false;
+                        SPO_ScreeningCampUpComing=false;
+
                       }
                     });
                     Navigator.pop(context);
@@ -723,8 +737,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         GetSPO_GH_APPorovedClickShowData=false;
                         GetSPO_GHA_PendingClickShowData=false;
                         SPO_PrivatePartitionPorovedClickShowData=false;
+                        SPO_ScreeningCampUpComing=false;
                       } else if (_chosenEyeBank == "Eye Donation") {
-                        dashboardviewReplace = false;
                         eyeBankApprovals=false;
                         dashboardviewReplace = false;
                         RegisteredEyesurgeon = false;
@@ -735,6 +749,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         GetSPO_GH_APPorovedClickShowData=false;
                         GetSPO_GHA_PendingClickShowData=false;
                         SPO_PrivatePartitionPorovedClickShowData=false;
+                        SPO_ScreeningCampUpComing=false;
+
                       } else if (_chosenEyeBank ==
                           "Eyeball Collection Via Eye Bank") {
                         dashboardviewReplace = false;
@@ -749,6 +765,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         GetSPO_GH_APPorovedClickShowData=false;
                         GetSPO_GHA_PendingClickShowData=false;
                         SPO_PrivatePartitionPorovedClickShowData=false;
+                        SPO_ScreeningCampUpComing=false;
                       }
                     });
                   },
@@ -1186,6 +1203,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     GetSPO_GH_APPorovedClickShowData=true;
                                                     GetSPO_GHA_PendingClickShowData=false;
                                                      SPO_PrivatePartitionPorovedClickShowData=false;
+                                                    SPO_ScreeningCampUpComing=false;
                                                   });
                                                 },
                                                 child: new Text('Approved',
@@ -1220,7 +1238,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     GetSPO_GH_APPorovedClickShowData=false;
                                                     GetSPO_GHA_PendingClickShowData=true;
                                                     SPO_PrivatePartitionPorovedClickShowData=false;
-
+                                                    SPO_ScreeningCampUpComing=false;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -1338,6 +1356,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     GetSPO_GH_APPorovedClickShowData=false;
                                                     GetSPO_GHA_PendingClickShowData=false;
                                                     SPO_PrivatePartitionPorovedClickShowData=true;
+                                                    SPO_ScreeningCampUpComing=false;
                                                   });
 
                                                   // GetDPM_NGOApprovedPending();
@@ -1375,6 +1394,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     GetSPO_GHA_PendingClickShowData=false;
                                                     SPO_PrivatePartitionPorovedClickShowData=false;
                                                     SPO_PrivatePartitionPendingClickShowData=true;
+                                                    SPO_ScreeningCampUpComing=false;
                                                   });
                                                 },
                                                 child: new Text('Pending',
@@ -1658,8 +1678,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     SPO_PivateMEdicalColleges=false;
                                                     SPO_PivateMEdicalCollegesPending=false;
 
-                                                    SPO_ScreeningCampCompleteds = false;
                                                     SPO_ScreeningCampOngoing=false;
+                                                    SPO_ScreeningCampUpComing=false;
                                                   });
                                                 },
                                                 child: new Text('Completed',
@@ -1701,6 +1721,7 @@ class _SpoDashboard extends State<SpoDashboard> {
 
                                                     SPO_ScreeningCampCompleteds = false;
                                                     SPO_ScreeningCampOngoing=true;
+                                                    SPO_ScreeningCampUpComing=false;
                                                   });
                                                 },
                                                 child: new Text('Ongoing',
@@ -1724,7 +1745,26 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   print(
                                                       '@@---Screening here work----1');
 
-                                                  setState(() {});
+                                                  setState(() {
+                                                    SPO_ScreeningCampCompleteds=false;
+                                                    dashboardviewReplace = false;
+                                                    GetSPO_GHA_PendingClickShowData=false;
+                                                    SPOLcikONDPMMEnus = false;
+                                                    RegisteredEyesurgeon = false;
+                                                    eyeBankDonationApprovals=false;
+                                                    RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                                                    eyeBankApprovals=false;
+                                                    eyeBankCollections=false;
+                                                    GetSPO_GH_APPorovedClickShowData=false;
+                                                    SPO_PrivatePartitionPorovedClickShowData=false;
+                                                    SPO_PrivatePartitionPendingClickShowData=false;
+                                                    SPO_PivateMEdicalColleges=false;
+                                                    SPO_PivateMEdicalCollegesPending=false;
+
+                                                    SPO_ScreeningCampCompleteds = false;
+                                                    SPO_ScreeningCampOngoing=false;
+                                                    SPO_ScreeningCampUpComing=true;
+                                                  });
                                                 },
                                                 child: new Text('Coming',
                                                     textAlign: TextAlign.center,
@@ -1868,6 +1908,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                     SPO_ScreeningCampCompleteds = false;
                                                     SPO_ScreeningCampOngoing=false;
                                                     SPO_SatelliteCentres=true;
+                                                    SPO_ScreeningCampUpComing=false;
                                                   });
                                                 },
                                                 child: new Text(
@@ -1912,6 +1953,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   SPO_ScreeningCampCompleteds = false;
                                                   SPO_ScreeningCampOngoing=false;
                                                   SPO_SatelliteCentres=true;
+                                                  SPO_ScreeningCampUpComing=false;
                                                 },
                                                 child: new Text('more..',
                                                     textAlign: TextAlign.center,
@@ -5756,6 +5798,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           GetSPO_GH_APPorovedClickShowData=false;
                                           GetSPO_GHA_PendingClickShowData=false;
                                           SPO_PrivatePartitionPorovedClickShowData=false;
+                                          SPO_ScreeningCampUpComing=false;
                                         });
                                       },
                                       child: Container(
@@ -5979,6 +6022,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           eyeBankCollections=false;
                                           GetSPO_GH_APPorovedClickShowData=false;
                                           SPO_PrivatePartitionPorovedClickShowData=false;
+                                          SPO_ScreeningCampUpComing=false;
                                         });
                                       },
                                       child: Container(
@@ -6193,6 +6237,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           eyeBankCollections=false;
                                           GetSPO_GH_APPorovedClickShowData=false;
                                           SPO_PrivatePartitionPorovedClickShowData=false;
+                                          SPO_ScreeningCampUpComing=false;
                                         });
                                       },
                                       child: Container(
@@ -6398,6 +6443,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           GetSPO_GH_APPorovedClickShowData=false;
                                           SPO_PrivatePartitionPorovedClickShowData=false;
                                           SPO_PrivatePartitionPendingClickShowData=false;
+                                          SPO_ScreeningCampUpComing=false;
                                         });
                                       },
                                       child: Container(
@@ -6605,6 +6651,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           SPO_PrivatePartitionPorovedClickShowData=false;
                                           SPO_PrivatePartitionPendingClickShowData=false;
                                           SPO_PivateMEdicalColleges=false;
+                                          SPO_ScreeningCampUpComing=false;
                                         });
                                       },
                                       child: Container(
@@ -6809,6 +6856,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           SPO_PrivatePartitionPendingClickShowData=false;
                                           SPO_PivateMEdicalColleges=false;
                                           SPO_PivateMEdicalCollegesPending=false;
+                                          SPO_ScreeningCampUpComing=false;
                                         });
                                       },
                                       child: Container(
@@ -6998,6 +7046,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                       SPO_PivateMEdicalColleges = false;
                       SPO_PivateMEdicalCollegesPending = false;
                       SPO_ScreeningCampCompleteds = false;
+                      SPO_ScreeningCampOngoing = false;
+                      SPO_ScreeningCampUpComing=false;
                     });
                   },
                   child: Container(
@@ -7169,6 +7219,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                           SPO_PivateMEdicalCollegesPending = false;
                           SPO_ScreeningCampCompleteds = false;
                           SPO_ScreeningCampOngoing=false;
+                          SPO_ScreeningCampUpComing=false;
                         });
                       },
                       child: Container(
@@ -7515,6 +7566,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                           SPO_ScreeningCampCompleteds = false;
                           SPO_ScreeningCampOngoing=false;
                           SPO_SatelliteCentres=false;
+                          SPO_ScreeningCampUpComing=false;
+
                         });
                       },
                       child: Container(
