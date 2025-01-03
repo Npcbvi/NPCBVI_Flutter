@@ -17,6 +17,7 @@ class _SenTODPMCatractListData extends State<SenTODPMCatractListData> {
   String fullnameController, getYearNgoHopital, getfyidNgoHospital;
   String role_id, userId, currentFinancialYear;
   int district_code_login, state_code_login;
+String Gender;
 
   @override
   void initState() {
@@ -126,6 +127,32 @@ class _SenTODPMCatractListData extends State<SenTODPMCatractListData> {
     );
   }
   void _showDetailsDialogSentTODPM(BuildContext context, SendTODPMCataractData offer) {
+    String statusText;
+
+    // Check the vstatus and assign the appropriate statusText
+    if (offer.vstatus == "4") {
+      statusText = "Send to DPM";
+    } else if (offer.vstatus == "5") {
+      statusText = "Approved by DPM";
+    } else if (offer.vstatus == "3") {
+      statusText = "Follow up Done";
+    } else if (offer.vstatus == "2") {
+      statusText = "Post Operative Done";
+    }
+    else if (offer.vstatus == "1") {
+      statusText = "Operative Done";
+    }
+    else if (offer.vstatus == "0") {
+      statusText = "Pre Operative Done";
+    }
+    else if (offer.vstatus == "-1") {
+      statusText = "SR Pending";
+    }
+
+    else {
+      statusText = "Rejected ny DPM";  // For any other vstatus values
+    }
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -145,13 +172,18 @@ class _SenTODPMCatractListData extends State<SenTODPMCatractListData> {
                 _buildTableRow('Name of Person', offer.name),
                 _buildTableRow('Mobile No', offer.mobile.toString()),
                 _buildTableRow('DOB', offer.dob),
-                _buildTableRow('Gender', offer.gender),
+              _buildTableRow("Gender", offer.gender == "1" ? "Male" : "Female"),
                 _buildTableRow('Address', offer.addressLine1),
-                _buildTableRow('Operation Date', offer.operatedOn.toString()),
+                _buildTableRow('Operation Date',
+                    Utils.formatDateString(offer.operatedOn).toString()),
 
-                _buildTableRow('Operated Eye', offer.eyetype.toString()),
+                _buildTableRow("Operated Eye", offer.eyetype == "1" ? "Left" : "Right"),
 
-                _buildTableRow('Status', offer.vstatus.toString()),
+                _buildTableRow('Status', statusText),  // Use the statusText here
+                _buildTableRowcall("Action", () {
+                  print('@@Pending work here now---for print ');
+
+                }),
               ],
             ),
           ),
@@ -167,6 +199,45 @@ class _SenTODPMCatractListData extends State<SenTODPMCatractListData> {
       },
     );
   }
+  TableRow _buildTableRowcall(String title, VoidCallback onTap) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(title),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: onTap,  // Trigger the onTap callback when clicked
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                color: Colors.blue,  // Background color of the button
+                borderRadius: BorderRadius.circular(8.0),  // Rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    blurRadius: 6,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Text(
+                "View",  // Customize the "View" text as needed
+                style: TextStyle(
+                  color: Colors.white,  // Text color
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
 
   TableRow _buildTableRow(String label, String value) {
     return TableRow(
