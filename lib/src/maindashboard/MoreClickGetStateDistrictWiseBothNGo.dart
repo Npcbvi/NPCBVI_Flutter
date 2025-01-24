@@ -105,8 +105,8 @@ class _MoreClickGetStateDistrictWiseBothNGo
                     children: [
                       _buildHeaderCell("S.No.", 50),
                       _buildHeaderCell("Darpan No.", 150),
-                      _buildHeaderCell("Nodal Officer Name", 150),
-                      _buildHeaderCell("More", 80),
+                     // _buildHeaderCell("Nodal Officer Name", 150),
+                      _buildHeaderCell("Action", 80),
                     ],
                   ),
                 ),
@@ -120,10 +120,37 @@ class _MoreClickGetStateDistrictWiseBothNGo
                         children: [
                           _buildDataCell(index.toString(), 50),
                           _buildDataCell(entry.darpanNo ?? '-', 150),
-                          _buildDataCell(entry.name ?? '-', 150),
-                          _buildDataCellViewBlueDashboard("More", () {
-                            debugPrint("More button clicked for ${entry.darpanNo}");
+                          //_buildDataCell(entry.memberName ?? '-', 150),
+                          _buildDataCellViewBlueDashboard("View", () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Details for ${entry.darpanNo}'),
+                                  content: SingleChildScrollView(
+                                    child: Table(
+                                      border: TableBorder.all(color: Colors.blue),
+                                      children: [
+                                        _buildTableRow("Field", "Value", isHeader: true),
+                                        _buildTableRow("Darpan No", entry.darpanNo ?? "-"),
+                                        _buildTableRow("Nodal Officer Name", entry.memberName ?? "-"),
+                                        _buildTableRow("NGO Name", entry.name ?? "-"),
+                                        _buildTableRow("Address", entry.address ?? "-"),
+                                        // Add more fields as necessary
+                                      ],
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(),
+                                      child: const Text("Close"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           }),
+
                         ],
                       );
                     }).toList(),
@@ -178,6 +205,27 @@ class _MoreClickGetStateDistrictWiseBothNGo
             text,
             style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
           ),
+        ),
+      ),
+    );
+  }
+  TableRow _buildTableRow(String field, String value, {bool isHeader = false}) {
+    return TableRow(
+      children: [
+        _buildTableCell(field, isHeader: isHeader),
+        _buildTableCell(value, isHeader: isHeader),
+      ],
+    );
+  }
+
+  Widget _buildTableCell(String text, {bool isHeader = false}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+          fontSize: isHeader ? 16.0 : 14.0,
         ),
       ),
     );
