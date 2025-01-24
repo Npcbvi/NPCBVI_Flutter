@@ -4,14 +4,14 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/sendTODPM/SendTODPMCataract.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class SenTODPMDiabeticListData extends StatefulWidget {
+class SenTODPMGlaucomaListData extends StatefulWidget {
 
 
   @override
-  _SenTODPMDiabeticListData createState() => _SenTODPMDiabeticListData();
+  _SenTODPMGlaucomaListData createState() => _SenTODPMGlaucomaListData();
 }
 
-class _SenTODPMDiabeticListData extends State<SenTODPMDiabeticListData> {
+class _SenTODPMGlaucomaListData extends State<SenTODPMGlaucomaListData> {
   String districtNames = '';
   String stateNames = '';
   String fullnameController, getYearNgoHopital, getfyidNgoHospital;
@@ -47,7 +47,7 @@ String Gender;
     currentFinancialYear = getCurrentFinancialYear();
     return Scaffold(
       appBar: AppBar( title: Text(
-        'Diabetic patient records for DPM approval',
+        'Glaucoma patient records for DPM approval',
         style: TextStyle(
           fontSize: 12.0, // Adjust the size as needed
         ),
@@ -91,8 +91,8 @@ String Gender;
                   Divider(color: Colors.blue, height: 1.0),
                   // Data Rows
                   FutureBuilder<List<SendTODPMCataractData>>(
-                    future: ApiController.getGovtPvtOther_Diabetic(district_code_login, state_code_login, userId),
-                  //  future: ApiController.getGovtPvtOther_Diabetic(533, 29, "H202089135507"),
+                   future: ApiController.getGovtPvtOther_Glaucoma(district_code_login, state_code_login, userId),
+                  //  future: ApiController.getGovtPvtOther_Glaucoma(454, 24, "H202044985799"),
 
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {

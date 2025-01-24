@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/sendTODPM/SendTODPMCataract.dart';
+import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/sendTODPM/sendTODPMVRSurgery.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class SenTODPMDiabeticListData extends StatefulWidget {
+class SenTODPMVRSurgeryListData extends StatefulWidget {
 
 
   @override
-  _SenTODPMDiabeticListData createState() => _SenTODPMDiabeticListData();
+  _SenTODPMVRSurgeryListData createState() => _SenTODPMVRSurgeryListData();
 }
 
-class _SenTODPMDiabeticListData extends State<SenTODPMDiabeticListData> {
+class _SenTODPMVRSurgeryListData extends State<SenTODPMVRSurgeryListData> {
   String districtNames = '';
   String stateNames = '';
   String fullnameController, getYearNgoHopital, getfyidNgoHospital;
@@ -47,7 +48,7 @@ String Gender;
     currentFinancialYear = getCurrentFinancialYear();
     return Scaffold(
       appBar: AppBar( title: Text(
-        'Diabetic patient records for DPM approval',
+        'VR Surgery patient records for DPM approval',
         style: TextStyle(
           fontSize: 12.0, // Adjust the size as needed
         ),
@@ -90,10 +91,9 @@ String Gender;
                   ),
                   Divider(color: Colors.blue, height: 1.0),
                   // Data Rows
-                  FutureBuilder<List<SendTODPMCataractData>>(
-                    future: ApiController.getGovtPvtOther_Diabetic(district_code_login, state_code_login, userId),
-                  //  future: ApiController.getGovtPvtOther_Diabetic(533, 29, "H202089135507"),
-
+                  FutureBuilder<List<sendTODPMVRSurgeryData>>(
+                    //  future: ApiController.getGovtPvtOther_VRSurgery(district_code_login, state_code_login, userId),
+                    future: ApiController.getGovtPvtOther_VRSurgery(314, 19, "H20197241684"),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(child: CircularProgressIndicator());
@@ -109,7 +109,7 @@ String Gender;
                           ),
                         );
                       } else {
-                        List<SendTODPMCataractData> data = snapshot.data;
+                        List<sendTODPMVRSurgeryData> data = snapshot.data;
                         return Column(
                           children: data.map((entry) {
                             return Row(
@@ -134,7 +134,7 @@ String Gender;
       ),
     );
   }
-  void _showDetailsDialogSentTODPM(BuildContext context, SendTODPMCataractData offer) {
+  void _showDetailsDialogSentTODPM(BuildContext context, sendTODPMVRSurgeryData offer) {
     String statusText;
 
     // Check the vstatus and assign the appropriate statusText

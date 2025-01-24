@@ -19,4 +19,8 @@ class AppConstant {
   static final String eyeBankById = "eyeBankById";
 
   static final String fromlisteyeBankById = "fromlisteyeBankById";
+
+  static final String moreclickNgoStatedCode = "moreclickNgoStatedCode";
+  static final String moreclickdistrictCodeNGO = "moreclickdistrictCodeNGO";
+
 }

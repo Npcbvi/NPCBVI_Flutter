@@ -2,14 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
-
+import 'dart:convert'; // For base64Encode
+import 'dart:io'; // For File
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMCatractListData.dart';
 import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMDiabeticListData.dart';
+import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMGlaucomaListData.dart';
+import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMVRSurgeryListData.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
@@ -24,12 +30,15 @@ import 'package:mohfw_npcbvi/src/model/spoModel/GetLanguageForDDLs.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
-
+import 'package:image/image.dart' as img;
 import '../loginsignup/LoginScreen.dart';
 import '../model/spoModel/GetLanguageForDDLs.dart';
 import '../model/spoModel/GetLanguageForDDLs.dart';
+import '../model/spoModel/PatientRegistrations.dart';
+import 'SenTODPMCornealBlindnessListData.dart';
 
 class HospitalDashboard extends StatefulWidget {
   @override
@@ -155,15 +164,41 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
+
+
+  // For ImagePicker
+
   Future<void> _pickImage(ImageSource source) async {
-    final pickedImage = await ImagePicker.pickImage(source: source);
-    if (pickedImage != null) {
-      setState(() {
-      //  _image = pickedImage;
-        _image = File(pickedImage.path); // Ensure _image is a File
-      });
+    try {
+      // Create an instance of ImagePicker
+      final ImagePicker picker = ImagePicker();
+
+      // Use the instance to pick an image
+      final File pickedFile = await ImagePicker.pickImage(source: source);
+
+      if (pickedFile != null) {
+        // Convert XFile to File
+        final File imageFile = File(pickedFile.path);
+
+        setState(() {
+          _image = imageFile; // Ensure _image is a File
+          print('@@_image+_image.toString()'+_image.path.toString());
+        });
+
+        // Convert the selected image to Base64
+        final bytes = await imageFile.readAsBytes(); // Read the image as bytes
+        final base64Image = base64Encode(bytes); // Encode bytes to Base64
+        print('Base64 String: $base64Image');
+      } else {
+        print('No image selected.');
+      }
+    } catch (e) {
+      print('Error picking or processing image: $e');
     }
   }
+
+
+
   @override
   void initState() {
     // TODO: implement initState
@@ -440,10 +475,28 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     );
                   } else if (_chosenValueLOWVisionSendTODM == "Glaucoma") {
                     print('Glaucoma selected');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SenTODPMGlaucomaListData(),
+                      ),
+                    );
                   } else if (_chosenValueLOWVisionSendTODM == "Corneal Blindness") {
                     print('Corneal Blindness selected');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SenTODPMCornealBlindnessListData(),
+                      ),
+                    );
                   } else if (_chosenValueLOWVisionSendTODM == "VR Surgery") {
                     print('VR Surgery selected');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SenTODPMVRSurgeryListData(),
+                      ),
+                    );
                   } else if (_chosenValueLOWVisionSendTODM == "Childhood Blindness") {
                     print('Childhood Blindness selected');
                   } else {
@@ -2573,35 +2626,24 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
       ),
     );
   }
-  /*Future<void> ApipatientRegistration() async {
-    File imageFile = _image; // Ensure you have an image file
-    Utils.showProgressDialog1(context);
-    print("@@-----hopitalPatientRegistration--inside api");
-    var response = await ApiController.hopitalPatientRegistration(
-        registerationtypeRadioValueinAPi,"",VoterIDtype.toString(),_voterIDNumber.text.toString(),dependencyTypeRadio.toString(),relationtypeValue.toString(),relationFatherController.text.toString(),
-        _firstNamePatientDetail.text.toString(),_lastNamePatientDetail.text.toString(),_dob.toString(),
-    _AgePatientDetail.text.toString(),gender.toString(),relationtypeValueMobile.toString(),_mobileNumberDetailsRelationtype.text.toString(),
-        _selectedDateText.toString(),_selectedDateTextToDate.toString(),getDissesID.toString(),_reportingPlaceController.text.toString(),state_code_login,district_code_login,distCodeGovtPrivate,0,
-        _AddressHouse.text.toString(),_Apartment.text.toString(),_AreaNearLandMark.text.toString(),_PinCode.text.toString(),stateLKanguage,state_code_login,district_code_login,entryby,
-   "10126","002",int.parse(role_id),userId.toString() );
 
-    Utils.hideProgressDialog1(context);
-    print("@@-----hopitalPatientRegistration--inside api--2");
-    // Check if the response is null before accessing properties
-    if (response.status) {
-      Utils.showToast(response.message.toString(), true);
-      print("@@Result hopitalPatientRegistration----Class: " + response.message);
-      *//*   EyeBankApplication = true;
-        ngoDashboardclicks = false;
-        ManageUSerNGOHospt = false;
-        ngoCampManagerLists = true;
-        CampManagerRegisterartions = false;
-        AddScreeningCamps = false;*//*
-    } else {
-      // Handle the case where the list is null or empty
-      Utils.showToast("Not created succesfully", true);
-    }
-  }*/
+
+  Future<String> compressAndEncodeImage(String imagePath) async {
+    final file = File(imagePath);
+    final bytes = await file.readAsBytes();
+
+    // Decode the image
+    final decodedImage = img.decodeImage(bytes);
+
+    // Compress the image
+    final compressedImage = img.encodeJpg(decodedImage, quality: 50);
+
+    // Encode to base64
+    return base64Encode(compressedImage);
+  }
+
+
+/*
   Future<void> ApipatientRegistration() async {
     // Validate fields
     if (_firstNamePatientDetail.text.isEmpty) {
@@ -2640,49 +2682,303 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
       Utils.showToast("Please enter pin code", false);
       return;
     }
+    if (_image == null) {
+      Utils.showToast("Please select an image", false);
+      return;
+    }
 
-    // Optionally, check for other required fields here...
-
-    // Proceed with API call if all validations are passed
-    File imageFile = _image; // Ensure you have an image file
     Utils.showProgressDialog1(context);
-    print("@@-----hopitalPatientRegistration--inside api");
 
     try {
-      var response = await ApiController.hopitalPatientRegistration(
-          registerationtypeRadioValueinAPi, "",
-          VoterIDtype.toString(), _voterIDNumber.text.toString(),
-          dependencyTypeRadio.toString(), relationtypeValue.toString(),
-          relationFatherController.text.toString(),
-          _firstNamePatientDetail.text.toString(),
-          _lastNamePatientDetail.text.toString(),
-          _dob.toString(), _AgePatientDetail.text.toString(),
-          gender.toString(), relationtypeValueMobile.toString(),
-          _mobileNumberDetailsRelationtype.text.toString(),
-          _selectedDateText.toString(), _selectedDateTextToDate.toString(),
-          getDissesID.toString(), _reportingPlaceController.text.toString(),
-          state_code_login, district_code_login, distCodeGovtPrivate, village_code,
-          _AddressHouse.text.toString(), _Apartment.text.toString(),
-          _AreaNearLandMark.text.toString(), _PinCode.text.toString(),
-          stateLKanguage, state_code_login, district_code_login,
-          entryby, "10126", "002", int.parse(role_id),
-          userId.toString()
+      // Check if the image exists
+      print('@@Image Path: ${_image.path}');
+      bool fileExists = await File(_image.path).exists();
+      if (!fileExists) {
+        throw Exception('File does not exist');
+      }
+
+      // Compress and encode the image
+      final base64Image = await compressAndEncodeImage(_image.path);
+
+      final formData = {
+        "registrationType": registerationtypeRadioValueinAPi,
+        "idType": VoterIDtype.toString(),
+        "idName": _voterIDNumber.text.toString(),
+        "dependencyType": dependencyTypeRadio.toString(),
+        "relationType": relationtypeValue.toString(),
+        "relationName": relationFatherController.text.toString(),
+        "firstName": _firstNamePatientDetail.text.toString(),
+        "lastName": _lastNamePatientDetail.text.toString(),
+        "dob": _dob.toString(),
+        "age": _AgePatientDetail.text.toString(),
+        "gender": gender.toString(),
+        "mobileRelationType": relationtypeValueMobile.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
+        "screeningDate": _selectedDateText.toString(),
+        "tentativeSurgeryDate": _selectedDateTextToDate.toString(),
+        "disease": getDissesID.toString(),
+        "reportingPlace": _reportingPlaceController.text.toString(),
+        "state": state_code_login,
+        "district": district_code_login,
+        "city": distCodeGovtPrivate,
+        "village": village_code,
+        "address": _AddressHouse.text.toString(),
+        "apartment": _Apartment.text.toString(),
+        "nearLandMark": _AreaNearLandMark.text.toString(),
+        "pincode": _PinCode.text.toString(),
+        "communicationLanguage": stateLKanguage,
+        "loggedInUserStateId": state_code_login,
+        "loggedInUserDistrictId": district_code_login,
+        "entryBy": entryby,
+        "loggedInNgoId": "10126",
+        "programeId": "002",
+        "loggedInUserRole": int.parse(role_id),
+        "userId": userId.toString(),
+        "patientImage": base64Image, // Use the compressed and encoded image
+      };
+
+      print('@@FormData Payload: ${jsonEncode(formData)}');
+      var url = ApiConstants.baseUrl + ApiConstants.PatientRegistration;
+      print('Request URL: $url');
+
+      // Send POST request
+      final dio = Dio();
+      dio.options.connectTimeout = 10000;
+      dio.options.receiveTimeout = 10000;
+
+      final response = await dio.post(
+        url,
+        data: jsonEncode(formData),
+        options: Options(
+          headers: {"Content-Type": "application/json"},
+        ),
       );
 
+      print('Response: ${response.data}');
       Utils.hideProgressDialog1(context);
-      print("@@-----hopitalPatientRegistration--inside api--2");
 
-      if (response.status) {
-        Utils.showToast(response.message.toString(), true);
-        print("@@Result hopitalPatientRegistration----Class: " + response.message);
-        // Handle success (navigate, show success message, etc.)
+      // Handle response (if necessary)
+      *//*if (response.statusCode == 200) {
+      Utils.showToast("Registration successful", true);
+    } else {
+      Utils.showToast("Registration failed", false);
+    }*//*
+    } on DioError catch (dioError) {
+      Utils.hideProgressDialog1(context);
+      if (dioError.response != null) {
+        print('Response Status Code: ${dioError.response?.statusCode}');
+        print('Response Data: ${dioError.response?.data}');
+        print('Response Headers: ${dioError.response?.headers}');
       } else {
-        Utils.showToast("Not created successfully", true);
+        print('DioError (No Response): $dioError');
       }
     } catch (e) {
       Utils.hideProgressDialog1(context);
       Utils.showToast("Error: $e", false);
+      print('Unexpected Error: $e');
     }
+  }*/
+  Future<void> ApipatientRegistration() async {
+    print("### Starting patient registration ###");
+
+    // Validation checks for inputs
+    if (_firstNamePatientDetail.text.isEmpty) {
+      print("Error: First name is empty");
+      Utils.showToast("Please enter first name", false);
+      return;
+    }
+    if (_image == null) {
+      print("Error: Image is not selected");
+      Utils.showToast("Please select an image", false);
+      return;
+    }
+    if (_lastNamePatientDetail.text.isEmpty) {
+      print("Error: Last name is empty");
+      Utils.showToast("Please enter last name", false);
+      return;
+    }
+    if (_dob.isEmpty || _dob == "Select Date") {
+      print("Error: Date of birth is not selected");
+      Utils.showToast("Please select a date of birth", false);
+      return;
+    }
+    if (_AgePatientDetail.text.isEmpty) {
+      print("Error: Age is empty");
+      Utils.showToast("Please enter age", false);
+      return;
+    }
+    if (_mobileNumberDetailsRelationtype.text.isEmpty) {
+      print("Error: Mobile number is empty");
+      Utils.showToast("Please enter mobile number", false);
+      return;
+    }
+    if (_AddressHouse.text.isEmpty) {
+      print("Error: House address is empty");
+      Utils.showToast("Please enter house address", false);
+      return;
+    }
+    if (_Apartment.text.isEmpty) {
+      print("Error: Apartment is empty");
+      Utils.showToast("Please enter apartment", false);
+      return;
+    }
+    if (_AreaNearLandMark.text.isEmpty) {
+      print("Error: Area/landmark is empty");
+      Utils.showToast("Please enter area/landmark", false);
+      return;
+    }
+    if (_PinCode.text.isEmpty) {
+      print("Error: Pin code is empty");
+      Utils.showToast("Please enter pin code", false);
+      return;
+    }
+
+    Utils.showProgressDialog1(context);
+
+    try {
+      print("Compressing image...");
+      final tempDir = await getTemporaryDirectory();
+      final targetPath = '${tempDir.path}/compressed_image.jpg';
+      File compressedImage = await FlutterImageCompress.compressAndGetFile(
+        _image.path,
+        targetPath,
+        quality: 80,
+      );
+
+      if (compressedImage == null) {
+        print("Error: Image compression failed");
+        throw Exception("Image compression failed");
+      }
+
+      // Log image details
+      print("Original Image Path: ${_image.path}");
+      print("Compressed Image Path: ${compressedImage.path}");
+      print("Compressed Image Size: ${await compressedImage.length()} bytes");
+      print("Image compressed successfully: ${compressedImage.path}");
+
+      final imageBytes = await compressedImage.readAsBytes();
+      final base64Image = base64Encode(imageBytes);
+      print('@@Base64 Image (truncated): ${base64Image.substring(0, 100000)}...');
+
+      print("Preparing form data...");
+      // Create the MultipartFile outside the form data map
+      MultipartFile multipartFile = await MultipartFile.fromFile(
+        compressedImage.path,
+        filename: "patient_image_${DateTime.now().millisecondsSinceEpoch}.jpg",
+      );
+
+      // Log the details of the MultipartFile
+      print("Path: ${multipartFile.filename}"); // The file path
+      print("Filename: ${multipartFile.filename}"); // The filename (used in the request)
+      print("File Size: ${await compressedImage.length()} bytes"); // File size in bytes
+
+      // Prepare the form data
+      FormData formData = FormData.fromMap({
+        "registrationType": registerationtypeRadioValueinAPi,
+        "patientImage": multipartFile,  // Add the MultipartFile here
+        "idType": VoterIDtype.toString(),
+        "idName": _voterIDNumber.text.toString(),
+        "dependencyType": dependencyTypeRadio.toString(),
+        "relationType": relationtypeValue.toString(),
+        "relationName": relationFatherController.text.toString(),
+        "firstName": _firstNamePatientDetail.text.toString(),
+        "lastName": _lastNamePatientDetail.text.toString(),
+        "dob": _dob.toString(),
+        "age": _AgePatientDetail.text.toString(),
+        "gender": gender.toString(),
+        "mobileRelationType": relationtypeValueMobile.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
+        "screeningDate": _selectedDateText.toString(),
+        "tentativeSurgeryDate": _selectedDateTextToDate.toString(),
+        "disease": getDissesID.toString(),
+        "reportingPlace": _reportingPlaceController.text.toString(),
+        "state": state_code_login,
+        "district": district_code_login,
+        "city": distCodeGovtPrivate,
+        "village": village_code,
+        "address": _AddressHouse.text.toString(),
+        "apartment": _Apartment.text.toString(),
+        "nearLandMark": _AreaNearLandMark.text.toString(),
+        "pincode": _PinCode.text.toString(),
+        "communicationLanguage": stateLKanguage,
+        "loggedInUserStateId": state_code_login,
+        "loggedInUserDistrictId": district_code_login,
+        "entryBy": entryby,
+        "loggedInNgoId": "10126",
+        "programeId": "002",
+        "loggedInUserRole": int.parse(role_id),
+        "userId": userId.toString(),
+      });
+
+      print("Form data prepared successfully. Payload: ${formData.fields.toString()}");
+      print("Form data prepared successfully. Fields:");
+      for (int i = 0; i < formData.fields.length; i++) {
+        var field = formData.fields[i];
+        print("Index $i: Key = ${field.key}, Value = ${field.value}");
+      }
+
+      var url = ApiConstants.baseUrl + ApiConstants.PatientRegistration;
+      print("Sending API request to: $url");
+
+      final response = await Dio().post(
+        url,
+        data: formData,
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      );
+
+      print("API response received: ${response.statusCode}");
+      Utils.hideProgressDialog1(context);
+
+      if (response.statusCode == 200) {
+        final registrationResponse = PatientRegistrations.fromJson(response.data);
+        if (registrationResponse.status) {
+          print("Registration successful: ${registrationResponse.message}");
+          Utils.showToast(registrationResponse.message, true);
+        } else {
+          print("Registration failed: ${registrationResponse.message}");
+          Utils.showToast("Registration failed: ${registrationResponse.message}", false);
+        }
+      } else {
+        print("Error: Failed to register patient. Status code: ${response.statusCode}");
+        Utils.showToast("Failed to register patient. Status code: ${response.statusCode}", false);
+      }
+    } catch (e) {
+      Utils.hideProgressDialog1(context);
+
+      if (e is DioError) {
+        print("@@Exception occurred: ${e.toString()}");
+
+        if (e.response != null) {
+          print("@@Response Data: ${e.response?.data}");
+          print("@@Response Headers: ${e.response?.headers}");
+        } else {
+          print("@@Error without response: ${e.message}");
+        }
+      } else {
+        print("@@Unexpected Error: $e");
+      }
+
+      Utils.showToast("@@Error_1: $e", false);
+    }
+  }
+
+
+
+
+
+
+  void logFormData(Map<String, dynamic> formData) {
+    print("Logging Form Data:");
+    formData.forEach((key, value) {
+      if (key == "patientImage" && value is String && value.length > 100000) {
+        // For large fields like images, log only the first 100 characters
+        print("$key: ${value.substring(0, 100000)}... [truncated]");
+      } else {
+        print("$key: $value");
+      }
+    });
   }
 
   Widget _sectionHeader(String title) {

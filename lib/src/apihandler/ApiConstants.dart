@@ -154,5 +154,12 @@ class ApiConstants {
   static String GetGovtPvtOther_Cataract = 'SentToDpmGovtPvt/api/GetGovtPvtOther_Cataract';
 
   static String GetGovtPvtOther_Diabetic = 'SentToDpmGovtPvt/api/GetGovtPvtOther_Diabetic';
+  static String GetGovtPvtOther_Glaucoma = 'SentToDpmGovtPvt/api/GetGovtPvtOther_Glaucoma';
+  static String GetGovtPvtOther_CornealBlindness = 'SentToDpmGovtPvt/api/GetGovtPvtOther_CornealBlindness';
+  static String GetGovtPvtOther_VRSurgery = 'SentToDpmGovtPvt/api/GetGovtPvtOther_VRSurgery';
 
+  static String GetStateWiseNGOForDashboard = 'GetStateWiseNGOForDashboard';
+  static String GetDistrictWiseNGOForDashboard = 'GetDistrictWiseNGOForDashboard';
+
+  static String GetStateDistrictWiseNGOForDashboard = 'GetStateDistrictWiseNGOForDashboard';
 }

@@ -46,8 +46,14 @@ String Gender;
   Widget build(BuildContext context) {
     currentFinancialYear = getCurrentFinancialYear();
     return Scaffold(
-      appBar: AppBar(title: Text('Cataract Patient Records for DPM Approval')),
-      body: SingleChildScrollView(
+      appBar: AppBar( title: Text(
+        'Cataract Patient Records for DPM Approval',
+        style: TextStyle(
+        fontSize: 12.0, // Adjust the size as needed
+    ),
+      ),
+
+      ),      body: SingleChildScrollView(
         child: Column(
           children: [
             // Info Bar

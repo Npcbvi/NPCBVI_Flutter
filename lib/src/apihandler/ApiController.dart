@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreDashboardClickStateWise.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreStateDistrictBoth.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
 import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
@@ -68,6 +71,7 @@ import 'package:mohfw_npcbvi/src/model/govtprivate/Registration_of_Govt_Private_
 import 'package:mohfw_npcbvi/src/model/govtprivate/govtPrivateRegisterUSerId.dart';
 import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/HospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/sendTODPM/SendTODPMCataract.dart';
+import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/sendTODPM/sendTODPMVRSurgery.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/GetSatelliteManagerById.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/SatelitteMangerDetails.dart';
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/ngoSatelliteManagerRegistration.dart';
@@ -96,8 +100,10 @@ import 'package:mohfw_npcbvi/src/model/spoRegistartion/SPORegisterModel.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/mainDashbaordMorClick/nGOmoreDashboardClickDistrictWise.dart';
 import '../model/screeningCamp/ScreenCampRegister.dart';
 import '../model/spoModel/dahboardclickdetails/GetSPO_SatelliteCentreApproval.dart';
 import '../model/spoModel/dahboardclickdetails/PrivateMedicalCollegeApproved.dart';
@@ -4877,7 +4883,7 @@ class ApiController {
       return [];
     }
   }
-  static Future<PatientRegistrations> hopitalPatientRegistration(
+  /*static Future<PatientRegistrations> hopitalPatientRegistration(
       int registrationType,   String patientImage,String idType,String idName,String dependencyType,
       String relationType,String relationName,String firstName,String lastName,String dob,
       String age,String gender,String mobileRelationType, String mobileNo,String screeningDate,String tentativeSurgeryDate,String disease,
@@ -4958,7 +4964,163 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
+  }*/
+
+
+
+  static Future<PatientRegistrations> hospitalPatientRegistration(
+      String registrationType,
+      File imageFile,
+      String idType,
+      String idName,
+      String dependencyType,
+      String relationType,
+      String relationName,
+      String firstName,
+      String lastName,
+      String dob,
+      String age,
+      String gender,
+      String mobileRelationType,
+      String mobileNo,
+      String screeningDate,
+      String tentativeSurgeryDate,
+      String disease,
+      String reportingPlace,
+      String state,
+      String district,
+      String city,
+      String village,
+      String address,
+      String apartment,
+      String nearLandMark,
+      String pincode,
+      String communicationLanguage,
+      String loggedInUserStateId,
+      String loggedInUserDistrictId,
+      String entryBy,
+      String loggedInNgoId,
+      String programeId,
+      String loggedInUserRole,
+      String userId,
+      ) async {
+    PatientRegistrations registrationModel = PatientRegistrations();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+
+    var url = ApiConstants.baseUrl + ApiConstants.PatientRegistration;
+    var request = http.MultipartRequest("POST", Uri.parse(url));
+
+    if (isNetworkAvailable) {
+      if (imageFile != null) {
+        final tempDir = await getTemporaryDirectory();
+        final targetPath = '${tempDir.path}/compressed_image.jpg';
+        // Compress the image
+        var result = await FlutterImageCompress.compressAndGetFile(
+          imageFile.absolute.path,
+          targetPath,
+          quality: 80,
+        );
+        imageFile = result;
+      }
+
+      try {
+        // Add all fields
+        request.fields.addAll({
+          "registrationType": registrationType,
+          "idType": idType,
+          "idName": idName,
+          "dependencyType": dependencyType,
+          "relationType": relationType,
+          "relationName": relationName,
+          "firstName": firstName,
+          "lastName": lastName,
+          "dob": dob,
+          "age": age,
+          "gender": gender,
+          "mobileRelationType": mobileRelationType,
+          "mobileNo": mobileNo,
+          "screeningDate": screeningDate,
+          "tentativeSurgeryDate": tentativeSurgeryDate,
+          "disease": disease,
+          "reportingPlace": reportingPlace,
+          "state": state,
+          "district": district,
+          "city": city,
+          "village": village,
+          "address": address,
+          "apartment": apartment,
+          "nearLandMark": nearLandMark,
+          "pincode": pincode,
+          "communicationLanguage": communicationLanguage,
+          "loggedInUserStateId": loggedInUserStateId,
+          "loggedInUserDistrictId": loggedInUserDistrictId,
+          "entryBy": entryBy,
+          "loggedInNgoId": loggedInNgoId,
+          "programeId": programeId,
+          "loggedInUserRole": loggedInUserRole,
+          "userId": userId,
+        });
+
+        if (imageFile != null) {
+          DateTime currentDate = DateTime.now();
+
+          // Read the image bytes
+          var imageBytes = await imageFile.readAsBytes();
+
+          // Print the first 50 bytes of the image file (to give an idea of its contents)
+          print("First 50 bytes of the image file: ${imageBytes.sublist(0, 50)}");
+
+          // Create the MultipartFile
+          var multipartFile = http.MultipartFile.fromBytes(
+            'patientImage',
+            imageBytes,
+            filename: "Image_${currentDate.millisecondsSinceEpoch}.jpg",
+          );
+
+          // Add to the request
+          request.files.add(multipartFile);
+
+          // Print file metadata
+          print('Image file being sent:');
+          print('Filename: ${multipartFile.filename}');
+          print('Content Type: ${multipartFile.contentType}');
+        }
+
+
+        // Log the request details
+        print('Sending API request to__P: $url');
+        print("Request fields:__P");
+        request.fields.forEach((key, value) {
+          print("$key: $value");
+        });
+        print("Request files:__P");
+        for (var file in request.files) {
+          print("Field__P: ${file.field}, Filename__P: ${file.filename}");
+        }
+
+        final response = await request.send().timeout(Duration(seconds: 30));
+        final respStr = await response.stream.bytesToString();
+
+        print("Response: $respStr");
+
+        final parsed = json.decode(respStr);
+        PatientRegistrations ratingResponse = PatientRegistrations.fromJson(parsed);
+        return ratingResponse;
+
+      } catch (e) {
+        Utils.showToast("Error: $e", true);
+        print("Error occurred: $e");
+        return null;
+      }
+    } else {
+      Utils.showToast("No internet connection", true);
+      return null;
+    }
   }
+
+
+
 
 
 /*
@@ -6499,6 +6661,427 @@ class ApiController {
       var responseData = json.decode(response.data);
       SendTODPMCataract data =
       SendTODPMCataract.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<SendTODPMCataractData>>
+  getGovtPvtOther_Glaucoma(int district_code, int state_code,
+      String userid) async {
+    print("@@getGovtPvtOther_Glaucoma" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetGovtPvtOther_Glaucoma;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "userid": userid, // for approved
+
+      });
+      print("@@getGovtPvtOther_Glaucoma--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetGovtPvtOther_Glaucoma--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      SendTODPMCataract data =
+      SendTODPMCataract.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<SendTODPMCataractData>>
+  getGovtPvtOther_CornealBlindness(int district_code, int state_code,
+      String userid) async {
+    print("@@GetGovtPvtOther_CornealBlindness" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetGovtPvtOther_CornealBlindness;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "userid": userid, // for approved
+
+      });
+      print("@@GetGovtPvtOther_CornealBlindness--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetGovtPvtOther_Glaucoma--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      SendTODPMCataract data =
+      SendTODPMCataract.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<sendTODPMVRSurgeryData>>
+  getGovtPvtOther_VRSurgery(int district_code, int state_code,
+      String userid) async {
+    print("@@GetGovtPvtOther_VRSurgery" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetGovtPvtOther_VRSurgery;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "userid": userid, // for approved
+
+      });
+      print("@@GetGovtPvtOther_VRSurgery--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetGovtPvtOther_Glaucoma--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      sendTODPMVRSurgery data =
+      sendTODPMVRSurgery.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static File createFile(String path) {
+    final file = File(path);
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
+
+    return file;
+  }
+
+  static Future<List<nGOmoreDashboardClickStateWiseData>>
+  GetStateWiseNGOForDashboard() async {
+    print("@@GetStateWiseNGOForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetStateWiseNGOForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+
+      print("@@GetStateWiseNGOForDashboard--bodyprint--: ${url.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetStateWiseNGOForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      nGOmoreDashboardClickStateWise data =
+      nGOmoreDashboardClickStateWise.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<List<nGOmoreDashboardClickDistrictWiseData>>
+  GetDistrictWiseNGOForDashboard(int stateId) async {
+    print("@@GetDistrictWiseNGOForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWiseNGOForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateId": stateId,
+
+
+      });
+      print("@@GetStateWiseNGOForDashboard--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetStateWiseNGOForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      nGOmoreDashboardClickDistrictWise data =
+      nGOmoreDashboardClickDistrictWise.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<nGOmoreStateDistrictBothData>>
+  GetStateDistrictWiseNGOForDashboard(int stateId,int districtId) async {
+    print("@@GetStateDistrictWiseNGOForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWiseNGOForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateId": stateId,
+        "districtId":districtId,
+
+
+      });
+      print("@@GetStateDistrictWiseNGOForDashboard--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetStateWiseNGOForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      nGOmoreStateDistrictBoth data =
+      nGOmoreStateDistrictBoth.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);

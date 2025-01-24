@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMDashboard.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/MoreClickGetStateWiseNGOForDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
@@ -305,6 +306,14 @@ class _MainDashboard extends State<MainDashboard> {
                                           // Action when 'more..' is clicked
                                           // _handleMoreClick();
                                           Utils.showToast("Complete in next Sprint!", true);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MoreClickGetStateWiseNGOForDashboard(),
+
+
+                                            ),
+                                          );
                                         },
                                         child: Text(
                                           'more..',
