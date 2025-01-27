@@ -5,6 +5,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/BothDataFoMEdicalCollegesl.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/DistrictwiseMedicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/stateWiseMedicalCollegs.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickprivatepractiories/stateWisePrivatePractiories.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/BothDataForHospital.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/GeDistrictWiseHospitalsForDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/GetStateWiseHospitalsForDashboard.dart';
@@ -4976,156 +4977,7 @@ class ApiController {
 
 
 
-  static Future<PatientRegistrations> hospitalPatientRegistration(
-      String registrationType,
-      File imageFile,
-      String idType,
-      String idName,
-      String dependencyType,
-      String relationType,
-      String relationName,
-      String firstName,
-      String lastName,
-      String dob,
-      String age,
-      String gender,
-      String mobileRelationType,
-      String mobileNo,
-      String screeningDate,
-      String tentativeSurgeryDate,
-      String disease,
-      String reportingPlace,
-      String state,
-      String district,
-      String city,
-      String village,
-      String address,
-      String apartment,
-      String nearLandMark,
-      String pincode,
-      String communicationLanguage,
-      String loggedInUserStateId,
-      String loggedInUserDistrictId,
-      String entryBy,
-      String loggedInNgoId,
-      String programeId,
-      String loggedInUserRole,
-      String userId,
-      ) async {
-    PatientRegistrations registrationModel = PatientRegistrations();
-    Response response1;
-    bool isNetworkAvailable = await Utils.isNetworkAvailable();
 
-    var url = ApiConstants.baseUrl + ApiConstants.PatientRegistration;
-    var request = http.MultipartRequest("POST", Uri.parse(url));
-
-    if (isNetworkAvailable) {
-      if (imageFile != null) {
-        final tempDir = await getTemporaryDirectory();
-        final targetPath = '${tempDir.path}/compressed_image.jpg';
-        // Compress the image
-        var result = await FlutterImageCompress.compressAndGetFile(
-          imageFile.absolute.path,
-          targetPath,
-          quality: 80,
-        );
-        imageFile = result;
-      }
-
-      try {
-        // Add all fields
-        request.fields.addAll({
-          "registrationType": registrationType,
-          "idType": idType,
-          "idName": idName,
-          "dependencyType": dependencyType,
-          "relationType": relationType,
-          "relationName": relationName,
-          "firstName": firstName,
-          "lastName": lastName,
-          "dob": dob,
-          "age": age,
-          "gender": gender,
-          "mobileRelationType": mobileRelationType,
-          "mobileNo": mobileNo,
-          "screeningDate": screeningDate,
-          "tentativeSurgeryDate": tentativeSurgeryDate,
-          "disease": disease,
-          "reportingPlace": reportingPlace,
-          "state": state,
-          "district": district,
-          "city": city,
-          "village": village,
-          "address": address,
-          "apartment": apartment,
-          "nearLandMark": nearLandMark,
-          "pincode": pincode,
-          "communicationLanguage": communicationLanguage,
-          "loggedInUserStateId": loggedInUserStateId,
-          "loggedInUserDistrictId": loggedInUserDistrictId,
-          "entryBy": entryBy,
-          "loggedInNgoId": loggedInNgoId,
-          "programeId": programeId,
-          "loggedInUserRole": loggedInUserRole,
-          "userId": userId,
-        });
-
-        if (imageFile != null) {
-          DateTime currentDate = DateTime.now();
-
-          // Read the image bytes
-          var imageBytes = await imageFile.readAsBytes();
-
-          // Print the first 50 bytes of the image file (to give an idea of its contents)
-          print("First 50 bytes of the image file: ${imageBytes.sublist(0, 50)}");
-
-          // Create the MultipartFile
-          var multipartFile = http.MultipartFile.fromBytes(
-            'patientImage',
-            imageBytes,
-            filename: "Image_${currentDate.millisecondsSinceEpoch}.jpg",
-          );
-
-          // Add to the request
-          request.files.add(multipartFile);
-
-          // Print file metadata
-          print('Image file being sent:');
-          print('Filename: ${multipartFile.filename}');
-          print('Content Type: ${multipartFile.contentType}');
-        }
-
-
-        // Log the request details
-        print('Sending API request to__P: $url');
-        print("Request fields:__P");
-        request.fields.forEach((key, value) {
-          print("$key: $value");
-        });
-        print("Request files:__P");
-        for (var file in request.files) {
-          print("Field__P: ${file.field}, Filename__P: ${file.filename}");
-        }
-
-        final response = await request.send().timeout(Duration(seconds: 30));
-        final respStr = await response.stream.bytesToString();
-
-        print("Response: $respStr");
-
-        final parsed = json.decode(respStr);
-        PatientRegistrations ratingResponse = PatientRegistrations.fromJson(parsed);
-        return ratingResponse;
-
-      } catch (e) {
-        Utils.showToast("Error: $e", true);
-        print("Error occurred: $e");
-        return null;
-      }
-    } else {
-      Utils.showToast("No internet connection", true);
-      return null;
-    }
-  }
 
 
 
@@ -7515,5 +7367,139 @@ class ApiController {
       return [];
     }
   }
+
+
+  static Future<List<stateWisePrivatePractioriesData>>
+  getStateWisePractitionerForDashboard() async {
+    print("@@getStateWisePractitionerForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetStateWisePractitionerForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+
+      print("@@getStateWisePractitionerForDashboard--bodyprint--: ${url.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getStateWisePractitionerForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      stateWisePrivatePractiories data =
+      stateWisePrivatePractiories.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+ /* static Future<List<DistrictwiseMedicalCollegesData>>
+  getDistrictWiseMedicalForDashboard(int stateId) async {
+    print("@@GetDistrictWiseMedicalForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWiseMedicalForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateId": stateId,
+
+
+      });
+      print("@@getDistrictWiseHospitalForDashboard--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getDistrictWiseHospitalForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      DistrictwiseMedicalColleges data =
+      DistrictwiseMedicalColleges.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }*/
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

@@ -172,4 +172,8 @@ class ApiConstants {
   static String GetDistrictWiseMedicalForDashboard = 'GetDistrictWiseMedicalForDashboard';
   static String GetStateDistrictWiseMedicalForDashboard = 'GetStateDistrictWiseMedicalForDashboard';
 
+
+
+  static String GetStateWisePractitionerForDashboard = 'GetStateWisePractitionerForDashboard';
+
 }

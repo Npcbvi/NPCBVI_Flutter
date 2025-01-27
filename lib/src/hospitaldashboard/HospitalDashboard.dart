@@ -9,6 +9,7 @@ import 'dart:io'; // For File
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
@@ -134,6 +135,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController relationDaughterController = TextEditingController();
   TextEditingController relationspouseController = TextEditingController();
   String relationtypeValue; // Initialize as null
+  String formattedDate;
   Future<void> _showPickerDialog() async {
     showModalBottomSheet(
       context: context,
@@ -1264,53 +1266,65 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                 _sectionHeader('Patient Registration'),
                 _patientInfoRow(),
                 SizedBox(height: 2.0),
-                _sectionTitle('Registration Type'),
-                _radioButtonColumn(
-                  options: [
-                    'Screening Camp',
-                    'Satellite Centre',
-                    'Hospital Walk-in'
-                  ],
-                  groupValue: registerationtypeRadio,
-                  onChanged: (value) {
-                    setState(() {
-                      registerationtypeRadio = value;
-                      print('@@1'+registerationtypeRadio.toString());
-                      if(registerationtypeRadio=="Screening Camp"){
-                        registerationtypeRadioValueinAPi=1;
-                      }else if (registerationtypeRadio=="Satellite Centre"){
-                        registerationtypeRadioValueinAPi=2;
-                      }else if(registerationtypeRadio=="Hospital Walk-in"){
-                        registerationtypeRadioValueinAPi=3;
-                      }
 
-                    });
-                  },
-                ),
-                SizedBox(height: 10),
-                Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: _showPickerDialog,
-                        child: Text("Select Image"),
+                _sectionTitle('Registration Type'),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Left section: Radio button column
+                    Expanded(
+                      flex: 3, // Weight for the radio button column
+                      child: _radioButtonColumn(
+                        options: [
+                          'Screening Camp',
+                          'Satellite Centre',
+                          'Hospital Walk-in'
+                        ],
+                        groupValue: registerationtypeRadio,
+                        onChanged: (value) {
+                          setState(() {
+                            registerationtypeRadio = value;
+                            print('@@1' + registerationtypeRadio.toString());
+                            if (registerationtypeRadio == "Screening Camp") {
+                              registerationtypeRadioValueinAPi = 1;
+                            } else if (registerationtypeRadio == "Satellite Centre") {
+                              registerationtypeRadioValueinAPi = 2;
+                            } else if (registerationtypeRadio == "Hospital Walk-in") {
+                              registerationtypeRadioValueinAPi = 3;
+                            }
+                          });
+                        },
                       ),
-                      SizedBox(height: 20),
-                      if (_image != null)
-                        Image.file(
-                          File(_image.path),
-                          height: 200,
-                          width: 200,
-                          fit: BoxFit.cover,
-                        ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(width: 10), // Add spacing between the two sections
+                    // Right section: Image picker and preview
+                    Expanded(
+                      flex: 2, // Weight for the image picker section
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          ElevatedButton(
+                            onPressed: _showPickerDialog,
+                            child: Text("Select Image"),
+                          ),
+                          SizedBox(height: 10),
+                          if (_image != null)
+                            Image.file(
+                              File(_image.path),
+                              height: 100,
+                              width: 100,
+                              fit: BoxFit.cover,
+                            ),
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
+
                 SizedBox(height: 10),
                 _sectionHeader('Personal Details'),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
                   child: Form(
                     key: _formKeyhopsitalPersonalDetal,
                     child: Column(
@@ -1434,7 +1448,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                           ),
                         if (showNotAvailble)
 
-                        SizedBox(height: 10.0),
+                        SizedBox(height: 5.0),
                         _sectionTitle('Dependency Type'),
                         _radioButtonRow(
                           options: ['Self', 'Dependent'],
@@ -1457,12 +1471,13 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                         ),
                         if (Dependent) // Only show if "Dependent" is selected
                           Padding(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                             child: Column(
                               children: [
 
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.blue[50],
@@ -1534,7 +1549,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                 // Display input field based on selected relation
                                 if (relationtypeValue == "Father")
                                   Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Father's Name",
@@ -1545,7 +1560,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                   ),
                                 if (relationtypeValue == "Mother")
                                   Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Mother's Name",
@@ -1556,7 +1571,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                   ),
                                 if (relationtypeValue == "Brother")
                                   Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Brother's Name",
@@ -1567,7 +1582,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                   ),
                                 if (relationtypeValue == "Sister")
                                   Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Sister's Name",
@@ -1578,7 +1594,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                   ),
                                 if (relationtypeValue == "Daughter")
                                   Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Daughter's Name",
@@ -1589,7 +1606,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                   ),
                                 if (relationtypeValue == "Spouse")
                                   Padding(
-                                    padding: const EdgeInsets.all(20.0),
+                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Spouse's Name",
@@ -1606,33 +1624,41 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                         // Hide the relation type section if "Self" is selected
                           SizedBox.shrink(), // This will render nothing when "Self" is selected
 
-                        SizedBox(height: 10.0),
-                        _textInputField(
-                          controller: _firstNamePatientDetail,
-                          labelText: 'First  Name *',
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your mobile number';
-                            } else if (value.length != 10) {
-                              return 'Please enter a valid 10-digit mobile number';
-                            }
-                            return null;
-                          },
+                        SizedBox(height: 5.0),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
+                          child: _textInputField(
+                            controller: _firstNamePatientDetail,
+                            labelText: 'First  Name *',
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your First name';
+                              } else if (value.length != 10) {
+                                return 'Please enter a valid 10-digit mobile number';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
-                        SizedBox(height: 10.0),
-                        _textInputField(
-                          controller: _lastNamePatientDetail,
-                          labelText: 'Last Name *',
-                          keyboardType: TextInputType.text,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your mobile number';
-                            } else if (value.length != 10) {
-                              return 'Please enter a valid 10-digit mobile number';
-                            }
-                            return null;
-                          },
+                        SizedBox(height: 5.0),
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
+                          child: _textInputField(
+                            controller: _lastNamePatientDetail,
+                            labelText: 'Last Name *',
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your Last name';
+                              } else if (value.length != 10) {
+                                return 'Please enter a valid 10-digit mobile number';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
 
                         Container(
@@ -1656,16 +1682,21 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                       );
 
                                       if (pickedDate != null) {
-                                        String formattedDate =
-                                            "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                        String formattedDateForDisplay =
+                                            "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // For UI display
+
+                                        String formattedDateForAPI =
+                                        DateFormat('yyyy-MM-dd').format(pickedDate); // For API request
+
                                         setState(() {
-                                          _dob = formattedDate;
+                                          _dob = formattedDateForAPI; // Use this for the API
+                                          print("@@_dob (API format): $_dob");
+                                          print("@@_dob (display format): $formattedDateForDisplay");
                                         });
                                       }
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        color: Colors.grey[200],
                                         borderRadius: BorderRadius.circular(8.0),
                                         border: Border.all(
                                           color: Colors.blue,
@@ -1684,7 +1715,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 10.0), // Spacing between the widgets
+                                SizedBox(width: 5.0), // Spacing between the widgets
                                 // Age Input Field with same width and height
                                 SizedBox(
                                   width: 150, // Same width as Date Picker
@@ -1711,14 +1742,15 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                             });
                           },
                         ),
-                        SizedBox(height: 16.0),
+                        SizedBox(height: 8.0),
                       ],
                     ),
                   ),
                 ),
                 _sectionHeader('Mobile Number Details'),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                   child: Column(
                     children: [
                       Padding(
@@ -1774,7 +1806,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                       // Display input field based on selected relation
                       if (relationtypeValue == "Father")
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Father's Name",
@@ -1785,7 +1818,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                         ),
                       if (relationtypeValue == "Mother")
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Mother's Name",
@@ -1796,7 +1830,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                         ),
                       if (relationtypeValue == "Brother")
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Brother's Name",
@@ -1807,7 +1842,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                         ),
                       if (relationtypeValue == "Sister")
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Sister's Name",
@@ -1818,7 +1854,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                         ),
                       if (relationtypeValue == "Daughter")
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Daughter's Name",
@@ -1829,7 +1866,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                         ),
                       if (relationtypeValue == "Spouse")
                         Padding(
-                          padding: const EdgeInsets.all(20.0),
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Spouse's Name",
@@ -1842,14 +1880,23 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                   child: Form(
                     child: Column(
                       children: [
                         _textInputField(
-                           controller: _mobileNumberDetailsRelationtype,
+                          controller: _mobileNumberDetailsRelationtype,
                           labelText: 'Mobile No *',
                           keyboardType: TextInputType.phone,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number';
+                            } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                              return 'Please enter a valid 10-digit mobile number';
+                            }
+                            return null;
+                          },
                         ),
                         SizedBox(height: 10.0),
                       ],
@@ -2077,17 +2124,22 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
 
 
 
-                SizedBox(height: 10.0),
+                SizedBox(height: 8.0),
 
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                   child: Form(
                     child: Column(
                       children: [
-                        _textInputField(
-                           controller: _reportingPlaceController,
-                          labelText: 'Reporting Place *',
-                          keyboardType: TextInputType.phone,
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
+                          child: _textInputField(
+                             controller: _reportingPlaceController,
+                            labelText: 'Reporting Place *',
+                            keyboardType: TextInputType.phone,
+                          ),
                         ),
                         SizedBox(height: 10.0),
                       ],
@@ -2292,7 +2344,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     ],
                   ),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 8),
                 Center(
                   child: Column(
                     children: [
@@ -2439,15 +2491,20 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
 
                 SizedBox(height: 10.0),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                   child: Form(
                     child: Column(
                       children: [
-                        _textInputField(
-                          controller: _AddressHouse,
-                          labelText: 'Address/ House/ Flat Number *',
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
 
-                          keyboardType: TextInputType.text,
+                          child: _textInputField(
+                            controller: _AddressHouse,
+                            labelText: 'Address/ House/ Flat Number *',
+
+                            keyboardType: TextInputType.text,
+                          ),
                         ),
                       ],
                     ),
@@ -2457,14 +2514,19 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
 
 
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                   child: Form(
                     child: Column(
                       children: [
-                        _textInputField(
-                          controller: _Apartment,
-                          labelText: 'Apartment/ building,/Colony /floor',
-                          keyboardType: TextInputType.text,
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
+                          child: _textInputField(
+                            controller: _Apartment,
+                            labelText: 'Apartment/ building,/Colony /floor',
+                            keyboardType: TextInputType.text,
+                          ),
                         ),
                       ],
                     ),
@@ -2472,14 +2534,19 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                 ),
 
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                   child: Form(
                     child: Column(
                       children: [
-                        _textInputField(
-                          controller: _AreaNearLandMark,
-                          labelText: 'Area/ Near Land Mark, etc',
-                          keyboardType: TextInputType.text,
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
+                          child: _textInputField(
+                            controller: _AreaNearLandMark,
+                            labelText: 'Area/ Near Land Mark, etc',
+                            keyboardType: TextInputType.text,
+                          ),
                         ),
                       ],
                     ),
@@ -2487,22 +2554,27 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                 ),
 
 
-                SizedBox(height: 10.0),
+                SizedBox(height: 8.0),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                   child: Form(
                     child: Column(
                       children: [
-                        _textInputField(
-                          controller: _PinCode,
-                          labelText: 'Pin Code',
-                          keyboardType: TextInputType.text,
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
+                          child: _textInputField(
+                            controller: _PinCode,
+                            labelText: 'Pin Code',
+                            keyboardType: TextInputType.text,
+                          ),
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 10.0),
+                SizedBox(height: 5.0),
                 Container(
                   decoration: BoxDecoration(
                     border: Border(
@@ -2542,7 +2614,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                           ),
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(
-                                20, 10, 20.0, 0),
+                                20, 5, 20.0, 0),
                             child: Column(
                               mainAxisAlignment:
                               MainAxisAlignment.start,
@@ -2643,142 +2715,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
   }
 
 
-/*
-  Future<void> ApipatientRegistration() async {
-    // Validate fields
-    if (_firstNamePatientDetail.text.isEmpty) {
-      Utils.showToast("Please enter first name", false);
-      return;
-    }
-    if (_lastNamePatientDetail.text.isEmpty) {
-      Utils.showToast("Please enter last name", false);
-      return;
-    }
-    if (_dob.isEmpty || _dob == "Select Date") {
-      Utils.showToast("Please select a date of birth", false);
-      return;
-    }
-    if (_AgePatientDetail.text.isEmpty) {
-      Utils.showToast("Please enter age", false);
-      return;
-    }
-    if (_mobileNumberDetailsRelationtype.text.isEmpty) {
-      Utils.showToast("Please enter mobile number", false);
-      return;
-    }
-    if (_AddressHouse.text.isEmpty) {
-      Utils.showToast("Please enter house address", false);
-      return;
-    }
-    if (_Apartment.text.isEmpty) {
-      Utils.showToast("Please enter apartment", false);
-      return;
-    }
-    if (_AreaNearLandMark.text.isEmpty) {
-      Utils.showToast("Please enter area/landmark", false);
-      return;
-    }
-    if (_PinCode.text.isEmpty) {
-      Utils.showToast("Please enter pin code", false);
-      return;
-    }
-    if (_image == null) {
-      Utils.showToast("Please select an image", false);
-      return;
-    }
 
-    Utils.showProgressDialog1(context);
-
-    try {
-      // Check if the image exists
-      print('@@Image Path: ${_image.path}');
-      bool fileExists = await File(_image.path).exists();
-      if (!fileExists) {
-        throw Exception('File does not exist');
-      }
-
-      // Compress and encode the image
-      final base64Image = await compressAndEncodeImage(_image.path);
-
-      final formData = {
-        "registrationType": registerationtypeRadioValueinAPi,
-        "idType": VoterIDtype.toString(),
-        "idName": _voterIDNumber.text.toString(),
-        "dependencyType": dependencyTypeRadio.toString(),
-        "relationType": relationtypeValue.toString(),
-        "relationName": relationFatherController.text.toString(),
-        "firstName": _firstNamePatientDetail.text.toString(),
-        "lastName": _lastNamePatientDetail.text.toString(),
-        "dob": _dob.toString(),
-        "age": _AgePatientDetail.text.toString(),
-        "gender": gender.toString(),
-        "mobileRelationType": relationtypeValueMobile.toString(),
-        "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
-        "screeningDate": _selectedDateText.toString(),
-        "tentativeSurgeryDate": _selectedDateTextToDate.toString(),
-        "disease": getDissesID.toString(),
-        "reportingPlace": _reportingPlaceController.text.toString(),
-        "state": state_code_login,
-        "district": district_code_login,
-        "city": distCodeGovtPrivate,
-        "village": village_code,
-        "address": _AddressHouse.text.toString(),
-        "apartment": _Apartment.text.toString(),
-        "nearLandMark": _AreaNearLandMark.text.toString(),
-        "pincode": _PinCode.text.toString(),
-        "communicationLanguage": stateLKanguage,
-        "loggedInUserStateId": state_code_login,
-        "loggedInUserDistrictId": district_code_login,
-        "entryBy": entryby,
-        "loggedInNgoId": "10126",
-        "programeId": "002",
-        "loggedInUserRole": int.parse(role_id),
-        "userId": userId.toString(),
-        "patientImage": base64Image, // Use the compressed and encoded image
-      };
-
-      print('@@FormData Payload: ${jsonEncode(formData)}');
-      var url = ApiConstants.baseUrl + ApiConstants.PatientRegistration;
-      print('Request URL: $url');
-
-      // Send POST request
-      final dio = Dio();
-      dio.options.connectTimeout = 10000;
-      dio.options.receiveTimeout = 10000;
-
-      final response = await dio.post(
-        url,
-        data: jsonEncode(formData),
-        options: Options(
-          headers: {"Content-Type": "application/json"},
-        ),
-      );
-
-      print('Response: ${response.data}');
-      Utils.hideProgressDialog1(context);
-
-      // Handle response (if necessary)
-      *//*if (response.statusCode == 200) {
-      Utils.showToast("Registration successful", true);
-    } else {
-      Utils.showToast("Registration failed", false);
-    }*//*
-    } on DioError catch (dioError) {
-      Utils.hideProgressDialog1(context);
-      if (dioError.response != null) {
-        print('Response Status Code: ${dioError.response?.statusCode}');
-        print('Response Data: ${dioError.response?.data}');
-        print('Response Headers: ${dioError.response?.headers}');
-      } else {
-        print('DioError (No Response): $dioError');
-      }
-    } catch (e) {
-      Utils.hideProgressDialog1(context);
-      Utils.showToast("Error: $e", false);
-      print('Unexpected Error: $e');
-    }
-  }*/
-  Future<void> ApipatientRegistration() async {
+ /* Future<void> ApipatientRegistration() async {
     print("### Starting patient registration ###");
 
     // Validation checks for inputs
@@ -2962,8 +2900,179 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
 
       Utils.showToast("@@Error_1: $e", false);
     }
-  }
+  }*/
+  Future<void> ApipatientRegistration() async {
+    print("### Starting patient registration ###");
 
+    // Validation checks for inputs
+    if (_firstNamePatientDetail.text.isEmpty) {
+      print("Error: First name is empty");
+      Utils.showToast("Please enter first name", false);
+      return;
+    }
+    if (_image == null) {
+      print("Error: Image is not selected");
+      Utils.showToast("Please select an image", false);
+      return;
+    }
+    if (_lastNamePatientDetail.text.isEmpty) {
+      print("Error: Last name is empty");
+      Utils.showToast("Please enter last name", false);
+      return;
+    }
+    if (_dob.isEmpty || _dob == "Select Date") {
+      print("Error: Date of birth is not selected");
+      Utils.showToast("Please select a date of birth", false);
+      return;
+    }
+    if (_AgePatientDetail.text.isEmpty) {
+      print("Error: Age is empty");
+      Utils.showToast("Please enter age", false);
+      return;
+    }
+    if (_mobileNumberDetailsRelationtype.text.isEmpty) {
+      print("Error: Mobile number is empty");
+      Utils.showToast("Please enter mobile number", false);
+      return;
+    } else if (_mobileNumberDetailsRelationtype.text.length != 10) {
+      print("Error: Mobile number must be 10 digits");
+      Utils.showToast("Please enter a valid 10-digit mobile number", false);
+      return;
+    }
+
+    if (_AddressHouse.text.isEmpty) {
+      print("Error: House address is empty");
+      Utils.showToast("Please enter house address", false);
+      return;
+    }
+    if (_Apartment.text.isEmpty) {
+      print("Error: Apartment is empty");
+      Utils.showToast("Please enter apartment", false);
+      return;
+    }
+    if (_AreaNearLandMark.text.isEmpty) {
+      print("Error: Area/landmark is empty");
+      Utils.showToast("Please enter area/landmark", false);
+      return;
+    }
+    if (_PinCode.text.isEmpty) {
+      print("Error: Pin code is empty");
+      Utils.showToast("Please enter pin code", false);
+      return;
+    }
+
+
+    // Show progress dialog
+    Utils.showProgressDialog1(context);
+
+    try {
+      // Compress image
+      final tempDir = await getTemporaryDirectory();
+      final targetPath = '${tempDir.path}/compressed_image.jpg';
+      File compressedImage = await FlutterImageCompress.compressAndGetFile(
+        _image.path,
+        targetPath,
+        quality: 80,
+      );
+
+      if (compressedImage == null) throw Exception("Image compression failed");
+
+      // Prepare MultipartFile for image
+      MultipartFile multipartFile = await MultipartFile.fromFile(
+        compressedImage.path,
+        filename: "patient_image_${DateTime.now().millisecondsSinceEpoch}.jpg",
+      );
+
+      // Prepare form data
+      FormData formData = FormData.fromMap({
+        "registrationType": registerationtypeRadioValueinAPi,
+        "patientImage": multipartFile,
+        "idType": VoterIDtype.toString(),
+        "idName":_voterIDNumber.text.toString(),
+        "dependencyType": dependencyTypeRadio.toString(),
+        "relationType":  relationtypeValue.toString(),
+        "relationName":  relationFatherController.text.toString(),
+        "firstName":_firstNamePatientDetail.text.toString(),
+        "lastName": _lastNamePatientDetail.text.toString(),
+
+
+       "dob":_dob.toString(),
+        //"dob": "12-12-2000",
+        "age":  _AgePatientDetail.text.toString(),
+        "gender":gender.toString(),
+        "mobileRelationType": relationtypeValueMobile.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
+        "screeningDate": _selectedDateText,
+        "tentativeSurgeryDate": _selectedDateTextToDate,
+        "disease": getDissesID.toString(),
+        "reportingPlace": _reportingPlaceController.text,
+        "state": state_code_login,
+        "district": district_code_login,
+        "city": distCodeGovtPrivate,
+        "village": village_code,
+        "address": _AddressHouse.text,
+        "apartment": _Apartment.text,
+        "nearLandMark": _AreaNearLandMark.text,
+        "pincode": _PinCode.text,
+        "communicationLanguage": stateLKanguage,
+        "loggedInUserStateId": state_code_login,
+        "loggedInUserDistrictId": district_code_login,
+        "entryBy": entryby,
+        "loggedInNgoId": "10126",
+        "programeId": "002",
+        "loggedInUserRole": int.parse(role_id),
+        "userId": userId,
+      });
+      print("Form data prepared successfully. Payload: ${formData.fields.toString()}");
+      print("Form data prepared successfully. Fields:");
+      for (int i = 0; i < formData.fields.length; i++) {
+        var field = formData.fields[i];
+        print("Index $i: Key = ${field.key}, Value = ${field.value}");
+      }
+      // API URL
+      final dio = Dio();
+      final url = "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
+      print("url: ${url}");
+// Prepare headers
+      final headers = {
+        'Content-Type': 'multipart/form-data', // Correctly specify the content type
+      };
+
+// Set up Dio options
+      dio.options.headers = headers;
+
+        final response = await dio.post(
+          url,
+          data: formData, // FormData object with your fields
+        );
+
+        print("API response received: ${response.statusCode}");
+
+      Utils.hideProgressDialog1(context);
+
+      if (response.statusCode == 200) {
+        final result = PatientRegistrations.fromJson(response.data);
+        if (result.status) {
+          Utils.showToast(result.message, true);
+
+        } else {
+          Utils.showToast("Registration failed: ${result.message}", false);
+        }
+      } else {
+        Utils.showToast("Failed to register. Status code: ${response.statusCode}", false);
+      }
+    } catch (e) {
+      Utils.hideProgressDialog1(context);
+      print("Error: $e");
+
+      if (e is DioError && e.response != null) {
+        print("DioError Response: ${e.response?.data}");
+        Utils.showToast("Error: ${e.response?.data}", false);
+      } else {
+        Utils.showToast("Unexpected error occurred", false);
+      }
+    }
+  }
 
 
 
