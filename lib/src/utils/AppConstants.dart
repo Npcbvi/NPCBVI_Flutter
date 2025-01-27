@@ -23,4 +23,10 @@ class AppConstant {
   static final String moreclickNgoStatedCode = "moreclickNgoStatedCode";
   static final String moreclickdistrictCodeNGO = "moreclickdistrictCodeNGO";
 
+
+  static final String moreclickHospitalStateCode = "moreclickHospitalStateCode";
+  static final String moreclickdistrictCodeHospital = "moreclickdistrictCodeNGO";
+
+  static final String moreclickMedicalcollegsStateCode = "moreclickHospitalStateCode";
+  static final String moreclickdistrictCodeMedicalcollegs = "moreclickdistrictCodeNGO";
 }

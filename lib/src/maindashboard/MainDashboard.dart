@@ -3,6 +3,8 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMDashboard.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MoreClickGetStateWiseNGOForDashboard.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickDashboardHopsital/MoreClickGetStateWiseHospitalDashboard.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickMedicalColleges/MoreClickGetStateWiseMedicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
@@ -305,7 +307,7 @@ class _MainDashboard extends State<MainDashboard> {
                                         onTap: () {
                                           // Action when 'more..' is clicked
                                           // _handleMoreClick();
-                                          Utils.showToast("Complete in next Sprint!", true);
+                                        //  Utils.showToast("Complete in next Sprint!", true);
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -397,7 +399,14 @@ class _MainDashboard extends State<MainDashboard> {
                                         onTap: () {
                                           // Action when 'more..' is clicked
                                           // _handleMoreClick();
-                                          Utils.showToast("Complete in next Sprint!", true);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                             builder: (context) => MoreClickGetStateWiseHospitalDashboard(),
+
+
+                                            ),
+                                          );
                                         },
                                         child: Text(
                                           'more..',
@@ -482,7 +491,14 @@ class _MainDashboard extends State<MainDashboard> {
                                         onTap: () {
                                           // Action when 'more..' is clicked
                                           // _handleMoreClick();
-                                          Utils.showToast("Complete in next Sprint!", true);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MoreClickGetStateWiseMedicalColleges(),
+
+
+                                            ),
+                                          );
                                         },
                                         child: Text(
                                           'more..',

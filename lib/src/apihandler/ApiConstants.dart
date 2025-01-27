@@ -160,6 +160,16 @@ class ApiConstants {
 
   static String GetStateWiseNGOForDashboard = 'GetStateWiseNGOForDashboard';
   static String GetDistrictWiseNGOForDashboard = 'GetDistrictWiseNGOForDashboard';
-
   static String GetStateDistrictWiseNGOForDashboard = 'GetStateDistrictWiseNGOForDashboard';
+
+
+  static String GetStateWiseHospitalsForDashboard = 'GetStateWiseHospitalsForDashboard';
+  static String GetDistrictWiseHospitalForDashboard = 'GetDistrictWiseHospitalForDashboard';
+  static String GetStateDistrictWiseHospitalForDashboard = 'GetStateDistrictWiseHospitalForDashboard';
+
+
+  static String GetStateWiseMedicalForDashboard = 'GetStateWiseMedicalForDashboard';
+  static String GetDistrictWiseMedicalForDashboard = 'GetDistrictWiseMedicalForDashboard';
+  static String GetStateDistrictWiseMedicalForDashboard = 'GetStateDistrictWiseMedicalForDashboard';
+
 }
