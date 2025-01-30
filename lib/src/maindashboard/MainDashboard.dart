@@ -5,6 +5,8 @@ import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MoreClickGetStateWiseNGOForDashboard.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickDashboardHopsital/MoreClickGetStateWiseHospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickMedicalColleges/MoreClickGetStateWiseMedicalColleges.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickSatelliteCenters/MoreClickGetStateWiseSatelliteCenters.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreclickPrivatePractitioner/MoreClickGetStateWisePrivatePrectioiries.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
@@ -583,7 +585,15 @@ class _MainDashboard extends State<MainDashboard> {
                                         onTap: () {
                                           // Action when 'more..' is clicked
                                           // _handleMoreClick();
-                                          Utils.showToast("Complete in next Sprint!", true);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => MoreClickGetStateWisePrivatePrectioiries(),
+
+
+                                            ),
+                                          );
+
                                         },
                                         child: Text(
                                           'more..',
@@ -661,17 +671,23 @@ class _MainDashboard extends State<MainDashboard> {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
-                                      child: Container(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Action when 'more..' is clicked
+                                          // _handleMoreClick();
+                                        Utils.showToast("work is pending from chnadha due to large data and crash app", true);
+
+                                        },
                                         child: Text(
                                           'more..',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
+                                            color: Colors.black, // Changed to blue to indicate it's clickable
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -741,17 +757,29 @@ class _MainDashboard extends State<MainDashboard> {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
-                                      child: Container(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Action when 'more..' is clicked
+                                          // _handleMoreClick();
+      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                          builder: (context) => MoreClickGetStateWiseSatelliteCenters(),
+
+
+                                          ),
+                                          );
+                                        },
                                         child: Text(
                                           'more..',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
+                                            color: Colors.black, // Changed to blue to indicate it's clickable
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                       ),
                                     ),

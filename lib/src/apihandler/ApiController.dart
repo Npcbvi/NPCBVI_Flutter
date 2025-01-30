@@ -5,6 +5,10 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/BothDataFoMEdicalCollegesl.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/DistrictwiseMedicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/stateWiseMedicalCollegs.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickSatelliteCenters/BothSatelliteCenters.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickSatelliteCenters/DistrictwiseSatelliteCentyers.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickSatelliteCenters/stateWiseSatelliteCenterss.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickprivatepractiories/BothPrivatePractiores.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickprivatepractiories/stateWisePrivatePractiories.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/BothDataForHospital.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/GeDistrictWiseHospitalsForDashboard.dart';
@@ -111,6 +115,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/mainDashbaordMorClick/moreclickprivatepractiories/DistrictwisePrivatePractionries.dart';
 import '../model/mainDashbaordMorClick/morehospitalclick/GetStateWiseHospitalsForDashboard.dart';
 import '../model/mainDashbaordMorClick/nGOmoreDashboardClickDistrictWise.dart';
 import '../model/screeningCamp/ScreenCampRegister.dart';
@@ -7433,9 +7438,9 @@ class ApiController {
     }
   }
 
- /* static Future<List<DistrictwiseMedicalCollegesData>>
-  getDistrictWiseMedicalForDashboard(int stateId) async {
-    print("@@GetDistrictWiseMedicalForDashboard" + "1");
+  static Future<List<DistrictwisePrivatePractionriesData>>
+  getDistrictWisePractitionerForDashboard(int stateId) async {
+    print("@@getDistrictWisePractitionerForDashboard" + "1");
     Response response1;
 
     // Check network availability
@@ -7447,7 +7452,7 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWiseMedicalForDashboard;
+      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWisePractitionerForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7460,7 +7465,7 @@ class ApiController {
 
 
       });
-      print("@@getDistrictWiseHospitalForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getDistrictWisePractitionerForDashboard--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7474,13 +7479,13 @@ class ApiController {
       );
 
       print(
-          "@@getDistrictWiseHospitalForDashboard--Api Response: ${response
+          "@@getDistrictWisePractitionerForDashboard--Api Response: ${response
               .toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      DistrictwiseMedicalColleges data =
-      DistrictwiseMedicalColleges.fromJson(responseData);
+      DistrictwisePrivatePractionries data =
+      DistrictwisePrivatePractionries.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
@@ -7500,6 +7505,281 @@ class ApiController {
       Utils.showToast(e.toString(), true);
       return [];
     }
-  }*/
+  }
+
+  static Future<List<BothPrivatePractioresData>>
+  getStateDistrictWisePractitionerForDashboard(int stateId,int districtId) async {
+    print("@@GetStateDistrictWisePractitionerForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWisePractitionerForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateId": stateId,
+        "districtId":districtId,
+
+
+      });
+      print("@@getStateDistrictWiseMedicalForDashboard--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getStateDistrictWiseMedicalForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      BothPrivatePractiores data =
+      BothPrivatePractiores.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+  static Future<List<stateWiseSatelliteCenterssData>>
+  getStateWiseSatteliteForDashboard() async {
+    print("@@getStateWiseSatteliteForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetStateWiseSatteliteForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+
+      print("@@getStateWisePractitionerForDashboard--bodyprint--: ${url.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getStateWisePractitionerForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      stateWiseSatelliteCenterss data =
+      stateWiseSatelliteCenterss.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<List<DistrictwiseSatelliteCentyersData>>
+  getDistrictWiseSatteliteForDashboard(int stateId) async {
+    print("@@getDistrictWiseSatteliteForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWiseSatteliteForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateId": stateId,
+
+
+      });
+      print("@@getDistrictWiseSatteliteForDashboard--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getDistrictWiseSatteliteForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      DistrictwiseSatelliteCentyers data =
+      DistrictwiseSatelliteCentyers.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<List<BothSatelliteCentersData>>
+  getStateDistrictWiseSatteliteForDashboard(int stateId,int districtId) async {
+    print("@@GetStateDistrictWiseSatteliteForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWiseSatteliteForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateId": stateId,
+        "districtId":districtId,
+
+
+      });
+      print("@@GetStateDistrictWiseSatteliteForDashboard--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetStateDistrictWiseSatteliteForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      BothSatelliteCenterss data =
+      BothSatelliteCenterss.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

@@ -176,4 +176,15 @@ class ApiConstants {
 
   static String GetStateWisePractitionerForDashboard = 'GetStateWisePractitionerForDashboard';
 
+  static String GetDistrictWisePractitionerForDashboard = 'GetDistrictWisePractitionerForDashboard';
+
+  static String GetStateDistrictWisePractitionerForDashboard = 'GetStateDistrictWisePractitionerForDashboard';
+
+
+  static String GetStateWiseSatteliteForDashboard = 'GetStateWiseSatteliteForDashboard';
+
+  static String GetDistrictWiseSatteliteForDashboard = 'GetDistrictWiseSatteliteForDashboard';
+
+  static String GetStateDistrictWiseSatteliteForDashboard = 'GetStateDistrictWiseSatteliteForDashboard';
+
 }

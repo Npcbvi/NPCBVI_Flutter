@@ -4,25 +4,27 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MoreClickGetStateDistrictWiseBothNGo.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickDashboardHopsital/BothStateDistrictwiseHospital.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickMedicalColleges/BothStateDistrictwiseMEdicalColleges.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickSatelliteCenters/BothSatelliteCenters.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreclickPrivatePractitioner/BothPrivatePractionaries.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/DistrictwiseMedicalColleges.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickSatelliteCenters/DistrictwiseSatelliteCentyers.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickprivatepractiories/DistrictwisePrivatePractionries.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/GeDistrictWiseHospitalsForDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreDashboardClickDistrictWise.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class GetDistrictWisePrivatePractiories extends StatefulWidget {
+
+class GetDistrictWiseSatelliteCenters extends StatefulWidget {
   @override
-  _GetDistrictWisePrivatePractiories createState() =>
-      _GetDistrictWisePrivatePractiories();
+  _GetDistrictWiseSatelliteCenters createState() =>
+      _GetDistrictWiseSatelliteCenters();
 }
 
-class _GetDistrictWisePrivatePractiories
-    extends State<GetDistrictWisePrivatePractiories> {
-  String moreclickPrivatePractioaryStatedCodess;
+class _GetDistrictWiseSatelliteCenters
+    extends State<GetDistrictWiseSatelliteCenters> {
+  String moreclicSatelliteCentersStatedCodess;
   //int moreclickkMEdicalcollegesStatedCodesss;
-  int moreclickkPrivatePractioaryStatedCodesss;
+  int moreclickkSatelliteCentersStatedCodesss;
 
   @override
   void initState() {
@@ -32,12 +34,12 @@ class _GetDistrictWisePrivatePractiories
 
   Future<void> fetchMoreclickNgoStateCode() async {
     try {
-      moreclickPrivatePractioaryStatedCodess = await SharedPrefs.getStoreSharedValue(
-        AppConstant.moreclickPrivatePRactioriesStateCode,
+      moreclicSatelliteCentersStatedCodess = await SharedPrefs.getStoreSharedValue(
+        AppConstant.moreclickSatelliteCentersStateCode,
       ) as String;
-      if (moreclickPrivatePractioaryStatedCodess != null) {
-        moreclickkPrivatePractioaryStatedCodesss = int.tryParse(moreclickPrivatePractioaryStatedCodess);
-        if (moreclickkPrivatePractioaryStatedCodesss == null) {
+      if (moreclicSatelliteCentersStatedCodess != null) {
+        moreclickkSatelliteCentersStatedCodesss = int.tryParse(moreclicSatelliteCentersStatedCodess);
+        if (moreclickkSatelliteCentersStatedCodesss == null) {
           debugPrint("Error: Invalid integer value for state code.");
         }
       } else {
@@ -60,16 +62,16 @@ class _GetDistrictWisePrivatePractiories
         ),
       ),
 
-      body: moreclickkPrivatePractioaryStatedCodesss == null
+      body: moreclickkSatelliteCentersStatedCodesss == null
           ? const Center(
         child: Text(
           "No state code found.",
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
         ),
       )
-          : FutureBuilder<List<DistrictwisePrivatePractionriesData>>(
-        future: ApiController.getDistrictWisePractitionerForDashboard(
-          moreclickkPrivatePractioaryStatedCodesss,
+          : FutureBuilder<List<DistrictwiseSatelliteCentyersData>>(
+        future: ApiController.getDistrictWiseSatteliteForDashboard(
+          moreclickkSatelliteCentersStatedCodesss,
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -114,14 +116,14 @@ class _GetDistrictWisePrivatePractiories
                         _buildDataCell(entry.districtName, 150),
                         _buildDataCell(entry.countState.toString(), 80),
                         _buildDataCellViewBlueDashboard("More", () {
-                          SharedPrefs.storeSharedValues(AppConstant.moreclickdistrictCodePrivatePRactiories,
+                          SharedPrefs.storeSharedValues(AppConstant.moreclickdistrictCodeSatelliteCentersPRactiories,
                               entry.districtCode.toString());
-                          SharedPrefs.storeSharedValues(AppConstant.moreclickPrivatePRactioriesStateCode,
+                          SharedPrefs.storeSharedValues(AppConstant.moreclickSatelliteCentersStateCode,
                               entry.stateCode.toString());
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BothPrivatePractionaries(),
+                              builder: (context) => BothSatelliteCenters(),
 
 
                             ),

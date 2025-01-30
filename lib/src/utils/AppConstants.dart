@@ -32,4 +32,7 @@ class AppConstant {
 
   static final String moreclickPrivatePRactioriesStateCode = "moreclickPrivatePRactioriesStateCode";
   static final String moreclickdistrictCodePrivatePRactiories = "moreclickdistrictCodePrivatePRactiories";
+
+  static final String moreclickSatelliteCentersStateCode = "moreclickPrivatePRactioriesStateCode";
+  static final String moreclickdistrictCodeSatelliteCentersPRactiories = "moreclickdistrictCodePrivatePRactiories";
 }
