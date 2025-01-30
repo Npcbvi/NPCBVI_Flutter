@@ -37,11 +37,20 @@ class _MainDashboard extends State<MainDashboard> {
 
   Future<void> fetchData() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
-    if (isNetworkAvailable) {
-      Utils.showProgressDialog1(context);
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return;
+    }
+
+    Utils.showProgressDialog1(context);
+    int maxRetries = 3;
+    int attempt = 0;
+
+    while (attempt < maxRetries) {
       try {
         final value = await ApiController.getDashbaord();
         Utils.hideProgressDialog1(context);
+
         if (value.status) {
           setState(() {
             ngoCount = value.data.ngoCount ?? '0';
@@ -55,20 +64,26 @@ class _MainDashboard extends State<MainDashboard> {
             totalEB = value.data.totalEB ?? 'null';
             totalEd = value.data.totalEd ?? 'null';
             spo = value.data.spo ?? 'null';
+            isLoadingApi = false;
           });
+          return; // Exit loop if successful
+        } else {
+          Utils.showToast(value.message, true);
         }
-        //    Utils.showToast(value.message, !value.status);
       } catch (e) {
-        Utils.showToast(e.toString(), true);
-      } finally {
-        setState(() {
-          isLoadingApi = false;
-        });
+        attempt++;
+        if (attempt >= maxRetries) {
+          Utils.showToast("Failed to fetch data. Please try again.", true);
+        }
       }
-    } else {
-      Utils.showToast(AppConstant.noInternet, true);
     }
+
+    Utils.hideProgressDialog1(context);
+    setState(() {
+      isLoadingApi = false;
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
