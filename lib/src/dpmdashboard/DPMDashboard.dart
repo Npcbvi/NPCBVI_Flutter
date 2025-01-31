@@ -23,6 +23,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/NGOAPPlicationDropDownDPm
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/childrenblindess/GetDPMCongenitalPtosis.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/childrenblindess/GetDPMSquint.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/childrenblindess/GetDPMTraumaChildren.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmDashboardPatinetApproveDisesesViewClick/PatientapprovedSisesesViewclick.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_EyeScreeningEdit.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningMonth.dart';
@@ -3192,11 +3193,12 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                           // Data Rows
                           FutureBuilder<
-                              List<DataDPMGovtPrivateOrganisationTypeData>>(
-                            future: ApiController.getDPM_GovtPvtOther(
+                              List<Dpm_application_ngoApplicationsData>>(
+                           /* future: ApiController.get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List("",userId,0,
                                 district_code_login,
                                 state_code_login,
-                                dropDownvalueOrgnbaistaionType),
+                                dropDownvalueOrgnbaistaionType),*/
+                            future: ApiController.get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List("", userId, 0, 100, 1001, 5),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
@@ -3221,7 +3223,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   ),
                                 );
                               } else {
-                                List<DataDPMGovtPrivateOrganisationTypeData>
+                                List<Dpm_application_ngoApplicationsData>
                                     ddata = snapshot.data;
                                 return Column(
                                   children: ddata.map((offer) {
@@ -3239,8 +3241,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         //Comment for first sprint
                                         _buildDataCellViewBlue("View Detail",
                                             () {
-                                          _showDetailDialogGovernmentDistrictHospita(
-                                              context, offer);
+                                          /*_showDetailDialogGovernmentDistrictHospita(
+                                              context, offer);*/
                                         }),
                                       ],
                                     );
