@@ -154,29 +154,88 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
         contentPadding: EdgeInsets.only(top: 10.0),
-        title: Text("Full Description",  style: TextStyle(
-          color: Colors.blue,
-          fontWeight: FontWeight.bold,  // Makes text bold
-        ),
+        title: Text(
+          "Full Description",
+          style: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.bold, // Makes text bold
+          ),
         ),
         content: Container(
           height: 400,
+          width: double.maxFinite,
           child: SingleChildScrollView(
             padding: EdgeInsets.all(8.0),
-            child: Text(
-              'In order to login for the first time into the new web application it is necessary to register and upload certain documents and information as detailed below. Hence keep the scanned copy of these documents handy before starting the process of registration.\n\n'
-              'CHECKLIST FOR REGISTRATION\n\n• For NGOs:\n • Darpan Number is a must for registration. If you haven\'t registered on the Darpan portal. \n\n'
-              '• Equipment details of your hospital need to be filled once you log in.\n• Documents Checklist:\n i. Society/Charitable public trust registration certificate\n ii. Minimum 3 years of experience certificate\n • Bank Details like Account No., Bank IFSC Code, and Bank Name.\n\n'
-              'For Private Practitioners/Private Medical Colleges/Others:\n• Equipment details of your hospital need to be filled.\nDocuments Checklist:\n i. MS Ophthalmology Degree\n ii. Two years of Experience post PG\n\n '
-              'If there is any problem in the registration, please contact: helpdesk[dot]npcb[at]nic[dot]in.',
-              style: TextStyle(fontSize: 14,
-                fontWeight: FontWeight.bold,),
+            child: RichText(
+              text: TextSpan(
+                style: TextStyle(fontSize: 14, color: Colors.black),
+                children: [
+                  TextSpan(
+                    text:
+                    'In order to login for the first time into the new web application, it is necessary to register and upload certain documents and information as detailed below. Hence, keep the scanned copy of these documents handy before starting the process of registration.\n\n',
+                  ),
+                  TextSpan(
+                    text: 'CHECKLIST FOR REGISTRATION\n\n',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+
+                  // NGO Section
+                  TextSpan(
+                    text: '• For NGOs:\n',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: '   • Darpan Number is a must \n'
+                                 '     for registration.\n',
+                  ),
+              //    TextSpan(text: '   • Equipment details of your hospital need to be filled once you log in.\n'),
+                  TextSpan(
+                    text: '   • Equipment details of your hospital\n'
+                          '      need to be filled once you log in.\n',
+                  ),
+                  TextSpan(
+                    text: '   • Documents Checklist:\n',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: '       i. Society/Charitable public trust \n'
+                                 '          registration certificate \n '),
+                  TextSpan(text: '       ii. Minimum 3 years of experience \n'
+                                  '          certificate \n'),
+                  TextSpan(text: '   • Bank Details like Account No.\n'
+                                  '     Bank IFSC Code, and Bank Name.\n \n'),
+
+                  // Private Practitioners Section
+                  TextSpan(
+                    text: '• For Private Practitioners/Private \n'
+                           '  Medical Colleges/Others: \n',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+
+                  ),
+                  TextSpan(text: '   • Equipment details of your hospital \n'
+                                  '     need to be filled.\n'),
+                  TextSpan(
+                    text: '   • Documents Checklist:\n',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  TextSpan(text: '       i. MS Ophthalmology Degree\n'),
+                  TextSpan(text: '       ii. Two years of experience post PG\n\n'),
+
+                  // Contact Info
+                  TextSpan(
+                    text: 'If there is any problem in the registration, please contact: ',
+                  ),
+                  TextSpan(
+                    text: 'helpdesk[dot]npcb[at]nic[dot]in.',
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.red),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

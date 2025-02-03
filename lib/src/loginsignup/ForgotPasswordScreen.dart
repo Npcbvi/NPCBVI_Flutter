@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/forgot/ForgotPasswordModel.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -358,6 +359,13 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
               print('@@----forgotPasswordDatasOTPData+111---' +
                   response.status.toString());
                Utils.showToast(response.message, true);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      LoginScreen(),
+                ),
+              );
             } else {
               Utils.showToast(response.message, true);
             }

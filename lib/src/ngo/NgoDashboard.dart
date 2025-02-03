@@ -1294,8 +1294,16 @@ class _NgoDashboard extends State<NgoDashboard> {
             if (response != null && response.status) {
               Utils.showToast(response.message, true);
               Navigator.of(context).pop(); // Close the dialog
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      LoginScreen(),
+                ),
+              );
             } else {
               Utils.showToast(response.message, true);
+
             }
           });
         } else {

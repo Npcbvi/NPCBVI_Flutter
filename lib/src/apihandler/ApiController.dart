@@ -116,6 +116,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
 import '../model/mainDashbaordMorClick/moreclickprivatepractiories/DistrictwisePrivatePractionries.dart';
 import '../model/mainDashbaordMorClick/morehospitalclick/GetStateWiseHospitalsForDashboard.dart';
 import '../model/mainDashbaordMorClick/nGOmoreDashboardClickDistrictWise.dart';
@@ -7837,6 +7838,79 @@ class ApiController {
       var responseData = json.decode(response.data);
       Dpm_application_ngoApplications data =
       Dpm_application_ngoApplications.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<GovtPrivateHospitalData>> get_DPM_Applications_GovtPrivate_applications(String npcbNo,String userid,
+      int status ,int stateId,int districtId,int organisationType) async {
+    print("@@get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List_govt" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "npcbNo":npcbNo,
+        "userid":userid,
+        "status":status,
+        "stateId": stateId,
+        "districtId":districtId,
+        "organisationType":organisationType,
+
+
+      });
+      print("@@get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List_govt--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List_govt--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GovtPrivateHospital data =
+      GovtPrivateHospital.fromJson(responseData);
 
       if (data.status) {
         Utils.showToast(data.message, true);
