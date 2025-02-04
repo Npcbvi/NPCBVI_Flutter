@@ -2479,25 +2479,24 @@ class _NgoDashboard extends State<NgoDashboard> {
                       return CircularProgressIndicator();
                     }
 
-                    List<DataGetDPM_ScreeningYear> list =
-                        snapshot.data.toList();
+                    List<DataGetDPM_ScreeningYear> list = snapshot.data;
 
                     // Check if _selectedUser is null or not part of the list anymore
                     if (_selectedUser == null ||
                         !list.contains(_selectedUser)) {
-                      _selectedUser = null; // Set the first item as default
+                      _selectedUser =
+                          list.first; // Set the first item as default
                     }
 
+
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
                             width: 300, // Consistent width with the container
-                            child: DropdownButtonFormField<
-                                DataGetDPM_ScreeningYear>(
+                            child: DropdownButtonFormField<DataGetDPM_ScreeningYear>(
                               value: _selectedUser,
                               onChanged: (userc) {
                                 setState(() {
@@ -2509,41 +2508,32 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 });
                               },
                               items: list.map((user) {
-                                return DropdownMenuItem<
-                                    DataGetDPM_ScreeningYear>(
+                                return DropdownMenuItem<DataGetDPM_ScreeningYear>(
                                   value: user,
-                                  child: Text(user.name,
-                                      style: TextStyle(fontSize: 16)),
+                                  child: Text(user.name, style: TextStyle(fontSize: 16)),
                                 );
                               }).toList(),
                               hint: Text(
                                 'Please Select year',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  // Light gray color for the hint
-                                  fontSize: 16,
-                                ),
+                                style: TextStyle(color: Colors.grey, fontSize: 16),
                               ),
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
+                                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
+                                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blueAccent, width: 2.0),
+                                  borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 filled: true,
                                 fillColor: Colors.blue[50],
                               ),
-                              dropdownColor: Colors.blue[50],
+                              dropdownColor: Colors.blue[50], // Custom background color for dropdown
                               style: TextStyle(color: Colors.black),
-                              icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.blue),
+                              icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                              menuMaxHeight: 300, // Controls the maximum height of the dropdown menu
                             ),
                           ),
                         ],
@@ -2551,6 +2541,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     );
                   },
                 ),
+
 
                 SizedBox(height: 8),
                 buildInfoContainer(stateNames),

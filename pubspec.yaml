@@ -53,6 +53,7 @@ dependencies:
   image_picker: any
   image: ^3.0.1 # Add the image package
   flutter_image_compress: any
+  dropdown_button2: any  # Use the latest version
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
