@@ -106,7 +106,6 @@ class _GetDistrictWiseSatelliteCenters
                     _buildHeaderCell("More", 80),
                   ],
                 ),
-                const Divider(color: Colors.blue, height: 1.0),
                 Column(
                   children: data.map((entry) {
                     final index = data.indexOf(entry) + 1;
@@ -145,7 +144,10 @@ class _GetDistrictWiseSatelliteCenters
     return Container(
       width: width,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(
         child: Text(
           title,
@@ -159,7 +161,10 @@ class _GetDistrictWiseSatelliteCenters
     return Container(
       width: width,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(
         child: Text(
           value,
@@ -176,7 +181,10 @@ class _GetDistrictWiseSatelliteCenters
       child: Container(
         width: 80,
         height: 50,
-        decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        ),
         child: const Center(
           child: Text(
             "View",
@@ -195,7 +203,10 @@ class _GetDistrictWiseSatelliteCenters
       child: Container(
         width: 80,
         height: 50,
-        decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.1)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        ),
         child: Center(
           child: Text(text, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
         ),

@@ -105,13 +105,13 @@ class _BothStateDistrictwiseHospital
                   child: Row(
                     children: [
                       _buildHeaderCell("S.No.", 50),
-                      _buildHeaderCell("Darpan No.", 150),
+                      _buildHeaderCell("Darpan No.", 200),
                      // _buildHeaderCell("Nodal Officer Name", 150),
-                      _buildHeaderCell("Action", 80),
+                      _buildHeaderCell("Action", 100),
                     ],
                   ),
                 ),
-                const Divider(color: Colors.blue, height: 1.0),
+                const Divider(color: Colors.transparent, height: 1.0),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Column(
@@ -120,7 +120,7 @@ class _BothStateDistrictwiseHospital
                       return Row(
                         children: [
                           _buildDataCell(index.toString(), 50),
-                          _buildDataCell(entry.ngoName ?? '-', 150),
+                          _buildDataCell(entry.ngoName ?? '-', 200),
                           //_buildDataCell(entry.memberName ?? '-', 150),
                           _buildDataCellViewBlueDashboard("View", () {
                             showDialog(
@@ -170,7 +170,10 @@ class _BothStateDistrictwiseHospital
     return Container(
       width: width,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(
         child: Text(
           title,
@@ -184,7 +187,10 @@ class _BothStateDistrictwiseHospital
     return Container(
       width: width,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(
         child: Text(
           value,
@@ -199,9 +205,12 @@ class _BothStateDistrictwiseHospital
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 80,
+        width: 100,
         height: 50,
-        decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        ),
         child: Center(
           child: Text(
             text,

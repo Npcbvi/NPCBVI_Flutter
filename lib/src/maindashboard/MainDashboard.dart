@@ -6,6 +6,7 @@ import 'package:mohfw_npcbvi/src/maindashboard/MoreClickGetStateWiseNGOForDashbo
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickDashboardHopsital/MoreClickGetStateWiseHospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickMedicalColleges/MoreClickGetStateWiseMedicalColleges.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickSatelliteCenters/MoreClickGetStateWiseSatelliteCenters.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/StateWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreclickPrivatePractitioner/MoreClickGetStateWisePrivatePrectioiries.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
@@ -292,14 +293,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       ),
                                     ),
                                   ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
 
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
                                   Padding(
                                     padding:
                                         const EdgeInsets.fromLTRB(6, 4, 6, 4),
@@ -322,9 +316,6 @@ class _MainDashboard extends State<MainDashboard> {
                                       alignment: Alignment.bottomRight,
                                       child: InkWell(
                                         onTap: () {
-                                          // Action when 'more..' is clicked
-                                          // _handleMoreClick();
-                                        //  Utils.showToast("Complete in next Sprint!", true);
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -864,17 +855,29 @@ class _MainDashboard extends State<MainDashboard> {
                                     ),
                                   ),
                                   Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
+                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
                                     child: Align(
                                       alignment: Alignment.bottomRight,
-                                      child: Container(
+                                      child: InkWell(
+                                        onTap: () {
+                                          // Action when 'more..' is clicked
+                                          // _handleMoreClick();
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => StateWiseCamp(),
+
+
+                                            ),
+                                          );
+                                        },
                                         child: Text(
                                           'more..',
                                           style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
+                                            color: Colors.black, // Changed to blue to indicate it's clickable
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.normal,
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -1209,7 +1212,7 @@ class _MainDashboard extends State<MainDashboard> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 10),
+                  padding: const EdgeInsets.fromLTRB(10, 20, 10, 50),
                 ),
               ],
             ),

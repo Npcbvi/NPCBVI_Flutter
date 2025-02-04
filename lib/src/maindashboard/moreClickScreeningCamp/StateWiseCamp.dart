@@ -2,25 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MoreClickGetDistrictWiseNGOForDashboard.dart';
-import 'package:mohfw_npcbvi/src/maindashboard/moreClickMedicalColleges/GetDistrictWiseMedicalCollegs.dart';
-import 'package:mohfw_npcbvi/src/maindashboard/moreclickPrivatePractitioner/GetDistrictWisePrivatePractiories.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/DistrictWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/sendTODPM/SendTODPMCataract.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/stateWiseMedicalCollegs.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickprivatepractiories/stateWisePrivatePractiories.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/StateWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/GetStateWiseHospitalsForDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreDashboardClickStateWise.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 
-class MoreClickGetStateWisePrivatePrectioiries extends StatefulWidget {
+class StateWiseCamp extends StatefulWidget {
 
 
   @override
-  _MoreClickGetStateWisePrivatePrectioiries createState() => _MoreClickGetStateWisePrivatePrectioiries();
+  _StateWiseCamp createState() => _StateWiseCamp();
 }
 
-class _MoreClickGetStateWisePrivatePrectioiries extends State<MoreClickGetStateWisePrivatePrectioiries> {
+class _StateWiseCamp extends State<StateWiseCamp> {
   String districtNames = '';
   String stateNames = '';
   String fullnameController, getYearNgoHopital, getfyidNgoHospital;
@@ -38,7 +36,7 @@ String   moreclickNgoStatedCodess;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( title: Text(
-        'State-wise Private Practitioners',
+        'State-wise Screening Camps',
         style: TextStyle(
           fontSize: 12.0, // Adjust the size as needed
         ),
@@ -59,13 +57,13 @@ String   moreclickNgoStatedCodess;
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('State'),
-                    _buildHeaderCellTOTalNGO('Total Hospital'),
+                    _buildHeaderCellTOTalNGO('Total NGO'),
                     _buildHeaderCellDashboardsAction('Action'),
                   ],
                 ),
                 // Data Rows
-                FutureBuilder<List<stateWisePrivatePractioriesData>>(
-                  future: ApiController.getStateWisePractitionerForDashboard(),
+                FutureBuilder<List<StateWiseCampData>>(
+                  future: ApiController.getStateWiseCampForDashboard(),
                   //  future: ApiController.getGovtPvtOther_Cataract(484, 27, "H201944681641"),
 
                   builder: (context, snapshot) {
@@ -82,7 +80,7 @@ String   moreclickNgoStatedCodess;
                         ),
                       );
                     } else {
-                      List<stateWisePrivatePractioriesData> data = snapshot.data;
+                      List<StateWiseCampData> data = snapshot.data;
                       return Column(
                         children: data.map((entry) {
                           return Row(
@@ -91,12 +89,12 @@ String   moreclickNgoStatedCodess;
                               _buildDataCell(entry.stateName),
                               _buildDataCellTotalNGo(entry.countState.toString()),
                               _buildDataCellViewBlueDashboard("More", () {
-                                SharedPrefs.storeSharedValues(AppConstant.moreclickPrivatePRactioriesStateCode,
+                                SharedPrefs.storeSharedValues(AppConstant.moreclickCamptsateCode,
                                     entry.stateCode.toString());
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => GetDistrictWisePrivatePractiories(),
+                                    builder: (context) => DistrictWiseCamp(),
 
 
                                   ),
@@ -131,7 +129,7 @@ String   moreclickNgoStatedCodess;
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
               decoration: BoxDecoration(
-                color: Colors.blue,  // Background color of the button
+                color: Colors.white,  // Background color of the button
                 borderRadius: BorderRadius.circular(8.0),  // Rounded corners
                 boxShadow: [
                   BoxShadow(

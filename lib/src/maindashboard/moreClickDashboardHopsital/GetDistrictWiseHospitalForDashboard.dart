@@ -138,7 +138,10 @@ class _GetDistrictWiseHospitalForDashboard
     return Container(
       width: width,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(
         child: Text(
           title,
@@ -152,7 +155,10 @@ class _GetDistrictWiseHospitalForDashboard
     return Container(
       width: width,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(
         child: Text(
           value,
@@ -169,7 +175,10 @@ class _GetDistrictWiseHospitalForDashboard
       child: Container(
         width: 80,
         height: 50,
-        decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        ),
         child: const Center(
           child: Text(
             "View",
@@ -188,7 +197,10 @@ class _GetDistrictWiseHospitalForDashboard
       child: Container(
         width: 80,
         height: 50,
-        decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.1)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        ),
         child: Center(
           child: Text(text, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
         ),

@@ -154,12 +154,21 @@ class _LoginScreenState extends State<LoginScreen> {
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
         contentPadding: EdgeInsets.only(top: 10.0),
-        title: Text(
-          "Full Description",
-          style: TextStyle(
-            color: Colors.blue,
-            fontWeight: FontWeight.bold, // Makes text bold
-          ),
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              "Full Description",
+              style: TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold, // Makes text bold
+              ),
+            ),
+            Divider( // Divider below the title
+              color: Colors.grey,
+              thickness: 1,
+            ),
+          ],
         ),
         content: Container(
           height: 400,
@@ -261,12 +270,12 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 50, // Set a height that makes sense for your use case
+              height: 30, // Set a height that makes sense for your use case
               child: Marquee(
                 text: 'NGO Darpan number is mandatory for registration.',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 18,
                     color: Colors.red),
                 velocity: 50.0,
                 pauseAfterRound: Duration(seconds: 1),
@@ -277,39 +286,42 @@ class _LoginScreenState extends State<LoginScreen> {
                 decelerationCurve: Curves.easeOut,
               ),
             ),
-            SizedBox(height: 20),
-            RichText(
-              text: TextSpan(
-                style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black,
-                    fontSize: 16),
-                children: [
-                  TextSpan(
-                    text:
-                        'In order to login for the first time into the new web application it is necessary to'
-                        ' register and upload certain documents and information as detailed below. Hence keep'
-                        ' the scanned copy of these documents handy before starting the process of registration.\n\n'
-                        'CHECKLIST FOR REGISTRATION\n\n • For NGOs\nDarpan Number is must for registration. If you haven\'t registered on Darpan portal.',
-                  ),
-                  TextSpan(
-                    text: ' Click here.',
-                    style: TextStyle(color: Colors.blue),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DarpanWebview()));
-                      },
-                  ),
-                  TextSpan(
-                    text: '\nRead more',
-                    style: TextStyle(color: Colors.blue,
-                      fontWeight: FontWeight.bold),
-                    recognizer: TapGestureRecognizer()..onTap = showDataAlert,
-                  ),
-                ],
+            SizedBox(height: 12),
+            Container(
+              width: 350, // Set the desired width
+              child: RichText(
+                text: TextSpan(
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                      fontSize: 15),
+                  children: [
+                    TextSpan(
+                      text:
+                          'In order to login for the first time into the new web application it is necessary to'
+                          ' register and upload certain documents and information as detailed below. Hence keep'
+                          ' the scanned copy of these documents handy before starting the process of registration.\n\n'
+                          'CHECKLIST FOR REGISTRATION\n\n • For NGOs\nDarpan Number is must for registration. If you haven\'t registered on Darpan portal.',
+                    ),
+                    TextSpan(
+                      text: ' Click here.',
+                      style: TextStyle(color: Colors.blue),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DarpanWebview()));
+                        },
+                    ),
+                    TextSpan(
+                      text: '\nRead more',
+                      style: TextStyle(color: Colors.blue,
+                        fontWeight: FontWeight.bold),
+                      recognizer: TapGestureRecognizer()..onTap = showDataAlert,
+                    ),
+                  ],
+                ),
               ),
             ),
             SizedBox(height: 20),
@@ -359,11 +371,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 Expanded(
                   flex: 2,
                   child: Container(
-                    height: 55,
+
+                    height: 56,
                     margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
                     decoration: BoxDecoration(
-                      border: Border.all(width: 2, color: Colors.red),
+
+                      color: Colors.white, // Background color
+                      border: Border.all(width: 1, color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
+
                     child: Center( // Center widget to center the text
                       child: Text(
                         randomString,
@@ -388,16 +405,22 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             SizedBox(height: 10),
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(130, 50), // Set width & height
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8), // Add rounded corners
+                ),
+              ),
               onPressed: () {
                 // Step 1: Check if the username is entered and valid
                 if (_loginIdController.text.isEmpty) {
-                  Utils.showToast("Username cannot be empty", false);
+                  Utils.showToast("Username cannot be empty !", false);
                   return;  // Exit if username is not entered
                 }
 
                 // Step 2: Check if the password is entered and valid
                 if (_passwordController.text.isEmpty) {
-                  Utils.showToast("Password cannot be empty", false);
+                  Utils.showToast("Password cannot be empty !", false);
                   return;  // Exit if password is not entered
                 }
 
@@ -412,7 +435,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 _submitForm();
               },
               child: Text('Sign In'),
-              style: ElevatedButton.styleFrom(primary: Colors.blue),
             ),
 
             // SizedBox(height: 10),

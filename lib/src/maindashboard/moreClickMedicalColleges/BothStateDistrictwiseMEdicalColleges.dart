@@ -121,7 +121,7 @@ class _BothStateDistrictwiseMEdicalColleges
                       return Row(
                         children: [
                           _buildDataCell(index.toString(), 50),
-                          _buildDataCell(entry.ngoName ?? '-', 150),
+                          _buildDataCell(entry.ngoName ?? '-', 200),
                           //_buildDataCell(entry.memberName ?? '-', 150),
                           _buildDataCellViewBlueDashboard("View", () {
                             showDialog(
@@ -171,7 +171,10 @@ class _BothStateDistrictwiseMEdicalColleges
     return Container(
       width: width,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(
         child: Text(
           title,
@@ -185,7 +188,10 @@ class _BothStateDistrictwiseMEdicalColleges
     return Container(
       width: width,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(
         child: Text(
           value,
@@ -200,9 +206,12 @@ class _BothStateDistrictwiseMEdicalColleges
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 80,
+        width: 100,
         height: 50,
-        decoration: BoxDecoration(color: Colors.white, border: Border.all()),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        ),
         child: Center(
           child: Text(
             text,

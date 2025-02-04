@@ -57,7 +57,6 @@ String   moreclickNgoStatedCodess;
                     _buildHeaderCellDashboardsAction('Action'),
                   ],
                 ),
-                Divider(color: Colors.blue, height: 1.0),
                 // Data Rows
                 FutureBuilder<List<nGOmoreDashboardClickStateWiseData>>(
                   future: ApiController.GetStateWiseNGOForDashboard(),
@@ -174,7 +173,10 @@ String   moreclickNgoStatedCodess;
     return Container(
       width: 150,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(child: Text(title, style: _infoTextStyle())),
     );
   }
@@ -183,7 +185,10 @@ String   moreclickNgoStatedCodess;
     return Container(
       width: 80,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(child: Text(title, style: _infoTextStyle())),
     );
   }
@@ -192,7 +197,10 @@ String   moreclickNgoStatedCodess;
     return Container(
       width: 80,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(child: Text(title, style: TextStyle(fontWeight: FontWeight.bold))),
     );
   }
@@ -201,7 +209,10 @@ String   moreclickNgoStatedCodess;
     return Container(
       width: 50,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(child: Text(title, style: _infoTextStyle())),
     );
   }
@@ -210,7 +221,10 @@ String   moreclickNgoStatedCodess;
     return Container(
       width: 150,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(child: Text(value,
           maxLines:2,style: TextStyle(color: Colors.black))),
     );
@@ -220,7 +234,10 @@ String   moreclickNgoStatedCodess;
     return Container(
       width: 80,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(child: Text(value,
           maxLines:2,style: TextStyle(color: Colors.black))),
     );
@@ -229,7 +246,10 @@ String   moreclickNgoStatedCodess;
     return Container(
       width: 50,
       height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+      ),
       child: Center(child: Text(value, style: TextStyle(color: Colors.black))),
     );
   }
@@ -240,7 +260,10 @@ String   moreclickNgoStatedCodess;
       child: Container(
         width: 80,
         height: 50,
-        decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.1)),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        ),
         child: Center(
           child: Text(text, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
         ),

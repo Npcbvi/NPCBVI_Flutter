@@ -53,7 +53,7 @@ class DPMDashboard extends StatefulWidget {
 class _DPMDashboard extends State<DPMDashboard> {
   bool _isLoadings = false; // Flag to check if the API is already being called
   GlobalKey _dropdownKeyApplications = GlobalKey(); // Add this at the top of your widget
-  String oganisationTypeGovtPrivateDRopDown,oganisationTypeGovtPrivateDRopDownApplications;
+  String oganisationTypeGovtPrivateDRopDown,oganisationTypeGovtPrivateDRopDownApplications,oganisationTypeGovtDistrictHospitalApplicationsViews;
   String ngoApproveRevenuMOU, lowVisionDatas;
   String ngodependOrganbisatioSelectValue;
   int dropDownvalueOrgnbaistaionType = 0;
@@ -18321,71 +18321,48 @@ class _DPMDashboard extends State<DPMDashboard> {
 // Function to handle the selected value
   void _handleMenuSelectionNGOsPrivateGovtApplications(int value) {
     setState(() {  // Ensure UI updates
+      // Reset all variables before setting the required one
+      NGOApplicationApplicationsViews = false;
+      NGOlistDropDownDisplayDatas = false;
+      GovtDistrictHospitalApplicationsViews = false;
+      dashboardviewReplace = false;
+      NGO_APPorovedClickShowData = false;
+      NGO_PendingClickShowData = false;
+      GetDPM_GH_APPorovedClickShowData = false;
+      GetDPM_GH_PendingClickShowData = false;
+      GetDPM_PrivatePartitionPorovedClickShowData = false;
+      DPM_PrivatePartitionP_PendingClickShowData = false;
+      DPM_privateMEdicalCollegeApprovedData = false;
+      DPM_privateMEdicalCollegePendingData = false;
+      ScreeningCamp = false;
+      ScreeningCampOngoing = false;
+      ScreeningCampComing = false;
+      satelliteCentreShowData = false;
+      ngoApproveRevenueMOU = false;
+      ngoGovtPrivateOthereHosdpitalDataShow = false;
+      ngolistNewHosdpitalDropDown = false;
+      LowVisionRegisterCatracts = false;
+      LowVisionRegisterGlaucoma = false;
+      LowVisionRegisterDiabitic = false;
+      LowVisionRegisterCornealBlindness = false;
+      LowVisionRegisterVRSurgery = false;
+      ngoEyeScreeningdataShow = false;
+      LowVisionRegisterChildhoodCongenitalPtosiss = false;
+      LowVisionRegisterChildhoodTrauma = false;
+      LowVisionRegisterSquint = false;
+
+      // Set specific flags based on the selected value
       switch (value) {
         case 1:
-          print("@@SElction type Value____1");
+          print("@@Selection type Value____1");
           NGOApplicationApplicationsViews = true;
-          NGOlistDropDownDisplayDatas = false;
-          GovtDistrictHospitalApplicationsViews = false;
-          dashboardviewReplace = false;
-          NGO_APPorovedClickShowData = false;
-          NGO_PendingClickShowData = false;
-          GetDPM_GH_APPorovedClickShowData = false;
-          GetDPM_GH_PendingClickShowData = false;
-          GetDPM_PrivatePartitionPorovedClickShowData = false;
-          DPM_PrivatePartitionP_PendingClickShowData = false;
-          DPM_privateMEdicalCollegeApprovedData = false;
-          DPM_privateMEdicalCollegePendingData = false;
-          ScreeningCamp = false;
-          ScreeningCampOngoing = false;
-          ScreeningCampComing = false;
-          satelliteCentreShowData = false;
-          ngoApproveRevenueMOU = false;
-          ngoGovtPrivateOthereHosdpitalDataShow = false;
-          ngolistNewHosdpitalDropDown = false;
-          LowVisionRegisterCatracts = false;
-          LowVisionRegisterGlaucoma = false;
-          LowVisionRegisterDiabitic = false;
-          LowVisionRegisterCornealBlindness = false;
-          LowVisionRegisterVRSurgery = false;
-          ngoEyeScreeningdataShow = false;
-          LowVisionRegisterChildhoodCongenitalPtosiss = false;
-          LowVisionRegisterChildhoodTrauma = false;
-          LowVisionRegisterSquint = false;
-          satelliteCentreShowData = false;
+          Navigator.pop(context);
           break;
 
         case 2:
-          print("@@SElction type Value____2");
-          NGOApplicationApplicationsViews = false;
-          NGOlistDropDownDisplayDatas = false;
+          print("@@Selection type Value____2");
           GovtDistrictHospitalApplicationsViews = true;
-          dashboardviewReplace = false;
-          NGO_APPorovedClickShowData = false;
-          NGO_PendingClickShowData = false;
-          GetDPM_GH_APPorovedClickShowData = false;
-          GetDPM_GH_PendingClickShowData = false;
-          GetDPM_PrivatePartitionPorovedClickShowData = false;
-          DPM_PrivatePartitionP_PendingClickShowData = false;
-          DPM_privateMEdicalCollegeApprovedData = false;
-          DPM_privateMEdicalCollegePendingData = false;
-          ScreeningCamp = false;
-          ScreeningCampOngoing = false;
-          ScreeningCampComing = false;
-          satelliteCentreShowData = false;
-          ngoApproveRevenueMOU = false;
-          ngoGovtPrivateOthereHosdpitalDataShow = false;
-          ngolistNewHosdpitalDropDown = false;
-          LowVisionRegisterCatracts = false;
-          LowVisionRegisterGlaucoma = false;
-          LowVisionRegisterDiabitic = false;
-          LowVisionRegisterCornealBlindness = false;
-          LowVisionRegisterVRSurgery = false;
-          ngoEyeScreeningdataShow = false;
-          LowVisionRegisterChildhoodCongenitalPtosiss = false;
-          LowVisionRegisterChildhoodTrauma = false;
-          LowVisionRegisterSquint = false;
-          satelliteCentreShowData = false;
+          Navigator.pop(context);
           break;
 
         case 3:
@@ -18397,9 +18374,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           break;
 
         case 5:
-          print("Selected: Squint");
-          print("Selected: Intraocular Trauma in Children");
-          print("@@Selected: Congenital Ptosis");
+          print("Selected: Squint, Intraocular Trauma in Children, Congenital Ptosis");
           break;
 
         default:
@@ -18407,6 +18382,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       }
     });
   }
+
 
   Widget NGOApplicationApplicationsView() {
     return Column(
@@ -18566,6 +18542,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
               FutureBuilder<
               List<Dpm_application_ngoApplicationsData>>(
+                  key: Key(dropDownvalueOrgnbaistaionTypeApplications.toString()), // Force rebuild
                future: ApiController.get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List("",userId,0,
                                 district_code_login,
                                 state_code_login,
@@ -18732,7 +18709,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      value: oganisationTypeGovtPrivateDRopDownApplications,
+                      value: oganisationTypeGovtDistrictHospitalApplicationsViews,
                       icon: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -18780,7 +18757,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       ),
                       onChanged: (String newValue) {
                         setState(() {
-                          oganisationTypeGovtPrivateDRopDownApplications = newValue;
+                          oganisationTypeGovtDistrictHospitalApplicationsViews = newValue;
                           updateDropDownSelectionApplication();
                         });
                       },
@@ -18800,8 +18777,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   onPressed: () {
                     setState(() {
                       print("@@oganisationTypeGovtPrivateDRopDownApplications--1 " +
-                          oganisationTypeGovtPrivateDRopDownApplications);
-                      if (oganisationTypeGovtPrivateDRopDownApplications == null) {
+                          oganisationTypeGovtDistrictHospitalApplicationsViews);
+                      if (oganisationTypeGovtDistrictHospitalApplicationsViews == null) {
                         Utils.showToast(
                             "Please Select oganisation Type !", false);
                       } else {
@@ -18842,11 +18819,11 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                           FutureBuilder<
                               List<GovtPrivateHospitalData>>(
-                           /* future: ApiController.get_DPM_Applications_GovtPrivate_applications("",userId,0,
+                            future: ApiController.get_DPM_Applications_GovtPrivate_applications("",userId,0,
                                 district_code_login,
                                 state_code_login,
-                                dropDownvalueOrgnbaistaionTypeApplications),*/
-                               future: ApiController.get_DPM_Applications_GovtPrivate_applications("", userId, 0, 24, 438, 10),
+                                dropDownvalueOrgnbaistaionTypeApplications),
+                             //  future: ApiController.get_DPM_Applications_GovtPrivate_applications("", userId, 0, 24, 438, 10),
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {

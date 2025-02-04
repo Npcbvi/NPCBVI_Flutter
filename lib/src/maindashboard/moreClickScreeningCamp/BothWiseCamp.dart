@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/BothDataFoMEdicalCollegesl.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickprivatepractiories/BothPrivatePractiores.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/BothWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/BothDataForHospital.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreStateDistrictBoth.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class BothPrivatePractionaries extends StatefulWidget {
+class BothWiseCamp extends StatefulWidget {
   @override
-  _BothPrivatePractionaries createState() =>
-      _BothPrivatePractionaries();
+  _BothWiseCamp createState() =>
+      _BothWiseCamp();
 }
 
-class _BothPrivatePractionaries
-    extends State<BothPrivatePractionaries> {
-  String moreclickPrivatePRactionariesStateCode;
-  int moreclickPrivatePRactionariesStateCodeInt;
+class _BothWiseCamp
+    extends State<BothWiseCamp> {
+  String moreclickCampStateCode;
+  int moreclickCampStateCodeInt;
 
-  String moreclickMPrivatePRactionariesDistrictCode;
-  int moreclickPrivatePRactionariesDistrictCodeInt;
+  String moreclickCampDistrictCode;
+  int moreclickCampDistrictCodeInt;
 
   @override
   void initState() {
@@ -31,21 +30,21 @@ class _BothPrivatePractionaries
   Future<void> fetchStateAndDistrictCodes() async {
     try {
       // Fetch state code
-      moreclickPrivatePRactionariesStateCode = await SharedPrefs.getStoreSharedValue(
-        AppConstant.moreclickPrivatePRactioriesStateCode,
+      moreclickCampStateCode = await SharedPrefs.getStoreSharedValue(
+        AppConstant.moreclickCamptsateCode,
       ) as String;
-      moreclickPrivatePRactionariesStateCodeInt = int.tryParse(moreclickPrivatePRactionariesStateCode ?? '');
+      moreclickCampStateCodeInt = int.tryParse(moreclickCampStateCode ?? '');
 
       // Fetch district code
-      moreclickMPrivatePRactionariesDistrictCode = await SharedPrefs.getStoreSharedValue(
-        AppConstant.moreclickdistrictCodePrivatePRactiories,
+      moreclickCampDistrictCode = await SharedPrefs.getStoreSharedValue(
+        AppConstant.moreclickdistrictCodeHospital,
       ) as String;
-      moreclickPrivatePRactionariesDistrictCodeInt = int.tryParse(moreclickMPrivatePRactionariesDistrictCode ?? '');
+      moreclickCampDistrictCodeInt = int.tryParse(moreclickCampDistrictCode ?? '');
 
-      if (moreclickPrivatePRactionariesDistrictCodeInt == null) {
+      if (moreclickCampDistrictCodeInt == null) {
         debugPrint("Error: Invalid or missing state code.");
       }
-      if (moreclickPrivatePRactionariesDistrictCodeInt == null) {
+      if (moreclickCampDistrictCodeInt == null) {
         debugPrint("Error: Invalid or missing district code.");
       }
     } catch (e) {
@@ -64,17 +63,17 @@ class _BothPrivatePractionaries
           style: TextStyle(fontSize: 16.0),
         ),
       ),
-      body: (moreclickPrivatePRactionariesDistrictCodeInt == null || moreclickPrivatePRactionariesDistrictCodeInt == null)
+      body: (moreclickCampDistrictCodeInt == null || moreclickCampDistrictCodeInt == null)
           ? const Center(
         child: Text(
           "No valid state or district code found.",
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
         ),
       )
-          : FutureBuilder<List<BothPrivatePractioresData>>(
-        future: ApiController.getStateDistrictWisePractitionerForDashboard(
-          moreclickPrivatePRactionariesStateCodeInt,
-          moreclickPrivatePRactionariesDistrictCodeInt,
+          : FutureBuilder<List<BothWiseCampsData>>(
+        future: ApiController.getStateDistrictWiseCampForDashboard(
+          moreclickCampStateCodeInt,
+          moreclickCampDistrictCodeInt,
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -107,7 +106,7 @@ class _BothPrivatePractionaries
                   child: Row(
                     children: [
                       _buildHeaderCell("S.No.", 50),
-                      _buildHeaderCell("Darpan No.", 200),
+                      _buildHeaderCell("NGO Name", 200),
                      // _buildHeaderCell("Nodal Officer Name", 150),
                       _buildHeaderCell("Action", 100),
                     ],
@@ -135,11 +134,8 @@ class _BothPrivatePractionaries
                                       border: TableBorder.all(color: Colors.blue),
                                       children: [
                                         _buildTableRow("Field", "Value", isHeader: true),
-                                        _buildTableRow("Organisation Name", entry.ngoName ?? "-"),
-                                        _buildTableRow("Nodal Officer Name", entry.nodalOfficerName ?? "-"),
-                                        _buildTableRow("Organisation Type", entry.type ?? "-"),
-                                        _buildTableRow("Contact No", entry.mobile ?? "-"),
-                                        _buildTableRow("Hospital Address", entry.address ?? "-"),
+                                        _buildTableRow("NGO Name", entry.ngoName ?? "-"),
+                                        _buildTableRow("Total Camps", entry.countState.toString() ?? "-"),
                                         // Add more fields as necessary
                                       ],
                                     ),

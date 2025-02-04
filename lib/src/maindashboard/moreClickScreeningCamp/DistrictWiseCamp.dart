@@ -3,23 +3,23 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MoreClickGetStateDistrictWiseBothNGo.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickDashboardHopsital/BothStateDistrictwiseHospital.dart';
-import 'package:mohfw_npcbvi/src/maindashboard/moreClickMedicalColleges/BothStateDistrictwiseMEdicalColleges.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/DistrictwiseMedicalColleges.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/BothWiseCamp.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/DistrictWiseCamps.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/GeDistrictWiseHospitalsForDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreDashboardClickDistrictWise.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class GetDistrictWiseMedicalCollegs extends StatefulWidget {
+class DistrictWiseCamp extends StatefulWidget {
   @override
-  _GetDistrictWiseMedicalCollegs createState() =>
-      _GetDistrictWiseMedicalCollegs();
+  _DistrictWiseCamp createState() =>
+      _DistrictWiseCamp();
 }
 
-class _GetDistrictWiseMedicalCollegs
-    extends State<GetDistrictWiseMedicalCollegs> {
-  String moreclickMEdicalcollegesStatedCodess;
-  int moreclickkMEdicalcollegesStatedCodesss;
+class _DistrictWiseCamp
+    extends State<DistrictWiseCamp> {
+  String moreclickCampStatedCodess;
+  int moreclickCampStatedCodesss;
 
   @override
   void initState() {
@@ -29,12 +29,12 @@ class _GetDistrictWiseMedicalCollegs
 
   Future<void> fetchMoreclickNgoStateCode() async {
     try {
-      moreclickMEdicalcollegesStatedCodess = await SharedPrefs.getStoreSharedValue(
-        AppConstant.moreclickMedicalcollegsStateCode,
+      moreclickCampStatedCodess = await SharedPrefs.getStoreSharedValue(
+        AppConstant.moreclickCamptsateCode,
       ) as String;
-      if (moreclickMEdicalcollegesStatedCodess != null) {
-        moreclickkMEdicalcollegesStatedCodesss = int.tryParse(moreclickMEdicalcollegesStatedCodess);
-        if (moreclickkMEdicalcollegesStatedCodesss == null) {
+      if (moreclickCampStatedCodess != null) {
+        moreclickCampStatedCodesss = int.tryParse(moreclickCampStatedCodess);
+        if (moreclickCampStatedCodess == null) {
           debugPrint("Error: Invalid integer value for state code.");
         }
       } else {
@@ -52,21 +52,21 @@ class _GetDistrictWiseMedicalCollegs
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'District-wise Gov. Hospitals / CHC',
+          'District-wise Camps',
           style: TextStyle(fontSize: 16.0),
         ),
       ),
 
-      body: moreclickkMEdicalcollegesStatedCodesss == null
+      body: moreclickCampStatedCodesss == null
           ? const Center(
         child: Text(
           "No state code found.",
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
         ),
       )
-          : FutureBuilder<List<DistrictwiseMedicalCollegesData>>(
-        future: ApiController.getDistrictWiseMedicalForDashboard(
-          moreclickkMEdicalcollegesStatedCodesss,
+          : FutureBuilder<List<DistrictWiseCampsData>>(
+        future: ApiController.getDistrictWiseCampForDashboard(
+          moreclickCampStatedCodesss,
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -111,14 +111,14 @@ class _GetDistrictWiseMedicalCollegs
                         _buildDataCell(entry.districtName, 150),
                         _buildDataCell(entry.countState.toString(), 80),
                         _buildDataCellViewBlueDashboard("More", () {
-                          SharedPrefs.storeSharedValues(AppConstant.moreclickdistrictCodeMedicalcollegs,
+                          SharedPrefs.storeSharedValues(AppConstant.moreclickdistrictCodeCamp,
                               entry.districtCode.toString());
-                          SharedPrefs.storeSharedValues(AppConstant.moreclickMedicalcollegsStateCode,
+                          SharedPrefs.storeSharedValues(AppConstant.moreclickCamptsateCode,
                               entry.stateCode.toString());
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => BothStateDistrictwiseMEdicalColleges(),
+                              builder: (context) => BothWiseCamp(),
 
 
                             ),
