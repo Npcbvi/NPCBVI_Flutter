@@ -1069,11 +1069,11 @@ class ApiController {
       NGOAPPlicationDropDownDPm.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1128,11 +1128,11 @@ class ApiController {
       GetNewHospitalData data = GetNewHospitalData.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1190,11 +1190,11 @@ class ApiController {
       DPMGovtPrivateOrganisationTypeData.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1254,11 +1254,11 @@ class ApiController {
       GetDPM_NGOAPProved_pending.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1318,11 +1318,11 @@ class ApiController {
       getDPMGH_clickAPProved.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1381,11 +1381,11 @@ class ApiController {
       GetDPM_PrivatePartition.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1446,11 +1446,11 @@ class ApiController {
       DPMRivateMEdicalColleges.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1568,15 +1568,15 @@ class ApiController {
       GetDPM_MOUApprove data = GetDPM_MOUApprove.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1627,7 +1627,7 @@ class ApiController {
         ),
       );
 
-      print("@@GetDPM_SatelliteCentre--Api Response yaha se--: ${response.toString()}");
+      print("@@GetDPM_SatelliteCentre--Api Response yaha se kyuuu--: ${url+body+response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
@@ -1699,11 +1699,11 @@ class ApiController {
       GetDPM_PrivatePartition.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1763,11 +1763,11 @@ class ApiController {
       GetPatientAPprovedwithFinanceYear.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1828,11 +1828,11 @@ class ApiController {
       GetPatientPendingwithFinance.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1890,11 +1890,11 @@ class ApiController {
       GetEyeScreening data = GetEyeScreening.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1954,11 +1954,11 @@ class ApiController {
       GetDPM_EyeScreeningEdit.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2032,9 +2032,9 @@ class ApiController {
         SchoolEyeScreening_Registration.fromJson(responseData);
 
         if (data.status) {
-          Utils.showToast(data.message, true);
+          //Utils.showToast(data.message, true);
         } else {
-          Utils.showToast(data.message, true);
+         // Utils.showToast(data.message, true);
         }
         return data;
       } catch (e) {
@@ -2099,11 +2099,11 @@ class ApiController {
       lowvisionregister_Glaucoma.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2168,11 +2168,11 @@ class ApiController {
       lowvisionregister_cataract.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2237,11 +2237,11 @@ class ApiController {
       lowvisonregister_diabitic.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2306,11 +2306,11 @@ class ApiController {
       lowvisionCornealBlindness.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2374,11 +2374,11 @@ class ApiController {
       lowvisionVRSurgery data = lowvisionVRSurgery.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2443,11 +2443,11 @@ class ApiController {
           responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2510,11 +2510,11 @@ class ApiController {
       GetDPMTraumaChildren data = GetDPMTraumaChildren.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2575,11 +2575,11 @@ class ApiController {
       GetDPMSquint data = GetDPMSquint.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2642,11 +2642,11 @@ class ApiController {
       PatientapprovedSisesesViewclick.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2719,11 +2719,11 @@ class ApiController {
       ReportScreen data = ReportScreen.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2787,11 +2787,11 @@ class ApiController {
       GetDPMCataractPatientView.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2856,11 +2856,11 @@ class ApiController {
       NGODashboards data = NGODashboards.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2923,11 +2923,11 @@ class ApiController {
       GetHospitalList data = GetHospitalList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -2987,11 +2987,11 @@ class ApiController {
           responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of hospital details
         return data.data.hospitalDetails ?? []; // Handle null case
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3049,11 +3049,11 @@ class ApiController {
       DoctorlinkedwithHospital.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3112,11 +3112,11 @@ class ApiController {
       GetDoctorDetailsById.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3176,11 +3176,11 @@ class ApiController {
       GetAllNgoService.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3240,11 +3240,11 @@ class ApiController {
       UploadMOUNGO.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3308,11 +3308,11 @@ class ApiController {
       AddEyeBank data = AddEyeBank.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3375,11 +3375,11 @@ class ApiController {
       etEyeDonationCenterListByNOG data = etEyeDonationCenterListByNOG.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       /// Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3448,11 +3448,11 @@ class ApiController {
       RegistryDonatiopnCenterClick data = RegistryDonatiopnCenterClick.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
       }
     } catch (e) {
       Utils.showToast("Eye Donation Center already exists Center", true);
@@ -3515,11 +3515,11 @@ class ApiController {
       NgoCampMangerList data = NgoCampMangerList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3581,11 +3581,11 @@ class ApiController {
       ManageDoctor data = ManageDoctor.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3733,10 +3733,10 @@ class ApiController {
 
       // Check the status of the response
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return data; // Return the entire data object
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return null; // Return null if the status is false
       }
     } catch (e) {
@@ -3889,11 +3889,11 @@ class ApiController {
       ScreeningCampList data = ScreeningCampList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3952,11 +3952,11 @@ class ApiController {
      ScreeningCampManager.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -4088,11 +4088,11 @@ class ApiController {
       GetSatelliteCenterList data = GetSatelliteCenterList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -4243,10 +4243,10 @@ class ApiController {
 
       // Check the status of the response
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return data; // Return the entire data object
       } else {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return null; // Return null if the status is false
       }
     } catch (e) {
@@ -4397,11 +4397,11 @@ class ApiController {
       GetSatelliteCenterList data = GetSatelliteCenterList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -4557,7 +4557,7 @@ class ApiController {
       HospitalDashboard data = HospitalDashboard.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -4692,11 +4692,11 @@ class ApiController {
       SPODashboardDPMClickView data = SPODashboardDPMClickView.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -4752,14 +4752,14 @@ class ApiController {
       EyeSurgeons data = EyeSurgeons.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         print("@@11: ${response.toString()}");
 
         // Return the list of data
         return data.data;
       } else {
         print("@@22: ${response.toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -4819,14 +4819,14 @@ class ApiController {
       EyeBankApproval data = EyeBankApproval.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         print("@@11: ${response.toString()}");
 
         // Return the list of data
         return data.data;
       } else {
         print("@@22: ${response.toString()}");
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -4886,14 +4886,14 @@ class ApiController {
       EyeBankDonationApproval data = EyeBankDonationApproval.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print("@@11: ${response.toString()}");
 
         // Return the list of data
         return data.data;
       } else {
         print("@@22: ${response.toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5159,11 +5159,11 @@ class ApiController {
       ApprovedclickPatients.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5223,11 +5223,11 @@ class ApiController {
       GetSPO_DiseasewiseRecordsApproval.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5289,11 +5289,11 @@ class ApiController {
       GetSPO_Patients_Approved_View.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5356,11 +5356,11 @@ class ApiController {
       NGOApprovalClick.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       /// Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5422,7 +5422,7 @@ class ApiController {
       NGOAPPRovedClickListDetail.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -5432,7 +5432,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5494,11 +5494,11 @@ class ApiController {
       GetSPO_GHCHCOtherApprovals.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5560,7 +5560,7 @@ class ApiController {
       GHC_approvalList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -5570,7 +5570,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5632,7 +5632,7 @@ class ApiController {
       PrivateMedicalCollegeApproved.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -5640,7 +5640,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5698,7 +5698,7 @@ class ApiController {
       PrivatePractionries.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -5708,7 +5708,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5769,11 +5769,11 @@ class ApiController {
       PrivateMedicalCollegeApproved.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5834,7 +5834,7 @@ class ApiController {
       PrivateMedicalCollgeAPProvalList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -5844,7 +5844,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5907,11 +5907,11 @@ class ApiController {
       ScreeningCampComplted.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -5974,7 +5974,7 @@ class ApiController {
       ScreeningCampCompletedList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -5984,7 +5984,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6047,11 +6047,11 @@ class ApiController {
       ScreeningCampComplted.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6114,7 +6114,7 @@ class ApiController {
       ScreeningCampCompletedList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6124,7 +6124,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6187,11 +6187,11 @@ class ApiController {
       ScreeningCampComplted.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6254,7 +6254,7 @@ class ApiController {
       ScreeningCampCompletedList.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6264,7 +6264,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6326,11 +6326,11 @@ class ApiController {
       GetSPO_SatelliteCentreApproval.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6392,7 +6392,7 @@ class ApiController {
       SatelliteCenterListData.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6402,7 +6402,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+    //    Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6463,7 +6463,7 @@ class ApiController {
       SendTODPMCataract.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6473,7 +6473,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6533,7 +6533,7 @@ class ApiController {
       SendTODPMCataract.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6543,7 +6543,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6603,7 +6603,7 @@ class ApiController {
       SendTODPMCataract.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6613,7 +6613,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6673,7 +6673,7 @@ class ApiController {
       SendTODPMCataract.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6683,7 +6683,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6743,7 +6743,7 @@ class ApiController {
       sendTODPMVRSurgery.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       /// Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6753,7 +6753,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6816,7 +6816,7 @@ class ApiController {
       nGOmoreDashboardClickStateWise.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6826,7 +6826,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6885,7 +6885,7 @@ class ApiController {
       nGOmoreDashboardClickDistrictWise.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6895,7 +6895,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -6954,7 +6954,7 @@ class ApiController {
       nGOmoreStateDistrictBoth.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6964,7 +6964,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7018,7 +7018,7 @@ class ApiController {
       GetStateWiseHospitalsForDashboard.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7028,7 +7028,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7087,7 +7087,7 @@ class ApiController {
       GeDistrictWiseHospitalsForDashboard.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7097,7 +7097,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7156,7 +7156,7 @@ class ApiController {
       BothDataForHospital.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7166,7 +7166,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7221,7 +7221,7 @@ class ApiController {
       stateWiseMedicalCollegs.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7231,7 +7231,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7290,7 +7290,7 @@ class ApiController {
       DistrictwiseMedicalColleges.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7300,7 +7300,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7359,7 +7359,7 @@ class ApiController {
       BothDataFoMEdicalCollegesl.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7369,7 +7369,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7424,7 +7424,7 @@ class ApiController {
       stateWisePrivatePractiories.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7434,7 +7434,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+    //    Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7493,7 +7493,7 @@ class ApiController {
       DistrictwisePrivatePractionries.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7503,7 +7503,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7563,7 +7563,7 @@ class ApiController {
       BothPrivatePractiores.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7573,7 +7573,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7628,7 +7628,7 @@ class ApiController {
       stateWiseSatelliteCenterss.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7638,7 +7638,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7697,7 +7697,7 @@ class ApiController {
       DistrictwiseSatelliteCentyers.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7707,7 +7707,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7767,7 +7767,7 @@ class ApiController {
       BothSatelliteCenterss.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7777,7 +7777,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7843,7 +7843,7 @@ class ApiController {
       Dpm_application_ngoApplications.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7853,7 +7853,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7916,7 +7916,7 @@ class ApiController {
       GovtPrivateHospital.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7926,7 +7926,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -7979,7 +7979,7 @@ class ApiController {
       StateWiseCamps.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7989,7 +7989,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+     //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -8047,7 +8047,7 @@ class ApiController {
       DistrictWiseCamps.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -8057,7 +8057,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -8116,7 +8116,7 @@ class ApiController {
       BothWiseCamps.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -8126,7 +8126,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-        Utils.showToast(data.message, true);
+       // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {

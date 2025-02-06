@@ -146,8 +146,9 @@ class _DPMDashboard extends State<DPMDashboard> {
   int PatientsPendingClickData_valueSendinAPi = 1;
 
   String resultScreeningCampsCompleted = "Completed";
-  String resultScreeningCampsOngoing = "Ongoing";
-  String resultScreeningCampsComing = "Coming";
+  String resultScreeningCampsOngoing = "Onging";
+  String resultScreeningCampsComing = "Comming";
+
 
   bool chnagePAsswordView = false;
   TextEditingController _oldPasswordControllere = new TextEditingController();
@@ -9516,6 +9517,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     "2019-2020",
                     "",
                     resultScreeningCampsComing),
+
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
@@ -9644,157 +9646,73 @@ class _DPMDashboard extends State<DPMDashboard> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            padding: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: Colors.blue[50],
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: Colors.red,
+                                width: 2,
+                              ),
+                            ),
+                            width: 150.0,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.location_on,
+                                  color: Colors.red,
+                                ),
+                                SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'Satellite Centre',
+                                    maxLines: 3,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          InkWell(
+                            onTap: () {
+                              print('@@back Pressed----display---');
+                              setState(() {
+                                dashboardviewReplace = true;
+                                satelliteCentreShowData = false;
+                              });
+                            },
                             child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Shown Captcha value to user
-                                    /*  Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*/
-                                    Container(
-                                      margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blue[50],
-                                        // Light blue background color
-                                        borderRadius: BorderRadius.circular(8),
-                                        // Rounded corners
-                                        border: Border.all(
-                                          color: Colors.red, // Border color
-                                          width: 2, // Border thickness
-                                        ),
-                                      ),
-                                      width: 150.0,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        // Align elements to the start
-                                        children: [
-                                          Icon(
-                                            Icons.location_on,
-                                            // Icon for 'Satellite Centre'
-                                            color: Colors.red,
-                                          ),
-                                          SizedBox(width: 8),
-                                          // Space between icon and text
-                                          Expanded(
-                                            // Wrap Text with Expanded to prevent overflow
-                                            child: Text(
-                                              'Satellite Centre',
-                                              maxLines: 3,
-                                              // Limit to 1 line of text
-                                              overflow: TextOverflow.ellipsis,
-                                              // Add ellipsis if text overflows
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize:
-                                                    14, // Increased font size
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        // Navigator.of(context).pop(context); // It deletes from top of stack previous screen
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          satelliteCentreShowData = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        width: 80.0,
-                                        padding:
-                                            EdgeInsets.symmetric(vertical: 8.0),
-                                        // Add vertical padding for better touch area
-                                        decoration: BoxDecoration(
-                                          color: Colors.red[50],
-                                          // Light background color for the button
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                            color: Colors.red,
-                                            // Red border color for consistency
-                                            width: 2.0, // Border thickness
-                                          ),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            'Back',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize:
-                                                  14.0, // Adjusted font size for better readability
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
+                              width: 80.0,
+                              padding: EdgeInsets.symmetric(vertical: 8.0),
+                              decoration: BoxDecoration(
+                                color: Colors.red[50],
+                                borderRadius: BorderRadius.circular(8.0),
+                                border: Border.all(
+                                  color: Colors.red,
+                                  width: 2.0,
+                                ),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  'Back',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 14.0,
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                          const SizedBox(width: 10),
                         ],
                       ),
                     ),
@@ -9808,27 +9726,24 @@ class _DPMDashboard extends State<DPMDashboard> {
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('Organisation Name'),
-                    /*    _buildHeaderCell('Nodal Officer Name'),
-                    // _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Hospital Address'),
-                    _buildHeaderCell('Contact No'),
-                    _buildHeaderCell('Email Id'),*/
                     _buildHeaderCellDiseaseDataAction('Action'),
                   ],
+
                 ),
               ),
               Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<DataDPMsatteliteCenter>>(
-                future: ApiController.GetDPM_SatelliteCentre(
-                    district_code_login, state_code_login),
+                future: (district_code_login != null && state_code_login != null)
+                    ? ApiController.GetDPM_SatelliteCentre(
+                    district_code_login, state_code_login)
+                    : Future.value([]), // Use an empty list or placeholder data
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -9841,8 +9756,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                     );
                   } else {
                     List<DataDPMsatteliteCenter> ddata = snapshot.data;
-                    print('@@---DataDPMsatteliteCenter--' +
-                        ddata.length.toString());
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
@@ -9853,10 +9766,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.name),
-                              /*     _buildDataCell(offer.smanagername),
-                              _buildDataCell(offer.address),
-                              _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),*/
                               _buildDataCellViewBlueDiseaseDataAction(
                                   'View Detail', () {
                                 _showDetailDialogSatelliteCentreNumbersClcik(
@@ -9876,6 +9785,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
 
   void _showDetailDialogSatelliteCentreNumbersClcik(
       BuildContext context, DataDPMsatteliteCenter offer) {
