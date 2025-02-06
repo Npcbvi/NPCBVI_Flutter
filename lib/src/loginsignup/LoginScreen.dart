@@ -130,6 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
             nextScreen = NgoDashboard();// working full
             break;
           case '2':
+
             nextScreen = SpoDashboard();
            // nextScreen = CampDashboard///Only Dashboardview
             break;
