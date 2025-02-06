@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
@@ -4967,177 +4968,190 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ),
                 ),
-                Center(
-                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                    future: _future,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
+            Center(
+              child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                future: _future,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
 
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
 
-                      if (snapshot.data == null || snapshot.data.isEmpty) {
-                        return const Text(
-                          'No data found',
-                          style: TextStyle(fontSize: 16, color: Colors.red),
+                  if (snapshot.data == null || snapshot.data.isEmpty) {
+                    return const Text(
+                      'No data found',
+                      style: TextStyle(fontSize: 16, color: Colors.red),
+                    );
+                  }
+
+                  List<DataGetDPM_ScreeningYear> list = snapshot.data ?? [];
+
+                  // Ensure the selected user is valid and in the list
+                  if (_selectedUser == null || !list.contains(_selectedUser)) {
+                    _selectedUser = null; // Remove default selection
+                  }
+
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                      hint: const Text(
+                        'Select Year',
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                      ),
+                      onChanged: (userc) {
+                        setState(() {
+                          _selectedUser = userc;
+                          var getYear = int.parse(
+                              userc?.name.replaceAll(RegExp(r'\D'), '') ?? '0');
+                          getfyid = userc?.fyid ?? 0;
+                          print('@@getYear--$getYear');
+                          print('@@getfyidSelected here----$getfyid');
+                        });
+                      },
+                      value: _selectedUser,
+                      items: list.map((user) {
+                        return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                          value: user,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              user.name,
+                              style: const TextStyle(fontSize: 16),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
                         );
-                      }
-
-                      List<DataGetDPM_ScreeningYear> list = snapshot.data;
-
-                      if (_selectedUser == null ||
-                          !list.contains(_selectedUser)) {
-                        _selectedUser = null; // Remove default selection
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child:
-                            DropdownButtonFormField<DataGetDPM_ScreeningYear>(
-                          hint: const Text(
-                            'Select Year',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                          // Hint text
-                          onChanged: (userc) => setState(() {
-                            _selectedUser = userc;
-                            var getYear = int.parse(
-                                userc.name.replaceAll(RegExp(r'\D'), ''));
-                            getfyid = userc.fyid;
-                            print('@@getYear--' + getYear.toString());
-                            print('@@getfyidSelected here----' +
-                                getfyid.toString());
-                          }),
-                          value: _selectedUser,
-                          items: list
-                              .map(
-                                (user) => DropdownMenuItem(
-                                  value: user,
-                                  child: Text(
-                                    user.name,
-                                    style: const TextStyle(
-                                        fontSize:
-                                            16), // Style for dropdown items
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.blue, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.blueAccent, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            filled: true,
-                            fillColor:
-                                Colors.blue[50], // Light blue background color
-                          ),
-                          dropdownColor: Colors.white,
-                          style: const TextStyle(color: Colors.black),
-                          // Selected text style
-                          icon: const Icon(Icons.arrow_drop_down,
-                              color: Colors.blueAccent),
+                      }).toList(),
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 300,
+                        width: 300,
+                        decoration: BoxDecoration(
+                          color: Colors.blue[50],
+                          borderRadius: BorderRadius.circular(10),
                         ),
+                        offset: const Offset(0, -3),
+                      ),
+                      buttonStyleData: ButtonStyleData(
+                        height: 60, // Set consistent height
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        decoration: BoxDecoration(
+                          color: Colors.blue[50], // Visible background
+                          border: Border.all(color: Colors.blue, width: 2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      iconStyleData: const IconStyleData(
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                      ),
+                      menuItemStyleData: MenuItemStyleData(
+                        overlayColor: MaterialStateProperty.all(Colors.blue[100]),
+                      ),
+
+                      decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                        border: InputBorder.none,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+
+              Center(
+                child: FutureBuilder<List<DataGetDPM_ScreeningMonth>>(
+                  future: _futureMonth,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    if (snapshot.data == null || snapshot.data.isEmpty) {
+                      return const Text(
+                        'No data found',
+                        style: TextStyle(fontSize: 16, color: Colors.red),
                       );
-                    },
-                  ),
-                ),
+                    }
 
-                Center(
-                  child: FutureBuilder<List<DataGetDPM_ScreeningMonth>>(
-                    future: _futureMonth,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
+                    List<DataGetDPM_ScreeningMonth> list = snapshot.data ?? [];
 
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      }
+                    if (_selectedUserMonth == null || !list.contains(_selectedUserMonth)) {
+                      _selectedUserMonth = null; // Remove default selection
+                    }
 
-                      if (snapshot.data == null || snapshot.data.isEmpty) {
-                        return const Text(
-                          'No data found',
-                          style: TextStyle(fontSize: 16, color: Colors.red),
-                        );
-                      }
-
-                      List<DataGetDPM_ScreeningMonth> list = snapshot.data;
-
-                      if (_selectedUserMonth == null ||
-                          !list.contains(_selectedUserMonth)) {
-                        _selectedUserMonth = null; // Remove default selection
-                      }
-
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child:
-                            DropdownButtonFormField<DataGetDPM_ScreeningMonth>(
-                          hint: const Text(
-                            'Select Month',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
-                          ),
-                          // Hint text
-                          onChanged: (user) => setState(() {
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: DropdownButtonFormField2<DataGetDPM_ScreeningMonth>(
+                        hint: const Text(
+                          'Select Month',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                        onChanged: (user) {
+                          setState(() {
                             _selectedUserMonth = user;
-                            var getYear = user.monthname.toString();
-                            month_id = user.monthId.toString();
-                            print('@@monthname--' + getYear.toString());
-                            print('@@month_id--' + month_id.toString());
-                          }),
-                          value: _selectedUserMonth,
-                          items: list
-                              .map(
-                                (user) => DropdownMenuItem(
-                                  value: user,
-                                  child: Text(
-                                    user.monthname,
-                                    style: const TextStyle(
-                                        fontSize:
-                                            16), // Style for dropdown items
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 10.0),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.blue, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
+                            var getYear = user?.monthname ?? '';
+                            month_id = user?.monthId?.toString() ?? '';
+                            print('@@monthname--$getYear');
+                            print('@@month_id--$month_id');
+                          });
+                        },
+                        value: _selectedUserMonth,
+                        items: list.map((user) {
+                          return DropdownMenuItem<DataGetDPM_ScreeningMonth>(
+                            value: user,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Text(
+                                user.monthname,
+                                style: const TextStyle(fontSize: 16),
+                              ),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.blueAccent, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            filled: true,
-                            fillColor:
-                                Colors.blue[50], // Light blue background color
+                          );
+                        }).toList(),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 300,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          dropdownColor: Colors.white,
-                          style: const TextStyle(color: Colors.black),
-                          // Selected text style
-                          icon: const Icon(Icons.arrow_drop_down,
-                              color: Colors.blueAccent),
+                          offset: const Offset(0, -3),
                         ),
-                      );
-                    },
-                  ),
-                ),
+                        buttonStyleData: ButtonStyleData(
+                          height: 60, // Set consistent height
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            border: Border.all(color: Colors.blue, width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        iconStyleData: const IconStyleData(
+                          icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                        ),
+                        menuItemStyleData: MenuItemStyleData(
+                          overlayColor: MaterialStateProperty.all(Colors.blue[100]),
+                        ),
 
-                Column(
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+
+              Column(
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
@@ -10704,65 +10718,67 @@ class _DPMDashboard extends State<DPMDashboard> {
                       );
                     }
 
-                    List<DataGetDPM_ScreeningYear> list = snapshot.data;
+                    List<DataGetDPM_ScreeningYear> list = snapshot.data ?? [];
 
-                    if (_selectedUser == null ||
-                        !list.contains(_selectedUser)) {
+                    if (_selectedUser == null || !list.contains(_selectedUser)) {
                       _selectedUser = null; // Remove default selection
                     }
 
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                      child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
                         hint: const Text(
                           'Select Year',
                           style: TextStyle(fontSize: 16, color: Colors.grey),
                         ),
-                        // Hint text when nothing is selected
-                        onChanged: (user) => setState(() {
-                          _selectedUser = user;
-                          getYearCatract = user.name;
-                          getfyid = user.fyid;
-                          print('@@getYear--' + getYearCatract.toString());
-                          print('@@getfyidSelected here----' +
-                              getfyid.toString());
-                        }),
+                        onChanged: (user) {
+                          setState(() {
+                            _selectedUser = user;
+                            getYearCatract = user?.name ?? '';
+                            getfyid = user?.fyid ?? '';
+                            print('@@getYear--$getYearCatract');
+                            print('@@getfyidSelected here----$getfyid');
+                          });
+                        },
                         value: _selectedUser,
-                        items: list
-                            .map(
-                              (user) => DropdownMenuItem(
-                                value: user,
-                                child: Text(
-                                  user.name,
-                                  style: const TextStyle(
-                                      fontSize: 16), // Dropdown item text style
-                                ),
-                              ),
-                            )
-                            .toList(),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 15.0, horizontal: 10.0),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Colors.blue, width: 2.0),
-                            borderRadius: BorderRadius.circular(10.0),
+                        items: list.map((user) {
+                          return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                            value: user,
+                            child: Text(
+                              user.name,
+                              style: const TextStyle(fontSize: 16), // Dropdown item text style
+                            ),
+                          );
+                        }).toList(),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 300,
+                          width: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Colors.blueAccent, width: 2.0),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          filled: true,
-                          fillColor: Colors
-                              .blue[50], // Background color of dropdown box
+                          offset: const Offset(0, -3),
                         ),
-                        dropdownColor: Colors.blue[50],
-                        // Background color of dropdown menu
-                        style: const TextStyle(color: Colors.black),
-                        // Selected item text style
-                        icon: const Icon(Icons.arrow_drop_down,
-                            color: Colors.blueAccent),
+                        buttonStyleData: ButtonStyleData(
+                          height: 60, // Set consistent height
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            border: Border.all(color: Colors.blue, width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        iconStyleData: const IconStyleData(
+                          icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                        ),
+                        menuItemStyleData: MenuItemStyleData(
+                          overlayColor: MaterialStateProperty.all(Colors.blue[100]),
+                        ),
+
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          border: InputBorder.none,
+                        ),
                       ),
                     );
                   },
@@ -10846,6 +10862,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
+
 
               if (lowVisionDataValue == 5)
                 Center(

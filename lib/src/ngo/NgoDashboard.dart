@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
@@ -2296,8 +2297,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
-
-  Widget buildDropdownHospitalType() {
+/* Widget buildDropdownHospitalType() {
     return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Container(
@@ -2457,6 +2457,196 @@ class _NgoDashboard extends State<NgoDashboard> {
             ),
           ),
         ));
+  }*/
+
+
+
+  Widget buildDropdownHospitalType() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: SizedBox(
+        width: 300,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DropdownButtonFormField2<String>(
+              value: _chosenValueMangeTwo,
+              isExpanded: true,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 0),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.blue, width: 2.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                filled: true,
+                fillColor: Colors.blue[50],
+                hintText: 'All',
+                hintStyle: const TextStyle(color: Colors.grey),
+              ),
+              buttonStyleData: ButtonStyleData(
+                height: 60,
+                padding: const EdgeInsets.symmetric(horizontal: 3),  // Reduced horizontal padding
+               /* decoration: BoxDecoration(
+                  color: Colors.blue[50],
+                  borderRadius: BorderRadius.circular(10),
+                ),*/
+              ),
+              dropdownStyleData: DropdownStyleData(
+                maxHeight: 300,
+                decoration: BoxDecoration(
+                  color: Colors.blue[50],
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                offset: const Offset(0, -3),
+              ),
+              iconStyleData: const IconStyleData(
+                icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+              ),
+              items: <String>['Hospitals', 'Camps', 'Satellite Centres']
+                  .map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              }).toList(),
+              onChanged: (String value) {
+                setState(() {
+                  _chosenValueMangeTwo = value ?? 'All';
+                  switch (_chosenValueMangeTwo) {
+                    case 'Hospitals':
+                      dropDownTwoSelcted = 6;
+                      selectionBasedHospital = true;
+                      _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL();
+                      break;
+                    case 'Camps':
+                      dropDownTwoSelcted = 9;
+                      selectionBasedHospital = false;
+                      ngoDashboardDatas = false;
+                      break;
+                    case 'Satellite Centres':
+                      dropDownTwoSelcted = 8;
+                      selectionBasedHospital = false;
+                      ngoDashboardDatas = false;
+                      break;
+                    default:
+                      dropDownTwoSelcted = 0;
+                      selectionBasedHospital = false;
+                      ngoDashboardDatas = false;
+                      break;
+                  }
+                });
+              },
+            ),
+            const SizedBox(height: 10),
+
+            // ✅ Conditional Dropdown for "Hospitals"
+            if (dropDownTwoSelcted == 6)
+              FutureBuilder<List<DataDropDownHospitalSelected>>(
+                future: _futureDataDropDownHospitalSelected,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  List<DataDropDownHospitalSelected> list =
+                      snapshot.data ?? [];
+
+                  // Handle case when the list is null or empty
+                  if (list.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: const Text(
+                        'No data found',
+                        style: TextStyle(fontSize: 18, color: Colors.red),
+                      ),
+                    );
+                  }
+
+                  // Set the first item as default if none is selected
+                  if (_selectHospitalSelected == null ||
+                      !list.contains(_selectHospitalSelected)) {
+                    _selectHospitalSelected = list.first;
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Select Hospital:',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      DropdownButtonFormField2<DataDropDownHospitalSelected>(
+                        value: _selectHospitalSelected,
+                        isExpanded: true,
+                        onChanged: (hospital) {
+                          setState(() {
+                            _selectHospitalSelected = hospital;
+                            hospitalNameFetch = hospital?.hName ?? '';
+                            reghospitalNameFetch = hospital?.hRegID ?? '';
+                          });
+                        },
+                        items: list.map((hospital) {
+                          return DropdownMenuItem<DataDropDownHospitalSelected>(
+                            value: hospital,
+                            child: Text(
+                              hospital.hName,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          );
+                        }).toList(),
+                        buttonStyleData: ButtonStyleData(
+                          height: 60, // ✅ Dropdown height Set consistent height
+
+                          padding: const EdgeInsets.symmetric(horizontal: 3),  // Re
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            border: Border.all(color: Colors.blue, width: 2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[50],
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          offset: const Offset(0, -3),
+                        ),
+                        iconStyleData: const IconStyleData(
+                          icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                        ),
+                        hint: const Text(
+                          'Select Hospital',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+          ],
+        ),
+      ),
+    );
   }
 
   Widget ngoDashboardclick() {
@@ -2468,7 +2658,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+               /* FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _future,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
@@ -2479,24 +2669,25 @@ class _NgoDashboard extends State<NgoDashboard> {
                       return CircularProgressIndicator();
                     }
 
-                    List<DataGetDPM_ScreeningYear> list = snapshot.data;
+                    List<DataGetDPM_ScreeningYear> list =
+                        snapshot.data.toList();
 
                     // Check if _selectedUser is null or not part of the list anymore
                     if (_selectedUser == null ||
                         !list.contains(_selectedUser)) {
-                      _selectedUser =
-                          list.first; // Set the first item as default
+                      _selectedUser = null; // Set the first item as default
                     }
 
-
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
                             width: 300, // Consistent width with the container
-                            child: DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                            child: DropdownButtonFormField<
+                                DataGetDPM_ScreeningYear>(
                               value: _selectedUser,
                               onChanged: (userc) {
                                 setState(() {
@@ -2508,42 +2699,147 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 });
                               },
                               items: list.map((user) {
-                                return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                                return DropdownMenuItem<
+                                    DataGetDPM_ScreeningYear>(
                                   value: user,
-                                  child: Text(user.name, style: TextStyle(fontSize: 16)),
+                                  child: Text(user.name,
+                                      style: TextStyle(fontSize: 16)),
                                 );
                               }).toList(),
                               hint: Text(
                                 'Please Select year',
-                                style: TextStyle(color: Colors.grey, fontSize: 16),
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  // Light gray color for the hint
+                                  fontSize: 16,
+                                ),
                               ),
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                  borderSide: BorderSide(
+                                      color: Colors.blue, width: 2.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                                  borderSide: BorderSide(
+                                      color: Colors.blueAccent, width: 2.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 filled: true,
                                 fillColor: Colors.blue[50],
                               ),
-                              dropdownColor: Colors.blue[50], // Custom background color for dropdown
+                              dropdownColor: Colors.blue[50],
                               style: TextStyle(color: Colors.black),
-                              icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
-                              menuMaxHeight: 300, // Controls the maximum height of the dropdown menu
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.blue),
+                              menuMaxHeight: 300,
                             ),
                           ),
                         ],
                       ),
                     );
                   },
-                ),
-
-
+                ),*/
                 SizedBox(height: 8),
+               //working code here and use it on thuisrday
+              FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                future: _future,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+
+                  if (!snapshot.hasData) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  List<DataGetDPM_ScreeningYear> list =
+                  snapshot.data.toList();
+
+                  // Check if _selectedUser is null or not part of the list anymore
+                  if (_selectedUser == null ||
+                      !list.contains(_selectedUser)) {
+                    _selectedUser = null; // Set the first item as default
+                  }
+
+                  return Padding(
+                    padding:  EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: 320,
+                          child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                            value: _selectedUser, // ✅ Selected value will now be displayed
+                            isExpanded: true,
+                            onChanged: (userc) {
+                              setState(() {
+                                _selectedUser = userc;
+                                getYearNgoHopital = userc?.name ?? '';
+                                getfyidNgoHospital = userc?.fyid ?? '';
+                                print('Selected Year: $getYearNgoHopital');
+                                print('FYID: $getfyidNgoHospital');
+                              });
+                            },
+                            items: list
+                                .map((user) => DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                              value: user,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(vertical: 10),
+                                child: Text(
+                                  user.name,
+                                  style: const TextStyle(fontSize: 16),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ))
+                                .toList(),
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 300,
+                              width: 300,
+                              decoration: BoxDecoration(
+                                color: Colors.blue[50],
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              offset: const Offset(0, -3),
+                            ),
+                            buttonStyleData: ButtonStyleData(
+                              height: 60, // ✅ Dropdown height Set consistent height
+                              padding: const EdgeInsets.symmetric(horizontal: 15),
+                              decoration: BoxDecoration(
+                                color: Colors.blue[50], // ✅ Visible background
+                                border: Border.all(color: Colors.blue, width: 2),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            iconStyleData: const IconStyleData(
+                              icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                            ),
+                            menuItemStyleData: MenuItemStyleData(
+                              overlayColor: MaterialStateProperty.all(Colors.blue[100]),
+                            ),
+                            hint: const Text(
+                              'Please Select Year',
+                              style: TextStyle(color: Colors.grey, fontSize: 16),
+                            ),
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+
+
+
+              SizedBox(height: 8),
                 buildInfoContainer(stateNames),
                 SizedBox(height: 8),
                 buildInfoContainer(districtNames),

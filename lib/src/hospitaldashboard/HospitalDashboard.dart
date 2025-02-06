@@ -906,6 +906,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                           dropdownColor: Colors.blue[50],
                           style: TextStyle(color: Colors.black),
                           icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                          menuMaxHeight: 300,
                         ),
                       ),
                     );
