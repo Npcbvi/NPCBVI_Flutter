@@ -1077,7 +1077,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1136,7 +1136,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1198,7 +1198,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+      //Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1262,7 +1262,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1326,7 +1326,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1389,7 +1389,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1454,7 +1454,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1707,7 +1707,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1771,7 +1771,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1836,7 +1836,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1898,7 +1898,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1962,7 +1962,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2038,7 +2038,7 @@ class ApiController {
         }
         return data;
       } catch (e) {
-        Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       }
     }
   }
@@ -2107,7 +2107,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2176,7 +2176,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2245,7 +2245,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2314,7 +2314,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2382,7 +2382,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2451,7 +2451,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2518,7 +2518,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2583,7 +2583,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2650,7 +2650,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -2727,7 +2727,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -2795,7 +2795,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -2864,7 +2864,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -2931,7 +2931,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3057,7 +3057,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3120,7 +3120,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3184,7 +3184,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3248,7 +3248,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3316,7 +3316,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3383,7 +3383,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3523,7 +3523,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3589,7 +3589,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3682,7 +3682,7 @@ class ApiController {
 
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return null;
     }
   }
@@ -3740,7 +3740,7 @@ class ApiController {
         return null; // Return null if the status is false
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return null; // Return null on exceptions
     }
   }
@@ -3830,7 +3830,7 @@ class ApiController {
 
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return null;
     }
   }
@@ -3897,7 +3897,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3960,7 +3960,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -4022,7 +4022,7 @@ class ApiController {
         }
         return registrationModel;
       } catch (e) {
-        Utils.showToast(e.toString(), true);
+     //   Utils.showToast(e.toString(), true);
         return null;
       }
     } else {
@@ -4096,7 +4096,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -4192,7 +4192,7 @@ class ApiController {
 
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return null;
     }
   }
@@ -4250,7 +4250,7 @@ class ApiController {
         return null; // Return null if the status is false
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return null; // Return null on exceptions
     }
   }
@@ -4340,7 +4340,7 @@ class ApiController {
 
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return null;
     }
   }
@@ -4405,7 +4405,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -4497,7 +4497,7 @@ class ApiController {
 
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return null;
     }
   }
@@ -4565,7 +4565,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -4636,7 +4636,7 @@ class ApiController {
         }
         return getSpoDashobardData;
       } catch (e) {
-        Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
         return null;
       }
     } else {
@@ -4700,7 +4700,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -4764,7 +4764,7 @@ class ApiController {
       }
     } catch (e) {
       print("@@33--Error: $e");
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -4831,7 +4831,7 @@ class ApiController {
       }
     } catch (e) {
       print("@@33--Error: $e");
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -4898,7 +4898,7 @@ class ApiController {
       }
     } catch (e) {
       print("@@33--Error: $e");
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5167,7 +5167,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5231,7 +5231,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5297,7 +5297,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5364,7 +5364,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5436,7 +5436,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5502,7 +5502,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5574,7 +5574,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5712,7 +5712,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5777,7 +5777,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+  //    Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5848,7 +5848,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5915,7 +5915,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5988,7 +5988,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6055,7 +6055,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6128,7 +6128,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6195,7 +6195,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6268,7 +6268,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6334,7 +6334,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6406,7 +6406,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6477,7 +6477,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6547,7 +6547,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6617,7 +6617,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6687,7 +6687,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6757,7 +6757,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+  //    Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6830,7 +6830,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6899,7 +6899,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6968,7 +6968,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7032,7 +7032,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7101,7 +7101,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7170,7 +7170,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7235,7 +7235,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7304,7 +7304,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7373,7 +7373,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7438,7 +7438,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+  ///    Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7507,7 +7507,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7577,7 +7577,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7642,7 +7642,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7711,7 +7711,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+     // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7781,7 +7781,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7857,7 +7857,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+   //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7930,7 +7930,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7993,7 +7993,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -8061,7 +8061,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+    //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -8130,7 +8130,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-      Utils.showToast(e.toString(), true);
+      //Utils.showToast(e.toString(), true);
       return [];
     }
   }
