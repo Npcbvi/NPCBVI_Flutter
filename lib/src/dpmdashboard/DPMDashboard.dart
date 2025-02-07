@@ -849,7 +849,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                       //  print('@@spinnerChooseValue--' + _chosenValue);
                       if (_chosenEyeBank == "Eye Bank Collection") {
                         print('@@NGO--1' + _chosenEyeBank);
+                        Utils.showToast("Next Sprint ", true);
                       } else if (_chosenEyeBank == "Eye Donation") {
+                        Utils.showToast("Next Sprint ", true);
                       } else if (_chosenEyeBank ==
                           "Eyeball Collection Via Eye Bank") {
                         dashboardviewReplace = false;
@@ -860,7 +862,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     });
                   },
                 ),
-                DropdownButton<String>(
+                /*    DropdownButton<String>(
                   key: _dropdownKeyApplications, // Attach the key to DropdownButton
                   value: _chhoseApplication,
                   hint: Row(
@@ -900,7 +902,54 @@ class _DPMDashboard extends State<DPMDashboard> {
                       });
                     }
                   },
-                ),
+                ),*/
+                DropdownButtonHideUnderline( // ✅ Hide the grey underline
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                    child: DropdownButton<String>(
+                      key: _dropdownKeyApplications,
+                      value: _chhoseApplication,
+                      hint: Row(
+                        children: [
+                          Icon(Icons.local_hospital, color: Colors.black),
+                          SizedBox(width: 6),
+                          Text('Application'),
+                        ],
+                      ),
+                      isExpanded: true,
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Dropdown arrow
+                      items: [
+                        {'value': 'NGOs/Private/Govt/Other', 'icon': Icons.healing},
+                        {'value': 'Eye Bank', 'icon': Icons.visibility},
+                        {'value': 'Eye Donation', 'icon': Icons.favorite},
+                      ].map((item) {
+                        return DropdownMenuItem<String>(
+                          value: item['value'],
+                          child: Row(
+                            children: [
+                              Icon(item['icon'], color: Colors.blue),
+                              SizedBox(width: 6),
+                              Text(item['value']),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String value) {
+                        if (value == null) return;
+
+                        setState(() {
+                          _chhoseApplication = value;
+                        });
+
+                        if (_chhoseApplication == "NGOs/Private/Govt/Other") {
+                          Future.delayed(Duration(milliseconds: 30), () {
+                            _showPopupMenuNGOsPrivateGovtApplications();
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                )
 
               ],
             ),
@@ -2621,6 +2670,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             LowVisionRegisterSquints(),
             NGOApplicationApplicationsView(),
             GovtDistrictHospitalApplicationsView(),
+
             // ngowisePatientPendingInnerDisplayDataEidt(),
           ],
         ),
@@ -3011,8 +3061,214 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
-
   Widget NGOlistgovtPvtotherHospitalDropdownData() {
+    return Column(
+      children: [
+        Visibility(
+          visible: ngoGovtPrivateOthereHosdpitalDataShow,
+          child: Card(
+            elevation: 4,
+            margin: const EdgeInsets.all(16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Government / District Hospital List for Approval',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                DropdownButtonFormField2<String>(
+                  value: oganisationTypeGovtPrivateDRopDown,
+                  isExpanded: true,
+                  decoration: InputDecoration(
+                    filled: true,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                  ),
+                  iconStyleData: const IconStyleData(
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.blueAccent),
+                  ),
+                  style: const TextStyle(color: Colors.black87, fontSize: 16),
+                  dropdownStyleData: DropdownStyleData(
+                    maxHeight: 300,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                  ),
+                  items: [
+                    'Govt. District Hospital/Govt. Medical College',
+                    'CHC/Govt. Sub-Dist. Hospital',
+                    'Private Practitioner',
+                    'Private Medical College',
+                    'Other(Institution not claiming fund from NPCBVI)',
+                  ].map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          const Icon(Icons.local_hospital, color: Colors.blue),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              value,
+                              style: const TextStyle(fontSize: 14),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                  hint: const Text(
+                    "Select Organisation Type",
+                    style: TextStyle(
+                      color: Colors.black54,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  onChanged: (String newValue) {
+                    setState(() {
+                      oganisationTypeGovtPrivateDRopDown = newValue;
+                      updateDropDownSelection();
+                    });
+                  },
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      if (oganisationTypeGovtPrivateDRopDown == null) {
+                        Utils.showToast("Please select Organisation Type!", false);
+                      } else {
+                        organisationGovtPrivateSelectionAfter = true;
+                      }
+                    });
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: const Text(
+                    'Submit',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                ),
+
+                /// FutureBuilder for API data
+                Visibility(
+                  visible: organisationGovtPrivateSelectionAfter,
+                  child: FutureBuilder<List<DataDPMGovtPrivateOrganisationTypeData>>(
+                    future: ApiController.getDPM_GovtPvtOther(
+                      district_code_login,
+                      state_code_login,
+                      dropDownvalueOrgnbaistaionType, // Corrected the dropdown value
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return const Center(
+                          child: Text(
+                            "No data found",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      } else {
+                        // Data available, display header row + list
+                        return Column(
+                          children: [
+                            /// ✅ Header Row
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                              child: Row(
+                                children: [
+                                  _buildHeaderCellSrNoGovtPrivate('S.No.'),
+                                  _buildHeaderCellGovtPrivateNgo('NGO Darpan No.'),
+                                  _buildHeaderCellActionGovtPrivate('Action'),
+                                ],
+                              ),
+                            ),
+
+                            /// ✅ List of Data
+                            ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: snapshot.data.length,
+                              itemBuilder: (context, index) {
+                                final offer = snapshot.data[index];
+                                return Card(
+                                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                                  child: ListTile(
+                                    leading: CircleAvatar(
+                                      backgroundColor: Colors.blueAccent,
+                                      child: Text('${index + 1}'),
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    title: Text(offer.npcbNo ?? 'N/A'),
+                                    trailing: TextButton(
+                                      onPressed: () {
+                                        _showDetailDialogGovernmentDistrictHospita(context, offer);
+                                      },
+                                      child: const Text(
+                                        "View Detail",
+                                        style: TextStyle(color: Colors.blueAccent),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  /* Widget NGOlistgovtPvtotherHospitalDropdownData() {
     return Column(
       children: [
         Visibility(
@@ -3040,53 +3296,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
               SizedBox(height: 8.0),
 
-              // Dropdown for selecting organisation type
-              /*   Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.lightBlue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      value: oganisationTypeGovtPrivateDRopDown,
-                      style: TextStyle(color: Colors.white),
-                      iconEnabledColor: Colors.white,
-                      items: <String>[
-                        'Govt. District Hospital/Govt.MEdical College',
-                        'CHC/Govt. Sub-Dist. Hospital',
-                        'Private Practitioner',
-                        'Private Medical College',
-                        'Other(Institution not claiming fund from NPCBVI)',
-                      ].map<DropdownMenuItem<String>>(
-                          (String oganisationTypeGovtPrivateDRopDowns) {
-                        return DropdownMenuItem<String>(
-                          value: oganisationTypeGovtPrivateDRopDowns,
-                          child: Text(
-                            oganisationTypeGovtPrivateDRopDowns,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                      hint: Text(
-                        "Select Organisation Type",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      onChanged: (String oganisationTypeGovtPrivateDRopDownss) {
-                        setState(() {
-                          oganisationTypeGovtPrivateDRopDown =
-                              oganisationTypeGovtPrivateDRopDownss;
-                          updateDropDownSelection();
-                        });
-                      },
-                    ),
-                  ),
-                ),
-              ),*/
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
@@ -3184,7 +3394,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   },
                 ),
               ),
-              /// Kal APi kareyngey
+/// Kal APi kareyngey
               // Display data after submission
               Visibility(
                 visible: organisationGovtPrivateSelectionAfter,
@@ -3280,7 +3490,7 @@ class _DPMDashboard extends State<DPMDashboard> {
         ),
       ],
     );
-  }
+  }*/
 
   void _showDetailDialogGovernmentDistrictHospita(
       BuildContext context, DataDPMGovtPrivateOrganisationTypeData offer) {
@@ -6863,259 +7073,6 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  /// here we are showing the GovtPrivateHospital Dat aon DPm Dashboard.
-  /* Widget DPMGetDPM_GHA_Click_prrovalDisplayDatas() {
-    return Column(
-      children: [
-        Visibility(
-          visible: GetDPM_GH_APPorovedClickShowData,
-          child: Column(
-            children: [
-              // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Shown Captcha value to user
-                                    *//*        Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*//*
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                      padding: EdgeInsets.all(10),
-                                      width: 160.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(12),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.1),
-                                            blurRadius: 8,
-                                            offset: Offset(0, 4),
-                                          ),
-                                        ],
-                                        border: Border.all(
-                                            color: Colors.red, width: 1.5),
-                                      ),
-                                      child: Text(
-                                        'Govt. / CHC / Other Hospitals (Approved)',
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          GetDPM_GH_PendingClickShowData =
-                                              false;
-                                          GetDPM_GH_APPorovedClickShowData =
-                                              false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 8),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.1),
-                                              blurRadius: 6,
-                                              offset: Offset(0, 3),
-                                            ),
-                                          ],
-                                          border: Border.all(
-                                              color: Colors.red, width: 1.5),
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_back_ios_new,
-                                              color: Colors.red,
-                                              size: 18,
-                                            ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              'Back',
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('NGO Name'),
-                    *//*       _buildHeaderCell('Member Name'),
-                    //  _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Address'),
-                    _buildHeaderCell('Nodal Officer Name'),
-                    _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),*//*
-                    _buildHeaderCell('Action'),
-                  ],
-                ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
-              FutureBuilder<List<DatagetDPMGH_clickAPProved>>(
-                future: ApiController.getDPM_GetDPM_GHAPProved_pendings(
-                    district_code_login,
-                    state_code_login,
-                    GetDPM_GH_APPoroved_valueSendinAPi),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "No data found",
-                          style: TextStyle(fontSize: 16, color: Colors.blue),
-                        ),
-                      ),
-                    );
-                  } else {
-                    List<DatagetDPMGH_clickAPProved> ddata = snapshot.data;
-                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
-                        ddata.length.toString());
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.oName),
-                              *//*  _buildDataCell(offer.ngoName),
-                              // _buildDataCell(offer.hName),
-                            _buildDataCell(offer.address),
-                              _buildDataCell(offer.nodalOfficerName),
-                              _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),*//*
-                              _buildDataCellViewBlue("View Detail", () {
-                                _showDetailDialogGovtCHCHospitalClick(
-                                    context, offer);
-                              }),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }*/
 
   Widget DPMGetDPM_GHA_Click_prrovalDisplayDatas() {
     return Column(
@@ -7337,258 +7294,152 @@ class _DPMDashboard extends State<DPMDashboard> {
   Widget DPMGetDPM_GHA_Click_PendingDisplayDatas() {
     return Column(
       children: [
+        // Header Section
         Visibility(
           visible: GetDPM_GH_PendingClickShowData,
-          child: Column(
-            children: [
-              // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Shown Captcha value to user
-                                    /*      Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*/
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                      padding: EdgeInsets.all(10),
-                                      width: 180.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(12),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                            Colors.black.withOpacity(0.1),
-                                            blurRadius: 8,
-                                            offset: Offset(0, 4),
-                                          ),
-                                        ],
-                                        border: Border.all(
-                                            color: Colors.red, width: 1.5),
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'GOVT.CHC Hospital (Pending)',
-                                          maxLines: 3,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          GetDPM_GH_PendingClickShowData =
-                                          false;
-                                          GetDPM_GH_APPorovedClickShowData =
-                                          false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 8),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                          BorderRadius.circular(8),
-                                          border: Border.all(
-                                              color: Colors.red, width: 1.5),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                              Colors.black.withOpacity(0.1),
-                                              blurRadius: 6,
-                                              offset: Offset(0, 3),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_back_ios_new,
-                                              color: Colors.red,
-                                              size: 16,
-                                            ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+          child: Container(
+            color: Colors.white70,
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10.0),
+                  padding: EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 8,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                    border: Border.all(color: Colors.red, width: 1.5),
+                  ),
+                  child: Center(
+                    child: Text(
+                      'GOVT.CHC Hospital \n (Pending)',
+                      maxLines: 3,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
                       ),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('NGO Name'),
-                    /*   _buildHeaderCell('Member Name'),
-                    // _buildHeaderCell('Hospital Name'),
-                    _buildHeaderCell('Address'),
-                    _buildHeaderCell('Nodal Officer Name'),
-                    _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),*/
-                    _buildHeaderCell('Action'),
-                  ],
-                ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
-              FutureBuilder<List<DatagetDPMGH_clickAPProved>>(
-                future: ApiController.getDPM_GetDPM_GHAPProved_pendings(
-                    district_code_login,
-                    state_code_login,
-                    GetDPM_GH_Pending_valueSendinAPi),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "No data found",
-                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                const SizedBox(width: 10),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      dashboardviewReplace = true;
+                      GetDPM_GH_PendingClickShowData = false;
+                      GetDPM_GH_APPorovedClickShowData = false;
+                    });
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Colors.red, width: 1.5),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
                         ),
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(Icons.arrow_back_ios_new, color: Colors.red, size: 16),
+                        SizedBox(width: 8),
+                        Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Data Section
+        Visibility(
+          visible: GetDPM_GH_PendingClickShowData,
+          child: FutureBuilder<List<DatagetDPMGH_clickAPProved>>(
+            future: ApiController.getDPM_GetDPM_GHAPProved_pendings(
+              district_code_login,
+              state_code_login,
+              GetDPM_GH_Pending_valueSendinAPi,
+            ),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Utils.getEmptyView("Error: ${snapshot.error}");
+              } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                return Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      "No data found",
+                      style: TextStyle(fontSize: 16, color: Colors.blue),
+                    ),
+                  ),
+                );
+              } else {
+                List<DatagetDPMGH_clickAPProved> ddata = snapshot.data;
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    children: [
+                      // Header Row
+                      Row(
+                        children: [
+                          _buildHeaderCellSrNo('S.No.'),
+                          _buildHeaderCell('NGO Name'),
+                          _buildHeaderCell('Action'),
+                        ],
                       ),
-                    );
-                  } else {
-                    List<DatagetDPMGH_clickAPProved> ddata = snapshot.data;
-                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
-                        ddata.length.toString());
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.oName),
-                              _buildDataCell(offer.ngoName),
-                              //_buildDataCell(offer.hName),
-                              /* _buildDataCell(offer.address),
-                              _buildDataCell(offer.nodalOfficerName),
-                              _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),*/
-                              _buildDataCellViewBlueDiseaseDataAction(
-                                  'View Detail', () {
-                                _showDetailDialogGHCCHCPendingHospital(
-                                    context, offer);
-                              }),
-                            ],
-                          );
-                        }).toList(),
-                      ),
-                    );
-                  }
-                },
-              ),
-            ],
+                      Divider(color: Colors.blue, height: 1.0),
+
+                      // Data Rows
+                      ...ddata.map((offer) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                            _buildDataCell(offer.ngoName),
+                            _buildDataCellViewBlueDiseaseDataAction('View Detail', () {
+                              _showDetailDialogGHCCHCPendingHospital(context, offer);
+                            }),
+                          ],
+                        );
+                      }).toList(),
+                    ],
+                  ),
+                );
+              }
+            },
           ),
         ),
       ],
     );
   }
+
 
   void _showDetailDialogGHCCHCPendingHospital(
       BuildContext context, DatagetDPMGH_clickAPProved offer) {
@@ -9917,6 +9768,27 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
+  Widget _buildHeaderCellSrNoGovtPrivate(String text) {
+    return Container(
+      height: 35,
+      width: 70, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
   Widget _buildHeaderCellSrNo(String text) {
     return Container(
       height: 35,
@@ -9943,6 +9815,52 @@ class _DPMDashboard extends State<DPMDashboard> {
     return Container(
       height: 35,
       width: 150, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellActionGovtPrivate(String text) {
+    return Container(
+      height: 35,
+      width: 90, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.5,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellGovtPrivateNgo(String text) {
+    return Container(
+      height: 35,
+      width: 130, // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
         border: Border.all(
@@ -18299,6 +18217,8 @@ class _DPMDashboard extends State<DPMDashboard> {
       NGOlistDropDownDisplayDatas = false;
       GovtDistrictHospitalApplicationsViews = false;
       dashboardviewReplace = false;
+      ngoEyeScreeningdataShow = false;
+      dpmEyeScreeningSchoolDataShowADDNewRecord = false;
       NGO_APPorovedClickShowData = false;
       NGO_PendingClickShowData = false;
       GetDPM_GH_APPorovedClickShowData = false;
@@ -18386,7 +18306,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               SizedBox(height: 8.0),
 
               // Dropdown for selecting organisation type
-              Padding(
+              /* Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 12),
@@ -18460,8 +18380,54 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
+              // Dropdown with enhanced UI
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.blueAccent, width: 1.5),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                      ),
+                    ],
+                  ),
+                  child: DropdownButtonFormField2(
+                    isExpanded: true,
+                    value: oganisationTypeGovtPrivateDRopDownApplications,
+                    iconStyleData: IconStyleData(
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                    ),
 
+                    items: [
+                      'NGOs',
+                      'Govt. District Hospital/Govt. Medical College',
+                      'CHC/Govt. Sub-Dist. Hospital',
+                      'Private Practitioner',
+                      'Private Medical College',
+                      'Other (Institution not claiming fund from NPCBVI)',
+                    ].map((value) => DropdownMenuItem(
+                      value: value,
+                      child: Text(value, style: TextStyle(fontSize: 14)),
+                    )).toList(),
+                    hint: Text(
+                      "Select Organisation Type",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    onChanged: (newValue) {
+                      setState(() {
+                        oganisationTypeGovtPrivateDRopDownApplications = newValue;
+                        updateDropDownSelectionApplication();
+                      });
+                    },
+                  ),
+                ),
+              ),
               // Submit Button
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 5, 20.0, 0),
@@ -18585,6 +18551,10 @@ class _DPMDashboard extends State<DPMDashboard> {
       ],
     );
   }
+
+
+
+
   void _showDetailNgoApplicationclickDetail(
       BuildContext context, Dpm_application_ngoApplicationsData offer) {
 
