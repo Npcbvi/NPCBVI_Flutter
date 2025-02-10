@@ -1,15 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:dio/dio.dart' as dio;
 import 'package:dio/dio.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
-
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert'; // For base64Encode
+import 'dart:io'; // For File
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
-import 'package:mohfw_npcbvi/src/database/DatabaseHelper.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMCatractListData.dart';
 import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMDiabeticListData.dart';
@@ -17,11 +19,14 @@ import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMGlaucomaListData.dart
 import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMVRSurgeryListData.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
+import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/city/GetCity.dart';
 import 'package:mohfw_npcbvi/src/model/city/GetVillage.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/model/hopitaldashboardineerData/HospitalDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/GetDiseaseForDDL.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/GetLanguageForDDLs.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/GetLanguageForDDLs.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/GetLanguageForDDLs.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
@@ -36,32 +41,20 @@ import '../model/spoModel/GetLanguageForDDLs.dart';
 import '../model/spoModel/PatientRegistrations.dart';
 import 'SenTODPMCornealBlindnessListData.dart';
 
-class HospitalDashboard extends StatefulWidget {
+class HospitalDashboardextra extends StatefulWidget {
   @override
-  _HospitalDashboard createState() => _HospitalDashboard();
+  _HospitalDashboardextra createState() => _HospitalDashboardextra();
 }
 
-class _HospitalDashboard extends State<HospitalDashboard> {
-  TextEditingController _voterIDNumber = TextEditingController();
-  TextEditingController _drivingLicenseNumber = TextEditingController();
-  TextEditingController _passport = TextEditingController();
-  TextEditingController _rationCard = TextEditingController();
-  TextEditingController _panCard = TextEditingController();
-  TextEditingController _notAvalble = TextEditingController();
-  TextEditingController _reportingPlaceController = TextEditingController();
-  TextEditingController _firstNamePatientDetail = TextEditingController();
-  TextEditingController _lastNamePatientDetail = TextEditingController();
-  TextEditingController _AgePatientDetail = TextEditingController();
-  TextEditingController _mobileNumberDetailsRelationtype = TextEditingController();
-  TextEditingController _AddressHouse = TextEditingController();
-  TextEditingController _Apartment = TextEditingController();
-  TextEditingController _AreaNearLandMark = TextEditingController();
-  TextEditingController _PinCode = TextEditingController();
+class _HospitalDashboardextra extends State<HospitalDashboardextra> {
   TextEditingController fullnameControllers = new TextEditingController();
-
-  String _chosenValue, districtNames, userId, stateNames, fullnameController, role_id;
+  String _chosenValue,
+      districtNames,
+      userId,
+      stateNames,
+      fullnameController,
+      role_id;
   int status, district_code_login, state_code_login;
-
   final GlobalKey _dropdownKey = GlobalKey();
 
   final GlobalKey _dropdownKeySenTODPM = GlobalKey();
@@ -80,15 +73,37 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   String _errorMessage, VoterIDtype,relationtypeValueMobile,entryby,loggedInNgoId;
   final ImagePicker _picker = ImagePicker();
   final _formKeyhopsitalPersonalDetal = GlobalKey<FormState>();
+
+  TextEditingController _firstNamePatientDetail = TextEditingController();
+  TextEditingController _lastNamePatientDetail = TextEditingController();
+  TextEditingController _AgePatientDetail = TextEditingController();
+
+  TextEditingController _mobileNumberDetailsRelationtype = TextEditingController();
   String gender = 'Male'; // Default gender
   var dependencyTypeRadio;
   int voterIDTypeValue = 0;
   bool showVoterIDField = false,showDrivingLicenseField=false,showPassport=false,showRationCard=false,showPanCard=false,showNotAvailble=false;
   bool showSelf = false,Dependent=false;
+  TextEditingController _voterIDNumber = TextEditingController();
+  TextEditingController _drivingLicenseNumber = TextEditingController();
+  TextEditingController _passport = TextEditingController();
+  TextEditingController _rationCard = TextEditingController();
+  TextEditingController _panCard = TextEditingController();
+  TextEditingController _notAvalble = TextEditingController();
+  TextEditingController _reportingPlaceController = TextEditingController();
+
+  TextEditingController _AddressHouse = TextEditingController();
+  TextEditingController _Apartment = TextEditingController();
+  TextEditingController _AreaNearLandMark = TextEditingController();
+  TextEditingController _PinCode = TextEditingController();
+
   File _image;
   String _selectedDateText = 'Screening Date *'; // Initially set to "From Date"
+
   String _selectedDateTextToDate = 'Tentative Surgery Date *';
+
   String _dob = 'Date of birth';
+
   Future<List<Data>> _futureState;
   Data _selectedUserState;
   DataDsiricst _selectedUserDistrict;
@@ -121,7 +136,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController relationspouseController = TextEditingController();
   String relationtypeValue; // Initialize as null
   String formattedDate;
-  final dbHelper = DatabaseHelper();  // Initialize the database helper
   Future<void> _showPickerDialog() async {
     showModalBottomSheet(
       context: context,
@@ -192,12 +206,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     // TODO: implement initState
     super.initState();
     // To generate number on loading of page
-    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
-      if (result != ConnectivityResult.none) {
-        print("🌐 Internet Available. Uploading Local Data...");
-        uploadLocalData();  // ✅ Upload when online
-      }
-    });
     getUserData();
     hospitalDashboardclickDsiplay = true;
     _future = getDPM_ScreeningYear();
@@ -821,6 +829,10 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
     );
   }
 
+
+
+
+
   Widget hospitalDashboardclick() {
     return Row(
       children: [
@@ -1116,6 +1128,29 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
     );
   }
 
+  Widget _buildDataCellblue(String text) {
+    return Container(
+      height: 80,
+      width: 150,
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: Colors.blue,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildDataCellViewBlue(String text, VoidCallback onTap) {
     return GestureDetector(
@@ -2451,6 +2486,10 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     ],
                   ),
                 ),
+
+
+
+
                 SizedBox(height: 10.0),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
@@ -2472,8 +2511,12 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     ),
                   ),
                 ),
+
+
+
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+
                   child: Form(
                     child: Column(
                       children: [
@@ -2490,6 +2533,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     ),
                   ),
                 ),
+
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
 
@@ -2509,6 +2553,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     ),
                   ),
                 ),
+
+
                 SizedBox(height: 8.0),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
@@ -2626,37 +2672,27 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                   ),
                 ),
                 SizedBox(height: 10.0),
-
-          Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  print("@@-----click SubmitAdd Patient--");
-
-                  var connectivityResult = await Connectivity().checkConnectivity();
-
-                  if (connectivityResult == ConnectivityResult.none) {
-                    print("No internet connection. Saving data locally.");
-                    await dbHelper.savePatientData(); // ✅ Save to SQLite
-                    Utils.showToast("No internet. Data saved locally.", true);
-                  } else {
-                    print("Internet available. Uploading data to API.");
-                    await ApipatientRegistration(); // Submit to API
-                  }
-                },
-                child: Text('Submit'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Reset form fields
-                },
-                child: Text('Reset'),
-              ),
-            ],
-          )
-
-        ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Process the form data
+                        print("@@-----click SubmitAdd Patient--");
+                        ApipatientRegistration();
+                      },
+                      child: Text('Submit'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Reset form fields
+                     //   _resetForm();
+                      },
+                      child: Text('Reset'),
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ],
@@ -2680,7 +2716,192 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
   }
 
 
-//Comment here for Offline ki bajah se other working fine
+
+ /* Future<void> ApipatientRegistration() async {
+    print("### Starting patient registration ###");
+
+    // Validation checks for inputs
+    if (_firstNamePatientDetail.text.isEmpty) {
+      print("Error: First name is empty");
+      Utils.showToast("Please enter first name", false);
+      return;
+    }
+    if (_image == null) {
+      print("Error: Image is not selected");
+      Utils.showToast("Please select an image", false);
+      return;
+    }
+    if (_lastNamePatientDetail.text.isEmpty) {
+      print("Error: Last name is empty");
+      Utils.showToast("Please enter last name", false);
+      return;
+    }
+    if (_dob.isEmpty || _dob == "Select Date") {
+      print("Error: Date of birth is not selected");
+      Utils.showToast("Please select a date of birth", false);
+      return;
+    }
+    if (_AgePatientDetail.text.isEmpty) {
+      print("Error: Age is empty");
+      Utils.showToast("Please enter age", false);
+      return;
+    }
+    if (_mobileNumberDetailsRelationtype.text.isEmpty) {
+      print("Error: Mobile number is empty");
+      Utils.showToast("Please enter mobile number", false);
+      return;
+    }
+    if (_AddressHouse.text.isEmpty) {
+      print("Error: House address is empty");
+      Utils.showToast("Please enter house address", false);
+      return;
+    }
+    if (_Apartment.text.isEmpty) {
+      print("Error: Apartment is empty");
+      Utils.showToast("Please enter apartment", false);
+      return;
+    }
+    if (_AreaNearLandMark.text.isEmpty) {
+      print("Error: Area/landmark is empty");
+      Utils.showToast("Please enter area/landmark", false);
+      return;
+    }
+    if (_PinCode.text.isEmpty) {
+      print("Error: Pin code is empty");
+      Utils.showToast("Please enter pin code", false);
+      return;
+    }
+
+    Utils.showProgressDialog1(context);
+
+    try {
+      print("Compressing image...");
+      final tempDir = await getTemporaryDirectory();
+      final targetPath = '${tempDir.path}/compressed_image.jpg';
+      File compressedImage = await FlutterImageCompress.compressAndGetFile(
+        _image.path,
+        targetPath,
+        quality: 80,
+      );
+
+      if (compressedImage == null) {
+        print("Error: Image compression failed");
+        throw Exception("Image compression failed");
+      }
+
+      // Log image details
+      print("Original Image Path: ${_image.path}");
+      print("Compressed Image Path: ${compressedImage.path}");
+      print("Compressed Image Size: ${await compressedImage.length()} bytes");
+      print("Image compressed successfully: ${compressedImage.path}");
+
+      final imageBytes = await compressedImage.readAsBytes();
+      final base64Image = base64Encode(imageBytes);
+      print('@@Base64 Image (truncated): ${base64Image.substring(0, 100000)}...');
+
+      print("Preparing form data...");
+      // Create the MultipartFile outside the form data map
+      MultipartFile multipartFile = await MultipartFile.fromFile(
+        compressedImage.path,
+        filename: "patient_image_${DateTime.now().millisecondsSinceEpoch}.jpg",
+      );
+
+      // Log the details of the MultipartFile
+      print("Path: ${multipartFile.filename}"); // The file path
+      print("Filename: ${multipartFile.filename}"); // The filename (used in the request)
+      print("File Size: ${await compressedImage.length()} bytes"); // File size in bytes
+
+      // Prepare the form data
+      FormData formData = FormData.fromMap({
+        "registrationType": registerationtypeRadioValueinAPi,
+        "patientImage": multipartFile,  // Add the MultipartFile here
+        "idType": VoterIDtype.toString(),
+        "idName": _voterIDNumber.text.toString(),
+        "dependencyType": dependencyTypeRadio.toString(),
+        "relationType": relationtypeValue.toString(),
+        "relationName": relationFatherController.text.toString(),
+        "firstName": _firstNamePatientDetail.text.toString(),
+        "lastName": _lastNamePatientDetail.text.toString(),
+        "dob": _dob.toString(),
+        "age": _AgePatientDetail.text.toString(),
+        "gender": gender.toString(),
+        "mobileRelationType": relationtypeValueMobile.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
+        "screeningDate": _selectedDateText.toString(),
+        "tentativeSurgeryDate": _selectedDateTextToDate.toString(),
+        "disease": getDissesID.toString(),
+        "reportingPlace": _reportingPlaceController.text.toString(),
+        "state": state_code_login,
+        "district": district_code_login,
+        "city": distCodeGovtPrivate,
+        "village": village_code,
+        "address": _AddressHouse.text.toString(),
+        "apartment": _Apartment.text.toString(),
+        "nearLandMark": _AreaNearLandMark.text.toString(),
+        "pincode": _PinCode.text.toString(),
+        "communicationLanguage": stateLKanguage,
+        "loggedInUserStateId": state_code_login,
+        "loggedInUserDistrictId": district_code_login,
+        "entryBy": entryby,
+        "loggedInNgoId": "10126",
+        "programeId": "002",
+        "loggedInUserRole": int.parse(role_id),
+        "userId": userId.toString(),
+      });
+
+      print("Form data prepared successfully. Payload: ${formData.fields.toString()}");
+      print("Form data prepared successfully. Fields:");
+      for (int i = 0; i < formData.fields.length; i++) {
+        var field = formData.fields[i];
+        print("Index $i: Key = ${field.key}, Value = ${field.value}");
+      }
+
+      var url = ApiConstants.baseUrl + ApiConstants.PatientRegistration;
+      print("Sending API request to: $url");
+
+      final response = await Dio().post(
+        url,
+        data: formData,
+        options: Options(
+          contentType: Headers.formUrlEncodedContentType,
+        ),
+      );
+
+      print("API response received: ${response.statusCode}");
+      Utils.hideProgressDialog1(context);
+
+      if (response.statusCode == 200) {
+        final registrationResponse = PatientRegistrations.fromJson(response.data);
+        if (registrationResponse.status) {
+          print("Registration successful: ${registrationResponse.message}");
+          Utils.showToast(registrationResponse.message, true);
+        } else {
+          print("Registration failed: ${registrationResponse.message}");
+          Utils.showToast("Registration failed: ${registrationResponse.message}", false);
+        }
+      } else {
+        print("Error: Failed to register patient. Status code: ${response.statusCode}");
+        Utils.showToast("Failed to register patient. Status code: ${response.statusCode}", false);
+      }
+    } catch (e) {
+      Utils.hideProgressDialog1(context);
+
+      if (e is DioError) {
+        print("@@Exception occurred: ${e.toString()}");
+
+        if (e.response != null) {
+          print("@@Response Data: ${e.response?.data}");
+          print("@@Response Headers: ${e.response?.headers}");
+        } else {
+          print("@@Error without response: ${e.message}");
+        }
+      } else {
+        print("@@Unexpected Error: $e");
+      }
+
+      Utils.showToast("@@Error_1: $e", false);
+    }
+  }*/
   Future<void> ApipatientRegistration() async {
     print("### Starting patient registration ###");
 
@@ -2854,132 +3075,6 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
     }
   }
 
-  Future<void> ApipatientRegistrations({Map<String, dynamic> patientData}) async {
-    print("### Starting patient registration ###");
-
-    try {
-      // Show progress dialog only for real-time submission
-      if (patientData == null) Utils.showProgressDialog1(context);
-
-      // Determine the data source
-      final isOfflineData = patientData != null;
-
-      // Validation checks (only for real-time submissions)
-      if (!isOfflineData) {
-        if (_firstNamePatientDetail.text.isEmpty) {
-          Utils.showToast("Please enter first name", false);
-          return;
-        }
-        if (_image == null) {
-          Utils.showToast("Please select an image", false);
-          return;
-        }
-        if (_lastNamePatientDetail.text.isEmpty) {
-          Utils.showToast("Please enter last name", false);
-          return;
-        }
-        if (_dob.isEmpty || _dob == "Select Date") {
-          Utils.showToast("Please select a date of birth", false);
-          return;
-        }
-        if (_AgePatientDetail.text.isEmpty) {
-          Utils.showToast("Please enter age", false);
-          return;
-        }
-        if (_mobileNumberDetailsRelationtype.text.isEmpty) {
-          Utils.showToast("Please enter mobile number", false);
-          return;
-        } else if (_mobileNumberDetailsRelationtype.text.length != 10) {
-          Utils.showToast("Please enter a valid 10-digit mobile number", false);
-          return;
-        }
-        if (_AddressHouse.text.isEmpty) {
-          Utils.showToast("Please enter house address", false);
-          return;
-        }
-        if (_Apartment.text.isEmpty) {
-          Utils.showToast("Please enter apartment", false);
-          return;
-        }
-        if (_AreaNearLandMark.text.isEmpty) {
-          Utils.showToast("Please enter area/landmark", false);
-          return;
-        }
-        if (_PinCode.text.isEmpty) {
-          Utils.showToast("Please enter pin code", false);
-          return;
-        }
-      }
-
-      // Handle Image
-      MultipartFile multipartFile;
-      if (isOfflineData && patientData['imagePath'] != null) {
-        multipartFile = await MultipartFile.fromFile(patientData['imagePath']);
-      } else if (_image != null) {
-        final tempDir = await getTemporaryDirectory();
-        final targetPath = '${tempDir.path}/compressed_image.jpg';
-        File compressedImage = await FlutterImageCompress.compressAndGetFile(
-          _image.path,
-          targetPath,
-          quality: 80,
-        ) ?? _image;
-
-        multipartFile = await MultipartFile.fromFile(compressedImage.path);
-      }
-
-      // Prepare form data
-      FormData formData = FormData.fromMap({
-        "registrationType": isOfflineData ? patientData['registrationType'] : registerationtypeRadioValueinAPi,
-        "patientImage": multipartFile,
-        "idType": isOfflineData ? patientData['idType'] : VoterIDtype.toString(),
-        "idName": isOfflineData ? patientData['idNumber'] : _voterIDNumber.text,
-        "dependencyType": isOfflineData ? patientData['dependencyType'] : dependencyTypeRadio.toString(),
-        "relationType": isOfflineData ? patientData['relationType'] : relationtypeValue.toString(),
-        "relationName": isOfflineData ? patientData['relationName'] : relationFatherController.text,
-        "firstName": isOfflineData ? patientData['firstName'] : _firstNamePatientDetail.text,
-        "lastName": isOfflineData ? patientData['lastName'] : _lastNamePatientDetail.text,
-        "dob": isOfflineData ? patientData['dob'] : _dob,
-        "age": isOfflineData ? patientData['age'].toString() : _AgePatientDetail.text,
-        "gender": isOfflineData ? patientData['gender'] : gender.toString(),
-        "mobileNo": isOfflineData ? patientData['relationMobileNo'] : _mobileNumberDetailsRelationtype.text,
-        "reportingPlace": isOfflineData ? patientData['reportingPlace'] : _reportingPlaceController.text,
-        "state": isOfflineData ? patientData['stateId'].toString() : state_code_login,
-        "district": isOfflineData ? patientData['districtId'].toString() : district_code_login,
-        "city": isOfflineData ? patientData['cityId'].toString() : distCodeGovtPrivate,
-        "village": isOfflineData ? patientData['villageId'].toString() : village_code,
-        "address": isOfflineData ? patientData['houseAddress'] : _AddressHouse.text,
-        "apartment": isOfflineData ? patientData['apartmentDetails'] : _Apartment.text,
-        "nearLandMark": isOfflineData ? patientData['landmarkArea'] : _AreaNearLandMark.text,
-        "pincode": isOfflineData ? patientData['pinCode'] : _PinCode.text,
-      });
-
-      // API call
-      final dio = Dio();
-      final url = "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
-      final response = await dio.post(url, data: formData);
-
-      if (response.statusCode == 200) {
-        final result = PatientRegistrations.fromJson(response.data);
-        if (result.status) {
-          Utils.showToast(result.message, true);
-
-          if (isOfflineData) {
-            await dbHelper.deleteLocalPatient(patientData['id']);
-            print("🗑️ Local data deleted after upload.");
-          }
-        } else {
-          Utils.showToast("Registration failed: ${result.message}", false);
-        }
-      } else {
-        Utils.showToast("Failed to register. Status code: ${response.statusCode}", false);
-      }
-    } catch (e) {
-      print("Error: $e");
-      Utils.showToast("Unexpected error occurred", false);
-    } finally {
-      if (patientData == null) Utils.hideProgressDialog1(context);
-    }
-  }
 
 
 
@@ -3652,18 +3747,4 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
       ),
     );
   }
-  Future<void> uploadLocalData() async {
-    final localDataList = await dbHelper.getAllLocalPatients();  // ✅ Fetch data from SQLite
-
-    for (var patientData in localDataList) {
-      try {
-        await ApipatientRegistrations(patientData: patientData);  // ✅ Use named argument
-        await dbHelper.deleteLocalPatient(patientData['id']);     // ✅ Delete after successful upload
-        print("✅ Data uploaded and removed from local DB.");
-      } catch (e) {
-        print("❌ Error uploading data: $e");
-      }
-    }
-  }
-
 }
