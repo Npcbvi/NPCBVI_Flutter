@@ -56,7 +56,7 @@ class DatabaseHelper {
     String path = join(documentsDirectory.path, "Npcbvi.db");
     // Open/create the database at a given path
     var theDb = await openDatabase(path,
-        version: 3, onCreate: _onCreate, onUpgrade: _onUpgrade);
+        version: 4, onCreate: _onCreate, onUpgrade: _onUpgrade);
     return theDb;
   }
 
@@ -89,10 +89,21 @@ class DatabaseHelper {
       landmark_area TEXT,        
       pin_code TEXT,             
       communication_language_id INTEGER,
-      image BLOB                 -- ✅ Added Image Column
+      image BLOB,
+      
+      -- ✅ New Fields
+      communication_language TEXT,
+      logged_in_user_state_id INTEGER,
+      logged_in_user_district_id INTEGER,
+      entry_by TEXT,
+      logged_in_ngo_id TEXT,
+      programe_id TEXT,
+      logged_in_user_role INTEGER,
+      user_id TEXT
     )
   """);
   }
+
 
 
 
@@ -107,42 +118,63 @@ class DatabaseHelper {
       await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN gender TEXT");
 
       // ✅ New Fields for Address & Communication Language
-      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN house_address TEXT");               // House/Flat Number
-      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN apartment_details TEXT");           // Apartment/Building/Colony/Floor
-      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN landmark_area TEXT");               // Area/Near Landmark
-      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN pin_code TEXT");                    // Pin Code
-      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN communication_language_id INTEGER"); // Communication Language ID
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN house_address TEXT");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN apartment_details TEXT");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN landmark_area TEXT");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN pin_code TEXT");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN communication_language_id INTEGER");
       await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN image BLOB");
+
+      // ✅ Add Missing New Columns
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN communication_language TEXT");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN logged_in_user_state_id INTEGER");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN logged_in_user_district_id INTEGER");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN entry_by TEXT");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN logged_in_ngo_id TEXT");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN programe_id TEXT");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN logged_in_user_role INTEGER");
+      await db.execute("ALTER TABLE $ADD_PATIENT ADD COLUMN user_id TEXT");
     }
   }
 
+
+
   Future<int> savePatientData({
-    String id,                       // ✅ To identify if it's an update
-     String idType,
-     String idNumber,
-     String firstName,
-     String lastName,
-     String relationType,
-     String relationName,
-     String dependencyType,
-     String dob,
-     int age,
-     String gender,
-     String relationMobileNo,
-     String fromDate,
-     String toDate,
-     int diseaseId,
-     int stateId,
-     int districtId,
-     int cityId,
-     int villageId,
-     String reportingPlace,
-     String houseAddress,
-     String apartmentDetails,
-     String landmarkArea,
-     String pinCode,
-     int communicationLanguageId,
-    Uint8List image,                 // ✅ Added Image Parameter
+    String id,                         // ✅ To identify if it's an update
+    String idType,
+    String idNumber,
+    String firstName,
+    String lastName,
+    String relationType,
+    String relationName,
+    String dependencyType,
+    String dob,
+    int age,
+    String gender,
+    String relationMobileNo,
+    String fromDate,
+    String toDate,
+    int diseaseId,
+    int stateId,
+    int districtId,
+    int cityId,
+    int villageId,
+    String reportingPlace,
+    String houseAddress,
+    String apartmentDetails,
+    String landmarkArea,
+    String pinCode,
+    int communicationLanguageId,
+    Uint8List image,                   // ✅ Added Image Parameter
+
+    // ✅ New Fields
+    int loggedInUserStateId,
+    int loggedInUserDistrictId,
+    String entryBy,
+    String loggedInNgoId = "10126",    // Default value if not provided
+    String programeId = "002",         // Default value if not provided
+    int loggedInUserRole,
+    String userId,
   }) async {
     var dbClient = await db;
 
@@ -173,7 +205,16 @@ class DatabaseHelper {
       'landmark_area': landmarkArea,
       'pin_code': pinCode,
       'communication_language_id': communicationLanguageId,
-      'image': image,                 // ✅ Saving Image Bytes
+      'image': image,                   // ✅ Saving Image Bytes
+
+      // ✅ New Fields
+      'logged_in_user_state_id': loggedInUserStateId,
+      'logged_in_user_district_id': loggedInUserDistrictId,
+      'entry_by': entryBy,
+      'logged_in_ngo_id': loggedInNgoId,
+      'programe_id': programeId,
+      'logged_in_user_role': loggedInUserRole,
+      'user_id': userId,
     };
 
     // ✅ Check if updating or inserting
@@ -188,8 +229,6 @@ class DatabaseHelper {
       return await dbClient.insert(ADD_PATIENT, data);
     }
   }
-
-
 
 
 

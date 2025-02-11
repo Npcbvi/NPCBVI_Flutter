@@ -2929,31 +2929,52 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
 
       // Prepare form data
       FormData formData = FormData.fromMap({
-        "registrationType": isOfflineData ? patientData['registrationType'] : registerationtypeRadioValueinAPi,
+        "registrationType": registerationtypeRadioValueinAPi,
         "patientImage": multipartFile,
-        "idType": isOfflineData ? patientData['idType'] : VoterIDtype.toString(),
-        "idName": isOfflineData ? patientData['idNumber'] : _voterIDNumber.text,
-        "dependencyType": isOfflineData ? patientData['dependencyType'] : dependencyTypeRadio.toString(),
-        "relationType": isOfflineData ? patientData['relationType'] : relationtypeValue.toString(),
-        "relationName": isOfflineData ? patientData['relationName'] : relationFatherController.text,
-        "firstName": isOfflineData ? patientData['firstName'] : _firstNamePatientDetail.text,
-        "lastName": isOfflineData ? patientData['lastName'] : _lastNamePatientDetail.text,
-        "dob": isOfflineData ? patientData['dob'] : _dob,
-        "age": isOfflineData ? patientData['age'].toString() : _AgePatientDetail.text,
-        "gender": isOfflineData ? patientData['gender'] : gender.toString(),
-        "mobileNo": isOfflineData ? patientData['relationMobileNo'] : _mobileNumberDetailsRelationtype.text,
-        "reportingPlace": isOfflineData ? patientData['reportingPlace'] : _reportingPlaceController.text,
-        "state": isOfflineData ? patientData['stateId'].toString() : state_code_login,
-        "district": isOfflineData ? patientData['districtId'].toString() : district_code_login,
-        "city": isOfflineData ? patientData['cityId'].toString() : distCodeGovtPrivate,
-        "village": isOfflineData ? patientData['villageId'].toString() : village_code,
-        "address": isOfflineData ? patientData['houseAddress'] : _AddressHouse.text,
-        "apartment": isOfflineData ? patientData['apartmentDetails'] : _Apartment.text,
-        "nearLandMark": isOfflineData ? patientData['landmarkArea'] : _AreaNearLandMark.text,
-        "pincode": isOfflineData ? patientData['pinCode'] : _PinCode.text,
+        "idType": VoterIDtype.toString(),
+        "idName":_voterIDNumber.text.toString(),
+        "dependencyType": dependencyTypeRadio.toString(),
+        "relationType":  relationtypeValue.toString(),
+        "relationName":  relationFatherController.text.toString(),
+        "firstName":_firstNamePatientDetail.text.toString(),
+        "lastName": _lastNamePatientDetail.text.toString(),
+
+
+        "dob":_dob.toString(),
+        //"dob": "12-12-2000",
+        "age":  _AgePatientDetail.text.toString(),
+        "gender":gender.toString(),
+        "mobileRelationType": relationtypeValueMobile.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
+        "screeningDate": _selectedDateText,
+        "tentativeSurgeryDate": _selectedDateTextToDate,
+        "disease": getDissesID.toString(),
+        "reportingPlace": _reportingPlaceController.text,
+        "state": state_code_login,
+        "district": district_code_login,
+        "city": distCodeGovtPrivate,
+        "village": village_code,
+        "address": _AddressHouse.text,
+        "apartment": _Apartment.text,
+        "nearLandMark": _AreaNearLandMark.text,
+        "pincode": _PinCode.text,
+        "communicationLanguage": stateLKanguage,
+        "loggedInUserStateId": state_code_login,
+        "loggedInUserDistrictId": district_code_login,
+        "entryBy": entryby,
+        "loggedInNgoId": "10126",
+        "programeId": "002",
+        "loggedInUserRole": int.parse(role_id),
+        "userId": userId,
       });
 
-      // API call
+      // Debug: Print form data line by line
+      print("### Form Data to be Submitted ###");
+      formData.fields.forEach((field) {
+        print("${field.key}: ${field.value}");
+      });
+
+// API call
       final dio = Dio();
       final url = "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
       final response = await dio.post(url, data: formData);
