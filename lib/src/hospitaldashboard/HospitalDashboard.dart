@@ -75,7 +75,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   bool hospitalDashboardDatas = false;
   bool hospitalAddPatientData = false;
   String registerationtypeRadio = 'Hospital Walk-in'; // Default gender
-  int registerationtypeRadioValueinAPi = 2; // Default gender
+  int registerationtypeRadioValueinAPi = 3; // Default gender
   File _selectedImage;
   String _errorMessage, VoterIDtype,relationtypeValueMobile,entryby,loggedInNgoId;
   final ImagePicker _picker = ImagePicker();
@@ -121,7 +121,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController relationspouseController = TextEditingController();
   String relationtypeValue; // Initialize as null
   String formattedDate;
-  final dbHelper = DatabaseHelper();  // Initialize the database helper
+  final dbHelper = DatabaseHelper();
+  bool isConnected = false;
+  Future<void> checkInternetConnection() async {
+    var connectivityResult = await Connectivity().checkConnectivity();
+    isConnected = connectivityResult != ConnectivityResult.none;
+    setState(() {}); // Trigger UI update
+  }// Global variable// Initialize the database helper
   Future<void> _showPickerDialog() async {
     showModalBottomSheet(
       context: context,
@@ -198,12 +204,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         uploadLocalData();  // ✅ Upload when online
       }
     });
+    checkInternetConnection();
     getUserData();
     hospitalDashboardclickDsiplay = true;
     _future = getDPM_ScreeningYear();
     _futureState = _getStatesDAta();
     //_futureVillage = _getVillage(district_code_login, state_code_login,distCodeGovtPrivate);
-_futureStateGetLanguageForDDLsData=getLanguageForDDL();
+    _futureStateGetLanguageForDDLsData=getLanguageForDDL();
     _futureStateGetLanguageForDDLsData=getLanguageForDDL();
     _futureGetDiseaseForDDLDatas=getDiseaseForDDL();
   }
@@ -221,7 +228,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
           state_code_login = user.state_code;
           district_code_login = user.district_code;
           getentryby();
-         // getloggedInNgoId();
+          // getloggedInNgoId();
           print('@@2' + user.name);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
@@ -246,7 +253,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-          GetDPM_ScreeningYear.fromJson(json);
+      GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -307,7 +314,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
             elevation: 2,
             onSelected: (value) {
               if (value == 1) {
-               // _showChangePasswordDialog();
+                // _showChangePasswordDialog();
               } else if (value == 2) {
                 // Implement User Manual action
               } else if (value == 3) {
@@ -433,75 +440,75 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     Navigator.pop(context);
                   },
                 ),
-            _buildDropdownItem(
-              key: _dropdownKeySenTODPM,
-              value: _chosenValueLOWVisionSendTODM,
-              hint: 'Send to DPM',
-              hintIcon: Icon(Icons.local_hospital, color: Colors.black), // Add an icon to the hint
-              items: [
-                {'value': 'Cataract', 'icon': Icons.local_hospital},
-                {'value': 'Diabetic', 'icon': Icons.healing},
-                {'value': 'Glaucoma', 'icon': Icons.healing},
-                {'value': 'Corneal Blindness', 'icon': Icons.healing},
-                {'value': 'VR Surgery', 'icon': Icons.healing},
-                {'value': 'Childhood Blindness', 'icon': Icons.child_care},
+                _buildDropdownItem(
+                  key: _dropdownKeySenTODPM,
+                  value: _chosenValueLOWVisionSendTODM,
+                  hint: 'Send to DPM',
+                  hintIcon: Icon(Icons.local_hospital, color: Colors.black), // Add an icon to the hint
+                  items: [
+                    {'value': 'Cataract', 'icon': Icons.local_hospital},
+                    {'value': 'Diabetic', 'icon': Icons.healing},
+                    {'value': 'Glaucoma', 'icon': Icons.healing},
+                    {'value': 'Corneal Blindness', 'icon': Icons.healing},
+                    {'value': 'VR Surgery', 'icon': Icons.healing},
+                    {'value': 'Childhood Blindness', 'icon': Icons.child_care},
+                  ],
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenValueLOWVisionSendTODM = value;
+                      print('@@SelectedValue: $_chosenValueLOWVisionSendTODM');
+
+                      if (_chosenValueLOWVisionSendTODM == "Cataract") {
+                        print('@@Navigating to LoginScreen');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SenTODPMCatractListData(),
+                          ),
+                        );
+                      } else if (_chosenValueLOWVisionSendTODM == "Diabetic") {
+                        print('Diabetic selected');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SenTODPMDiabeticListData(),
+                          ),
+                        );
+                      } else if (_chosenValueLOWVisionSendTODM == "Glaucoma") {
+                        print('Glaucoma selected');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SenTODPMGlaucomaListData(),
+                          ),
+                        );
+                      } else if (_chosenValueLOWVisionSendTODM == "Corneal Blindness") {
+                        print('Corneal Blindness selected');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SenTODPMCornealBlindnessListData(),
+                          ),
+                        );
+                      } else if (_chosenValueLOWVisionSendTODM == "VR Surgery") {
+                        print('VR Surgery selected');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SenTODPMVRSurgeryListData(),
+                          ),
+                        );
+                      } else if (_chosenValueLOWVisionSendTODM == "Childhood Blindness") {
+                        print('Childhood Blindness selected');
+                      } else {
+                        print('Other value selected');
+                      }
+                    });
+                  },
+                )
+
+
               ],
-              onChanged: (String value) {
-                setState(() {
-                  _chosenValueLOWVisionSendTODM = value;
-                  print('@@SelectedValue: $_chosenValueLOWVisionSendTODM');
-
-                  if (_chosenValueLOWVisionSendTODM == "Cataract") {
-                    print('@@Navigating to LoginScreen');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SenTODPMCatractListData(),
-                      ),
-                    );
-                  } else if (_chosenValueLOWVisionSendTODM == "Diabetic") {
-                    print('Diabetic selected');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SenTODPMDiabeticListData(),
-                      ),
-                    );
-                  } else if (_chosenValueLOWVisionSendTODM == "Glaucoma") {
-                    print('Glaucoma selected');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SenTODPMGlaucomaListData(),
-                      ),
-                    );
-                  } else if (_chosenValueLOWVisionSendTODM == "Corneal Blindness") {
-                    print('Corneal Blindness selected');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SenTODPMCornealBlindnessListData(),
-                      ),
-                    );
-                  } else if (_chosenValueLOWVisionSendTODM == "VR Surgery") {
-                    print('VR Surgery selected');
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SenTODPMVRSurgeryListData(),
-                      ),
-                    );
-                  } else if (_chosenValueLOWVisionSendTODM == "Childhood Blindness") {
-                    print('Childhood Blindness selected');
-                  } else {
-                    print('Other value selected');
-                  }
-                });
-              },
-            )
-
-
-            ],
             ),
           ),
         ),
@@ -509,7 +516,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
       body: SingleChildScrollView(
         child: Column(
           children: [
-          /*  Container(
+            /*  Container(
               width: double.infinity,
               color: Colors.blue,
               child: Padding(
@@ -1000,7 +1007,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                     children: ddata.map((offer) {
                                       return Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        MainAxisAlignment.start,
                                         children: [
                                           _buildDataCellDiseaseData(offer.status),
                                           _buildDataCellDiseaseData(offer.registered),
@@ -1184,7 +1191,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: Colors.blueAccent, width: 2.0),
+                      BorderSide(color: Colors.blueAccent, width: 2.0),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     hintText: 'Hospitals',
@@ -1238,7 +1245,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Left section: Radio button column
-                    Expanded(
+                    /* Expanded(
                       flex: 3, // Weight for the radio button column
                       child: _radioButtonColumn(
                         options: [
@@ -1261,7 +1268,26 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                           });
                         },
                       ),
+                    ),*/
+                    Expanded(
+                      flex: 3,
+                      child: _radioButtonColumn(
+                        options: ['Screening Camp', 'Satellite Centre', 'Hospital Walk-in'],
+                        enabledOptions: ['Hospital Walk-in'], // Only this option is enabled
+                        groupValue: registerationtypeRadio,
+                        onChanged: (value) {
+                          if (value == "Hospital Walk-in") { // Allow only if enabled
+                            setState(() {
+                              registerationtypeRadio = value;
+                              print('@@1 ' + registerationtypeRadio.toString());
+
+                              registerationtypeRadioValueinAPi = 3;
+                            });
+                          }
+                        },
+                      ),
                     ),
+
                     SizedBox(width: 10), // Add spacing between the two sections
                     // Right section: Image picker and preview
                     Expanded(
@@ -1414,7 +1440,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                           ),
                         if (showNotAvailble)
 
-                        SizedBox(height: 5.0),
+                          SizedBox(height: 5.0),
                         _sectionTitle('Dependency Type'),
                         _radioButtonRow(
                           options: ['Self', 'Dependent'],
@@ -1430,7 +1456,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                 relationtypeValue = null; // Reset value for dropdown
                                 relationFatherController.text='xr';
                                 // Set to '0' or a special indicator for "Self"
-                              // relationNameController.clear();
+                                // relationNameController.clear();
                               }
                             });
                           },
@@ -1443,7 +1469,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                               children: [
 
                                 Padding(
-    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+                                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.blue[50],
@@ -2102,7 +2128,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                           padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
 
                           child: _textInputField(
-                             controller: _reportingPlaceController,
+                            controller: _reportingPlaceController,
                             labelText: 'Reporting Place *',
                             keyboardType: TextInputType.phone,
                           ),
@@ -2184,7 +2210,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                     filled: true,
                                     fillColor: Colors.blue[50],
                                   ),
-                                  onChanged: (user) => setState(() {
+                                  /*   onChanged: (user) => setState(() {
                                     _selectedUserState = user;
                                     stateCodeGovtPrivate = int.parse(
                                         user.stateCode.toString());
@@ -2197,7 +2223,29 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                                     } else {
                                       isVisibleDitrictGovt = false;
                                     }
-                                  }),
+                                  }),*/
+                                  onChanged: (user) async {
+                                    setState(() {
+                                      _selectedUserState = user;
+                                      stateCodeGovtPrivate = int.parse(user.stateCode.toString());
+                                      CodeGovtPrivate = user.code;
+                                    });
+
+                                    // ✅ Check Internet Connection Before Fetching Data
+                                    bool isConnected = (await Connectivity().checkConnectivity()) as bool;
+
+                                    if (isConnected) {
+                                      setState(() {
+                                        isVisibleDitrictGovt = true;
+                                      });
+                                      _getDistrictData(stateCodeGovtPrivate); // ✅ Fetch data if connected
+                                    } else {
+                                      setState(() {
+                                        isVisibleDitrictGovt = false;
+                                      });
+
+                                    }
+                                  },
                                   value: _selectedUserState,
                                   items: stateList
                                       .map<DropdownMenuItem<Data>>(
@@ -2218,239 +2266,132 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                 ),
 
                 Visibility(
-                  visible: isVisibleDitrictGovt,
+                  visible: isConnected && isVisibleDitrictGovt, // Check for both internet and visibility flag
                   child: Column(
                     children: [
-                      Center(
-                        child: FutureBuilder<List<DataDsiricst>>(
-                          future:
-                          _getDistrictData(stateCodeGovtPrivate),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
-                            if (!snapshot.hasData) {
-                              return const CircularProgressIndicator();
-                            }
-
-                            // Logging for debugging
-                            developer
-                                .log('@@snapshot: ${snapshot.data}');
-
-                            List<DataDsiricst> districtList =
-                                snapshot.data;
-
-                            // Ensure selected district is in the list, otherwise select the first one
-                            if (_selectedUserDistrict == null ||
-                                !districtList
-                                    .contains(_selectedUserDistrict)) {
-                              _selectedUserDistrict =
-                                  districtList.first;
-                            }
-
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(
-                                  20, 10, 20.0, 0),
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.start,
-                                children: <Widget>[
-                                  const Text('Select District:'),
-                                  DropdownButtonFormField<DataDsiricst>(
-                                    decoration: InputDecoration(
-                                      contentPadding:
-                                      EdgeInsets.symmetric(
-                                          vertical: 15.0,
-                                          horizontal: 10.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.blue,
-                                            width: 2.0),
-                                        borderRadius:
-                                        BorderRadius.circular(10.0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.blueAccent,
-                                            width: 2.0),
-                                        borderRadius:
-                                        BorderRadius.circular(10.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.blue[50],
-                                    ),
-                                    onChanged: (districtUser) =>
-                                        setState(() {
-                                          _selectedUserDistrict =
-                                              districtUser;
-                                          distCodeGovtPrivate = int.parse(
-                                              districtUser.districtCode
-                                                  .toString());
-                                          // Update state or further actions here
-                                          print(
-                                              'Selected District: ${districtUser.districtName}');
-                                        }),
-                                    value: _selectedUserDistrict,
-                                    items: districtList
-                                        .map((DataDsiricst district) {
-                                      return DropdownMenuItem<
-                                          DataDsiricst>(
-                                        value: district,
-                                        child:
-                                        Text(district.districtName),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 8),
-                Center(
-                  child: Column(
-                    children: [
-                      // City Dropdown
-                      FutureBuilder<List<DataGetCity>>(
-                        future: _getCity(district_code_login),
+                      // District Dropdown
+                      FutureBuilder<List<DataDsiricst>>(
+                        future: _getDistrictData(stateCodeGovtPrivate),
                         builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          }
-                          if (!snapshot.hasData) {
-                            return const CircularProgressIndicator();
-                          }
+                          if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+                          if (!snapshot.hasData) return CircularProgressIndicator();
 
-                          List<DataGetCity> districtList = snapshot.data;
-                          // Default selection logic
-                          if (_selectedUserCity == null || !districtList.contains(_selectedUserCity)) {
-                            _selectedUserCity = districtList.first;
-                          }
+                          List<DataDsiricst> districtList = snapshot.data ?? [];
+                          _selectedUserDistrict ??= districtList.isNotEmpty ? districtList.first : null;
 
-
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                const Text('Select City:'),
-                                DropdownButtonFormField<DataGetCity>(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
-                                  ),
-                                  onChanged: (districtUser) {
-                                    setState(() {
-                                      _selectedUserCity = districtUser;
-                                      distCodeGovtPrivate = int.parse(districtUser.subdistrictCode.toString());
-                                      _selectedUserVillage = null; // Reset village selection
-                                    });
-                                  },
-                                  value: _selectedUserCity ?? districtList.first,
-                                  items: districtList.map((DataGetCity district) {
-                                    return DropdownMenuItem<DataGetCity>(
-                                      value: district,
-                                      child: Text(district.name),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
+                          return DropdownButtonFormField<DataDsiricst>(
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.blue)),
+                              filled: true,
+                              fillColor: Colors.blue[50],
                             ),
+                            onChanged: (district) {
+                              setState(() {
+                                _selectedUserDistrict = district;
+                                distCodeGovtPrivate = int.parse(district?.districtCode ?? "0");
+                              });
+                            },
+                            value: _selectedUserDistrict,
+                            items: districtList.map((district) {
+                              return DropdownMenuItem<DataDsiricst>(
+                                value: district,
+                                child: Text(district.districtName),
+                              );
+                            }).toList(),
                           );
                         },
                       ),
 
                       SizedBox(height: 10),
 
-                      // Village Dropdown - Conditional Rendering
+                      // City Dropdown
+                      if (_selectedUserDistrict != null)
+                        FutureBuilder<List<DataGetCity>>(
+                          future: _getCity(district_code_login),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+                            if (!snapshot.hasData) return CircularProgressIndicator();
+
+                            List<DataGetCity> cityList = snapshot.data ?? [];
+                            _selectedUserCity ??= cityList.isNotEmpty ? cityList.first : null;
+
+                            return DropdownButtonFormField<DataGetCity>(
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.blue)),
+                                filled: true,
+                                fillColor: Colors.blue[50],
+                              ),
+                              onChanged: (city) {
+                                setState(() {
+                                  _selectedUserCity = city;
+                                  distCodeGovtPrivate = int.parse(city?.subdistrictCode ?? "0");
+                                });
+                              },
+                              value: _selectedUserCity,
+                              items: cityList.map((city) {
+                                return DropdownMenuItem<DataGetCity>(
+                                  value: city,
+                                  child: Text(city.name),
+                                );
+                              }).toList(),
+                            );
+                          },
+                        ),
+
+                      SizedBox(height: 10),
+
+                      // Village Dropdown
                       if (_selectedUserCity != null)
                         FutureBuilder<List<DataGetVillage>>(
                           future: _getVillage(district_code_login, state_code_login, distCodeGovtPrivate),
                           builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
-                            }
+                            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+                            if (snapshot.connectionState == ConnectionState.waiting) return CircularProgressIndicator();
 
-                            // Handle empty data
-                            if (snapshot.data == null || snapshot.data.isEmpty) {
+                            List<DataGetVillage> villageList = snapshot.data ?? [];
+                            if (villageList.isEmpty) {
                               return Container(
-                                padding: EdgeInsets.all(16.0),
+                                padding: EdgeInsets.all(16),
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  border: Border.all(color: Colors.blue),
+                                  borderRadius: BorderRadius.circular(8),
                                   color: Colors.blue[50],
                                 ),
-                                child: const Text(
-                                  'No data found',
-                                  style: TextStyle(fontSize: 16.0, color: Colors.black),
-                                ),
+                                child: Text('No data found'),
                               );
                             }
 
-                            List<DataGetVillage> villageList = snapshot.data;
+                            _selectedUserVillage ??= villageList.first;
 
-                            // Default selection for village
-                            if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
-                              _selectedUserVillage = villageList.first;
-                            }
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  const Text('Select Village:'),
-                                  DropdownButtonFormField<DataGetVillage>(
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.blue[50],
-                                    ),
-                                    onChanged: (villageUser) {
-                                      setState(() {
-                                        _selectedUserVillage = villageUser;
-                                        village_code = int.parse(villageUser.villageCode.toString());
-                                      });
-                                    },
-                                    value: _selectedUserVillage ?? villageList.first,
-                                    items: villageList.map((DataGetVillage village) {
-                                      return DropdownMenuItem<DataGetVillage>(
-                                        value: village,
-                                        child: Text(village.name),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
+                            return DropdownButtonFormField<DataGetVillage>(
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide(color: Colors.blue)),
+                                filled: true,
+                                fillColor: Colors.blue[50],
                               ),
+                              onChanged: (village) {
+                                setState(() {
+                                  _selectedUserVillage = village;
+                                  village_code = int.parse(village?.villageCode ?? "0");
+                                });
+                              },
+                              value: _selectedUserVillage,
+                              items: villageList.map((village) {
+                                return DropdownMenuItem<DataGetVillage>(
+                                  value: village,
+                                  child: Text(village.name),
+                                );
+                              }).toList(),
                             );
                           },
                         ),
                     ],
                   ),
                 ),
+
                 SizedBox(height: 10.0),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
@@ -2627,36 +2568,36 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
                 ),
                 SizedBox(height: 10.0),
 
-          Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  print("@@-----click SubmitAdd Patient--");
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        print("@@-----click SubmitAdd Patient--");
 
-                  var connectivityResult = await Connectivity().checkConnectivity();
+                        var connectivityResult = await Connectivity().checkConnectivity();
 
-                  if (connectivityResult == ConnectivityResult.none) {
-                    print("No internet connection. Saving data locally.");
-                    await dbHelper.savePatientData(); // ✅ Save to SQLite
-                    Utils.showToast("No internet. Data saved locally.", true);
-                  } else {
-                    print("Internet available. Uploading data to API.");
-                    await ApipatientRegistration(); // Submit to API
-                  }
-                },
-                child: Text('Submit'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  // Reset form fields
-                },
-                child: Text('Reset'),
-              ),
-            ],
-          )
+                        if (connectivityResult == ConnectivityResult.none) {
+                          print("No internet connection. Saving data locally.");
+                          await dbHelper.savePatientData(); // ✅ Save to SQLite
+                          Utils.showToast("No internet. Data saved locally.", true);
+                        } else {
+                          print("Internet available. Uploading data to API.");
+                          await ApipatientRegistration(); // Submit to API
+                        }
+                      },
+                      child: Text('Submit'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        // Reset form fields
+                      },
+                      child: Text('Reset'),
+                    ),
+                  ],
+                )
 
-        ],
+              ],
             ),
           ),
         ],
@@ -2776,7 +2717,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
         "lastName": _lastNamePatientDetail.text.toString(),
 
 
-       "dob":_dob.toString(),
+        "dob":_dob.toString(),
         //"dob": "12-12-2000",
         "age":  _AgePatientDetail.text.toString(),
         "gender":gender.toString(),
@@ -2821,12 +2762,12 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
 // Set up Dio options
       dio.options.headers = headers;
 
-        final response = await dio.post(
-          url,
-          data: formData, // FormData object with your fields
-        );
+      final response = await dio.post(
+        url,
+        data: formData, // FormData object with your fields
+      );
 
-        print("API response received: ${response.statusCode}");
+      print("API response received: ${response.statusCode}");
 
       Utils.hideProgressDialog1(context);
 
@@ -2886,10 +2827,8 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
           Utils.showToast("Please enter age", false);
           return;
         }
-        if (_mobileNumberDetailsRelationtype.text.isEmpty) {
-          Utils.showToast("Please enter mobile number", false);
-          return;
-        } else if (_mobileNumberDetailsRelationtype.text.length != 10) {
+        if (_mobileNumberDetailsRelationtype.text.isEmpty ||
+            _mobileNumberDetailsRelationtype.text.length != 10) {
           Utils.showToast("Please enter a valid 10-digit mobile number", false);
           return;
         }
@@ -2921,8 +2860,9 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
         File compressedImage = await FlutterImageCompress.compressAndGetFile(
           _image.path,
           targetPath,
-          quality: 80,
-        ) ?? _image;
+          quality: 40,
+        ) ??
+            _image;
 
         multipartFile = await MultipartFile.fromFile(compressedImage.path);
       }
@@ -2932,40 +2872,37 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
         "registrationType": registerationtypeRadioValueinAPi,
         "patientImage": multipartFile,
         "idType": VoterIDtype.toString(),
-        "idName":_voterIDNumber.text.toString(),
+        "idName": _voterIDNumber.text,
         "dependencyType": dependencyTypeRadio.toString(),
-        "relationType":  relationtypeValue.toString(),
-        "relationName":  relationFatherController.text.toString(),
-        "firstName":_firstNamePatientDetail.text.toString(),
-        "lastName": _lastNamePatientDetail.text.toString(),
-
-
-        "dob":_dob.toString(),
-        //"dob": "12-12-2000",
-        "age":  _AgePatientDetail.text.toString(),
-        "gender":gender.toString(),
+        "relationType": relationtypeValue.toString(),
+        "relationName": relationFatherController.text,
+        "firstName": _firstNamePatientDetail.text,
+        "lastName": _lastNamePatientDetail.text,
+        "dob": _dob,
+        "age": _AgePatientDetail.text,
+        "gender": gender.toString(),
         "mobileRelationType": relationtypeValueMobile.toString(),
-        "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text,
         "screeningDate": _selectedDateText,
         "tentativeSurgeryDate": _selectedDateTextToDate,
         "disease": getDissesID.toString(),
         "reportingPlace": _reportingPlaceController.text,
         "state": state_code_login,
-        "district": district_code_login,
-        "city": distCodeGovtPrivate,
-        "village": village_code,
+        "district":  0,
+        "city":  0,
+        "village":  0,
         "address": _AddressHouse.text,
         "apartment": _Apartment.text,
         "nearLandMark": _AreaNearLandMark.text,
         "pincode": _PinCode.text,
         "communicationLanguage": stateLKanguage,
-        "loggedInUserStateId": state_code_login,
-        "loggedInUserDistrictId": district_code_login,
+        "loggedInUserStateId": state_code_login ?? "",
+        "loggedInUserDistrictId": district_code_login ?? "",
         "entryBy": entryby,
         "loggedInNgoId": "10126",
         "programeId": "002",
-        "loggedInUserRole": int.parse(role_id),
-        "userId": userId,
+        "loggedInUserRole": int.tryParse(role_id) ?? 0,
+        "userId": userId ?? "",
       });
 
       // Debug: Print form data line by line
@@ -2974,7 +2911,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
         print("${field.key}: ${field.value}");
       });
 
-// API call
+      // API call
       final dio = Dio();
       final url = "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
       final response = await dio.post(url, data: formData);
@@ -2995,12 +2932,13 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
         Utils.showToast("Failed to register. Status code: ${response.statusCode}", false);
       }
     } catch (e) {
-      print("Error: $e");
+      print("❌ Error: $e");
       Utils.showToast("Unexpected error occurred", false);
     } finally {
       if (patientData == null) Utils.hideProgressDialog1(context);
     }
   }
+
 
 
 
@@ -3031,7 +2969,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
               child: Text(
                 title,
                 style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -3065,16 +3003,16 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
       child: Row(
         children: options
             .map((option) => Row(
-                  children: [
-                    Radio<String>(
-                      value: option,
-                      groupValue: groupValue,
-                      onChanged: onChanged,
-                    ),
-                    Text(option),
-                    SizedBox(width: 10),
-                  ],
-                ))
+          children: [
+            Radio<String>(
+              value: option,
+              groupValue: groupValue,
+              onChanged: onChanged,
+            ),
+            Text(option),
+            SizedBox(width: 10),
+          ],
+        ))
             .toList(),
       ),
     );
@@ -3082,7 +3020,7 @@ _futureStateGetLanguageForDDLsData=getLanguageForDDL();
   Widget _radioButtonColumn({
     List<String> options,
     String groupValue,
-    Function(String) onChanged,
+    Function(String) onChanged, List<String> enabledOptions,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
