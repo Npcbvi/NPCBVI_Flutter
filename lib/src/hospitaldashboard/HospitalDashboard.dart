@@ -16,6 +16,7 @@ import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMCatractListData.dart'
 import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMDiabeticListData.dart';
 import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMGlaucomaListData.dart';
 import 'package:mohfw_npcbvi/src/hospitaldashboard/SenTODPMVRSurgeryListData.dart';
+import 'package:mohfw_npcbvi/src/hospitaldashboard/updatePatient/UpdatePatients.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/city/GetCity.dart';
@@ -53,21 +54,32 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController _firstNamePatientDetail = TextEditingController();
   TextEditingController _lastNamePatientDetail = TextEditingController();
   TextEditingController _AgePatientDetail = TextEditingController();
-  TextEditingController _mobileNumberDetailsRelationtype = TextEditingController();
+  TextEditingController _mobileNumberDetailsRelationtype =
+      TextEditingController();
   TextEditingController _AddressHouse = TextEditingController();
   TextEditingController _Apartment = TextEditingController();
   TextEditingController _AreaNearLandMark = TextEditingController();
   TextEditingController _PinCode = TextEditingController();
   TextEditingController fullnameControllers = new TextEditingController();
 
-  String _chosenValue, districtNames, userId, stateNames, fullnameController, role_id;
+  String _chosenValue,
+      districtNames,
+      userId,
+      stateNames,
+      fullnameController,
+      role_id;
   int status, district_code_login, state_code_login;
 
   final GlobalKey _dropdownKey = GlobalKey();
 
   final GlobalKey _dropdownKeySenTODPM = GlobalKey();
 
-  String _chosenValueLOWVision, _chosenValueLOWVisionSendTODM,_chosenEyeBank, _chosenValueLgoutOption,lowVisionDatas,_chosenValueDiseses;
+  String _chosenValueLOWVision,
+      _chosenValueLOWVisionSendTODM,
+      _chosenEyeBank,
+      _chosenValueLgoutOption,
+      lowVisionDatas,
+      _chosenValueDiseses;
 
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
@@ -78,14 +90,23 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   String registerationtypeRadio = 'Hospital Walk-in'; // Default gender
   int registerationtypeRadioValueinAPi = 3; // Default gender
   File _selectedImage;
-  String _errorMessage, VoterIDtype,relationtypeValueMobile,entryby,loggedInNgoId;
+  String _errorMessage,
+      VoterIDtype,
+      relationtypeValueMobile,
+      entryby,
+      loggedInNgoId;
   final ImagePicker _picker = ImagePicker();
   final _formKeyhopsitalPersonalDetal = GlobalKey<FormState>();
   String gender = 'Male'; // Default gender
   var dependencyTypeRadio;
   int voterIDTypeValue = 0;
-  bool showVoterIDField = false,showDrivingLicenseField=false,showPassport=false,showRationCard=false,showPanCard=false,showNotAvailble=false;
-  bool showSelf = false,Dependent=false;
+  bool showVoterIDField = false,
+      showDrivingLicenseField = false,
+      showPassport = false,
+      showRationCard = false,
+      showPanCard = false,
+      showNotAvailble = false;
+  bool showSelf = false, Dependent = false;
   File _image;
   String _selectedDateText = 'Screening Date *'; // Initially set to "From Date"
   String _selectedDateTextToDate = 'Tentative Surgery Date *';
@@ -107,7 +128,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       stateCodeDPM,
       stateCodeGovtPrivate,
       distCodeDPM,
-      distCodeGovtPrivate,stateLKanguage,getDissesID,village_code=0;
+      distCodeGovtPrivate,
+      stateLKanguage,
+      getDissesID,
+      village_code = 0;
   String CodeSPO,
       codeDPM,
       CodeGovtPrivate,
@@ -124,11 +148,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   String formattedDate;
   final dbHelper = DatabaseHelper();
   bool isConnected = false;
+
   Future<void> checkInternetConnection() async {
     var connectivityResult = await Connectivity().checkConnectivity();
     isConnected = connectivityResult != ConnectivityResult.none;
     setState(() {}); // Trigger UI update
-  }// Global variable// Initialize the database helper
+  } // Global variable// Initialize the database helper
+
   Future<void> _showPickerDialog() async {
     showModalBottomSheet(
       context: context,
@@ -159,8 +185,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
-
-
   // For ImagePicker
 
   Future<void> _pickImage(ImageSource source) async {
@@ -177,7 +201,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
         setState(() {
           _image = imageFile; // Ensure _image is a File
-          print('@@_image+_image.toString()'+_image.path.toString());
+          print('@@_image+_image.toString()' + _image.path.toString());
         });
 
         // Convert the selected image to Base64
@@ -192,8 +216,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     }
   }
 
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -202,7 +224,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       if (result != ConnectivityResult.none) {
         print("🌐 Internet Available. Uploading Local Data...");
-        uploadLocalData();  // ✅ Upload when online
+        uploadLocalData(); // ✅ Upload when online
       }
     });
     checkInternetConnection();
@@ -211,9 +233,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     _future = getDPM_ScreeningYear();
     _futureState = _getStatesDAta();
     //_futureVillage = _getVillage(district_code_login, state_code_login,distCodeGovtPrivate);
-    _futureStateGetLanguageForDDLsData=getLanguageForDDL();
-    _futureStateGetLanguageForDDLsData=getLanguageForDDL();
-    _futureGetDiseaseForDDLDatas=getDiseaseForDDL();
+    _futureStateGetLanguageForDDLsData = getLanguageForDDL();
+    _futureStateGetLanguageForDDLsData = getLanguageForDDL();
+    _futureGetDiseaseForDDLDatas = getDiseaseForDDL();
   }
 
   void getUserData() {
@@ -238,8 +260,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           print('@@7' + state_code_login.toString());
           print('@@8' + district_code_login.toString());
           // Assuming you fetch the value from login or a previous screen
-          String reportingPlace = fullnameController; // Replace with actual value
-          _reportingPlaceController.text  = reportingPlace;
+          String reportingPlace =
+              fullnameController; // Replace with actual value
+          _reportingPlaceController.text = reportingPlace;
         });
       });
     } catch (e) {
@@ -254,7 +277,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-      GetDPM_ScreeningYear.fromJson(json);
+          GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -283,9 +306,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 value: 1,
                 child: Row(
                   children: [
-                    Icon(Icons.lock, color: Colors.black), // Black icon color
+                    Icon(Icons.lock, color: Colors.black),
+                    // Black icon color
                     SizedBox(width: 10),
-                    Text("Change Password", style: TextStyle(color: Colors.black)), // Black text color
+                    Text("Change Password",
+                        style: TextStyle(color: Colors.black)),
+                    // Black text color
                   ],
                 ),
               ),
@@ -293,9 +319,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 value: 2,
                 child: Row(
                   children: [
-                    Icon(Icons.book, color: Colors.black), // Black icon color
+                    Icon(Icons.book, color: Colors.black),
+                    // Black icon color
                     SizedBox(width: 10),
-                    Text("User Manual", style: TextStyle(color: Colors.black)), // Black text color
+                    Text("User Manual", style: TextStyle(color: Colors.black)),
+                    // Black text color
                   ],
                 ),
               ),
@@ -303,15 +331,18 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 value: 3,
                 child: Row(
                   children: [
-                    Icon(Icons.logout, color: Colors.black), // Black icon color
+                    Icon(Icons.logout, color: Colors.black),
+                    // Black icon color
                     SizedBox(width: 10),
-                    Text("Logout", style: TextStyle(color: Colors.black)), // Black text color
+                    Text("Logout", style: TextStyle(color: Colors.black)),
+                    // Black text color
                   ],
                 ),
               ),
             ],
             offset: const Offset(0, 50),
-            color: Colors.white, // White background color
+            color: Colors.white,
+            // White background color
             elevation: 2,
             onSelected: (value) {
               if (value == 1) {
@@ -329,7 +360,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
       drawer: Drawer(
         child: Container(
-          width: 100.0,  // Set the width of the drawer
+          width: 100.0, // Set the width of the drawer
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.white70, Colors.white70],
@@ -338,11 +369,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
             ),
           ),
           child: Container(
-            margin: EdgeInsets.all(8.0), // Reduce the margin to decrease space// Set the margin here
+            margin: EdgeInsets.all(8.0),
+            // Reduce the margin to decrease space// Set the margin here
             child: ListView(
               children: [
-
-
                 _buildMenuItem(
                   icon: Icons.dashboard,
                   title: 'Dashboard',
@@ -359,7 +389,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 _buildDropdownItem(
                   value: _chosenValue,
                   hint: 'Register Patient',
-                  hintIcon: Icon(Icons.update, color: Colors.black), // Add an icon to the hint
+                  hintIcon: Icon(Icons.update, color: Colors.black),
+                  // Add an icon to the hint
                   items: [
                     {'value': 'Add Patient', 'icon': Icons.person_add},
                     // Add an icon here
@@ -375,19 +406,21 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         hospitalDashboardclickDsiplay = false;
                         //_showPopupMenu();
                       } else if (_chosenValue == "Update Patient") {
-                        print('@@Screening--1 $_chosenValue');
-                        //  _showPopupMenuScreeningCamp();
+                        // Navigate to UpdatePatients screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UpdatePatients()),
+                        );
                       } else if (_chosenValue == "Screening Entry") {
                         print('@@Sattelite--1 $_chosenValue');
                         //  _showPopupMenuSatteliteCenter();
                       }
                     });
 
-
                     Navigator.pop(context);
                   },
                 ),
-
                 _buildMenuItem(
                   icon: Icons.assignment,
                   title: 'Add PNJA',
@@ -401,7 +434,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   key: _dropdownKey,
                   value: _chosenValueLOWVision,
                   hint: 'Low Vision Register',
-                  hintIcon: Icon(Icons.update, color: Colors.black), // Add an icon to the hint
+                  hintIcon: Icon(Icons.update, color: Colors.black),
+                  // Add an icon to the hint
                   items: [
                     {'value': 'Cataract', 'icon': Icons.local_hospital},
                     // Add an icon here
@@ -417,26 +451,18 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       //  print('@@spinnerChooseValue--' + _chosenValue);
                       if (_chosenValueLOWVision == "Cataract") {
                         print('@@NGO--1' + _chosenValueLOWVision);
-                      } else if (_chosenValueLOWVision ==
-                          "Diabetic") {
-                      } else if (_chosenValueLOWVision ==
-                          "Glaucoma") {
-                      } else if (_chosenValueLOWVision ==
-                          "Corneal Blindness") {
-                      } else if (_chosenValueLOWVision ==
-                          "VR Surgery") {
-                        print('@@Childhood--' +
-                            _chosenValueLOWVision);
+                      } else if (_chosenValueLOWVision == "Diabetic") {
+                      } else if (_chosenValueLOWVision == "Glaucoma") {
+                      } else if (_chosenValueLOWVision == "Corneal Blindness") {
+                      } else if (_chosenValueLOWVision == "VR Surgery") {
+                        print('@@Childhood--' + _chosenValueLOWVision);
                       } else if (_chosenValueLOWVision ==
                           "Childhood Blindness") {
-                        print('@@Childhood--' +
-                            _chosenValueLOWVision);
+                        print('@@Childhood--' + _chosenValueLOWVision);
                       } else {
-                        print('@@Childhood--2' +
-                            _chosenValueLOWVision);
+                        print('@@Childhood--2' + _chosenValueLOWVision);
                       }
                     });
-
 
                     Navigator.pop(context);
                   },
@@ -445,7 +471,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   key: _dropdownKeySenTODPM,
                   value: _chosenValueLOWVisionSendTODM,
                   hint: 'Send to DPM',
-                  hintIcon: Icon(Icons.local_hospital, color: Colors.black), // Add an icon to the hint
+                  hintIcon: Icon(Icons.local_hospital, color: Colors.black),
+                  // Add an icon to the hint
                   items: [
                     {'value': 'Cataract', 'icon': Icons.local_hospital},
                     {'value': 'Diabetic', 'icon': Icons.healing},
@@ -483,15 +510,18 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             builder: (context) => SenTODPMGlaucomaListData(),
                           ),
                         );
-                      } else if (_chosenValueLOWVisionSendTODM == "Corneal Blindness") {
+                      } else if (_chosenValueLOWVisionSendTODM ==
+                          "Corneal Blindness") {
                         print('Corneal Blindness selected');
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SenTODPMCornealBlindnessListData(),
+                            builder: (context) =>
+                                SenTODPMCornealBlindnessListData(),
                           ),
                         );
-                      } else if (_chosenValueLOWVisionSendTODM == "VR Surgery") {
+                      } else if (_chosenValueLOWVisionSendTODM ==
+                          "VR Surgery") {
                         print('VR Surgery selected');
                         Navigator.push(
                           context,
@@ -499,7 +529,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             builder: (context) => SenTODPMVRSurgeryListData(),
                           ),
                         );
-                      } else if (_chosenValueLOWVisionSendTODM == "Childhood Blindness") {
+                      } else if (_chosenValueLOWVisionSendTODM ==
+                          "Childhood Blindness") {
                         print('Childhood Blindness selected');
                       } else {
                         print('Other value selected');
@@ -507,8 +538,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     });
                   },
                 )
-
-
               ],
             ),
           ),
@@ -706,10 +735,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }
+
   Future<void> getentryby() async {
     // Use await to get the actual value from SharedPrefs
     entryby =
-    await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
+        await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
 
     if (entryby != null) {
       print("entryby Number: $entryby");
@@ -717,10 +747,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       print("No entryby found in shared preferences.");
     }
   }
+
   Future<void> getloggedInNgoId() async {
     // Use await to get the actual value from SharedPrefs
     loggedInNgoId =
-    await SharedPrefs.getStoreSharedValue(AppConstant.loggedInNgoId) as String;
+        await SharedPrefs.getStoreSharedValue(AppConstant.loggedInNgoId)
+            as String;
 
     if (loggedInNgoId != null) {
       print("loggedInNgoId Number: $loggedInNgoId");
@@ -728,6 +760,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       print("No loggedInNgoId found in shared preferences.");
     }
   }
+
   Widget _buildDropdownRegisterPatient() {
     return Container(
       width: 170.0,
@@ -798,10 +831,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           padding: const EdgeInsets.all(8.0),
           child: Row(
             children: [
-              _buildUserInfoGrid('Login Type:', 'Hospital', Colors.black, Colors.red),
-              _buildUserInfoGrid('Login Id:', userId?.toString() ?? 'N/A', Colors.black, Colors.red),
-              _buildUserInfoGrid('District:', districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
-              _buildUserInfoGrid('State:', stateNames?.toString() ?? 'N/A', Colors.black, Colors.red),
+              _buildUserInfoGrid(
+                  'Login Type:', 'Hospital', Colors.black, Colors.red),
+              _buildUserInfoGrid('Login Id:', userId?.toString() ?? 'N/A',
+                  Colors.black, Colors.red),
+              _buildUserInfoGrid('District:',
+                  districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
+              _buildUserInfoGrid('State:', stateNames?.toString() ?? 'N/A',
+                  Colors.black, Colors.red),
             ],
           ),
         ),
@@ -809,8 +846,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
-
-  Widget _buildUserInfoGrid(String label, String value, Color labelColor, Color valueColor) {
+  Widget _buildUserInfoGrid(
+      String label, String value, Color labelColor, Color valueColor) {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 4.0),
       child: Column(
@@ -839,8 +876,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
-
                 FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _future,
                   builder: (context, snapshot) {
@@ -852,17 +887,21 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       return Center(child: CircularProgressIndicator());
                     }
 
-                    List<DataGetDPM_ScreeningYear> list = snapshot.data.toList();
+                    List<DataGetDPM_ScreeningYear> list =
+                        snapshot.data.toList();
 
                     // Ensure a default selection
-                    if (_selectedUser == null || !list.contains(_selectedUser)) {
-                      _selectedUser = list.first; // Set the first item as default
+                    if (_selectedUser == null ||
+                        !list.contains(_selectedUser)) {
+                      _selectedUser =
+                          list.first; // Set the first item as default
                     }
 
                     // Show "No data found" if the list is empty
                     if (list.isEmpty) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 10),
                         child: Container(
                           width: 300,
                           height: 60,
@@ -874,22 +913,26 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                           child: Text(
                             'No data found',
-                            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                color: Colors.red, fontWeight: FontWeight.bold),
                           ),
                         ),
                       );
                     }
 
                     // Ensure a default selection
-                    if (_selectedUser == null || !list.contains(_selectedUser)) {
+                    if (_selectedUser == null ||
+                        !list.contains(_selectedUser)) {
                       _selectedUser = list.first;
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 10),
                       child: SizedBox(
                         width: 300, // Set width using SizedBox
-                        child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                        child:
+                            DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
                           value: _selectedUser,
                           onChanged: (userc) {
                             setState(() {
@@ -910,15 +953,18 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             );
                           }).toList(),
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                            contentPadding: EdgeInsets.symmetric(
+                                vertical: 15.0, horizontal: 0.0),
                             hintText: 'Select Year',
                             hintStyle: TextStyle(color: Colors.grey),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                              borderSide:
+                                  BorderSide(color: Colors.blue, width: 2.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
+                              borderSide: BorderSide(
+                                  color: Colors.blueAccent, width: 2.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             filled: true,
@@ -932,7 +978,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             ),
                           ),
                           iconStyleData: IconStyleData(
-                            icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                            icon:
+                                Icon(Icons.arrow_drop_down, color: Colors.blue),
                             iconSize: 24,
                           ),
                         ),
@@ -940,12 +987,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     );
                   },
                 ),
-
-
-
-
-
-
                 SizedBox(height: 5),
                 buildInfoContainer(stateNames),
                 SizedBox(height: 5),
@@ -1044,11 +1085,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                     children: ddata.map((offer) {
                                       return Row(
                                         mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                            MainAxisAlignment.start,
                                         children: [
-                                          _buildDataCellDiseaseData(offer.status),
-                                          _buildDataCellDiseaseData(offer.registered),
-                                          _buildDataCellDiseaseData(offer.operated),
+                                          _buildDataCellDiseaseData(
+                                              offer.status),
+                                          _buildDataCellDiseaseData(
+                                              offer.registered),
+                                          _buildDataCellDiseaseData(
+                                              offer.operated),
                                         ],
                                       );
                                     }).toList(),
@@ -1160,7 +1204,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
-
   Widget _buildDataCellViewBlue(String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap, // Trigger the callback when the cell is clicked
@@ -1228,7 +1271,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                      BorderSide(color: Colors.blueAccent, width: 2.0),
+                          BorderSide(color: Colors.blueAccent, width: 2.0),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     hintText: 'Hospitals',
@@ -1276,7 +1319,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 _sectionHeader('Patient Registration'),
                 _patientInfoRow(),
                 SizedBox(height: 2.0),
-
                 _sectionTitle('Registration Type'),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -1309,11 +1351,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     Expanded(
                       flex: 3,
                       child: _radioButtonColumn(
-                        options: ['Screening Camp', 'Satellite Centre', 'Hospital Walk-in'],
-                        enabledOptions: ['Hospital Walk-in'], // Only this option is enabled
+                        options: [
+                          'Screening Camp',
+                          'Satellite Centre',
+                          'Hospital Walk-in'
+                        ],
+                        enabledOptions: ['Hospital Walk-in'],
+                        // Only this option is enabled
                         groupValue: registerationtypeRadio,
                         onChanged: (value) {
-                          if (value == "Hospital Walk-in") { // Allow only if enabled
+                          if (value == "Hospital Walk-in") {
+                            // Allow only if enabled
                             setState(() {
                               registerationtypeRadio = value;
                               print('@@1 ' + registerationtypeRadio.toString());
@@ -1349,11 +1397,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ],
                 ),
-
                 SizedBox(height: 10),
                 _sectionHeader('Personal Details'),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     key: _formKeyhopsitalPersonalDetal,
                     child: Column(
@@ -1364,7 +1411,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             decoration: BoxDecoration(
                               color: Colors.blue[50],
                               // Background color of the dropdown box
-                              border: Border.all(color: Colors.blue, width: 2.0),
+                              border:
+                                  Border.all(color: Colors.blue, width: 2.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: DropdownButtonHideUnderline(
@@ -1393,20 +1441,24 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 hint: Text(
                                   "Select Type",
                                   style: TextStyle(
-                                      color: Colors.black, fontSize: 14, fontWeight: FontWeight.w500),
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 onChanged: (String newValue) {
                                   setState(() {
                                     VoterIDtype = newValue;
-                                    showVoterIDField = VoterIDtype == "Voter ID"; // Show field if "Voter ID" is selected
-                                    showDrivingLicenseField = VoterIDtype == "Driving License";
+                                    showVoterIDField = VoterIDtype ==
+                                        "Voter ID"; // Show field if "Voter ID" is selected
+                                    showDrivingLicenseField =
+                                        VoterIDtype == "Driving License";
                                     showPassport = VoterIDtype == "Passport";
-                                    showRationCard= VoterIDtype == "Ration Card";
-                                    showPanCard= VoterIDtype == "Pan Card";
+                                    showRationCard =
+                                        VoterIDtype == "Ration Card";
+                                    showPanCard = VoterIDtype == "Pan Card";
 
-                                    showNotAvailble= VoterIDtype == "Not Available";
-
-
+                                    showNotAvailble =
+                                        VoterIDtype == "Not Available";
                                   });
                                 },
                               ),
@@ -1419,12 +1471,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             child: _textInputField(
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
-
-
                               labelText: "Voter ID No.",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Voter ID No.'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Voter ID No.'
+                                      : null,
                             ),
                           ),
                         if (showDrivingLicenseField)
@@ -1434,9 +1485,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               controller: _voterIDNumber,
                               labelText: "Driving License No.",
                               keyboardType: TextInputType.number,
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Driving License No.'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Driving License No.'
+                                      : null,
                             ),
                           ),
                         if (showPassport)
@@ -1446,9 +1498,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
                               labelText: "Passport No.",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Passport No.'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Passport No.'
+                                      : null,
                             ),
                           ),
                         if (showRationCard)
@@ -1458,9 +1511,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
                               labelText: "Ration Card No.",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Ration Card No.'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Ration Card No.'
+                                      : null,
                             ),
                           ),
                         if (showPanCard)
@@ -1470,14 +1524,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
                               labelText: "Pan Card No.",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Pan Card No.'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Pan Card No.'
+                                      : null,
                             ),
                           ),
-                        if (showNotAvailble)
-
-                          SizedBox(height: 5.0),
+                        if (showNotAvailble) SizedBox(height: 5.0),
                         _sectionTitle('Dependency Type'),
                         _radioButtonRow(
                           options: ['Self', 'Dependent'],
@@ -1486,12 +1539,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             setState(() {
                               dependencyTypeRadio = value;
                               print('@@11' + dependencyTypeRadio.toString());
-                              showSelf = dependencyTypeRadio == "Self"; // Show field if "Self" is selected
+                              showSelf = dependencyTypeRadio ==
+                                  "Self"; // Show field if "Self" is selected
                               Dependent = dependencyTypeRadio == "Dependent";
                               if (showSelf) {
-                                relationFatherController.text="string";
-                                relationtypeValue = null; // Reset value for dropdown
-                                relationFatherController.text='xr';
+                                relationFatherController.text = "string";
+                                relationtypeValue =
+                                    null; // Reset value for dropdown
+                                relationFatherController.text = 'xr';
                                 // Set to '0' or a special indicator for "Self"
                                 // relationNameController.clear();
                               }
@@ -1500,17 +1555,18 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                         if (Dependent) // Only show if "Dependent" is selected
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                            padding:
+                                const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                             child: Column(
                               children: [
-
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+                                  padding: const EdgeInsets.fromLTRB(
+                                      10.0, 5.0, 10.0, 5.0),
                                   child: Container(
                                     decoration: BoxDecoration(
                                       color: Colors.blue[50],
-                                      border: Border.all(color: Colors.blue, width: 2.0),
+                                      border: Border.all(
+                                          color: Colors.blue, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     child: DropdownButtonHideUnderline(
@@ -1527,12 +1583,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                           'Sister',
                                           'Daughter',
                                           'Spouse',
-                                        ].map<DropdownMenuItem<String>>((String type) {
+                                        ].map<DropdownMenuItem<String>>(
+                                            (String type) {
                                           return DropdownMenuItem<String>(
                                             value: type,
                                             child: Text(
                                               type,
-                                              style: TextStyle(color: Colors.black),
+                                              style: TextStyle(
+                                                  color: Colors.black),
                                             ),
                                           );
                                         }).toList(),
@@ -1549,27 +1607,32 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                                             // Set the relation name dynamically
                                             if (relationtypeValue == "Father") {
-                                              relationNameController.text = "Father's Name";
-                                            } else if (relationtypeValue == "Mother") {
-                                              relationNameController.text = "Mother's Name";
-                                            }else if (relationtypeValue == "Brother") {
-                                              relationNameController.text = "Brother's Name";
-                                            }
-                                            else if (relationtypeValue == "Sister") {
-                                              relationNameController.text = "Sister's Name";
-                                            }
-                                            else if (relationtypeValue == "Daughter") {
-                                              relationNameController.text = "Daughter's Name";
-                                            }
-                                            else if (relationtypeValue == "Spouse") {
-                                              relationNameController.text = "Spouse's Name";
-                                            }
-
-                                            else {
+                                              relationNameController.text =
+                                                  "Father's Name";
+                                            } else if (relationtypeValue ==
+                                                "Mother") {
+                                              relationNameController.text =
+                                                  "Mother's Name";
+                                            } else if (relationtypeValue ==
+                                                "Brother") {
+                                              relationNameController.text =
+                                                  "Brother's Name";
+                                            } else if (relationtypeValue ==
+                                                "Sister") {
+                                              relationNameController.text =
+                                                  "Sister's Name";
+                                            } else if (relationtypeValue ==
+                                                "Daughter") {
+                                              relationNameController.text =
+                                                  "Daughter's Name";
+                                            } else if (relationtypeValue ==
+                                                "Spouse") {
+                                              relationNameController.text =
+                                                  "Spouse's Name";
+                                            } else {
                                               relationNameController.clear();
                                             }
                                           });
-
                                         },
                                       ),
                                     ),
@@ -1578,71 +1641,80 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 // Display input field based on selected relation
                                 if (relationtypeValue == "Father")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10.0, 5.0, 10.0, 5.0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Father's Name",
-                                      validator: (value) => value == null || value.isEmpty
-                                          ? 'Please enter Father\'s name'
-                                          : null,
+                                      validator: (value) =>
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Father\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Mother")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10.0, 5.0, 10.0, 5.0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Mother's Name",
-                                      validator: (value) => value == null || value.isEmpty
-                                          ? 'Please enter Mother\'s name'
-                                          : null,
+                                      validator: (value) =>
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Mother\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Brother")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10.0, 5.0, 10.0, 5.0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Brother's Name",
-                                      validator: (value) => value == null || value.isEmpty
-                                          ? 'Please enter Brother\'s name'
-                                          : null,
+                                      validator: (value) =>
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Brother\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Sister")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10.0, 5.0, 10.0, 5.0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Sister's Name",
-                                      validator: (value) => value == null || value.isEmpty
-                                          ? 'Please enter Sister\'s name'
-                                          : null,
+                                      validator: (value) =>
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Sister\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Daughter")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10.0, 5.0, 10.0, 5.0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Daughter's Name",
-                                      validator: (value) => value == null || value.isEmpty
-                                          ? 'Please enter Daughter\'s name'
-                                          : null,
+                                      validator: (value) =>
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Daughter\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Spouse")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                                    padding: const EdgeInsets.fromLTRB(
+                                        10.0, 5.0, 10.0, 5.0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Spouse's Name",
-                                      validator: (value) => value == null || value.isEmpty
-                                          ? 'Please enter Spouse\'s name'
-                                          : null,
+                                      validator: (value) =>
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Spouse\'s name'
+                                              : null,
                                     ),
                                   ),
                               ],
@@ -1650,13 +1722,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
 
                         if (showSelf)
-                        // Hide the relation type section if "Self" is selected
-                          SizedBox.shrink(), // This will render nothing when "Self" is selected
+                          // Hide the relation type section if "Self" is selected
+                          SizedBox.shrink(),
+                        // This will render nothing when "Self" is selected
 
                         SizedBox(height: 5.0),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: _firstNamePatientDetail,
                             labelText: 'First  Name *',
@@ -1673,8 +1746,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                         SizedBox(height: 5.0),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: _lastNamePatientDetail,
                             labelText: 'Last Name *',
@@ -1700,10 +1773,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 // Date Picker Container with fixed height and width
                                 SizedBox(
                                   width: 150, // Set same width for both widgets
-                                  height: 50,  // Set desired height
+                                  height: 50, // Set desired height
                                   child: GestureDetector(
                                     onTap: () async {
-                                      DateTime pickedDate = await showDatePicker(
+                                      DateTime pickedDate =
+                                          await showDatePicker(
                                         context: context,
                                         initialDate: DateTime.now(),
                                         firstDate: DateTime(2000),
@@ -1715,18 +1789,22 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                             "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // For UI display
 
                                         String formattedDateForAPI =
-                                        DateFormat('yyyy-MM-dd').format(pickedDate); // For API request
+                                            DateFormat('yyyy-MM-dd').format(
+                                                pickedDate); // For API request
 
                                         setState(() {
-                                          _dob = formattedDateForAPI; // Use this for the API
+                                          _dob =
+                                              formattedDateForAPI; // Use this for the API
                                           print("@@_dob (API format): $_dob");
-                                          print("@@_dob (display format): $formattedDateForDisplay");
+                                          print(
+                                              "@@_dob (display format): $formattedDateForDisplay");
                                         });
                                       }
                                     },
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8.0),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
                                         border: Border.all(
                                           color: Colors.blue,
                                           width: 2.0,
@@ -1744,11 +1822,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                     ),
                                   ),
                                 ),
-                                SizedBox(width: 5.0), // Spacing between the widgets
+                                SizedBox(width: 5.0),
+                                // Spacing between the widgets
                                 // Age Input Field with same width and height
                                 SizedBox(
                                   width: 150, // Same width as Date Picker
-                                  height: 50,  // Same height as Date Picker
+                                  height: 50, // Same height as Date Picker
                                   child: _textInputField(
                                     controller: _AgePatientDetail,
                                     labelText: 'Age *',
@@ -1759,7 +1838,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             ),
                           ),
                         ),
-
 
                         _sectionTitle('Gender *'),
                         _radioButtonRow(
@@ -1778,8 +1856,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 ),
                 _sectionHeader('Mobile Number Details'),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Column(
                     children: [
                       Padding(
@@ -1823,10 +1900,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               onChanged: (String newValue) {
                                 setState(() {
                                   relationtypeValueMobile = newValue;
-
-
                                 });
-
                               },
                             ),
                           ),
@@ -1835,8 +1909,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       // Display input field based on selected relation
                       if (relationtypeValue == "Father")
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Father's Name",
@@ -1847,8 +1921,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Mother")
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Mother's Name",
@@ -1859,8 +1933,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Brother")
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Brother's Name",
@@ -1871,8 +1945,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Sister")
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Sister's Name",
@@ -1883,8 +1957,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Daughter")
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Daughter's Name",
@@ -1895,8 +1969,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Spouse")
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Spouse's Name",
@@ -1908,34 +1982,31 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ],
                   ),
                 ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0), // Left & Right margins
-              child: _textInputField(
-                controller: _mobileNumberDetailsRelationtype,
-                labelText: 'Mobile No *',
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your mobile number';
-                  } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                    return 'Please enter a valid 10-digit mobile number';
-                  }
-                  return null;
-                },
-              ),
-            ),
-
-
-
-            Container(
+                Container(
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 5.0), // Left & Right margins
+                  child: _textInputField(
+                    controller: _mobileNumberDetailsRelationtype,
+                    labelText: 'Mobile No *',
+                    maxLength: 10, // Add this
+                    keyboardType: TextInputType.phone,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your mobile number';
+                      } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                        return 'Please enter a valid 10-digit mobile number';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                Container(
                   color: Colors.white,
                   margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
-
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-
                       children: [
                         Flexible(
                           child: Align(
@@ -1953,7 +2024,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   firstDate: DateTime(2000),
                                   // The earliest allowed date
                                   lastDate:
-                                  DateTime(2101), // The latest allowed date
+                                      DateTime(2101), // The latest allowed date
                                 );
 
                                 if (pickedDate != null) {
@@ -2010,7 +2081,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   firstDate: DateTime(2000),
                                   // The earliest allowed date
                                   lastDate:
-                                  DateTime(2101), // The latest allowed date
+                                      DateTime(2101), // The latest allowed date
                                 );
 
                                 if (pickedDate != null) {
@@ -2055,7 +2126,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 10.0),
                 Center(
                   child: Column(
@@ -2071,8 +2141,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           }
 
                           // Logging for debugging
-                          developer
-                              .log('@@snapshot: ${snapshot.data}');
+                          developer.log('@@snapshot: ${snapshot.data}');
 
                           List<GetDiseaseForDDLData> districtList =
                               snapshot.data;
@@ -2085,46 +2154,37 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           }
 
                           return Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                20, 10, 20.0, 0),
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 const Text('Select Diseases:'),
                                 DropdownButtonFormField<GetDiseaseForDDLData>(
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                    EdgeInsets.symmetric(
-                                        vertical: 15.0,
-                                        horizontal: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blue,
-                                          width: 2.0),
-                                      borderRadius:
-                                      BorderRadius.circular(10.0),
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blueAccent,
-                                          width: 2.0),
-                                      borderRadius:
-                                      BorderRadius.circular(10.0),
+                                          color: Colors.blueAccent, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
                                     fillColor: Colors.blue[50],
                                   ),
-                                  onChanged: (districtUser) =>
-                                      setState(() {
-                                        _futureGetDiseaseForDDLDatass = districtUser;
-                                        getDissesID = int.parse(
-                                            districtUser.id
-                                                .toString());
-                                        // Update state or further actions here
-                                        print(
-                                            'Selected District: ${districtUser.name}');
-                                      }),
+                                  onChanged: (districtUser) => setState(() {
+                                    _futureGetDiseaseForDDLDatass =
+                                        districtUser;
+                                    getDissesID =
+                                        int.parse(districtUser.id.toString());
+                                    // Update state or further actions here
+                                    print(
+                                        'Selected District: ${districtUser.name}');
+                                  }),
                                   value: _futureGetDiseaseForDDLDatass,
                                   items: districtList
                                       .map((GetDiseaseForDDLData district) {
@@ -2140,24 +2200,18 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           );
                         },
                       ),
-
                     ],
                   ),
                 ),
-
-
-
                 SizedBox(height: 8.0),
-
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: _reportingPlaceController,
                             labelText: 'Reporting Place *',
@@ -2168,142 +2222,155 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ),
                 ),
-
                 SizedBox(height: 10.0),
-            Container(
-                width: 400, // Set your desired width
-                padding: EdgeInsets.symmetric(horizontal: 10),
-              child: FutureBuilder<List<Data>>(
-                future: _futureState,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
+                Container(
+                  width: 400, // Set your desired width
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: FutureBuilder<List<Data>>(
+                    future: _futureState,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                  if (!snapshot.hasData) {
-                    return Center(child: CircularProgressIndicator());
-                  }
+                      if (!snapshot.hasData) {
+                        return Center(child: CircularProgressIndicator());
+                      }
 
-                  List<Data> stateList = snapshot.data ?? [];
+                      List<Data> stateList = snapshot.data ?? [];
 
-                  // Ensure selected state is in the list, otherwise select the first
-                  if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
-                    _selectedUserState = stateList.isNotEmpty ? stateList.first : null;
-                  }
+                      // Ensure selected state is in the list, otherwise select the first
+                      if (_selectedUserState == null ||
+                          !stateList.contains(_selectedUserState)) {
+                        _selectedUserState =
+                            stateList.isNotEmpty ? stateList.first : null;
+                      }
 
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          width: 1.5,
-                          color: Colors.grey[300],
-                        ),
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        const Text(
-                          'Select State:',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        const SizedBox(height: 8),
-                        DropdownButtonFormField<Data>(
-                          isExpanded: true, // ✅ Prevent overflow by expanding
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.blue, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              width: 1.5,
+                              color: Colors.grey[300],
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.blueAccent, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            filled: true,
-                            fillColor: Colors.blue[50],
                           ),
-                          onChanged: (user) async {
-                            if (user != null) {
-                              setState(() {
-                                _selectedUserState = user;
-                                stateCodeGovtPrivate = int.parse(user.stateCode.toString());
-                                CodeGovtPrivate = user.code;
-                              });
-
-                              var connectivityResult = await Connectivity().checkConnectivity();
-                              bool isConnected = connectivityResult != ConnectivityResult.none;
-
-                              if (isConnected) {
-                                setState(() {
-                                  isVisibleDitrictGovt = true;
-                                });
-                                await _getDistrictData(stateCodeGovtPrivate);
-                              } else {
-                                setState(() {
-                                  isVisibleDitrictGovt = false;
-                                });
-                              }
-                            }
-                          },
-                          value: _selectedUserState,
-                          items: stateList.map<DropdownMenuItem<Data>>((Data user) {
-                            return DropdownMenuItem<Data>(
-                              value: user,
-                              child: Text(
-                                user.stateName,
-                                overflow: TextOverflow.ellipsis, // ✅ Handles long text
-                                maxLines: 1,                      // ✅ Restricts to a single line
-                                style: const TextStyle(fontSize: 14),
-                              ),
-                            );
-                          }).toList(),
                         ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            const Text(
+                              'Select State:',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 8),
+                            DropdownButtonFormField<Data>(
+                              isExpanded: true,
+                              // ✅ Prevent overflow by expanding
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.blue, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.blueAccent, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.blue[50],
+                              ),
+                              onChanged: (user) async {
+                                if (user != null) {
+                                  setState(() {
+                                    _selectedUserState = user;
+                                    stateCodeGovtPrivate =
+                                        int.parse(user.stateCode.toString());
+                                    CodeGovtPrivate = user.code;
+                                  });
 
+                                  var connectivityResult =
+                                      await Connectivity().checkConnectivity();
+                                  bool isConnected = connectivityResult !=
+                                      ConnectivityResult.none;
 
-
-            Visibility(
-                  visible: isConnected && isVisibleDitrictGovt, // Check for both internet and visibility flag
+                                  if (isConnected) {
+                                    setState(() {
+                                      isVisibleDitrictGovt = true;
+                                    });
+                                    await _getDistrictData(
+                                        stateCodeGovtPrivate);
+                                  } else {
+                                    setState(() {
+                                      isVisibleDitrictGovt = false;
+                                    });
+                                  }
+                                }
+                              },
+                              value: _selectedUserState,
+                              items: stateList
+                                  .map<DropdownMenuItem<Data>>((Data user) {
+                                return DropdownMenuItem<Data>(
+                                  value: user,
+                                  child: Text(
+                                    user.stateName,
+                                    overflow: TextOverflow.ellipsis,
+                                    // ✅ Handles long text
+                                    maxLines: 1,
+                                    // ✅ Restricts to a single line
+                                    style: const TextStyle(fontSize: 14),
+                                  ),
+                                );
+                              }).toList(),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Visibility(
+                  visible: isConnected && isVisibleDitrictGovt,
+                  // Check for both internet and visibility flag
                   child: Column(
                     children: [
                       SizedBox(height: 10),
                       Container(
-                        width: 400, // Set your desired width
-                        padding: EdgeInsets.symmetric(horizontal: 10), // Optional padding
+                        width: 400,
+                        // Set your desired width
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        // Optional padding
 
                         child: FutureBuilder<List<DataDsiricst>>(
                           future: _getDistrictData(stateCodeGovtPrivate),
                           builder: (context, snapshot) {
-                            if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-                            if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
+                            if (snapshot.hasError)
+                              return Text('Error: ${snapshot.error}');
+                            if (!snapshot.hasData)
+                              return Center(child: CircularProgressIndicator());
 
-                            developer
-                                .log('@@snapshot: ${snapshot.data}');
+                            developer.log('@@snapshot: ${snapshot.data}');
 
-                            List<DataDsiricst> districtList =
-                                snapshot.data;
-
+                            List<DataDsiricst> districtList = snapshot.data;
 
                             // Ensure selected district is in the list, otherwise select the first one
                             if (_selectedUserDistrict == null ||
-                                !districtList
-                                    .contains(_selectedUserDistrict)) {
-                              _selectedUserDistrict =
-                                  districtList.first;
+                                !districtList.contains(_selectedUserDistrict)) {
+                              _selectedUserDistrict = districtList.first;
                             }
                             if (districtList.isEmpty) {
                               return Container(
                                 padding: EdgeInsets.all(16),
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.blue, width: 2), // Blue border
+                                  border:
+                                      Border.all(color: Colors.blue, width: 2),
+                                  // Blue border
                                   borderRadius: BorderRadius.circular(8),
-                                  color: Colors.blue[50], // Light blue background
+                                  color:
+                                      Colors.blue[50], // Light blue background
                                 ),
                                 child: Center(
                                   child: Text(
@@ -2322,7 +2389,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             _selectedUserDistrict ??= districtList.first;
                             return DropdownButtonFormField<DataDsiricst>(
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 10),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(10),
                                   borderSide: BorderSide(color: Colors.blue),
@@ -2333,7 +2401,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               onChanged: (district) {
                                 setState(() {
                                   _selectedUserDistrict = district;
-                                  distCodeGovtPrivate = int.parse(district?.districtCode ?? "0");
+                                  distCodeGovtPrivate =
+                                      int.parse(district?.districtCode ?? "0");
                                 });
                               },
                               value: _selectedUserDistrict,
@@ -2348,30 +2417,36 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       ),
 
-
                       SizedBox(height: 10),
 
                       // City Dropdown
                       if (_selectedUserDistrict != null)
                         Container(
-                          width: 400, // Set your desired width here
-                          padding: EdgeInsets.symmetric(horizontal: 10), // Optional padding
+                          width: 400,
+                          // Set your desired width here
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          // Optional padding
 
                           child: FutureBuilder<List<DataGetCity>>(
                             future: _getCity(district_code_login),
                             builder: (context, snapshot) {
-                              if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-                              if (!snapshot.hasData) return Center(child: CircularProgressIndicator());
+                              if (snapshot.hasError)
+                                return Text('Error: ${snapshot.error}');
+                              if (!snapshot.hasData)
+                                return Center(
+                                    child: CircularProgressIndicator());
 
                               List<DataGetCity> districtList = snapshot.data;
                               // Default selection logic
-                              if (_selectedUserCity == null || !districtList.contains(_selectedUserCity)) {
+                              if (_selectedUserCity == null ||
+                                  !districtList.contains(_selectedUserCity)) {
                                 _selectedUserCity = districtList.first;
                               }
 
                               return DropdownButtonFormField<DataGetCity>(
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 10),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10),
                                     borderSide: BorderSide(color: Colors.blue),
@@ -2382,11 +2457,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 onChanged: (city) {
                                   setState(() {
                                     _selectedUserCity = city;
-                                    distCodeGovtPrivate = city?.subdistrictCode ?? 0; // Removed int.parse
-                                    print('@@distCodeGovtPrivate: ${distCodeGovtPrivate}');
+                                    distCodeGovtPrivate =
+                                        city?.subdistrictCode ??
+                                            0; // Removed int.parse
+                                    print(
+                                        '@@distCodeGovtPrivate: ${distCodeGovtPrivate}');
                                   });
                                 },
-
                                 value: _selectedUserCity,
                                 items: districtList.map((city) {
                                   return DropdownMenuItem<DataGetCity>(
@@ -2399,95 +2476,101 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         ),
 
-
                       SizedBox(height: 10),
 
                       // Village Dropdown
                       if (_selectedUserCity != null)
-    Container(
-      width: 400,
-      margin: EdgeInsets.symmetric(horizontal: 12), // Added margin to left and right
-      child: FutureBuilder<List<DataGetVillage>>(
-        future: _getVillage(district_code_login, state_code_login, distCodeGovtPrivate),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) return Text('Error: ${snapshot.error}');
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
+                        Container(
+                          width: 400,
+                          margin: EdgeInsets.symmetric(horizontal: 12),
+                          // Added margin to left and right
+                          child: FutureBuilder<List<DataGetVillage>>(
+                            future: _getVillage(district_code_login,
+                                state_code_login, distCodeGovtPrivate),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError)
+                                return Text('Error: ${snapshot.error}');
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return Center(
+                                    child: CircularProgressIndicator());
+                              }
 
-          List<DataGetVillage> villageList = snapshot.data ?? [];
+                              List<DataGetVillage> villageList =
+                                  snapshot.data ?? [];
 
-          // 🔔 Check if the village list is empty
-          if (villageList.isEmpty) {
-            return Container(
-              padding: EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue, width: 2), // Blue border
-                borderRadius: BorderRadius.circular(8),
-                color: Colors.blue[50], // Light blue background
-              ),
-              child: Center(
-                child: Text(
-                  'No data found',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.blue,
-                    fontWeight: FontWeight.bold,
+                              // 🔔 Check if the village list is empty
+                              if (villageList.isEmpty) {
+                                return Container(
+                                  padding: EdgeInsets.all(16),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.blue, width: 2),
+                                    // Blue border
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors
+                                        .blue[50], // Light blue background
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      'No data found',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.blue,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }
+
+                              // Default selection for village
+                              _selectedUserVillage ??= villageList.first;
+
+                              return DropdownButtonFormField<DataGetVillage>(
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15, horizontal: 10),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(color: Colors.blue),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
+                                ),
+                                onChanged: (village) {
+                                  setState(() {
+                                    _selectedUserVillage = village;
+                                    village_code =
+                                        int.parse(village?.villageCode ?? "0");
+                                  });
+                                },
+                                value: _selectedUserVillage,
+                                items: villageList.map((village) {
+                                  return DropdownMenuItem<DataGetVillage>(
+                                    value: village,
+                                    child: Text(village.name),
+                                  );
+                                }).toList(),
+                              );
+                            },
+                          ),
+                        ),
+                    ],
                   ),
                 ),
-              ),
-            );
-          }
-
-          // Default selection for village
-          _selectedUserVillage ??= villageList.first;
-
-          return DropdownButtonFormField<DataGetVillage>(
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.blue),
-              ),
-              filled: true,
-              fillColor: Colors.blue[50],
-            ),
-            onChanged: (village) {
-              setState(() {
-                _selectedUserVillage = village;
-                village_code = int.parse(village?.villageCode ?? "0");
-              });
-            },
-            value: _selectedUserVillage,
-            items: villageList.map((village) {
-              return DropdownMenuItem<DataGetVillage>(
-                value: village,
-                child: Text(village.name),
-              );
-            }).toList(),
-          );
-        },
-      ),
-    ),
-
-    ],
-                  ),
-                ),
-
                 SizedBox(height: 10.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: _AddressHouse,
                             labelText: 'Address/ House/ Flat Number *',
-
                             keyboardType: TextInputType.text,
                           ),
                         ),
@@ -2496,13 +2579,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: _Apartment,
                             labelText: 'Apartment/ building,/Colony /floor',
@@ -2514,14 +2597,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: _AreaNearLandMark,
                             labelText: 'Area/ Near Land Mark, etc',
@@ -2534,18 +2616,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 ),
                 SizedBox(height: 8.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     child: Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(10.0,5.0,10.0,5.0),
-
+                          padding:
+                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                           child: _textInputField(
                             controller: _PinCode,
                             labelText: 'Pin Code',
-                            keyboardType: TextInputType.text,
+                            keyboardType: TextInputType.number,
                           ),
                         ),
                       ],
@@ -2556,13 +2637,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(
-                          width: 1.5, color: Colors.grey[300]),
+                      bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
                     ),
                   ),
                   child: Center(
                     child: FutureBuilder<List<GetLanguageForDDLsDatas>>(
-                      future: _futureStateGetLanguageForDDLsData, // Future to fetch the data
+                      future: _futureStateGetLanguageForDDLsData,
+                      // Future to fetch the data
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
@@ -2591,54 +2672,47 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             ),
                           ),
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(
-                                20, 5, 20.0, 0),
+                            padding: const EdgeInsets.fromLTRB(20, 5, 20.0, 0),
                             child: Column(
-                              mainAxisAlignment:
-                              MainAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Text(
                                   'Communication Language *',
                                 ),
-                                DropdownButtonFormField<GetLanguageForDDLsDatas>(
+                                DropdownButtonFormField<
+                                    GetLanguageForDDLsDatas>(
                                   decoration: InputDecoration(
-                                    contentPadding:
-                                    EdgeInsets.symmetric(
-                                        vertical: 15.0,
-                                        horizontal: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blue,
-                                          width: 2.0),
-                                      borderRadius:
-                                      BorderRadius.circular(10.0),
+                                          color: Colors.blue, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blueAccent,
-                                          width: 2.0),
-                                      borderRadius:
-                                      BorderRadius.circular(10.0),
+                                          color: Colors.blueAccent, width: 2.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
                                     fillColor: Colors.blue[50],
                                   ),
                                   onChanged: (user) => setState(() {
                                     GetLanguageForDDLsDatasa = user;
-                                    stateLKanguage = int.parse(
-                                        user.id.toString());
-
-
+                                    stateLKanguage =
+                                        int.parse(user.id.toString());
                                   }),
                                   value: GetLanguageForDDLsDatasa,
-                                  items: stateList
-                                      .map<DropdownMenuItem<GetLanguageForDDLsDatas>>(
-                                          (GetLanguageForDDLsDatas user) {
-                                        return DropdownMenuItem<GetLanguageForDDLsDatas>(
-                                          value: user,
-                                          child: Text(user.name),
-                                        );
-                                      }).toList(),
+                                  items: stateList.map<
+                                          DropdownMenuItem<
+                                              GetLanguageForDDLsDatas>>(
+                                      (GetLanguageForDDLsDatas user) {
+                                    return DropdownMenuItem<
+                                        GetLanguageForDDLsDatas>(
+                                      value: user,
+                                      child: Text(user.name),
+                                    );
+                                  }).toList(),
                                 ),
                               ],
                             ),
@@ -2649,7 +2723,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   ),
                 ),
                 SizedBox(height: 10.0),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -2657,12 +2730,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       onPressed: () async {
                         print("@@-----click SubmitAdd Patient--");
 
-                        var connectivityResult = await Connectivity().checkConnectivity();
+                        var connectivityResult =
+                            await Connectivity().checkConnectivity();
 
                         if (connectivityResult == ConnectivityResult.none) {
                           print("No internet connection. Saving data locally.");
                           await dbHelper.savePatientData(); // ✅ Save to SQLite
-                          Utils.showToast("No internet. Data saved locally.", true);
+                          Utils.showToast(
+                              "No internet. Data saved locally.", true);
                         } else {
                           print("Internet available. Uploading data to API.");
                           await ApipatientRegistration(); // Submit to API
@@ -2673,13 +2748,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ElevatedButton(
                       onPressed: () {
                         resetForm();
-
                       },
                       child: Text('Reset'),
                     ),
                   ],
                 )
-
               ],
             ),
           ),
@@ -2728,6 +2801,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     // Optional: Show a toast message
     Utils.showToast("Form has been reset!", true);
   }
+
   Future<String> compressAndEncodeImage(String imagePath) async {
     final file = File(imagePath);
     final bytes = await file.readAsBytes();
@@ -2741,7 +2815,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     // Encode to base64
     return base64Encode(compressedImage);
   }
-
 
 //Comment here for Offline ki bajah se other working fine
   Future<void> ApipatientRegistration() async {
@@ -2804,7 +2877,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       return;
     }
 
-
     // Show progress dialog
     Utils.showProgressDialog1(context);
 
@@ -2831,18 +2903,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         "registrationType": registerationtypeRadioValueinAPi,
         "patientImage": multipartFile,
         "idType": VoterIDtype.toString(),
-        "idName":_voterIDNumber.text.toString(),
+        "idName": _voterIDNumber.text.toString(),
         "dependencyType": dependencyTypeRadio.toString(),
-        "relationType":  relationtypeValue.toString(),
-        "relationName":  relationFatherController.text.toString(),
-        "firstName":_firstNamePatientDetail.text.toString(),
+        "relationType": relationtypeValue.toString(),
+        "relationName": relationFatherController.text.toString(),
+        "firstName": _firstNamePatientDetail.text.toString(),
         "lastName": _lastNamePatientDetail.text.toString(),
 
-
-        "dob":_dob.toString(),
+        "dob": _dob.toString(),
         //"dob": "12-12-2000",
-        "age":  _AgePatientDetail.text.toString(),
-        "gender":gender.toString(),
+        "age": _AgePatientDetail.text.toString(),
+        "gender": gender.toString(),
         "mobileRelationType": relationtypeValueMobile.toString(),
         "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
         "screeningDate": _selectedDateText,
@@ -2866,7 +2937,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         "loggedInUserRole": int.parse(role_id),
         "userId": userId,
       });
-      print("Form data prepared successfully. Payload: ${formData.fields.toString()}");
+      print(
+          "Form data prepared successfully. Payload: ${formData.fields.toString()}");
       print("Form data prepared successfully. Fields:");
       for (int i = 0; i < formData.fields.length; i++) {
         var field = formData.fields[i];
@@ -2874,11 +2946,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       }
       // API URL
       final dio = Dio();
-      final url = "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
+      final url =
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
       print("url: ${url}");
 // Prepare headers
       final headers = {
-        'Content-Type': 'multipart/form-data', // Correctly specify the content type
+        'Content-Type': 'multipart/form-data',
+        // Correctly specify the content type
       };
 
 // Set up Dio options
@@ -2938,7 +3012,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           Utils.showToast("Registration failed: ${result.message}", false);
         }
       } else {
-        Utils.showToast("Failed to register. Status code: ${response.statusCode}", false);
+        Utils.showToast(
+            "Failed to register. Status code: ${response.statusCode}", false);
       }
     } catch (e) {
       Utils.hideProgressDialog1(context);
@@ -2953,7 +3028,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     }
   }
 
-  Future<void> ApipatientRegistrations({Map<String, dynamic> patientData}) async {
+  Future<void> ApipatientRegistrations(
+      {Map<String, dynamic> patientData}) async {
     print("### Starting patient registration ###");
 
     try {
@@ -3016,10 +3092,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         final tempDir = await getTemporaryDirectory();
         final targetPath = '${tempDir.path}/compressed_image.jpg';
         File compressedImage = await FlutterImageCompress.compressAndGetFile(
-          _image.path,
-          targetPath,
-          quality: 30,
-        ) ??
+              _image.path,
+              targetPath,
+              quality: 30,
+            ) ??
             _image;
 
         multipartFile = await MultipartFile.fromFile(compressedImage.path);
@@ -3046,9 +3122,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         "disease": getDissesID.toString(),
         "reportingPlace": _reportingPlaceController.text,
         "state": state_code_login,
-        "district":  0,
-        "city":  0,
-        "village":  0,
+        "district": 0,
+        "city": 0,
+        "village": 0,
         "address": _AddressHouse.text,
         "apartment": _Apartment.text,
         "nearLandMark": _AreaNearLandMark.text,
@@ -3071,7 +3147,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
       // API call
       final dio = Dio();
-      final url = "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
+      final url =
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
       final response = await dio.post(url, data: formData);
 
       if (response.statusCode == 200) {
@@ -3087,7 +3164,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           Utils.showToast("Registration failed: ${result.message}", false);
         }
       } else {
-        Utils.showToast("Failed to register. Status code: ${response.statusCode}", false);
+        Utils.showToast(
+            "Failed to register. Status code: ${response.statusCode}", false);
       }
     } catch (e) {
       print("❌ Error: $e");
@@ -3096,10 +3174,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       if (patientData == null) Utils.hideProgressDialog1(context);
     }
   }
-
-
-
-
 
   void logFormData(Map<String, dynamic> formData) {
     print("Logging Form Data:");
@@ -3115,7 +3189,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
   Widget _sectionHeader(String title) {
     return Container(
-      margin: const EdgeInsets.fromLTRB(10.0,0.0,20.0,0.0), // External margin
+      margin: const EdgeInsets.fromLTRB(10.0, 0.0, 20.0, 0.0),
+      // External margin
       color: Colors.blue,
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -3127,7 +3202,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
               child: Text(
                 title,
                 style:
-                TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
+                    TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -3161,58 +3236,63 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       child: Row(
         children: options
             .map((option) => Row(
-          children: [
-            Radio<String>(
-              value: option,
-              groupValue: groupValue,
-              onChanged: onChanged,
-            ),
-            Text(option),
-            SizedBox(width: 10),
-          ],
-        ))
+                  children: [
+                    Radio<String>(
+                      value: option,
+                      groupValue: groupValue,
+                      onChanged: onChanged,
+                    ),
+                    Text(option),
+                    SizedBox(width: 10),
+                  ],
+                ))
             .toList(),
       ),
     );
   }
+
   Widget _radioButtonColumn({
     List<String> options,
     String groupValue,
-    Function(String) onChanged, List<String> enabledOptions,
+    Function(String) onChanged,
+    List<String> enabledOptions,
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: options
           .map((option) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 4.0), // Equal vertical spacing
-        child: Row(
-          children: [
-            Radio<String>(
-              value: option,
-              groupValue: groupValue,
-              onChanged: onChanged,
-            ),
-            Expanded(
-              child: Text(
-                option,
-                style: TextStyle(
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                // Equal vertical spacing
+                child: Row(
+                  children: [
+                    Radio<String>(
+                      value: option,
+                      groupValue: groupValue,
+                      onChanged: onChanged,
+                    ),
+                    Expanded(
+                      child: Text(
+                        option,
+                        style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      ))
+              ))
           .toList(),
     );
   }
+
   Widget _textInputField({
     TextEditingController controller,
     String labelText,
     TextInputType keyboardType = TextInputType.text,
     String Function(String) validator,
+    int maxLength, // Add maxLength parameter
   }) {
     return TextFormField(
       controller: controller,
@@ -3250,6 +3330,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       validator: validator,
     );
   }
+
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -3257,7 +3338,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/State'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final DashboardStateModel dashboardStateModel =
-      DashboardStateModel.fromJson(json);
+          DashboardStateModel.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -3327,13 +3408,16 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       return null;
     }
   }
-  Future<List<DataGetVillage>> _getVillage(int districtId, int stateId,int cityId) async {
+
+  Future<List<DataGetVillage>> _getVillage(
+      int districtId, int stateId, int cityId) async {
     GetVillage dashboardDistrictModel = GetVillage();
     Response response1;
 
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
-      var body = json.encode({"districtId": districtId, "stateId": stateId,"cityId":cityId});
+      var body = json.encode(
+          {"districtId": districtId, "stateId": stateId, "cityId": cityId});
 
       Dio dio = Dio();
       response1 = await dio.post(
@@ -3344,13 +3428,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           responseType: ResponseType.plain,
         ),
       );
-      print("@@GetVillage--Api: "+"https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetVillage");
+      print("@@GetVillage--Api: " +
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetVillage");
       print("@@GetVillage--Api: $body");
       print("@@GetVillage--Api Response: ${response1.data}");
 
       dashboardDistrictModel = GetVillage.fromJson(json.decode(response1.data));
 
-      if (dashboardDistrictModel.status && dashboardDistrictModel.data != null) {
+      if (dashboardDistrictModel.status &&
+          dashboardDistrictModel.data != null) {
         print("@@GetVillage--Data Size: ${dashboardDistrictModel.data.length}");
         return dashboardDistrictModel.data;
       } else {
@@ -3363,7 +3449,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     }
   }
 
-
   Future<List<GetLanguageForDDLsDatas>> getLanguageForDDL() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -3371,7 +3456,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetLanguageForDDL'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetLanguageForDDLs dashboardStateModel =
-      GetLanguageForDDLs.fromJson(json);
+          GetLanguageForDDLs.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -3379,6 +3464,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       return null;
     }
   }
+
   Future<List<GetDiseaseForDDLData>> getDiseaseForDDL() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -3386,7 +3472,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetDiseaseForDDL'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDiseaseForDDL dashboardStateModel =
-      GetDiseaseForDDL.fromJson(json);
+          GetDiseaseForDDL.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -3394,6 +3480,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       return null;
     }
   }
+
   Widget _patientInfoRow() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -3424,10 +3511,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }
+
   Future<void> showLogoutDialog() async {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent closing the dialog by tapping outside
+      barrierDismissible: false,
+      // Prevent closing the dialog by tapping outside
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -3461,7 +3550,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
             ElevatedButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog
-                logoutUserStatic();  // Call the logout function
+                logoutUserStatic(); // Call the logout function
               },
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
@@ -3478,6 +3567,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       },
     );
   }
+
   Future<void> logoutUserStatic() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
@@ -3486,31 +3576,39 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginScreen()),
-          (route) => false,
+      (route) => false,
     );
   }
+
   Widget _buildMenuItem({
     IconData icon,
     String title,
     Function() onTap,
   }) {
-    double size = 14.0; // You can set a consistent size for both the icon and text
+    double size =
+        14.0; // You can set a consistent size for both the icon and text
 
     return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0), // Reduce the vertical padding
+      contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
+      // Reduce the vertical padding
       title: Row(
         children: [
-          Icon(icon, color: Colors.black, size: size), // Set icon size
-          SizedBox(width: 8.0,height: 4.0,), // Add space between the icon and the text
+          Icon(icon, color: Colors.black, size: size),
+          // Set icon size
+          SizedBox(
+            width: 8.0,
+            height: 4.0,
+          ),
+          // Add space between the icon and the text
           Text(
             title,
             style: TextStyle(
               color: Colors.black,
               fontSize: size,
-              fontWeight: FontWeight.normal,  // Explicitly set fontWeight to normal
+              fontWeight:
+                  FontWeight.normal, // Explicitly set fontWeight to normal
             ),
           )
-
         ],
       ),
       onTap: onTap,
@@ -3521,7 +3619,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     GlobalKey key,
     String value,
     String hint,
-    List<Map<String, dynamic>> items, // List of maps to hold both item text and icon data
+    List<Map<String, dynamic>>
+        items, // List of maps to hold both item text and icon data
     Function(String) onChanged,
     Icon hintIcon, // Make hintIcon nullable
   }) {
@@ -3531,11 +3630,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       contentPadding: EdgeInsets.symmetric(vertical: 0), // Remove extra padding
       title: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          key: key, // Assign the key here
+          key: key,
+          // Assign the key here
           value: value,
           style: TextStyle(color: Colors.black),
           dropdownColor: Colors.white,
-          items: items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
+          items:
+              items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
             return DropdownMenuItem<String>(
               value: item['value'],
               child: Row(
@@ -3548,7 +3649,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   SizedBox(width: 8.0), // Add space between the icon and text
                   Text(
                     item['value'],
-                    style: TextStyle(color: Colors.black, fontSize: size), // Set text size
+                    style: TextStyle(
+                        color: Colors.black, fontSize: size), // Set text size
                   ),
                 ],
               ),
@@ -3556,24 +3658,28 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           }).toList(),
           hint: hintIcon != null
               ? Row(
-            children: [
-              hintIcon, // Only add the icon if it's not null
-              SizedBox(width: 8.0), // Add space between the icon and hint text
-              Text(
-                hint,
-                style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-              ),
-            ],
-          )
+                  children: [
+                    hintIcon, // Only add the icon if it's not null
+                    SizedBox(
+                        width: 8.0), // Add space between the icon and hint text
+                    Text(
+                      hint,
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                )
               : Text(
-            hint,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
-          ),
+                  hint,
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w500),
+                ),
           onChanged: onChanged,
         ),
       ),
     );
   }
+
   //related disease Data view
   Widget _buildHeaderCellSrNoDiseaseData(String text) {
     return Container(
@@ -3769,18 +3875,21 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }
+
   Future<void> uploadLocalData() async {
-    final localDataList = await dbHelper.getAllLocalPatients();  // ✅ Fetch data from SQLite
+    final localDataList =
+        await dbHelper.getAllLocalPatients(); // ✅ Fetch data from SQLite
 
     for (var patientData in localDataList) {
       try {
-        await ApipatientRegistrations(patientData: patientData);  // ✅ Use named argument
-        await dbHelper.deleteLocalPatient(patientData['id']);     // ✅ Delete after successful upload
+        await ApipatientRegistrations(
+            patientData: patientData); // ✅ Use named argument
+        await dbHelper.deleteLocalPatient(
+            patientData['id']); // ✅ Delete after successful upload
         print("✅ Data uploaded and removed from local DB.");
       } catch (e) {
         print("❌ Error uploading data: $e");
       }
     }
   }
-
 }

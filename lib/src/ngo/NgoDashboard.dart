@@ -356,23 +356,21 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   void _showPopupMenu() async {
-    // Wait until the widget tree has stabilized
+    await Future.delayed(Duration.zero); // ✅ Ensures smooth popup opening
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final BuildContext dropdownContext = _dropdownKey.currentContext;
 
       if (dropdownContext == null) {
-        print("Dropdown context is null. Retrying...");
+        print("❌ Dropdown context is null!");
         return;
       }
 
-      final RenderBox dropdownRenderBox =
-          dropdownContext.findRenderObject() as RenderBox;
+      final RenderBox dropdownRenderBox = dropdownContext.findRenderObject() as RenderBox;
       final RenderBox overlayRenderBox =
-          Overlay.of(context)?.context.findRenderObject() as RenderBox;
+      Overlay.of(context).context.findRenderObject() as RenderBox;
 
-      // Ensure both render boxes are not null
       if (dropdownRenderBox == null || overlayRenderBox == null) {
-        print("RenderBox is null. Cannot display menu.");
+        print("❌ RenderBox is null!");
         return;
       }
 
@@ -381,26 +379,19 @@ class _NgoDashboard extends State<NgoDashboard> {
         Offset.zero & overlayRenderBox.size,
       );
 
-      // Show the popup menu
-      final selectedValue = await showMenu<int>(
+      print("✅ Showing Popup Menu at position: $position");
+
+      final int selectedValue = await showMenu<int>(
         context: context,
         position: position,
         items: [
-          PopupMenuItem<int>(
-            value: 1,
-            child: Text("Add Ngo Hospital"),
-          ),
-          // Add more PopupMenuItem if needed
+          PopupMenuItem<int>(value: 1, child: Text("Add NGO Hospital")),
         ],
         elevation: 8.0,
       );
 
-      // Handle menu selection
       if (selectedValue != null) {
-        // Close the drawer if it's open
-        Navigator.of(context).pop(); // Closes the drawer
-
-        // Call the handler for menu selection
+        // Removed Navigator.pop() to prevent double-click issue
         _handleMenuSelection(selectedValue);
       }
     });
@@ -906,7 +897,61 @@ class _NgoDashboard extends State<NgoDashboard> {
                     Navigator.pop(context);
                   },
                 ),
-                _buildDropdown(),
+                //_buildDropdown(),
+                DropdownButtonHideUnderline( // ✅ Hide the grey underline
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+                    child: DropdownButton<String>(
+                      key: _dropdownKey,
+                      value: _chosenValue,
+                      hint: Row(
+                        children: [
+                          Icon(Icons.supervised_user_circle, color: Colors.black),
+                          SizedBox(width: 6),
+                          Text('Manage Users'),
+                        ],
+                      ),
+                      isExpanded: true,
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Dropdown arrow
+                      items: [
+                        {'value': 'NGO Hospital', 'icon': Icons.local_hospital},
+                        {'value': 'Screening Camp', 'icon': Icons.campaign},
+                        {'value': 'Satellite Center', 'icon': Icons.satellite_alt},
+                      ].map((item) {
+                        return DropdownMenuItem<String>(
+                          value: item['value'],
+                          child: Row(
+                            children: [
+                              Icon(item['icon'], color: Colors.blue),
+                              SizedBox(width: 6),
+                              Text(item['value']),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String value) {
+                        setState(() {
+                          _chosenValue = value ?? '';
+                          if (_chosenValue == "NGO Hospital") {
+                            print('@@NGO---Hospital--1 $_chosenValue');
+                            Future.delayed(Duration(milliseconds: 30), () {
+                              _showPopupMenu();
+                            });
+                          } else if (_chosenValue == "Screening Camp") {
+                            print('@@Screening--1 $_chosenValue');
+                            _showPopupMenuScreeningCamp  ();
+                          } else if (_chosenValue == "Satellite Center") {
+                            print('@@Sattelite--1 $_chosenValue');
+                            _showPopupMenuSatelliteCenter();
+                          }
+                        });
+                      },
+                    ),
+
+                  ),
+
+                ),
+
                 _buildMenuItem(
                   icon: Icons.dashboard,
                   title: 'Add Eye Bank',
@@ -1050,84 +1095,6 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget _buildDropdown() {
-    return Container(
-      width: 150.0,
-      child: Theme(
-        data: Theme.of(context).copyWith(
-          canvasColor: Colors.white, // Dropdown background color
-        ),
-        child: DropdownButtonHideUnderline(
-          child: DropdownButton<String>(
-            key: _dropdownKey,
-            // Ensure the key is defined and used correctly
-            focusColor: Colors.white,
-            value: _chosenValue,
-            style: TextStyle(color: Colors.white),
-            // Style for text in dropdown
-            iconEnabledColor: Colors.white,
-            // Color of dropdown arrow icon
-            items: <String>[
-              'NGO Hospital',
-              'Screening Camp',
-              'Satellite Center',
-            ].map<DropdownMenuItem<String>>((String value) {
-              // Define the icon for each value
-              Icon icon;
-              if (value == 'NGO Hospital') {
-                icon = Icon(Icons.local_hospital, color: Colors.black);
-              } else if (value == 'Screening Camp') {
-                icon = Icon(Icons.local_activity, color: Colors.black);
-              } else if (value == 'Satellite Center') {
-                icon = Icon(Icons.satellite, color: Colors.black);
-              } else {
-                icon = Icon(Icons.help, color: Colors.black); // Default icon
-              }
-
-              return DropdownMenuItem<String>(
-                value: value,
-                child: Row(
-                  children: [
-                    icon, // The icon for each item
-                    SizedBox(width: 10), // Space between icon and text
-                    Text(
-                      value,
-                      overflow: TextOverflow.ellipsis, // Handle text overflow
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ],
-                ),
-              );
-            }).toList(),
-            hint: Text(
-              "Manage Users", // Placeholder text when nothing is selected
-              overflow: TextOverflow.ellipsis, // Handle text overflow
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            onChanged: (String value) {
-              setState(() {
-                _chosenValue = value ?? '';
-                if (_chosenValue == "NGO Hospital") {
-                  print('@@NGO---Hospital--1 $_chosenValue');
-                  _showPopupMenu();
-                } else if (_chosenValue == "Screening Camp") {
-                  print('@@Screening--1 $_chosenValue');
-                  _showPopupMenuScreeningCamp();
-                } else if (_chosenValue == "Satellite Center") {
-                  print('@@Sattelite--1 $_chosenValue');
-                  _showPopupMenuSatelliteCenter();
-                }
-              });
-            },
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildUserInfo() {
     return SingleChildScrollView(

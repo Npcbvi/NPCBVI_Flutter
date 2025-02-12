@@ -175,10 +175,10 @@ class _LoginScreenState extends State<LoginScreen> {
           height: 400,
           width: double.maxFinite,
           child: SingleChildScrollView(
-            padding: EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(6.0),
             child: RichText(
               text: TextSpan(
-                style: TextStyle(fontSize: 14, color: Colors.black),
+                style: TextStyle(fontSize: 13, color: Colors.black),
                 children: [
                   TextSpan(
                     text:
@@ -191,43 +191,37 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // NGO Section
                   TextSpan(
-                    text: '• For NGOs:\n',
+                    text: 'For NGOs:\n',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(text: '   • Darpan Number is a must \n'
-                                 '     for registration.\n',
+                  TextSpan(text: 'Darpan Number is a must for registration.\n',
                   ),
               //    TextSpan(text: '   • Equipment details of your hospital need to be filled once you log in.\n'),
                   TextSpan(
-                    text: '   • Equipment details of your hospital\n'
-                          '      need to be filled once you log in.\n',
+                    text: 'Equipment details of your hospital need to be filled once you log in.\n',
                   ),
                   TextSpan(
-                    text: '   • Documents Checklist:\n',
+                    text: 'Documents Checklist:\n',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(text: '       i. Society/Charitable public trust \n'
-                                 '          registration certificate \n '),
-                  TextSpan(text: '       ii. Minimum 3 years of experience \n'
-                                  '          certificate \n'),
-                  TextSpan(text: '   • Bank Details like Account No.\n'
-                                  '     Bank IFSC Code, and Bank Name.\n \n'),
+                  TextSpan(text: 'i. Society/Charitable public trust registration certificate \n'),
+                  TextSpan(text: 'ii. Minimum 3 years of experience certificate \n'),
+                  TextSpan(text: 'Bank Details like Account No.Bank IFSC Code, and Bank Name.\n \n'),
 
                   // Private Practitioners Section
                   TextSpan(
-                    text: '• For Private Practitioners/Private \n'
-                           '  Medical Colleges/Others: \n',
+                    text: 'For Private Practitioners/Private \n'
+                           'Medical Colleges/Others: \n',
                     style: TextStyle(fontWeight: FontWeight.bold),
 
                   ),
-                  TextSpan(text: '   • Equipment details of your hospital \n'
-                                  '     need to be filled.\n'),
+                  TextSpan(text: 'Equipment details of your hospital need to be filled.\n'),
                   TextSpan(
-                    text: '   • Documents Checklist:\n',
+                    text: 'Documents Checklist:\n',
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  TextSpan(text: '       i. MS Ophthalmology Degree\n'),
-                  TextSpan(text: '       ii. Two years of experience post PG\n\n'),
+                  TextSpan(text: 'MS Ophthalmology Degree\n'),
+                  TextSpan(text: 'ii. Two years of experience post PG\n\n'),
 
                   // Contact Info
                   TextSpan(
@@ -302,7 +296,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           'In order to login for the first time into the new web application it is necessary to'
                           ' register and upload certain documents and information as detailed below. Hence keep'
                           ' the scanned copy of these documents handy before starting the process of registration.\n\n'
-                          'CHECKLIST FOR REGISTRATION\n\n • For NGOs\nDarpan Number is must for registration. If you haven\'t registered on Darpan portal.',
+                          'CHECKLIST FOR REGISTRATION: \n\n For NGOs\nDarpan Number is must for registration. If you haven\'t registered on Darpan portal.',
                     ),
                     TextSpan(
                       text: ' Click here.',
@@ -329,25 +323,52 @@ class _LoginScreenState extends State<LoginScreen> {
             TextField(
               controller: _loginIdController,
               decoration: InputDecoration(
-                labelText: 'Login ID',
+                label: RichText(
+                  text: TextSpan(
+                    text: 'Login ID',
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    children: [
+                      TextSpan(
+                        text: ' *', // Asterisk for required field
+                        style: TextStyle(color: Colors.red, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
                 hintText: 'Enter Login ID',
                 prefixIcon: Icon(Icons.person),
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0)),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
             ),
+
             SizedBox(height: 10),
             TextField(
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
-                labelText: 'Password',
-                hintText: 'Enter Password',
+                label: RichText(
+                  text: TextSpan(
+                    text: 'Password',
+                    style: TextStyle(color: Colors.black, fontSize: 16),
+                    children: [
+                      TextSpan(
+                        text: ' *', // Red Asterisk
+                        style: TextStyle(color: Colors.red, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+                hintText: 'Enter Password', // Regular hint text
                 prefixIcon: Icon(Icons.lock),
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0)),
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
               ),
             ),
+
+
             SizedBox(height: 10),
             Row(
              // mainAxisAlignment: MainAxisAlignment.center,
@@ -356,25 +377,39 @@ class _LoginScreenState extends State<LoginScreen> {
                 Expanded(
                   flex: 4,
                   child: TextField(
-                  controller: _captchaController,
-                  decoration: InputDecoration(
-                    labelText: 'Enter Captcha Value',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0)),
+                    controller: _captchaController,
+                    decoration: InputDecoration(
+                      label: RichText(
+                        text: TextSpan(
+                          text: 'Enter Captcha Value',
+                          style: TextStyle(color: Colors.black, fontSize: 16),
+                          children: [
+                            TextSpan(
+                              text: ' *', // Red Asterisk for required field
+                              style: TextStyle(color: Colors.red, fontSize: 16),
+                            ),
+                          ],
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        isVerified = false;
+                      });
+                    },
                   ),
-                  onChanged: (value) {
-                    setState(() {
-                      isVerified = false;
-                    });
-                  },
-                ),),
+                ),
+
 
                 Expanded(
                   flex: 2,
                   child: Container(
 
                     height: 56,
-                    margin: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                    margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
                     decoration: BoxDecoration(
 
                       color: Colors.white, // Background color
@@ -398,14 +433,24 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 Expanded(
                   flex: 1,
-                  child: IconButton(
-                  onPressed: buildCaptcha,
-                  icon: Icon(Icons.refresh),
-                ),),
+                  child: Container(
+                    height: 56,
+                    margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey, width: 1), // Border color & width
+                      borderRadius: BorderRadius.circular(8), // Optional: Rounded corners
+                    ),
+                    child: IconButton(
+                      onPressed: buildCaptcha,
+                      icon: Icon(Icons.refresh),
+                    ),
+                  ),
+                )
+
               ],
             ),
             SizedBox(height: 10),
-            ElevatedButton(
+          /*  ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(130, 50), // Set width & height
                 shape: RoundedRectangleBorder(
@@ -436,6 +481,59 @@ class _LoginScreenState extends State<LoginScreen> {
                 _submitForm();
               },
               child: Text('Sign In'),
+            ),*/
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size(130, 50), // Button size
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8), // Rounded corners
+                ),
+                primary: Colors.blue, // Use 'primary' instead of 'backgroundColor'
+                elevation: 4, // Default shadow
+                shadowColor: Colors.black, // Shadow color
+              ).copyWith(
+                elevation: MaterialStateProperty.resolveWith<double>(
+                      (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return 10; // Increase shadow on click
+                    }
+                    return 4; // Default shadow
+                  },
+                ),
+              ),
+              onPressed: () {
+                if (_loginIdController.text.isEmpty) {
+                  Utils.showToast("Username cannot be empty !", false);
+                  return;  // Exit if username is not entered
+                }
+
+                // Step 2: Check if the password is entered and valid
+                if (_passwordController.text.isEmpty) {
+                  Utils.showToast("Password cannot be empty !", false);
+                  return;  // Exit if password is not entered
+                }
+
+                // Step 3: Check if captcha is correct
+                isVerified = _captchaController.text == randomString;
+                if (!isVerified) {
+                  Utils.showToast("Captcha does not match!", false);
+                  return;  // Exit if captcha is incorrect
+                }
+
+                // If all checks pass, submit the form
+                _submitForm();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.chevron_right, color: Colors.white),
+                  SizedBox(width: 8), // Space between icon and text
+                  Text(
+                    'Sign In',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                ],
+              ),
             ),
 
             // SizedBox(height: 10),
