@@ -156,8 +156,19 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                     TextFormField(
                       controller: userIDController,
                       decoration: InputDecoration(
-                        hintText: 'User Id',
-                        labelText: 'User Id',
+                        label: RichText(
+                          text: TextSpan(
+                            text: 'User Id',
+                            style: TextStyle(color: Colors.black, fontSize: 16),
+                            children: [
+                              TextSpan(
+                                text: ' *', // Red Asterisk for required field
+                                style: TextStyle(color: Colors.red, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                        hintText: 'Enter User Id', // Adjusted hint text for clarity
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
@@ -165,50 +176,42 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                     ),
                     SizedBox(height: 10),
                     GestureDetector(
-                      child: new Container(
-                        padding: const EdgeInsets.all(
-                          10.0,
+                      onTap: _forgotPassword, // Handle tap directly on GestureDetector
+                      child: Container(
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                          color: appThemeSecondary,
+                          borderRadius: BorderRadius.circular(8.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2), // Shadow color
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3), // Shadow position
+                            ),
+                          ],
                         ),
-                        child: new Row(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center, // Center alignment
                           children: [
-                            // First child in the Row for the name and the
-                            new Expanded(
-                              // Name and Address are in the same column
-                              child: new Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  // Code to create the view for name.
-                                  new Container(
-                                      padding: const EdgeInsets.only(
-                                          bottom: 20,
-                                          left: 10.0,
-                                          top: 10.0,
-                                          right: 40.0),
-                                      child: new ElevatedButton(
-                                        style: Utils.getButtonDecoration(
-                                          color: appThemeSecondary,
-                                          border: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(5.0),
-                                          ),
-                                        ),
-                                        child: Text(
-                                          AppConstant.txtSendEmail,
-
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-
-                                        ),
-                                        onPressed: _forgotPassword,
-                                      )),
-                                ],
+                            Icon(
+                              Icons.email, // Email icon
+                              color: Colors.white,
+                            ),
+                            SizedBox(width: 8), // Space between icon and text
+                            Text(
+                              AppConstant.txtSendEmail,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
+                    )
+
                   ],
                 ),
               ),
