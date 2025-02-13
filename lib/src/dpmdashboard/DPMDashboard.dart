@@ -5743,8 +5743,8 @@ class _DPMDashboard extends State<DPMDashboard> {
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: screenWidth * 0.9, // 90% of screen width
-            height: screenHeight * 0.7, // 70% of screen height
+            width: screenWidth * 1.0, // 90% of screen width
+            height: screenHeight * 1.0, // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -5757,7 +5757,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         Row(
                           children: [
                             _buildHeaderCellSrNoDiseaseData('S.No.',context),
-                            _buildHeaderCellDiseaseData('Disease Name'),
+                            _buildHeaderCellDiseaseDataSettingUp('Disease Name'),
                             _buildHeaderCellSrNoDiseaseDataTotal('Total'),
                             _buildHeaderCellDiseaseDataAction('Action'),
                           ],
@@ -5805,10 +5805,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _buildDataCellSrNoDiseaseData(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDiseaseData(
+                                      _buildDataCellDiseaseDataSettingUp(
                                           offer.diseaseName),
                                       _buildDataCellDiseaseTotal(
                                           offer.totalApproPending.toString()),
+
                                       _buildDataCellViewBlueDiseaseDataAction(
                                           "View", () {
                                         print(
@@ -5868,12 +5869,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                         Row(
                           children: [
                             _buildHeaderCellSrNoDiseaseData('S.No.',context),
-                            _buildHeaderCellDiseaseData('Disease Name'),
+                            _buildHeaderCellDiseaseDataSettingUp('Disease Name'),
                             _buildHeaderCellSrNoDiseaseDataTotal('Total'),
                             _buildHeaderCellDiseaseDataAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
                         FutureBuilder<List<DataGetPatientPendingwithFinance>>(
                           future: ApiController.GetDPM_Patients_Pending_finacne(
@@ -5903,7 +5903,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _buildDataCellSrNoDiseaseData(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDiseaseData(
+                                      _buildDataCellDiseaseDataSettingUp(
                                           offer.diseaseName),
                                       _buildDataCellDiseaseTotal(
                                           offer.totalApproPending.toString()),
@@ -5952,8 +5952,8 @@ class _DPMDashboard extends State<DPMDashboard> {
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: screenWidth * 0.9, // 90% of screen width
-            height: screenHeight * 0.7, // 70% of screen height
+            width: screenWidth * 1.0, // 90% of screen width
+            height: screenHeight * 1.0, // 70% of screen height
             child: SingleChildScrollView(
               child: Column(
                 children: [
@@ -5966,7 +5966,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         Row(
                           children: [
                             _buildHeaderCellSrNoDiseaseData('S.No.',context),
-                            _buildHeaderCellDiseaseData('NGO'),
+                            _buildHeaderCellDiseaseDataSettingUp('NGO'),
                             _buildHeaderCellSrNoDiseaseDataTotal('Total'),
                             _buildHeaderCellDiseaseDataAction('Action'),
                           ],
@@ -6018,7 +6018,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _buildDataCellSrNoDiseaseData(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDiseaseData(offer.ngoname),
+                                      _buildDataCellDiseaseDataSettingUp(offer.ngoname),
                                       _buildDataCellDiseaseTotal(
                                           offer.approved.toString()),
                                       _buildDataCellViewBlueDiseaseDataAction(
@@ -6084,12 +6084,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                         Row(
                           children: [
                             _buildHeaderCellSrNoDiseaseData('S.No.',context),
-                            _buildHeaderCellDiseaseData('NGO'),
+                            _buildHeaderCellDiseaseDataSettingUp('NGO'),
                             _buildHeaderCellSrNoDiseaseDataTotal('Total'),
                             _buildHeaderCellDiseaseDataAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
                         FutureBuilder<
                             List<DataPatientapprovedSisesesViewclick>>(
@@ -6137,7 +6136,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _buildDataCellSrNoDiseaseData(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDiseaseData(offer.ngoname),
+                                      _buildDataCellDiseaseDataSettingUp(offer.ngoname),
                                       _buildDataCellDiseaseTotal(
                                           offer.approved.toString()),
                                       _buildDataCellViewBlueDiseaseDataAction(
@@ -6378,11 +6377,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 10.0),
                       padding: EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.orange.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.orange, width: 1),
-                      ),
+
                       child: Row(
                         children: [
                           Icon(Icons.hourglass_top, color: Colors.orange),
@@ -6412,20 +6407,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                         padding:
                         EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
                         decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1),
+                          color: Colors.blue,
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.red, width: 1),
+                          border: Border.all(color: Colors.white, width: 1),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.arrow_back, color: Colors.red, size: 16),
+                            Icon(Icons.arrow_back, color: Colors.white, size: 16),
                             SizedBox(width: 5),
                             Text(
                               'Back',
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                color: Colors.red,
+                                color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 14,
                               ),
@@ -6573,18 +6568,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         Container(
                           padding: EdgeInsets.all(10),
                           width: 160.0,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: Offset(0, 4),
-                              ),
-                            ],
-                            border: Border.all(color: Colors.red, width: 1.5),
-                          ),
+
                           child: Text(
                             'Govt. / CHC / Other Hospitals (Approved)',
                             maxLines: 2,
@@ -6610,27 +6594,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                             padding:
                             EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Colors.blue,
                               borderRadius: BorderRadius.circular(8),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 6,
-                                  offset: Offset(0, 3),
-                                ),
-                              ],
-                              border: Border.all(color: Colors.red, width: 1.5),
+
+                              border: Border.all(color: Colors.white, width: 1.5),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(Icons.arrow_back_ios_new,
-                                    color: Colors.red, size: 18),
+                                    color: Colors.white, size: 18),
                                 SizedBox(width: 8),
                                 Text(
                                   'Back',
                                   style: TextStyle(
-                                    color: Colors.red,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 14,
                                   ),
@@ -6677,35 +6655,37 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Table Header
-                          Row(
-                            children: [
-                              _buildHeaderCellSrNo('S.No.'),
-                              _buildHeaderCell('NGO Name'),
-                              _buildHeaderCell('Action'),
-                            ],
-                          ),
-                          Divider(color: Colors.blue, height: 1.0),
-
-                          // Data Rows
-                          ...ddata.map((offer) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(6, 0, 6, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Table Header
+                            Row(
                               children: [
-                                _buildDataCellSrNo(
-                                    (ddata.indexOf(offer) + 1).toString()),
-                                _buildDataCell(offer.oName),
-                                _buildDataCellViewBlue("View", () {
-                                  _showDetailDialogGovtCHCHospitalClick(
-                                      context, offer);
-                                }),
+                                _buildHeaderCellSrNo('S.No.'),
+                                _buildHeaderCell('NGO Name'),
+                                _buildHeaderCell('Action'),
                               ],
-                            );
-                          }).toList(),
-                        ],
+                            ),
+
+                            // Data Rows
+                            ...ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.oName),
+                                  _buildDataCellViewBlue("View", () {
+                                    _showDetailDialogGovtCHCHospitalClick(
+                                        context, offer);
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ],
+                        ),
                       ),
                     );
                   }
@@ -6785,18 +6765,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10.0),
                   padding: EdgeInsets.all(10.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.1),
-                        blurRadius: 8,
-                        offset: Offset(0, 4),
-                      ),
-                    ],
-                    border: Border.all(color: Colors.red, width: 1.5),
-                  ),
+
                   child: Center(
                     child: Text(
                       'GOVT.CHC Hospital \n (Pending)',
@@ -6822,25 +6791,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Colors.blue,
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.red, width: 1.5),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 6,
-                          offset: Offset(0, 3),
-                        ),
-                      ],
+                      border: Border.all(color: Colors.white, width: 1.5),
+
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.arrow_back_ios_new, color: Colors.red, size: 16),
+                        Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 16),
                         SizedBox(width: 8),
                         Text(
                           'Back',
                           style: TextStyle(
-                            color: Colors.red,
+                            color: Colors.white,
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
@@ -7038,14 +7001,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       margin: EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 8),
                                       padding: EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.red.withOpacity(0.1),
-                                        // Light red background
-                                        border: Border.all(
-                                            color: Colors.red,
-                                            width: 1), // Red border
-                                      ),
+
                                       child: Text(
                                         'Private Practitioners (Approved)',
                                         style: TextStyle(
@@ -7074,34 +7030,30 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 16.0),
+                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                                         decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
-                                          // Light red background
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.red,
-                                              width: 1), // Red border
+                                          color: Colors.blue, // Light red background
+                                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                                          border: Border.all(color: Colors.white, width: 1), // White border
                                         ),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center, // Center the content
+                                          mainAxisSize: MainAxisSize.min, // Wrap content size
+                                          mainAxisAlignment: MainAxisAlignment.center, // Center the content
                                           children: [
-                                            // Space between the icon and text
+                                            Icon(Icons.arrow_back, color: Colors.white, size: 20), // Back icon
+                                            SizedBox(width: 5), // Space between icon and text
                                             Text(
                                               'Back',
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: Colors.red,
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
+
                                     ),
 
                                     const SizedBox(
@@ -7122,36 +7074,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                 ),
               ),
               SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('NGO Name'),
-                    //_buildHeaderCell('Member Name'),
-                    //  _buildHeaderCell('Hospital Name'),
-                    /*      _buildHeaderCell('Address'),
-                    _buildHeaderCell('Nodal Officer Name'),
-                    _buildHeaderCell('Mobile No'),
-                    _buildHeaderCell('Email Id'),*/
-                    _buildHeaderCellDiseaseDataAction('Action'),
-                  ],
-                ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
               FutureBuilder<List<DataGetDPM_PrivatePartition>>(
                 future: ApiController.getDPM_PrivatePartition(
-                    district_code_login,
-                    state_code_login,
-                    DPM_PrivatePartitionP_APPoroved_valueSendinAPi),
+                    district_code_login, state_code_login, DPM_PrivatePartitionP_APPoroved_valueSendinAPi),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
+                    // Show "No data found" message
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -7164,37 +7096,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                     );
                   } else {
                     List<DataGetDPM_PrivatePartition> ddata = snapshot.data;
-                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
-                        ddata.length.toString());
+                    print('@@---getDPM_GetDPM_GHAPProved_pendings' + ddata.length.toString());
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Display headers only if data is available
+                          Row(
                             children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.oName),
-                              //_buildDataCell(offer.ngoName),
-                              // _buildDataCell(offer.hName),
-                              /*  _buildDataCell(offer.address),
-                              _buildDataCell(offer.nodalOfficerName),
-                              _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),*/
-                              _buildDataCellViewBlueDiseaseDataAction(
-                                  'View', () {
-                                _showDetailDialogPrivatePractitionerApproval(
-                                    context, offer);
-                              }),
+                              _buildHeaderCellSrNo('S.No.'),
+                              _buildHeaderCell('NGO Name'),
+                              _buildHeaderCellDiseaseDataAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+                          // Display Data Rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.oName),
+                                  _buildDataCellViewBlueDiseaseDataAction('View', () {
+                                    _showDetailDialogPrivatePractitionerApproval(context, offer);
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -7271,60 +7208,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    // Shown Captcha value to user
-                                    /*  Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
 
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*/
                                     Container(
                                       margin: EdgeInsets.symmetric(
                                           horizontal: 10, vertical: 5),
                                       padding: EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.red.withOpacity(0.1),
-                                        // Light red background
-                                        border: Border.all(
-                                            color: Colors.red,
-                                            width: 1), // Red border
-                                      ),
+
                                       child: Text(
                                         'Private Practitioner(s) (Pending)',
                                         maxLines: 2,
@@ -7353,22 +7242,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         });
                                       },
                                       child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 16.0),
+                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
                                         decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          // Red background for the button
-                                          borderRadius: BorderRadius.circular(
-                                              8.0), // Rounded corners
+                                          color: Colors.blue, // Light red background
+                                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                                          border: Border.all(color: Colors.white, width: 1), // White border
                                         ),
-                                        child: Text(
-                                          'Back',
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            // White text for contrast
-                                            fontWeight: FontWeight.w500,
-                                          ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min, // Wrap content size
+                                          mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                                          children: [
+                                            Icon(Icons.arrow_back, color: Colors.white, size: 20), // Back icon
+                                            SizedBox(width: 5), // Space between icon and text
+                                            Text(
+                                              'Back',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -7391,34 +7285,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                 ),
               ),
               SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNo('S.No.'),
-                    _buildHeaderCell('Organisation'),
-                    //_buildHeaderCell('Nodal Officer Name'),
-                    // _buildHeaderCell('Hospital Name'),
-                    /*  _buildHeaderCell('Hospital Address'),
-                    _buildHeaderCell('Contact No'),
-                    _buildHeaderCell('Email Id'),*/
-                    _buildHeaderCellDiseaseDataAction('Action'),
-                  ],
-                ),
-              ),
-              // Data Rows
               FutureBuilder<List<DataGetDPM_PrivatePartition>>(
                 future: ApiController.getDPM_PrivatePartition(
-                    district_code_login,
-                    state_code_login,
-                    DPM_PrivatePartitionP_Pending_valueSendinAPi),
+                    district_code_login, state_code_login, DPM_PrivatePartitionP_Pending_valueSendinAPi),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
+                    // Show "No data found" message when there's no data
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -7431,35 +7307,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                     );
                   } else {
                     List<DataGetDPM_PrivatePartition> ddata = snapshot.data;
-                    print('@@---DataGetDPM_PrivatePartition' +
-                        ddata.length.toString());
+                    print('@@---DataGetDPM_PrivatePartition ' + ddata.length.toString());
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Show headers only when data is available
+                          Row(
                             children: [
-                              _buildDataCellSrNo(
-                                  (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.oName),
-                              /*  _buildDataCell(offer.nodalOfficerName),
-                              _buildDataCell(offer.address),
-                              _buildDataCell(offer.mobile.toString()),
-                              _buildDataCell(offer.emailId.toString()),*/
-                              _buildDataCellViewBlueDiseaseDataAction(
-                                  'View', () {
-                                _showDetailDialogPrivatePractitionerPending(
-                                    context, offer);
-                              }),
+                              _buildHeaderCellSrNo('S.No.'),
+                              _buildHeaderCell('Organisation'),
+                              _buildHeaderCellDiseaseDataAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+                          // Data Rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.oName),
+                                  _buildDataCellViewBlueDiseaseDataAction('View', () {
+                                    _showDetailDialogPrivatePractitionerPending(context, offer);
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -7584,20 +7467,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           horizontal: 12, vertical: 8),
                                       padding: EdgeInsets.all(12),
                                       width: 180.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(12),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.1),
-                                            blurRadius: 8,
-                                            offset: Offset(0, 4),
-                                          ),
-                                        ],
-                                        border: Border.all(
-                                            color: Colors.red, width: 1.5),
-                                      ),
+
                                       child: Center(
                                         child: Text(
                                           'Private Medical College(s) (Approved)',
@@ -7626,32 +7496,27 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         });
                                       },
                                       child: Container(
-                                        width: 100.0,
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 10, horizontal: 12),
+                                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                                         decoration: BoxDecoration(
-                                          color: Colors.red,
-                                          borderRadius:
-                                              BorderRadius.circular(8),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.1),
-                                              blurRadius: 6,
-                                              offset: Offset(0, 2),
+                                          color: Colors.blue, // Light red background
+                                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                                          border: Border.all(color: Colors.white, width: 1), // White border
+                                        ),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min, // Wrap content size
+                                          mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                                          children: [
+                                            Icon(Icons.arrow_back, color: Colors.white, size: 20), // Back icon
+                                            SizedBox(width: 8), // Space between icon and text
+                                            Text(
+                                              'Back',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w500,
+                                              ),
                                             ),
                                           ],
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            'Back',
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 16,
-                                            ),
-                                          ),
                                         ),
                                       ),
                                     ),
@@ -7718,7 +7583,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       _buildHeaderCellDiseaseDataAction('Action'),
                     ],
                   ),
-                  Divider(color: Colors.blue, height: 1.0),
 
                   // Data Rows
                   ...ddata.asMap().entries.map((entry) {
@@ -7860,17 +7724,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       padding: const EdgeInsets.all(8.0),
                                       // Padding for better spacing
                                       width: 150.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.red.withOpacity(0.1),
-                                        // Light red background
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        // Rounded corners
-                                        border: Border.all(
-                                            color: Colors.red,
-                                            width:
-                                                1.0), // Border for better contrast
-                                      ),
+
                                       child: Row(
                                         children: [
                                           Icon(
@@ -7918,13 +7772,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             horizontal: 16.0, vertical: 8.0),
                                         // Padding for a better touch area
                                         decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
+                                          color: Colors.blue,
                                           // Light red background
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                           // Rounded corners
                                           border: Border.all(
-                                              color: Colors.red,
+                                              color: Colors.white,
                                               width:
                                                   1.0), // Border for emphasis
                                         ),
@@ -7934,7 +7788,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           children: [
                                             Icon(
                                               Icons.arrow_back, // Back icon
-                                              color: Colors.red,
+                                              color: Colors.white,
                                               size: 20.0,
                                             ),
                                             const SizedBox(width: 8.0),
@@ -7943,7 +7797,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               'Back',
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
-                                                color: Colors.red,
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 14.0,
                                               ),
@@ -8110,48 +7964,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    // Shown Captcha value to user
-                                    /* Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
 
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*/
                                     Container(
                                       margin: const EdgeInsets.fromLTRB(
                                           10, 0, 10, 0),
@@ -8159,16 +7972,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       // Padding for better spacing
                                       width: 180.0,
                                       // Slightly increased width for better alignment
-                                      decoration: BoxDecoration(
-                                        color: Colors.red.withOpacity(0.1),
-                                        // Light red background
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        // Rounded corners
-                                        border: Border.all(
-                                            color: Colors.red,
-                                            width: 1.0), // Border for emphasis
-                                      ),
+
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         // Wrap content horizontally
@@ -8185,6 +7989,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             child: Text(
                                               'Screening Camp(s)',
                                               style: const TextStyle(
+
                                                 color: Colors.red,
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 14.0,
@@ -8217,13 +8022,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             horizontal: 16.0, vertical: 8.0),
                                         // Add padding for a better touch area
                                         decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
+                                          color: Colors.blue,
                                           // Light red background
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                           // Rounded corners
                                           border: Border.all(
-                                              color: Colors.red,
+                                              color: Colors.white,
                                               width: 1.0), // Red border
                                         ),
                                         child: Row(
@@ -8232,7 +8037,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           children: [
                                             Icon(
                                               Icons.arrow_back, // Back icon
-                                              color: Colors.red,
+                                              color: Colors.white,
                                               size: 20.0,
                                             ),
                                             const SizedBox(width: 8.0),
@@ -8242,7 +8047,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               overflow: TextOverflow.ellipsis,
                                               // Handle text overflow gracefully
                                               style: const TextStyle(
-                                                color: Colors.red,
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.w500,
                                                 fontSize:
                                                     14.0, // Slightly increased font size for better readability
@@ -8316,7 +8121,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       _buildHeaderCellDiseaseDataAction('Action'),
                     ],
                   ),
-                  Divider(color: Colors.blue, height: 1.0),
 
                   // Data Rows
                   ...ddata.asMap().entries.map((entry) {
@@ -8423,48 +8227,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    // Shown Captcha value to user
-                                    /*  Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
 
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*/
                                     Container(
                                       margin: EdgeInsets.symmetric(
                                           horizontal: 10.0, vertical: 5.0),
@@ -8472,16 +8235,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       padding: EdgeInsets.symmetric(
                                           horizontal: 10.0, vertical: 8.0),
                                       // Add padding
-                                      decoration: BoxDecoration(
-                                        color: Colors.red.withOpacity(0.1),
-                                        // Light red background
-                                        borderRadius:
-                                            BorderRadius.circular(8.0),
-                                        // Rounded corners
-                                        border: Border.all(
-                                            color: Colors.red,
-                                            width: 1.0), // Red border
-                                      ),
+
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment
                                             .center, // Center the content
@@ -8524,13 +8278,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             horizontal: 12.0, vertical: 8.0),
                                         // Add padding
                                         decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
+                                          color: Colors.blue,
                                           // Light red background
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                           // Rounded corners
                                           border: Border.all(
-                                              color: Colors.red,
+                                              color: Colors.white,
                                               width: 1.0), // Red border
                                         ),
                                         child: Row(
@@ -8539,7 +8293,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           children: [
                                             Icon(
                                               Icons.arrow_back, // Back icon
-                                              color: Colors.red,
+                                              color: Colors.white,
                                               size: 20.0,
                                             ),
                                             const SizedBox(width: 5.0),
@@ -8548,7 +8302,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               'Back',
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(
-                                                color: Colors.red,
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.w500,
                                                 fontSize:
                                                     14.0, // Adjust font size
@@ -8724,67 +8478,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    // Shown Captcha value to user
-                                    /*  Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
 
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*/
                                 Container(
                                 margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
                                 padding: EdgeInsets.all(10.0), // Padding inside the container
-                                decoration: BoxDecoration(
-                                  color: Colors.white, // Optional: Background color
-                                  border: Border.all(
-                                    color: Colors.red, // Border color
-                                    width: 1.0,        // Border thickness
-                                  ),
-                                  borderRadius: BorderRadius.circular(8.0), // Rounded corners
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.3), // Optional shadow for depth
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                      offset: Offset(0, 3),
-                                    ),
-                                  ],
-                                ),
+
                                 child: Row(
                                   children: [
                                     Icon(
@@ -8825,13 +8523,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         padding: EdgeInsets.symmetric(
                                             horizontal: 15.0, vertical: 10.0),
                                         decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
+                                          color: Colors.blue,
                                           // Light red background for emphasis
                                           borderRadius:
                                               BorderRadius.circular(8.0),
                                           border: Border.all(
                                               color: Colors
-                                                  .red), // Red border for better visibility
+                                                  .white), // Red border for better visibility
                                         ),
                                         child: Row(
                                           mainAxisSize: MainAxisSize.min,
@@ -8839,7 +8537,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             Icon(
                                               Icons.arrow_back,
                                               // Back arrow icon
-                                              color: Colors.red,
+                                              color: Colors.white,
                                               size: 18.0,
                                             ),
                                             SizedBox(width: 8.0),
@@ -8847,7 +8545,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             Text(
                                               'Back',
                                               style: TextStyle(
-                                                color: Colors.red,
+                                                color: Colors.white,
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 14.0,
                                               ),
@@ -8913,11 +8611,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     children: [
                       _buildHeaderCellSrNo('S.No.'),
                       _buildHeaderCell('Organisation Name'),
-                      // _buildHeaderCell('Nodal Officer Name'),
-                      // _buildHeaderCell('Hospital Name'),
-                      // _buildHeaderCell('Hospital Address'),
-                      // _buildHeaderCell('Contact No'),
-                      // _buildHeaderCell('Email Id'),
+
                       _buildHeaderCellDiseaseDataAction('Action'),
                     ],
                   ),
@@ -9022,11 +8716,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     children: [
                       Container(
                         padding: EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[50],
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.red, width: 2),
-                        ),
+
                         child: Row(
                           children: [
                             Icon(Icons.location_on, color: Colors.red),
@@ -9051,22 +8741,30 @@ class _DPMDashboard extends State<DPMDashboard> {
                           });
                         },
                         child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
+                          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                           decoration: BoxDecoration(
-                            color: Colors.red[50],
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(color: Colors.red, width: 2),
+                            color: Colors.blue, // Light red background
+                            borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                            border: Border.all(color: Colors.white, width: 1), // White border
                           ),
-                          child: Text(
-                            'Back',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                            ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min, // Wrap content size
+                            mainAxisAlignment: MainAxisAlignment.center, // Center the content
+                            children: [
+                              Icon(Icons.arrow_back, color: Colors.white, size: 20), // Back icon
+                              SizedBox(width: 8), // Space between icon and text
+                              Text(
+                                'Back',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
+
                       ),
                     ],
                   ),
@@ -9115,10 +8813,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ...ddata.map((offer) {
                             return Container(
                               margin: EdgeInsets.symmetric(vertical: 4),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
+
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
@@ -9255,21 +8950,26 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
   Widget _buildHeaderCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: 35,
-      width: 80, // Fixed width to ensure horizontal scrolling
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
           ),
         ),
       ),
@@ -9514,22 +9214,27 @@ class _DPMDashboard extends State<DPMDashboard> {
   }
 
   Widget _buildDataCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: 35,
-      width: 80, //
-      // Fixed width to ensure horizontal scrolling
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
         child: Text(
+
           text,
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
           ),
         ),
       ),
@@ -9537,28 +9242,6 @@ class _DPMDashboard extends State<DPMDashboard> {
   }
 
   //related disease Data view
- /* Widget _buildHeaderCellSrNoDiseaseData(String text) {
-    return Container(
-      height: 35,
-      width: 40, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
-          ),
-        ),
-      ),
-    );
-  }*/
   Widget _buildHeaderCellSrNoDiseaseData(String text, BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -9587,24 +9270,28 @@ class _DPMDashboard extends State<DPMDashboard> {
   }
 
   Widget _buildHeaderCellDiseaseData(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: 35,
-      width: 90, // Fixed width to ensure horizontal scrolling
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
-          maxLines: 4,
-          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
@@ -9612,22 +9299,26 @@ class _DPMDashboard extends State<DPMDashboard> {
   }
 
   Widget _buildHeaderCellSrNoDiseaseDataTotal(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: 35,
-      width: 40,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
+            fontSize: screenWidth * 0.035, // Scales with screen width
           ),
         ),
       ),
@@ -9635,24 +9326,29 @@ class _DPMDashboard extends State<DPMDashboard> {
   }
 
   Widget _buildHeaderCellDiseaseDataAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
+
       height: 35,
-      width: 60, // Fixed width to ensure horizontal scrolling
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+
+          maxLines: 2,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
@@ -9689,24 +9385,84 @@ class _DPMDashboard extends State<DPMDashboard> {
 
 
   Widget _buildDataCellDiseaseData(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: 35,
-      width: 90,
-      // Fixed width to ensure horizontal scrolling
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCellDiseaseDataSettingUp(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellDiseaseDataSettingUp(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+
         child: Text(
           text,
           maxLines: 3,
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
@@ -9714,22 +9470,26 @@ class _DPMDashboard extends State<DPMDashboard> {
   }
 
   Widget _buildDataCellDiseaseTotal(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: 35,
-      width: 40, // Fixed width to ensure horizontal scrolling
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
+            fontSize: screenWidth * 0.035, // Scales with screen width
           ),
         ),
       ),
@@ -9738,24 +9498,28 @@ class _DPMDashboard extends State<DPMDashboard> {
 
   Widget _buildDataCellViewBlueDiseaseDataAction(
       String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: onTap, // Trigger the callback when the cell is clicked
       child: Container(
         height: 35,
-        width: 60,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(
-            width: 0.1,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+            bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
           ),
         ),
-        child: Center(
+        child: Align(
+          alignment: Alignment.centerLeft,
           child: Text(
             text,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               color: Colors.blue,
-              fontSize: 14, // Set font size to 16 pixels
+              fontSize: screenWidth * 0.04, // Scales with screen width
             ),
           ),
         ),
