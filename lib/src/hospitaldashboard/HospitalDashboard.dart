@@ -1055,7 +1055,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 _buildHeaderCellDiseaseData('Operated'),
                               ],
                             ),
-                            Divider(color: Colors.blue, height: 1.0),
                             // Data Rows
                             FutureBuilder<List<DataHospitalDashboard>>(
                               future: ApiController.hospitalDashboard(
@@ -3704,7 +3703,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
-  Widget _buildHeaderCellDiseaseData(String text) {
+  /*Widget _buildHeaderCellDiseaseData(String text) {
     return Container(
       height: 35,
       width: 90, // Fixed width to ensure horizontal scrolling
@@ -3727,84 +3726,39 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         ),
       ),
     );
-  }
+  }*/
 
-  Widget _buildHeaderCellSrNoDiseaseDataTotal(String text) {
+  Widget _buildHeaderCellDiseaseData(String text) {
     return Container(
       height: 35,
-      width: 40,
+      width: MediaQuery.of(context).size.width * 0.35, // 30% of screen width
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
+        color: Colors.white,
+        border: Border.all(width: 0.1),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
       child: Center(
         child: Text(
           text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellDiseaseDataAction(String text) {
-    return Container(
-      height: 35,
-      width: 80, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          maxLines: 3,
+          maxLines: 2, // Restrict lines for readability
           overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
+            fontSize: MediaQuery.of(context).size.width * 0.04, // Responsive font size
           ),
         ),
       ),
     );
   }
 
-  Widget _buildDataCellSrNoDiseaseData(String text) {
-    return Container(
-      height: 35,
-      width: 40,
-      // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
-          ),
-        ),
-      ),
-    );
-  }
+
+
+
 
   Widget _buildDataCellDiseaseData(String text) {
     return Container(
       height: 35,
-      width: 90,
+      width: MediaQuery.of(context).size.width * 0.35, // 30% of screen width
       // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
@@ -3826,55 +3780,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
-  Widget _buildDataCellDiseaseTotal(String text) {
-    return Container(
-      height: 35,
-      width: 40, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildDataCellViewBlueDiseaseDataAction(
-      String text, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 35,
-        width: 80,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            width: 0.1,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-              fontSize: 14, // Set font size to 16 pixels
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+
 
   Future<void> uploadLocalData() async {
     final localDataList =
