@@ -2697,7 +2697,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Header Row
-                    Container(
+                   /* Container(
                       color: Colors.white70,
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
@@ -2748,7 +2748,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         ],
                       ),
                     ),
-                    SizedBox(width: 10.0),
+                    SizedBox(width: 10.0),*/
                     // Table Header Row
                     FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
                       future: ApiController.getDPM_NGOApplicationDropDown(
@@ -2762,15 +2762,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                           // Show "No data found" when there's no data
-                          return Center(
-                            child: Text(
-                              "No data found",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
+                          return Container(
+                            margin:EdgeInsets.fromLTRB(0, 20, 0, 10),
+                            child: Center(
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
                               ),
-                              textAlign: TextAlign.center,
                             ),
                           );
                         } else {
@@ -2786,7 +2789,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   _buildHeaderCell('Action'),
                                 ],
                               ),
-                              Divider(color: Colors.blue, height: 1.0),
 
                               // Data Rows
                               ...ddata.map((offer) {
@@ -2923,32 +2925,36 @@ class _DPMDashboard extends State<DPMDashboard> {
                     } else {
                       // Show Header + Data Rows when data is available
                       List<DataGetNewHospitalData> ddata = snapshot.data;
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Header Row (Visible only when data is available)
-                          Row(
-                            children: [
-                              _buildHeaderCellSrNo('S.No.'),
-                              _buildHeaderCell('NGO Darpan No.'),
-                              _buildHeaderCell('Action'),
-                            ],
-                          ),
+                      return Container(
+                        margin:EdgeInsets.fromLTRB(4, 0, 4, 0),
 
-                          // Data Rows
-                          ...ddata.map((offer) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // Header Row (Visible only when data is available)
+                            Row(
                               children: [
-                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
-                                _buildDataCell(offer.darpanNo),
-                                _buildDataCellViewBlue("View", () {
-                                  _showDetailDialogHospitalDataApprove(context, offer);
-                                }),
+                                _buildHeaderCellSrNo('S.No.'),
+                                _buildHeaderCell('NGO Darpan No.'),
+                                _buildHeaderCell('Action'),
                               ],
-                            );
-                          }).toList(),
-                        ],
+                            ),
+
+                            // Data Rows
+                            ...ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.darpanNo),
+                                  _buildDataCellViewBlue("View", () {
+                                    _showDetailDialogHospitalDataApprove(context, offer);
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ],
+                        ),
                       );
                     }
                   },
