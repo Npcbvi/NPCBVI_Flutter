@@ -986,63 +986,89 @@ class _NgoDashboard extends State<NgoDashboard> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            /* Container(
-              width: double.infinity,
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(4.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      _buildNavigationButton('Dashboard', () {
-                        setState(() {
-                          print('@@dashboardviewReplace----display---');
-                          _future = getDPM_ScreeningYear();
-                          ngoDashboardclicks = true;
-                          ManageUSerNGOHospt = false;
-                          EyeBankApplication = false;
-                          ngoCampManagerLists = false;
-                          CampManagerRegisterartions = false;
-                          CampManagerRegisterartionsEdit = false;
-                          SatelliteManagerRegisterartionsEdit = false;
-                          satelliteCenterMenuListdisplay = false;
-                          ngoScreeningCampListss = false;
-                          AddScreeningCamps = false;
-                          ngoSATELLITECENTREMANAGERLists = false;
-                          AddSatelliteManagers = false;
-                          satelliteCenterMenuListdisplay = false;
-                          AddSatelliteCenterRedOptionFields = false;
-                        });
-                      }),
-                     */ /* SizedBox(width: 5.0),
-                      _buildDropdown(),*/ /*
-                      SizedBox(width: 5.0),
-                      _buildNavigationButton('Add Eye Bank', () {
-                        print('@@Add Eye Bank Clicked');
-                        setState(() {
-                          EyeBankApplication = true;
-                          ngoDashboardclicks = false;
-                          ManageUSerNGOHospt = false;
-                          ngoCampManagerLists = false;
-                          CampManagerRegisterartions = false;
-                          CampManagerRegisterartionsEdit = false;
-                          SatelliteManagerRegisterartionsEdit = false;
 
-                          ngoScreeningCampListss = false;
-                          AddScreeningCamps = false;
-                          ngoSATELLITECENTREMANAGERLists = false;
-                          AddSatelliteManagers = false;
-                          satelliteCenterMenuListdisplay = false;
-                          AddSatelliteCenterRedOptionFields = false;
-                        });
-                      }),
-                    ],
+           /* _buildUserInfo(),*/
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  // Login Type and District in a Row
+                  Container(
+                    margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    // Margin for spacing
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 20),
+                          // Space between Login Type and District
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Login Type:',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(height: 5),
+                              Text(
+                                'District NGO',
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'District:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              '${districtNames}',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+
+                  // Space between Row and State Column
+                  const SizedBox(width: 40),
+
+                  // State in a Column with margin
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    // Right margin for spacing
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'State:',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          '${stateNames}',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-            ),*/
-            _buildUserInfo(),
+            ),
             LowVisionRegisterNgoHopsital(),
             ngoDashboardclick(),
             EyeBankApplicationNgo(),
@@ -1108,7 +1134,7 @@ class _NgoDashboard extends State<NgoDashboard> {
               Row(
                 children: [
                   _buildUserInfoItem(
-                      'Login Type:', 'District NGO', Colors.black, Colors.red),
+                      'Login Type:', "District NGO", Colors.black, Colors.red),
                   _buildUserInfoItem(
                       'Login Id:', userId, Colors.black, Colors.red),
                 ],
@@ -1378,72 +1404,55 @@ class _NgoDashboard extends State<NgoDashboard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Header Row
-                    Row(
-                      children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('Hospital ID'),
-                        _buildHeaderCell('Hospital Name'),
-                        /*  _buildHeaderCell('Mobile No.'),
-                        _buildHeaderCell('Email ID'),
-                        _buildHeaderCell('Equipment'),
-                        _buildHeaderCell('Doctors'),
-                        _buildHeaderCell('MOU'),
-                        _buildHeaderCell('Status'),*/
-                        _buildHeaderCellAction('View Details'),
-                        // _buildHeaderCellActionMOU('Action'),
-                      ],
-                    ),
-                    Divider(color: Colors.blue, height: 1.0),
-                    // Data Rows
                     FutureBuilder<List<DataGetHospitalList>>(
                       future: _hospitalListFuture, // Use cached Future
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData || snapshot.data == null) {
-                          return Utils.getEmptyView("No data found");
+                        } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                          return Utils.getEmptyView("No data found"); // Show message if no data
                         } else {
                           List<DataGetHospitalList> ddata = snapshot.data;
 
-                          print('@@---ddata' + ddata.length.toString());
-                          return Column(
-                            children: ddata.map((offer) {
-                              return Row(
+                          return Container(
+                            margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Column(
                                 children: [
-                                  _buildDataCellSrNo(
-                                      (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.hRegID),
-                                  _buildDataCell(offer.hName),
-                                  /* _buildDataCell(offer.mobile),
-                                  _buildDataCell(offer.emailId),
-                                  _buildDataCell(offer.eqCount.toString()),
-                                  _buildDataCell(offer.drcount.toString()),
-                                  _buildDataCell(offer.moucount.toString()),
-                                  _buildDataCell(offer.status.toString()),*/
-                                  _buildDataCellViewBlue("View Detail", () {
-                                    // Show the dialog with hospital details when the "View Detail" button is pressed
-                                    _showHospitalDetailsDialogNGOHospital(
-                                        offer);
-                                  }),
-                                  /* if (offer.status == 'Approved')
-                                  // Store locally
-                                    _buildViewManageDoctorUploadMOUUI(
-                                        offer.hRegID) // Pass hospitalId
-                                  else
-                                    if (offer.status == 'Pending')
-                                      _buildEditMAnageDoctorUploadMOUUI()
-                                    else
-                                      _buildEdit(),*/
+                                  // Show header only if data is available
+                                  Row(
+                                    children: [
+                                      _buildHeaderCellSrNoDiseaseData('S.No.',context),
+                                      _buildHeaderCell('Hospital ID'),
+                                      _buildHeaderCellNGOAction('Action'),
+                                    ],
+                                  ),
+
+                                  // Generate table rows dynamically
+                                  Column(
+                                    children: ddata.map((offer) {
+                                      return Row(
+                                        children: [
+                                          _buildDataCellSrNoDiseaseData((ddata.indexOf(offer) + 1).toString()),
+                                          _buildDataCell(offer.hRegID),
+                                          _buildDataCellViewBlue("View", () {
+                                            _showHospitalDetailsDialogNGOHospital(offer);
+                                          }),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ),
                                 ],
-                              );
-                            }).toList(),
+                              ),
+                            ),
                           );
                         }
                       },
                     ),
+
                   ],
                 ),
               ),
@@ -1611,17 +1620,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                     // Header Row
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCellSrNo('S.No.',context),
                         _buildHeaderCell('Eye Bank ID'),
-                        _buildHeaderCell('Eye Bank Name'),
-                        /* _buildHeaderCell('Member Name'),
-                        _buildHeaderCell('Email'),
-                        _buildHeaderCell('Status'),*/
-                        _buildHeaderCellAction('View Details'),
+
+                        _buildHeaderCellAction('View'),
                         //_buildHeaderCellAction('Action'),
                       ],
                     ),
-                    Divider(color: Colors.blue, height: 1.0),
                     // Data Rows
                     FutureBuilder<List<DataAddEyeBank>>(
                       future: ApiController.getEyeBankDonationList(
@@ -1658,12 +1663,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.eyeBankUniqueID),
-                                  _buildDataCell(offer.eyebankName),
-                                  /*   _buildDataCell(offer.officername),
-                                  _buildDataCell(offer.emailid),
-                                  _buildDataCell(offer.status.toString()),
-                                  _buildMAnageEyeDonationMOUUI(),*/
-                                  _buildDataCellViewBlue("View Detail", () {
+
+                                  _buildDataCellViewBlue("View", () {
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
                                     SharedPrefs.storeSharedValues(AppConstant.fromlisteyeBankById,
                                         offer.eyeBankUniqueID);
@@ -1783,6 +1784,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     Flexible(
                       child: Text(
                         'CAMP MANAGER DETAILS',
+                        maxLines: 3,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -1810,7 +1812,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
+                          primary: Colors.blue,
                           // Button background color
                           onPrimary: Colors.white,
                           // Text and icon color
@@ -1838,16 +1840,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                     // Header Row
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('NGO Name'),
+                        _buildHeaderCellSrNo('S.No.',context),
                         _buildHeaderCell('User Id'),
-                        /*  _buildHeaderCell('Officer Name'),
-                        _buildHeaderCell('Mobile Number'),
-                        _buildHeaderCell('Email id'),
-                        _buildHeaderCell('Address'),
-                        _buildHeaderCell('Designation'),
-                        _buildHeaderCellUpdateandBlock('Update/Block'),*/
-                        _buildHeaderCellAction('View Details'),
+
+                        _buildHeaderCellAction('Action'),
                       ],
                     ),
                     Divider(color: Colors.blue, height: 1.0),
@@ -1884,14 +1880,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 children: [
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.managerName),
                                   _buildDataCell(offer.userId),
                                   /*  _buildDataCell(offer.managerName),
                                   _buildDataCell(offer.mobile),
                                   _buildDataCell(offer.emailId.toString()),
                                   _buildDataCell(offer.address.toString()),
                                   _buildDataCell(offer.designation.toString()),*/
-                                  _buildDataCellViewBlue("View Detail", () {
+                                  _buildDataCellViewBlue("View", () {
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
                                     _showDetailsDialogCAMPMANAGERDETAILS(offer);
                                   }),
@@ -2625,90 +2620,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               /* FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                  future: _future,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
 
-                    if (!snapshot.hasData) {
-                      return CircularProgressIndicator();
-                    }
-
-                    List<DataGetDPM_ScreeningYear> list =
-                        snapshot.data.toList();
-
-                    // Check if _selectedUser is null or not part of the list anymore
-                    if (_selectedUser == null ||
-                        !list.contains(_selectedUser)) {
-                      _selectedUser = null; // Set the first item as default
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 300, // Consistent width with the container
-                            child: DropdownButtonFormField<
-                                DataGetDPM_ScreeningYear>(
-                              value: _selectedUser,
-                              onChanged: (userc) {
-                                setState(() {
-                                  _selectedUser = userc;
-                                  getYearNgoHopital = userc?.name ?? '';
-                                  getfyidNgoHospital = userc?.fyid ?? '';
-                                  print('Selected Year: $getYearNgoHopital');
-                                  print('FYID: $getfyidNgoHospital');
-                                });
-                              },
-                              items: list.map((user) {
-                                return DropdownMenuItem<
-                                    DataGetDPM_ScreeningYear>(
-                                  value: user,
-                                  child: Text(user.name,
-                                      style: TextStyle(fontSize: 16)),
-                                );
-                              }).toList(),
-                              hint: Text(
-                                'Please Select year',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  // Light gray color for the hint
-                                  fontSize: 16,
-                                ),
-                              ),
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.blueAccent, width: 2.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.blue[50],
-                              ),
-                              dropdownColor: Colors.blue[50],
-                              style: TextStyle(color: Colors.black),
-                              icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.blue),
-                              menuMaxHeight: 300,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),*/
                 SizedBox(height: 8),
                //working code here and use it on thuisrday
               FutureBuilder<List<DataGetDPM_ScreeningYear>>(
@@ -2815,31 +2727,38 @@ class _NgoDashboard extends State<NgoDashboard> {
                 SizedBox(height: 8),
                 //buildDropdownHospitalTypeHospialSelect(),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10),
-                  child: ElevatedButton(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                  child: ElevatedButton.icon(
                     onPressed: () {
                       if (getYearNgoHopital != null && dropDownTwoSelcted > 0) {
-                        // Replace 'Specific Value' with the condition you want to check
                         print('@@Condition met: Get button clicked' +
                             getYearNgoHopital.toString() +
                             dropDownTwoSelcted.toString());
                         setState(() {
-                          ngoDashboardDatas =
-                              true; // Update based on the condition
+                          ngoDashboardDatas = true;
                         });
                       } else {
                         print('@@Condition not met or no selection made' +
                             getYearNgoHopital.toString() +
                             dropDownTwoSelcted.toString());
-                        Utils.showToast(
-                            "Need to select Select year & DropDown Selction!",
-                            true);
+                        Utils.showToast("Need to select Select year & DropDown Selection!", true);
                       }
                     },
-                    child: Text('Get Data'),
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15), // Rounded corners
+                      ),
+                      elevation: 5, // Adds a shadow effect
+                    ),
+                    icon: Icon(Icons.cloud_download, size: 24), // Download icon
+                    label: Text(
+                      'Get Data',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
+
 
                 if (dropDownTwoSelcted == 6)
                   Visibility(
@@ -2874,12 +2793,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                               // Header Row
                               Row(
                                 children: [
-                                  _buildHeaderCellDiseaseType('Disease Type'),
-                                  _buildHeaderCellDiseaseType('Registered'),
-                                  _buildHeaderCellDiseaseType('Operated'),
+                                  _buildHeaderCell('Disease Type'),
+                                  _buildHeaderCellSrNoDiseaseData('Registered',context),
+                                  _buildHeaderCellSrNoDiseaseData('Operated',context),
                                 ],
                               ),
-                              Divider(color: Colors.blue, height: 1.0),
                               // Data Rows
                               FutureBuilder<List<DataNGODashboards>>(
                                 future: ApiController.getNGODashboard(
@@ -2929,11 +2847,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-                                            _buildDataCellDissesValue(
+                                            _buildDataCell(
                                                 offer.status),
-                                            _buildDataCellDissesValue(
+                                            _buildDataCellSrNoDiseaseData(
                                                 offer.registered),
-                                            _buildDataCellDissesValue(
+                                            _buildDataCellSrNoDiseaseData(
                                                 offer.operated),
                                           ],
                                         );
@@ -3229,22 +3147,27 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget _buildHeaderCellSrNo(String text) {
+  Widget _buildHeaderCellSrNo(String text, BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 30,
-      width: 60, // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
           ),
         ),
       ),
@@ -3298,23 +3221,28 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   Widget _buildHeaderCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 30,
-      width: 100, // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
-          maxLines: 3,
-          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
@@ -3322,28 +3250,32 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   Widget _buildHeaderCellAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 30,
-      width: 100,
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
-          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
     );
   }
-
   Widget _buildHeaderCellActionMOU(String text) {
     return Container(
       height: 30,
@@ -3389,72 +3321,88 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
+  Widget _buildHeaderCellNGOAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
 
-  Widget _buildDataCell(String text) {
     return Container(
-      height: 40,
-      width: 100,
-      // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
     );
   }
 
-  Widget _buildDataCellViewBlue(String text, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 40,
-        width: 100,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            width: 0.1,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+
+
+
 
   Widget _buildDataCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 40,
-      width: 60,
-      // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
         child: Text(
+
+
           text,
           style: TextStyle(
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
           ),
         ),
       ),
@@ -3692,7 +3640,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     // Header Row
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCellSrNo('S.No.',context),
                         _buildHeaderCell('Eye Bank ID'),
                         _buildHeaderCell('Eye Bank Name'),
                         /* _buildHeaderCell('Member Name'),
@@ -5983,7 +5931,7 @@ _RegistrationEyeDonationCenterByNGO();
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCellSrNo('S.No.',context),
                             _buildHeaderCell('Doctor ID'),
                             _buildHeaderCell('Doctor Name'),
                             _buildHeaderCell('Mobile No.'),
@@ -6179,7 +6127,7 @@ _RegistrationEyeDonationCenterByNGO();
                   Row(
                     children: [
                       // Header Row
-                      _buildHeaderCellSrNo('S.No.'),
+                      _buildHeaderCellSrNo('S.No.',context),
                       _buildHeaderCell('Component'),
                     ],
                   ),
@@ -6262,7 +6210,7 @@ _RegistrationEyeDonationCenterByNGO();
                   Row(
                     children: [
                       // Header Row
-                      _buildHeaderCellSrNo('S.No.'),
+                      _buildHeaderCellSrNo('S.No.',context),
                       _buildHeaderCell('MCI ID'),
                       _buildHeaderCell('Hospital Id'),
                       _buildHeaderCell('Doctor Name'),
@@ -6382,7 +6330,7 @@ _RegistrationEyeDonationCenterByNGO();
                   Row(
                     children: [
                       // Header Row
-                      _buildHeaderCellSrNo('S.No.'),
+                      _buildHeaderCellSrNo('S.No.',context),
                       _buildHeaderCell('Id'),
                       _buildHeaderCell('From Date'),
                       _buildHeaderCell('To Date'),
@@ -8424,6 +8372,7 @@ _RegistrationEyeDonationCenterByNGO();
                       flex: 2,
                       child: Text(
                         'Screening Camp',
+                        maxLines:2,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -8437,9 +8386,9 @@ _RegistrationEyeDonationCenterByNGO();
                       child: ElevatedButton.icon(
                         onPressed: _addScreeningCampManager,
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
-                          onPrimary: Colors.red,
-                          shadowColor: Colors.redAccent.withOpacity(0.4),
+                          primary: Colors.blue,
+                          onPrimary: Colors.blue,
+                          shadowColor: Colors.white.withOpacity(0.4),
                           elevation: 3.0,
                           padding: EdgeInsets.symmetric(
                               vertical: 10.0, horizontal: 20.0),
@@ -8447,11 +8396,11 @@ _RegistrationEyeDonationCenterByNGO();
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
-                        icon: Icon(Icons.add, color: Colors.red, size: 20.0),
+                        icon: Icon(Icons.add, color: Colors.white, size: 20.0),
                         label: Text(
                           'Add Screening Camp',
                           style: TextStyle(
-                            color: Colors.red,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 15.0,
                           ),
@@ -8472,18 +8421,16 @@ _RegistrationEyeDonationCenterByNGO();
                     // Header Row
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCellSrNo('S.No.',context),
 
                         _buildHeaderCell('Camp Name'),
                         // _buildHeaderCell('Start Date'),
                         //_buildHeaderCell('End Date'),
-                        _buildHeaderCell('City'),
 
-                        _buildHeaderCellAction('View Details'),
+                        _buildHeaderCellAction('View'),
                         //_buildHeaderCellUpdateandBlock('Update/Block'),
                       ],
                     ),
-                    Divider(color: Colors.blue, height: 1.0),
                     // Data Rows
                     FutureBuilder<List<DataScreeningCampList>>(
                       future: ApiController.getCampList(
@@ -8510,8 +8457,7 @@ _RegistrationEyeDonationCenterByNGO();
                                       Utils.formatDateString(offer.startDate)),
                                   _buildDataCell(
                                       Utils.formatDateString(offer.endDate)),*/
-                                  _buildDataCell(offer.name),
-                                  _buildDataCellViewBlue("View Detail", () {
+                                  _buildDataCellViewBlue("View", () {
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
                                     // Call the dialog method when the "View Detail" button is pressed
                                     _showDetailsDialogADDScreeningCamp(
@@ -8857,13 +8803,13 @@ _RegistrationEyeDonationCenterByNGO();
                         // Align text to the left
                         child: Text(
                           'SATELLITE CENTRE MANAGER DETAILS',
+                          maxLines:2,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                             fontSize: 16, // Increased font size for emphasis
                           ),
-                          overflow: TextOverflow
-                              .ellipsis, // Ensures text does not overflow
+
                         ),
                       ),
                     ),
@@ -8874,11 +8820,11 @@ _RegistrationEyeDonationCenterByNGO();
                         onPressed: _addSatelliteCenterManager,
                         // Trigger action on press
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.transparent,
+                          primary: Colors.blue,
                           // Transparent background for the button
-                          onPrimary: Colors.red,
+                          onPrimary: Colors.blue,
                           // Text color when not pressed
-                          shadowColor: Colors.red.withOpacity(0.4),
+                          shadowColor: Colors.blue.withOpacity(0.4),
                           // Shadow effect
                           padding: EdgeInsets.symmetric(
                               horizontal: 16.0, vertical: 12.0),
@@ -8887,14 +8833,14 @@ _RegistrationEyeDonationCenterByNGO();
                                 BorderRadius.circular(8.0), // Rounded corners
                           ),
                           side: BorderSide(
-                              color: Colors.red,
+                              color: Colors.white,
                               width: 2.0), // Red border around the button
                         ),
                         child: Text(
                           'Add Satellite Manager',
                           maxLines: 2,
                           style: TextStyle(
-                            color: Colors.red, // Button text color
+                            color: Colors.white, // Button text color
                             fontWeight: FontWeight.normal, // Text weight
                           ),
                           overflow:
@@ -8916,17 +8862,13 @@ _RegistrationEyeDonationCenterByNGO();
                     // Header Row
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCellSrNo('S.No.',context),
                         _buildHeaderCell('Officer Name'),
-                        _buildHeaderCell('Hospital'),
-                        //_buildHeaderCell('Designation'),
-                        // _buildHeaderCell('Mobile Number'),
-                        // _buildHeaderCell('Email id'),
-                        _buildHeaderCellAction('View Details'),
+
+                        _buildHeaderCellAction('Action '),
                         // _buildHeaderCellUpdateandBlock('Update/Block'),
                       ],
                     ),
-                    Divider(color: Colors.blue, height: 1.0),
                     // Data Rows
                     FutureBuilder<List<DataGetSatelliteCenterList>>(
                       future: ApiController.GetSatelliteManagerList(
@@ -8950,13 +8892,8 @@ _RegistrationEyeDonationCenterByNGO();
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.name),
-                                  _buildDataCell(offer.hName),
-                                  //   _buildDataCell(offer.designation),
-                                  // _buildDataCell(offer.mobile),
-                                  // _buildDataCell(offer.emailId),
-                                  /* _buildSatelliteManagerEditBlocked(
-                                      int.parse(offer.srNo)),*/
-                                  _buildDataCellViewBlue("View Detail", () {
+
+                                  _buildDataCellViewBlue("View", () {
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
                                     _showHospitalDetailsDialogSATELLITECENTREMANAGERDETAILS(
                                         offer);
@@ -9863,7 +9800,8 @@ _RegistrationEyeDonationCenterByNGO();
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'SATELLITE CENTRE MANAGER DETAILS',
+                            'SATELLITE CENTRE MANAGER',
+                            maxLines:2,
                             style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
@@ -9876,28 +9814,40 @@ _RegistrationEyeDonationCenterByNGO();
                           ),
                         ),
                       ),
+                      SizedBox(width: 4), // Spacing between icon and text
+
                       Flexible(
                         child: GestureDetector(
                           onTap: _addSatelliteCenterRedOtionclick,
                           child: Align(
                             alignment: Alignment.centerRight,
-                            child: Text(
-                              'Add Satellite Centre',
-                              style: TextStyle(
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                // Increased font size
-                                letterSpacing: 1.2,
-                                // Letter spacing for consistency
-                                decoration: TextDecoration
-                                    .underline, // Underlined for emphasis
-                              ),
-                              overflow: TextOverflow.ellipsis,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min, // Ensures compact layout
+                              crossAxisAlignment: CrossAxisAlignment.center, // Align items properly
+                              children: [
+                                Icon(Icons.add_circle, color: Colors.white, size: 20), // Icon added
+                                SizedBox(width: 8), // Spacing between icon and text
+                                Expanded( // Prevents overflow
+                                  child: Text(
+                                    'Add Satellite Centre',
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16, // Increased font size
+                                      letterSpacing: 1.2, // Letter spacing for consistency
+                                      decoration: TextDecoration.underline, // Underlined for emphasis
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
                       ),
+
+
                     ],
                   ),
                 ),
@@ -9913,19 +9863,17 @@ _RegistrationEyeDonationCenterByNGO();
                     // Header Row
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('Officer Name'),
+                        _buildHeaderCellSrNo('S.No.',context),
                         _buildHeaderCell('Hospital'),
                         /*  _buildHeaderCell('Designation'),
                         _buildHeaderCell('Mobile Number'),
                         _buildHeaderCell('Email id'),
 */
 
-                        _buildHeaderCellAction('View Details'),
+                        _buildHeaderCellAction('Action'),
                         // _buildHeaderCell('Update/Block'),
                       ],
                     ),
-                    Divider(color: Colors.blue, height: 1.0),
                     // Data Rows
                     FutureBuilder<List<DataGetSatelliteCenterList>>(
                       future: ApiController.GetSatelliteManagerList(
@@ -9948,14 +9896,9 @@ _RegistrationEyeDonationCenterByNGO();
                                 children: [
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.name),
                                   _buildDataCell(offer.hName),
-                                  /* _buildDataCell(offer.designation),
-                                  _buildDataCell(offer.mobile),
-                                  _buildDataCell(offer.emailId),
-                                  _buildSatelliteManagerEditBlocked(
-                                      int.parse(offer.srNo)),*/
-                                  _buildDataCellViewBlue("View Detail", () {
+
+                                  _buildDataCellViewBlue("View", () {
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
                                     // Show the dialog with hospital details when the "View Detail" button is pressed
                                     _showHospitalDetailsDialogSATELLITECENTREDATA(
@@ -9996,6 +9939,7 @@ _RegistrationEyeDonationCenterByNGO();
                   // Title
                   Text(
                     'Satellite Center Details',
+                    maxLines:2,
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 20.0,
@@ -10680,6 +10624,96 @@ _RegistrationEyeDonationCenterByNGO();
     } else {
       print("@@No fromListgeteyeBankById Number found in shared preferences.");
     }
+  }
+  Widget _buildHeaderCellSrNoDiseaseData(String text, BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.2, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+
+  Widget _buildDataCellSrNoDiseaseData(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.2, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Text(
+
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+
+
+  Widget _buildDataCellViewBlue(
+      String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+            bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
 

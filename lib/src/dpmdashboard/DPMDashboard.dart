@@ -463,7 +463,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   onTap: () {
                     setState(() {
                       NGOlistDropDownDisplayDatas = false;
-
+                      dpmEyeScreeningSchoolDataShow = false;
                       dashboardviewReplace = true;
                       NGO_APPorovedClickShowData = false;
                       NGO_PendingClickShowData = false;
@@ -10143,7 +10143,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               Container(
-                color: Colors.blue,
+                color: Colors.white,
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
@@ -10162,13 +10162,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 4,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
+
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -10233,20 +10227,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Colors.blue,
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 4,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
+
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.arrow_back, color: Colors.blue),
+                              Icon(Icons.arrow_back, color: Colors.white),
                               // Back icon
                               SizedBox(width: 8),
                               // Space between icon and text
@@ -10254,7 +10242,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Text(
                                   'Back',
                                   style: TextStyle(
-                                    color: Colors.blue,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                   ),
@@ -11044,7 +11032,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               Container(
-                color: Colors.blue,
+                color: Colors.white,
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
@@ -11063,13 +11051,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 4,
-                                offset: Offset(2, 2),
-                              ),
-                            ],
+
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -11116,7 +11098,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         child: Container(
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Colors.blue,
                             borderRadius: BorderRadius.circular(10),
                             boxShadow: [
                               BoxShadow(
@@ -11129,7 +11111,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.arrow_back, color: Colors.blue),
+                              Icon(Icons.arrow_back, color: Colors.white),
                               // Back icon
                               SizedBox(width: 8),
                               // Space between icon and text
@@ -11137,7 +11119,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Text(
                                   'Back',
                                   style: TextStyle(
-                                    color: Colors.blue,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                   ),
@@ -11419,7 +11401,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           child: Column(
                             children: [
                               const Text(
-                                'No data found',
+                                 'No data found',
                                 style:
                                     TextStyle(fontSize: 18, color: Colors.red),
                               ),
@@ -11785,23 +11767,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Column(
                         children: [
                           // Header Row
-                          Row(
-                            children: [
-                              _buildHeaderCellSrNo('S.No.'),
-                              _buildHeaderCell('Patient Id'),
-                              _buildHeaderCell('Name of Person'),
-                              _buildHeaderCell('Mobile No.'),
-                              _buildHeaderCell('DOB'),
-                              _buildHeaderCell('Gender'),
-                              _buildHeaderCell('Organisation Date'),
-                              _buildHeaderCell('Operated type'),
-                              _buildHeaderCell('NGO'),
-                              _buildHeaderCell('Action'),
-                            ],
-                          ),
-                          Divider(color: Colors.blue, height: 1.0),
-
-                          // Data Rows
                           FutureBuilder<List<Datalowvisionregister_Glaucoma>>(
                             future: ApiController.getDPM_Glaucoma(
                               district_code_login,
@@ -11811,15 +11776,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                               lowVisionDataValue,
                             ),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
                               } else if (snapshot.hasError) {
-                                return Utils.getEmptyView(
-                                    "Error: ${snapshot.error}");
-                              } else if (!snapshot.hasData ||
-                                  snapshot.data.isEmpty) {
+                                return Utils.getEmptyView("Error: ${snapshot.error}");
+                              } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                                 return Container(
                                   padding: const EdgeInsets.all(16.0),
                                   child: Text(
@@ -11831,47 +11792,86 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     ),
                                   ),
                                 );
-                              } else {
-                                List<Datalowvisionregister_Glaucoma> ddata =
-                                    snapshot.data;
-
-                                print('@@---ddata: ' +
-                                    lowVisionDataValue.toString());
-                                return SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Column(
-                                    children: ddata.map((offer) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          _buildDataCellSrNo(
-                                              (ddata.indexOf(offer) + 1)
-                                                  .toString()),
-                                          _buildDataCell(offer.pUniqueID),
-                                          _buildDataCell(offer.name),
-                                          _buildDataCell(
-                                              offer.mobile.toString()),
-                                          _buildDataCell(Utils.formatDateString(
-                                              offer.dob)),
-                                          _buildDataCell(offer.gender),
-                                          _buildDataCell(offer.addressLine1),
-                                          _buildDataCell(Utils.formatDateString(
-                                              offer.operatedOn)),
-                                          _buildDataCell(
-                                              offer.ngoName.toString()),
-                                          _buildDataCellViewBlue("View", () {
-                                            // Handle the view action here
-                                            // Example: Navigate to a details page with the selected item
-                                          }),
-                                        ],
-                                      );
-                                    }).toList(),
-                                  ),
-                                );
                               }
+
+                              List<Datalowvisionregister_Glaucoma> ddata = snapshot.data;
+
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // ✅ Show header only when data is available
+                                    Row(
+                                      children: [
+                                        _buildHeaderCellSrNo('S.No.'),
+                                        _buildHeaderCell('Patient Id'),
+                                        _buildHeaderCell('Action'),
+                                      ],
+                                    ),
+
+                                    // ✅ Show rows when data is available
+                                    Column(
+                                      children: ddata.map((offer) {
+                                        return Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                            _buildDataCell(offer.pUniqueID),
+
+                                            _buildDataCellViewBlue("View", () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: Text("Patient Details"),
+                                                    content: SingleChildScrollView(
+                                                      child: DataTable(
+                                                        border: TableBorder.all(color: Colors.blue),
+                                                        columnSpacing: 20.0,
+                                                        columns: [
+                                                          DataColumn(
+                                                            label: Text('Field', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                          ),
+                                                          DataColumn(
+                                                            label: Text('Value', style: TextStyle(fontWeight: FontWeight.bold)),
+                                                          ),
+                                                        ],
+                                                        rows: [
+                                                          _buildDataRow("Sr. No.", (ddata.indexOf(offer) + 1).toString()),
+                                                          _buildDataRow("Unique ID", offer.pUniqueID),
+                                                          _buildDataRow("Name", offer.name),
+                                                          _buildDataRow("Mobile", offer.mobile.toString()),
+                                                          _buildDataRow("DOB", Utils.formatDateString(offer.dob)),
+                                                          _buildDataRow("Gender", offer.gender),
+                                                          _buildDataRow("Address", offer.addressLine1),
+                                                          _buildDataRow("Operated On", Utils.formatDateString(offer.operatedOn)),
+                                                          _buildDataRow("NGO Name", offer.ngoName.toString()),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context).pop(); // Close dialog
+                                                        },
+                                                        child: Text("Close"),
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }),
+                                          ],
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ],
+                                ),
+                              );
                             },
                           ),
+
                         ],
                       ),
                     ),
@@ -11893,7 +11893,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               Container(
-                color: Colors.blue,
+                color: Colors.white,
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
@@ -11909,19 +11909,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         },
                         child: Container(
                           padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            // White background for better contrast
-                            borderRadius: BorderRadius.circular(10),
-                            // Rounded corners
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26, // Shadow color
-                                blurRadius: 4, // Shadow blur radius
-                                offset: Offset(2, 2), // Shadow offset
-                              ),
-                            ],
-                          ),
+
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -11966,22 +11954,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Colors.white,
+                            color: Colors.blue,
                             // White background for better contrast
                             borderRadius: BorderRadius.circular(10),
                             // Rounded corners
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black26, // Shadow color
-                                blurRadius: 4, // Shadow blur radius
-                                offset: Offset(2, 2), // Shadow offset
-                              ),
-                            ],
+
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(Icons.arrow_back, color: Colors.blue),
+                              Icon(Icons.arrow_back, color: Colors.white),
                               // Back icon
                               SizedBox(width: 8),
                               // Space between icon and text
@@ -11989,7 +11971,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Text(
                                   'Back',
                                   style: TextStyle(
-                                    color: Colors.blue,
+                                    color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 16,
                                   ),
@@ -12642,19 +12624,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                           // Header Row
                           Row(
                             children: [
-                              _buildHeaderCellSrNo('S.No.'),
+                              _buildHeaderCellSrNoDiseaseData('S.No.',context),
                               _buildHeaderCell('Patient Id'),
-                              _buildHeaderCell('Name of Person'),
-                              _buildHeaderCell('Mobile No.'),
-                              _buildHeaderCell('DOB'),
-                              _buildHeaderCell('Gender'),
-                              _buildHeaderCell('Organisation Date'),
-                              _buildHeaderCell('Operated type'),
-                              _buildHeaderCell('NGO'),
-                              _buildHeaderCell('Action'),
+
+                              _buildHeaderCellNGOAction('Action'),
                             ],
                           ),
-                          Divider(color: Colors.blue, height: 1.0),
 
                           // Data Rows
                           FutureBuilder<List<Datalowvisonregister_diabitic>>(
@@ -12700,11 +12675,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          _buildDataCellSrNo(
+                                          _buildDataCellSrNoDiseaseData(
                                               (ddata.indexOf(offer) + 1)
                                                   .toString()),
                                           _buildDataCell(offer.pUniqueID),
-                                          _buildDataCell(offer.name),
+                                       /*   _buildDataCell(offer.name),
                                           _buildDataCell(
                                               offer.mobile.toString()),
                                           _buildDataCell(Utils.formatDateString(
@@ -12714,11 +12689,56 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           _buildDataCell(Utils.formatDateString(
                                               offer.operatedOn)),
                                           _buildDataCell(
-                                              offer.ngoName.toString()),
+                                              offer.ngoName.toString()),*/
                                           _buildDataCellViewBlue("View", () {
-                                            // Handle the view action here
-                                            // Example: Navigate to a details page with the selected item
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: Text("Patient Details"),
+                                                  content: SingleChildScrollView(
+                                                    child: DataTable(
+                                                      border: TableBorder.all(color: Colors.blue),
+                                                      columns: [
+                                                        DataColumn(
+                                                          label: Text(
+                                                            'Field',
+                                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                                          ),
+                                                        ),
+                                                        DataColumn(
+                                                          label: Text(
+                                                            'Value',
+                                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                      rows: [
+                                                        _buildDataRow("Sr. No.", (ddata.indexOf(offer) + 1).toString()),
+                                                        _buildDataRow("Unique ID", offer.pUniqueID),
+                                                        _buildDataRow("Name", offer.name),
+                                                        _buildDataRow("Mobile", offer.mobile.toString()),
+                                                        _buildDataRow("DOB", Utils.formatDateString(offer.dob)),
+                                                        _buildDataRow("Gender", offer.gender),
+                                                        _buildDataRow("Address", offer.addressLine1),
+                                                        _buildDataRow("Operated On", Utils.formatDateString(offer.operatedOn)),
+                                                        _buildDataRow("NGO Name", offer.ngoName.toString()),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop(); // Close the dialog
+                                                      },
+                                                      child: Text("Close"),
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
                                           }),
+
                                         ],
                                       );
                                     }).toList(),
