@@ -1660,6 +1660,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             children: ddata.map((offer) {
                               return Row(
                                 children: [
+
                                   _buildDataCellSrNo(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.eyeBankUniqueID),
