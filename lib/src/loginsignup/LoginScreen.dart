@@ -320,50 +320,56 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SizedBox(height: 20),
-            TextField(
-              controller: _loginIdController,
-              decoration: InputDecoration(
-                label: RichText(
-                  text: TextSpan(
-                    text: 'Login ID',
-                    style: TextStyle(color: Colors.black, fontSize: 16),
-                    children: [
-                      TextSpan(
-                        text: ' *', // Asterisk for required field
-                        style: TextStyle(color: Colors.red, fontSize: 16),
-                      ),
-                    ],
+            SizedBox(
+              height: 50, // Adjust height as needed
+              child: TextField(
+                controller: _loginIdController,
+                decoration: InputDecoration(
+                  label: RichText(
+                    text: TextSpan(
+                      text: 'Login ID',
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                      children: [
+                        TextSpan(
+                          text: ' *', // Asterisk for required field
+                          style: TextStyle(color: Colors.red, fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                hintText: 'Enter Login ID',
-                prefixIcon: Icon(Icons.person),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  hintText: 'Enter Login ID',
+                  prefixIcon: Icon(Icons.person),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
               ),
             ),
 
             SizedBox(height: 10),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                label: RichText(
-                  text: TextSpan(
-                    text: 'Password',
-                    style: TextStyle(color: Colors.black, fontSize: 16),
-                    children: [
-                      TextSpan(
-                        text: ' *', // Red Asterisk
-                        style: TextStyle(color: Colors.red, fontSize: 16),
-                      ),
-                    ],
+            SizedBox(
+              height: 50, // Adjust height as needed
+              child: TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  label: RichText(
+                    text: TextSpan(
+                      text: 'Password',
+                      style: TextStyle(color: Colors.black, fontSize: 16),
+                      children: [
+                        TextSpan(
+                          text: ' *', // Red Asterisk
+                          style: TextStyle(color: Colors.red, fontSize: 16),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                hintText: 'Enter Password', // Regular hint text
-                prefixIcon: Icon(Icons.lock),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  hintText: 'Enter Password', // Regular hint text
+                  prefixIcon: Icon(Icons.lock),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                  ),
                 ),
               ),
             ),
@@ -376,30 +382,33 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 Expanded(
                   flex: 4,
-                  child: TextField(
-                    controller: _captchaController,
-                    decoration: InputDecoration(
-                      label: RichText(
-                        text: TextSpan(
-                          text: 'Enter Captcha Value',
-                          style: TextStyle(color: Colors.black, fontSize: 16),
-                          children: [
-                            TextSpan(
-                              text: ' *', // Red Asterisk for required field
-                              style: TextStyle(color: Colors.red, fontSize: 16),
-                            ),
-                          ],
+                  child: SizedBox(
+                    height: 50, // Adjust height as needed
+                    child: TextField(
+                      controller: _captchaController,
+                      decoration: InputDecoration(
+                        label: RichText(
+                          text: TextSpan(
+                            text: 'Enter Captcha Value',
+                            style: TextStyle(color: Colors.black, fontSize: 16),
+                            children: [
+                              TextSpan(
+                                text: ' *', // Red Asterisk for required field
+                                style: TextStyle(color: Colors.red, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
+                      onChanged: (value) {
+                        setState(() {
+                          isVerified = false;
+                        });
+                      },
                     ),
-                    onChanged: (value) {
-                      setState(() {
-                        isVerified = false;
-                      });
-                    },
                   ),
                 ),
 
@@ -408,7 +417,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   flex: 2,
                   child: Container(
 
-                    height: 56,
+                    height: 50, // Adjust height as needed
                     margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
                     decoration: BoxDecoration(
 
@@ -434,7 +443,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Expanded(
                   flex: 1,
                   child: Container(
-                    height: 56,
+                    height: 50, // Adjust height as needed
                     margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey, width: 1), // Border color & width
@@ -482,57 +491,60 @@ class _LoginScreenState extends State<LoginScreen> {
               },
               child: Text('Sign In'),
             ),*/
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(130, 50), // Button size
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8), // Rounded corners
-                ),
-                primary: Colors.blue, // Use 'primary' instead of 'backgroundColor'
-                elevation: 4, // Default shadow
-                shadowColor: Colors.black, // Shadow color
-              ).copyWith(
-                elevation: MaterialStateProperty.resolveWith<double>(
-                      (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.pressed)) {
-                      return 10; // Increase shadow on click
-                    }
-                    return 4; // Default shadow
-                  },
-                ),
-              ),
-              onPressed: () {
-                if (_loginIdController.text.isEmpty) {
-                  Utils.showToast("Username cannot be empty !", false);
-                  return;  // Exit if username is not entered
-                }
-
-                // Step 2: Check if the password is entered and valid
-                if (_passwordController.text.isEmpty) {
-                  Utils.showToast("Password cannot be empty !", false);
-                  return;  // Exit if password is not entered
-                }
-
-                // Step 3: Check if captcha is correct
-                isVerified = _captchaController.text == randomString;
-                if (!isVerified) {
-                  Utils.showToast("Captcha does not match!", false);
-                  return;  // Exit if captcha is incorrect
-                }
-
-                // If all checks pass, submit the form
-                _submitForm();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.chevron_right, color: Colors.white),
-                  SizedBox(width: 8), // Space between icon and text
-                  Text(
-                    'Sign In',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+            SizedBox(
+              height: 50, // Adjust height as needed
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(130, 50), // Button size
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
                   ),
-                ],
+                  primary: Colors.blue, // Use 'primary' instead of 'backgroundColor'
+                  elevation: 4, // Default shadow
+                  shadowColor: Colors.black, // Shadow color
+                ).copyWith(
+                  elevation: MaterialStateProperty.resolveWith<double>(
+                        (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return 10; // Increase shadow on click
+                      }
+                      return 4; // Default shadow
+                    },
+                  ),
+                ),
+                onPressed: () {
+                  if (_loginIdController.text.isEmpty) {
+                    Utils.showToast("Username cannot be empty !", false);
+                    return;  // Exit if username is not entered
+                  }
+
+                  // Step 2: Check if the password is entered and valid
+                  if (_passwordController.text.isEmpty) {
+                    Utils.showToast("Password cannot be empty !", false);
+                    return;  // Exit if password is not entered
+                  }
+
+                  // Step 3: Check if captcha is correct
+                  isVerified = _captchaController.text == randomString;
+                  if (!isVerified) {
+                    Utils.showToast("Captcha does not match!", false);
+                    return;  // Exit if captcha is incorrect
+                  }
+
+                  // If all checks pass, submit the form
+                  _submitForm();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.chevron_right, color: Colors.white),
+                    SizedBox(width: 8), // Space between icon and text
+                    Text(
+                      'Sign In',
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
+                    ),
+                  ],
+                ),
               ),
             ),
 

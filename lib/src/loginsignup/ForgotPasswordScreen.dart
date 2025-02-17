@@ -101,9 +101,11 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
               )),
             ),
             Container(
+              height: 50, // Adjust height as needed
               margin: EdgeInsets.fromLTRB(100, 20, 100, 20),
               child: Container(
                 color: Colors.blue,
+
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -153,61 +155,67 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
                           ),
                         )),
                     SizedBox(height: 10),
-                    TextFormField(
-                      controller: userIDController,
-                      decoration: InputDecoration(
-                        label: RichText(
-                          text: TextSpan(
-                            text: 'User Id',
-                            style: TextStyle(color: Colors.black, fontSize: 16),
-                            children: [
-                              TextSpan(
-                                text: ' *', // Red Asterisk for required field
-                                style: TextStyle(color: Colors.red, fontSize: 16),
-                              ),
-                            ],
+                    SizedBox(
+                      height: 50, // Adjust height as needed
+                      child: TextFormField(
+                        controller: userIDController,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'User Id',
+                              style: TextStyle(color: Colors.black, fontSize: 16),
+                              children: [
+                                TextSpan(
+                                  text: ' *', // Red Asterisk for required field
+                                  style: TextStyle(color: Colors.red, fontSize: 16),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        hintText: 'Enter User Id', // Adjusted hint text for clarity
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
+                          hintText: 'Enter User Id', // Adjusted hint text for clarity
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
                         ),
                       ),
                     ),
                     SizedBox(height: 10),
-                    GestureDetector(
-                      onTap: _forgotPassword, // Handle tap directly on GestureDetector
-                      child: Container(
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          color: appThemeSecondary,
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2), // Shadow color
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: Offset(0, 3), // Shadow position
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center, // Center alignment
-                          children: [
-                            Icon(
-                              Icons.email, // Email icon
-                              color: Colors.white,
-                            ),
-                            SizedBox(width: 8), // Space between icon and text
-                            Text(
-                              AppConstant.txtSendEmail,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                    SizedBox(
+                      height: 50, // Adjust height as needed
+                      child: GestureDetector(
+                        onTap: _forgotPassword, // Handle tap directly on GestureDetector
+                        child: Container(
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                            color: appThemeSecondary,
+                            borderRadius: BorderRadius.circular(8.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2), // Shadow color
+                                spreadRadius: 2,
+                                blurRadius: 5,
+                                offset: Offset(0, 3), // Shadow position
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center, // Center alignment
+                            children: [
+                              Icon(
+                                Icons.email, // Email icon
+                                color: Colors.white,
+                              ),
+                              SizedBox(width: 8), // Space between icon and text
+                              Text(
+                                AppConstant.txtSendEmail,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     )
