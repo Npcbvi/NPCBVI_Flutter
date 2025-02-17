@@ -58,22 +58,7 @@ String Gender;
         child: Column(
           children: [
             // Info Bar
-            Container(
-              color: Colors.white70,
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Text('District:', style: _infoTextStyle()),
-                  SizedBox(width: 5),
-                  Text(districtNames, style: _highlightTextStyle()),
-                  SizedBox(width: 5),
-                  Text('State:', style: _infoTextStyle()),
-                  SizedBox(width: 5),
-                  Text(stateNames, style: _highlightTextStyle()),
-                ],
-              ),
-            ),
-            Divider(color: Colors.grey),
+         _buildUserInfo(),
             // Data Table
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -83,7 +68,7 @@ String Gender;
                   // Header Row
                   Row(
                     children: [
-                      _buildHeaderCellSrNo('S.No.'),
+                      _buildHeaderCellSrNo('S.No.',context),
                       _buildHeaderCell('Patient ID'),
                       _buildHeaderCellDashboardsAction('Action'),
                     ],
@@ -207,6 +192,22 @@ String Gender;
       },
     );
   }
+
+
+  TextStyle _infoTextStyle() => TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
+
+  TextStyle _highlightTextStyle() => TextStyle(color: Colors.red, fontWeight: FontWeight.w500);
+
+  String getCurrentFinancialYear() {
+    DateTime now = DateTime.now();
+    int currentYear = now.year;
+    int nextYear = currentYear + 1;
+    if (now.month >= 4) {
+      return '$currentYear-${nextYear.toString().substring(2)}';
+    } else {
+      return '${currentYear - 1}-${currentYear.toString().substring(2)}';
+    }
+  }
   TableRow _buildTableRowcall(String title, VoidCallback onTap) {
     return TableRow(
       children: [
@@ -265,77 +266,213 @@ String Gender;
     );
   }
 
-  Widget _buildHeaderCell(String title) {
-    return Container(
-      width: 200,
-      height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
-      child: Center(child: Text(title, style: _infoTextStyle())),
-    );
-  }
+  Widget _buildHeaderCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
 
-  Widget _buildHeaderCellDashboardsAction(String title) {
     return Container(
-      width: 60,
-      height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
-      child: Center(child: Text(title, style: TextStyle(fontWeight: FontWeight.bold))),
-    );
-  }
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
 
-  Widget _buildHeaderCellSrNo(String title) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
-      child: Center(child: Text(title, style: _infoTextStyle())),
-    );
-  }
-
-  Widget _buildDataCell(String value) {
-    return Container(
-      width: 200,
-      height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
-      child: Center(child: Text(value, style: TextStyle(color: Colors.black))),
-    );
-  }
-
-  Widget _buildDataCellCellSrNo(String value) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.5)),
-      child: Center(child: Text(value, style: TextStyle(color: Colors.black))),
-    );
-  }
-
-  Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 60,
-        height: 50,
-        decoration: BoxDecoration(color: Colors.white, border: Border.all(width: 0.1)),
-        child: Center(
-          child: Text(text, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
         ),
       ),
     );
   }
 
-  TextStyle _infoTextStyle() => TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
+  Widget _buildHeaderCellDashboardsAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
 
-  TextStyle _highlightTextStyle() => TextStyle(color: Colors.red, fontWeight: FontWeight.w500);
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.center,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
 
-  String getCurrentFinancialYear() {
-    DateTime now = DateTime.now();
-    int currentYear = now.year;
-    int nextYear = currentYear + 1;
-    if (now.month >= 4) {
-      return '$currentYear-${nextYear.toString().substring(2)}';
-    } else {
-      return '${currentYear - 1}-${currentYear.toString().substring(2)}';
-    }
+  Widget _buildHeaderCellSrNo(String text, BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Text(
+
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellViewBlueDashboard(
+      String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+            bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildUserInfo() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Container(
+        color: Colors.white70,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            children: [
+
+
+              _buildUserInfoGrid('District:',
+                  districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
+              _buildUserInfoGrid('State:', stateNames?.toString() ?? 'N/A',
+                  Colors.black, Colors.red),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildUserInfoGrid(
+      String label, String value, Color labelColor, Color valueColor) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 4.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(color: labelColor, fontWeight: FontWeight.w500),
+          ),
+          SizedBox(height: 5),
+          Text(
+            value,
+            style: TextStyle(color: valueColor, fontWeight: FontWeight.w500),
+          ),
+        ],
+      ),
+    );
   }
 }

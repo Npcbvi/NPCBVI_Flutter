@@ -426,6 +426,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   title: 'Add PNJA',
                   onTap: () {
                     print('@@Add PNJA');
+                    Utils.showToast("Complete in Next Sprint!", true);
                     setState(() {});
                     Navigator.pop(context);
                   },
@@ -451,16 +452,31 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       //  print('@@spinnerChooseValue--' + _chosenValue);
                       if (_chosenValueLOWVision == "Cataract") {
                         print('@@NGO--1' + _chosenValueLOWVision);
+                        Utils.showToast("Complete in Next Sprint!", true);
+
                       } else if (_chosenValueLOWVision == "Diabetic") {
+                        Utils.showToast("Complete in Next Sprint!", true);
+
                       } else if (_chosenValueLOWVision == "Glaucoma") {
+                        Utils.showToast("Complete in Next Sprint!", true);
+
                       } else if (_chosenValueLOWVision == "Corneal Blindness") {
+                        Utils.showToast("Complete in Next Sprint!", true);
+
                       } else if (_chosenValueLOWVision == "VR Surgery") {
                         print('@@Childhood--' + _chosenValueLOWVision);
+                        Utils.showToast("Complete in Next Sprint!", true);
+
+
                       } else if (_chosenValueLOWVision ==
                           "Childhood Blindness") {
                         print('@@Childhood--' + _chosenValueLOWVision);
+                        Utils.showToast("Complete in Next Sprint!", true);
+
                       } else {
                         print('@@Childhood--2' + _chosenValueLOWVision);
+                        Utils.showToast("Complete in Next Sprint!", true);
+
                       }
                     });
 
@@ -546,173 +562,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            /*  Container(
-              width: double.infinity,
-              color: Colors.blue,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      _buildNavigationButton('Dashboard', () {
-                        setState(() {
-                          print('@@dashboardviewReplace----display---');
-                          _future = getDPM_ScreeningYear();
-                          hospitalDashboardclickDsiplay = true;
-                          hospitalAddPatientData = false;
-                        });
-                      }),
-                      SizedBox(width: 8.0),
-                      _buildDropdownRegisterPatient(),
-                      SizedBox(width: 8.0),
-                      _buildNavigationButton('Add PNJA', () {
-                        print('@@Add PNJA');
-                        setState(() {});
-                      }),
-                      SizedBox(width: 8.0),
-                      Container(
-                        width: 170.0,
-                        key: _dropdownKey,
-                        child: new Theme(
-                          data: Theme.of(context).copyWith(
-                            canvasColor: Colors.blue.shade200,
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              focusColor: Colors.white,
-                              value: _chosenValueLOWVision,
-                              style: TextStyle(color: Colors.white),
-                              iconEnabledColor: Colors.white,
-                              items: <String>[
-                                'Cataract',
-                                'Diabetic',
-                                'Glaucoma',
-                                'Corneal Blindness',
-                                'VR Surgery',
-                                'Childhood Blindness',
-                              ].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                );
-                              }).toList(),
-                              hint: Text(
-                                "Low Vision Register",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              onChanged: (String value) {
-                                setState(() {
-                                  _chosenValueLOWVision = value;
-                                  //  print('@@spinnerChooseValue--' + _chosenValue);
-                                  if (_chosenValueLOWVision == "Cataract") {
-                                    print('@@NGO--1' + _chosenValueLOWVision);
-                                  } else if (_chosenValueLOWVision ==
-                                      "Diabetic") {
-                                  } else if (_chosenValueLOWVision ==
-                                      "Glaucoma") {
-                                  } else if (_chosenValueLOWVision ==
-                                      "Corneal Blindness") {
-                                  } else if (_chosenValueLOWVision ==
-                                      "VR Surgery") {
-                                    print('@@Childhood--' +
-                                        _chosenValueLOWVision);
-                                  } else if (_chosenValueLOWVision ==
-                                      "Childhood Blindness") {
-                                    print('@@Childhood--' +
-                                        _chosenValueLOWVision);
-                                  } else {
-                                    print('@@Childhood--2' +
-                                        _chosenValueLOWVision);
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8.0),
-                      Container(
-                        width: 170.0,
-                        key: _dropdownKeySenTODPM,
-                        child: new Theme(
-                          data: Theme.of(context).copyWith(
-                            canvasColor: Colors.blue.shade200,
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              focusColor: Colors.white,
-                              value: _chosenValueLOWVision,
-                              style: TextStyle(color: Colors.white),
-                              iconEnabledColor: Colors.white,
-                              items: <String>[
-                                'Cataract',
-                                'Diabetic',
-                                'Glaucoma',
-                                'Corneal Blindness',
-                                'VR Surgery',
-                                'Childhood Blindness',
-                              ].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                );
-                              }).toList(),
-                              hint: Text(
-                                "Send to DPM",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              onChanged: (String value) {
-                                setState(() {
-                                  _chosenValueLOWVision = value;
-                                  //  print('@@spinnerChooseValue--' + _chosenValue);
-                                  if (_chosenValueLOWVision == "Cataract") {
-                                    print('@@NGO--1' + _chosenValueLOWVision);
-                                  } else if (_chosenValueLOWVision ==
-                                      "Diabetic") {
-                                  } else if (_chosenValueLOWVision ==
-                                      "Glaucoma") {
-                                  } else if (_chosenValueLOWVision ==
-                                      "Corneal Blindness") {
-                                  } else if (_chosenValueLOWVision ==
-                                      "VR Surgery") {
-                                    print('@@Childhood--' +
-                                        _chosenValueLOWVision);
-                                  } else if (_chosenValueLOWVision ==
-                                      "Childhood Blindness") {
-                                    print('@@Childhood--' +
-                                        _chosenValueLOWVision);
-                                  } else {
-                                    print('@@Childhood--2' +
-                                        _chosenValueLOWVision);
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),*/
+
             _buildUserInfo(),
             hospitalDashboardclick(),
             HospitalAddPatientData()
@@ -901,7 +751,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     if (list.isEmpty) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10),
+                            horizontal: 20.0, vertical: 0),
                         child: Container(
                           width: 300,
                           height: 60,
@@ -959,12 +809,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             hintStyle: TextStyle(color: Colors.grey),
                             enabledBorder: OutlineInputBorder(
                               borderSide:
-                                  BorderSide(color: Colors.blue, width: 2.0),
+                                  BorderSide(color: Colors.blue, width: 1.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderSide: BorderSide(
-                                  color: Colors.blueAccent, width: 2.0),
+                                  color: Colors.blueAccent, width: 1.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             filled: true,
@@ -996,28 +846,35 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 SizedBox(height: 5),
                 buildInfoContainer(fullnameController),
                 Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 10),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      print('Get button clicked');
-                      setState(() {
-                        // Update ngoDashboardDatas based on dropDownTwoSelcted value
-                        // if (dropDownTwoSelcted == 6) {
-                        if (getYearNgoHopital == null) {
-                          Utils.showToast(
-                              "Please Select financialYear !", false);
-                        } else {
-                          hospitalDashboardDatas = true;
-                        }
-                        /*   } else {
-                          ngoDashboardDatas = false;
-                        }*/
-                      });
-                    },
-                    child: Text('Get Data'),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                  child: SizedBox(
+                    height: 40,
+                    child: ElevatedButton(
+                      onPressed: () {
+                        print('Get button clicked');
+                        setState(() {
+                          if (getYearNgoHopital == null) {
+                            Utils.showToast("Please Select financialYear !", false);
+                          } else {
+                            hospitalDashboardDatas = true;
+                          }
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min, // Ensures button wraps around content
+                        children: [
+                          Icon(Icons.search, color: Colors.white), // Change icon as needed
+                          SizedBox(width: 8), // Space between icon and text
+                          Text('Get Data'),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
+
                 Visibility(
                   visible: hospitalDashboardDatas,
                   child: Column(
@@ -1042,64 +899,67 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       ),
                       // Horizontal Scrolling Header Row
 
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Header Row
-                            Row(
-                              children: [
-                                _buildHeaderCellDiseaseData('Disease Type'),
-                                _buildHeaderCellDiseaseData('Registered'),
-                                _buildHeaderCellDiseaseData('Operated'),
-                              ],
-                            ),
-                            // Data Rows
-                            FutureBuilder<List<DataHospitalDashboard>>(
-                              future: ApiController.hospitalDashboard(
-                                  int.parse(role_id),
-                                  district_code_login,
-                                  state_code_login,
-                                  userId,
-                                  getYearNgoHopital,
-                                  0,
-                                  "0"),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return Center(
-                                      child: CircularProgressIndicator());
-                                } else if (snapshot.hasError) {
-                                  return Utils.getEmptyView(
-                                      "Error: ${snapshot.error}");
-                                } else if (!snapshot.hasData ||
-                                    snapshot.data.isEmpty) {
-                                  return Utils.getEmptyView("No data found");
-                                } else {
-                                  List<DataHospitalDashboard> ddata =
-                                      snapshot.data;
+                      Container(
+                        margin: EdgeInsets.fromLTRB(4, 0, 4, 0),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Header Row
+                              Row(
+                                children: [
+                                  _buildHeaderCellDiseaseData('Disease Type'),
+                                  _buildHeaderCellDiseaseData('Registered'),
+                                  _buildHeaderCellDiseaseData('Operated'),
+                                ],
+                              ),
+                              // Data Rows
+                              FutureBuilder<List<DataHospitalDashboard>>(
+                                future: ApiController.hospitalDashboard(
+                                    int.parse(role_id),
+                                    district_code_login,
+                                    state_code_login,
+                                    userId,
+                                    getYearNgoHopital,
+                                    0,
+                                    "0"),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Utils.getEmptyView(
+                                        "Error: ${snapshot.error}");
+                                  } else if (!snapshot.hasData ||
+                                      snapshot.data.isEmpty) {
+                                    return Utils.getEmptyView("No data found");
+                                  } else {
+                                    List<DataHospitalDashboard> ddata =
+                                        snapshot.data;
 
-                                  return Column(
-                                    children: ddata.map((offer) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          _buildDataCellDiseaseData(
-                                              offer.status),
-                                          _buildDataCellDiseaseData(
-                                              offer.registered),
-                                          _buildDataCellDiseaseData(
-                                              offer.operated),
-                                        ],
-                                      );
-                                    }).toList(),
-                                  );
-                                }
-                              },
-                            ),
-                          ],
+                                    return Column(
+                                      children: ddata.map((offer) {
+                                        return Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            _buildDataCellDiseaseData(
+                                                offer.status),
+                                            _buildDataCellDiseaseData(
+                                                offer.registered),
+                                            _buildDataCellDiseaseData(
+                                                offer.operated),
+                                          ],
+                                        );
+                                      }).toList(),
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],
@@ -1118,9 +978,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
         width: 300,
+        height: 60,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue, width: 2.0),
+          border: Border.all(color: Colors.blue, width: 1.0),
           borderRadius: BorderRadius.circular(5.0),
           color: Colors.white,
         ),
@@ -1256,6 +1117,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Container(
           width: 300,
+
           child: Theme(
             data: Theme.of(context).copyWith(canvasColor: Colors.white),
             child: Column(
@@ -1265,12 +1127,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   style: TextStyle(color: Colors.black),
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: Colors.blueAccent, width: 2.0),
+                          BorderSide(color: Colors.blueAccent, width: 1.0),
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                     hintText: 'Hospitals',
@@ -1323,30 +1185,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Left section: Radio button column
-                    /* Expanded(
-                      flex: 3, // Weight for the radio button column
-                      child: _radioButtonColumn(
-                        options: [
-                          'Screening Camp',
-                          'Satellite Centre',
-                          'Hospital Walk-in'
-                        ],
-                        groupValue: registerationtypeRadio,
-                        onChanged: (value) {
-                          setState(() {
-                            registerationtypeRadio = value;
-                            print('@@1' + registerationtypeRadio.toString());
-                            if (registerationtypeRadio == "Screening Camp") {
-                              registerationtypeRadioValueinAPi = 1;
-                            } else if (registerationtypeRadio == "Satellite Centre") {
-                              registerationtypeRadioValueinAPi = 2;
-                            } else if (registerationtypeRadio == "Hospital Walk-in") {
-                              registerationtypeRadioValueinAPi = 3;
-                            }
-                          });
-                        },
-                      ),
-                    ),*/
                     Expanded(
                       flex: 3,
                       child: _radioButtonColumn(
@@ -1411,7 +1249,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               color: Colors.blue[50],
                               // Background color of the dropdown box
                               border:
-                                  Border.all(color: Colors.blue, width: 2.0),
+                                  Border.all(color: Colors.grey, width: 1.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: DropdownButtonHideUnderline(
@@ -1805,15 +1643,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                         borderRadius:
                                             BorderRadius.circular(8.0),
                                         border: Border.all(
-                                          color: Colors.blue,
-                                          width: 2.0,
+                                          color: Colors.grey,
+                                          width: 1.0,
                                         ),
                                       ),
                                       alignment: Alignment.center,
                                       child: Text(
                                         _dob.isEmpty ? "Select Date" : _dob,
                                         style: TextStyle(
-                                          color: Colors.black,
+                                          color: Colors.grey,
                                           fontWeight: FontWeight.w800,
                                         ),
                                         overflow: TextOverflow.ellipsis,
@@ -1863,7 +1701,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.blue[50],
-                            border: Border.all(color: Colors.blue, width: 2.0),
+                            border: Border.all(color: Colors.grey, width: 1.0),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: DropdownButtonHideUnderline(
@@ -2046,15 +1884,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   borderRadius: BorderRadius.circular(8.0),
                                   // Rounded corners
                                   border: Border.all(
-                                    color: Colors.blue, // Border color
-                                    width: 2.0, // Border width
+                                    color: Colors.grey, // Border color
+                                    width: 1.0, // Border width
                                   ),
                                 ),
                                 child: Text(
                                   _selectedDateText,
                                   // Display the selected date or "From Date"
                                   style: TextStyle(
-                                    color: Colors.black, // Text color
+                                    color: Colors.grey, // Text color
                                     fontWeight: FontWeight.w800, // Text weight
                                   ),
                                   overflow: TextOverflow
@@ -2103,15 +1941,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   borderRadius: BorderRadius.circular(8.0),
                                   // Rounded corners
                                   border: Border.all(
-                                    color: Colors.blue, // Border color
-                                    width: 2.0, // Border width
+                                    color: Colors.grey, // Border color
+                                    width: 1.0, // Border width
                                   ),
                                 ),
                                 child: Text(
                                   _selectedDateTextToDate,
                                   // Display the selected date or "From Date"
                                   style: TextStyle(
-                                    color: Colors.black, // Text color
+                                    color: Colors.grey, // Text color
                                     fontWeight: FontWeight.w800, // Text weight
                                   ),
                                   overflow: TextOverflow
@@ -2164,12 +2002,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                         vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blueAccent, width: 2.0),
+                                          color: Colors.grey, width: 2.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -2262,7 +2100,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(height: 8),
                             DropdownButtonFormField<Data>(
                               isExpanded: true,
                               // ✅ Prevent overflow by expanding
@@ -2271,12 +2108,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                     vertical: 15.0, horizontal: 10.0),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                      color: Colors.blue, width: 2.0),
+                                      color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(
-                                      color: Colors.blueAccent, width: 2.0),
+                                      color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 filled: true,
@@ -2365,7 +2202,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 padding: EdgeInsets.all(16),
                                 decoration: BoxDecoration(
                                   border:
-                                      Border.all(color: Colors.blue, width: 2),
+                                      Border.all(color: Colors.grey, width: 1),
                                   // Blue border
                                   borderRadius: BorderRadius.circular(8),
                                   color:
@@ -2636,7 +2473,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 Container(
                   decoration: BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                      bottom: BorderSide(width: 1, color: Colors.transparent),
                     ),
                   ),
                   child: Center(
@@ -2667,7 +2504,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           decoration: BoxDecoration(
                             border: Border(
                               bottom: BorderSide(
-                                  width: 1.5, color: Colors.grey[300]),
+                                  width: 1, color: Colors.transparent),
                             ),
                           ),
                           child: Padding(
@@ -2685,12 +2522,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                         vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blueAccent, width: 2.0),
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -2709,6 +2546,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                     return DropdownMenuItem<
                                         GetLanguageForDDLsDatas>(
                                       value: user,
+
                                       child: Text(user.name),
                                     );
                                   }).toList(),
@@ -2742,14 +2580,32 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           await ApipatientRegistration(); // Submit to API
                         }
                       },
-                      child: Text('Submit'),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min, // Ensures button wraps around content
+                        children: [
+                          Icon(Icons.send, color: Colors.white), // Change icon as needed
+                          SizedBox(width: 8), // Space between icon and text
+                          Text('Submit'),
+                        ],
+                      ),
                     ),
                     ElevatedButton(
                       onPressed: () {
                         resetForm();
                       },
-                      child: Text('Reset'),
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min, // Ensures button wraps around content
+                        children: [
+                          Icon(Icons.refresh, color: Colors.white), // Reset icon
+                          SizedBox(width: 8), // Space between icon and text
+                          Text('Reset'),
+                        ],
+                      ),
                     ),
+
                   ],
                 )
               ],
