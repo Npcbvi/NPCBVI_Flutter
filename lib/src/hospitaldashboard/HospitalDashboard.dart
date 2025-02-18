@@ -737,21 +737,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       return Center(child: CircularProgressIndicator());
                     }
 
-                    List<DataGetDPM_ScreeningYear> list =
-                        snapshot.data.toList();
+                    List<DataGetDPM_ScreeningYear> list = snapshot.data.toList();
 
                     // Ensure a default selection
-                    if (_selectedUser == null ||
-                        !list.contains(_selectedUser)) {
-                      _selectedUser =
-                          list.first; // Set the first item as default
+                    if (_selectedUser == null || !list.contains(_selectedUser)) {
+                      _selectedUser = list.isNotEmpty ? list.first : null; // Set the first item as default
                     }
 
                     // Show "No data found" if the list is empty
                     if (list.isEmpty) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 0),
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 0),
                         child: Container(
                           width: 300,
                           height: 60,
@@ -763,26 +759,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                           child: Text(
                             'No data found',
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                           ),
                         ),
                       );
                     }
 
-                    // Ensure a default selection
-                    if (_selectedUser == null ||
-                        !list.contains(_selectedUser)) {
-                      _selectedUser = list.first;
-                    }
-
                     return Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                       child: SizedBox(
                         width: 300, // Set width using SizedBox
-                        child:
-                            DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                        child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
                           value: _selectedUser,
                           onChanged: (userc) {
                             setState(() {
@@ -803,18 +790,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             );
                           }).toList(),
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(
-                                vertical: 15.0, horizontal: 0.0),
-                            hintText: 'Select Year',
-                            hintStyle: TextStyle(color: Colors.grey),
+                            contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                            hintText: null, // Remove the hint text
                             enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 1.0),
+                              borderSide: BorderSide(color: Colors.blue, width: 1.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.blueAccent, width: 1.0),
+                              borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             filled: true,
@@ -828,8 +811,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             ),
                           ),
                           iconStyleData: IconStyleData(
-                            icon:
-                                Icon(Icons.arrow_drop_down, color: Colors.blue),
+                            icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
                             iconSize: 24,
                           ),
                         ),
@@ -837,6 +819,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     );
                   },
                 ),
+
                 SizedBox(height: 5),
                 buildInfoContainer(stateNames),
                 SizedBox(height: 5),
@@ -2052,7 +2035,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           child: _textInputField(
                             controller: _reportingPlaceController,
                             labelText: 'Reporting Place *',
-                            keyboardType: TextInputType.phone,
+                            keyboardType: TextInputType.text,
                           ),
                         ),
                       ],

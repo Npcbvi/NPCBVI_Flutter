@@ -206,7 +206,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextSpan(text: '1. Society/Charitable public trust registration certificate \n'),
                   TextSpan(text: '2. Minimum 3 years of experience certificate \n'),
-                  TextSpan(text: 'Bank Details like Account No.Bank IFSC Code, and Bank Name.\n \n'),
+                  TextSpan(text: ' Bank Details like Account No.Bank IFSC Code, and Bank Name.\n \n'),
 
                   // Private Practitioners Section
                   TextSpan(
@@ -221,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   TextSpan(text: '1.MS Ophthalmology Degree\n'),
-                  TextSpan(text: '2. Two years of experience post PG\n\n'),
+                  TextSpan(text: '2.Two years of experience post PG\n\n'),
 
                   // Contact Info
                   TextSpan(
