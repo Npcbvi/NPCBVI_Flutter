@@ -250,13 +250,13 @@ class _LoginScreenState extends State<LoginScreen> {
         centerTitle: true,
         title: Text('Login', style: TextStyle(color: Colors.white)),
         actions: [
-          IconButton(
+          /*IconButton(
             icon: Icon(Icons.dashboard, color: Colors.white),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => MainDashboard()));
             },
-          )
+          )*/
         ],
       ),
       body: SingleChildScrollView(

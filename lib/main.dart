@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/home_page.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 
 Future<void> main() async {
@@ -36,7 +37,7 @@ Future<void> main() async {
   runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,  // Removes the debug banner
-      home: LoginScreen(), // Set the initial screen
+      home: MainDashboard(), // Set the initial screen
       // home: HomePage(), // Uncomment this line if you want to use HomePage instead of LoginScreen
     ),
   );

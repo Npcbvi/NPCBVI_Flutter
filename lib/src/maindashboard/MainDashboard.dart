@@ -30,6 +30,176 @@ class _MainDashboard extends State<MainDashboard> {
   bool isLoadingApi = true;
   String ngoCount, gH_CHC_Count, ppCount, campCount, satellitecentreCount, patientCount, dpm, pmcCount, totalEB, totalEd, spo;
   String _chosenValue, districtNames, userId, stateNames, fullnameController, _chosenValueRegistrationType, _chosenEyeBank;
+  double imageTopPositionNGOs = -10; // Default position
+  double imageTopPositionGovt = -10; // Default position
+
+  double imageTopPositionMedicalCollege = -10; // Default position
+  double imageTopPositionPrivatePractionries = -10; // Default position
+  double imageTopPositionPatient = -10; // Default position
+  double imageTopPositionSatelliteCenter = -10; // Default position
+  double imageTopPositionScreeningCamps = -10; // Default position
+  double imageTopPositionDpms = -10; // Default position
+  double imageTopPositionSpos = -10; // Default position
+  double imageTopPositionEyeBank = -10; // Default position
+  double imageTopPositionDonationCenters = -10; // Default position
+
+  bool isTapped = false;
+
+  void _animateImageNGOs() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionNGOs = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionNGOs = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImageGovt() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionGovt = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionGovt = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImageMedicalCollege() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionMedicalCollege = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionMedicalCollege = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImagePrivatePractionries() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionPrivatePractionries = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionPrivatePractionries = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImagePatient() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionPatient = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionPatient = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImageSatelliteCenters() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionSatelliteCenter = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionSatelliteCenter = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImageScreeningCamps() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionScreeningCamps = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionScreeningCamps = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImageDpms() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionDpms = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionDpms = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImageSpos() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionSpos = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionSpos = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImageEyeBank() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionEyeBank = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionEyeBank = -10; // Move image back to original position
+      });
+    });
+  }
+  void _animateImagDonationCenters() {
+    setState(() {
+      isTapped = !isTapped;
+      imageTopPositionDonationCenters = isTapped ? -25 : -10; // Move image up when tapped
+    });
+
+    // Reset animation after a short delay
+    Future.delayed(Duration(milliseconds: 500), () {
+      setState(() {
+        isTapped = false;
+        imageTopPositionDonationCenters = -10; // Move image back to original position
+      });
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -98,26 +268,18 @@ class _MainDashboard extends State<MainDashboard> {
           'Dashboard',
           style: new TextStyle(color: Colors.white),
         ),
-      /*  leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Utils.hideKeyboard(context);
-            return Navigator.pop(context,
-                false); //is used to removed the top-most route off the navigator.
-            // To go to a new screen, use the Navigator.push()
-          },
-        ),*/
+
         actions: <Widget>[
           IconButton(
             icon: Icon(
-              Icons.contact_page,
+              Icons.login,
               color: Colors.white,
             ),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ContactusHtmlDisplayScreen()),
+                    builder: (context) => LoginScreen()),
               );
               // do something
             },
@@ -190,50 +352,7 @@ class _MainDashboard extends State<MainDashboard> {
                     // Navigator.pop(context);
                   },
                 ),
-                /*_buildDropdownItem(
-                  value: _chosenValueRegistrationType,
-                  hint: 'Registration',
-                  hintIcon: Icon(Icons.local_hospital, color: Colors.black),
-                  // Add an icon to the hint
-                  items: [
-                    {'value': 'NGO', 'icon': Icons.group}, // Example of valid Flutter icon
-                    {'value': 'Govt/Private/Other', 'icon': Icons.healing},
-                    {'value': 'SPO', 'icon': Icons.supervised_user_circle},
-                    {'value': 'DPM', 'icon': Icons.person_pin},
-                  ],
-                  onChanged: (String value) {
-                    setState(() {
-                      _chosenValueRegistrationType = value;
-                      //  print('@@spinnerChooseValue--' + _chosenValue);
-                      if (_chosenValueRegistrationType == "NGO") {
-                        print('@@NGO--1' + _chosenValueRegistrationType);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => NGORegistrationScreen()));
-                      //  Navigator.pop(context);
-                      } else if (_chosenValueRegistrationType ==
-                          "Govt/Private/Other") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RegisterScreen()),
-                        );
-                      } else if (_chosenValueRegistrationType ==
-                          "SPO") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RegisterScreen()),
-                        );
-                      } else if (_chosenValueRegistrationType ==
-                          "DPM") {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RegisterScreen()),
-                        );
-                      }
-                    });
-                  },
-                ),*/
+
                 _buildMenuItem(
                   icon: Icons.login,
                   title: 'Login',
@@ -261,956 +380,817 @@ class _MainDashboard extends State<MainDashboard> {
               MediaQuery.of(context).padding.top,
           child: SingleChildScrollView(
             child: Column(
+
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'NGO(s)',
-                                          style: TextStyle(
-                                              color: green2,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MoreClickGetStateWiseNGOForDashboard(),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'NGO(s)',
+                                      style: TextStyle(
+                                        color: Colors.green,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          ngoCount != null ? '${ngoCount}' : '0',  // If ngoCount is null, show '0'
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    ngoCount != null ? '$ngoCount' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: InkWell(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => MoreClickGetStateWiseNGOForDashboard(),
-
-
-                                            ),
-                                          );
-                                        },
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                            color: Colors.black, // Changed to blue to indicate it's clickable
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'Goverment / CHC /RIO',
-                                          style: TextStyle(
-                                              color: govtgch,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          gH_CHC_Count != null ? '${gH_CHC_Count}' : '0',  // If ngoCount is null, show '0'
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: InkWell(
-                                        onTap: () {
-                                          // Action when 'more..' is clicked
-                                          // _handleMoreClick();
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                             builder: (context) => MoreClickGetStateWiseHospitalDashboard(),
-
-
-                                            ),
-                                          );
-                                        },
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                            color: Colors.black, // Changed to blue to indicate it's clickable
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionNGOs,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'Medical College(s)',
-                                          style: TextStyle(
-                                              color: medicalcollege,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MoreClickGetStateWiseHospitalDashboard(),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'Goverment / CHC /RIO',
+                                      style: TextStyle(
+                                        color: govtgch,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          pmcCount != null ? '${pmcCount}' : '0',  // If ngoCount is null, show '0'
-
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    gH_CHC_Count   != null ? '$gH_CHC_Count  ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: InkWell(
-                                        onTap: () {
-                                          // Action when 'more..' is clicked
-                                          // _handleMoreClick();
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => MoreClickGetStateWiseMedicalColleges(),
-
-
-                                            ),
-                                          );
-                                        },
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                            color: Colors.black, // Changed to blue to indicate it's clickable
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'Private Practitioner(s)',
-                                          style: TextStyle(
-                                              color: privatepractitioner,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          ppCount != null ? '${ppCount}' : '0',  // If ngoCount is null, show '0'
-
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: InkWell(
-                                        onTap: () {
-                                          // Action when 'more..' is clicked
-                                          // _handleMoreClick();
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => MoreClickGetStateWisePrivatePrectioiries(),
-
-
-                                            ),
-                                          );
-
-                                        },
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                            color: Colors.black, // Changed to blue to indicate it's clickable
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionGovt ,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'Patient(s)',
-                                          style: TextStyle(
-                                              color: patient,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MoreClickGetStateWiseMedicalColleges(),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'Medical College(s)',
+                                      style: TextStyle(
+                                        color: medicalcollege,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          patientCount != null ? '${patientCount}' : '0',  // If ngoCount is null, show '0'
-
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    pmcCount      != null ? '$pmcCount     ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: InkWell(
-                                        onTap: () {
-                                          // Action when 'more..' is clicked
-                                          // _handleMoreClick();
-                                        Utils.showToast("work is pending from chnadha due to large data and crash app", true);
-
-                                        },
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                            color: Colors.black, // Changed to blue to indicate it's clickable
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'Satellite Centre(s)',
-                                          style: TextStyle(
-                                              color: satellitecentre,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          satellitecentreCount != null ? '${satellitecentreCount}' : '0',  // If ngoCount is null, show '0'
-
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: InkWell(
-                                        onTap: () {
-                                          // Action when 'more..' is clicked
-                                          // _handleMoreClick();
-      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                          builder: (context) => MoreClickGetStateWiseSatelliteCenters(),
-
-
-                                          ),
-                                          );
-                                        },
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                            color: Colors.black, // Changed to blue to indicate it's clickable
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionMedicalCollege  ,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'Screening Camp(s)',
-                                          style: TextStyle(
-                                              color: screeningcamp,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MoreClickGetStateWisePrivatePrectioiries(),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'Private Practitioner(s)',
+                                      style: TextStyle(
+                                        color: privatepractitioner,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          campCount != null ? '${campCount}' : '0',  // If ngoCount is null, show '0'
-
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    ppCount          != null ? '$ppCount         ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: InkWell(
-                                        onTap: () {
-                                          // Action when 'more..' is clicked
-                                          // _handleMoreClick();
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => StateWiseCamp(),
-
-
-                                            ),
-                                          );
-                                        },
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                            color: Colors.black, // Changed to blue to indicate it's clickable
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'DPM(s)',
-                                          style: TextStyle(
-                                              color: dpms,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          dpm != null ? '${dpm}' : '0',  // If ngoCount is null, show '0'
-
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Container(
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionPrivatePractionries   ,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'SPO(s)',
-                                          style: TextStyle(
-                                              color: spos,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    // _handleMoreClick();
+                    Utils.showToast("work is pending from chnadha due to large data and crash app", true);
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'Patient(s)',
+                                      style: TextStyle(
+                                        color: patient,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          spo != null ? '${spo}' : '0',  // If ngoCount is null, show '0'
-
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    patientCount != null ? '$patientCount  ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
                                     ),
                                   ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Container(
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'Eye Banks(s)',
-                                          style: TextStyle(
-                                              color: eybanks,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
-
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          totalEB != null ? '${totalEB}' : '0',  // If ngoCount is null, show '0'
-
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Container(
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionPatient    ,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                  child: Card(
-                    color: Colors.white,
-                    elevation: 5,
-                    child: InkWell(
-                      onTap: () {},
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Align(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          'Donation Centres(s)',
-                                          style: TextStyle(
-                                              color: donationcentres,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  /*Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Container(
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    // _handleMoreClick();
 
-                                    child: Image.asset(
-                                      'images/close.png', fit: BoxFit.fitWidth,),
-                                  ),
-                                ),*/
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Container(
-                                        child: Text(
-                                          totalEd != null ? '${totalEd}' : '0',  // If ngoCount is null, show '0'
-
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MoreClickGetStateWiseSatelliteCenters(),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'Satellite Centre(s)',
+                                      style: TextStyle(
+                                        color: satellitecentre,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(6, 4, 6, 4),
-                                    child: Align(
-                                      alignment: Alignment.bottomRight,
-                                      child: Container(
-                                        child: Text(
-                                          'more..',
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.normal),
-                                        ),
-                                      ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    satellitecentreCount != null ? '$satellitecentreCount  ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                  )
-                                ],
-                              ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionSatelliteCenter     ,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    // _handleMoreClick();
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StateWiseCamp(),
+                      ),
+                    );
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'Screening Camp(s)',
+                                      style: TextStyle(
+                                        color: screeningcamp,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    campCount != null ? '$campCount  ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionScreeningCamps      ,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    // _handleMoreClick();
+
+                    // Action when 'more..' is clicked
+                    // _handleMoreClick();
+                    Utils.showToast("Pending work from Api", true);
+
+
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'DPM(s)',
+                                      style: TextStyle(
+                                        color: dpms,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    dpm   != null ? '$dpm    ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionDpms      ,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    // _handleMoreClick();
+
+                    // Action when 'more..' is clicked
+                    // _handleMoreClick();
+                    Utils.showToast("Pending work from Api", true);
+
+
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'SPO(s)',
+                                      style: TextStyle(
+                                        color: dpms,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    spo    != null ? '$spo     ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionSpos      ,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    // _handleMoreClick();
+
+                    // Action when 'more..' is clicked
+                    // _handleMoreClick();
+                    Utils.showToast("Pending work from Api", true);
+
+
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'Eye Banks(s)',
+                                      style: TextStyle(
+                                        color:eybanks,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    totalEB != null ? '$totalEB  ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionEyeBank,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
+                GestureDetector(
+                  onTap: () {
+                    // _handleMoreClick();
+
+                    // Action when 'more..' is clicked
+                    // _handleMoreClick();
+                    Utils.showToast("Pending work from Api", true);
+
+
+                  },
+                  child: Stack(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                        child: SizedBox(
+                          width: double.infinity, // Full width inside the margin
+                          height: 100, // Set your desired height
+                          child: Card(
+                            color: Colors.white,
+                            elevation: 5,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                      'Donation Centres(s)',
+                                      style: TextStyle(
+                                        color:donationcentres,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    totalEd  != null ? '$totalEd   ' : '0',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      // 🟢 Animated Positioned Image (Moves Up on Tap)
+                      AnimatedPositioned(
+                        duration: Duration(milliseconds: 300),
+                        top: imageTopPositionDonationCenters,// Animated position
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: Colors.white,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.asset(
+                              'images/ngo.png',
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 15),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10, 20, 10, 50),
                 ),
