@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/StateWiseC
 import 'package:mohfw_npcbvi/src/maindashboard/moreclickPrivatePractitioner/MoreClickGetStateWisePrivatePrectioiries.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickDpm/StateWiseDpm.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
@@ -21,6 +22,7 @@ import 'package:mohfw_npcbvi/src/widgets/web_view/DarpanWebview.dart';
 import '../hospitaldashboard/HospitalDashboard.dart';
 import '../loginsignup/RegisterScreen.dart';
 import '../registerScreens/NGORegistrationScreen.dart';
+import 'moreClickdpm/StateWisedpm.dart';
 
 class MainDashboard extends StatefulWidget {
   _MainDashboard createState() => _MainDashboard(); // connect using createState
@@ -901,8 +903,12 @@ class _MainDashboard extends State<MainDashboard> {
 
                     // Action when 'more..' is clicked
                     // _handleMoreClick();
-                    Utils.showToast("Pending work from Api", true);
-
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => StateWisedpm(),
+                      ),
+                    );
 
                   },
                   child: Stack(

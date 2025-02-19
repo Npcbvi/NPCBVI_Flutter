@@ -38,4 +38,8 @@ class AppConstant {
 
   static final String moreclickCamptsateCode = "moreclickCamptsateCode";
   static final String moreclickdistrictCodeCamp = "moreclickdistrictCodeCamp";
+
+
+  static final String moreclickDpmtsateCode = "moreclickDpmtsateCode";
+  static final String moreclickdistrictCodeDpm= "moreclickdistrictCodeDpm";
 }

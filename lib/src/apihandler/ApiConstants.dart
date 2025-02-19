@@ -187,10 +187,14 @@ class ApiConstants {
 
 
   static String GetStateWiseCampForDashboard = 'GetStateWiseCampForDashboard';
-
   static String GetDistrictWiseCampForDashboard = 'GetDistrictWiseCampForDashboard';
-
   static String GetStateDistrictWiseCampForDashboard = 'GetStateDistrictWiseCampForDashboard';
+
+
+  static String GetStateWiseDPMForDashboard = 'GetStateWiseDPMForDashboard';
+
+  static String GetDPMListForDashboard = 'GetDPMListForDashboard';
+
 
   static String Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List = 'DpmDashboard/api/Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List';
 
