@@ -107,14 +107,13 @@ class _BothSatelliteCenters
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      _buildHeaderCell("S.No.", 50),
-                      _buildHeaderCell("Darpan No.", 200),
+                      _buildHeaderCellSrNo("S.No."),
+                      _buildHeaderCell("Darpan No."),
                      // _buildHeaderCell("Nodal Officer Name", 150),
-                      _buildHeaderCell("Action", 100),
+                      _buildHeaderCellDashboardsAction("Action"),
                     ],
                   ),
                 ),
-                const Divider(color: Colors.transparent, height: 1.0),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Column(
@@ -122,8 +121,8 @@ class _BothSatelliteCenters
                       final index = data.indexOf(entry) + 1;
                       return Row(
                         children: [
-                          _buildDataCell(index.toString(), 50),
-                          _buildDataCell(entry.ngoName ?? '-', 150),
+                          _buildDataCellCellSrNo(index.toString()),
+                          _buildDataCell(entry.ngoName ?? '-'),
                           //_buildDataCell(entry.memberName ?? '-', 150),
                           _buildDataCellViewBlueDashboard("View", () {
                             showDialog(
@@ -168,60 +167,8 @@ class _BothSatelliteCenters
     );
   }
 
-  Widget _buildHeaderCell(String title, double width) {
-    return Container(
-      width: width,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildDataCell(String value, double width) {
-    return Container(
-      width: width,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
-      ),
-      child: Center(
-        child: Text(
-          value,
-          style: const TextStyle(color: Colors.black),
-          maxLines: 2,
-        ),
-      ),
-    );
-  }
 
-  Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 100,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black, width: 0.1), // Thick border
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    );
-  }
   TableRow _buildTableRow(String field, String value, {bool isHeader = false}) {
     return TableRow(
       children: [
@@ -239,6 +186,298 @@ class _BothSatelliteCenters
         style: TextStyle(
           fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
           fontSize: isHeader ? 16.0 : 14.0,
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildHeaderCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+          child: Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildViewButton(VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 80,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        ),
+        child: const Center(
+          child: Text(
+            "View",
+            style: TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildHeaderCellTOTalNGO(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.18, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.035, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellDashboardsAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellSrNo(String text ) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.14, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.035, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildDataCellTotalNGo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.18, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: screenWidth * 0.03, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellCellSrNo(String text) {
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.14, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: screenWidth * 0.03, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellViewBlueDashboard(
+      String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+            bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+            child: Text(
+              text,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: Colors.blue,
+                fontSize: screenWidth * 0.04, // Scales with screen width
+              ),
+            ),
+          ),
         ),
       ),
     );
