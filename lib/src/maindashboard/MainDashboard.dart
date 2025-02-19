@@ -7,6 +7,7 @@ import 'package:mohfw_npcbvi/src/maindashboard/moreClickDashboardHopsital/MoreCl
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickMedicalColleges/MoreClickGetStateWiseMedicalColleges.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickSatelliteCenters/MoreClickGetStateWiseSatelliteCenters.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/StateWiseCamp.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickSpo/SpoDataListclickMore.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreclickPrivatePractitioner/MoreClickGetStateWisePrivatePrectioiries.dart';
 import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
@@ -979,9 +980,12 @@ class _MainDashboard extends State<MainDashboard> {
                   onTap: () {
                     // _handleMoreClick();
 
-                    // Action when 'more..' is clicked
-                    // _handleMoreClick();
-                    Utils.showToast("Pending work from Api", true);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SpoDataListclickMore(),
+                      ),
+                    );
 
 
                   },

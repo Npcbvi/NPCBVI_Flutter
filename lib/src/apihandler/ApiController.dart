@@ -1,12 +1,11 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/DistrictWiseCamps.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/StateWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickDpm/DistrictWiseDpm.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickDpm/StateWiseDpm.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickSpo/SpoListwise.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/BothDataFoMEdicalCollegesl.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/DistrictwiseMedicalColleges.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/stateWiseMedicalCollegs.dart';
@@ -98,7 +97,6 @@ import 'package:mohfw_npcbvi/src/model/sattelliteCenter/SatelliteCenterRegistati
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeBankApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeBankDonationApproval.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/EyeSurgeons.dart';
-import 'package:mohfw_npcbvi/src/model/spoModel/PatientRegistrations.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SPODashboardDPMClickView.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/SpoDashobardData.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/ApprovedclickPatients.dart';
@@ -129,10 +127,6 @@ import '../model/screeningCamp/ScreenCampRegister.dart';
 import '../model/spoModel/dahboardclickdetails/GetSPO_SatelliteCentreApproval.dart';
 import '../model/spoModel/dahboardclickdetails/PrivateMedicalCollegeApproved.dart';
 import '../utils/Utils.dart';
-import 'dart:developer';
-import 'package:mohfw_npcbvi/src/model/cities_model.dart';
-import 'package:mohfw_npcbvi/src/model/country_state_model.dart';
-import 'package:http/http.dart' as http;
 
 class ApiController {
   static final int timeout = 18;
@@ -8249,6 +8243,71 @@ class ApiController {
       var responseData = json.decode(response.data);
       DistrictWiseDpm data =
       DistrictWiseDpm.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        //  Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //  Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+  static Future<List<SpoListwiseData>>
+  getSPOListForDashboard() async {
+    print("@@getSPOListForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSPOListForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+
+      print("@@getSPOListForDashboard--bodyprint--: ${url.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.get(
+        url,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetSPOListForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      SpoListwise data =
+      SpoListwise.fromJson(responseData);
 
       if (data.status) {
         //  Utils.showToast(data.message, true);

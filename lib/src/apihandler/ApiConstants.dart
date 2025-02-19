@@ -195,6 +195,8 @@ class ApiConstants {
 
   static String GetDPMListForDashboard = 'GetDPMListForDashboard';
 
+  static String GetSPOListForDashboard = 'GetSPOListForDashboard';
+
 
   static String Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List = 'DpmDashboard/api/Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List';
 
