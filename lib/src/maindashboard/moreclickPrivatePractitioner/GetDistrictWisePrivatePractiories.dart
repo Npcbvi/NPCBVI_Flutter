@@ -98,10 +98,10 @@ class _GetDistrictWisePrivatePractiories
               children: [
                 Row(
                   children: [
-                    _buildHeaderCell("S.No.", 50),
-                    _buildHeaderCell("District", 150),
-                    _buildHeaderCell("Total NGO", 80),
-                    _buildHeaderCell("More", 80),
+                    _buildHeaderCellSrNo("S.No."),
+                    _buildHeaderCell("District"),
+                    _buildHeaderCellTOTalNGO("Total NGO"),
+                    _buildHeaderCellDashboardsAction("More",),
                   ],
                 ),
                 Column(
@@ -109,9 +109,9 @@ class _GetDistrictWisePrivatePractiories
                     final index = data.indexOf(entry) + 1;
                     return Row(
                       children: [
-                        _buildDataCell(index.toString(), 50),
-                        _buildDataCell(entry.districtName, 150),
-                        _buildDataCell(entry.countState.toString(), 80),
+                        _buildDataCellCellSrNo(index.toString()),
+                        _buildDataCell(entry.districtName),
+                        _buildDataCellTotalNGo(entry.countState.toString()),
                         _buildDataCellViewBlueDashboard("More", () {
                           SharedPrefs.storeSharedValues(AppConstant.moreclickdistrictCodePrivatePRactiories,
                               entry.districtCode.toString());
@@ -138,78 +138,350 @@ class _GetDistrictWisePrivatePractiories
     );
   }
 
-  Widget _buildHeaderCell(String title, double width) {
-    return Container(
-      width: width,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+  TableRow _buildTableRowcall(String title, VoidCallback onTap) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(title),
         ),
-      ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            onTap: onTap,  // Trigger the onTap callback when clicked
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+              decoration: BoxDecoration(
+                color: Colors.blue,  // Background color of the button
+                borderRadius: BorderRadius.circular(8.0),  // Rounded corners
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3),
+                    blurRadius: 6,
+                    spreadRadius: 2,
+                  ),
+                ],
+              ),
+              child: Text(
+                "View",  // Customize the "View" text as needed
+                style: TextStyle(
+                  color: Colors.white,  // Text color
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _buildDataCell(String value, double width) {
-    return Container(
-      width: width,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
-      ),
-      child: Center(
-        child: Text(
-          value,
-          style: const TextStyle(color: Colors.black),
-          maxLines: 2,
-        ),
-      ),
-    );
-  }
 
-  Widget _buildViewButton(VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 80,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black, width: 0.1), // Thick border
-        ),
-        child: const Center(
+  TableRow _buildTableRow(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Text(
-            "View",
+            label,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(value),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeaderCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+          child: Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
             style: TextStyle(
-              color: Colors.blue,
               fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.04, // Scales with screen width
             ),
           ),
         ),
       ),
     );
   }
-  Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
-        width: 80,
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+
+
+  Widget _buildHeaderCellTOTalNGO(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.15, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
-        child: Center(
-          child: Text(text, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.035, // Scales with screen width
+            ),
+          ),
         ),
       ),
     );
   }
 
+
+  Widget _buildHeaderCellDashboardsAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.2, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellSrNo(String text ) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.14, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.035, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            maxLines: 2,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildDataCellTotalNGo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.15,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: screenWidth * 0.03, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellCellSrNo(String text) {
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.14, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: screenWidth * 0.03, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildDataCellViewBlueDashboard(
+      String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+        height: 35,
+        width: screenWidth * 0.2, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+            bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+            child: Text(
+              text,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: Colors.blue,
+                fontSize: screenWidth * 0.04, // Scales with screen width
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  TextStyle _infoTextStyle() => TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
+
+  TextStyle _highlightTextStyle() => TextStyle(color: Colors.red, fontWeight: FontWeight.w500);
+
+  String getCurrentFinancialYear() {
+
+    DateTime now = DateTime.now();
+    int currentYear = now.year;
+    int nextYear = currentYear + 1;
+    if (now.month >= 4) {
+      return '$currentYear-${nextYear.toString().substring(2)}';
+    } else {
+      return '${currentYear - 1}-${currentYear.toString().substring(2)}';
+    }
+  }
 }

@@ -177,103 +177,274 @@ String   moreclickNgoStatedCodess;
     );
   }
 
-  Widget _buildHeaderCell(String title) {
+  Widget _buildHeaderCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 150,
-      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
       ),
-      child: Center(child: Text(title, style: _infoTextStyle())),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+          child: Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildHeaderCellTOTalNGO(String title) {
+
+  Widget _buildHeaderCellTOTalNGO(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 80,
-      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.18, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
       ),
-      child: Center(child: Text(title, style: _infoTextStyle())),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.035, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildHeaderCellDashboardsAction(String title) {
+
+  Widget _buildHeaderCellDashboardsAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 80,
-      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
       ),
-      child: Center(child: Text(title, style: TextStyle(fontWeight: FontWeight.bold))),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildHeaderCellSrNo(String title) {
+  Widget _buildHeaderCellSrNo(String text ) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 50,
-      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.14, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
       ),
-      child: Center(child: Text(title, style: _infoTextStyle())),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.035, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildDataCell(String value) {
+  Widget _buildDataCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 150,
-      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
       ),
-      child: Center(child: Text(value,
-          maxLines:2,style: TextStyle(color: Colors.black))),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+            text,
+            maxLines: 2,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildDataCellTotalNGo(String value) {
+
+
+  Widget _buildDataCellTotalNGo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 80,
-      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.18, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
       ),
-      child: Center(child: Text(value,
-          maxLines:2,style: TextStyle(color: Colors.black))),
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: screenWidth * 0.03, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
     );
   }
-  Widget _buildDataCellCellSrNo(String value) {
+  Widget _buildDataCellCellSrNo(String text) {
+    double screenWidth = MediaQuery
+        .of(context)
+        .size
+        .width;
+
     return Container(
-      width: 50,
-      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+      height: 35,
+      width: screenWidth * 0.14, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
       ),
-      child: Center(child: Text(value, style: TextStyle(color: Colors.black))),
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+          child: Text(
+
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontSize: screenWidth * 0.03, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
     );
   }
 
-  Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
+
+
+  Widget _buildDataCellViewBlueDashboard(
+      String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
-      onTap: onTap,
+      onTap: onTap, // Trigger the callback when the cell is clicked
       child: Container(
-        width: 80,
-        height: 50,
+        margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+            bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
         ),
-        child: Center(
-          child: Text(text, style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold)),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
+
+            child: Text(
+              text,
+              style: TextStyle(
+                fontWeight: FontWeight.normal,
+                color: Colors.blue,
+                fontSize: screenWidth * 0.04, // Scales with screen width
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -284,6 +455,7 @@ String   moreclickNgoStatedCodess;
   TextStyle _highlightTextStyle() => TextStyle(color: Colors.red, fontWeight: FontWeight.w500);
 
   String getCurrentFinancialYear() {
+
     DateTime now = DateTime.now();
     int currentYear = now.year;
     int nextYear = currentYear + 1;
