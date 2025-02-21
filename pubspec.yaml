@@ -71,6 +71,7 @@ flutter:
     - images/ngo.png
     - images/login_restro_bg.jpg
     - images/doctorpatientimage.jpg
+    - images/bgimage.jpeg
   fonts:
     - family: PT_Sans
       fonts:
