@@ -75,158 +75,172 @@ class _ForgotPasswordScreen extends State<ForgotPasswordScreen> {
           )
         ],
       ),
-      body: SafeArea(
-          child: SingleChildScrollView(
-        reverse: true,
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              width: double.infinity,
-              height: 50,
-              child: Expanded(
-                  child: Marquee(
-                text: 'NGO Darpan number is mandatory for registration.',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                    color: Colors.red),
-                velocity: 50.0,
-                //speed
-                pauseAfterRound: Duration(seconds: 1),
-                startPadding: 10.0,
-                accelerationDuration: Duration(seconds: 1),
-                accelerationCurve: Curves.linear,
-                decelerationDuration: Duration(milliseconds: 500),
-                decelerationCurve: Curves.easeOut,
-              )),
+
+      body: Container(
+        height: double.infinity, // Ensures full height
+        width: double.infinity, // Ensures full width
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Image.asset(
+                "images/doctorpatientimage.jpg",
+                fit: BoxFit.cover, // Ensures it covers the full screen
+              ),
             ),
-            Container(
-              height: 50, // Adjust height as needed
-              margin: EdgeInsets.fromLTRB(100, 20, 100, 20),
-              child: Container(
-                color: Colors.blue,
+        SingleChildScrollView(
+          reverse: true,
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: Expanded(
+                    child: Marquee(
+                      text: 'NGO Darpan number is mandatory for registration.',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.red),
+                      velocity: 50.0,
+                      //speed
+                      pauseAfterRound: Duration(seconds: 1),
+                      startPadding: 10.0,
+                      accelerationDuration: Duration(seconds: 1),
+                      accelerationCurve: Curves.linear,
+                      decelerationDuration: Duration(milliseconds: 500),
+                      decelerationCurve: Curves.easeOut,
+                    )),
+              ),
+              Container(
+                height: 50, // Adjust height as needed
+                margin: EdgeInsets.fromLTRB(100, 20, 100, 20),
+                child: Container(
+                  color: Colors.blue,
 
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // Shown Captcha value to user
-                      Container(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Shown Captcha value to user
+                        Container(
 
-                      child: Center( // Center widget to center the text
-                        child: Text(
-                          'Reset Password',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
+                          child: Center( // Center widget to center the text
+                            child: Text(
+                              'Reset Password',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                    ],
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+                      ],
+                    ),
                   ),
                 ),
               ),
-            ),
-            GovtRAdioGroups(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Form(
-                key: _formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: new ListView(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  children: <Widget>[
-                    Container(
-                        padding: const EdgeInsets.only(top: 40.0),
-                        margin: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 5.0),
-                        child: new Text(
-                          AppConstant.entertxForgotPssword,
-                          style: new TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
+              GovtRAdioGroups(),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: new ListView(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    children: <Widget>[
+                      Container(
+                          padding: const EdgeInsets.only(top: 40.0),
+                          margin: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 5.0),
+                          child: new Text(
+                            AppConstant.entertxForgotPssword,
+                            style: new TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          )),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        height: 50, // Adjust height as needed
+                        child: TextFormField(
+                          controller: userIDController,
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                text: 'User Id',
+                                style: TextStyle(color: Colors.black, fontSize: 16),
+                                children: [
+                                  TextSpan(
+                                    text: ' *', // Red Asterisk for required field
+                                    style: TextStyle(color: Colors.red, fontSize: 16),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter User Id', // Adjusted hint text for clarity
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
                           ),
-                        )),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      height: 50, // Adjust height as needed
-                      child: TextFormField(
-                        controller: userIDController,
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              text: 'User Id',
-                              style: TextStyle(color: Colors.black, fontSize: 16),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      SizedBox(
+                        height: 50, // Adjust height as needed
+                        child: GestureDetector(
+                          onTap: _forgotPassword, // Handle tap directly on GestureDetector
+                          child: Container(
+                            padding: const EdgeInsets.all(10.0),
+                            decoration: BoxDecoration(
+                              color: appThemeSecondary,
+                              borderRadius: BorderRadius.circular(8.0),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2), // Shadow color
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: Offset(0, 3), // Shadow position
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center, // Center alignment
                               children: [
-                                TextSpan(
-                                  text: ' *', // Red Asterisk for required field
-                                  style: TextStyle(color: Colors.red, fontSize: 16),
+                                Icon(
+                                  Icons.email, // Email icon
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: 8), // Space between icon and text
+                                Text(
+                                  AppConstant.txtSendEmail,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          hintText: 'Enter User Id', // Adjusted hint text for clarity
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
                         ),
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    SizedBox(
-                      height: 50, // Adjust height as needed
-                      child: GestureDetector(
-                        onTap: _forgotPassword, // Handle tap directly on GestureDetector
-                        child: Container(
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                            color: appThemeSecondary,
-                            borderRadius: BorderRadius.circular(8.0),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.2), // Shadow color
-                                spreadRadius: 2,
-                                blurRadius: 5,
-                                offset: Offset(0, 3), // Shadow position
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center, // Center alignment
-                            children: [
-                              Icon(
-                                Icons.email, // Email icon
-                                color: Colors.white,
-                              ),
-                              SizedBox(width: 8), // Space between icon and text
-                              Text(
-                                AppConstant.txtSendEmail,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
+                      )
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ],
+          ),
+        ),
           ],
         ),
-      )),
+      ),
     );
   }
 

@@ -70,6 +70,7 @@ flutter:
     - images/orderrefund.png
     - images/ngo.png
     - images/login_restro_bg.jpg
+    - images/doctorpatientimage.jpg
   fonts:
     - family: PT_Sans
       fonts:
