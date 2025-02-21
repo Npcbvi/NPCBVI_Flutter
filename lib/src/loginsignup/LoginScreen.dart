@@ -264,10 +264,11 @@ class _LoginScreenState extends State<LoginScreen> {
         height: double.infinity, // Ensures full height
         width: double.infinity, // Ensures full width
         child: Stack(
+
           children: [
             Positioned.fill(
               child: Image.asset(
-                "images/bgimage.jpeg",
+                "images/doctorpatientimage.jpg",
                 fit: BoxFit.cover, // Ensures it covers the full screen
               ),
             ),
