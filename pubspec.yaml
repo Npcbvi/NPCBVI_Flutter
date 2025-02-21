@@ -69,7 +69,13 @@ flutter:
     - images/close.png
     - images/orderrefund.png
     - images/ngo.png
-
+    - images/login_restro_bg.jpg
+  fonts:
+    - family: PT_Sans
+      fonts:
+        - asset: fonts/MontserratAlternates-Black.otf
+        - asset: fonts/MontserratAlternates-Black.otf
+          weight: 700
 
   # To add assets to your application, add an assets section, like this:
   # assets:

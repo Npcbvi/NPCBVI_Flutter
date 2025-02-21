@@ -242,315 +242,275 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.white, // or Colors.blueGrey[50]
       appBar: AppBar(
         automaticallyImplyLeading: false, // Disables the back button
         centerTitle: true,
         title: Text('Login', style: TextStyle(color: Colors.white)),
         actions: [
           /*IconButton(
-            icon: Icon(Icons.dashboard, color: Colors.white),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MainDashboard()));
-            },
-          )*/
+          icon: Icon(Icons.dashboard, color: Colors.white),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => MainDashboard()));
+          },
+        )*/
         ],
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+      body: Container(
+        height: double.infinity, // Ensures full height
+        width: double.infinity, // Ensures full width
+        child: Stack(
           children: [
-            SizedBox(
-              height: 30, // Set a height that makes sense for your use case
-              child: Marquee(
-                text: 'NGO Darpan number is mandatory for registration.',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                    color: Colors.red),
-                velocity: 50.0,
-                pauseAfterRound: Duration(seconds: 1),
-                startPadding: 10.0,
-                accelerationDuration: Duration(seconds: 1),
-                accelerationCurve: Curves.linear,
-                decelerationDuration: Duration(milliseconds: 500),
-                decelerationCurve: Curves.easeOut,
+            Positioned.fill(
+              child: Image.asset(
+                "images/login_restro_bg.jpg",
+                fit: BoxFit.cover, // Ensures it covers the full screen
               ),
             ),
-            SizedBox(height: 12),
-            Container(
-              width: 350, // Set the desired width
-              child: RichText(
-                text: TextSpan(
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                      fontSize: 15),
-                  children: [
-                    TextSpan(
-                      text:
-                          'In order to login for the first time into the new web application it is necessary to'
-                          ' register and upload certain documents and information as detailed below. Hence keep'
-                          ' the scanned copy of these documents handy before starting the process of registration.\n\n'
-                          'CHECKLIST FOR REGISTRATION: \n\n For NGOs\nDarpan Number is must for registration. If you haven\'t registered on Darpan portal.',
-                    ),
-                    TextSpan(
-                      text: ' Click here.',
-                      style: TextStyle(color: Colors.blue),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DarpanWebview()));
-                        },
-                    ),
-                    TextSpan(
-                      text: '\nRead more',
-                      style: TextStyle(color: Colors.blue,
-                        fontWeight: FontWeight.bold),
-                      recognizer: TapGestureRecognizer()..onTap = showDataAlert,
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 20),
-            SizedBox(
-              height: 50, // Adjust height as needed
-              child: TextField(
-                controller: _loginIdController,
-                decoration: InputDecoration(
-                  label: RichText(
-                    text: TextSpan(
-                      text: 'Login ID',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                      children: [
-                        TextSpan(
-                          text: ' *', // Asterisk for required field
-                          style: TextStyle(color: Colors.red, fontSize: 16),
-                        ),
-                      ],
+            SingleChildScrollView(
+              padding: EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 30,
+                    child: Marquee(
+                      text: 'NGO Darpan number is mandatory for registration.',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                        color: Colors.red,
+                      ),
+                      velocity: 50.0,
+                      pauseAfterRound: Duration(seconds: 1),
+                      startPadding: 10.0,
+                      accelerationDuration: Duration(seconds: 1),
+                      accelerationCurve: Curves.linear,
+                      decelerationDuration: Duration(milliseconds: 500),
+                      decelerationCurve: Curves.easeOut,
                     ),
                   ),
-                  hintText: 'Enter Login ID',
-                  prefixIcon: Icon(Icons.person),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-              ),
-            ),
-
-            SizedBox(height: 10),
-            SizedBox(
-              height: 50, // Adjust height as needed
-              child: TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  label: RichText(
-                    text: TextSpan(
-                      text: 'Password',
-                      style: TextStyle(color: Colors.black, fontSize: 16),
-                      children: [
-                        TextSpan(
-                          text: ' *', // Red Asterisk
-                          style: TextStyle(color: Colors.red, fontSize: 16),
-                        ),
-                      ],
+                  SizedBox(height: 12),
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    width: 350, // Set the desired width
+                    child: RichText(
+                      text: TextSpan(
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                            fontSize: 15),
+                        children: [
+                          TextSpan(
+                            text:
+                            'In order to login for the first time into the new web application it is necessary to'
+                                ' register and upload certain documents and information as detailed below. Hence keep'
+                                ' the scanned copy of these documents handy before starting the process of registration.\n\n'
+                                'CHECKLIST FOR REGISTRATION: \n\nFor NGOs\nDarpan Number is must for registration. If you haven\'t registered on Darpan portal.',
+                          ),
+                          TextSpan(
+                            text: ' Click here.',
+                            style: TextStyle(color: Colors.blue),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DarpanWebview()));
+                              },
+                          ),
+                          TextSpan(
+                            text: '\nRead more',
+                            style: TextStyle(
+                                color: Colors.blue, fontWeight: FontWeight.bold),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = showDataAlert,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  hintText: 'Enter Password', // Regular hint text
-                  prefixIcon: Icon(Icons.lock),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-              ),
-            ),
-
-
-            SizedBox(height: 10),
-            Row(
-             // mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  flex: 4,
-                  child: SizedBox(
+                  SizedBox(height: 20),
+                  SizedBox(
                     height: 50, // Adjust height as needed
                     child: TextField(
-                      controller: _captchaController,
+                      controller: _loginIdController,
                       decoration: InputDecoration(
                         label: RichText(
                           text: TextSpan(
-                            text: 'Enter Captcha Value',
+                            text: 'Login ID',
                             style: TextStyle(color: Colors.black, fontSize: 16),
                             children: [
                               TextSpan(
-                                text: ' *', // Red Asterisk for required field
+                                text: ' *', // Asterisk for required field
                                 style: TextStyle(color: Colors.red, fontSize: 16),
                               ),
                             ],
                           ),
                         ),
+                        hintText: 'Enter Login ID',
+                        prefixIcon: Icon(Icons.person),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          isVerified = false;
-                        });
-                      },
                     ),
                   ),
-                ),
-
-
-                Expanded(
-                  flex: 2,
-                  child: Container(
-
+                  SizedBox(height: 10),
+                  SizedBox(
                     height: 50, // Adjust height as needed
-                    margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    decoration: BoxDecoration(
-
-                      color: Colors.white, // Background color
-                      border: Border.all(width: 1, color: Colors.grey),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-
-                    child: Center( // Center widget to center the text
-                      child: Text(
-                        randomString,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w500,
+                    child: TextField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        label: RichText(
+                          text: TextSpan(
+                            text: 'Password',
+                            style: TextStyle(color: Colors.black, fontSize: 16),
+                            children: [
+                              TextSpan(
+                                text: ' *', // Red Asterisk
+                                style: TextStyle(color: Colors.red, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                        hintText: 'Enter Password', // Regular hint text
+                        prefixIcon: Icon(Icons.lock),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
                     ),
                   ),
-                ),
+                  SizedBox(height: 10),
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                        flex: 4,
+                        child: SizedBox(
+                          height: 50, // Adjust height as needed
+                          child: TextField(
+                            controller: _captchaController,
+                            decoration: InputDecoration(
+                              label: RichText(
+                                text: TextSpan(
+                                  text: 'Enter Captcha Value',
+                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  children: [
+                                    TextSpan(
+                                      text: ' *', // Red Asterisk for required field
+                                      style: TextStyle(color: Colors.red, fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                            onChanged: (value) {
+                              setState(() {
+                                isVerified = false;
+                              });
+                            },
+                          ),
+                        ),
+                      ),
 
 
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    height: 50, // Adjust height as needed
-                    margin: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey, width: 1), // Border color & width
-                      borderRadius: BorderRadius.circular(8), // Optional: Rounded corners
-                    ),
-                    child: IconButton(
-                      onPressed: buildCaptcha,
-                      icon: Icon(Icons.refresh),
+                      Expanded(
+                        flex: 2,
+                        child: Container(
+                          height: 50,
+                          margin: EdgeInsets.only(left: 5),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(width: 1, color: Colors.grey),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Center(
+                            child: Text(
+                              randomString,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          height: 50,
+                          margin: EdgeInsets.only(left: 5),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: IconButton(
+                            onPressed: buildCaptcha,
+                            icon: Icon(Icons.refresh),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(130, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 4,
+                        shadowColor: Colors.black,
+                      ),
+                      onPressed: () {
+                        if (_loginIdController.text.isEmpty) {
+                          Utils.showToast("Username cannot be empty!", false);
+                          return;
+                        }
+                        if (_passwordController.text.isEmpty) {
+                          Utils.showToast("Password cannot be empty!", false);
+                          return;
+                        }
+                        isVerified = _captchaController.text == randomString;
+                        if (!isVerified) {
+                          Utils.showToast("Captcha does not match!", false);
+                          return;
+                        }
+                        _submitForm();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.chevron_right, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            'Sign In',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                )
-
-              ],
-            ),
-            SizedBox(height: 10),
-          /*  ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size(130, 50), // Set width & height
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8), // Add rounded corners
-                ),
-              ),
-              onPressed: () {
-                // Step 1: Check if the username is entered and valid
-                if (_loginIdController.text.isEmpty) {
-                  Utils.showToast("Username cannot be empty !", false);
-                  return;  // Exit if username is not entered
-                }
-
-                // Step 2: Check if the password is entered and valid
-                if (_passwordController.text.isEmpty) {
-                  Utils.showToast("Password cannot be empty !", false);
-                  return;  // Exit if password is not entered
-                }
-
-                // Step 3: Check if captcha is correct
-                isVerified = _captchaController.text == randomString;
-                if (!isVerified) {
-                  Utils.showToast("Captcha does not match!", false);
-                  return;  // Exit if captcha is incorrect
-                }
-
-                // If all checks pass, submit the form
-                _submitForm();
-              },
-              child: Text('Sign In'),
-            ),*/
-            SizedBox(
-              height: 50, // Adjust height as needed
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(130, 50), // Button size
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8), // Rounded corners
-                  ),
-                  primary: Colors.blue, // Use 'primary' instead of 'backgroundColor'
-                  elevation: 4, // Default shadow
-                  shadowColor: Colors.black, // Shadow color
-                ).copyWith(
-                  elevation: MaterialStateProperty.resolveWith<double>(
-                        (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed)) {
-                        return 10; // Increase shadow on click
-                      }
-                      return 4; // Default shadow
-                    },
-                  ),
-                ),
-                onPressed: () {
-                  if (_loginIdController.text.isEmpty) {
-                    Utils.showToast("Username cannot be empty !", false);
-                    return;  // Exit if username is not entered
-                  }
-
-                  // Step 2: Check if the password is entered and valid
-                  if (_passwordController.text.isEmpty) {
-                    Utils.showToast("Password cannot be empty !", false);
-                    return;  // Exit if password is not entered
-                  }
-
-                  // Step 3: Check if captcha is correct
-                  isVerified = _captchaController.text == randomString;
-                  if (!isVerified) {
-                    Utils.showToast("Captcha does not match!", false);
-                    return;  // Exit if captcha is incorrect
-                  }
-
-                  // If all checks pass, submit the form
-                  _submitForm();
-                },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.chevron_right, color: Colors.white),
-                    SizedBox(width: 8), // Space between icon and text
-                    Text(
-                      'Sign In',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // SizedBox(height: 10),
-          //comment code for next sprint
-          /*  InkWell(
+                  // SizedBox(height: 10),
+                  //comment code for next sprint
+                  /*  InkWell(
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()));
@@ -580,30 +540,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
             ),*/
-            //comment code for next sprint
-            MaterialButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ForgotPasswordScreen()));
-              },
-              textColor: Colors.blue,
-              child: Text('Forgot password?', style: TextStyle(fontSize: 14)),
-            ),
-            if (isVerified)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [Icon(Icons.verified), Text("Verified")],
-                ),
+                  //comment code for next sprint
+                  MaterialButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ForgotPasswordScreen()));
+                    },
+                    textColor: Colors.blue,
+                    child: Text('Forgot password?',
+                        style: TextStyle(fontSize: 14)),
+                  ),
+                  if (isVerified)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [Icon(Icons.verified), Text("Verified")],
+                      ),
+                    ),
+                ],
               ),
+            ),
           ],
         ),
       ),
     );
   }
+
 }
 
 class UserData {
