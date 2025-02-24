@@ -132,7 +132,8 @@ class _BothWiseCamp
                                     child: Table(
                                       border: TableBorder.all(color: Colors.blue),
                                       children: [
-                                        _buildTableRow("Field", "Value", isHeader: true),
+                                        _buildTableRow("Organization", "Detail", isHeader: true),
+
                                         _buildTableRow("NGO Name", entry.ngoName ?? "-"),
                                         _buildTableRow("Total Camps", entry.countState.toString() ?? "-"),
                                         // Add more fields as necessary

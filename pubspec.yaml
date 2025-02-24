@@ -55,6 +55,7 @@ dependencies:
   flutter_image_compress: any
   dropdown_button2: any  # Use the latest version
   sqflite: any
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -72,6 +73,16 @@ flutter:
     - images/login_restro_bg.jpg
     - images/doctorpatientimage.jpg
     - images/bgimage.jpeg
+    - images/ngo_new.png
+    - images/medicalclg.png
+    - images/govt.png
+    - images/privatepractionarie.png
+    - images/paptient.png
+    - images/satellite.png
+    - images/eye.png
+    - images/dpm.png
+    - images/eyebank.png
+    - images/donationcenters.png
   fonts:
     - family: PT_Sans
       fonts:

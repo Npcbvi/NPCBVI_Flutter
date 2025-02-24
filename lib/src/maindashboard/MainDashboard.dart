@@ -35,18 +35,18 @@ class _MainDashboard extends State<MainDashboard> {
   bool isLoadingApi = true;
   String ngoCount, gH_CHC_Count, ppCount, campCount, satellitecentreCount, patientCount, dpm, pmcCount, totalEB, totalEd, spo;
   String _chosenValue, districtNames, userId, stateNames, fullnameController, _chosenValueRegistrationType, _chosenEyeBank;
-  double imageTopPositionNGOs = -10; // Default position
-  double imageTopPositionGovt = -10; // Default position
+  double imageTopPositionNGOs = 0; // Default position
+  double imageTopPositionGovt = 0; // Default position
 
-  double imageTopPositionMedicalCollege = -10; // Default position
-  double imageTopPositionPrivatePractionries = -10; // Default position
-  double imageTopPositionPatient = -10; // Default position
-  double imageTopPositionSatelliteCenter = -10; // Default position
-  double imageTopPositionScreeningCamps = -10; // Default position
-  double imageTopPositionDpms = -10; // Default position
-  double imageTopPositionSpos = -10; // Default position
-  double imageTopPositionEyeBank = -10; // Default position
-  double imageTopPositionDonationCenters = -10; // Default position
+  double imageTopPositionMedicalCollege = 0; // Default position
+  double imageTopPositionPrivatePractionries = 0; // Default position
+  double imageTopPositionPatient = 0; // Default position
+  double imageTopPositionSatelliteCenter = 0; // Default position
+  double imageTopPositionScreeningCamps = 0; // Default position
+  double imageTopPositionDpms = 0; // Default position
+  double imageTopPositionSpos = 0; // Default position
+  double imageTopPositionEyeBank = 0; // Default position
+  double imageTopPositionDonationCenters = 0; // Default position
 
   bool isTapped = false;
 
@@ -344,7 +344,7 @@ class _MainDashboard extends State<MainDashboard> {
                    // Navigator.pop(context);
                   },
                 ),
-                _buildMenuItem(
+              /*  _buildMenuItem(
                   icon: Icons.contact_page,
                   title: 'Registration',
                   onTap: () {
@@ -357,7 +357,7 @@ class _MainDashboard extends State<MainDashboard> {
                     // Navigator.pop(context);
                   },
                 ),
-
+*/
                 _buildMenuItem(
                   icon: Icons.login,
                   title: 'Login',
@@ -453,15 +453,18 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionNGOs,
-                              left: 25,
+                              top: 0,
+                              left: 30,
+
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(0),
+
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/ngo_new.png',
+
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -526,15 +529,15 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionGovt ,
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/govt.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -599,15 +602,15 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionMedicalCollege  ,
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/medicalclg.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -672,7 +675,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionPrivatePractionries   ,
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -680,7 +683,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/privatepractionarie.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -741,15 +744,16 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionPatient    ,
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
-                                backgroundColor: Colors.white,
+                                backgroundColor: Colors.transparent,
+
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/paptient.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -816,15 +820,15 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionSatelliteCenter     ,
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/satellite.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -891,15 +895,15 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionScreeningCamps      ,
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/eye.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -969,15 +973,15 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionDpms      ,
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/dpm.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1046,7 +1050,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionSpos      ,
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -1054,7 +1058,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/dpm.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1123,7 +1127,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionEyeBank,
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -1131,7 +1135,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/eyebank.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1198,15 +1202,15 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: imageTopPositionDonationCenters,// Animated position
+                              top: 0 ,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
-                                    'images/ngo.png',
+                                    'images/donationcenters.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),

@@ -843,7 +843,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 ),
                 _buildDropdownItem(
                   value: _chosenEyeBank,
-                  hint: 'Eye Blink',
+                  hint: 'Eye Bank',
                   hintIcon: Icon(Icons.remove_red_eye),
                   // Add an icon to the hint
                   items: [
@@ -6666,8 +6666,8 @@ class _DPMDashboard extends State<DPMDashboard> {
               children: [
                 TableRow(
                   children: [
-                    _buildTableHeader("Field"),
-                    _buildTableHeader("Value"),
+                    _buildTableHeader("Organisation"),
+                    _buildTableHeader("Detail"),
                   ],
                 ),
                 _buildTableRow("Organization Name", offer.oName),
@@ -6850,8 +6850,8 @@ class _DPMDashboard extends State<DPMDashboard> {
               children: [
                 TableRow(
                   children: [
-                    _buildTableHeader("Field"),
-                    _buildTableHeader("Value"),
+                    _buildTableHeader("Organisation"),
+                    _buildTableHeader("Detail"),
                   ],
                 ),
                 _buildTableRow("Organization Name", offer.oName),
@@ -7122,8 +7122,8 @@ class _DPMDashboard extends State<DPMDashboard> {
               children: [
                 TableRow(
                   children: [
-                    _buildTableHeader("Field"),
-                    _buildTableHeader("Value"),
+                    _buildTableHeader("Organisation"),
+                    _buildTableHeader("Detail"),
                   ],
                 ),
                 _buildTableRow("Organization Name", offer.oName),
@@ -7349,8 +7349,8 @@ class _DPMDashboard extends State<DPMDashboard> {
               children: [
                 TableRow(
                   children: [
-                    _buildTableHeader("Field"),
-                    _buildTableHeader("Value"),
+                    _buildTableHeader("Organisation"),
+                    _buildTableHeader("Detail"),
                   ],
                 ),
                 _buildTableRow("Organization Name", offer.oName),
@@ -8652,8 +8652,8 @@ class _DPMDashboard extends State<DPMDashboard> {
             scrollDirection: Axis.horizontal,
             child: DataTable(
               columns: [
-                DataColumn(label: Text('Field')),
-                DataColumn(label: Text('Value')),
+                DataColumn(label: Text('Organisation')),
+                DataColumn(label: Text('Detail')),
               ],
               rows: [
                 DataRow(cells: [

@@ -130,7 +130,8 @@ class _MoreClickGetStateDistrictWiseBothNGo
                                     child: Table(
                                       border: TableBorder.all(color: Colors.blue),
                                       children: [
-                                        _buildTableRow("Field", "Value", isHeader: true),
+                                        _buildTableRow("Organization", "Detail", isHeader: true),
+
                                         _buildTableRow("Darpan No", entry.darpanNo ?? "-"),
                                         _buildTableRow("Nodal Officer Name", entry.memberName ?? "-"),
                                         _buildTableRow("NGO Name", entry.name ?? "-"),

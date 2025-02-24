@@ -134,7 +134,8 @@ class _BothSatelliteCenters
                                     child: Table(
                                       border: TableBorder.all(color: Colors.blue),
                                       children: [
-                                        _buildTableRow("Field", "Value", isHeader: true),
+                                        _buildTableRow("Organization", "Detail", isHeader: true),
+
                                         _buildTableRow("Organisation Name", entry.ngoName ?? "-"),
                                         _buildTableRow("Hospital Name", entry.hospitalname ?? "-"),
                                         _buildTableRow("Total Satellite	", entry.smanagername ?? "-"),
