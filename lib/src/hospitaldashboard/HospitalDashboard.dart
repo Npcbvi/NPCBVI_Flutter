@@ -54,6 +54,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController _firstNamePatientDetail = TextEditingController();
   TextEditingController _lastNamePatientDetail = TextEditingController();
   TextEditingController _AgePatientDetail = TextEditingController();
+  TextEditingController _ageController = TextEditingController();
   TextEditingController _mobileNumberDetailsRelationtype =
       TextEditingController();
   TextEditingController _AddressHouse = TextEditingController();
@@ -1618,6 +1619,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                           print("@@_dob (API format): $_dob");
                                           print(
                                               "@@_dob (display format): $formattedDateForDisplay");
+                                          // Calculate age and update age field
+                                          int age = _calculateAge(pickedDate);
+                                          _ageController.text = age.toString();
                                         });
                                       }
                                     },
@@ -1649,7 +1653,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   width: 150, // Same width as Date Picker
                                   height: 50, // Same height as Date Picker
                                   child: _textInputField(
-                                    controller: _AgePatientDetail,
+                                    controller: _ageController,
                                     labelText: 'Age *',
                                     keyboardType: TextInputType.number,
                                   ),
@@ -3637,5 +3641,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         print("❌ Error uploading data: $e");
       }
     }
+  }
+  int _calculateAge(DateTime birthDate) {
+    DateTime today = DateTime.now();
+    int age = today.year - birthDate.year;
+
+    // Adjust age if the birthday hasn't occurred yet this year
+    if (today.month < birthDate.month ||
+        (today.month == birthDate.month && today.day < birthDate.day)) {
+      age--;
+    }
+
+    return age;
   }
 }
