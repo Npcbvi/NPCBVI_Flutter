@@ -9,13 +9,17 @@
 
     <!-- <uses-permission android:name ="android.permission.ACCESS_FINE_LOCATION" />
      <uses-permission android:name ="android.permission.ACCESS_COARSE_LOCATION" />-->
-
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <queries>
-        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
-    </queries>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
+    <queries>
+        <intent>
+            <action android:name="android.location.PROVIDERS_CHANGED"/>
+        </intent>
+    </queries>
     <queries>
         <intent>
             <action android:name="android.intent.action.VIEW" />
@@ -41,11 +45,12 @@
         android:icon="@mipmap/ic_launcher">
 
         <!-- Add the following entry, with your API key -->
-        <meta-data
+      <!--  <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCwKXvgsBElyhqwj03ro9e-Lnu3fmRmpJI" />
+            android:value="AIzaSyCwKXvgsBElyhqwj03ro9e-Lnu3fmRmpJI" />-->
 
-
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="YOUR_GOOGLE_MAPS_API_KEY"/>
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="default_channel_id" />
@@ -54,6 +59,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:exported="true"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
