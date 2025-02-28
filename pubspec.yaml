@@ -55,6 +55,8 @@ dependencies:
   flutter_image_compress: any
   dropdown_button2: any  # Use the latest version
   sqflite: any
+  geolocator: ^9.0.2
+  geocoding: ^2.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

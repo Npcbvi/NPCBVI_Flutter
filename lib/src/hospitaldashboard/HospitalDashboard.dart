@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
@@ -230,6 +231,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     });
     checkInternetConnection();
     getUserData();
+    _getLocation();
     hospitalDashboardclickDsiplay = true;
     _future = getDPM_ScreeningYear();
     _futureState = _getStatesDAta();
@@ -237,6 +239,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     _futureStateGetLanguageForDDLsData = getLanguageForDDL();
     _futureStateGetLanguageForDDLsData = getLanguageForDDL();
     _futureGetDiseaseForDDLDatas = getDiseaseForDDL();
+    hospitalDashboardDatas = true;
   }
 
   void getUserData() {
@@ -767,7 +770,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 5),
                       child: SizedBox(
                         width: 300, // Set width using SizedBox
                         child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
@@ -794,12 +797,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
                             hintText: null, // Remove the hint text
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                              borderRadius: BorderRadius.circular(5.0),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blueAccent, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                              borderRadius: BorderRadius.circular(5.0),
                             ),
                             filled: true,
                             fillColor: Colors.blue[50],
@@ -807,12 +810,18 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           dropdownStyleData: DropdownStyleData(
                             maxHeight: 300,
                             decoration: BoxDecoration(
-                              color: Colors.blue[50],
+                              color: Colors.grey[50],
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          buttonStyleData: ButtonStyleData(
+                            height: 21, // Adjust button height
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                          ),
                           iconStyleData: IconStyleData(
-                            icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
                             iconSize: 24,
                           ),
                         ),
@@ -821,12 +830,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   },
                 ),
 
-                SizedBox(height: 5),
+             /*   SizedBox(height: 5),
                 buildInfoContainer(stateNames),
                 SizedBox(height: 5),
-                buildInfoContainer(districtNames),
+                buildInfoContainer(districtNames),*/
                 SizedBox(height: 5),
                 buildDropdownHospitalType(),
+
                 SizedBox(height: 5),
                 buildInfoContainer(fullnameController),
                 Padding(
@@ -837,11 +847,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       onPressed: () {
                         print('Get button clicked');
                         setState(() {
-                          if (getYearNgoHopital == null) {
-                            Utils.showToast("Please Select financialYear !", false);
-                          } else {
+
                             hospitalDashboardDatas = true;
-                          }
                         });
                       },
                       style: ElevatedButton.styleFrom(
@@ -863,6 +870,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   visible: hospitalDashboardDatas,
                   child: Column(
                     children: [
+                      // Header Container
                       Container(
                         color: Colors.blue,
                         child: Padding(
@@ -881,74 +889,67 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         ),
                       ),
-                      // Horizontal Scrolling Header Row
 
+                      // Data Table with FutureBuilder
                       Container(
                         margin: EdgeInsets.fromLTRB(4, 0, 4, 0),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Header Row
-                              Row(
-                                children: [
-                                  _buildHeaderCellDiseaseData('Disease Type'),
-                                  _buildHeaderCellDiseaseData('Registered'),
-                                  _buildHeaderCellDiseaseData('Operated'),
-                                ],
-                              ),
-                              // Data Rows
-                              FutureBuilder<List<DataHospitalDashboard>>(
-                                future: ApiController.hospitalDashboard(
-                                    int.parse(role_id),
-                                    district_code_login,
-                                    state_code_login,
-                                    userId,
-                                    getYearNgoHopital,
-                                    0,
-                                    "0"),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return Center(
-                                        child: CircularProgressIndicator());
-                                  } else if (snapshot.hasError) {
-                                    return Utils.getEmptyView(
-                                        "Error: ${snapshot.error}");
-                                  } else if (!snapshot.hasData ||
-                                      snapshot.data.isEmpty) {
-                                    return Utils.getEmptyView("No data found");
-                                  } else {
-                                    List<DataHospitalDashboard> ddata =
-                                        snapshot.data;
+                        child: FutureBuilder<List<DataHospitalDashboard>>(
+                          future: ApiController.hospitalDashboard(
+                              int.parse(role_id),
+                              district_code_login,
+                              state_code_login,
+                              userId,
+                              getYearNgoHopital,
+                              0,
+                              "0"),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(child: Utils.getEmptyView("Error: ${snapshot.error}"));
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              // Show "No data found" if the list is empty
+                              return Center(child: Utils.getEmptyView("No data found"));
+                            } else {
+                              List<DataHospitalDashboard> ddata = snapshot.data;
 
-                                    return Column(
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Show header row only if data is available
+                                    Row(
+                                      children: [
+                                        _buildHeaderCellDiseaseData('Disease Type'),
+                                        _buildHeaderCellDiseaseData('Registered'),
+                                        _buildHeaderCellDiseaseData('Operated'),
+                                      ],
+                                    ),
+                                    // Data Rows
+                                    Column(
                                       children: ddata.map((offer) {
                                         return Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                          mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
-                                            _buildDataCellDiseaseData(
-                                                offer.status),
-                                            _buildDataCellDiseaseData(
-                                                offer.registered),
-                                            _buildDataCellDiseaseData(
-                                                offer.operated),
+                                            _buildDataCellDiseaseData(offer.status),
+                                            _buildDataCellDiseaseData(offer.registered),
+                                            _buildDataCellDiseaseData(offer.operated),
                                           ],
                                         );
                                       }).toList(),
-                                    );
-                                  }
-                                },
-                              ),
-                            ],
-                          ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
                         ),
-                      )
+                      ),
                     ],
                   ),
-                ),
+                )
+
               ],
             ),
           ),
@@ -962,10 +963,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
         width: 300,
-        height: 60,
+        height: 50,
         padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.blue, width: 1.0),
+          border: Border.all(color: Colors.grey, width: 1.0),
           borderRadius: BorderRadius.circular(5.0),
           color: Colors.white,
         ),
@@ -973,7 +974,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           text,
           style: TextStyle(
             color: Colors.black,
-            fontSize: 16,
+            fontSize: 14,
           ),
         ),
       ),
@@ -1096,62 +1097,72 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     );
   }
 
+
   Widget buildDropdownHospitalType() {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: Container(
-          width: 300,
-
-          child: Theme(
-            data: Theme.of(context).copyWith(canvasColor: Colors.white),
-            child: Column(
-              children: [
-                DropdownButtonFormField<String>(
-                  value: _chosenValueMangeTwo,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue, width: 1.0),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.blueAccent, width: 1.0),
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    hintText: 'Hospitals',
-                    hintStyle: TextStyle(color: Colors.black),
-                  ),
-                  items: <String>['Hospitals']
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (String value) {
-                    setState(() {
-                      _chosenValueMangeTwo = value ?? 'All';
-                      switch (_chosenValueMangeTwo) {
-                        case 'Hospitals':
-                          break;
-
-                        default:
-                          break;
-                      }
-                    });
-                  },
-                ),
-                // Show the second dropdown only if the selected value is "Hospitals"
-              ],
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Container(
+        width: 300,
+        child: DropdownButtonFormField2<String>(
+          value: _chosenValueMangeTwo,
+          style: TextStyle(color: Colors.black),
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey, width: 1.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey, width: 1.0),
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            hintText: 'Hospitals',
+            hintStyle: TextStyle(color: Colors.black),
+          ),
+          dropdownStyleData: DropdownStyleData(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(5.0),
             ),
           ),
-        ));
+
+          items: <String>['Hospitals']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.black),
+              ),
+            );
+          }).toList(),
+          onChanged: (String value) {
+            setState(() {
+              _chosenValueMangeTwo = value ?? 'All';
+              switch (_chosenValueMangeTwo) {
+                case 'Hospitals':
+                  break;
+
+                default:
+                  break;
+              }
+            });
+          },
+          buttonStyleData: ButtonStyleData(
+            height: 25, // Adjust button height
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+          ),
+          menuItemStyleData: MenuItemStyleData(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+          ),
+        ),
+      ),
+    );
   }
+
 
   Widget HospitalAddPatientData() {
     return SingleChildScrollView(
@@ -3653,5 +3664,40 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     }
 
     return age;
+  }
+  void _getLocation() async {
+    try {
+      Position position = await _determinePosition();
+      print('@@Latitude: ${position.latitude}, Longitude: ${position.longitude},');
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // Get the current position
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 }
