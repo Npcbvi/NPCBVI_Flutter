@@ -5,6 +5,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
 import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -150,7 +151,71 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   String formattedDate;
   final dbHelper = DatabaseHelper();
   bool isConnected = false;
+  String _locationMessage = "Press the button to get location";
+  String _address = "No address found";
+  // Function to get current position
+  Future<void> _getCurrentLocation() async {
+    try {
+      Position position = await _determinePosition();
+      print("Latitude: ${position.latitude}, Longitude: ${position.longitude}"); // Print coordinates
 
+      setState(() {
+        _locationMessage = "Lat: ${position.latitude}, Lng: ${position.longitude}";
+      });
+
+      // Get address from coordinates
+      List<Placemark> placemarks =
+      await placemarkFromCoordinates(position.latitude, position.longitude);
+
+      if (placemarks.isNotEmpty) {
+        Placemark place = placemarks.first;
+        String fullAddress =
+            "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
+
+        setState(() {
+          _AreaNearLandMark.text = fullAddress;
+        });
+
+        print("Address: $fullAddress"); // Print address in console
+      }
+    } catch (e) {
+      setState(() {
+        _locationMessage = "Error: $e";
+        _address = "Failed to get address";
+        _AreaNearLandMark.text = "Error: $e";
+      });
+
+      print("Error getting location: $e"); // Print error in console
+    }
+  }
+
+
+  // Function to determine position
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+  }
   Future<void> checkInternetConnection() async {
     var connectivityResult = await Connectivity().checkConnectivity();
     isConnected = connectivityResult != ConnectivityResult.none;
@@ -241,6 +306,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     _futureStateGetLanguageForDDLsData = getLanguageForDDL();
     _futureGetDiseaseForDDLDatas = getDiseaseForDDL();
     hospitalDashboardDatas = true;
+
   }
 
   void getUserData() {
@@ -2394,6 +2460,31 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ],
                   ),
                 ),
+
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                  child: Row(
+                    children: [
+                      // Expanded to take available width
+                      Expanded(
+                        child: TextFormField(
+                          controller: _AreaNearLandMark,
+                          decoration: InputDecoration(
+                            labelText: 'Area/ Near Land Mark, etc',
+                            border: OutlineInputBorder(),
+                          ),
+                          keyboardType: TextInputType.text,
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      // Location Icon Button
+                      IconButton(
+                        icon: Icon(Icons.my_location, color: Colors.blue),
+                        onPressed: _getCurrentLocation,
+                      ),
+                    ],
+                  ),
+                ),
                 SizedBox(height: 10.0),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
@@ -3673,32 +3764,5 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     } catch (e) {
       print('Error: $e');
     }
-  }
-  Future<Position> _determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
-    // Check if location services are enabled
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      return Future.error('Location services are disabled.');
-    }
-
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
-      }
-    }
-
-    if (permission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
-    }
-
-    // Get the current position
-    return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
   }
 }
