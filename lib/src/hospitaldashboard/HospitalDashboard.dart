@@ -229,6 +229,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         uploadLocalData(); // ✅ Upload when online
       }
     });
+
     checkInternetConnection();
     getUserData();
     _getLocation();
