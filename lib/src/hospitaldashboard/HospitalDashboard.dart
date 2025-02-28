@@ -179,6 +179,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         print("Address: $fullAddress"); // Print address in console
       }
     } catch (e) {
+
       setState(() {
         _locationMessage = "Error: $e";
         _address = "Failed to get address";
