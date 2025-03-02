@@ -175,7 +175,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         setState(() {
           _AreaNearLandMark.text = fullAddress;
         });
-
         print("Address: $fullAddress"); // Print address in console
       }
     } catch (e) {
