@@ -511,7 +511,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   // SizedBox(height: 10),
                   //comment code for next sprint
-                  /*  InkWell(
+                    InkWell(
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()));
@@ -540,7 +540,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-            ),*/
+            ),
+
                   //comment code for next sprint
                   MaterialButton(
                     onPressed: () {

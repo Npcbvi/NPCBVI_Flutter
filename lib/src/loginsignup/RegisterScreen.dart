@@ -23,7 +23,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
-
+import 'package:dropdown_button2/dropdown_button2.dart';
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreen createState() => _RegisterScreen();
@@ -36,7 +36,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   Data _selectedUser;
   DataDsiricst _selectedUserDistrict;
 
-  String _chosenValue, oganisationTypeGovtPrivateDRopDown;
+  String _chosenValue, oganisationTypeGovtPrivateDRopDown,_chosenValueRegisertaion;
   String randomString = "";
   bool showGOVTPrivate = false;
   bool showNGOResgistration = false;
@@ -69,6 +69,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   TextEditingController _dpmEmailIdController = new TextEditingController();
   TextEditingController _dpmDestinationController = new TextEditingController();
   TextEditingController _dpmPhoneNumberController = new TextEditingController();
+  TextEditingController _captchaController = TextEditingController();
 
   TextEditingController stdControllerDPM = new TextEditingController();
   TextEditingController stdControllerSpo = new TextEditingController();
@@ -215,6 +216,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     // TODO: implement build
     return Scaffold(
       backgroundColor: Colors.white,
+
       appBar: new AppBar(
           backgroundColor: Colors.blue,
           title: new Text('Registration ',
@@ -222,152 +224,148 @@ class _RegisterScreen extends State<RegisterScreen> {
                 color: Colors.white,
               )),
           centerTitle: true,
-          leading: IconButton(
+          /*leading: IconButton(
               icon: Icon(Icons.arrow_back_ios),
               onPressed: () {
                 Utils.hideKeyboard(context);
                 Navigator.of(context).pop(context);
-              })),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
-              child: Container(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Shown Captcha value to user
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      Container(
-                          child: Text(
-                        'Home',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      new DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          focusColor: Colors.white,
-                          value: _chosenValue,
-                          style: TextStyle(
-                            color: Colors.white, // Selected text color
-                          ),
-                          iconEnabledColor: Colors.white, // Color of the dropdown icon
-                          dropdownColor: Colors.blue, // Set the dropdown background to black
-                          hint: Text(
-                            "Registration",
-                            style: TextStyle(
-                              color: Colors.white, // Hint text color
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          items: <String>[
-                            'NGO',
-                            'Govt./Private /Other',
-                            'SPO',
-                            'DPM',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(
-                                  color: Colors.white, // Dropdown items text color
-                                ),
-                              ),
-                            );
-                          }).toList(),
+              })*/
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.login,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => LoginScreen()),
+              );
+              // do something
+            },
+          )
+        ],
+      ),
+      drawer: Drawer(
+        child: Container(
+          width: 100.0, // Set the width of the drawer
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white70, Colors.white70],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Container(
+            margin: EdgeInsets.all(8.0),
+            // Reduce the margin to decrease space// Set the margin here
+            child: ListView(
+              children: [
+                _buildMenuItem(
+                  icon: Icons.dashboard,
+                  title: 'Home',
+                  onTap: () {
+                    setState(() {
+                      print('@@dashboardviewReplace----display---');
 
-                          onChanged: (String value) {
-                            setState(() {
-                              _chosenValue = value;
-                              //  print('@@spinnerChooseValue--' + _chosenValue);
-                              if (_chosenValue == "NGO") {
-                                print('@@NGO--1' + _chosenValue);
-                              /*  Navigator.push(
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+                _buildDropdownItem(
+                  value: _chosenValueRegisertaion,
+                  hint: 'Registeration',
+                  hintIcon: Icon(Icons.update, color: Colors.black),
+                  // Add an icon to the hint
+                  items: [
+                    {'value': 'NGO', 'icon': Icons.person_add},
+                    // Add an icon here
+                    {'value': 'Govt./Private /Other', 'icon': Icons.update},
+                    {'value': 'SPO', 'icon': Icons.visibility},
+                    {'value': 'DPM', 'icon': Icons.visibility},
+                  ],
+
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenValueRegisertaion = value;
+                      //  print('@@spinnerChooseValue--' + _chosenValue);
+                      if (_chosenValueRegisertaion == "NGO") {
+                        print('@@NGO--1' + _chosenValueRegisertaion);
+                        /*  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => NGORegistrationScreen()));*/
 
-                                showNGOResgistration = true;
-                                showSPORegistration = false;
-                                showDPMRegistration = false;
-                                showGOVTPrivate = false;
-                                newUSerGovtPrivateRegisterRadios = false;
-                                registeredUSerGovtPrivateRegsiterations = false;
-                              } else if (_chosenValue == "SPO") {
-                                //getCountries();
-                                _future = _getStatesDAta();
-                                print(
-                                    '@@showSPORegistration--2' + _chosenValue);
-                                showNGOResgistration = false;
-                                showSPORegistration = true;
-                                showDPMRegistration = false;
-                                showGOVTPrivate = false;
-                                newUSerGovtPrivateRegisterRadios = false;
-                                registeredUSerGovtPrivateRegsiterations = false;
-                              } else if (_chosenValue == "DPM") {
-                                //getCountries();
-                                _future = _getStatesDAta();
+                        showNGOResgistration = true;
+                        showSPORegistration = false;
+                        showDPMRegistration = false;
+                        showGOVTPrivate = false;
+                        newUSerGovtPrivateRegisterRadios = false;
+                        registeredUSerGovtPrivateRegsiterations = false;
+                      } else if (_chosenValueRegisertaion == "SPO") {
+                        //getCountries();
+                        _future = _getStatesDAta();
+                        print(
+                            '@@showSPORegistration--2' + _chosenValueRegisertaion);
+                        showNGOResgistration = false;
+                        showSPORegistration = true;
+                        showDPMRegistration = false;
+                        showGOVTPrivate = false;
+                        newUSerGovtPrivateRegisterRadios = false;
+                        registeredUSerGovtPrivateRegsiterations = false;
+                      } else if (_chosenValueRegisertaion == "DPM") {
+                        //getCountries();
+                        _future = _getStatesDAta();
 
-                                // _getDistrictData(18);
+                        // _getDistrictData(18);
 
-                                print('@@showSPORegistration--3' +
-                                    _chosenValue +
-                                    value.toString());
-                                showNGOResgistration = false;
-                                showSPORegistration = false;
-                                showDPMRegistration = true;
-                                showGOVTPrivate = false;
-                                newUSerGovtPrivateRegisterRadios = false;
-                                registeredUSerGovtPrivateRegsiterations = false;
-                              } else if (_chosenValue ==
-                                  "Govt./Private /Other") {
-                                showNGOResgistration = false;
-                                showSPORegistration = false;
-                                showDPMRegistration = false;
-                                showGOVTPrivate = true;
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                      //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                      InkWell(
-                        onTap: () {
-                          //  Navigator.of(context).pop(context); // it deletes from top from stack previos screen
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => LoginScreen()));
-                        },
-                        child: Container(
-                            child: Text(
-                          'Login',
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.w800),
-                        )),
-                      ),
-                      const SizedBox(
-                        width: 12,
-                      ),
-                    ],
-                  ),
+                        print('@@showSPORegistration--3' +
+                            _chosenValue +
+                            value.toString());
+                        showNGOResgistration = false;
+                        showSPORegistration = false;
+                        showDPMRegistration = true;
+                        showGOVTPrivate = false;
+                        newUSerGovtPrivateRegisterRadios = false;
+                        registeredUSerGovtPrivateRegsiterations = false;
+                      } else if (_chosenValueRegisertaion ==
+                          "Govt./Private /Other") {
+                        showNGOResgistration = false;
+                        showSPORegistration = false;
+                        showDPMRegistration = false;
+                        showGOVTPrivate = true;
+                      }
+                    });
+
+                    Navigator.pop(context);
+                  },
                 ),
-              ),
+                _buildMenuItem(
+                  icon: Icons.login,
+                  title: 'Login',
+                  onTap: () {
+                    setState(() {
+                      Navigator.pop(context);
+                       Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => LoginScreen()));
+                    });
+                    //  Navigator.pop(context);
+                  },
+                ),
+
+
+              ],
             ),
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+
             SizedBox(
               width: double.infinity,
               height: 40,
@@ -389,6 +387,7 @@ class _RegisterScreen extends State<RegisterScreen> {
               )),
             ),
             NGORegistration(),
+
             GovtRAdioGroups(),
             SPORegistration(),
             DPMRegistration(),
@@ -517,48 +516,50 @@ class _RegisterScreen extends State<RegisterScreen> {
               child: ListView(
                 shrinkWrap: true,
                 children: [
+                  // NGO Darpan Number TextField
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
+                    child: TextField(
                       controller: _ngoDarpanNumberController,
                       decoration: InputDecoration(
-                          label: Text('NGO Darpan number'),
-                          hintText: 'NGO Darpan number',
-
-                          //prefixIcon
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
+                        labelText: 'NGO Darpan number',
+                        hintText: 'Enter NGO Darpan number',
+                        prefixIcon: Icon(Icons.business, color: Colors.grey), // 👈 Added icon
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
                     ),
                   ),
 
+                  // NGO PAN Number TextField
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
+                    child: TextField(
                       controller: _ngoPANNumberController,
-                      obscureText: true,
                       decoration: InputDecoration(
-                          label: Text('NGO PAN number'),
-                          hintText: 'NGO PAN number',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
+                        labelText: 'NGO PAN number',
+                        hintText: 'Enter NGO PAN number',
+                        prefixIcon: Icon(Icons.credit_card, color: Colors.grey), // 👈 Added icon
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
                     ),
                   ),
 
-                  // TextFormField to enter captcha value
-
+                  // Submit Button
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                    child: ElevatedButton(
-                      child: Text('Verify'),
+                    child: ElevatedButton.icon( // 👈 Added an icon to the button
+                      icon: Icon(Icons.check_circle, color: Colors.white),
+                      label: Text('Verify'),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blue,
                       ),
                       onPressed: () {
-                        print('@@NGO Button click__work prnding');
-                      //  _NGORegistrationSubmit();
+                        print('@@NGO Button click__work pending');
+                        // _NGORegistrationSubmit();
                       },
                     ),
                   ),
@@ -570,6 +571,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       ],
     );
   }
+
 
   //SPO Registyartion work here
 
@@ -587,285 +589,465 @@ class _RegisterScreen extends State<RegisterScreen> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    Center(
-                      child: FutureBuilder<List<Data>>(
-                        future: _future,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          }
 
-                          if (!snapshot.hasData) {
-                            return const CircularProgressIndicator();
-                          }
+                FutureBuilder<List<Data>>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
 
-                          // Logging for debugging
-                          developer.log('@@snapshot: ${snapshot.data}');
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
 
-                          List<Data> stateList = snapshot.data;
+                    List<Data> stateList = snapshot.data;
 
-                          // Ensure selected state is in the list, otherwise select the first
-                          if (_selectedUser == null || !stateList.contains(_selectedUser)) {
-                            _selectedUser = stateList.first;
-                          }
+                    // Ensure selected state is in the list, otherwise select the first
+                    if (_selectedUser == null || !stateList.contains(_selectedUser)) {
+                      _selectedUser = stateList.first;
+                    }
 
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                DropdownButtonFormField<Data>(
-                                  decoration: InputDecoration(
-                                    hintText: 'Select State',  // Set the hint text
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
-                                  ),
-                                  onChanged: (user) {
-                                    setState(() {
-                                      _selectedUser = user;
-                                      stateCodeSPO = int.parse(user.stateCode.toString());
-                                      CodeSPO = user.code;
-                                      print('@@statenameSPO: $stateCodeSPO');
-                                      print('@@CodeSPO: $CodeSPO');
-                                    });
-                                  },
-                                  value: _selectedUser,
-                                  items: stateList.map<DropdownMenuItem<Data>>((Data user) {
-                                    return DropdownMenuItem<Data>(
-                                      value: user,
-                                      child: Text(user.stateName),
-                                    );
-                                  }).toList(),
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 5, 10.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          DropdownButtonFormField2<Data>(
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.blue[50],
+                            ),
+                            hint: Text('Select State'),
+                            value: _selectedUser,
+                            onChanged: (user) {
+                              setState(() {
+                                _selectedUser = user;
+                                stateCodeSPO = int.parse(user.stateCode.toString());
+                                CodeSPO = user.code;
+                                print('@@statenameSPO: $stateCodeSPO');
+                                print('@@CodeSPO: $CodeSPO');
+                              });
+                            },
+                            items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                              return DropdownMenuItem<Data>(
+                                value: user,
+                                child: Text(user.stateName),
+                              );
+                            }).toList(),
+
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 350,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+
+
+                  Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: TextField(
+                        controller: _spoNAmeController,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Name ', // Regular label text
+                                  style: TextStyle(color: Colors.black), // Change label text color here
+                                ),
+                                TextSpan(
+                                  text: '*', // Asterisk
+                                  style: TextStyle(color: Colors.red), // Make asterisk red
                                 ),
                               ],
                             ),
-                          );
-                        },
+                          ),
+                          hintText: 'Name',
+                          hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        controller: _spoNAmeController,
-                        decoration: InputDecoration(
-                            label: Text('Name'),
-                            hintText: 'Name',
-                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
-                            //prefixIcon
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),
 
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
+                      child: TextField(
                         keyboardType: TextInputType.number,
                         controller: _spoMobileController,
                         maxLength: 10,
                         decoration: InputDecoration(
-                            label: Text('Mobile Number'),
-                            hintText: 'Mobile Number',
-                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
+                          label: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Mobile Number ', // Regular label text
+                                  style: TextStyle(color: Colors.black), // Change label text color
+                                ),
+                                TextSpan(
+                                  text: '*', // Asterisk
+                                  style: TextStyle(color: Colors.red), // Make asterisk red
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Mobile Number',
+                          hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
+                      child: TextField(
                         controller: _spoEmailIdController,
+                        keyboardType: TextInputType.emailAddress, // Set keyboard type for email
                         decoration: InputDecoration(
-                            label: Text('EmailID'),
-                            hintText: 'EmailID',
-                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
+                          label: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Email ID ', // Regular label text
+                                  style: TextStyle(color: Colors.black), // Label text color
+                                ),
+                                TextSpan(
+                                  text: '*', // Asterisk
+                                  style: TextStyle(color: Colors.red), // Make asterisk red
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Email ID',
+                          hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                        ),
                       ),
                     ),
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
+                      child: TextField(
                         controller: _spoDestinationController,
                         decoration: InputDecoration(
-                            label: Text('Designation'),
-                            hintText: 'Designation',
-                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
-
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: new TextFormField(
-                              controller: stdControllerSpo,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
+                          label: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'Designation ', // Regular label text
+                                  style: TextStyle(color: Colors.black), // Label text color
+                                ),
+                                TextSpan(
+                                  text: '*', // Asterisk
+                                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold), // Red asterisk
+                                ),
                               ],
-                              maxLength: 10,
-                              decoration: InputDecoration(
-                                  label: Text('Std'),
-                                  hintText: 'Std',
-                                  hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
-
-                                  //prefixIcon
-
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(5.0))),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: new TextField(
-                              keyboardType: TextInputType.number,
-                              controller: _spoPhoneNumberController,
-                              maxLength: 10,
-                              decoration: InputDecoration(
-                                  label: Text('Phone Number'),
-                                  hintText: 'Phone Number',
-                                  hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
-
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(5.0))),
-                            ),
+                          hintText: 'Designation',
+                          hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5.0),
                           ),
                         ),
-                      ],
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        controller: _spoOfficeAddressController,
-                        decoration: InputDecoration(
-                            label: Text('Office Address'),
-                            hintText: 'Office Address',
-                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
-
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        controller: _spoPinCodeController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            label: Text('Pin Code'),
-                            hintText: 'Pin Code',
-                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
 
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          // Shown Captcha value to user
-                          Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                  border: Border.all(width: 2, color: red1)),
-                              child: Text(
-                                '${randomString}',
-                                style: TextStyle(
-                                    color: red1, fontWeight: FontWeight.w500),
-                              )),
-                          const SizedBox(
-                            width: 10,
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              child: TextFormField(
+                                controller: stdControllerSpo,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(5), // Restrict to 5 digits
+                                ],
+                                decoration: InputDecoration(
+                                  label: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: 'STD ',
+                                          style: TextStyle(color: Colors.black), // Label text color
+                                        ),
+                                        TextSpan(
+                                          text: '*', // Asterisk
+                                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  hintText: 'Enter STD Code',
+                                  hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                ),
+                              ),
+                            ),
                           ),
-
-                          // Regenerate captcha value
-                          IconButton(
-                              onPressed: () {
-                                //  buildCaptcha();
-                              },
-                              icon: const Icon(Icons.refresh)),
+                          Expanded(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              child: TextFormField(
+                                controller: _spoPhoneNumberController,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: [
+                                  FilteringTextInputFormatter.digitsOnly,
+                                  LengthLimitingTextInputFormatter(10), // Restrict to 10 digits
+                                ],
+                                decoration: InputDecoration(
+                                  label: RichText(
+                                    text: TextSpan(
+                                      children: [
+                                        TextSpan(
+                                          text: 'Phone Number ',
+                                          style: TextStyle(color: Colors.black), // Label text color
+                                        ),
+                                        TextSpan(
+                                          text: '*', // Asterisk
+                                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  hintText: 'Enter Phone Number',
+                                  hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    // TextFormField to enter captcha value
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                      child: TextFormField(
-                        controller: _spoCaptchaCodeEnterController,
 
-                        /*  onChanged: (value) {
-                        setState(() {
-                          isVerified = false;
-                        });
-                      },*/
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Enter Captcha Value",
-                            hintStyle: TextStyle(color: Colors.grey), // Set hint text color here
 
-                            labelText: "Enter Captcha Value"),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                      child: ElevatedButton(
-                          child: Text('Submit'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
+                    Container(
+                      margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+
+                        child: TextField(
+                          controller: _spoOfficeAddressController,
+                          maxLines: 3, // Allows multiline input for addresses
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Office Address ',
+                                    style: TextStyle(color: Colors.black), // Label text color
+                                  ),
+                                  TextSpan(
+                                    text: '*', // Asterisk
+                                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter Office Address',
+                            hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
                           ),
-                          onPressed: () {
-                            print('@@Spo Submit Button');
-                            _spoRegistrationSubmit();
-                          }),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                      child: ElevatedButton(
-                        child: Text('Reset'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
                         ),
-                        onPressed: () {
-                          _spoNAmeController.clear();
-                          _spoMobileController.clear();
-                          _spoPinCodeController.clear();
-                          _spoOfficeAddressController.clear();
-                          _spoEmailIdController.clear();
-                          _spoPhoneNumberController.clear();
-                          _spoCaptchaCodeEnterController.clear();
-                          _spoDestinationController.clear();
-                          stdControllerSpo.clear();
-                        },
                       ),
                     ),
+                    Container(
+                      margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+
+                        child: TextField(
+                          controller: _spoPinCodeController,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            LengthLimitingTextInputFormatter(6), // Restrict to 6 digits
+                          ],
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Pin Code ',
+                                    style: TextStyle(color: Colors.black), // Label text color
+                                  ),
+                                  TextSpan(
+                                    text: '*', // Asterisk
+                                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter Pin Code',
+                            hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                          ),
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 5),
+
+
+                    Container(
+                      margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: SizedBox(
+                              height: 50, // Adjust height as needed
+                              child: TextField(
+                                controller: _spoCaptchaCodeEnterController,
+                                decoration: InputDecoration(
+                                  label: RichText(
+                                    text: TextSpan(
+                                      text: 'Enter Captcha Value',
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      children: [
+                                        TextSpan(
+                                          text: ' *', // Red Asterisk for required field
+                                          style: TextStyle(color: Colors.red, fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    isVerified = false;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+
+
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              height: 50,
+                              margin: EdgeInsets.only(left: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(width: 1, color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  randomString,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: 50,
+                              margin: EdgeInsets.only(left: 5),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: IconButton(
+                                onPressed: buildCaptcha,
+                                icon: Icon(Icons.refresh),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Even spacing
+                        children: [
+                          Expanded(
+                            child: ElevatedButton.icon( // Using ElevatedButton.icon
+                              onPressed: () {
+                                print('@@Spo Submit Button');
+                                _spoRegistrationSubmit();
+                              },
+                              icon: Icon(Icons.check, color: Colors.white), // ✅ Submit Icon
+                              label: Text('Submit', style: TextStyle(fontSize: 16)),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue, // Button color
+                                padding: EdgeInsets.symmetric(vertical: 15), // Button height
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 20), // Adds spacing between buttons
+                          Expanded(
+                            child: ElevatedButton.icon( // Using ElevatedButton.icon
+                              onPressed: () {
+                                _spoNAmeController.clear();
+                                _spoMobileController.clear();
+                                _spoPinCodeController.clear();
+                                _spoOfficeAddressController.clear();
+                                _spoEmailIdController.clear();
+                                _spoPhoneNumberController.clear();
+                                _spoCaptchaCodeEnterController.clear();
+                                _spoDestinationController.clear();
+                                stdControllerSpo.clear();
+                              },
+                              icon: Icon(Icons.refresh, color: Colors.white), // 🔄 Reset Icon
+                              label: Text('Reset', style: TextStyle(fontSize: 16)),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red, // Different color for Reset
+                                padding: EdgeInsets.symmetric(vertical: 15), // Button height
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+
                   ],
                 ),
               ),
@@ -884,161 +1066,137 @@ class _RegisterScreen extends State<RegisterScreen> {
             child: Container(
               margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
               alignment: Alignment.center,
-              child: ListView(
-                shrinkWrap: true,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(10)),
-                      child: new DropdownButtonHideUnderline(
-                        child: DropdownButton<String>(
-                          isExpanded: true,
-                          focusColor: Colors.white,
-                          value: oganisationTypeGovtPrivateDRopDown,
-                          //elevation: 5,
-                          style: TextStyle(color: Colors.white),
-                          iconEnabledColor: Colors.white,
-                          items: <String>[
-                            'Govt. District Hospital/Govt.MEdical College',
-                            'CHC/Govt. Sub-Dist. Hospital',
-                            'Private Practitioner',
-                            'Private Medical College',
-                            'Other(Institution not claiming fund from NPCBVI)',
-                          ].map<DropdownMenuItem<String>>(
-                              (String oganisationTypeGovtPrivateDRopDowns) {
-                            return DropdownMenuItem<String>(
-                              value: oganisationTypeGovtPrivateDRopDowns,
-                              child: Text(
-                                oganisationTypeGovtPrivateDRopDowns,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            );
-                          }).toList(),
-                          hint: Text(
-                            "Select",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500),
+              child: SingleChildScrollView( // ✅ Wrap ListView with SingleChildScrollView
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: DropdownButtonFormField2<String>(
+                        isExpanded: true,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                          filled: true,
+                          fillColor: Colors.grey, // Background color
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.grey), // Border color
                           ),
-                          onChanged:
-                              (String oganisationTypeGovtPrivateDRopDownss) {
-                            setState(() {
-                              oganisationTypeGovtPrivateDRopDown =
-                                  oganisationTypeGovtPrivateDRopDownss;
-                              print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                  oganisationTypeGovtPrivateDRopDown);
-                              if (oganisationTypeGovtPrivateDRopDown ==
-                                  "Govt. District Hospital/Govt.MEdical College") {
-                                isVisibleHostpiatnNinitrictGovt = true;
-
-                                dropDownvalueOrgnbaistaionType = 10;
-                                print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                    oganisationTypeGovtPrivateDRopDown +
-                                    "-----" +
-                                    dropDownvalueOrgnbaistaionType.toString());
-                              } else if (oganisationTypeGovtPrivateDRopDown ==
-                                  "CHC/Govt. Sub-Dist. Hospital") {
-                                dropDownvalueOrgnbaistaionType = 11;
-                                print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                    oganisationTypeGovtPrivateDRopDown +
-                                    "-----" +
-                                    dropDownvalueOrgnbaistaionType.toString());
-                                isVisibleHostpiatnNinitrictGovt = false;
-                              } else if (oganisationTypeGovtPrivateDRopDown ==
-                                  "Private Practitioner") {
-                                dropDownvalueOrgnbaistaionType = 12;
-                                print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                    oganisationTypeGovtPrivateDRopDown +
-                                    "-----" +
-                                    dropDownvalueOrgnbaistaionType.toString());
-                                isVisibleHostpiatnNinitrictGovt = true;
-                              } else if (oganisationTypeGovtPrivateDRopDown ==
-                                  "Private Medical College") {
-                                dropDownvalueOrgnbaistaionType = 13;
-                                print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                    oganisationTypeGovtPrivateDRopDown +
-                                    "-----" +
-                                    dropDownvalueOrgnbaistaionType.toString());
-                                isVisibleHostpiatnNinitrictGovt = false;
-                              } else if (oganisationTypeGovtPrivateDRopDown ==
-                                  "Other(Institution not claiming fund from NPCBVI)") {
-                                dropDownvalueOrgnbaistaionType = 14;
-                                print('@@oganisationTypeGovtPrivateDRopDown--' +
-                                    oganisationTypeGovtPrivateDRopDown +
-                                    "-----" +
-                                    dropDownvalueOrgnbaistaionType.toString());
-                                isVisibleHostpiatnNinitrictGovt = false;
-                              }
-                            });
-                          },
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            borderSide: BorderSide(color: Colors.blue), // Highlighted border color
+                          ),
                         ),
+                        value: oganisationTypeGovtPrivateDRopDown,
+                        hint: Text(
+                          "Select",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        iconStyleData: IconStyleData(
+                          icon: Icon(Icons.arrow_drop_down, color: Colors.white), // Dropdown icon
+                        ),
+
+                        items: [
+                          'Govt. District Hospital/Govt. Medical College',
+                          'CHC/Govt. Sub-Dist. Hospital',
+                          'Private Practitioner',
+                          'Private Medical College',
+                          'Other (Institution not claiming fund from NPCBVI)',
+                        ].map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(
+                              value,
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            oganisationTypeGovtPrivateDRopDown = newValue;
+                            print('@@oganisationTypeGovtPrivateDRopDown--$oganisationTypeGovtPrivateDRopDown');
+
+                            // Assigning dropDownvalueOrgnbaistaionType based on selection
+                            switch (oganisationTypeGovtPrivateDRopDown) {
+                              case "Govt. District Hospital/Govt. Medical College":
+                                dropDownvalueOrgnbaistaionType = 10;
+                                isVisibleHostpiatnNinitrictGovt = true;
+                                break;
+                              case "CHC/Govt. Sub-Dist. Hospital":
+                                dropDownvalueOrgnbaistaionType = 11;
+                                isVisibleHostpiatnNinitrictGovt = false;
+                                break;
+                              case "Private Practitioner":
+                                dropDownvalueOrgnbaistaionType = 12;
+                                isVisibleHostpiatnNinitrictGovt = true;
+                                break;
+                              case "Private Medical College":
+                                dropDownvalueOrgnbaistaionType = 13;
+                                isVisibleHostpiatnNinitrictGovt = false;
+                                break;
+                              case "Other (Institution not claiming fund from NPCBVI)":
+                                dropDownvalueOrgnbaistaionType = 14;
+                                isVisibleHostpiatnNinitrictGovt = false;
+                                break;
+                            }
+
+                            print('@@dropDownvalueOrgnbaistaionType--$dropDownvalueOrgnbaistaionType');
+                          });
+                        },
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _organisationNameGovtPrivate,
-                      keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
-                          label: Text('Organisation Name * '),
-                          hintText: 'Organisation Name * ',
-                          //prefixIcon
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Visibility(
-                    visible: isVisibleHostpiatnNinitrictGovt,
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: new TextFormField(
-                              controller: _HospitalNINnoGovtController,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              maxLength: 10,
-                              decoration: InputDecoration(
-                                  label: Text('Hospital NIN no '),
-                                  hintText: 'Hospital NIN no',
 
-                                  //prefixIcon
 
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0))),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: ElevatedButton(
-                              child: Text('Verify'),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.blue,
+                    Visibility(
+                      visible: isVisibleHostpiatnNinitrictGovt,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: new TextFormField(
+                                controller: _HospitalNINnoGovtController,
+                                keyboardType: TextInputType.number,
+                                inputFormatters: <TextInputFormatter>[
+                                  FilteringTextInputFormatter.digitsOnly
+                                ],
+                                maxLength: 10,
+                                decoration: InputDecoration(
+                                    label: Text('Hospital NIN no '),
+                                    hintText: 'Hospital NIN no',
+
+                                    //prefixIcon
+
+                                    border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(5.0))),
                               ),
-                              onPressed: () {
-                                print('@@HNNNumberAPi---');
-                                //   _submitForm();
-                              },
                             ),
                           ),
-                        ),
-                      ],
+                          Expanded(
+                            flex: 1,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                              child: ElevatedButton(
+                                child: Text('Verify'),
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.blue,
+                                ),
+                                onPressed: () {
+                                  print('@@HNNNumberAPi---');
+                                  //   _submitForm();
+                                },
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  /*Visibility(
+                    /*Visibility(
                       visible: isVisibleHostpiatnNinitrictGovt,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
@@ -1059,44 +1217,43 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   borderRadius: BorderRadius.circular(5.0))),
                         ),
                       )),*/
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _mobileGovtPRivate,
-                      keyboardType: TextInputType.number,
-                      maxLength: 10,
-                      decoration: InputDecoration(
-                          label: Text('Mobile No. * '),
-                          hintText: 'Mobile No. *',
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: new TextField(
+                        controller: _mobileGovtPRivate,
+                        keyboardType: TextInputType.number,
+                        maxLength: 10,
+                        decoration: InputDecoration(
+                            label: Text('Mobile No. * '),
+                            hintText: 'Mobile No. *',
 
-                          //prefixIcon
+                            //prefixIcon
 
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _emailIDGovtPRivate,
-                      decoration: InputDecoration(
-                          label: Text('Email ID *'),
-                          hintText: 'Email ID *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  // TextFormField to enter captcha value
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
-                    child: Center(
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: new TextField(
+                        controller: _emailIDGovtPRivate,
+                        decoration: InputDecoration(
+                            label: Text('Email ID *'),
+                            hintText: 'Email ID *',
+
+                            //prefixIcon
+
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                    // TextFormField to enter captcha value
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 1, color: Colors.grey[300]),
+                        ),
+                      ),
                       child: FutureBuilder<List<Data>>(
                         future: _future, // Future to fetch the data
                         builder: (context, snapshot) {
@@ -1121,7 +1278,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                           return Container(
                             decoration: BoxDecoration(
                               border: Border(
-                                bottom: BorderSide(width: 1.5, color: Colors.grey[300]),
+                                bottom: BorderSide(width: 1, color: Colors.grey[300]),
                               ),
                             ),
                             child: Padding(
@@ -1137,12 +1294,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                                       contentPadding:
                                       EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                                       enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
+                                        borderSide: BorderSide(color: Colors.grey, width: 1.0),
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderSide:
-                                        BorderSide(color: Colors.blueAccent, width: 2.0),
+                                        BorderSide(color: Colors.grey, width: 1.0),
                                         borderRadius: BorderRadius.circular(10.0),
                                       ),
                                       filled: true,
@@ -1175,490 +1332,491 @@ class _RegisterScreen extends State<RegisterScreen> {
                         },
                       ),
                     ),
-                  ),
 
-              Visibility(
-                visible: isVisibleDitrictGovt,
-                child: Column(
-                  children: [
-                    Center(
-                      child: FutureBuilder<List<DataDsiricst>>(
-                        future: _getDistrictData(stateCodeGovtPrivate),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          }
-                          if (!snapshot.hasData) {
-                            return const CircularProgressIndicator();
-                          }
+                    Visibility(
+                      visible: isVisibleDitrictGovt,
+                      child: Column(
+                        children: [
+                          Center(
+                            child: FutureBuilder<List<DataDsiricst>>(
+                              future: _getDistrictData(stateCodeGovtPrivate),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+                                if (!snapshot.hasData) {
+                                  return const CircularProgressIndicator();
+                                }
 
-                          // Logging for debugging
-                          developer.log('@@snapshot: ${snapshot.data}');
+                                // Logging for debugging
+                                developer.log('@@snapshot: ${snapshot.data}');
 
-                          List<DataDsiricst> districtList = snapshot.data;
+                                List<DataDsiricst> districtList = snapshot.data;
 
-                          // Ensure selected district is in the list, otherwise select the first one
-                          if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
-                            _selectedUserDistrict = districtList.first;
-                          }
+                                // Ensure selected district is in the list, otherwise select the first one
+                                if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                                  _selectedUserDistrict = districtList.first;
+                                }
 
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                const Text('Select District:'),
-                                DropdownButtonFormField<DataDsiricst>(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
+                                return Padding(
+                                  padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      const Text('Select District:'),
+                                      DropdownButtonFormField<DataDsiricst>(
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.blue[50],
+                                        ),
+                                        onChanged: (districtUser) => setState(() {
+                                          _selectedUserDistrict = districtUser;
+                                          distCodeGovtPrivate = int.parse(districtUser.districtCode.toString());
+                                          // Update state or further actions here
+                                          print('Selected District: ${districtUser.districtName}');
+                                        }),
+                                        value: _selectedUserDistrict,
+                                        items: districtList.map((DataDsiricst district) {
+                                          return DropdownMenuItem<DataDsiricst>(
+                                            value: district,
+                                            child: Text(district.districtName),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ],
                                   ),
-                                  onChanged: (districtUser) => setState(() {
-                                    _selectedUserDistrict = districtUser;
-                                    distCodeGovtPrivate = int.parse(districtUser.districtCode.toString());
-                                    // Update state or further actions here
-                                    print('Selected District: ${districtUser.districtName}');
-                                  }),
-                                  value: _selectedUserDistrict,
-                                  items: districtList.map((DataDsiricst district) {
-                                    return DropdownMenuItem<DataDsiricst>(
-                                      value: district,
-                                      child: Text(district.districtName),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
+                                );
+                              },
                             ),
-                          );
-                        },
+                          ),
+                        ],
                       ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: new TextField(
+                        controller: _addressGovtPRivate,
+                        decoration: InputDecoration(
+                            label: Text('Address  *'),
+                            hintText: 'Address  *',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: new TextField(
+                        controller: _pinbCodeGovtPRivate,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                            label: Text('Pin Code *'),
+                            hintText: 'Pin Code *',
+
+                            //prefixIcon
+
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: new TextField(
+                        controller: _officerNAmeGovtPRivate,
+                        decoration: InputDecoration(
+                            label: Text('Officer Name *'),
+                            hintText: 'Officer Name *',
+
+                            //prefixIcon
+
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(),
+                        ),
+                        child: Text(
+                          'Equipment Details *',
+                          textDirection: TextDirection.ltr,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 22),
+                        ),
+                      ),
+                    ),
+
+                    Container(
+                      child: Row(
+                        children: <Widget>[
+                          FutureBuilder(
+                            future: ApiController.getEquipmentGovtPRivateModel(),
+                            builder: (context, projectSnap) {
+                              if (projectSnap.connectionState ==
+                                  ConnectionState.none &&
+                                  projectSnap.hasData == null) {
+                                return Container();
+                              } else {
+                                if (projectSnap.hasData) {
+                                  GovtPRivateModel response = projectSnap.data;
+                                  if (response.status) {
+                                    offerList = response.list;
+                                    if (offerList.isEmpty) {
+                                      return Utils.getEmptyView("No data found");
+                                    } else {
+                                      _controllers = List.generate(
+                                          offerList.length,
+                                              (index) => TextEditingController());
+                                      return Expanded(
+                                        child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: offerList.length,
+                                          itemBuilder: (context, index) {
+                                            ListGovtPRivateModel offer =
+                                            offerList[index];
+
+                                            return Column(
+                                              children: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceEvenly,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                            20, 10, 20.0, 0),
+                                                        child: Container(
+                                                          decoration:
+                                                          BoxDecoration(
+                                                            border: Border.all(
+                                                              color: Colors.white,
+                                                              width: 1.0,
+                                                            ),
+                                                          ),
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: Text(
+                                                            offer.name,
+                                                            textDirection:
+                                                            TextDirection.ltr,
+                                                            textAlign:
+                                                            TextAlign.left,
+                                                            style: TextStyle(
+                                                                fontSize: 15),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Padding(
+                                                        padding: const EdgeInsets
+                                                            .fromLTRB(
+                                                            4, 10, 4.0, 0),
+                                                        child: Container(
+                                                          decoration:
+                                                          BoxDecoration(
+                                                            border: Border.all(
+                                                              color: Colors.black,
+                                                              //
+                                                              width: 0.4,
+                                                            ),
+                                                          ),
+                                                          alignment: Alignment
+                                                              .centerLeft,
+                                                          child: TextField(
+                                                            controller:
+                                                            _controllers[
+                                                            index],
+                                                            keyboardType:
+                                                            TextInputType
+                                                                .number,
+                                                            onChanged: (value) {
+                                                              //  offerList[index].quantity = value;
+                                                              // Optionally, parse the value to an integer if you need it as such
+                                                              int parsedValue =
+                                                              int.tryParse(
+                                                                  value);
+
+                                                              // Update the offerList with the parsed value or keep it as a string
+                                                              offerList[index]
+                                                                  .quantity =
+                                                              parsedValue !=
+                                                                  null
+                                                                  ? parsedValue
+                                                                  .toString()
+                                                                  : value;
+
+                                                              // Debug output
+                                                              print(
+                                                                  '@@equpimentList__id----${offerList[index].quantity}');
+                                                              print(
+                                                                  '@@equpimentList__value-----$value');
+                                                            },
+                                                            decoration:
+                                                            InputDecoration(
+                                                              border:
+                                                              OutlineInputBorder(),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    return Utils.getEmptyView("No data found");
+                                  }
+                                } else {
+                                  return Center(
+                                    child: CircularProgressIndicator(
+                                        backgroundColor: Colors.black26,
+                                        valueColor: AlwaysStoppedAnimation<Color>(
+                                            Colors.black26)),
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Shown Captcha value to user
+                          Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                  border: Border.all(width: 2, color: red1)),
+                              child: Text(
+                                '${randomString}',
+                                style: TextStyle(
+                                    color: red1, fontWeight: FontWeight.w500),
+                              )),
+                          const SizedBox(
+                            width: 10,
+                          ),
+
+                          // Regenerate captcha value
+                          IconButton(
+                              onPressed: () {
+                                buildCaptcha();
+                              },
+                              icon: const Icon(Icons.refresh)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                      child: TextFormField(
+                        onChanged: (value) {
+                          setState(() {
+                            isVerified = false;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: "Enter Captcha Value",
+                            labelText: "Enter Captcha Value"),
+                        controller: _captchaControllerGovtPrivateScreen,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (_isVisibleADDDoctorsDetails)
+                      Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: Container(
+//                alignment: Alignment.bottomRight,
+                              decoration: BoxDecoration(
+                                border: Border.all(),
+                              ),
+                              child: Text(
+                                'Doctor Registration',
+                                textDirection: TextDirection.ltr,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 22),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextField(
+                              controller: _doctorMCIReg,
+                              decoration: InputDecoration(
+                                  label: Text('MCI Reg. No.*'),
+                                  hintText: 'MCI Reg. No.*',
+
+                                  //prefixIcon
+
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0))),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextField(
+                              controller: _doctorName,
+                              decoration: InputDecoration(
+                                  label: Text('Name'),
+                                  hintText: 'Name *',
+
+                                  //prefixIcon
+
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0))),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextField(
+                              controller: _doctorMobileNumber,
+                              decoration: InputDecoration(
+                                  label: Text('Mobile No. *'),
+                                  hintText: 'Mobile No. *',
+
+                                  //prefixIcon
+
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0))),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextField(
+                              controller: _doctorEmailId,
+                              decoration: InputDecoration(
+                                  label: Text('Email ID *'),
+                                  hintText: 'Email ID. *',
+
+                                  //prefixIcon
+
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0))),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: new TextField(
+                              controller: _doctorPinCode,
+                              decoration: InputDecoration(
+                                  label: Text('Pin Code *'),
+                                  hintText: 'Pin Code *',
+
+                                  //prefixIcon
+
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(5.0))),
+                            ),
+                          ),
+                        ],
+
+                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: ElevatedButton(
+                              child: Text('Save'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue,
+                              ),
+                              onPressed: () {
+                                isVerified =
+                                    _captchaControllerGovtPrivateScreen.text ==
+                                        randomString;
+
+                                setState(() {});
+
+                                print(
+                                    '@@_NewUSerGovtPrivateRegisterSubmit----Wait here---Pending');
+                                if (counterSaveGovtButtonValue == 1) {
+                                  _NewUSerGovtPrivateRegisterSubmit();
+                                }
+                                //_NewUSerGovtPrivateRegisterSubmit();
+                                //   _submitForm();
+                              },
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: ElevatedButton(
+                              child: Text(textValueAddDoctors),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue,
+                              ),
+                              onPressed: () {
+
+                                if (counterSaveGovtButtonValue == 1) {
+                                  print('@@counterSaveGovtButtonValue--'+counterSaveGovtButtonValue.toString());
+                                  Utils.showToast("you need to save the data  First", true);
+                                } else {
+                                  setState(() {
+                                    print('@@counterSaveGovtButtonValue--Else--'+counterSaveGovtButtonValue.toString());
+                                    print('@@AddDoctors click__here');
+                                    textValueAddDoctors = 'Doctors Added';
+                                    _toggleVisibility();
+
+                                  });
+
+
+                                }
+
+                                //   _submitForm();
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _addressGovtPRivate,
-                      decoration: InputDecoration(
-                          label: Text('Address  *'),
-                          hintText: 'Address  *',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _pinbCodeGovtPRivate,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                          label: Text('Pin Code *'),
-                          hintText: 'Pin Code *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: new TextField(
-                      controller: _officerNAmeGovtPRivate,
-                      decoration: InputDecoration(
-                          label: Text('Officer Name *'),
-                          hintText: 'Officer Name *',
-
-                          //prefixIcon
-
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5.0))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: Container(
-//                alignment: Alignment.bottomRight,
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                      ),
-                      child: Text(
-                        'Equipment Details *',
-                        textDirection: TextDirection.ltr,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 22),
-                      ),
-                    ),
-                  ),
-
-                  Container(
-                    child: Row(
-                      children: <Widget>[
-                        FutureBuilder(
-                          future: ApiController.getEquipmentGovtPRivateModel(),
-                          builder: (context, projectSnap) {
-                            if (projectSnap.connectionState ==
-                                    ConnectionState.none &&
-                                projectSnap.hasData == null) {
-                              return Container();
-                            } else {
-                              if (projectSnap.hasData) {
-                                GovtPRivateModel response = projectSnap.data;
-                                if (response.status) {
-                                  offerList = response.list;
-                                  if (offerList.isEmpty) {
-                                    return Utils.getEmptyView("No data found");
-                                  } else {
-                                    _controllers = List.generate(
-                                        offerList.length,
-                                        (index) => TextEditingController());
-                                    return Expanded(
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: offerList.length,
-                                        itemBuilder: (context, index) {
-                                          ListGovtPRivateModel offer =
-                                              offerList[index];
-
-                                          return Column(
-                                            children: <Widget>[
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          20, 10, 20.0, 0),
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          border: Border.all(
-                                                            color: Colors.white,
-                                                            width: 1.0,
-                                                          ),
-                                                        ),
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: Text(
-                                                          offer.name,
-                                                          textDirection:
-                                                              TextDirection.ltr,
-                                                          textAlign:
-                                                              TextAlign.left,
-                                                          style: TextStyle(
-                                                              fontSize: 15),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: Padding(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          4, 10, 4.0, 0),
-                                                      child: Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          border: Border.all(
-                                                            color: Colors.black,
-                                                            //
-                                                            width: 0.4,
-                                                          ),
-                                                        ),
-                                                        alignment: Alignment
-                                                            .centerLeft,
-                                                        child: TextField(
-                                                          controller:
-                                                              _controllers[
-                                                                  index],
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .number,
-                                                          onChanged: (value) {
-                                                            //  offerList[index].quantity = value;
-                                                            // Optionally, parse the value to an integer if you need it as such
-                                                            int parsedValue =
-                                                                int.tryParse(
-                                                                    value);
-
-                                                            // Update the offerList with the parsed value or keep it as a string
-                                                            offerList[index]
-                                                                    .quantity =
-                                                                parsedValue !=
-                                                                        null
-                                                                    ? parsedValue
-                                                                        .toString()
-                                                                    : value;
-
-                                                            // Debug output
-                                                            print(
-                                                                '@@equpimentList__id----${offerList[index].quantity}');
-                                                            print(
-                                                                '@@equpimentList__value-----$value');
-                                                          },
-                                                          decoration:
-                                                              InputDecoration(
-                                                            border:
-                                                                OutlineInputBorder(),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  }
-                                } else {
-                                  return Utils.getEmptyView("No data found");
-                                }
-                              } else {
-                                return Center(
-                                  child: CircularProgressIndicator(
-                                      backgroundColor: Colors.black26,
-                                      valueColor: AlwaysStoppedAnimation<Color>(
-                                          Colors.black26)),
-                                );
-                              }
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Shown Captcha value to user
-                        Container(
-                            padding: const EdgeInsets.all(12),
-                            decoration: BoxDecoration(
-                                border: Border.all(width: 2, color: red1)),
-                            child: Text(
-                              '${randomString}',
-                              style: TextStyle(
-                                  color: red1, fontWeight: FontWeight.w500),
-                            )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-
-                        // Regenerate captcha value
-                        IconButton(
-                            onPressed: () {
-                              buildCaptcha();
-                            },
-                            icon: const Icon(Icons.refresh)),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        setState(() {
-                          isVerified = false;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: "Enter Captcha Value",
-                          labelText: "Enter Captcha Value"),
-                      controller: _captchaControllerGovtPrivateScreen,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  if (_isVisibleADDDoctorsDetails)
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: Container(
-//                alignment: Alignment.bottomRight,
-                            decoration: BoxDecoration(
-                              border: Border.all(),
-                            ),
-                            child: Text(
-                              'Doctor Registration',
-                              textDirection: TextDirection.ltr,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 22),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: new TextField(
-                            controller: _doctorMCIReg,
-                            decoration: InputDecoration(
-                                label: Text('MCI Reg. No.*'),
-                                hintText: 'MCI Reg. No.*',
-
-                                //prefixIcon
-
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: new TextField(
-                            controller: _doctorName,
-                            decoration: InputDecoration(
-                                label: Text('Name'),
-                                hintText: 'Name *',
-
-                                //prefixIcon
-
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: new TextField(
-                            controller: _doctorMobileNumber,
-                            decoration: InputDecoration(
-                                label: Text('Mobile No. *'),
-                                hintText: 'Mobile No. *',
-
-                                //prefixIcon
-
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: new TextField(
-                            controller: _doctorEmailId,
-                            decoration: InputDecoration(
-                                label: Text('Email ID *'),
-                                hintText: 'Email ID. *',
-
-                                //prefixIcon
-
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: new TextField(
-                            controller: _doctorPinCode,
-                            decoration: InputDecoration(
-                                label: Text('Pin Code *'),
-                                hintText: 'Pin Code *',
-
-                                //prefixIcon
-
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5.0))),
-                          ),
-                        ),
-                      ],
-
-                    ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: ElevatedButton(
-                            child: Text('Save'),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
-                            ),
-                            onPressed: () {
-                              isVerified =
-                                  _captchaControllerGovtPrivateScreen.text ==
-                                      randomString;
-
-                              setState(() {});
-
-                              print(
-                                  '@@_NewUSerGovtPrivateRegisterSubmit----Wait here---Pending');
-                              if (counterSaveGovtButtonValue == 1) {
-                                _NewUSerGovtPrivateRegisterSubmit();
-                              }
-                              //_NewUSerGovtPrivateRegisterSubmit();
-                              //   _submitForm();
-                            },
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: ElevatedButton(
-                            child: Text(textValueAddDoctors),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.blue,
-                            ),
-                            onPressed: () {
-
-                              if (counterSaveGovtButtonValue == 1) {
-                                print('@@counterSaveGovtButtonValue--'+counterSaveGovtButtonValue.toString());
-                                Utils.showToast("you need to save the data  First", true);
-                              } else {
-                                setState(() {
-                                  print('@@counterSaveGovtButtonValue--Else--'+counterSaveGovtButtonValue.toString());
-                                  print('@@AddDoctors click__here');
-                                  textValueAddDoctors = 'Doctors Added';
-                                 _toggleVisibility();
-
-                                });
-
-
-                              }
-
-                              //   _submitForm();
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
             ),
           ),
-        ),
-      ],
-    );
+    ),
+
+  ]);
+
   }
+
 
   Widget newUSerGovtPrivateRegisterRadiousedForRegisteredUSer() {
     return   SingleChildScrollView(
@@ -3146,9 +3304,100 @@ class _RegisterScreen extends State<RegisterScreen> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
+
+                Center(
+                child: FutureBuilder<List<Data>>(
+                future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    List<Data> stateList = snapshot.data;
+
+                    if (_selectedUser == null || !stateList.contains(_selectedUser)) {
+                      _selectedUser = stateList.first;
+                    }
+
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 5, 10.0, 0),
+                      child: Column(
+                        children: <Widget>[
+                          DropdownButtonFormField2<Data>(
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.blue[50],
+                            ),
+                            hint: Text("Select State"),
+                            value: _selectedUser,
+                            onChanged: (user) {
+                              setState(() {
+                                _selectedUser = user;
+                                stateCodeDPM = int.parse(user.stateCode.toString());
+                                codeDPM = user.code;
+                                distNameDPM = user.stateName;
+
+                                if (codeDPM != null) {
+                                  SharedPrefs.storeSharedValue(AppConstant.txtStateDPmValue, stateCodeDPM);
+                                  isVisibleDitrict = true;
+                                  _getDistrictData(stateCodeDPM);
+                                } else {
+                                  isVisibleDitrict = false;
+                                }
+                              });
+                            },
+                            items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                              return DropdownMenuItem<Data>(
+                                value: user,
+                                child: Text(user.stateName),
+                              );
+                            }).toList(),
+
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 300,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+
+
+
+
+              Visibility(
+              visible: isVisibleDitrict,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                child: Column(
+                  children: <Widget>[
+                    const Text(
+                      'Select District:',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
                     Center(
-                      child: FutureBuilder<List<Data>>(
-                        future: _future,
+                      child: FutureBuilder<List<DataDsiricst>>(
+                        future: _getDistrictData(stateCodeDPM),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
@@ -3158,130 +3407,64 @@ class _RegisterScreen extends State<RegisterScreen> {
                             return const CircularProgressIndicator();
                           }
 
-                          List<Data> stateList = snapshot.data;
+                          List<DataDsiricst> districtList = snapshot.data;
 
-                          if (_selectedUser == null || !stateList.contains(_selectedUser)) {
-                            _selectedUser = stateList.first;
+                          if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                            _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
                           }
 
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: Column(
-                              children: <Widget>[
-                                DropdownButtonFormField<Data>(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
-                                    hintText: "Select State",  // Hint text to show when no state is selected
-                                  ),
-                                  onChanged: (user) => setState(() {
-                                    _selectedUser = user;
-                                    stateCodeDPM = int.parse(user.stateCode.toString());
-                                    codeDPM = user.code;
-                                    distNameDPM = user.stateName;
-                                    if (codeDPM != null) {
-                                      SharedPrefs.storeSharedValue(AppConstant.txtStateDPmValue, stateCodeDPM);
-                                      isVisibleDitrict = true;
-                                      _getDistrictData(stateCodeDPM);
-                                    } else {
-                                      isVisibleDitrict = false;
-                                    }
-                                    setState(() {});
-                                  }),
-                                  value: _selectedUser,
-                                  items: stateList.map<DropdownMenuItem<Data>>((Data user) {
-                                    return DropdownMenuItem<Data>(
-                                      value: user,
-                                      child: Text(user.stateName),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
+                          return DropdownButtonFormField2<DataDsiricst>(
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.blue[50],
+                              hintText: 'Select District',
+                            ),
+                            hint: Text("Select District"),
+                            value: _selectedUserDistrict,
+                            onChanged: (districtUser) {
+                              setState(() {
+                                _selectedUserDistrict = districtUser;
+                                distCodeDPM = int.parse(districtUser.districtCode.toString());
+                                distNameDPMs_distictValues = districtUser.districtName;
+                              });
+                            },
+                            items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                              return DropdownMenuItem<DataDsiricst>(
+                                value: district,
+                                child: Text(district.districtName),
+                              );
+                            }).toList(),
+
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 300,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
                             ),
                           );
                         },
                       ),
                     ),
-
-
-                    Visibility(
-                      visible: isVisibleDitrict,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Select District:',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Center(
-                              child: FutureBuilder<List<DataDsiricst>>(
-                                future: _getDistrictData(stateCodeDPM),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  }
-
-                                  if (!snapshot.hasData) {
-                                    return const CircularProgressIndicator();
-                                  }
-
-                                  List<DataDsiricst> districtList = snapshot.data;
-
-                                  if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
-                                    _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
-                                  }
-
-                                  return DropdownButtonFormField<DataDsiricst>(
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.blue[50],
-                                      hintText: 'Select District',  // Hint text to show when no district is selected
-                                    ),
-                                    onChanged: (districtUser) {
-                                      setState(() {
-                                        _selectedUserDistrict = districtUser;
-                                        distCodeDPM = int.parse(districtUser.districtCode.toString());
-                                        distNameDPMs_distictValues = districtUser.districtName;
-                                      });
-                                    },
-                                    value: _selectedUserDistrict,
-                                    items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
-                                      return DropdownMenuItem<DataDsiricst>(
-                                        value: district,
-                                        child: Text(district.districtName),
-                                      );
-                                    }).toList(),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
+                  ],
+                ),
+              ),
+            ),
 
 
 
-                    Padding(
+
+          Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: TextField(
                         controller: _dpmNAmeController,
@@ -3392,43 +3575,80 @@ class _RegisterScreen extends State<RegisterScreen> {
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0))),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    Container(
+                      margin:EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: Colors.white, // Background color of the container
-                              borderRadius: BorderRadius.circular(10), // Rounded corners
-                              border: Border.all(width: 2, color: red1), // Border color and thickness
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  spreadRadius: 1,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 2), // Shadow position
+                          Expanded(
+                            flex: 4,
+                            child: SizedBox(
+                              height: 50, // Adjust height as needed
+                              child: TextField(
+                                controller: _captchaController,
+                                decoration: InputDecoration(
+                                  label: RichText(
+                                    text: TextSpan(
+                                      text: 'Enter Captcha Value',
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      children: [
+                                        TextSpan(
+                                          text: ' *', // Red Asterisk for required field
+                                          style: TextStyle(color: Colors.red, fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
                                 ),
-                              ],
-                            ),
-                            child: Text(
-                              '${randomString}',
-                              style: TextStyle(
-                                color: red1,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16, // Adjust text size
+                                onChanged: (value) {
+                                  setState(() {
+                                    isVerified = false;
+                                  });
+                                },
                               ),
                             ),
                           ),
-                          const SizedBox(width: 10),
-                          IconButton(
-                            onPressed: () {
-                                buildCaptcha();
-                            },
-                            icon: const Icon(
-                              Icons.refresh,
-                              color: Colors.red, // Icon color matching text color
+
+
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              height: 50,
+                              margin: EdgeInsets.only(left: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(width: 1, color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  randomString,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: 50,
+                              margin: EdgeInsets.only(left: 5),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: IconButton(
+                                onPressed: buildCaptcha,
+                                icon: Icon(Icons.refresh),
+                              ),
                             ),
                           ),
                         ],
@@ -3437,15 +3657,41 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                      child: ElevatedButton(
-                        child: Text('Submit'),
-                        style: ElevatedButton.styleFrom(primary: Colors.blue),
-                        onPressed: () {
-                          print('@@DPMMMM Hit here-----Api---------');
-                          _DPMRegistrationSubmit();
-                        },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Even spacing
+                        children: [
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              icon: Icon(Icons.send, color: Colors.white), // Submit Icon
+                              label: Text('Submit'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.blue, // Button color
+                                padding: EdgeInsets.symmetric(vertical: 15), // Button height
+                              ),
+                              onPressed: () {
+                                print('@@DPMMMM Hit here-----Api---------');
+                                _DPMRegistrationSubmit();
+                              },
+                            ),
+                          ),
+                          SizedBox(width: 20), // Spacing between buttons
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              icon: Icon(Icons.refresh, color: Colors.white), // Reset Icon
+                              label: Text('Reset'),
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red, // Reset button color
+                                padding: EdgeInsets.symmetric(vertical: 15), // Button height
+                              ),
+                              onPressed: () {
+
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+
                   ],
                 ),
               ),
@@ -3556,6 +3802,106 @@ class _RegisterScreen extends State<RegisterScreen> {
     bool isMatch = regex.hasMatch(input);
     if (!isMatch) Utils.showToast("Please enter valid email", false);
     return isMatch;
+  }
+
+  Widget _buildMenuItem({
+    IconData icon,
+    String title,
+    Function() onTap,
+  }) {
+    double size =
+    14.0; // You can set a consistent size for both the icon and text
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
+      // Reduce the vertical padding
+      title: Row(
+        children: [
+          Icon(icon, color: Colors.black, size: size),
+          // Set icon size
+          SizedBox(
+            width: 8.0,
+            height: 4.0,
+          ),
+          // Add space between the icon and the text
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: size,
+              fontWeight:
+              FontWeight.normal, // Explicitly set fontWeight to normal
+            ),
+          )
+        ],
+      ),
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildDropdownItem({
+    GlobalKey key,
+    String value,
+    String hint,
+    List<Map<String, dynamic>>
+    items, // List of maps to hold both item text and icon data
+    Function(String) onChanged,
+    Icon hintIcon, // Make hintIcon nullable
+  }) {
+    double size = 14.0; // Consistent size for both text and icon
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(vertical: 0), // Remove extra padding
+      title: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          key: key,
+          // Assign the key here
+          value: value,
+          style: TextStyle(color: Colors.black),
+          dropdownColor: Colors.white,
+          items:
+          items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
+            return DropdownMenuItem<String>(
+              value: item['value'],
+              child: Row(
+                children: [
+                  Icon(
+                    item['icon'], // Icon from the map
+                    color: Colors.black,
+                    size: size, // Set icon size
+                  ),
+                  SizedBox(width: 8.0), // Add space between the icon and text
+                  Text(
+                    item['value'],
+                    style: TextStyle(
+                        color: Colors.black, fontSize: size), // Set text size
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          hint: hintIcon != null
+              ? Row(
+            children: [
+              hintIcon, // Only add the icon if it's not null
+              SizedBox(
+                  width: 8.0), // Add space between the icon and hint text
+              Text(
+                hint,
+                style: TextStyle(
+                    color: Colors.black, fontWeight: FontWeight.w500),
+              ),
+            ],
+          )
+              : Text(
+            hint,
+            style: TextStyle(
+                color: Colors.black, fontWeight: FontWeight.w500),
+          ),
+          onChanged: onChanged,
+        ),
+      ),
+    );
   }
 }
 ///////////////////////////////////////Outside the class declare heloper classes.
