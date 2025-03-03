@@ -2713,59 +2713,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header Row
-                    /* Container(
-                      color: Colors.white70,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(right: 10),
-                            child: Text(
-                              'District: ${districtNames}',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(right: 10),
-                            child: Text(
-                              'State: ${stateNames}',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                dashboardviewReplace = true;
-                                NGOlistDropDownDisplayDatas = false;
-                                LowVisionRegisterCatracts = false;
-                              });
-                            },
-                            child: Container(
-                              width: 80.0,
-                              margin: EdgeInsets.fromLTRB(12, 0, 0, 0),
-                              // Adds 8.0 pixels of margin on all sides
-                              child: Text(
-                                'Back',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  // Set font weight to bold
-                                  color: Colors.red,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(width: 10.0),*/
+
                     // Table Header Row
                     FutureBuilder<List<DataNGOAPPlicationDropDownDPm>>(
                       future: ApiController.getDPM_NGOApplicationDropDown(
@@ -2805,7 +2753,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 children: [
                                   _buildHeaderCellSrNo('S.No.'),
                                   _buildHeaderCell('NGO Darpan No.'),
-                                  _buildHeaderCell('Action'),
+                                  _buildHeaderCellNGOAction('Action'),
                                 ],
                               ),
 

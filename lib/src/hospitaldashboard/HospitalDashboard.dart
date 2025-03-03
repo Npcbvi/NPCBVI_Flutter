@@ -135,11 +135,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       stateLKanguage,
       getDissesID,
       village_code = 0;
-  String CodeSPO,
-      codeDPM,
-      CodeGovtPrivate,
-      distNameDPM,
-      distNameDPMs_distictValues;
+  String CodeSPO, codeDPM, CodeGovtPrivate, distNameDPM, distNameDPMs_distictValues;
+  String currentFinancialYear;
+
   TextEditingController relationNameController = TextEditingController();
   TextEditingController relationFatherController = TextEditingController();
   TextEditingController relationMotherController = TextEditingController();
@@ -153,6 +151,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   bool isConnected = false;
   String _locationMessage = "Press the button to get location";
   String _address = "No address found";
+  TextEditingController _latitudeController = TextEditingController();
+  TextEditingController _longitudeController = TextEditingController();
+
   // Function to get current position
   Future<void> _getCurrentLocation() async {
     try {
@@ -161,6 +162,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
       setState(() {
         _locationMessage = "Lat: ${position.latitude}, Lng: ${position.longitude}";
+
+        // Store Latitude & Longitude in Text Controllers
+        _latitudeController.text = position.latitude.toString();
+        _longitudeController.text = position.longitude.toString();
       });
 
       // Get address from coordinates
@@ -187,6 +192,22 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
       print("Error getting location: $e"); // Print error in console
     }
+  }
+  String getCurrentFinancialYear() {
+    DateTime now = DateTime.now();
+    int currentYear = now.year;
+    int nextYear = currentYear + 1;
+    String financialYear;
+
+    if (now.month >= 4) {
+      // Financial year starts in April
+      financialYear = '$currentYear-${nextYear.toString().substring(2)}';
+    } else {
+      financialYear =
+      '${currentYear - 1}-${currentYear.toString().substring(2)}';
+    }
+
+    return financialYear;
   }
 
 
@@ -298,8 +319,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     checkInternetConnection();
     getUserData();
     _getLocation();
-    hospitalDashboardclickDsiplay = true;
     _future = getDPM_ScreeningYear();
+
+    hospitalDashboardclickDsiplay = true;
     _futureState = _getStatesDAta();
     //_futureVillage = _getVillage(district_code_login, state_code_login,distCodeGovtPrivate);
     _futureStateGetLanguageForDDLsData = getLanguageForDDL();
@@ -359,6 +381,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
   @override
   Widget build(BuildContext context) {
+   // getYearNgoHopital = getCurrentFinancialYear();
     return Scaffold(
       backgroundColor: Colors.white,
       resizeToAvoidBottomInset: false,
@@ -810,10 +833,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                     List<DataGetDPM_ScreeningYear> list = snapshot.data.toList();
 
-                    // Ensure a default selection
-                    if (_selectedUser == null || !list.contains(_selectedUser)) {
-                      _selectedUser = list.isNotEmpty ? list.first : null; // Set the first item as default
-                    }
+                    // ✅ Set default first value when opening the screen
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (_selectedUser == null || !list.contains(_selectedUser)) {
+                        setState(() {
+                          _selectedUser = list.first;
+                          getYearNgoHopital = _selectedUser.name;
+                          getfyidNgoHospital = _selectedUser.fyid;
+                        });
+                      }
+                    });
+
 
                     // Show "No data found" if the list is empty
                     if (list.isEmpty) {
@@ -1366,7 +1396,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                         if (showVoterIDField)
                           Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+
                             child: _textInputField(
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
@@ -1379,7 +1410,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         if (showDrivingLicenseField)
                           Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
                             child: _textInputField(
                               controller: _voterIDNumber,
                               labelText: "Driving License No.",
@@ -1392,7 +1423,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         if (showPassport)
                           Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
                             child: _textInputField(
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
@@ -1405,7 +1436,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         if (showRationCard)
                           Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
                             child: _textInputField(
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
@@ -1418,7 +1449,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         if (showPanCard)
                           Padding(
-                            padding: const EdgeInsets.all(20.0),
+                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
                             child: _textInputField(
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
@@ -1429,7 +1460,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                       : null,
                             ),
                           ),
-                        if (showNotAvailble) SizedBox(height: 5.0),
+                        if (showNotAvailble)
+                          SizedBox(height: 10.0),
                         _sectionTitle('Dependency Type'),
                         _radioButtonRow(
                           options: ['Self', 'Dependent'],
@@ -1453,171 +1485,160 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           },
                         ),
                         if (Dependent) // Only show if "Dependent" is selected
-                          Padding(
-                            padding:
-                                const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.fromLTRB(
-                                      10.0, 5.0, 10.0, 5.0),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: Colors.blue[50],
-                                      border: Border.all(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton<String>(
-                                        isExpanded: true,
-                                        focusColor: Colors.black,
-                                        value: relationtypeValue,
-                                        style: TextStyle(color: Colors.black),
-                                        iconEnabledColor: Colors.black,
-                                        items: <String>[
-                                          'Father',
-                                          'Mother',
-                                          'Brother',
-                                          'Sister',
-                                          'Daughter',
-                                          'Spouse',
-                                        ].map<DropdownMenuItem<String>>(
-                                            (String type) {
-                                          return DropdownMenuItem<String>(
-                                            value: type,
-                                            child: Text(
-                                              type,
-                                              style: TextStyle(
-                                                  color: Colors.black),
-                                            ),
-                                          );
-                                        }).toList(),
-                                        hint: Text(
-                                          "Relation Type",
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        onChanged: (String newValue) {
-                                          setState(() {
-                                            relationtypeValue = newValue;
-
-                                            // Set the relation name dynamically
-                                            if (relationtypeValue == "Father") {
-                                              relationNameController.text =
-                                                  "Father's Name";
-                                            } else if (relationtypeValue ==
-                                                "Mother") {
-                                              relationNameController.text =
-                                                  "Mother's Name";
-                                            } else if (relationtypeValue ==
-                                                "Brother") {
-                                              relationNameController.text =
-                                                  "Brother's Name";
-                                            } else if (relationtypeValue ==
-                                                "Sister") {
-                                              relationNameController.text =
-                                                  "Sister's Name";
-                                            } else if (relationtypeValue ==
-                                                "Daughter") {
-                                              relationNameController.text =
-                                                  "Daughter's Name";
-                                            } else if (relationtypeValue ==
-                                                "Spouse") {
-                                              relationNameController.text =
-                                                  "Spouse's Name";
-                                            } else {
-                                              relationNameController.clear();
-                                            }
-                                          });
-                                        },
+                          Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.grey[50],
+                                    border: Border.all(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String>(
+                                      isExpanded: true,
+                                      focusColor: Colors.black,
+                                      value: relationtypeValue,
+                                      style: TextStyle(color: Colors.black),
+                                      iconEnabledColor: Colors.black,
+                                      items: <String>[
+                                        'Father',
+                                        'Mother',
+                                        'Brother',
+                                        'Sister',
+                                        'Daughter',
+                                        'Spouse',
+                                      ].map<DropdownMenuItem<String>>(
+                                          (String type) {
+                                        return DropdownMenuItem<String>(
+                                          value: type,
+                                          child: Text(
+                                            type,
+                                            style: TextStyle(
+                                                color: Colors.black),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      hint: Text(
+                                        "Relation Type",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500),
                                       ),
+                                      onChanged: (String newValue) {
+                                        setState(() {
+                                          relationtypeValue = newValue;
+
+                                          // Set the relation name dynamically
+                                          if (relationtypeValue == "Father") {
+                                            relationNameController.text =
+                                                "Father's Name";
+                                          } else if (relationtypeValue ==
+                                              "Mother") {
+                                            relationNameController.text =
+                                                "Mother's Name";
+                                          } else if (relationtypeValue ==
+                                              "Brother") {
+                                            relationNameController.text =
+                                                "Brother's Name";
+                                          } else if (relationtypeValue ==
+                                              "Sister") {
+                                            relationNameController.text =
+                                                "Sister's Name";
+                                          } else if (relationtypeValue ==
+                                              "Daughter") {
+                                            relationNameController.text =
+                                                "Daughter's Name";
+                                          } else if (relationtypeValue ==
+                                              "Spouse") {
+                                            relationNameController.text =
+                                                "Spouse's Name";
+                                          } else {
+                                            relationNameController.clear();
+                                          }
+                                        });
+                                      },
                                     ),
                                   ),
                                 ),
-                                // Display input field based on selected relation
-                                if (relationtypeValue == "Father")
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        10.0, 5.0, 10.0, 5.0),
-                                    child: _textInputField(
-                                      controller: relationFatherController,
-                                      labelText: "Father's Name",
-                                      validator: (value) =>
-                                          value == null || value.isEmpty
-                                              ? 'Please enter Father\'s name'
-                                              : null,
-                                    ),
+                              ),
+                              // Display input field based on selected relation
+                              if (relationtypeValue == "Father")
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  child: _textInputField(
+                                    controller: relationFatherController,
+                                    labelText: "Father's Name",
+                                    validator: (value) =>
+                                        value == null || value.isEmpty
+                                            ? 'Please enter Father\'s name'
+                                            : null,
                                   ),
-                                if (relationtypeValue == "Mother")
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        10.0, 5.0, 10.0, 5.0),
-                                    child: _textInputField(
-                                      controller: relationFatherController,
-                                      labelText: "Mother's Name",
-                                      validator: (value) =>
-                                          value == null || value.isEmpty
-                                              ? 'Please enter Mother\'s name'
-                                              : null,
-                                    ),
+                                ),
+                              if (relationtypeValue == "Mother")
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  child: _textInputField(
+                                    controller: relationFatherController,
+                                    labelText: "Mother's Name",
+                                    validator: (value) =>
+                                        value == null || value.isEmpty
+                                            ? 'Please enter Mother\'s name'
+                                            : null,
                                   ),
-                                if (relationtypeValue == "Brother")
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        10.0, 5.0, 10.0, 5.0),
-                                    child: _textInputField(
-                                      controller: relationFatherController,
-                                      labelText: "Brother's Name",
-                                      validator: (value) =>
-                                          value == null || value.isEmpty
-                                              ? 'Please enter Brother\'s name'
-                                              : null,
-                                    ),
+                                ),
+                              if (relationtypeValue == "Brother")
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  child: _textInputField(
+                                    controller: relationFatherController,
+                                    labelText: "Brother's Name",
+                                    validator: (value) =>
+                                        value == null || value.isEmpty
+                                            ? 'Please enter Brother\'s name'
+                                            : null,
                                   ),
-                                if (relationtypeValue == "Sister")
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        10.0, 5.0, 10.0, 5.0),
-                                    child: _textInputField(
-                                      controller: relationFatherController,
-                                      labelText: "Sister's Name",
-                                      validator: (value) =>
-                                          value == null || value.isEmpty
-                                              ? 'Please enter Sister\'s name'
-                                              : null,
-                                    ),
+                                ),
+                              if (relationtypeValue == "Sister")
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  child: _textInputField(
+                                    controller: relationFatherController,
+                                    labelText: "Sister's Name",
+                                    validator: (value) =>
+                                        value == null || value.isEmpty
+                                            ? 'Please enter Sister\'s name'
+                                            : null,
                                   ),
-                                if (relationtypeValue == "Daughter")
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        10.0, 5.0, 10.0, 5.0),
-                                    child: _textInputField(
-                                      controller: relationFatherController,
-                                      labelText: "Daughter's Name",
-                                      validator: (value) =>
-                                          value == null || value.isEmpty
-                                              ? 'Please enter Daughter\'s name'
-                                              : null,
-                                    ),
+                                ),
+                              if (relationtypeValue == "Daughter")
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  child: _textInputField(
+                                    controller: relationFatherController,
+                                    labelText: "Daughter's Name",
+                                    validator: (value) =>
+                                        value == null || value.isEmpty
+                                            ? 'Please enter Daughter\'s name'
+                                            : null,
                                   ),
-                                if (relationtypeValue == "Spouse")
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        10.0, 5.0, 10.0, 5.0),
-                                    child: _textInputField(
-                                      controller: relationFatherController,
-                                      labelText: "Spouse's Name",
-                                      validator: (value) =>
-                                          value == null || value.isEmpty
-                                              ? 'Please enter Spouse\'s name'
-                                              : null,
-                                    ),
+                                ),
+                              if (relationtypeValue == "Spouse")
+                                Padding(
+                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  child: _textInputField(
+                                    controller: relationFatherController,
+                                    labelText: "Spouse's Name",
+                                    validator: (value) =>
+                                        value == null || value.isEmpty
+                                            ? 'Please enter Spouse\'s name'
+                                            : null,
                                   ),
-                              ],
-                            ),
+                                ),
+                            ],
                           ),
 
                         if (showSelf)
@@ -1627,8 +1648,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                         SizedBox(height: 5.0),
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
                           child: _textInputField(
                             controller: _firstNamePatientDetail,
                             labelText: 'First  Name *',
@@ -1645,8 +1665,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                         SizedBox(height: 5.0),
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
                           child: _textInputField(
                             controller: _lastNamePatientDetail,
                             labelText: 'Last Name *',
@@ -1661,11 +1680,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             },
                           ),
                         ),
-
+                        SizedBox(height: 5.0),
                         Container(
                           color: Colors.white,
                           child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -1740,7 +1759,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             ),
                           ),
                         ),
-
+                        SizedBox(height: 5.0),
                         _sectionTitle('Gender *'),
                         _radioButtonRow(
                           options: ['Male', 'Female', 'Transgender'],
@@ -1751,18 +1770,20 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             });
                           },
                         ),
-                        SizedBox(height: 8.0),
+                        SizedBox(height: 5.0),
                       ],
                     ),
                   ),
                 ),
                 _sectionHeader('Mobile Number Details'),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                  padding: const EdgeInsets.fromLTRB(10, 5, 10.0, 5),
+
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.blue[50],
@@ -1811,8 +1832,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       // Display input field based on selected relation
                       if (relationtypeValue == "Father")
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Father's Name",
@@ -1823,8 +1844,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Mother")
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Mother's Name",
@@ -1835,8 +1856,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Brother")
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Brother's Name",
@@ -1847,8 +1868,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Sister")
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Sister's Name",
@@ -1859,8 +1880,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Daughter")
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Daughter's Name",
@@ -1871,8 +1892,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       if (relationtypeValue == "Spouse")
                         Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+
                           child: _textInputField(
                             controller: relationFatherController,
                             labelText: "Spouse's Name",
@@ -1884,29 +1905,33 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ],
                   ),
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 5.0), // Left & Right margins
-                  child: _textInputField(
-                    controller: _mobileNumberDetailsRelationtype,
-                    labelText: 'Mobile No *',
-                    maxLength: 10, // Add this
-                    keyboardType: TextInputType.phone,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your mobile number';
-                      } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                        return 'Please enter a valid 10-digit mobile number';
-                      }
-                      return null;
-                    },
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 0.0), // Left & Right margins
+                    child: _textInputField(
+                      controller: _mobileNumberDetailsRelationtype,
+                      labelText: 'Mobile No *',
+                      maxLength: 10, // Add this
+                      keyboardType: TextInputType.phone,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your mobile number';
+                        } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                          return 'Please enter a valid 10-digit mobile number';
+                        }
+                        return null;
+                      },
+                    ),
                   ),
                 ),
                 Container(
                   color: Colors.white,
-                  margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -2029,85 +2054,84 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   ),
                 ),
                 SizedBox(height: 10.0),
-                Center(
-                  child: Column(
-                    children: [
-                      FutureBuilder<List<GetDiseaseForDDLData>>(
-                        future: _futureGetDiseaseForDDLDatas,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          }
-                          if (!snapshot.hasData) {
-                            return const CircularProgressIndicator();
-                          }
 
-                          // Logging for debugging
-                          developer.log('@@snapshot: ${snapshot.data}');
+                Column(
+                  children: [
+                    FutureBuilder<List<GetDiseaseForDDLData>>(
+                      future: _futureGetDiseaseForDDLDatas,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+                        if (!snapshot.hasData) {
+                          return const CircularProgressIndicator();
+                        }
 
-                          List<GetDiseaseForDDLData> districtList =
-                              snapshot.data;
+                        // Logging for debugging
+                        developer.log('@@snapshot: ${snapshot.data}');
 
-                          // Ensure selected district is in the list, otherwise select the first one
-                          if (_futureGetDiseaseForDDLDatass == null ||
-                              !districtList
-                                  .contains(_futureGetDiseaseForDDLDatass)) {
-                            _futureGetDiseaseForDDLDatass = districtList.first;
-                          }
+                        List<GetDiseaseForDDLData> districtList =
+                            snapshot.data;
 
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                const Text('Select Diseases:'),
-                                DropdownButtonFormField<GetDiseaseForDDLData>(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
+                        // Ensure selected district is in the list, otherwise select the first one
+                        if (_futureGetDiseaseForDDLDatass == null ||
+                            !districtList
+                                .contains(_futureGetDiseaseForDDLDatass)) {
+                          _futureGetDiseaseForDDLDatass = districtList.first;
+                        }
+
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 10, 10.0, 0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              const Text('Select Diseases:'),
+                              DropdownButtonFormField<GetDiseaseForDDLData>(
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 5.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  onChanged: (districtUser) => setState(() {
-                                    _futureGetDiseaseForDDLDatass =
-                                        districtUser;
-                                    getDissesID =
-                                        int.parse(districtUser.id.toString());
-                                    // Update state or further actions here
-                                    print(
-                                        'Selected District: ${districtUser.name}');
-                                  }),
-                                  value: _futureGetDiseaseForDDLDatass,
-                                  items: districtList
-                                      .map((GetDiseaseForDDLData district) {
-                                    return DropdownMenuItem<
-                                        GetDiseaseForDDLData>(
-                                      value: district,
-                                      child: Text(district.name),
-                                    );
-                                  }).toList(),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.blue[50],
                                 ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+                                onChanged: (districtUser) => setState(() {
+                                  _futureGetDiseaseForDDLDatass =
+                                      districtUser;
+                                  getDissesID =
+                                      int.parse(districtUser.id.toString());
+                                  // Update state or further actions here
+                                  print(
+                                      'Selected District: ${districtUser.name}');
+                                }),
+                                value: _futureGetDiseaseForDDLDatass,
+                                items: districtList
+                                    .map((GetDiseaseForDDLData district) {
+                                  return DropdownMenuItem<
+                                      GetDiseaseForDDLData>(
+                                    value: district,
+                                    child: Text(district.name),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ],
                 ),
                 SizedBox(height: 8.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
                   child: Form(
                     child: Column(
                       children: [
@@ -2124,9 +2148,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10.0),
+                SizedBox(height: 8.0),
                 Container(
-                  width: 400, // Set your desired width
+                  width: 350, // Set your desired width
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: FutureBuilder<List<Data>>(
                     future: _futureState,
@@ -2460,45 +2484,75 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ],
                   ),
                 ),
-
+                SizedBox(height: 8.0),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Row(
                     children: [
                       // Expanded to take available width
                       Expanded(
-                        child: TextFormField(
+                        child: _textInputField(
                           controller: _AreaNearLandMark,
-                          decoration: InputDecoration(
-                            labelText: 'Area/ Near Land Mark, etc',
-                            border: OutlineInputBorder(),
-                          ),
+                          labelText: 'Area/ Near Land Mark, etc',
                           keyboardType: TextInputType.text,
+
+
+
                         ),
                       ),
                       SizedBox(width: 10),
                       // Location Icon Button
-                      IconButton(
-                        icon: Icon(Icons.my_location, color: Colors.blue),
-                        onPressed: _getCurrentLocation,
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey), // Border color
+                          borderRadius: BorderRadius.circular(10), // Border radius
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.my_location, color: Colors.blue),
+                          onPressed: _getCurrentLocation,
+                        ),
+                      )
+
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                // Latitude and Longitude fields
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: _textInputField(
+                          controller: _latitudeController,
+                          labelText: 'Latitude',
+                          readOnly: true, // Prevent manual input
+                          prefixIcon: Icon(Icons.my_location, color: Colors.blue), // Icon for Latitude
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: _textInputField(
+                          controller: _longitudeController,
+                          labelText: 'Longitude',
+                          readOnly: true, // Prevent manual input
+                          prefixIcon: Icon(Icons.location_searching, color: Colors.green), // Icon for Longitude
+                        ),
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 10.0),
+
+                SizedBox(height: 8.0),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     child: Column(
                       children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                          child: _textInputField(
-                            controller: _AddressHouse,
-                            labelText: 'Address/ House/ Flat Number *',
-                            keyboardType: TextInputType.text,
-                          ),
+                        _textInputField(
+                          controller: _AddressHouse,
+                          labelText: 'Address/ House/ Flat Number *',
+                          keyboardType: TextInputType.text,
                         ),
                       ],
                     ),
@@ -2509,14 +2563,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   child: Form(
                     child: Column(
                       children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                          child: _textInputField(
-                            controller: _Apartment,
-                            labelText: 'Apartment/ building,/Colony /floor',
-                            keyboardType: TextInputType.text,
-                          ),
+                        _textInputField(
+                          controller: _Apartment,
+                          labelText: 'Apartment/ building,/Colony /floor',
+                          keyboardType: TextInputType.text,
                         ),
                       ],
                     ),
@@ -2527,14 +2577,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   child: Form(
                     child: Column(
                       children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                          child: _textInputField(
-                            controller: _AreaNearLandMark,
-                            labelText: 'Area/ Near Land Mark, etc',
-                            keyboardType: TextInputType.text,
-                          ),
+                        _textInputField(
+                          controller: _AreaNearLandMark,
+                          labelText: 'Area/ Near Land Mark, etc',
+                          keyboardType: TextInputType.text,
                         ),
                       ],
                     ),
@@ -2546,110 +2592,95 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   child: Form(
                     child: Column(
                       children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                          child: _textInputField(
-                            controller: _PinCode,
-                            labelText: 'Pin Code',
-                            keyboardType: TextInputType.number,
-                          ),
+                        _textInputField(
+                          controller: _PinCode,
+                          labelText: 'Pin Code',
+                          keyboardType: TextInputType.number,
                         ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(height: 5.0),
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1, color: Colors.transparent),
-                    ),
+                SizedBox(height: 8.0),
+              Container(
+                width:  double.infinity, // Full width
+                height:80, // Increased height for dropdown
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 1, color: Colors.transparent),
                   ),
-                  child: Center(
-                    child: FutureBuilder<List<GetLanguageForDDLsDatas>>(
-                      future: _futureStateGetLanguageForDDLsData,
-                      // Future to fetch the data
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
+                ),
+                child: FutureBuilder<List<GetLanguageForDDLsDatas>>(
+                  future: _futureStateGetLanguageForDDLsData,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
 
-                        if (!snapshot.hasData) {
-                          return const CircularProgressIndicator();
-                        }
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
 
-                        // Logging data for debugging
-                        developer.log('@@snapshot: ${snapshot.data}');
+                    // Logging data for debugging
+                    developer.log('@@snapshot: ${snapshot.data}');
 
-                        List<GetLanguageForDDLsDatas> stateList = snapshot.data;
+                    List<GetLanguageForDDLsDatas> stateList = snapshot.data;
 
-                        // Ensure selected state is in the list, otherwise select the first
-                        if (GetLanguageForDDLsDatasa == null ||
-                            !stateList.contains(GetLanguageForDDLsDatasa)) {
-                          GetLanguageForDDLsDatasa = stateList.first;
-                        }
+                    // Ensure selected state is in the list, otherwise select the first
+                    if (GetLanguageForDDLsDatasa == null ||
+                        !stateList.contains(GetLanguageForDDLsDatasa)) {
+                      GetLanguageForDDLsDatasa = stateList.first;
+                    }
 
-                        return Container(
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                  width: 1, color: Colors.transparent),
-                            ),
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 5, 20.0, 0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            'Communication Language *',
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 5, 20.0, 0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Communication Language *',
+                          SizedBox(
+                            width: double.infinity, // Let it take full width of parent
+                            child: DropdownButtonFormField<GetLanguageForDDLsDatas>(
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                DropdownButtonFormField<
-                                    GetLanguageForDDLsDatas>(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
-                                  ),
-                                  onChanged: (user) => setState(() {
-                                    GetLanguageForDDLsDatasa = user;
-                                    stateLKanguage =
-                                        int.parse(user.id.toString());
-                                  }),
-                                  value: GetLanguageForDDLsDatasa,
-                                  items: stateList.map<
-                                          DropdownMenuItem<
-                                              GetLanguageForDDLsDatas>>(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.blue[50],
+                              ),
+                              onChanged: (user) => setState(() {
+                                GetLanguageForDDLsDatasa = user;
+                                stateLKanguage = int.parse(user.id.toString());
+                              }),
+                              value: GetLanguageForDDLsDatasa,
+                              items: stateList.map<DropdownMenuItem<GetLanguageForDDLsDatas>>(
                                       (GetLanguageForDDLsDatas user) {
-                                    return DropdownMenuItem<
-                                        GetLanguageForDDLsDatas>(
+                                    return DropdownMenuItem<GetLanguageForDDLsDatas>(
                                       value: user,
-
                                       child: Text(user.name),
                                     );
                                   }).toList(),
-                                ),
-                              ],
                             ),
                           ),
-                        );
-                      },
-                    ),
-                  ),
+                        ],
+                      ),
+                    );
+                  },
                 ),
-                SizedBox(height: 10.0),
+              ),
+
+              SizedBox(height: 8.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -3137,7 +3168,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       margin: const EdgeInsets.fromLTRB(10.0, 0.0, 20.0, 0.0),
       // External margin
       color: Colors.blue,
-      padding: const EdgeInsets.all(8.0),
+      
+      padding: const EdgeInsets.all(10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -3161,12 +3193,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 16.0),
         Text(
           title,
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 8.0),
+        SizedBox(height: 5.0),
       ],
     );
   }
@@ -3206,75 +3237,90 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: options
           .map((option) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                // Equal vertical spacing
-                child: Row(
-                  children: [
-                    Radio<String>(
-                      value: option,
-                      groupValue: groupValue,
-                      onChanged: onChanged,
-                    ),
-                    Expanded(
-                      child: Text(
-                        option,
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
+        padding: const EdgeInsets.symmetric(vertical: 1.0), // Reduce from 4.0 to 2.0
+        child: Row(
+          children: [
+            Radio<String>(
+              value: option,
+              groupValue: groupValue,
+              onChanged: onChanged,
+            ),
+            Expanded(
+              child: Text(
+                option,
+                style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
                 ),
-              ))
+              ),
+            ),
+          ],
+        ),
+      ))
           .toList(),
     );
   }
 
+
   Widget _textInputField({
-    TextEditingController controller,
-    String labelText,
+     TextEditingController controller,
+     String labelText,
     TextInputType keyboardType = TextInputType.text,
     String Function(String) validator,
-    int maxLength, // Add maxLength parameter
+    int maxLength,
+    double width,  // Width parameter
+    double height, // Height parameter
+    Widget prefixIcon, // Prefix icon support
+    bool readOnly = false, // Read-only support
   }) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0), // Customize as needed
-          borderSide: BorderSide(
-            color: Colors.grey, // Default border color
+    return SizedBox(
+      width: width ?? double.infinity, // Default to full width
+      height: height ?? 50, // Default height
+      child: TextFormField(
+        controller: controller,
+        readOnly: readOnly, // Prevent manual input if true
+        decoration: InputDecoration(
+          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10), // Adjust padding
+          labelText: labelText,
+          prefixIcon: prefixIcon, // Assign prefix icon
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(
+              color: Colors.grey,
+            ),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(
+              color: Colors.blue,
+              width: 2.0,
+            ),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(
+              color: Colors.red,
+              width: 2.0,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8.0),
+            borderSide: BorderSide(
+              color: Colors.grey,
+              width: 1.0,
+            ),
           ),
         ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(
-            color: Colors.blue, // Border color when focused
-            width: 2.0, // Customize border width
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(
-            color: Colors.red, // Border color when validation fails
-            width: 2.0,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8.0),
-          borderSide: BorderSide(
-            color: Colors.grey, // Border color when enabled but not focused
-            width: 1.0,
-          ),
-        ),
+        keyboardType: keyboardType,
+        validator: validator,
+        maxLength: maxLength,
       ),
-      keyboardType: keyboardType,
-      validator: validator,
     );
   }
+
+
+
 
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -3428,7 +3474,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
   Widget _patientInfoRow() {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
