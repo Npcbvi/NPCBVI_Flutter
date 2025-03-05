@@ -9,6 +9,7 @@ import 'package:marquee/marquee.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
+import 'package:mohfw_npcbvi/src/loginsignup/UpcomingHomeGuidlines.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/country_state_model.dart';
@@ -262,15 +263,19 @@ class _RegisterScreen extends State<RegisterScreen> {
             // Reduce the margin to decrease space// Set the margin here
             child: ListView(
               children: [
+
                 _buildMenuItem(
                   icon: Icons.dashboard,
                   title: 'Home',
                   onTap: () {
                     setState(() {
-                      print('@@dashboardviewReplace----display---');
-
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UpcomingHomeGuidlines()));
                     });
-                    Navigator.pop(context);
+                    //  Navigator.pop(context);
                   },
                 ),
                 _buildDropdownItem(
@@ -321,7 +326,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                         // _getDistrictData(18);
 
                         print('@@showSPORegistration--3' +
-                            _chosenValue +
+                            _chosenValueRegisertaion +
                             value.toString());
                         showNGOResgistration = false;
                         showSPORegistration = false;
@@ -341,7 +346,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                     Navigator.pop(context);
                   },
                 ),
-                _buildMenuItem(
+                // not Removes all previous screens
+            /*    _buildMenuItem(
                   icon: Icons.login,
                   title: 'Login',
                   onTap: () {
@@ -353,6 +359,21 @@ class _RegisterScreen extends State<RegisterScreen> {
                               builder: (context) => LoginScreen()));
                     });
                     //  Navigator.pop(context);
+                  },
+                ),*/
+                // Removes all previous screens
+                _buildMenuItem(
+                  icon: Icons.login,
+                  title: 'Login',
+                  onTap: () {
+                    setState(() {
+                      Navigator.pop(context); // Close the menu if needed
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                            (route) => false, // Removes all previous screens
+                      );
+                    });
                   },
                 ),
 
@@ -583,40 +604,42 @@ class _RegisterScreen extends State<RegisterScreen> {
         children: [
           Visibility(
             visible: showSPORegistration,
-            child: Center(
-              child: Container(
-                margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
-                alignment: Alignment.center,
-                child: Column(
-                  children: [
+            child: Container(
+              margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
 
-                FutureBuilder<List<Data>>(
-                  future: _future,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
+              FutureBuilder<List<Data>>(
+                future: _future,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
 
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
-                    }
+                  if (!snapshot.hasData) {
+                    return const CircularProgressIndicator();
+                  }
 
-                    List<Data> stateList = snapshot.data;
+                  List<Data> stateList = snapshot.data;
 
-                    // Ensure selected state is in the list, otherwise select the first
-                    if (_selectedUser == null || !stateList.contains(_selectedUser)) {
-                      _selectedUser = stateList.first;
-                    }
+                  // Ensure selected state is in the list, otherwise select the first
+                  if (_selectedUser == null || !stateList.contains(_selectedUser)) {
+                    _selectedUser = stateList.first;
+                  }
 
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 5, 10.0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          DropdownButtonFormField2<Data>(
+                  return Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10.0, 0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                          width: 300,  // Set desired width
+                          height: 60,   // Set desired height
+                          child: DropdownButtonFormField2<Data>(
                             isExpanded: true,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
@@ -654,402 +677,402 @@ class _RegisterScreen extends State<RegisterScreen> {
                               ),
                             ),
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: TextField(
+                      controller: _spoNAmeController,
+                      decoration: InputDecoration(
+                        label: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Name ', // Regular label text
+                                style: TextStyle(color: Colors.black), // Change label text color here
+                              ),
+                              TextSpan(
+                                text: '*', // Asterisk
+                                style: TextStyle(color: Colors.red), // Make asterisk red
+                              ),
+                            ],
+                          ),
+                        ),
+                        hintText: 'Name',
+                        hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  ),
 
 
                   Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: TextField(
+                      keyboardType: TextInputType.number,
+                      controller: _spoMobileController,
+                      maxLength: 10,
+                      decoration: InputDecoration(
+                        label: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Mobile Number ', // Regular label text
+                                style: TextStyle(color: Colors.black), // Change label text color
+                              ),
+                              TextSpan(
+                                text: '*', // Asterisk
+                                style: TextStyle(color: Colors.red), // Make asterisk red
+                              ),
+                            ],
+                          ),
+                        ),
+                        hintText: 'Mobile Number',
+                        hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: TextField(
+                      controller: _spoEmailIdController,
+                      keyboardType: TextInputType.emailAddress, // Set keyboard type for email
+                      decoration: InputDecoration(
+                        label: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Email ID ', // Regular label text
+                                style: TextStyle(color: Colors.black), // Label text color
+                              ),
+                              TextSpan(
+                                text: '*', // Asterisk
+                                style: TextStyle(color: Colors.red), // Make asterisk red
+                              ),
+                            ],
+                          ),
+                        ),
+                        hintText: 'Email ID',
+                        hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: TextField(
+                      controller: _spoDestinationController,
+                      decoration: InputDecoration(
+                        label: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Designation ', // Regular label text
+                                style: TextStyle(color: Colors.black), // Label text color
+                              ),
+                              TextSpan(
+                                text: '*', // Asterisk
+                                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold), // Red asterisk
+                              ),
+                            ],
+                          ),
+                        ),
+                        hintText: 'Designation',
+                        hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5.0),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            child: TextFormField(
+                              controller: stdControllerSpo,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(5), // Restrict to 5 digits
+                              ],
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'STD ',
+                                        style: TextStyle(color: Colors.black), // Label text color
+                                      ),
+                                      TextSpan(
+                                        text: '*', // Asterisk
+                                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                hintText: 'Enter STD Code',
+                                hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                            child: TextFormField(
+                              controller: _spoPhoneNumberController,
+                              keyboardType: TextInputType.number,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.digitsOnly,
+                                LengthLimitingTextInputFormatter(10), // Restrict to 10 digits
+                              ],
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Phone Number ',
+                                        style: TextStyle(color: Colors.black), // Label text color
+                                      ),
+                                      TextSpan(
+                                        text: '*', // Asterisk
+                                        style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                hintText: 'Enter Phone Number',
+                                hintStyle: TextStyle(color: Colors.grey), // Hint text color
+                                border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+
                       child: TextField(
-                        controller: _spoNAmeController,
+                        controller: _spoOfficeAddressController,
+                        maxLines: 3, // Allows multiline input for addresses
                         decoration: InputDecoration(
                           label: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Name ', // Regular label text
-                                  style: TextStyle(color: Colors.black), // Change label text color here
+                                  text: 'Office Address ',
+                                  style: TextStyle(color: Colors.black), // Label text color
                                 ),
                                 TextSpan(
                                   text: '*', // Asterisk
-                                  style: TextStyle(color: Colors.red), // Make asterisk red
+                                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
                           ),
-                          hintText: 'Name',
+                          hintText: 'Enter Office Address',
                           hintStyle: TextStyle(color: Colors.grey), // Hint text color
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
                         ),
                       ),
                     ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
 
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
 
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: TextField(
+                        controller: _spoPinCodeController,
                         keyboardType: TextInputType.number,
-                        controller: _spoMobileController,
-                        maxLength: 10,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(6), // Restrict to 6 digits
+                        ],
                         decoration: InputDecoration(
                           label: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Mobile Number ', // Regular label text
-                                  style: TextStyle(color: Colors.black), // Change label text color
-                                ),
-                                TextSpan(
-                                  text: '*', // Asterisk
-                                  style: TextStyle(color: Colors.red), // Make asterisk red
-                                ),
-                              ],
-                            ),
-                          ),
-                          hintText: 'Mobile Number',
-                          hintStyle: TextStyle(color: Colors.grey), // Hint text color
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: TextField(
-                        controller: _spoEmailIdController,
-                        keyboardType: TextInputType.emailAddress, // Set keyboard type for email
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Email ID ', // Regular label text
+                                  text: 'Pin Code ',
                                   style: TextStyle(color: Colors.black), // Label text color
                                 ),
                                 TextSpan(
                                   text: '*', // Asterisk
-                                  style: TextStyle(color: Colors.red), // Make asterisk red
+                                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
                           ),
-                          hintText: 'Email ID',
+                          hintText: 'Enter Pin Code',
                           hintStyle: TextStyle(color: Colors.grey), // Hint text color
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
                         ),
                       ),
                     ),
+                  ),
 
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: TextField(
-                        controller: _spoDestinationController,
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Designation ', // Regular label text
-                                  style: TextStyle(color: Colors.black), // Label text color
-                                ),
-                                TextSpan(
-                                  text: '*', // Asterisk
-                                  style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold), // Red asterisk
-                                ),
-                              ],
-                            ),
-                          ),
-                          hintText: 'Designation',
-                          hintStyle: TextStyle(color: Colors.grey), // Hint text color
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    Container(
-                      margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              child: TextFormField(
-                                controller: stdControllerSpo,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  LengthLimitingTextInputFormatter(5), // Restrict to 5 digits
-                                ],
-                                decoration: InputDecoration(
-                                  label: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: 'STD ',
-                                          style: TextStyle(color: Colors.black), // Label text color
-                                        ),
-                                        TextSpan(
-                                          text: '*', // Asterisk
-                                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  hintText: 'Enter STD Code',
-                                  hintStyle: TextStyle(color: Colors.grey), // Hint text color
-                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              child: TextFormField(
-                                controller: _spoPhoneNumberController,
-                                keyboardType: TextInputType.number,
-                                inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly,
-                                  LengthLimitingTextInputFormatter(10), // Restrict to 10 digits
-                                ],
-                                decoration: InputDecoration(
-                                  label: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: 'Phone Number ',
-                                          style: TextStyle(color: Colors.black), // Label text color
-                                        ),
-                                        TextSpan(
-                                          text: '*', // Asterisk
-                                          style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  hintText: 'Enter Phone Number',
-                                  hintStyle: TextStyle(color: Colors.grey), // Hint text color
-                                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                  SizedBox(height: 5),
 
 
-                    Container(
-                      margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
 
-                        child: TextField(
-                          controller: _spoOfficeAddressController,
-                          maxLines: 3, // Allows multiline input for addresses
-                          decoration: InputDecoration(
-                            label: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Office Address ',
-                                    style: TextStyle(color: Colors.black), // Label text color
-                                  ),
-                                  TextSpan(
-                                    text: '*', // Asterisk
-                                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            hintText: 'Enter Office Address',
-                            hintStyle: TextStyle(color: Colors.grey), // Hint text color
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-
-                        child: TextField(
-                          controller: _spoPinCodeController,
-                          keyboardType: TextInputType.number,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(6), // Restrict to 6 digits
-                          ],
-                          decoration: InputDecoration(
-                            label: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Pin Code ',
-                                    style: TextStyle(color: Colors.black), // Label text color
-                                  ),
-                                  TextSpan(
-                                    text: '*', // Asterisk
-                                    style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            hintText: 'Enter Pin Code',
-                            hintStyle: TextStyle(color: Colors.grey), // Hint text color
-                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(5.0)),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    SizedBox(height: 5),
-
-
-                    Container(
-                      margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-
-                      child: Row(
-                        // mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: SizedBox(
-                              height: 50, // Adjust height as needed
-                              child: TextField(
-                                controller: _spoCaptchaCodeEnterController,
-                                decoration: InputDecoration(
-                                  label: RichText(
-                                    text: TextSpan(
-                                      text: 'Enter Captcha Value',
-                                      style: TextStyle(color: Colors.black, fontSize: 16),
-                                      children: [
-                                        TextSpan(
-                                          text: ' *', // Red Asterisk for required field
-                                          style: TextStyle(color: Colors.red, fontSize: 16),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8.0),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: SizedBox(
+                            height: 50, // Adjust height as needed
+                            child: TextField(
+                              controller: _spoCaptchaCodeEnterController,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    text: 'Enter Captcha Value',
+                                    style: TextStyle(color: Colors.black, fontSize: 16),
+                                    children: [
+                                      TextSpan(
+                                        text: ' *', // Red Asterisk for required field
+                                        style: TextStyle(color: Colors.red, fontSize: 16),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                onChanged: (value) {
-                                  setState(() {
-                                    isVerified = false;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-
-
-                          Expanded(
-                            flex: 2,
-                            child: Container(
-                              height: 50,
-                              margin: EdgeInsets.only(left: 5),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(width: 1, color: Colors.grey),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Center(
-                                child: Text(
-                                  randomString,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.blue,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
                                 ),
                               ),
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              height: 50,
-                              margin: EdgeInsets.only(left: 5),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey, width: 1),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: IconButton(
-                                onPressed: buildCaptcha,
-                                icon: Icon(Icons.refresh),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Even spacing
-                        children: [
-                          Expanded(
-                            child: ElevatedButton.icon( // Using ElevatedButton.icon
-                              onPressed: () {
-                                print('@@Spo Submit Button');
-                                _spoRegistrationSubmit();
+                              onChanged: (value) {
+                                setState(() {
+                                  isVerified = false;
+                                });
                               },
-                              icon: Icon(Icons.check, color: Colors.white), // ✅ Submit Icon
-                              label: Text('Submit', style: TextStyle(fontSize: 16)),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.blue, // Button color
-                                padding: EdgeInsets.symmetric(vertical: 15), // Button height
+                            ),
+                          ),
+                        ),
+
+
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            height: 50,
+                            margin: EdgeInsets.only(left: 5),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(width: 1, color: Colors.grey),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Center(
+                              child: Text(
+                                randomString,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
                           ),
-                          SizedBox(width: 20), // Adds spacing between buttons
-                          Expanded(
-                            child: ElevatedButton.icon( // Using ElevatedButton.icon
-                              onPressed: () {
-                                _spoNAmeController.clear();
-                                _spoMobileController.clear();
-                                _spoPinCodeController.clear();
-                                _spoOfficeAddressController.clear();
-                                _spoEmailIdController.clear();
-                                _spoPhoneNumberController.clear();
-                                _spoCaptchaCodeEnterController.clear();
-                                _spoDestinationController.clear();
-                                stdControllerSpo.clear();
-                              },
-                              icon: Icon(Icons.refresh, color: Colors.white), // 🔄 Reset Icon
-                              label: Text('Reset', style: TextStyle(fontSize: 16)),
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.red, // Different color for Reset
-                                padding: EdgeInsets.symmetric(vertical: 15), // Button height
-                              ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            height: 50,
+                            margin: EdgeInsets.only(left: 5),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey, width: 1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: IconButton(
+                              onPressed: buildCaptcha,
+                              icon: Icon(Icons.refresh),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Even spacing
+                      children: [
+                        Expanded(
+                          child: ElevatedButton.icon( // Using ElevatedButton.icon
+                            onPressed: () {
+                              print('@@Spo Submit Button');
+                              _spoRegistrationSubmit();
+                            },
+                            icon: Icon(Icons.check, color: Colors.white), // ✅ Submit Icon
+                            label: Text('Submit', style: TextStyle(fontSize: 16)),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.blue, // Button color
+                              padding: EdgeInsets.symmetric(vertical: 15), // Button height
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 20), // Adds spacing between buttons
+                        Expanded(
+                          child: ElevatedButton.icon( // Using ElevatedButton.icon
+                            onPressed: () {
+                              _spoNAmeController.clear();
+                              _spoMobileController.clear();
+                              _spoPinCodeController.clear();
+                              _spoOfficeAddressController.clear();
+                              _spoEmailIdController.clear();
+                              _spoPhoneNumberController.clear();
+                              _spoCaptchaCodeEnterController.clear();
+                              _spoDestinationController.clear();
+                              stdControllerSpo.clear();
+                            },
+                            icon: Icon(Icons.refresh, color: Colors.white), // 🔄 Reset Icon
+                            label: Text('Reset', style: TextStyle(fontSize: 16)),
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red, // Different color for Reset
+                              padding: EdgeInsets.symmetric(vertical: 15), // Button height
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
 
-                  ],
-                ),
+                ],
               ),
             ),
           ),
@@ -3305,8 +3328,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                 child: Column(
                   children: [
 
-                Center(
-                child: FutureBuilder<List<Data>>(
+                FutureBuilder<List<Data>>(
                 future: _future,
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
@@ -3327,51 +3349,55 @@ class _RegisterScreen extends State<RegisterScreen> {
                       padding: const EdgeInsets.fromLTRB(10, 5, 10.0, 0),
                       child: Column(
                         children: <Widget>[
-                          DropdownButtonFormField2<Data>(
-                            isExpanded: true,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                borderRadius: BorderRadius.circular(10.0),
+                          SizedBox(
+                            width: 300,  // Set desired width
+                            height: 60,   // Set desired height
+                            child: DropdownButtonFormField2<Data>(
+                              isExpanded: true,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.blue[50],
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              filled: true,
-                              fillColor: Colors.blue[50],
-                            ),
-                            hint: Text("Select State"),
-                            value: _selectedUser,
-                            onChanged: (user) {
-                              setState(() {
-                                _selectedUser = user;
-                                stateCodeDPM = int.parse(user.stateCode.toString());
-                                codeDPM = user.code;
-                                distNameDPM = user.stateName;
+                              hint: Text("Select State"),
+                              value: _selectedUser,
+                              onChanged: (user) {
+                                setState(() {
+                                  _selectedUser = user;
+                                  stateCodeDPM = int.parse(user.stateCode.toString());
+                                  codeDPM = user.code;
+                                  distNameDPM = user.stateName;
 
-                                if (codeDPM != null) {
-                                  SharedPrefs.storeSharedValue(AppConstant.txtStateDPmValue, stateCodeDPM);
-                                  isVisibleDitrict = true;
-                                  _getDistrictData(stateCodeDPM);
-                                } else {
-                                  isVisibleDitrict = false;
-                                }
-                              });
-                            },
-                            items: stateList.map<DropdownMenuItem<Data>>((Data user) {
-                              return DropdownMenuItem<Data>(
-                                value: user,
-                                child: Text(user.stateName),
-                              );
-                            }).toList(),
+                                  if (codeDPM != null) {
+                                    SharedPrefs.storeSharedValue(AppConstant.txtStateDPmValue, stateCodeDPM);
+                                    isVisibleDitrict = true;
+                                    _getDistrictData(stateCodeDPM);
+                                  } else {
+                                    isVisibleDitrict = false;
+                                  }
+                                });
+                              },
+                              items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                                return DropdownMenuItem<Data>(
+                                  value: user,
+                                  child: Text(user.stateName),
+                                );
+                              }).toList(),
 
-                            dropdownStyleData: DropdownStyleData(
-                              maxHeight: 300,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 300,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -3380,7 +3406,6 @@ class _RegisterScreen extends State<RegisterScreen> {
                     );
                   },
                 ),
-              ),
 
 
 

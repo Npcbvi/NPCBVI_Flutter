@@ -279,12 +279,20 @@ class _MainDashboard extends State<MainDashboard> {
             icon: Icon(
               Icons.login,
               color: Colors.white,
+
             ),
             onPressed: () {
-              Navigator.push(
+              //not Removes all previous screens
+          /*    Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => LoginScreen()),
+              );*/
+// Removes all previous screens
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+                    (route) => false, // Removes all previous screens
               );
               // do something
             },
@@ -464,7 +472,6 @@ class _MainDashboard extends State<MainDashboard> {
 
                                   child: Image.asset(
                                     'images/ngo_new.png',
-
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -674,6 +681,7 @@ class _MainDashboard extends State<MainDashboard> {
                             ),
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
+
                               duration: Duration(milliseconds: 300),
                               top: 0 ,
                               left: 25,
@@ -681,7 +689,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
                                     'images/privatepractionarie.png',
                                     fit: BoxFit.cover,
@@ -1058,7 +1066,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
-                                    'images/dpm.png',
+                                    'images/spo.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),

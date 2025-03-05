@@ -245,11 +245,17 @@ class _NgoDashboard extends State<NgoDashboard> {
     // _manger = getCampManager(district_code_login, entryby);
     _futureCity = _getCity(district_code_login);
     _futureVillage = _getVillage(district_code_login, state_code_login, 10011);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        ngoDashboardDatas=true;
+        ngoDashboardclicks = true;
+
+
+      });
+    });
     AddSatelliteManagers = false;
     satelliteCenterMenuListdisplay = false;
     EyeDonationCentreRegistrationClickONAddDontaions = false;
-
-    ngoDashboardclicks = true;
     EyeBankApplication = false;
     mangeEyDonationClick = false;
     ngoCampManagerLists = false;
@@ -2296,7 +2302,7 @@ class _NgoDashboard extends State<NgoDashboard> {
               value: _chosenValueMangeTwo,
               isExpanded: true,
               decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10),
+                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
                 enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                   borderRadius: BorderRadius.circular(10.0),
@@ -2344,32 +2350,44 @@ class _NgoDashboard extends State<NgoDashboard> {
               onChanged: (String value) {
                 setState(() {
                   _chosenValueMangeTwo = value ?? 'All';
+                  print('@@_chosenValueMangeTwo-- $_chosenValueMangeTwo');
+
+
                   switch (_chosenValueMangeTwo) {
                     case 'Hospitals':
                       dropDownTwoSelcted = 6;
                       selectionBasedHospital = true;
-                      _futureDataDropDownHospitalSelected =
-                          GetHospitalNgoForDDL();
+                      _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL(); // ✅ Future is assigned
                       break;
+
                     case 'Camps':
                       dropDownTwoSelcted = 9;
                       selectionBasedHospital = false;
                       ngoDashboardDatas = false;
                       break;
+
                     case 'Satellite Centres':
                       dropDownTwoSelcted = 8;
                       selectionBasedHospital = false;
                       ngoDashboardDatas = false;
                       break;
-                    default:
-                      dropDownTwoSelcted = 0;
-                      selectionBasedHospital = false;
-                      ngoDashboardDatas = false;
 
+                    case 'All': // ✅ Fix for 'All' case
+                      dropDownTwoSelcted = 0;
+                      selectionBasedHospital = true;
+                      ngoDashboardDatas = true;
+                      _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL(); // ✅ Future is properly assigned
+                      break;
+
+                    default:
+                    /*  dropDownTwoSelcted = 0;
+                      selectionBasedHospital = false;
+                      ngoDashboardDatas = false;*/
                       break;
                   }
                 });
               },
+
             ),
             const SizedBox(height: 10),
 
@@ -2504,16 +2522,21 @@ class _NgoDashboard extends State<NgoDashboard> {
                     }
 
                     List<DataGetDPM_ScreeningYear> list = snapshot.data;
+                    if (_selectedUser == null ||
+                        !list.contains(_selectedUser)) {
+                      _selectedUser = null; // Remove default selection
+                    }
 
                     // Ensure default selection is set only once when data is first received
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (_selectedUser == null) {
+                      if (_selectedUser == null || !list.contains(_selectedUser)) {
                         setState(() {
                           _selectedUser = list.first;  // Default to first item
                           getYearNgoHopital = _selectedUser.name;
                           getfyidNgoHospital = _selectedUser.fyid;
                           print('@@Initial Year: $getYearNgoHopital');
                           print('Initial FYID: $getfyidNgoHospital');
+
                         });
                       }
                     });
@@ -2588,10 +2611,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
 
 
-                /*    SizedBox(height: 8),
-                buildInfoContainer(stateNames),
-                SizedBox(height: 8),
-                buildInfoContainer(districtNames),*/
+
                 SizedBox(height: 8),
                 buildDropdownHospitalType(),
                 SizedBox(height: 8),
@@ -2605,7 +2625,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                         // No validation, proceed with the action
                         print('@@Get button clicked');
                         setState(() {
-                          ngoDashboardDatas = true;
+                          ngoDashboardclicks = true;
+                          ngoDashboardDatas=true;
                         });
                     },
                     style: ElevatedButton.styleFrom(
@@ -2638,7 +2659,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Total number of patients (${hospitalNameFetch})',
+                                  'Total number of patients (${hospitalNameFetch ?? "All"})',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
@@ -2735,7 +2756,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Total number of patients (${hospitalNameFetch})',
+                                  'Total number of patients (${hospitalNameFetch ?? "Hospitals"})',
+
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
@@ -2878,18 +2900,20 @@ class _NgoDashboard extends State<NgoDashboard> {
                               // Display "No data found" on the right side
                               return Row(
                                 children: [
-                                  Spacer(),
                                   // Pushes "No data found" to the right
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 20.0),
-                                    child: Text(
-                                      "No data found",
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
+                                  Column(
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          "No data found",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ],
                               );
@@ -2975,13 +2999,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                             } else if (!snapshot.hasData ||
                                 snapshot.data.isEmpty) {
                               // If data is empty, show 'No data found' message
-                              return Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Center(
-                                    child: Text("No data found",
-                                        style: TextStyle(
-                                            fontSize: 18, color: Colors.blue))),
-                              );
+                              return Center(
+                                  child: Text("No data found",
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.blue)));
                             } else {
                               List<DataNGODashboards> ddata = snapshot.data;
 
@@ -3383,6 +3404,40 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
+  Widget _buildButtonNew(String text, IconData icon, VoidCallback onTap) {
+    return Material(
+      color: Colors.white, // Background color
+      borderRadius: BorderRadius.circular(8.0),
+      elevation: 3, // Adds elevation for a smooth shadow effect
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10.0), // Ensures ripple stays inside
+        splashColor: Colors.blue.withOpacity(0.3), // Ripple color
+        highlightColor: Colors.blue.withOpacity(0.1), // Light highlight on press
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: Colors.blue, width: 1),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min, // Keeps button compact
+            children: [
+              Icon(icon, color: Colors.blue, size: 12), // ✅ Icon
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildSeparator() {
     return Text(
@@ -3390,6 +3445,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
     );
   }
+
+
 
   // Define the callback function that takes the ID
   Widget _buildMAnageEyeDonationMOUUI(String eyeBankID) {
@@ -4766,51 +4823,73 @@ class _NgoDashboard extends State<NgoDashboard> {
     });
   }
 
-  Widget _buildMAnageEDITDELETE() {
+  Widget _buildMAnageEDITDELETE(String regId) {
     return Container(
-        height: 80,
-        width: 200,
-        // Fixed width to ensure horizontal scrolling
-        decoration: BoxDecoration(
-          color: Colors.white, // Background color for header cells
-          border: Border.all(
-            width: 0.1,
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12), // Dynamic padding
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8.0),
+        border: Border.all(color: Colors.blue, width: 0.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: Offset(0, 2),
           ),
-        ),
-        // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          // Spaces the buttons evenly
+        ],
+      ),
+      child: IntrinsicWidth(  // Adapts to content width
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // Takes minimum height required
           children: [
-            // "View" Text Button
+            // Edit Button
             GestureDetector(
               onTap: () {
-                print('MOU pressed');
+                print('@@Edit pressed for $regId');
               },
-              child: Text(
-                'Edit',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              child: Column(
+                children: [
+                  Icon(Icons.edit, size: 20, color: Colors.green),
+                  SizedBox(height: 2),
+                  Text(
+                    'Edit',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.green),
+                  ),
+                ],
               ),
             ),
-            // Separator "||"
-            Text(
-              '||',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+
+            // Divider
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Container(height: 0.5, width: double.infinity, color: Colors.grey.shade400),
             ),
-            // "Manage Doctor" Text Button
+
+            // Delete Button
             GestureDetector(
               onTap: () {
-                print('Manage Eye Donation');
+                print('@@Delete pressed for $regId');
               },
-              child: Text(
-                'Delete',
-                style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+              child: Column(
+                children: [
+                  Icon(Icons.delete, size: 20, color: Colors.red),
+                  SizedBox(height: 2),
+                  Text(
+                    'Delete',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.red),
+                  ),
+                ],
               ),
             ),
-            // Separator "||"
           ],
-        ));
+        ),
+      ),
+    );
   }
+
+
+
 
   Widget _buildCAMPMAnageEDITDELETE() {
     return Container(
@@ -4961,6 +5040,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildButton('View', () async {
+       // _buildButtonNew("View Detail", Icons.visibility, () {
             print('View pressed');
             print('@@fff1--' + darpan_nos);
             print('@@fff1--' + hospitalId);
@@ -5021,7 +5101,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             print('@@fff1--Manage' + district_code_login.toString());
             print('@@fff1--Manage' + userId);
             print('Manage Doctor pressed');
-            _showNgoManageDoctore(hospitalId, district_code_login);
+            _showNgoManageDoctore(context,hospitalId, district_code_login);
 
             // Logic for managing doctors
           }),
@@ -5132,7 +5212,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   Widget _buildViewManageDoctorUploadMOUUINGO(String hospitalId) {
     return Container(
       margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-      height: 120, // Increase height for the vertical layout
+      height: 100, // Increase height for the vertical layout
       width: 160,
 
       child: Column(
@@ -5141,7 +5221,9 @@ class _NgoDashboard extends State<NgoDashboard> {
         // Align buttons to the left
         children: [
           SizedBox(height: 5),
-          _buildButton('View', () async {
+         // _buildButton('View', () async {
+            _buildButtonNew("View Detail", Icons.visibility, () async {
+
             print('View pressed');
             print('@@fff1--' + darpan_nos);
             print('@@fff1--' + hospitalId);
@@ -5150,7 +5232,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
             try {
               _storeHRegID(hospitalId);
-              // Call the API to view hospital details and documents
+              // Call the API to view hospitaFuture<void>tails and documents
               ViewClickHospitalDetails viewClickHospitalDetails =
                   await viewHospitalDetails(
                 darpan_nos,
@@ -5159,7 +5241,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                 userId,
               );
 
-              // Check if the response status is true and hospitalDetails is not empty
+              // Check if the response status iasync s true and hospitalDetails is not empty
               if (viewClickHospitalDetails.status &&
                   viewClickHospitalDetails.data.hospitalDetails.isNotEmpty) {
                 HospitalDetailsDataViewClickHospitalDetails details =
@@ -5197,20 +5279,24 @@ class _NgoDashboard extends State<NgoDashboard> {
           }),
           SizedBox(height: 5),
           //_buildSeparator(),
-          _buildButton('Manage Doctor', () {
+         // _buildButton('Manage Doctor', () {
+          _buildButtonNew("Manage Doctor", Icons.visibility, () async {
+
             print('@@fff1--Manage' + darpan_nos);
             print('@@fff1--Manage' + hospitalId);
             print('@@fff1--Manage' + district_code_login.toString());
             print('@@fff1--Manage' + userId);
             print('Manage Doctor pressed');
-            _showNgoManageDoctore(hospitalId, district_code_login);
+            _showNgoManageDoctore(context,hospitalId, district_code_login);
 
             // Logic for managing doctors
           }),
           //_buildSeparator(),
           SizedBox(height: 5),
-          _buildButton('Upload Mou', () {
-            print('@@Upload MoU pressed');
+         // _buildButton('Upload Mou', () {
+          _buildButtonNew("Upload Mou", Icons.visibility, () async {
+
+            print('@@Upload MoU pressed chnagehere');
             _showNgoGetUploadedMouList(
                 hospitalId, district_code_login, int.parse(role_id));
 
@@ -6119,7 +6205,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  void _showNgoManageDoctore(String hospitalId, int districtId) {
+  /*void _showNgoManageDoctore(String hospitalId, int districtId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -6192,20 +6278,20 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 _buildDataCell(offer.mobile),
                                 _buildDataCell(offer.emailId),
                                 _buildDataCell(offer.status),
-                                /* if (offer.status == 'Approved')
+                                 if (offer.status == 'Approved')
                                 // Store locally
                                   _buildMAnageEDITDELETE(
-                                     */ /* offer.hRegID*/ /*) // Pass hospitalId
+                                       offer.hRegID ) // Pass hospitalId
                                 else
                                   if (offer.status == 'Pending')
                                     _buildMAnageEDITDELETE()
                                   else
                                     _buildMAnageEDITDELETE(),
-*/
+
                                 _buildDataCellViewBlue("View", () async {
                                   print('@@Pending work---'); // Pass hospitalId
                                 }),
-                                /*  if (offer.status == 'Approved')
+                                  if (offer.status == 'Approved')
                                 // Store locally
                                   _buildMAnageEDITDELETE(
                                       ) // Pass hospitalId
@@ -6213,7 +6299,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   if (offer.status == 'Pending')
                                     _buildMAnageEDITDELETE()
                                   else
-                                    _buildMAnageEDITDELETE(),*/
+                                    _buildMAnageEDITDELETE(),
                               ],
                             );
                           }).toList(),
@@ -6236,7 +6322,147 @@ class _NgoDashboard extends State<NgoDashboard> {
         );
       },
     );
+  }*/
+  void _showNgoManageDoctore(BuildContext context, String hospitalId, int districtId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+        return AlertDialog(
+          title: Text(
+            'Doctor List',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+          ),
+          content: FutureBuilder<List<DataManageDoctor>>(
+            future: ApiController.getDoctorListByHId(hospitalId, districtId),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Text("Error: ${snapshot.error}");
+              } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                return Text("No data found", style: TextStyle(color: Colors.red));
+              } else {
+                List<DataManageDoctor> ddata = snapshot.data;
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header Row
+                      Row(
+                        children: [
+                          _buildHeaderCellSrNo('S.No.', context),
+                          _buildHeaderCell('MCI ID'),
+
+                          _buildHeaderCellAction('Action'),
+                        ],
+                      ),
+                      // Data Rows
+                      Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            children: [
+                              _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.mcIID),
+
+                              _buildDataCellViewBlue("View", () {
+                                print('@@Add NGO_MAnageDoctorDialog View Clicked for ${offer.dName}');
+                                _showDoctorDetailsDialogAddNGOHospital(context, offer);
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Close', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
   }
+  void _showDoctorDetailsDialogAddNGOHospital(
+      BuildContext context, DataManageDoctor doctor) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Doctor Details',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+          ),
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Table(
+              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              columnWidths: {
+                0: FixedColumnWidth(120.0), // Label column width
+                1: FlexColumnWidth(), // Value column width
+              },
+              children: [
+                _buildTableRow('MCI ID:', doctor.mcIID),
+                _buildTableRow('Hospital ID:', doctor.hRegID),
+                _buildTableRow('Doctor Name:', doctor.dName),
+                _buildTableRow('Mobile No.:', doctor.mobile),
+                _buildTableRow('Email ID:', doctor.emailId),
+                _buildTableRow('Status:', doctor.status),
+
+                // Action Buttons Row
+                TableRow(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Action:',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+
+                          // Condition for Edit/Delete based on status
+                          if (doctor.status == 'Approved') ...[
+                            _buildMAnageEDITDELETE(doctor.hRegID),
+
+                          ] else if (doctor.status == 'Pending') ...[
+                            _buildMAnageEDITDELETE(doctor.hRegID),
+
+                          ] else ...[
+                            _buildMAnageEDITDELETE(doctor.hRegID),
+
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Close', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+
 
   void _showNgoGetUploadedMouList(
       String hospitalId, int districtId, int userRoleId) {

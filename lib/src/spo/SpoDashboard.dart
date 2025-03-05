@@ -778,109 +778,105 @@ class _SpoDashboard extends State<SpoDashboard> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(2.0, 2.0, 2.0, 2.0),
-              color: Colors.white70,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // First Row Container
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-
-                          Text(
-                            'Login ID:',
-                            style: TextStyle(
-                                color: Colors.black, fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            '${userId}',
-                            style: TextStyle(
-                                color: Colors.red, fontWeight: FontWeight.w500),
-                          ),
-                          const SizedBox(width: 10), // Add spacing between the sections
-
-                          // State
-                          Row(
+            SingleChildScrollView(
+              child: Row(
+                children: [
+                  // Login Type and District in a Row
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
+                    // Margin for spacing
+                    child: Row(
+                      children: [
+                        Container(
+                          margin: EdgeInsets.only(right: 10),
+                          // Space between Login Type and District
+                          child: Column(
                             children: [
                               Text(
-                                'State:',
+                                'Login ID:',
                                 style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w500),
                               ),
-                              const SizedBox(width: 10),
+                              const SizedBox(height: 5),
                               Text(
-                                '${stateNames}',
+                                '${userId}',
                                 style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500,
-                                ),
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    // Second Column Container
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      color: Colors.white70,
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Row(
+                        ),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            // Login ID
-                            Row(
-                              children: [
-                                Text(
-                                  'Login Type:',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                                const SizedBox(width: 10),
-                                Text(
-                                  'STATE PROGRAM OFFICER',
-
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              ],
+                            Text(
+                              'State:',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500),
                             ),
-
+                            const SizedBox(height: 5),
+                            Text(
+                              '${stateNames}',
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500),
+                            ),
                           ],
                         ),
-                      ),
+                      ],
                     ),
-                    Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      color: Colors.white70,
-                      child: Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // Login ID
+                  ),
 
-                            // State
-                          ],
+                  // Space between Row and State Column
+                  const SizedBox(width: 10),
+
+                  // State in a Column with margin
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    // Right margin for spacing
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Login Type:',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w500),
                         ),
-                      ),
-                    )
-                  ],
-                ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'SPO',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    // Right margin for spacing
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'District',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                            '${districtNames.isNotEmpty ? districtNames : null}',
+
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
 
@@ -1656,7 +1652,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                                      19, 30, 19.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1685,7 +1681,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                 child: new Text('Completed',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                        fontSize: 17,
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white)),
@@ -1697,7 +1693,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                                      19, 30, 19.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1727,7 +1723,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                 child: new Text('Ongoing',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                        fontSize: 17,
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white)),
@@ -1739,7 +1735,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                             child: Padding(
                                               padding:
                                                   const EdgeInsets.fromLTRB(
-                                                      20, 30, 20.0, 0),
+                                                      19, 30, 19.0, 0),
                                               child: GestureDetector(
                                                 onTap: () {
                                                   print(
@@ -1769,7 +1765,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                 child: new Text('Coming',
                                                     textAlign: TextAlign.center,
                                                     style: TextStyle(
-                                                        fontSize: 17,
+                                                        fontSize: 15,
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         color: Colors.white)),

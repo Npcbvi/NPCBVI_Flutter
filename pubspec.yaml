@@ -85,6 +85,7 @@ flutter:
     - images/dpm.png
     - images/eyebank.png
     - images/donationcenters.png
+    - images/spo.png
   fonts:
     - family: PT_Sans
       fonts:

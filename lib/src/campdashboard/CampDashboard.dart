@@ -9,7 +9,7 @@ class CampDashboard extends StatefulWidget {
 
 class _CampDashboard extends State<CampDashboard> {
   TextEditingController fullnameController = TextEditingController();
-  String _chosenValue, districtNames, userId, stateNames;
+  String  districtNames, userId, stateNames;
 
   @override
   void initState() {

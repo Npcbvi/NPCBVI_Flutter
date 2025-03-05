@@ -239,7 +239,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   int trained_teachers, child_screens, child_detects, freeglasss;
-
+  Future<List<DataGetDPM_NGOAPProved_pending>> _futureData;
   @override
   void initState() {
     // TODO: implement initState
@@ -248,6 +248,11 @@ class _DPMDashboard extends State<DPMDashboard> {
     _getDPMDashbnoardData();
     _future = getDPM_ScreeningYear();
     _futureMonth = getDPM_ScreeningMonth();
+    _futureData = ApiController.getDPM_NGOAPProved_pendings(
+      district_code_login,
+      state_code_login,
+      dpmAPPRoved_valueSendinAPi,
+    );
     // _futureAddSchoolEyeScreening = fetchScreeningYearData();  // API call happens once here
     // _futureMonthAddSchoolEyeScreening = fetchScreeningMonthData();
   }
@@ -2768,6 +2773,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _showDetailDialogNGOlistApprove(
                                           context, offer);
                                     }),
+
                                   ],
                                 );
                               }).toList(),
@@ -2812,10 +2818,33 @@ class _DPMDashboard extends State<DPMDashboard> {
                 _buildTableRow('Ngo Name:', offer.name),
                 _buildTableRow('Member Name:', offer.memberName),
                 _buildTableRow('Email:', offer.emailid),
+                TableRow(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Actions',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ), // Placeholder for the "key"
+                    ),
+                    // Apply a SingleChildScrollView with horizontal scroll direction
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      alignment: Alignment.centerLeft,
+                      child: _buildNGOAPPlicationViewDetailsAttachments(
+                          offer.darpanNo),
+                    ),
+                  ],
+                ),
                 // Add more fields as needed
               ],
             ),
           ),
+
           actions: [
             TextButton(
               onPressed: () {
@@ -6163,57 +6192,54 @@ class _DPMDashboard extends State<DPMDashboard> {
         // Data Section
         Visibility(
           visible: NGO_APPorovedClickShowData,
-          child: FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
-            future: ApiController.getDPM_NGOAPProved_pendings(
-              district_code_login,
-              state_code_login,
-              dpmAPPRoved_valueSendinAPi,
-            ),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
-              } else if (snapshot.hasError) {
-                return Utils.getEmptyView("Error: ${snapshot.error}");
-              } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                return Utils.getEmptyView("No data found");
-              } else {
-                List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Column(
-                    children: [
-                      // Header - Only when data exists
-                      Row(
-                        children: [
-                          _buildHeaderCellSrNoDiseaseData('S.No.', context),
-                          _buildHeaderCell('NGO Name'),
-                          _buildHeaderCellNGOAction('Action'),
-                        ],
-                      ),
+          child: SizedBox(
+            height: 300,  // Set an appropriate height
+            child: FutureBuilder<List<DataGetDPM_NGOAPProved_pending>>(
+              future: _futureData, // Use the stored future
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Utils.getEmptyView("Error: ${snapshot.error}");
+                } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                  return Utils.getEmptyView("No data found");
+                } else {
+                  List<DataGetDPM_NGOAPProved_pending> ddata = snapshot.data;
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
 
-                      // Data Rows
-                      ...ddata.map((offer) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Column(
+                      children: [
+                        Row(
                           children: [
-                            _buildDataCellSrNoDiseaseData(
-                              (ddata.indexOf(offer) + 1).toString(),
-                            ),
-                            _buildDataCell(offer.name),
-                            _buildDataCellViewBlue("View", () {
-                              _showDetailDialogNGOsApprovedClick(
-                                  context, offer);
-                            }),
+                            _buildHeaderCellSrNoDiseaseData('S.No.', context),
+                            _buildHeaderCell('NGO Name'),
+                            _buildHeaderCellNGOAction('Action'),
                           ],
-                        );
-                      }).toList(),
-                    ],
-                  ),
-                );
-              }
-            },
+                        ),
+                        ...ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDiseaseData(
+                                (ddata.indexOf(offer) + 1).toString(),
+                              ),
+                              _buildDataCell(offer.name),
+                              _buildDataCellViewBlue("View", () {
+                                _showDetailDialogNGOsApprovedClick(context, offer);
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
           ),
         ),
+
       ],
     );
   }
@@ -6371,9 +6397,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                           // Table Header (Visible Only When Data Exists)
                           Row(
                             children: [
+                             /* _buildHeaderCellSrNo('S.No.'),
+                              _buildHeaderCell('NGO Name'),
+                              _buildHeaderCell('Action'),*/
                               _buildHeaderCellSrNo('S.No.'),
                               _buildHeaderCell('NGO Name'),
-                              _buildHeaderCell('Action'),
+                              _buildHeaderCellDiseaseDataAction('Action'),
                             ],
                           ),
                           Divider(color: Colors.blue, height: 1.0),
@@ -6386,7 +6415,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 _buildDataCellSrNo(
                                     (ddata.indexOf(offer) + 1).toString()),
                                 _buildDataCell(offer.name),
-                                _buildDataCellViewBlue("View", () {
+                                _buildDataCellViewBlueDiseaseDataAction("View", () {
                                   _showDetailDialogNGOsPendingClick(
                                       context, offer);
                                 }),
@@ -18372,6 +18401,61 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
+  Widget _buildNGOAPPlicationViewDetailsAttachments(String hospitalId) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: Column(
+        children: [
+
+          SizedBox(height: 5),
+          _buildButton("View Detail", Icons.visibility, () {
+            print('@@Click of NGO APllication View pressed');
+// Ngo Dashboard main line number 4991
+
+
+          }),
+
+        ],
+      ),
+    );
+  }
+  Widget _buildButton(String text, IconData icon, VoidCallback onTap) {
+    return Material(
+      color: Colors.white, // Background color
+      borderRadius: BorderRadius.circular(8.0),
+      elevation: 3, // Adds elevation for a smooth shadow effect
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10.0), // Ensures ripple stays inside
+        splashColor: Colors.blue.withOpacity(0.3), // Ripple color
+        highlightColor: Colors.blue.withOpacity(0.1), // Light highlight on press
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: Colors.blue, width: 1),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min, // Keeps button compact
+            children: [
+              Icon(icon, color: Colors.blue, size: 12), // ✅ Icon
+              Text(
+                text,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
 }
 
 class DPMDashboardParamsData {

@@ -1760,7 +1760,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         ),
                         SizedBox(height: 5.0),
-                        _sectionTitle('Gender *'),
+                        _sectionTitle('Gender'),
                         _radioButtonRow(
                           options: ['Male', 'Female', 'Transgender'],
                           groupValue: gender,
