@@ -5307,96 +5307,79 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
+
+
   Widget _buildEditMAnageDoctorUploadMOUUINGO() {
     return Container(
-      height: 120, // Increase height for the vertical layout
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      height: 100, // Increase height for the vertical layout
       width: 160,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         // Align buttons to the left
         children: [
           SizedBox(height: 5),
-          GestureDetector(
-            onTap: () {
-              print('View pressed');
-            },
-            child: Text(
-              'Edit',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-            ),
-          ),
+          // _buildButton('View', () async {
+          _buildButtonNew("'Edit',", Icons.visibility, () async {
+
+            print('View pressed');
+
+
+
+          }),
           SizedBox(height: 5),
-          // Separator "||"
-          /* Text(
-            '||',
-            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-          ),*/
-          // "Manage Doctor" Text Button
-          GestureDetector(
-            onTap: () {
-              print('Manage Doctor pressed');
-            },
-            child: Text(
-              'Manage Doctor',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-            ),
-          ),
+          //_buildSeparator(),
+          // _buildButton('Manage Doctor', () {
+          _buildButtonNew("Manage Doctor", Icons.visibility, () async {
+
+
+
+            // Logic for managing doctors
+          }),
+          //_buildSeparator(),
           SizedBox(height: 5),
-          // Separator "||"
-          /*  Text(
-            '||',
-            style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-          ),*/
-          // "Upload MoU" Text Button
-          GestureDetector(
-            onTap: () {
-              print('Upload MoU pressed');
-            },
-            child: Text(
-              'Upload MoU',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-            ),
-          ),
+          // _buildButton('Upload Mou', () {
+          _buildButtonNew("Upload Mou", Icons.visibility, () async {
+
+            print('@@Upload MoU pressed chnagehere');
+
+            // Logic for uploading MoU
+          }),
         ],
       ),
     );
   }
 
+
   Widget _buildEditNGO() {
     return Container(
-      height: 60, // Adjusted height for vertical layout
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      height: 100, // Increase height for the vertical layout
       width: 160,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
+
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        // Align button to the left
+        // Align buttons to the left
         children: [
-          GestureDetector(
-            onTap: () {
-              print('View pressed');
-            },
-            child: Text(
-              'Edit',
-              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-            ),
-          ),
+          SizedBox(height: 5),
+          // _buildButton('View', () async {
+          _buildButtonNew("'Edit',", Icons.visibility, () async {
+
+            print('View pressed');
+
+
+
+          }),
+
         ],
       ),
     );
   }
+
+
 
   void _showDialogTableFormViewClickData({
     String darpanNo,
