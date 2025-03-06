@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DpmApprovalStatus/_HospitalsListScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Documentlist.dart';
 import '../../model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
 import 'dart:io';
@@ -126,12 +127,12 @@ class _NGODetailsScreenState extends State<NGODetailsScreen> {
         child: ElevatedButton(
           onPressed: () {
             // Navigate to the next screen
-         /*   Navigator.push(
+            Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => NextScreen(), // Replace with your next screen
+                builder: (context) => HospitalsListScreen(), // Replace with your next screen
               ),
-            );*/
+            );
           },
           child: Text("Next"),
           style: ElevatedButton.styleFrom(

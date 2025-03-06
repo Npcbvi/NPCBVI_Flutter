@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/HospitallinkedwithNGO.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/DistrictWiseCamps.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/StateWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickDpm/DistrictWiseDpm.dart';
@@ -8330,9 +8331,9 @@ class ApiController {
     }
   }
 
-  static Future<List<DataGet_DPM_NGOApplicationDetails>> get_DPM_NGOApplicationDetails(String  npcbNo) async {
-    print("@@get_DPM_NGOApplicationDetails" + "1");
-    Response response1;
+
+  static Future<List<DataHospitallinkedwithNGO>> getHospitalsLinkedWithNGO(String npcbNo) async {
+    print("@@getHospitalsLinkedWithNGO - Start");
 
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (!isNetworkAvailable) {
@@ -8341,21 +8342,19 @@ class ApiController {
     }
 
     try {
-      // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_NGOApplicationDetails;
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_HospitalLinkedWithNGO;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
         "apipassword": "PWD123",
       };
 
-      // Define the request body
       var body = json.encode({
         "npcbNo": npcbNo,
-
       });
-      print("@@get_DPM_NGOApplicationDetails--bodyprint--: ${url + body.toString()}");
-      // Create Dio instance and make the request
+
+      print("@@getHospitalsLinkedWithNGO - Request: ${url + body}");
+
       Dio dio = Dio();
       Response response = await dio.post(
         url,
@@ -8367,26 +8366,23 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_NGOApplicationDetails--Api Response: ${response.toString()}");
+      print("@@getHospitalsLinkedWithNGO - API Response: ${response.toString()}");
 
-      // Parse the response
       var responseData = json.decode(response.data);
-      Get_DPM_NGOApplicationDetails data = Get_DPM_NGOApplicationDetails.fromJson(responseData);
+      HospitallinkedwithNGO data = HospitallinkedwithNGO.fromJson(responseData);
 
       if (data.status) {
-        //Utils.showToast(data.message, true);
-        // Return the list of data
         return data.data;
       } else {
-        //Utils.showToast(data.message, true);
+        Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-      //  Utils.showToast(e.toString(), true);
+      print("@@getHospitalsLinkedWithNGO - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
       return [];
     }
   }
-
 
 
 
