@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/DistrictWiseCamps.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/StateWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickDpm/DistrictWiseDpm.dart';
@@ -8328,6 +8329,66 @@ class ApiController {
       return [];
     }
   }
+
+  static Future<List<DataGet_DPM_NGOApplicationDetails>> get_DPM_NGOApplicationDetails(String  npcbNo) async {
+    print("@@get_DPM_NGOApplicationDetails" + "1");
+    Response response1;
+
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_NGOApplicationDetails;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "npcbNo": npcbNo,
+
+      });
+      print("@@get_DPM_NGOApplicationDetails--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_NGOApplicationDetails--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      Get_DPM_NGOApplicationDetails data = Get_DPM_NGOApplicationDetails.fromJson(responseData);
+
+      if (data.status) {
+        //Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        //Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //  Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+
 
 
 }

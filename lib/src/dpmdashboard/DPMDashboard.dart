@@ -1,12 +1,16 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMEyeSchoolScreens.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMPatientPatientDisceaseInnerDataDisplay.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMReportScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DpmApprovalStatus/NGODetailsScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrganValuebiggerFive.dart';
@@ -46,12 +50,16 @@ import '../model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pe
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
+import '../model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
+
 class DPMDashboard extends StatefulWidget {
   @override
   _DPMDashboard createState() => _DPMDashboard();
 }
 
 class _DPMDashboard extends State<DPMDashboard> {
+  String npcbNo;
+
   Future<List<DataDPMGovtPrivateOrganisationTypeData>>
       futureDataGovtpvtOthers; // To prevent multiple API calls
 
@@ -269,6 +277,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           role_id = user.roleId;
           state_code_login = user.state_code;
           district_code_login = user.district_code;
+         // getnpcbNo();
           print('@@2' + user.name);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
@@ -2770,6 +2779,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         (ddata.indexOf(offer) + 1).toString()),
                                     _buildDataCell(offer.darpanNo),
                                     _buildDataCellViewBlue("View", () {
+                                      getnpcbNo();
                                       _showDetailDialogNGOlistApprove(
                                           context, offer);
                                     }),
@@ -2814,6 +2824,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 1: FlexColumnWidth(), // Value column width
               },
               children: [
+                _buildTableRow('NPCB No:', offer.npcbNo),
                 _buildTableRow('Darpan No:', offer.darpanNo),
                 _buildTableRow('Ngo Name:', offer.name),
                 _buildTableRow('Member Name:', offer.memberName),
@@ -2836,7 +2847,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       padding: EdgeInsets.symmetric(vertical: 8.0),
                       alignment: Alignment.centerLeft,
                       child: _buildNGOAPPlicationViewDetailsAttachments(
-                          offer.darpanNo),
+                          offer.npcbNo,offer.darpanNo),
                     ),
                   ],
                 ),
@@ -18401,7 +18412,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
-  Widget _buildNGOAPPlicationViewDetailsAttachments(String hospitalId) {
+  Widget _buildNGOAPPlicationViewDetailsAttachments(String npcbNumber,String darpanNumber ) {
     return Container(
       margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: Column(
@@ -18412,13 +18423,14 @@ class _DPMDashboard extends State<DPMDashboard> {
             print('@@Click of NGO APllication View pressed');
 // Ngo Dashboard main line number 4991
 
-
+            _onViewDetailButtonPressed(context,npcbNumber,darpanNumber); // Call function on button click
           }),
 
         ],
       ),
     );
   }
+
   Widget _buildButton(String text, IconData icon, VoidCallback onTap) {
     return Material(
       color: Colors.white, // Background color
@@ -18453,9 +18465,87 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+  void _onViewDetailButtonPressed(BuildContext context,String npcbNumber,String darpanNumber) async {
+    List<DataGet_DPM_NGOApplicationDetails> ngoDetails = await fetchAndShowNgoDetails(context,npcbNumber,darpanNumber);
+
+    if (ngoDetails.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NGODetailsScreen(data: ngoDetails.first),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("No data found")),
+      );
+    }
+  }
+  Future<List<DataGet_DPM_NGOApplicationDetails>> fetchAndShowNgoDetails(BuildContext context,String npcbNumber,String darpanNumber) async {
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_NGOApplicationDetails;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "npcbNo": npcbNumber,
+      });
+
+      print("@@get_DPM_NGOApplicationDetails--bodyprint--: ${url + body.toString()}");
+
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.json, // Ensure response is JSON
+        ),
+      );
+
+      print("@@get_DPM_NGOApplicationDetails--Api Response: ${response.data}");
+
+      if (response.statusCode == 200) {
+        // Decode response data if necessary
+        var jsonData = response.data is String ? jsonDecode(response.data) : response.data;
+
+        final Get_DPM_NGOApplicationDetails ngoResponse = Get_DPM_NGOApplicationDetails.fromJson(jsonData);
+
+        if (ngoResponse.status == true && ngoResponse.data != null) {
+          return ngoResponse.data;
+        } else {
+          print("No data found");
+
+          return [];
+        }
+      } else {
+        print("Error: ${response.statusMessage}");
+        return [];
+      }
+    } catch (e) {
+      print("Error fetching data: $e");
+      return [];
+    }
+  }
 
 
+  Future<void> getnpcbNo() async {
+    // Use await to get the actual value from SharedPrefs
+    npcbNo =
+    await SharedPrefs.getStoreSharedValue(AppConstant.npcbNo) as String;
 
+    if (npcbNo != null) {
+      print("npcbNo Number: $npcbNo");
+    } else {
+      print("No Darpan Number found in shared preferences.");
+    }
+  }
 }
 
 class DPMDashboardParamsData {

@@ -5108,7 +5108,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           _buildSeparator(),
           _buildButton('Upload MoU', () {
             print('@@Upload MoU pressed');
-            _showNgoGetUploadedMouList(
+            _showNgoGetUploadedMouList(context,
                 hospitalId, district_code_login, int.parse(role_id));
 
             // Logic for uploading MoU
@@ -5297,7 +5297,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           _buildButtonNew("Upload Mou", Icons.visibility, () async {
 
             print('@@Upload MoU pressed chnagehere');
-            _showNgoGetUploadedMouList(
+            _showNgoGetUploadedMouList(context,
                 hospitalId, district_code_login, int.parse(role_id));
 
             // Logic for uploading MoU
@@ -6447,7 +6447,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
 
 
-  void _showNgoGetUploadedMouList(
+/*  void _showNgoGetUploadedMouList(
       String hospitalId, int districtId, int userRoleId) {
     showDialog(
       context: context,
@@ -6548,7 +6548,94 @@ class _NgoDashboard extends State<NgoDashboard> {
         );
       },
     );
+  }*/
+
+  // i have chnaged this ciew rest all same
+
+  void _showNgoGetUploadedMouList(BuildContext context, String hospitalId, int districtId,int userRoleId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+        return AlertDialog(
+          title: Text(
+            'Uploaded MOU',
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+          ),
+          content:   FutureBuilder<List<DataUploadMOUNGO>>(
+            future: ApiController.getUploadedMouList(
+                hospitalId, districtId, userRoleId),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Text("Error: ${snapshot.error}");
+              } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                return Text("No data found", style: TextStyle(color: Colors.red));
+              } else {
+                List<DataUploadMOUNGO>  ddata = snapshot.data;
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Header Row
+                      Row(
+                        children: [
+                          _buildHeaderCellSrNo('S.No.', context),
+                          _buildHeaderCell('Id'),
+                          _buildHeaderCell('From Date'),
+                          _buildHeaderCell('To Date'),
+                          _buildHeaderCell('Status'),
+                          _buildHeaderCell('MOU'),
+                          _buildHeaderCell('Action'),
+                        ],
+                      ),
+                      // Data Rows
+                      Column(
+                        children: ddata.map((offer) {
+                          return Row(
+                            children: [
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCell(offer.hRegID),
+                              _buildDataCell(
+                                  Utils.formatDateString(offer.fromDate)),
+                              _buildDataCell(
+                                  Utils.formatDateString(offer.toDate)),
+                              _buildDataCell(offer.name),
+                              _buildDataCell(offer.file),
+                              if (offer.vstatus == '3')
+                                _buildDataCell('Download'),
+                              _buildDataCellViewBlue("RENEW", () async {
+                                print("@@Doctor Details: ");
+
+                                // Show doctor details dialog if data is available
+                              }),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
+                );
+              }
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('Close', style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
   }
+
+
+
 
   Widget _buildDetailRow(String label, String value) {
     return Padding(
