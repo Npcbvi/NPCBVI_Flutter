@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
-import 'package:mohfw_npcbvi/src/dpmdashboard/DpmApprovalStatus/_HospitalsListScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DpmApprovalStatus/HospitalsListScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Documentlist.dart';
 import '../../model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
 import 'dart:io';

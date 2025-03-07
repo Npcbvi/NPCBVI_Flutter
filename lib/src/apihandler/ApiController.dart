@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/EquipemntDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/HospitalDetailsView.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/HospitallinkedwithNGO.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/MouDetails.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/DistrictWiseCamps.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/StateWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickDpm/DistrictWiseDpm.dart';
@@ -8384,7 +8387,167 @@ class ApiController {
     }
   }
 
+  static Future<List<DataHospitalDetailsView>> get_DPM_ViewHospitalDetails(String hospitalId) async {
+    print("@@get_DPM_ViewHospitalDetails - Start");
 
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_ViewHospitalDetails;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "npcbNo": hospitalId,
+      });
+
+      print("@@get_DPM_ViewHospitalDetails - Request: ${url + body}");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_ViewHospitalDetails - API Response: ${response.toString()}");
+
+      var responseData = json.decode(response.data);
+     HospitalDetailsView data = HospitalDetailsView.fromJson(responseData);
+
+      if (data.status) {
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@get_DPM_ViewHospitalDetails - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
+      return [];
+    }
+  }
+
+  static Future<List<DataEquipemntDetails>> get_DPM_ViewHospitalequipmentDetails(String hospitalId) async {
+    print("@@get_DPM_ViewHospitalequipmentDetails - Start");
+
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_ViewHospitalequipmentDetails;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "npcbNo": hospitalId,
+      });
+
+      print("@@get_DPM_ViewHospitalequipmentDetails - Request: ${url + body}");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_ViewHospitalequipmentDetails - API Response: ${response.toString()}");
+
+      var responseData = json.decode(response.data);
+      EquipemntDetails data = EquipemntDetails.fromJson(responseData);
+
+      if (data.status) {
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@get_DPM_ViewHospitalDetails - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
+      return [];
+    }
+  }
+  static Future<List<DataMouDetails>> get_DPM_ViewMOU(String darpan_No,String user_ID) async {
+    print("@@get_DPM_ViewMOU - Start");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String districtCode_loginFetch =
+        prefs.getString(AppConstant.distritcCode) ?? "";
+    String stateCode_loginFetch = prefs.getString(AppConstant.state_code) ?? "";
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_ViewMOU;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "darpan_No": darpan_No,
+        "district_ID": districtCode_loginFetch,
+
+        "user_ID": user_ID,
+
+      });
+
+      print("@@get_DPM_ViewMOU - Request: ${url + body}");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_ViewMOU - API Response: ${response.toString()}");
+
+      var responseData = json.decode(response.data);
+      MouDetails data = MouDetails.fromJson(responseData);
+
+      if (data.status) {
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@get_DPM_ViewHospitalDetails - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
+      return [];
+    }
+  }
 
 
 }

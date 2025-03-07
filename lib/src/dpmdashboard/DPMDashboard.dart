@@ -2779,7 +2779,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         (ddata.indexOf(offer) + 1).toString()),
                                     _buildDataCell(offer.darpanNo),
                                     _buildDataCellViewBlue("View", () {
-                                      getnpcbNo();
+                                      SharedPrefs.storeSharedValues(AppConstant.npcbNo,
+                                          offer.npcbNo.toString());
                                       _showDetailDialogNGOlistApprove(
                                           context, offer);
                                     }),

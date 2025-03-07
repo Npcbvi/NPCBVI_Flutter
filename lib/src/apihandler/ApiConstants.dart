@@ -202,5 +202,9 @@ class ApiConstants {
   static String Get_DPM_NGOApplicationDetails = 'DpmDashboard/api/Get_DPM_NGOApplicationDetails';
 
   static String Get_DPM_HospitalLinkedWithNGO = 'DpmDashboard/api/Get_DPM_HospitalLinkedWithNGO';
+  static String Get_DPM_ViewHospitalDetails = 'DpmDashboard/api/Get_DPM_ViewHospitalDetails';
+
+  static String Get_DPM_ViewHospitalequipmentDetails = 'DpmDashboard/api/Get_DPM_ViewHospitalequipmentDetails';
+  static String Get_DPM_ViewMOU = 'DpmDashboard/api/Get_DPM_ViewMOU';
 
 }

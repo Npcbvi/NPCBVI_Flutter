@@ -59,7 +59,7 @@ dependencies:
   geocoding: ^2.0.4
   permission_handler: ^10.2.0  # Compatible with Dart 2.17.1
   open_file: ^3.2.1  # Compatible with Dart 2.17.1
-
+  url_launcher: ^6.1.5  # Use a version that supports Dart 2.17.1
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
