@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DpmApprovalStatus/GetAllNgoServicesDetailApproveScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
+import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 
 class DoctorLinkedWithHospitalScreen extends StatefulWidget {
@@ -69,23 +71,46 @@ class _DoctorLinkedWithHospitalScreenState extends State<DoctorLinkedWithHospita
                   return Column(
                     children: [
                       _buildTableRow("S.No", doctor.srNo.toString()),
-                      _buildTableRow("Doctor ID", doctor.mcIID),
+                      _buildTableRow("MCI ID", doctor.mcIID),
+                      _buildTableRow("Hospital Name", doctor.hName),
                       _buildTableRow("Doctor Name", doctor.dName),
                       _buildTableRow("Mobile No.", doctor.mobile.toString()),
                       _buildTableRow("Email ID", doctor.emailId),
-                      SizedBox(height: 10),
+                      _buildTableRow("State", doctor.stateName),
+                      _buildTableRow("District", doctor.districtName),
+                      _buildTableRow("DOB", Utils.formatDateString(doctor.dob)),
+                      _buildTableRow("Gender", doctor.gender == 1 ? "Male" : "Female"),
+                      _buildTableRow("PinCode", doctor.pincode),
+                      SizedBox(height: 5),
 
                       // Action Button
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            print("View details of: ${doctor.dName}");
-                          },
-                          child: Text("View"),
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween, // Ensures buttons are at opposite ends
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context); // Navigates back to the previous screen
+                            },
+                            child: Text("Previous"),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => GetAllNgoServicesDetailApproveScreen(
+
+
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text("Next"),
+                          ),
+                        ],
                       ),
-                      Divider(), // Add separator
+                      Divider(color: Colors.grey, thickness: 1), // Grey divider
+
                     ],
                   );
                 },

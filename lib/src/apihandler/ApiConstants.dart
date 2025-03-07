@@ -209,4 +209,6 @@ class ApiConstants {
 
   static String Get_DPM_DoctorLinkedWithHospital = 'DpmDashboard/api/Get_DPM_DoctorLinkedWithHospital';
 
+  static String Get_DPM_Ngo_Application_Approve_Reject_Hold = 'DpmDashboard/api/Get_DPM_Ngo_Application_Approve_Reject_Hold';
+
 }
