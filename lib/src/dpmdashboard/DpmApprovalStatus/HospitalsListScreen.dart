@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DpmApprovalStatus/DoctorLinkedWithHospitalScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/HospitalDetailsView.dart';
 import 'dart:convert';
 
@@ -370,6 +371,34 @@ class _HospitalDetailScreenState extends State<HospitalDetailScreen> {
             _buildEquipmentList(),
             SizedBox(height: 20),
             _buildMouList(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Ensures buttons are at opposite ends
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context); // Navigates back to the previous screen
+                  },
+                  child: Text("Previous"),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DoctorLinkedWithHospitalScreen(
+                          hName: hospital?.hName ?? "Unknown Hospital", // Pass hospital name
+                          hRegID: hospital?.hRegID ?? "Unknown Hospital", // Pass hospital name
+
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text("Next"),
+                ),
+              ],
+            )
+
+
           ],
         ),
       ),

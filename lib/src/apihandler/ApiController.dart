@@ -124,6 +124,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
+import '../model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
 import '../model/mainDashbaordMorClick/moreClickCamp/BothWiseCamp.dart';
 import '../model/mainDashbaordMorClick/moreclickprivatepractiories/DistrictwisePrivatePractionries.dart';
 import '../model/mainDashbaordMorClick/morehospitalclick/GetStateWiseHospitalsForDashboard.dart';
@@ -8549,6 +8550,62 @@ class ApiController {
     }
   }
 
+  static Future<List<DataDoctorlinkHospitals>> get_DPM_DoctorLinkedWithHospital(String npcbNo) async {
+    print("@@get_DPM_DoctorLinkedWithHospital - Start");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String districtCode_loginFetch =
+        prefs.getString(AppConstant.distritcCode) ?? "";
+    String stateCode_loginFetch = prefs.getString(AppConstant.state_code) ?? "";
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_DoctorLinkedWithHospital;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "npcbNo": npcbNo,
+
+
+      });
+
+      print("@@get_DPM_DoctorLinkedWithHospital - Request: ${url + body}");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_DoctorLinkedWithHospital - API Response: ${response.toString()}");
+
+      var responseData = json.decode(response.data);
+      DoctorlinkHospitals data = DoctorlinkHospitals.fromJson(responseData);
+
+      if (data.status) {
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@get_DPM_ViewHospitalDetails - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
+      return [];
+    }
+  }
 
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

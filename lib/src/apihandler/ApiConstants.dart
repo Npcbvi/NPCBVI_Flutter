@@ -207,4 +207,6 @@ class ApiConstants {
   static String Get_DPM_ViewHospitalequipmentDetails = 'DpmDashboard/api/Get_DPM_ViewHospitalequipmentDetails';
   static String Get_DPM_ViewMOU = 'DpmDashboard/api/Get_DPM_ViewMOU';
 
+  static String Get_DPM_DoctorLinkedWithHospital = 'DpmDashboard/api/Get_DPM_DoctorLinkedWithHospital';
+
 }
