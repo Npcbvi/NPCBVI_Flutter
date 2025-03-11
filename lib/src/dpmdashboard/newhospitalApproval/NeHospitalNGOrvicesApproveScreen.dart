@@ -269,7 +269,6 @@ class _NeHospitalNGOrvicesApproveScreen extends State<NeHospitalNGOrvicesApprove
       applicationStatus = (selectedAction == "Hold") ? 2 : 3;
       darpan_nos = widget.redId;
     }
-
     try {
       await ApiController.get_DPM_Hospital_Application_Approve_Reject_Hold(
         applicationStatus,
