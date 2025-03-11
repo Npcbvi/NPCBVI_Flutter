@@ -200,15 +200,18 @@ class ApiConstants {
 
   static String Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List = 'DpmDashboard/api/Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List';
   static String Get_DPM_NGOApplicationDetails = 'DpmDashboard/api/Get_DPM_NGOApplicationDetails';
-
   static String Get_DPM_HospitalLinkedWithNGO = 'DpmDashboard/api/Get_DPM_HospitalLinkedWithNGO';
   static String Get_DPM_ViewHospitalDetails = 'DpmDashboard/api/Get_DPM_ViewHospitalDetails';
-
   static String Get_DPM_ViewHospitalequipmentDetails = 'DpmDashboard/api/Get_DPM_ViewHospitalequipmentDetails';
   static String Get_DPM_ViewMOU = 'DpmDashboard/api/Get_DPM_ViewMOU';
-
   static String Get_DPM_DoctorLinkedWithHospital = 'DpmDashboard/api/Get_DPM_DoctorLinkedWithHospital';
-
   static String Get_DPM_Ngo_Application_Approve_Reject_Hold = 'DpmDashboard/api/Get_DPM_Ngo_Application_Approve_Reject_Hold';
+
+
+  static String Get_NewHospitalNgoDetails = 'DpmDashboard/api/Get_NewHospitalNgoDetails';
+
+  static String get_DPM_ViewNewHospitalDetails = 'DpmDashboard/api/get_DPM_ViewNewHospitalDetails';
+
+  static String Get_DPM_Hospital_Application_Approve_Reject_Hold = 'DpmDashboard/api/Get_DPM_Hospital_Application_Approve_Reject_Hold';
 
 }

@@ -42,6 +42,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionVRSurg
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_Glaucoma.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_cataract.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisonregister_diabitic.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/newhospital/NewHospitalNGoAppliDetails.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -51,6 +52,7 @@ import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
 import '../model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
+import 'newhospitalApproval/NewHospitalNGOAPPlicationDeatils.dart';
 
 class DPMDashboard extends StatefulWidget {
   @override
@@ -2780,7 +2782,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     _buildDataCell(offer.darpanNo),
                                     _buildDataCellViewBlue("View", () {
                                       SharedPrefs.storeSharedValues(AppConstant.npcbNo,
-                                          offer.npcbNo.toString());
+                                          offer.npcbNo.toString());// here we are saving NPcbNo and rotate in Api
                                       _showDetailDialogNGOlistApprove(
                                           context, offer);
                                     }),
@@ -2958,6 +2960,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.darpanNo),
                                   _buildDataCellViewBlue("View", () {
+                                    SharedPrefs.storeSharedValues(AppConstant.npcbNo,
+                                        offer.npcbNo.toString()); // here we are saving NPcbNo and rotate in Api
                                     _showDetailDialogHospitalDataApprove(
                                         context, offer);
                                   }),
@@ -2988,6 +2992,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             'Hospital list for Approval',
             style: TextStyle(
               fontWeight: FontWeight.bold,
+
               color: Colors.blue,
             ),
           ),
@@ -3001,9 +3006,33 @@ class _DPMDashboard extends State<DPMDashboard> {
               },
               children: [
                 _buildTableRow('Darpan No:', offer.darpanNo),
-                _buildTableRow('Name:', offer.name),
+                _buildTableRow('Ngo Name:', offer.name),
                 _buildTableRow('Hospital ID:', offer.hRegID),
                 _buildTableRow('Hospital Name:', offer.hName),
+                TableRow(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Actions',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ), // Placeholder for the "key"
+                    ),
+                    // Apply a SingleChildScrollView with horizontal scroll direction
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      alignment: Alignment.centerLeft,
+                      child: _buildNewHospitalsAttachments(
+                          offer.npcbNo,offer.darpanNo),
+
+                    ),
+                  ],
+                ),
+
                 // Add more fields as needed
               ],
             ),
@@ -18413,6 +18442,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
+
   Widget _buildNGOAPPlicationViewDetailsAttachments(String npcbNumber,String darpanNumber ) {
     return Container(
       margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -18431,6 +18461,24 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+  Widget _buildNewHospitalsAttachments(String npcbNumber,String darpanNumber ) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: Column(
+        children: [
+
+          SizedBox(height: 5),
+          _buildButton("View Detail", Icons.visibility, () {
+            print('@@Click of New Hsopital pressed');
+// Ngo Dashboard main line number 4991
+            _onViewNewHsopitalButtonPressed(context,npcbNumber,darpanNumber); // Call function on button click
+          }),
+
+        ],
+      ),
+    );
+  }
+
 
   Widget _buildButton(String text, IconData icon, VoidCallback onTap) {
     return Material(
@@ -18517,6 +18565,75 @@ class _DPMDashboard extends State<DPMDashboard> {
         var jsonData = response.data is String ? jsonDecode(response.data) : response.data;
 
         final Get_DPM_NGOApplicationDetails ngoResponse = Get_DPM_NGOApplicationDetails.fromJson(jsonData);
+
+        if (ngoResponse.status == true && ngoResponse.data != null) {
+          return ngoResponse.data;
+        } else {
+          print("No data found");
+
+          return [];
+        }
+      } else {
+        print("Error: ${response.statusMessage}");
+        return [];
+      }
+    } catch (e) {
+      print("Error fetching data: $e");
+      return [];
+    }
+  }
+
+  void _onViewNewHsopitalButtonPressed(BuildContext context,String npcbNumber,String darpanNumber) async {
+    List<DataNewHospitalNGoAppliDetails> ngoDetails = await fetchAndShowNewHospitalNGOApplictionDetails(context,npcbNumber,darpanNumber);
+
+    if (ngoDetails.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => NewHospitalNGOAPPlicationDeatils(data: ngoDetails.first),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("No data found")),
+      );
+    }
+  }
+  Future<List<DataNewHospitalNGoAppliDetails>> fetchAndShowNewHospitalNGOApplictionDetails(BuildContext context,String npcbNumber,String darpanNumber) async {
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_NewHospitalNgoDetails;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "npcbNo": npcbNumber,
+      });
+
+      print("@@fetchAndShowNewHospitalNGOApplictionDetails--bodyprint--: ${url + body.toString()}");
+
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.json, // Ensure response is JSON
+        ),
+      );
+
+      print("@@fetchAndShowNewHospitalNGOApplictionDetails--Api Response: ${response.data}");
+
+      if (response.statusCode == 200) {
+        // Decode response data if necessary
+        var jsonData = response.data is String ? jsonDecode(response.data) : response.data;
+
+        final NewHospitalNGoAppliDetails ngoResponse = NewHospitalNGoAppliDetails.fromJson(jsonData);
 
         if (ngoResponse.status == true && ngoResponse.data != null) {
           return ngoResponse.data;

@@ -7,6 +7,7 @@ import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Hospit
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/HospitallinkedwithNGO.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/MouDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/NGoAPPlicationApprovedFinalScreen.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/newhospital/hospitaldetailsview.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/DistrictWiseCamps.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/StateWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickDpm/DistrictWiseDpm.dart';
@@ -8642,6 +8643,126 @@ class ApiController {
       "userid": userid,
       "ngonumber": darpan,
       "npcbnumber": npcbnumber,
+      });
+
+      print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - Request: ${url + body}");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - API Response: ${response.toString()}");
+
+      var responseData = json.decode(response.data);
+      NGoAPPlicationApprovedFinalScreen data = NGoAPPlicationApprovedFinalScreen.fromJson(responseData);
+
+      if (data.status) {
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@get_DPM_ViewHospitalDetails - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
+      return [];
+    }
+  }
+  static Future<List<NewDatahospitaldetailsview>> get_DPM_ViewNewHospitalDetailss(String hospitalId) async {
+    print("@@get_DPM_ViewNewHospitalDetails - Start");
+
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_ViewHospitalDetails;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "npcbNo": hospitalId,
+      });
+
+      print("@@get_DPM_ViewNewHospitalDetails - Request: ${url + body}");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_ViewHospitalDetails - API Response: ${response.toString()}");
+
+      var responseData = json.decode(response.data);
+      hospitaldetailsview data = hospitaldetailsview.fromJson(responseData);
+
+      if (data.status) {
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@get_DPM_ViewHospitalDetails - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
+      return [];
+    }
+  }
+
+
+  static Future<List<DataNGoAPPlicationApprovedFinalScreen>> get_DPM_Hospital_Application_Approve_Reject_Hold(int application_Status,
+      String reason_Hold_Reject,int stateid,int districtid,String userid,String darpan,String npcbnumber) async {
+    print("@@get_DPM_Hospital_Application_Approve_Reject_Hold - Start");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String districtCode_loginFetch =
+        prefs.getString(AppConstant.distritcCode) ?? "";
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_Hospital_Application_Approve_Reject_Hold;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        /* "application_Status": 1,
+        "reason_Hold_Reject": "",
+        "stateid": 100,
+        "districtid": 1001,
+        "userid": "TTTest11001",
+        "ngonumber": "up_20184013",
+        "npcbnumber": "01840131001"*/
+        "application_Status": application_Status,
+        "reason_Hold_Reject": reason_Hold_Reject,
+        "stateid": stateid,
+        "districtid": districtid,
+        "userid": userid,
+        "ngonumber": darpan,
+        "npcbnumber": npcbnumber,
       });
 
       print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - Request: ${url + body}");
