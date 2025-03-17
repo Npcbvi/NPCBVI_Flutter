@@ -52,6 +52,7 @@ import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
 import '../model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
+import 'govtPrivateApproval/GovtPrivateDetailEqipment.dart';
 import 'newhospitalApproval/NewHospitalNGOAPPlicationDeatils.dart';
 
 class DPMDashboard extends StatefulWidget {
@@ -3168,7 +3169,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                   onChanged: (String newValue) {
                     setState(() {
-                      oganisationTypeGovtPrivateDRopDown = newValue;
+                    oganisationTypeGovtPrivateDRopDown = newValue;
                       updateDropDownSelection();
                     });
                   },
@@ -3261,11 +3262,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   margin: const EdgeInsets.symmetric(
                                       vertical: 8, horizontal: 16),
                                   child: ListTile(
-                                    leading: CircleAvatar(
-                                      backgroundColor: Colors.blueAccent,
-                                      child: Text('${index + 1}'),
-                                      foregroundColor: Colors.white,
-                                    ),
+                                    leading: Text('${index + 1}'),
                                     title: Text(offer.npcbNo ?? 'N/A'),
                                     trailing: TextButton(
                                       onPressed: () {
@@ -3333,6 +3330,24 @@ class _DPMDashboard extends State<DPMDashboard> {
           actions: [
             TextButton(
               onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => GovtPrivateDetailEqipment(
+                      hospitalID:offer.npcbNo,
+                      selectedOrganisation: oganisationTypeGovtPrivateDRopDown,
+                        selectedOrganisationType:dropDownvalueOrgnbaistaionType,
+                    ),
+                  ),
+                );
+              },
+              child: Text(
+                'Next',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
                 Navigator.of(context).pop();
               },
               child: Text(
@@ -3347,8 +3362,9 @@ class _DPMDashboard extends State<DPMDashboard> {
   }
 
   void updateDropDownSelection() {
+
     if (oganisationTypeGovtPrivateDRopDown ==
-        "Govt. District Hospital/Govt.MEdical College") {
+        "Govt. District Hospital/Govt. Medical College") {
       dropDownvalueOrgnbaistaionType = 10;
     } else if (oganisationTypeGovtPrivateDRopDown ==
         "CHC/Govt. Sub-Dist. Hospital") {

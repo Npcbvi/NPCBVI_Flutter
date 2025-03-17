@@ -50,160 +50,7 @@ class _MainDashboard extends State<MainDashboard> {
 
   bool isTapped = false;
 
-  void _animateImageNGOs() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionNGOs = isTapped ? -25 : -10; // Move image up when tapped
-    });
 
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionNGOs = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImageGovt() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionGovt = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionGovt = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImageMedicalCollege() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionMedicalCollege = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionMedicalCollege = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImagePrivatePractionries() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionPrivatePractionries = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionPrivatePractionries = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImagePatient() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionPatient = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionPatient = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImageSatelliteCenters() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionSatelliteCenter = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionSatelliteCenter = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImageScreeningCamps() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionScreeningCamps = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionScreeningCamps = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImageDpms() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionDpms = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionDpms = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImageSpos() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionSpos = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionSpos = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImageEyeBank() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionEyeBank = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionEyeBank = -10; // Move image back to original position
-      });
-    });
-  }
-  void _animateImagDonationCenters() {
-    setState(() {
-      isTapped = !isTapped;
-      imageTopPositionDonationCenters = isTapped ? -25 : -10; // Move image up when tapped
-    });
-
-    // Reset animation after a short delay
-    Future.delayed(Duration(milliseconds: 500), () {
-      setState(() {
-        isTapped = false;
-        imageTopPositionDonationCenters = -10; // Move image back to original position
-      });
-    });
-  }
 
   @override
   void initState() {
@@ -221,11 +68,11 @@ class _MainDashboard extends State<MainDashboard> {
     Utils.showProgressDialog1(context);
     int maxRetries = 3;
     int attempt = 0;
+    bool success = false;
 
     while (attempt < maxRetries) {
       try {
         final value = await ApiController.getDashbaord();
-        Utils.hideProgressDialog1(context);
 
         if (value.status) {
           setState(() {
@@ -242,7 +89,8 @@ class _MainDashboard extends State<MainDashboard> {
             spo = value.data.spo ?? 'null';
             isLoadingApi = false;
           });
-          return; // Exit loop if successful
+          success = true;
+          break; // Exit loop if successful
         } else {
           Utils.showToast(value.message, true);
         }
@@ -254,11 +102,12 @@ class _MainDashboard extends State<MainDashboard> {
       }
     }
 
-    Utils.hideProgressDialog1(context);
+    Utils.hideProgressDialog1(context); // Ensure this is always called
     setState(() {
       isLoadingApi = false;
     });
   }
+
 
 
   @override

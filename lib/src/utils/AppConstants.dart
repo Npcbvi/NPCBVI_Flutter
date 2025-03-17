@@ -44,4 +44,7 @@ class AppConstant {
 
   static final String moreclickDpmtsateCode = "moreclickDpmtsateCode";
   static final String moreclickdistrictCodeDpm= "moreclickdistrictCodeDpm";
+
+  static final String SaveOrganisationNameandValue = "SaveOrganisationNameandValue";
+
 }

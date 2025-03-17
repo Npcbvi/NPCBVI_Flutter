@@ -7,6 +7,7 @@ import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Hospit
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/HospitallinkedwithNGO.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/MouDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/NGoAPPlicationApprovedFinalScreen.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/govtPrivatehospitalApproval/GovtPrivateDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/newhospital/hospitaldetailsview.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/DistrictWiseCamps.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/StateWiseCamp.dart';
@@ -8791,6 +8792,62 @@ class ApiController {
       }
     } catch (e) {
       print("@@get_DPM_ViewHospitalDetails - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
+      return [];
+    }
+  }
+  static Future<List<DataGovtPrivateDetails>> get_DPM_Government_District_Hospital_list_Approval
+      (int district_code,int state_code,String npcbno,String financialYear,int organisationType) async {
+    print("@@get_DPM_Government_District_Hospital_list_Approval - Start");
+
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_Government_District_Hospital_list_Approval;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+          "district_code": district_code,
+          "state_code": state_code,
+          "npcbno": npcbno,
+          "financialYear":financialYear,
+          "organisationType": organisationType
+      });
+
+      print("@@get_DPM_Government_District_Hospital_list_Approval - Request: ${url + body}");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_Government_District_Hospital_list_Approval - API Response: ${response.toString()}");
+
+      var responseData = json.decode(response.data);
+      GovtPrivateDetails data = GovtPrivateDetails.fromJson(responseData);
+
+      if (data.status) {
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@getHospitalsLinkedWithNGO - Error: $e");
       Utils.showToast("Failed to fetch data", true);
       return [];
     }
