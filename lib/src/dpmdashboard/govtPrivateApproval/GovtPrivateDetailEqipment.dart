@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../model/dpm_approval_status/NgoAppliations/EquipemntDetails.dart';
 import '../../model/dpm_approval_status/NgoAppliations/MouDetails.dart';
 import '../../model/dpm_approval_status/govtPrivatehospitalApproval/GovtPrivateDetails.dart';
+import 'DoctorLinkedWithGovtPrivate.dart';
 
 class GovtPrivateDetailEqipment extends StatefulWidget {
   final String selectedOrganisation;
@@ -200,9 +201,18 @@ class _GovtPrivateDetailEqipment extends State<GovtPrivateDetailEqipment> {
                     alignment: Alignment.centerRight,
                     child: ElevatedButton(
                       onPressed: () {
-                        // Navigate to details page if needed
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DoctorLinkedWithGovtPrivate(
+                              hName: hospital?.oName ?? "Unknown Hospital", // Pass hospital name
+                              hRegID: hospital?.npcbNo ?? "Unknown Hospital", // Pass hospital name
+                              selectedOrganisationTypesValue: widget.selectedOrganisationType,
+                            ),
+                          ),
+                        );
                       },
-                      child: Text("View Details"),
+                      child: Text("Next"),
                     ),
                   ),
                 ],

@@ -7,6 +7,7 @@ import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Hospit
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/HospitallinkedwithNGO.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/MouDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/NGoAPPlicationApprovedFinalScreen.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/govtPrivatehospitalApproval/DoctorlinkwithGovtPrivate.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/govtPrivatehospitalApproval/GovtPrivateDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/newhospital/hospitaldetailsview.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/DistrictWiseCamps.dart';
@@ -8848,6 +8849,61 @@ class ApiController {
       }
     } catch (e) {
       print("@@getHospitalsLinkedWithNGO - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
+      return [];
+    }
+  }
+  static Future<List<DataDoctorlinkwithGovtPrivate>> getDPM_DoctorList(int districtCode,int StateCode,int roleId,String npcbNo) async {
+    print("@@getDPM_DoctorList - Start");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.getString(AppConstant.distritcCode) ?? "";
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_DoctorList;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "district_code": 1001,
+        "state_code": 100,
+        "roleId": 10,
+        "npcbNo":npcbNo,
+      });
+
+      print("@@getDPM_DoctorList - Request: ${url + body}");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_DoctorList - API Response: ${response.toString()}");
+
+      var responseData = json.decode(response.data);
+    DoctorlinkwithGovtPrivate data = DoctorlinkwithGovtPrivate.fromJson(responseData);
+
+      if (data.status) {
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@get_DPM_ViewHospitalDetails - Error: $e");
       Utils.showToast("Failed to fetch data", true);
       return [];
     }

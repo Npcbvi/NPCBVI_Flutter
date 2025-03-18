@@ -216,4 +216,6 @@ class ApiConstants {
 
   static String Get_DPM_Government_District_Hospital_list_Approval = 'DpmDashboard/api/Get_DPM_Government_District_Hospital_list_Approval';
 
+  static String GetDPM_DoctorList = 'DpmDashboard/api/GetDPM_DoctorList';
+
 }
