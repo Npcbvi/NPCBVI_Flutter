@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DpmApprovalStatus/GetAllNgoServicesDetailApproveScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/govtPrivateApproval/GovtPrivatelNGOrvicesApproveScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/govtPrivatehospitalApproval/DoctorlinkwithGovtPrivate.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -122,7 +123,8 @@ class _DoctorLinkedWithGovtPrivate extends State<DoctorLinkedWithGovtPrivate> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => GetAllNgoServicesDetailApproveScreen(
+                                  builder: (context) => GovtPrivatelNGOrvicesApproveScreen(
+                                      orgaTypeNAme:widget.hName
 
 
                                   ),

@@ -8,6 +8,7 @@ import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Hospit
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/MouDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/NGoAPPlicationApprovedFinalScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/govtPrivatehospitalApproval/DoctorlinkwithGovtPrivate.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/govtPrivatehospitalApproval/GovtPrivateApprovedFinalScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/govtPrivatehospitalApproval/GovtPrivateDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/newhospital/hospitaldetailsview.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/DistrictWiseCamps.dart';
@@ -8856,7 +8857,7 @@ class ApiController {
   static Future<List<DataDoctorlinkwithGovtPrivate>> getDPM_DoctorList(int districtCode,int StateCode,int roleId,String npcbNo) async {
     print("@@getDPM_DoctorList - Start");
     SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.getString(AppConstant.distritcCode) ?? "";
+    prefs.getString(AppConstant.distritcCode) ?? "";
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (!isNetworkAvailable) {
       Utils.showToast(AppConstant.noInternet, true);
@@ -8894,7 +8895,7 @@ class ApiController {
       print("@@getDPM_DoctorList - API Response: ${response.toString()}");
 
       var responseData = json.decode(response.data);
-    DoctorlinkwithGovtPrivate data = DoctorlinkwithGovtPrivate.fromJson(responseData);
+      DoctorlinkwithGovtPrivate data = DoctorlinkwithGovtPrivate.fromJson(responseData);
 
       if (data.status) {
         return data.data;
@@ -8909,5 +8910,76 @@ class ApiController {
     }
   }
 
+  static Future<List<DataGovtPrivateApprovedFinalScreen>> get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold(int application_Status,
+      String reason_Hold_Reject,int stateid,int districtid,String userid,String ngonumber,String npcbnumber,String orgType) async {
+    print("@@get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold - Start");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String districtCode_loginFetch =
+        prefs.getString(AppConstant.distritcCode) ?? "";
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        /* {
+          "application_Status": 1,
+          "reason_Hold_Reject": "string",
+          "stateid": 100,
+          "districtid": 1001,
+          "userid": "TTTEST11001",
+          "ngonumber": "string",
+          "npcbnumber": "GH201910011154",
+          "orgType": "10"
+        }*/
+        "application_Status": application_Status,
+        "reason_Hold_Reject": reason_Hold_Reject,
+        "stateid": stateid,
+        "districtid": districtid,
+        "userid": userid,
+        "ngonumber": "",
+        "npcbnumber": npcbnumber,
+        "orgType":orgType,
+      });
+
+      print("@@get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold - Request: ${url + body}");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold - API Response: ${response.toString()}");
+
+      var responseData = json.decode(response.data);
+      GovtPrivateApprovedFinalScreen data = GovtPrivateApprovedFinalScreen.fromJson(responseData);
+
+      if (data.status) {
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      print("@@get_DPM_ViewHospitalDetails - Error: $e");
+      Utils.showToast("Failed to fetch data", true);
+      return [];
+    }
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

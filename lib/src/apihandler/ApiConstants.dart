@@ -218,4 +218,6 @@ class ApiConstants {
 
   static String GetDPM_DoctorList = 'DpmDashboard/api/GetDPM_DoctorList';
 
+  static String Get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold = 'DpmDashboard/api/Get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold';
+
 }
