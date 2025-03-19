@@ -85,8 +85,10 @@ class _GovtPrivateDetailEqipment extends State<GovtPrivateDetailEqipment> {
       List<DataHospitalDetailsView> response =
       await ApiController.get_DPM_ViewHospitalDetails(widget.hospitalID);
 
+
       if (response.isNotEmpty) {
         hospital = response.first;
+
       }
 
       // Fetch Equipment Details

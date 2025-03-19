@@ -120,11 +120,15 @@ class _DoctorLinkedWithGovtPrivate extends State<DoctorLinkedWithGovtPrivate> {
                           ),
                           ElevatedButton(
                             onPressed: () {
+                              SharedPrefs.storeSharedValues(AppConstant.npcbNo,
+                                  doctor.npcbNo.toString());// here we are saving NPcbNo and
                               Navigator.push(
+
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => GovtPrivatelNGOrvicesApproveScreen(
-                                      orgaTypeNAme:widget.hName
+                                      orgaTypeNAme:widget.hName,
+                                      organisationTypeValue:widget.selectedOrganisationTypesValue,
 
 
                                   ),

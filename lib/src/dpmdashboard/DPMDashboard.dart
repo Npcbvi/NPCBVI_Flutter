@@ -3319,7 +3319,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 1: FlexColumnWidth(), // Value column width
               },
               children: [
-                _buildTableRow('NPCB No:', offer.npcbNo),
+                _buildTableRow('NPCB No:', offer.npcbNo),// in this case npcb_no used as hospitalID// reference kamal
                 _buildTableRow('Organisation Name:', offer.oName),
                 _buildTableRow('Member Name:', offer.nodalOfficerName),
                 _buildTableRow('Email:', offer.emailId),

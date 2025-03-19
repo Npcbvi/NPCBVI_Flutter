@@ -9,9 +9,10 @@ class GovtPrivatelNGOrvicesApproveScreen extends StatefulWidget {
   final String redId;
   final String darpanNumber;
   final String orgaTypeNAme;
+  final int organisationTypeValue;
 
 
-  const GovtPrivatelNGOrvicesApproveScreen({Key key, this.redId, this.darpanNumber, this. orgaTypeNAme}) : super(key: key);
+  const GovtPrivatelNGOrvicesApproveScreen({Key key, this.redId, this.darpanNumber, this. orgaTypeNAme, this.organisationTypeValue}) : super(key: key);
 
   @override
   _GovtPrivatelNGOrvicesApproveScreen createState() =>
@@ -25,6 +26,8 @@ class _GovtPrivatelNGOrvicesApproveScreen extends State<GovtPrivatelNGOrvicesApp
   String districtNames, userId, stateNames, fullnameController, role_id;
   int status, district_code_login, state_code_login;
   Map<int, String> selectedActions = {};
+  String organisationNAme;
+
   String selectedAction;
   final TextEditingController reasonController = TextEditingController();
 
@@ -48,6 +51,22 @@ class _GovtPrivatelNGOrvicesApproveScreen extends State<GovtPrivatelNGOrvicesApp
         role_id = user.roleId;
         state_code_login = user.state_code;
         district_code_login = user.district_code;
+        if (widget.organisationTypeValue == 10) {
+          organisationNAme = "Govt. District Hospital/Govt. Medical College";
+        } else if (widget.organisationTypeValue == 11) {
+          organisationNAme = "CHC/Govt. Sub-Dist. Hospital"; // Provide a value here
+        }
+        else if (widget.organisationTypeValue == 12) {
+          organisationNAme = "Private Practitioner"; // Provide a value here
+        }
+        else if (widget.organisationTypeValue == 13) {
+          organisationNAme = "Private Medical College"; // Provide a value here
+        }
+        else if (widget.organisationTypeValue == 14) {
+          organisationNAme = "Other(Institution not claiming fund from NPCBVI"; // Provide a value here
+        }else {
+          organisationNAme = "Other"; // Optional: Default value
+        }
        fetchNpcbNo();
       //  getDarpanNo();
       });
@@ -67,6 +86,7 @@ class _GovtPrivatelNGOrvicesApproveScreen extends State<GovtPrivatelNGOrvicesApp
 
   Future<void> fetchNpcbNo() async {
     npcbNo = await SharedPrefs.getStoreSharedValue(AppConstant.npcbNo) as String;
+    print("@@Npcbbumber Stored here"+npcbNo);
     if (npcbNo != null) {
       setState(() {
         _ngoServicesFuture = ApiController.getAllNgoService(npcbNo);
@@ -281,7 +301,7 @@ class _GovtPrivatelNGOrvicesApproveScreen extends State<GovtPrivatelNGOrvicesApp
         userId,
         ngonumber,
         npcbNo,
-          widget.orgaTypeNAme,
+          organisationNAme,
       );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Action submitted successfully!")),
