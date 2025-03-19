@@ -1,5 +1,9 @@
 import 'dart:convert';
-
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:open_file/open_file.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:dio/dio.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +49,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisonregiste
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/newhospital/NewHospitalNGoAppliDetails.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/dpmRegistration/DiseaseData/GetDiseaseData.dart';
 import '../model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pending.dart';
@@ -3424,11 +3429,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                       Flexible(
                         child: Text(
                           'NGO/Private Practitioner/Private Medical College MOU List',
+                          maxLines: 2,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
                           ),
-                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
@@ -3503,6 +3508,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   },
                 ),
               ),
+
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: DropdownButtonFormField2<String>(
@@ -3543,7 +3549,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     );
                   }).toList(),
                   hint: const Text(
-                    "Pending for Renew",
+                    "Select Status type",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14,
@@ -3568,29 +3574,58 @@ class _DPMDashboard extends State<DPMDashboard> {
                   },
                 ),
               ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                     child: ElevatedButton(
-                      child: Text('Submit'),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.blue,
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Adds spacing
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8), // Rounded edges
+                        ),
                       ),
                       onPressed: () {
-                        print('@@ApproveRevenueMOU-- clkick------' +
-                            ngoApproveRevenuMOU +
-                            "---" +
-                            ngodependOrganbisatioSelectValue);
-                        setState(() {
-                          ApproveRenveMOUDataShows = true;
-                        });
+                        if (ngoApproveRevenuMOU == null || ngodependOrganbisatioSelectValue == null) {
+                          // Show an alert if any dropdown is not selected
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("Please select both Organisation Type and Status"),
+                              backgroundColor: Colors.red,
+                            ),
+                          );
+                        } else {
+                          // Proceed with submission if both dropdowns are selected
+                          print('@@ApproveRevenueMOU-- click------' +
+                              ngoApproveRevenuMOU +
+                              "---" +
+                              ngodependOrganbisatioSelectValue);
+
+                          setState(() {
+                            ApproveRenveMOUDataShows = true;
+                          });
+                        }
                       },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min, // Prevents unnecessary stretching
+                        children: [
+                          Icon(Icons.check_circle, color: Colors.white), // ✅ Your Icon
+                          SizedBox(width: 8), // Space between icon and text
+                          Text(
+                            'Submit',
+                            style: TextStyle(fontSize: 16), // Text styling
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
+
+
               Visibility(
                 visible: ApproveRenveMOUDataShows,
                 child: Column(
@@ -3713,14 +3748,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                 _buildTableRows(
                     'To Date:', Utils.formatDateString(offer.toDate)),
                 SizedBox(height: 8),
-                _buildTableRows('Status:', offer.vstatus.toString()),
+                _buildTableRows('Status:', getStatusText(offer.vstatus.toString())),
                 SizedBox(height: 8),
-                _buildDataCellViewBlue(offer.file, () {
-                  // Handle the view/download action here
+                _buildDataCellViewBlueForDownlaod("MOU ",offer.file, () {
+                  if (offer.file != null && offer.file.isNotEmpty) {
+                    downloadFile(offer.file, "downloaded_file.pdf"); // Change file name accordingly
+                  } else {
+                    print("No file URL found");
+                  }
                 }),
               ],
             ),
           ),
+
           actions: [
             TextButton(
               onPressed: () {
@@ -3736,7 +3776,94 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
+  Widget _buildDataCellViewBlueForDownlaod(String label, String fileName, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.4, // Increased width for better text spacing
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black), // Top border
+            bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 0.0), // Left padding for "MOU"
+              child: Text(
+                label, // "MOU"
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.04, // Scales with screen width
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  fileName, // File name or link
+                  style: TextStyle(
+                    fontWeight: FontWeight.normal,
+                    color: Colors.blue,
+                    fontSize: screenWidth * 0.04, // Scales with screen width
+                    decoration: TextDecoration.underline, // Looks clickable
+                  ),
+                ),
+              ),
+            ),
+            Icon(Icons.download, color: Colors.blue), // Download icon
+          ],
+        ),
+      ),
+    );
+  }
 
+  Future<void> downloadFile(String url, String fileName) async {
+    try {
+      // Request storage permission (for Android)
+      if (Platform.isAndroid) {
+        var status = await Permission.storage.request();
+        if (!status.isGranted) {
+          print("Storage permission denied");
+          return;
+        }
+      }
+
+      // Get the device's temporary directory
+      Directory tempDir = await getTemporaryDirectory();
+      String filePath = "${tempDir.path}/$fileName";
+
+      // Download the file using Dio
+      Dio dio = Dio();
+      await dio.download(url, filePath);
+
+      print("File downloaded to: $filePath");
+
+      // Open the file after download
+      OpenFile.open(filePath);
+    } catch (e) {
+      print("Error downloading file: $e");
+    }
+  }
+  String getStatusText(String status) {
+    switch (status.toLowerCase()) {
+      case "3":
+        return "🔴 Expired"; // Customize how "Expired" is displayed
+      case "1":
+        return "🟢 Pending";
+      case "4":
+        return "🟡 Renew(Active)";
+      default:
+        return "⚪ Unknown";
+    }
+  }
   Widget _buildTableRows(String label, String value) {
     return Row(
       children: [
