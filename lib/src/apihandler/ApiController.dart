@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
+import 'package:mohfw_npcbvi/src/model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewClick.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/EquipemntDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/HospitalDetailsView.dart';
@@ -8981,5 +8982,68 @@ class ApiController {
       return [];
     }
   }
+
+
+
+  static Future<ApproveMOURenewClick> get_DPM_MouRenew(
+      int h_Reg_ID, String userid) async {
+    print("@@get_DPM_MouRenew" + "1");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_MouRenew;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "h_Reg_ID": h_Reg_ID,
+        "userid": userid
+      });
+
+      print("@@get_DPM_MouRenew--bodyprint--: ${url + body.toString()}");
+
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@get_DPM_MouRenew--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+
+      // Convert JSON response to ApproveMOURenewClick model
+      ApproveMOURenewClick data = ApproveMOURenewClick.fromJson(responseData);
+
+      if (data.status) {
+        return data; // Return the parsed data object
+      } else {
+        Utils.showToast(data.message, true);
+        return null;
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+      return null;
+    }
+  }
+
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

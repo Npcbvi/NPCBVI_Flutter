@@ -220,4 +220,6 @@ class ApiConstants {
 
   static String Get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold = 'DpmDashboard/api/Get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold';
 
+  static String Get_DPM_MouRenew = 'DpmDashboard/api/Get_DPM_MouRenew';
+
 }

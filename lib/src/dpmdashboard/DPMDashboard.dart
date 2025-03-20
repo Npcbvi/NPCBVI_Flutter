@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/updateUSers/UpdateUserDPMMenu.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -56,6 +57,7 @@ import '../model/dpmRegistration/getDPM_NGOApprovedPending/GetDPM_NGOAPProved_pe
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
+import '../model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewClick.dart';
 import '../model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
 import 'govtPrivateApproval/GovtPrivateDetailEqipment.dart';
 import 'newhospitalApproval/NewHospitalNGOAPPlicationDeatils.dart';
@@ -518,6 +520,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                     Navigator.pop(context);
                   },
                 ),
+                _buildMenuItem(
+                  icon: Icons.update,
+                  title: 'Update User',
+                  onTap: () {
+                    Navigator.pop(context); // Close the current menu first
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UpdateUserDPMMenu(),
+                      ),
+                    );
+                  },
+                ),
+
                 _buildDropdownItem(
                   value: _chosenValue,
                   hint: 'Approve Application',
@@ -3742,29 +3759,53 @@ class _DPMDashboard extends State<DPMDashboard> {
                 SizedBox(height: 8),
                 _buildTableRows('Email ID:', offer.emailId),
                 SizedBox(height: 8),
-                _buildTableRows(
-                    'From Date:', Utils.formatDateString(offer.fromDate)),
+                _buildTableRows('From Date:', Utils.formatDateString(offer.fromDate)),
                 SizedBox(height: 8),
-                _buildTableRows(
-                    'To Date:', Utils.formatDateString(offer.toDate)),
+                _buildTableRows('To Date:', Utils.formatDateString(offer.toDate)),
                 SizedBox(height: 8),
                 _buildTableRows('Status:', getStatusText(offer.vstatus.toString())),
                 SizedBox(height: 8),
-                _buildDataCellViewBlueForDownlaod("MOU ",offer.file, () {
+                _buildDataCellViewBlueForDownlaod("MOU ", offer.file, () {
                   if (offer.file != null && offer.file.isNotEmpty) {
-                    downloadFile(offer.file, "downloaded_file.pdf"); // Change file name accordingly
+                    downloadFile(offer.file, "downloaded_file.pdf");
                   } else {
                     print("No file URL found");
                   }
                 }),
+
+                _buildDataCellViewBlueForButton(
+                  "Action",
+                  ngodependOrganbisatioSelectValuessss == 1 // Only show button for "Pending for Renew"
+                      ? ElevatedButton(
+                    onPressed: () async {
+                      int h_Reg_ID = offer.id;
+                      String userid = userId;
+
+                      // Call API function
+                      ApproveMOURenewClick response =
+                      await ApiController.get_DPM_MouRenew(h_Reg_ID, userid);
+
+                      // Check response and handle accordingly
+                      if (response != null && response.status) {
+                        Utils.showToast("MOU Renewed Successfully", true);
+                        Navigator.of(context).pop(true); // Return `true` to indicate data change
+                      } else {
+                        Utils.showToast("Failed to Renew MOU", true);
+                      }
+                    },
+                    child: Text("Renew"),
+                  )
+                      : SizedBox(), // Hide the button for other statuses
+                      () {},
+                ),
+
               ],
             ),
           ),
-
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(true); // Close dialog and return `true`
               },
               child: Text(
                 'Close',
@@ -3776,6 +3817,8 @@ class _DPMDashboard extends State<DPMDashboard> {
       },
     );
   }
+
+
   Widget _buildDataCellViewBlueForDownlaod(String label, String fileName, VoidCallback onTap) {
     double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
@@ -3819,6 +3862,39 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
             ),
             Icon(Icons.download, color: Colors.blue), // Download icon
+          ],
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellViewBlueForButton(String label, Widget actionWidget, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.4, // Increased width for better text spacing
+
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(left: 0.0), // Left padding for label
+              child: Text(
+                label, // "Action"
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  fontSize: screenWidth * 0.04, // Scales with screen width
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: actionWidget, // This will now hold a button instead of text
+              ),
+            ),
           ],
         ),
       ),
