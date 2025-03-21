@@ -639,7 +639,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                           child: DropdownButtonFormField2<Data>(
                             isExpanded: true,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 4.0),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
@@ -671,11 +671,13 @@ class _RegisterScreen extends State<RegisterScreen> {
 
                             dropdownStyleData: DropdownStyleData(
                               maxHeight: 350,
+                              width: 350,  // Increase width to fit long text
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
                               ),
                             ),
+
                           ),
                         ),
                       ],
@@ -683,6 +685,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   );
                 },
               ),
+
 
 
                 Padding(
@@ -1626,7 +1629,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ),
                     ),
 
-                    Padding(
+                   /* Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -1669,6 +1672,91 @@ class _RegisterScreen extends State<RegisterScreen> {
                             hintText: "Enter Captcha Value",
                             labelText: "Enter Captcha Value"),
                         controller: _captchaControllerGovtPrivateScreen,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),*/
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      margin:EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      child: Row(
+                        // mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Expanded(
+                            flex: 4,
+                            child: SizedBox(
+                              height: 50, // Adjust height as needed
+                              child: TextField(
+                                controller: _captchaControllerGovtPrivateScreen,
+                                decoration: InputDecoration(
+                                  label: RichText(
+                                    text: TextSpan(
+                                      text: 'Enter Captcha Value',
+                                      style: TextStyle(color: Colors.black, fontSize: 16),
+                                      children: [
+                                        TextSpan(
+                                          text: ' *', // Red Asterisk for required field
+                                          style: TextStyle(color: Colors.red, fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    isVerified = false;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+
+
+                          Expanded(
+                            flex: 2,
+                            child: Container(
+                              height: 50,
+                              margin: EdgeInsets.only(left: 5),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(width: 1, color: Colors.grey),
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  randomString,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                              height: 50,
+                              margin: EdgeInsets.only(left: 5),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: IconButton(
+                                onPressed: buildCaptcha,
+                                icon: Icon(Icons.refresh),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(
@@ -3328,89 +3416,94 @@ class _RegisterScreen extends State<RegisterScreen> {
                 child: Column(
                   children: [
 
-                FutureBuilder<List<Data>>(
-                future: _future,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
+                    FutureBuilder<List<Data>>(
+                      future: _future,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
 
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
-                    }
+                        if (!snapshot.hasData) {
+                          return const CircularProgressIndicator();
+                        }
 
-                    List<Data> stateList = snapshot.data;
+                        List<Data> stateList = snapshot.data;
 
-                    if (_selectedUser == null || !stateList.contains(_selectedUser)) {
-                      _selectedUser = stateList.first;
-                    }
+                        // Ensure selected state is in the list, otherwise select the first
+                        if (_selectedUser == null || !stateList.contains(_selectedUser)) {
+                          _selectedUser = stateList.first;
+                        }
 
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 5, 10.0, 0),
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(
-                            width: 300,  // Set desired width
-                            height: 60,   // Set desired height
-                            child: DropdownButtonFormField2<Data>(
-                              isExpanded: true,
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                  borderRadius: BorderRadius.circular(10.0),
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(10, 5, 10.0, 0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 300,  // Set desired width
+                                height: 60,   // Set desired height
+                                child: DropdownButtonFormField2<Data>(
+                                  isExpanded: true,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 4.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.blue[50],
+                                  ),
+                                  hint: Text('Select State'),
+                                  value: _selectedUser,
+                                  onChanged: (user) {
+                                    setState(() {
+                                      _selectedUser = user;
+                                      stateCodeDPM = int.parse(user.stateCode.toString());
+                                      codeDPM = user.code;
+                                      distNameDPM = user.stateName;
+
+                                      if (codeDPM != null) {
+                                        SharedPrefs.storeSharedValue(AppConstant.txtStateDPmValue, stateCodeDPM);
+                                        isVisibleDitrict = true;
+                                        _getDistrictData(stateCodeDPM);
+                                      } else {
+                                        isVisibleDitrict = false;
+                                      }
+                                    });
+                                  },
+                                  items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                                    return DropdownMenuItem<Data>(
+                                      value: user,
+                                      child: Text(user.stateName),
+                                    );
+                                  }).toList(),
+
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 350,
+                                    width: 350,  // Increase width to fit long text
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+
                                 ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.blue[50],
                               ),
-                              hint: Text("Select State"),
-                              value: _selectedUser,
-                              onChanged: (user) {
-                                setState(() {
-                                  _selectedUser = user;
-                                  stateCodeDPM = int.parse(user.stateCode.toString());
-                                  codeDPM = user.code;
-                                  distNameDPM = user.stateName;
-
-                                  if (codeDPM != null) {
-                                    SharedPrefs.storeSharedValue(AppConstant.txtStateDPmValue, stateCodeDPM);
-                                    isVisibleDitrict = true;
-                                    _getDistrictData(stateCodeDPM);
-                                  } else {
-                                    isVisibleDitrict = false;
-                                  }
-                                });
-                              },
-                              items: stateList.map<DropdownMenuItem<Data>>((Data user) {
-                                return DropdownMenuItem<Data>(
-                                  value: user,
-                                  child: Text(user.stateName),
-                                );
-                              }).toList(),
-
-                              dropdownStyleData: DropdownStyleData(
-                                maxHeight: 300,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
+                        );
+                      },
+                    ),
 
 
 
 
-              Visibility(
+
+                    Visibility(
               visible: isVisibleDitrict,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
