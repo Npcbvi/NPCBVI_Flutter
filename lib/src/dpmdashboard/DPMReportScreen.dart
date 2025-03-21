@@ -773,6 +773,7 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                                         maxLines: 2,
                                         // Set max lines to 2
                                         overflow: TextOverflow.ellipsis,
+
                                         // Handle overflow
                                         style: TextStyle(fontSize: 16),
                                       ),
