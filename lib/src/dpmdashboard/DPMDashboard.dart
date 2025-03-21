@@ -1009,7 +1009,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ),
                 ),
-                _buildMenuItem(
+               /* _buildMenuItem(
                   icon: Icons.read_more,
                   title: 'Reports',
                   onTap: () {
@@ -1022,7 +1022,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       ),
                     );
                   },
-                ),
+                ),*/
               ],
             ),
           ),
@@ -13539,24 +13539,6 @@ class _DPMDashboard extends State<DPMDashboard> {
               if (lowvisionCornealBlindnessDataDispla)
                 Column(
                   children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          _buildHeaderCellSrNo('S.No.'),
-                          _buildHeaderCell('Patient Id'),
-                          _buildHeaderCell('Name of Person'),
-                          _buildHeaderCell('Mobile No.'),
-                          _buildHeaderCell('DOB'),
-                          _buildHeaderCell('Gender'),
-                          _buildHeaderCell('Organisation Date'),
-                          _buildHeaderCell('Operated type'),
-                          _buildHeaderCell('NGO'),
-                          _buildHeaderCell('Action'),
-                        ],
-                      ),
-                    ),
-                    Divider(color: Colors.blue, height: 1.0),
                     FutureBuilder<List<DatalowvisionCornealBlindness>>(
                       future: ApiController.getDPM_CornealBlindness(
                         district_code_login,
@@ -13566,70 +13548,118 @@ class _DPMDashboard extends State<DPMDashboard> {
                         lowVisionDataValue,
                       ),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          // Align "No data found" message to the left
+                          // No data case: Only show "No data found" message
                           return Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 "No data found",
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.blue),
+                                style: TextStyle(fontSize: 16, color: Colors.blue),
                               ),
                             ),
                           );
                         } else {
-                          List<DatalowvisionCornealBlindness> ddata =
-                              snapshot.data;
+                          // Data available: Show headers and rows
+                          List<DatalowvisionCornealBlindness> ddata = snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: ddata.map((offer) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+
+                          return Column(
+                            children: [
+                              // Show headers only if there is data
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
                                   children: [
-                                    _buildDataCellSrNo(
-                                        (ddata.indexOf(offer) + 1).toString()),
-                                    _buildDataCell(offer.pUniqueID),
-                                    _buildDataCell(offer.name),
-                                    _buildDataCell(offer.mobile.toString()),
-                                    _buildDataCell(
-                                        Utils.formatDateString(offer.dob)),
-                                    _buildDataCell((offer.gender)),
-                                    _buildDataCell((offer.addressLine1)),
-                                    _buildDataCell(Utils.formatDateString(
-                                        offer.operatedOn)),
-                                    _buildDataCell(offer.ngoName.toString()),
-                                    _buildDataCellViewBlue("View", () {
-                                      // Handle the view action here
-                                      // Example: Navigate to a details page with the selected item
-                                    }),
+                                    _buildHeaderCellSrNo('S.No.'),
+                                    _buildHeaderCell('Patient Id'),
+                                    _buildHeaderCell('Action'),
                                   ],
-                                );
-                              }).toList(),
-                            ),
+                                ),
+                              ),
+                              Divider(color: Colors.blue, height: 1.0),
+                              // Data Rows
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        _buildDataCellSrNo(
+                                            (ddata.indexOf(offer) + 1).toString()),
+                                        _buildDataCell(offer.pUniqueID),
+                                        _buildDataCellViewBlue("View", () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Patient Details"),
+                                                content: SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: DataTable(
+                                                    columnSpacing: 10,
+                                                    border: TableBorder.all(color: Colors.blue),
+                                                    columns: [
+                                                      DataColumn(label: Text("Organisation", style: TextStyle(fontWeight: FontWeight.bold))),
+                                                      DataColumn(label: Text("Detail", style: TextStyle(fontWeight: FontWeight.bold))),
+                                                    ],
+                                                    rows: [
+                                                      _buildTableRowNew("S.No.", (ddata.indexOf(offer) + 1).toString()),
+                                                      _buildTableRowNew("Patient Id", offer.pUniqueID),
+                                                      _buildTableRowNew("Name of Person", offer.name),
+                                                      _buildTableRowNew("Mobile No.", offer.mobile.toString()),
+                                                      _buildTableRowNew("DOB", Utils.formatDateString(offer.dob)),
+                                                      _buildTableRowNew("Gender", offer.gender),
+                                                      _buildTableRowNew("Organisation Date", offer.addressLine1),
+                                                      _buildTableRowNew("Operated Type", Utils.formatDateString(offer.operatedOn)),
+                                                      _buildTableRowNew("NGO", offer.ngoName.toString()),
+                                                    ],
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    child: Text("Close"),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
                           );
                         }
                       },
                     ),
                   ],
                 ),
+
             ],
           ),
         ),
       ],
     );
   }
-
+  DataRow _buildTableRowNew(String field, String value) {
+    return DataRow(cells: [
+      DataCell(Text(field, style: TextStyle(fontWeight: FontWeight.bold))),
+      DataCell(Text(value)),
+    ]);
+  }
   Widget LowVisionRegisterDataShowVRSurgery() {
     return Column(
       children: [
@@ -13813,7 +13843,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.blue, // Blue background color
+                    color: Colors.blue[50], // Blue background color
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: new DropdownButtonHideUnderline(
@@ -14338,23 +14368,6 @@ class _DPMDashboard extends State<DPMDashboard> {
               if (lowvisionVRSurgeryDataDispla)
                 Column(
                   children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          _buildHeaderCellSrNo('S.No.'),
-                          _buildHeaderCell('Patient Id'),
-                          _buildHeaderCell('Name of Person'),
-                          _buildHeaderCell('Mobile No.'),
-                          _buildHeaderCell('DOB'),
-                          _buildHeaderCell('Gender'),
-                          _buildHeaderCell('Organisation Date'),
-                          _buildHeaderCell('Operated type'),
-                          _buildHeaderCell('NGO'),
-                          _buildHeaderCell('Action'),
-                        ],
-                      ),
-                    ),
                     Divider(color: Colors.blue, height: 1.0),
                     FutureBuilder<List<DatalowvisionVRSurgery>>(
                       future: ApiController.getDPM_VRSurgery(
@@ -14365,21 +14378,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                         lowVisionDataValue,
                       ),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          // Align "No data found" message to the left
+                          // Show "No data found" message when data is empty
                           return Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 "No data found",
-                                style:
-                                    TextStyle(fontSize: 16, color: Colors.blue),
+                                style: TextStyle(fontSize: 16, color: Colors.blue),
                               ),
                             ),
                           );
@@ -14387,40 +14398,102 @@ class _DPMDashboard extends State<DPMDashboard> {
                           List<DatalowvisionVRSurgery> ddata = snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              children: ddata.map((offer) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+
+                          // Show headers only if data is available
+                          return Column(
+                            children: [
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
                                   children: [
-                                    _buildDataCellSrNo(
-                                        (ddata.indexOf(offer) + 1).toString()),
-                                    _buildDataCell(offer.pUniqueID),
-                                    _buildDataCell(offer.name),
-                                    _buildDataCell(offer.mobile.toString()),
-                                    _buildDataCell(
-                                        Utils.formatDateString(offer.dob)),
-                                    _buildDataCell((offer.gender)),
-                                    _buildDataCell((offer.addressLine1)),
-                                    _buildDataCell(Utils.formatDateString(
-                                        offer.operatedOn)),
-                                    _buildDataCell(offer.ngoName.toString()),
-                                    _buildDataCellViewBlue("View", () {
-                                      // Handle the view action here
-                                      // Example: Navigate to a details page with the selected item
-                                    }),
+                                    _buildHeaderCellSrNo('S.No.'),
+                                    _buildHeaderCell('Patient Id'),
+                                    _buildHeaderCell('Action'),
                                   ],
-                                );
-                              }).toList(),
-                            ),
+                                ),
+                              ),
+                              SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        _buildDataCellSrNo(
+                                            (ddata.indexOf(offer) + 1).toString()),
+                                        _buildDataCell(offer.pUniqueID),
+                                        _buildDataCellViewBlue("View", () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text("Patient Details"),
+                                                content: SingleChildScrollView(
+                                                  scrollDirection: Axis.horizontal,
+                                                  child: DataTable(
+                                                    columnSpacing: 10,
+                                                    border: TableBorder.all(color: Colors.blue),
+                                                    columns: [
+                                                      DataColumn(
+                                                          label: Text("Field",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                  FontWeight.bold))),
+                                                      DataColumn(
+                                                          label: Text("Value",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                  FontWeight.bold))),
+                                                    ],
+                                                    rows: [
+                                                      _buildTableRowNew("S.No.",
+                                                          (ddata.indexOf(offer) + 1)
+                                                              .toString()),
+                                                      _buildTableRowNew(
+                                                          "Patient Id", offer.pUniqueID),
+                                                      _buildTableRowNew(
+                                                          "Name of Person", offer.name),
+                                                      _buildTableRowNew(
+                                                          "Mobile No.", offer.mobile.toString()),
+                                                      _buildTableRowNew("DOB",
+                                                          Utils.formatDateString(offer.dob)),
+                                                      _buildTableRowNew("Gender",
+                                                          offer.gender),
+                                                      _buildTableRowNew("Organisation Date",
+                                                          offer.addressLine1),
+                                                      _buildTableRowNew("Operated Type",
+                                                          Utils.formatDateString(
+                                                              offer.operatedOn)),
+                                                      _buildTableRowNew("NGO",
+                                                          offer.ngoName.toString()),
+                                                    ],
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    child: Text("Close"),
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        }),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
                           );
                         }
                       },
                     ),
                   ],
                 ),
+
             ],
           ),
         ),
