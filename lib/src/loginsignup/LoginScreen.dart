@@ -251,13 +251,13 @@ class _LoginScreenState extends State<LoginScreen> {
         centerTitle: true,
         title: Text('Login', style: TextStyle(color: Colors.white)),
         actions: [
-          /*IconButton(
+          IconButton(
           icon: Icon(Icons.dashboard, color: Colors.white),
           onPressed: () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => MainDashboard()));
           },
-        )*/
+        )
         ],
       ),
       body: Container(
@@ -278,12 +278,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 30,
+                    height: 28,
                     child: Marquee(
                       text: 'NGO Darpan number is mandatory for registration.',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 16,
                         color: Colors.red,
                       ),
                       velocity: 50.0,

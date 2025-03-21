@@ -538,8 +538,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                 shrinkWrap: true,
                 children: [
                   // NGO Darpan Number TextField
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                  SizedBox(
+                    height: 50, //
                     child: TextField(
                       controller: _ngoDarpanNumberController,
                       decoration: InputDecoration(
@@ -552,10 +552,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-
+              SizedBox(
+                height: 10,), //
                   // NGO PAN Number TextField
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                  SizedBox(
+                    height: 50, //
                     child: TextField(
                       controller: _ngoPANNumberController,
                       decoration: InputDecoration(
@@ -568,22 +569,41 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ),
                     ),
                   ),
+              SizedBox(
+                height: 20),
 
-                  // Submit Button
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                    child: ElevatedButton.icon( // 👈 Added an icon to the button
-                      icon: Icon(Icons.check_circle, color: Colors.white),
-                      label: Text('Verify'),
+                  SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
+                        minimumSize: Size(130, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 4,
+                        shadowColor: Colors.black,
                       ),
                       onPressed: () {
                         print('@@NGO Button click__work pending');
                         // _NGORegistrationSubmit();
                       },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.check_circle, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            'Verify',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
+                  // Submit Button
                 ],
               ),
             ),
