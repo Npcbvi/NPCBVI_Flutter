@@ -218,7 +218,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     // To generate number on loading of page
     buildCaptcha();
     showHomeScreen = true;
-
+    _future = _getStatesDAta();
     submitButtonRegisteredUSerID = true; // or set based on some condition
   }
 
@@ -353,6 +353,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                         showGOVTPrivate = true;
                         showHomeScreen = false;
                         // ✅ Set the default selected radio to "New User"
+                        _future = _getStatesDAta();
                         _value = 1;
                         newUSerGovtPrivateRegisterRadios = true;
                         registeredUSerGovtPrivateRegsiterations = false;
@@ -1110,21 +1111,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                             icon: Icon(Icons.check, color: Colors.white),
                             label: Text(
                               'Submit',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.blue,
-                              // Button color
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                              // Button height
+                              minimumSize: Size(150, 40), // Set width and height
+                              fixedSize: Size(180, 50), // Fixed width and height
+                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20), // Button padding
                               shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(8), // Rounded corners
+                                borderRadius: BorderRadius.circular(8), // Rounded corners
                               ),
                               elevation: 6,
-                              // Adds shadow effect
-                              shadowColor: Colors.black54, // Shadow color
+                              shadowColor: Colors.black54,
                             ),
                           ),
                         ),
@@ -1145,27 +1143,25 @@ class _RegisterScreen extends State<RegisterScreen> {
                             icon: Icon(Icons.refresh, color: Colors.white),
                             label: Text(
                               'Reset',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold),
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                             ),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.red,
-                              // Button color
-                              padding: EdgeInsets.symmetric(vertical: 15),
-                              // Button height
+                              minimumSize: Size(150, 40), // Set width and height
+                              fixedSize: Size(180, 50), // Fixed width and height
+                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
                               shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(8), // Rounded corners
+                                borderRadius: BorderRadius.circular(8),
                               ),
                               elevation: 6,
-                              // Adds shadow effect
-                              shadowColor: Colors.black54, // Shadow color
+                              shadowColor: Colors.black54,
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
+
                 ],
               ),
             ),
@@ -4274,17 +4270,21 @@ class _RegisterScreen extends State<RegisterScreen> {
                   SizedBox(height: 10), // Adjust height as needed
 
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                    padding: const EdgeInsets.fromLTRB(10.0, 10, 10.0, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Even spacing
                       children: [
-                        Expanded(
+                        SizedBox(
+                          width: 150, // Set button width
+                          height: 50, // Set button height
                           child: ElevatedButton.icon(
                             icon: Icon(Icons.send, color: Colors.white), // Submit Icon
                             label: Text('Submit'),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.blue, // Button color
-                              padding: EdgeInsets.symmetric(vertical: 15), // Button height
+                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                              minimumSize: Size(150, 50), // Minimum size
+                              fixedSize: Size(150, 50), // Fixed width & height
                               elevation: 5, // Shadow effect
                               shadowColor: Colors.black54, // Shadow color
                               shape: RoundedRectangleBorder(
@@ -4297,14 +4297,18 @@ class _RegisterScreen extends State<RegisterScreen> {
                             },
                           ),
                         ),
-                        SizedBox(width: 20), // Spacing between buttons
-                        Expanded(
+                        SizedBox(width: 10), // Spacing between buttons
+                        SizedBox(
+                          width: 150, // Set button width
+                          height: 50, // Set button height
                           child: ElevatedButton.icon(
                             icon: Icon(Icons.refresh, color: Colors.white), // Reset Icon
                             label: Text('Reset'),
                             style: ElevatedButton.styleFrom(
                               primary: Colors.red, // Reset button color
-                              padding: EdgeInsets.symmetric(vertical: 15), // Button height
+                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                              minimumSize: Size(150, 50), // Minimum size
+                              fixedSize: Size(150, 50), // Fixed width & height
                               elevation: 5, // Shadow effect
                               shadowColor: Colors.black54, // Shadow color
                               shape: RoundedRectangleBorder(
@@ -4317,6 +4321,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ],
                     ),
                   ),
+
+
 
                 ],
               ),
