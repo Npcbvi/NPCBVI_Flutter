@@ -139,7 +139,7 @@ class _DistrictWisedpm
           ),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.grey, width: 1),
+              border: TableBorder.all(color: Colors.blue, width: 1),
               columnWidths: {
                 0: FixedColumnWidth(120), // Adjust column width
                 1: FlexColumnWidth(),

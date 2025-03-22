@@ -141,7 +141,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       str_regdgovtpvtstateName,
       str_regdgovtpvtdistrictName,
       str_regdgovtpvtOfficeName;
-
+  String _appBarTitle = "Registration"; // Default title
   void _toggleVisibility() {
     setState(() {
       _isVisibleADDDoctorsDetails = !_isVisibleADDDoctorsDetails;
@@ -229,7 +229,8 @@ class _RegisterScreen extends State<RegisterScreen> {
       backgroundColor: Colors.white,
       appBar: new AppBar(
         backgroundColor: Colors.blue,
-        title: new Text('Registration ',
+        title: new Text(_appBarTitle,
+            maxLines:2,
             style: new TextStyle(
               color: Colors.white,
             )),
@@ -271,6 +272,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                   onTap: () {
                     setState(() {
                       _selectedMenu = 'Home';
+                      _appBarTitle="Home";
                       Navigator.pop(context);
                       showHomeScreen = true;
                       showNGOResgistration = false;
@@ -299,6 +301,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                   onChanged: (String value) {
                     setState(() {
                       _chosenValueRegisertaion = value;
+                      _appBarTitle = value+" Registration"; // Update AppBar title dynamically
+
                       //  print('@@spinnerChooseValue--' + _chosenValue);
                       if (_chosenValueRegisertaion == "NGO") {
                         print('@@NGO--1' + _chosenValueRegisertaion);
