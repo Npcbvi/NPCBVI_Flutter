@@ -1773,150 +1773,73 @@ class _RegisterScreen extends State<RegisterScreen> {
                   ),
                 ),
 
-                Container(
-                  child: Row(
-                    children: <Widget>[
-                      FutureBuilder(
-                        future: ApiController.getEquipmentGovtPRivateModel(),
-                        builder: (context, projectSnap) {
-                          if (projectSnap.connectionState ==
-                                  ConnectionState.none &&
-                              projectSnap.hasData == null) {
-                            return Container();
-                          } else {
-                            if (projectSnap.hasData) {
-                              GovtPRivateModel response = projectSnap.data;
-                              if (response.status) {
-                                offerList = response.list;
-                                if (offerList.isEmpty) {
-                                  return Utils.getEmptyView("No data found");
-                                } else {
-                                  _controllers = List.generate(
-                                      offerList.length,
-                                      (index) => TextEditingController());
-                                  return Expanded(
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: offerList.length,
-                                      itemBuilder: (context, index) {
-                                        ListGovtPRivateModel offer =
-                                            offerList[index];
+                FutureBuilder(
+                  future: ApiController.getEquipmentGovtPRivateModel(),
+                  builder: (context, projectSnap) {
+                    if (projectSnap.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
 
-                                        return Column(
-                                          children: <Widget>[
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceEvenly,
-                                              children: [
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .fromLTRB(
-                                                        20, 5, 20.0, 0),
-                                                    child: Container(
-                                                      decoration:
-                                                          BoxDecoration(
-                                                        border: Border.all(
-                                                          color: Colors.white,
-                                                          width: 1.0,
-                                                        ),
-                                                      ),
-                                                      alignment: Alignment
-                                                          .centerLeft,
-                                                      child: Text(
-                                                        offer.name,
-                                                        textDirection:
-                                                            TextDirection.ltr,
-                                                        textAlign:
-                                                            TextAlign.left,
-                                                        style: TextStyle(
-                                                            fontSize: 15),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  flex: 1,
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .fromLTRB(
-                                                        4, 5, 4.0, 0),
-                                                    child: Container(
-                                                      decoration:
-                                                          BoxDecoration(
-                                                        border: Border.all(
-                                                          color: Colors.black,
-                                                          //
-                                                          width: 0.4,
-                                                        ),
-                                                      ),
-                                                      alignment: Alignment
-                                                          .centerLeft,
-                                                      child: TextField(
-                                                        controller:
-                                                            _controllers[
-                                                                index],
-                                                        keyboardType:
-                                                            TextInputType
-                                                                .number,
-                                                        onChanged: (value) {
-                                                          //  offerList[index].quantity = value;
-                                                          // Optionally, parse the value to an integer if you need it as such
-                                                          int parsedValue =
-                                                              int.tryParse(
-                                                                  value);
+                    if (!projectSnap.hasData || projectSnap.data == null) {
+                      return Utils.getEmptyView("No data found");
+                    }
 
-                                                          // Update the offerList with the parsed value or keep it as a string
-                                                          offerList[index]
-                                                                  .quantity =
-                                                              parsedValue !=
-                                                                      null
-                                                                  ? parsedValue
-                                                                      .toString()
-                                                                  : value;
+                    GovtPRivateModel response = projectSnap.data;
+                    if (!response.status || response.list.isEmpty) {
+                      return Utils.getEmptyView("No data found");
+                    }
 
-                                                          // Debug output
-                                                          print(
-                                                              '@@equpimentList__id----${offerList[index].quantity}');
-                                                          print(
-                                                              '@@equpimentList__value-----$value');
-                                                        },
-                                                        decoration:
-                                                            InputDecoration(
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        );
-                                      },
+                    offerList = response.list;
+                    _controllers = List.generate(
+                        offerList.length, (index) => TextEditingController());
+
+                    return SizedBox(
+                      height: 400, // Fixed height for scrolling issues
+                      child: ListView.builder(
+                        itemCount: offerList.length,
+                        itemBuilder: (context, index) {
+                          ListGovtPRivateModel offer = offerList[index];
+
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    offer.name,
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(fontSize: 15),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: TextField(
+                                    controller: _controllers[index],
+                                    keyboardType: TextInputType.number,
+                                    onChanged: (value) {
+                                      int parsedValue = int.tryParse(value);
+                                      offerList[index].quantity =
+                                          parsedValue?.toString() ?? value;
+                                      print(
+                                          '@@equpimentList__id----${offerList[index].quantity}');
+                                    },
+                                    decoration: const InputDecoration(
+                                      border: OutlineInputBorder(),
                                     ),
-                                  );
-                                }
-                              } else {
-                                return Utils.getEmptyView("No data found");
-                              }
-                            } else {
-                              return Center(
-                                child: CircularProgressIndicator(
-                                    backgroundColor: Colors.black26,
-                                    valueColor: AlwaysStoppedAnimation<Color>(
-                                        Colors.black26)),
-                              );
-                            }
-                          }
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
                         },
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
+
 
                 const SizedBox(
                   height: 10,
@@ -4057,6 +3980,7 @@ class _RegisterScreen extends State<RegisterScreen> {
       Utils.showToast("An unexpected error occurred. Please try again.", false);
     }
   }
+
 
 
 
