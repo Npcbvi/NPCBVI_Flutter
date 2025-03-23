@@ -26,12 +26,22 @@ import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 import 'package:dropdown_button2/dropdown_button2.dart';
 
+import 'EquipmentListWidget.dart';
+
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreen createState() => _RegisterScreen();
 }
 
 class _RegisterScreen extends State<RegisterScreen> {
+  List<String> dropdownItems = [
+    'Govt District Hospital',
+    'CHC/Govt. Sub-Dist. Hospital',
+    'Private Practitioner',
+    'Private Medical College',
+    'Other (Institution not claiming fund from NPCBVI)',
+  ];
+
   final _formKey = GlobalKey<FormState>();
   bool _autovalidate = false;
   Future<List<Data>> _future;
@@ -41,6 +51,7 @@ class _RegisterScreen extends State<RegisterScreen> {
   String _chosenValue,
       oganisationTypeGovtPrivateDRopDown,
       _chosenValueRegisertaion;
+
   String randomString = "";
   bool showGOVTPrivate = false;
   bool showNGOResgistration = false;
@@ -219,6 +230,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     buildCaptcha();
     showHomeScreen = true;
     _future = _getStatesDAta();
+    oganisationTypeGovtPrivateDRopDown = null; // Ensure it starts as null
     submitButtonRegisteredUSerID = true; // or set based on some condition
   }
 
@@ -1307,11 +1319,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ),
                     ),
                     iconStyleData: IconStyleData(
+
                       icon: Icon(Icons.arrow_drop_down,
                           color: Colors.white), // Dropdown icon
                     ),
                     items: [
-                      'Govt. District Hospital/Govt. Medical College',
+                      'Govt District Hospital',
                       'CHC/Govt. Sub-Dist. Hospital',
                       'Private Practitioner',
                       'Private Medical College',
@@ -1327,13 +1340,13 @@ class _RegisterScreen extends State<RegisterScreen> {
                     }).toList(),
                     onChanged: (String newValue) {
                       setState(() {
-                        oganisationTypeGovtPrivateDRopDown = newValue;
+                        oganisationTypeGovtPrivateDRopDown = newValue?.trim();
                         print(
                             '@@oganisationTypeGovtPrivateDRopDown--$oganisationTypeGovtPrivateDRopDown');
 
                         // Assigning dropDownvalueOrgnbaistaionType based on selection
                         switch (oganisationTypeGovtPrivateDRopDown) {
-                          case "Govt. District Hospital/Govt. Medical College":
+                          case "Govt District Hospital":
                             dropDownvalueOrgnbaistaionType = 10;
                             isVisibleHostpiatnNinitrictGovt = true;
                             break;
@@ -1361,6 +1374,9 @@ class _RegisterScreen extends State<RegisterScreen> {
                     },
                   ),
                 ),
+
+
+
 
                 Visibility(
                   visible: isVisibleHostpiatnNinitrictGovt,
@@ -1773,71 +1789,8 @@ class _RegisterScreen extends State<RegisterScreen> {
                   ),
                 ),
 
-                FutureBuilder(
-                  future: ApiController.getEquipmentGovtPRivateModel(),
-                  builder: (context, projectSnap) {
-                    if (projectSnap.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    }
-
-                    if (!projectSnap.hasData || projectSnap.data == null) {
-                      return Utils.getEmptyView("No data found");
-                    }
-
-                    GovtPRivateModel response = projectSnap.data;
-                    if (!response.status || response.list.isEmpty) {
-                      return Utils.getEmptyView("No data found");
-                    }
-
-                    offerList = response.list;
-                    _controllers = List.generate(
-                        offerList.length, (index) => TextEditingController());
-
-                    return SizedBox(
-                      height: 400, // Fixed height for scrolling issues
-                      child: ListView.builder(
-                        itemCount: offerList.length,
-                        itemBuilder: (context, index) {
-                          ListGovtPRivateModel offer = offerList[index];
-
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    offer.name,
-                                    textAlign: TextAlign.left,
-                                    style: const TextStyle(fontSize: 15),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: TextField(
-                                    controller: _controllers[index],
-                                    keyboardType: TextInputType.number,
-                                    onChanged: (value) {
-                                      int parsedValue = int.tryParse(value);
-                                      offerList[index].quantity =
-                                          parsedValue?.toString() ?? value;
-                                      print(
-                                          '@@equpimentList__id----${offerList[index].quantity}');
-                                    },
-                                    decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
+                SingleChildScrollView(
+                  child: EquipmentListWidget(), // ✅ Fixes scrolling issue
                 ),
 
 
@@ -1847,27 +1800,23 @@ class _RegisterScreen extends State<RegisterScreen> {
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
                         flex: 4,
                         child: SizedBox(
-                          height: 50, // Adjust height as needed
+                          height: 50,
                           child: TextField(
                             controller: _captchaControllerGovtPrivateScreen,
                             decoration: InputDecoration(
                               label: RichText(
                                 text: TextSpan(
                                   text: 'Enter Captcha Value',
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16),
+                                  style: TextStyle(color: Colors.black, fontSize: 16),
                                   children: [
                                     TextSpan(
                                       text: ' *',
-                                      // Red Asterisk for required field
-                                      style: TextStyle(
-                                          color: Colors.red, fontSize: 16),
+                                      style: TextStyle(color: Colors.red, fontSize: 16),
                                     ),
                                   ],
                                 ),
@@ -1877,9 +1826,12 @@ class _RegisterScreen extends State<RegisterScreen> {
                               ),
                             ),
                             onChanged: (value) {
-                              setState(() {
-                                isVerified = false;
-                              });
+                              // ✅ Only update if value changes significantly
+                              if (!isVerified) {
+                                setState(() {
+                                  isVerified = false;
+                                });
+                              }
                             },
                           ),
                         ),
@@ -1916,7 +1868,11 @@ class _RegisterScreen extends State<RegisterScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: IconButton(
-                            onPressed: buildCaptcha,
+                            onPressed: () {
+                              setState(() {
+                                buildCaptcha(); // ✅ Refresh Captcha properly
+                              });
+                            },
                             icon: Icon(Icons.refresh),
                           ),
                         ),
@@ -1924,6 +1880,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     ],
                   ),
                 ),
+
                 const SizedBox(
                   height: 10,
                 ),
@@ -1931,21 +1888,39 @@ class _RegisterScreen extends State<RegisterScreen> {
                   Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                         child: Container(
-//                alignment: Alignment.bottomRight,
+                          width: double.infinity,
+                          // Ensures full width
+                          padding: EdgeInsets.all(12),
+                          // Adds some padding inside the border
                           decoration: BoxDecoration(
-                            border: Border.all(),
+                            border: Border.all(color: Colors.black, width: 1.5),
+                            // Darker & thicker border
+                            borderRadius: BorderRadius.circular(
+                                5), // Optional: Rounded corners
                           ),
-                          child: Text(
-                            'Doctor Registration',
-                            textDirection: TextDirection.ltr,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 22),
+                          child: Center(
+                            // Ensures text is centered inside the box
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'Doctor Registration',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: Colors.black, // Text color
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: '', // Red Asterisk
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                         child: SizedBox(
@@ -2009,17 +1984,15 @@ class _RegisterScreen extends State<RegisterScreen> {
                           ),
                         ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                         child: SizedBox(
                           height: 50,
-                          // Ensures uniform height with other input fields
+                          // Ensures consistency with other fields
                           child: TextField(
                             controller: _doctorMobileNumber,
                             keyboardType: TextInputType.number,
-                            // Ensures only numeric input
-                            maxLength: 10,
-                            // Limits input to 10 digits
                             decoration: InputDecoration(
                               label: RichText(
                                 text: TextSpan(
@@ -2035,16 +2008,17 @@ class _RegisterScreen extends State<RegisterScreen> {
                                   ],
                                 ),
                               ),
-                              hintText: 'Enter Mobile No.',
+                              hintText: 'Enter MCI Reg. No.',
                               // Updated hint text
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(
-                                    8.0), // Consistent styling
+                                    8.0), // Consistent with Officer Name field
                               ),
                             ),
                           ),
                         ),
                       ),
+
                       Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                         child: SizedBox(
@@ -2251,7 +2225,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    Padding(
+                 /*   Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                       child: Container(
                         decoration: BoxDecoration(
@@ -2368,8 +2342,89 @@ class _RegisterScreen extends State<RegisterScreen> {
                           ),
                         ),
                       ),
-                    ),
+                    ),*/
+                Padding(
+                padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.blue.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
 
+                      // ✅ Fix: Ensure value exists in items, else set null
+                      value: dropdownItems.contains(oganisationTypeGovtPrivateDRopDown)
+                          ? oganisationTypeGovtPrivateDRopDown
+                          : null,
+
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                      style: TextStyle(color: Colors.black, fontSize: 10),
+
+                      items: dropdownItems.map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(color: Colors.black, fontSize: 10), // ⬅️ Smaller Font Size
+                          ),
+                        );
+                      }).toList(),
+                      hint: Text(
+                        "Select",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      onChanged: (String newValue) {
+                        if (newValue != null) {
+                          setState(() {
+                            oganisationTypeGovtPrivateDRopDown = newValue;
+                            developer.log('@@Selected Value: $oganisationTypeGovtPrivateDRopDown');
+
+                            switch (oganisationTypeGovtPrivateDRopDown) {
+                              case "Govt. District Hospital/Govt.MEdical College":
+                                dropDownvalueOrgnbaistaionType = 10;
+                                isVisibleHostpiatnNinitrictGovt = true;
+                                break;
+                              case "CHC/Govt. Sub-Dist. Hospital":
+                                dropDownvalueOrgnbaistaionType = 11;
+                                isVisibleHostpiatnNinitrictGovt = false;
+                                break;
+                              case "Private Practitioner":
+                                dropDownvalueOrgnbaistaionType = 12;
+                                isVisibleHostpiatnNinitrictGovt = true;
+                                break;
+                              case "Private Medical College":
+                                dropDownvalueOrgnbaistaionType = 13;
+                                isVisibleHostpiatnNinitrictGovt = false;
+                                break;
+                              case "Other(Institution not claiming fund from NPCBVI)":
+                                dropDownvalueOrgnbaistaionType = 14;
+                                isVisibleHostpiatnNinitrictGovt = false;
+                                break;
+                            }
+
+                            developer.log('@@dropDownvalueOrgnbaistaionType: $dropDownvalueOrgnbaistaionType');
+                          });
+                        }
+                      },
+                    ),
+                  ),
+                ),
+              ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                       child: TextFormField(
