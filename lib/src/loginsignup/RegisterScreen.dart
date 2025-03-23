@@ -1170,6 +1170,101 @@ class _RegisterScreen extends State<RegisterScreen> {
       ),
     );
   }
+  Future<void> _spoRegistrationSubmit() async {
+    try {
+      // Safely parse integer values
+      spoDataFields.stdSPO = stdControllerSpo.text.trim().isNotEmpty
+          ? int.tryParse(stdControllerSpo.text.trim()) ?? 0
+          : 0;
+
+      spoDataFields.state = stateCodeSPO;
+      spoDataFields.codeSPOs = CodeSPO ?? "";  // Prevent null issues
+      spoDataFields.Name = _spoNAmeController.text.trim();
+      spoDataFields.mobileNumber = _spoMobileController.text.trim();
+      spoDataFields.emailId = _spoEmailIdController.text.trim();
+      spoDataFields.designation = _spoDestinationController.text.trim();
+      spoDataFields.PhoneNumber = _spoPhoneNumberController.text.trim();
+      spoDataFields.OfficeAddress = _spoOfficeAddressController.text.trim();
+      spoDataFields.PinCode = _spoPinCodeController.text.trim();
+      spoDataFields.CaptchaCodeEnter = _spoCaptchaCodeEnterController.text.trim();
+
+      print('@@stateCodeSPO: ${stateCodeSPO}');
+      print('@@spoDataFields.codeSPOs: ${spoDataFields.codeSPOs}');
+
+      // Validation checks
+      if (spoDataFields.Name.isEmpty) {
+        Utils.showToast("Please enter Name!", true);
+        return;
+      }
+      if (spoDataFields.mobileNumber.isEmpty) {
+        Utils.showToast("Please enter Mobile number!", true);
+        return;
+      }
+      if (spoDataFields.emailId.isNotEmpty &&
+          !isValidEmail(spoDataFields.emailId)) {
+        Utils.showToast("Please enter a valid email!", true);
+        return;
+      }
+      if (spoDataFields.designation.isEmpty) {
+        Utils.showToast("Please enter Designation!", true);
+        return;
+      }
+      if (spoDataFields.PhoneNumber.isEmpty) {
+        Utils.showToast("Please enter Phone Number!", true);
+        return;
+      }
+      if (spoDataFields.OfficeAddress.isEmpty) {
+        Utils.showToast("Please enter Office Address!", true);
+        return;
+      }
+      if (spoDataFields.PinCode.isEmpty) {
+        Utils.showToast("Please enter Pin Code!", true);
+        return;
+      }
+      if (spoDataFields.CaptchaCodeEnter.isEmpty) {
+        Utils.showToast("Please enter the Matched Captcha!", true);
+        return;
+      }
+
+      // Check for network availability before API call
+      bool isNetworkAvailable = await Utils.isNetworkAvailable();
+      if (!isNetworkAvailable) {
+        Utils.showToast(AppConstant.noInternet, true);
+        return;
+      }
+
+      // Show progress dialog
+      Utils.showProgressDialog1(context);
+
+      // API call
+      var response = await ApiController.spoRegistrationAPiRquest(spoDataFields);
+
+      // Hide progress dialog
+      Utils.hideProgressDialog1(context);
+
+      print('@@spoAPiRquest Status: ${response.status}');
+
+      if (response.status) {
+        Utils.showToast(response.message, true);
+
+        // Clear text fields
+        _spoNAmeController.clear();
+        _spoMobileController.clear();
+        _spoPinCodeController.clear();
+        _spoOfficeAddressController.clear();
+        _spoEmailIdController.clear();
+        _spoPhoneNumberController.clear();
+        _spoCaptchaCodeEnterController.clear();
+        _spoDestinationController.clear();
+        stdControllerSpo.clear();
+      } else {
+        Utils.showToast(response.message, false);
+      }
+    } catch (e) {
+      print("Error in _spoRegistrationSubmit: $e");
+      Utils.showToast("An error occurred. Please try again.", false);
+    }
+  }
 
   Widget newUSerGovtPrivateRegisterRadio() {
     return Column(children: [
@@ -2708,160 +2803,158 @@ class _RegisterScreen extends State<RegisterScreen> {
                       ),
                     ),
 
-                    Container(
-                      child: Row(
-                        children: <Widget>[
-                          FutureBuilder(
-                            future:
-                                ApiController.getEquipmentGovtPRivateModel(),
-                            builder: (context, projectSnap) {
-                              if (projectSnap.connectionState ==
-                                      ConnectionState.none &&
-                                  projectSnap.hasData == null) {
-                                return Container();
-                              } else {
-                                if (projectSnap.hasData) {
-                                  GovtPRivateModel response = projectSnap.data;
-                                  if (response.status) {
-                                    offerList = response.list;
-                                    if (offerList.isEmpty) {
-                                      return Utils.getEmptyView(
-                                          "No data found");
-                                    } else {
-                                      _controllers = List.generate(
-                                          offerList.length,
-                                          (index) => TextEditingController());
-                                      return Expanded(
-                                        child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: offerList.length,
-                                          itemBuilder: (context, index) {
-                                            ListGovtPRivateModel offer =
-                                                offerList[index];
-
-                                            return Column(
-                                              children: <Widget>[
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .fromLTRB(
-                                                                20,
-                                                                10,
-                                                                20.0,
-                                                                0),
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                              color:
-                                                                  Colors.white,
-                                                              width: 1.0,
-                                                            ),
-                                                          ),
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: Text(
-                                                            offer.name,
-                                                            textDirection:
-                                                                TextDirection
-                                                                    .ltr,
-                                                            textAlign:
-                                                                TextAlign.left,
-                                                            style: TextStyle(
-                                                                fontSize: 15),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      flex: 1,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .fromLTRB(
-                                                                4, 10, 4.0, 0),
-                                                        child: Container(
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                              color:
-                                                                  Colors.black,
-                                                              //
-                                                              width: 0.4,
-                                                            ),
-                                                          ),
-                                                          alignment: Alignment
-                                                              .centerLeft,
-                                                          child: TextField(
-                                                            controller:
-                                                                _controllers[
-                                                                    index],
-                                                            keyboardType:
-                                                                TextInputType
-                                                                    .number,
-                                                            onChanged: (value) {
-                                                              //  offerList[index].quantity = value;
-                                                              // Optionally, parse the value to an integer if you need it as such
-                                                              int parsedValue =
-                                                                  int.tryParse(
-                                                                      value);
-
-                                                              // Update the offerList with the parsed value or keep it as a string
-                                                              offerList[index]
-                                                                      .quantity =
-                                                                  parsedValue !=
-                                                                          null
-                                                                      ? parsedValue
-                                                                          .toString()
-                                                                      : value;
-
-                                                              // Debug output
-                                                              print(
-                                                                  '@@equpimentList__id----${offerList[index].quantity}');
-                                                              print(
-                                                                  '@@equpimentList__value-----$value');
-                                                            },
-                                                            decoration:
-                                                                InputDecoration(
-                                                              border:
-                                                                  OutlineInputBorder(),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            );
-                                          },
-                                        ),
-                                      );
-                                    }
+                    Row(
+                      children: <Widget>[
+                        FutureBuilder(
+                          future:
+                              ApiController.getEquipmentGovtPRivateModel(),
+                          builder: (context, projectSnap) {
+                            if (projectSnap.connectionState ==
+                                    ConnectionState.none &&
+                                projectSnap.hasData == null) {
+                              return Container();
+                            } else {
+                              if (projectSnap.hasData) {
+                                GovtPRivateModel response = projectSnap.data;
+                                if (response.status) {
+                                  offerList = response.list;
+                                  if (offerList.isEmpty) {
+                                    return Utils.getEmptyView(
+                                        "No data found");
                                   } else {
-                                    return Utils.getEmptyView("No data found");
+                                    _controllers = List.generate(
+                                        offerList.length,
+                                        (index) => TextEditingController());
+                                    return Expanded(
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: offerList.length,
+                                        itemBuilder: (context, index) {
+                                          ListGovtPRivateModel offer =
+                                              offerList[index];
+
+                                          return Column(
+                                            children: <Widget>[
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets
+                                                                  .fromLTRB(
+                                                              20,
+                                                              10,
+                                                              20.0,
+                                                              0),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            color:
+                                                                Colors.white,
+                                                            width: 1.0,
+                                                          ),
+                                                        ),
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: Text(
+                                                          offer.name,
+                                                          textDirection:
+                                                              TextDirection
+                                                                  .ltr,
+                                                          textAlign:
+                                                              TextAlign.left,
+                                                          style: TextStyle(
+                                                              fontSize: 15),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets
+                                                                  .fromLTRB(
+                                                              4, 10, 4.0, 0),
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                            color:
+                                                                Colors.black,
+                                                            //
+                                                            width: 0.4,
+                                                          ),
+                                                        ),
+                                                        alignment: Alignment
+                                                            .centerLeft,
+                                                        child: TextField(
+                                                          controller:
+                                                              _controllers[
+                                                                  index],
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          onChanged: (value) {
+                                                            //  offerList[index].quantity = value;
+                                                            // Optionally, parse the value to an integer if you need it as such
+                                                            int parsedValue =
+                                                                int.tryParse(
+                                                                    value);
+
+                                                            // Update the offerList with the parsed value or keep it as a string
+                                                            offerList[index]
+                                                                    .quantity =
+                                                                parsedValue !=
+                                                                        null
+                                                                    ? parsedValue
+                                                                        .toString()
+                                                                    : value;
+
+                                                            // Debug output
+                                                            print(
+                                                                '@@equpimentList__id----${offerList[index].quantity}');
+                                                            print(
+                                                                '@@equpimentList__value-----$value');
+                                                          },
+                                                          decoration:
+                                                              InputDecoration(
+                                                            border:
+                                                                OutlineInputBorder(),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      ),
+                                    );
                                   }
                                 } else {
-                                  return Center(
-                                    child: CircularProgressIndicator(
-                                        backgroundColor: Colors.black26,
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.black26)),
-                                  );
+                                  return Utils.getEmptyView("No data found");
                                 }
+                              } else {
+                                return Center(
+                                  child: CircularProgressIndicator(
+                                      backgroundColor: Colors.black26,
+                                      valueColor:
+                                          AlwaysStoppedAnimation<Color>(
+                                              Colors.black26)),
+                                );
                               }
-                            },
-                          ),
-                        ],
-                      ),
+                            }
+                          },
+                        ),
+                      ],
                     ),
 
                     Padding(
@@ -3227,124 +3320,8 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
-  Future<void> _spoRegistrationSubmit() async {
-    spoDataFields.stdSPO = int.parse(stdControllerSpo.text.toString().trim());
-    spoDataFields.state = stateCodeSPO;
-    spoDataFields.codeSPOs = CodeSPO;
-    spoDataFields.Name = _spoNAmeController.text.toString().trim();
-    spoDataFields.mobileNumber = _spoMobileController.text.toString().trim();
-    spoDataFields.emailId = _spoEmailIdController.text.toString().trim();
-    spoDataFields.designation =
-        _spoDestinationController.text.toString().trim();
-    spoDataFields.PhoneNumber =
-        _spoPhoneNumberController.text.toString().trim();
-    spoDataFields.OfficeAddress =
-        _spoOfficeAddressController.text.toString().trim();
-    spoDataFields.PinCode = _spoPinCodeController.text.toString().trim();
-    spoDataFields.CaptchaCodeEnter =
-        _spoCaptchaCodeEnterController.text.toString().trim();
-    print('@@stateCodeSPO.state' + stateCodeSPO.toString());
-    print('@@spoDataFields.spoDataFields' + spoDataFields.codeSPOs);
-    if (spoDataFields.Name.isEmpty) {
-      Utils.showToast("Please enter Name !", false);
-      return;
-    }
-    if (spoDataFields.mobileNumber.isEmpty) {
-      Utils.showToast("Please enter Mobile number !", false);
-      return;
-    }
-    if (spoDataFields.emailId.isNotEmpty &&
-        !isValidEmail(_spoEmailIdController.text.toString().trim())) {
-      Utils.showToast("Please enter valid email", false);
-      return;
-    }
-    if (spoDataFields.designation.isEmpty) {
-      Utils.showToast("Please enter Designation !", false);
-      return;
-    }
-    if (spoDataFields.PhoneNumber.isEmpty) {
-      Utils.showToast("Please enter PhoneNumber !", false);
-      return;
-    }
-    if (spoDataFields.OfficeAddress.isEmpty) {
-      Utils.showToast("Please enter Office Address !", false);
-      return;
-    }
-    if (spoDataFields.PinCode.isEmpty) {
-      Utils.showToast("Please enter PinCode !", false);
-      return;
-    }
-    if (spoDataFields.CaptchaCodeEnter.isEmpty) {
-      Utils.showToast("Please enter Matched Captcha !", false);
-      return;
-    } else {
-      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
-        if (isNetworkAvailable) {
-          Utils.showProgressDialog1(context);
-          ApiController.spoRegistrationAPiRquest(spoDataFields)
-              .then((response) async {
-            Utils.hideProgressDialog1(context);
 
-            print('@@spoAPiRquest ---' + response.status.toString());
-            if (response.status) {
-              //    Navigator.pop(context);
-              Utils.showToast(response.message, true);
-              _spoNAmeController.clear();
-              _spoMobileController.clear();
-              _spoPinCodeController.clear();
-              _spoOfficeAddressController.clear();
-              _spoEmailIdController.clear();
-              _spoPhoneNumberController.clear();
-              _spoCaptchaCodeEnterController.clear();
-              _spoDestinationController.clear();
-              stdControllerSpo.clear();
-            } else {
-              Utils.showToast(response.message, true);
-            }
-          });
-        } else {
-          Utils.showToast(AppConstant.noInternet, true);
-        }
-      });
-    }
-  }
 
-/*  Future<void> _NGORegistrationSubmit() async {
-    ngodDataFields.ngoDarpanNumber =
-        _ngoDarpanNumberController.text.toString().trim();
-    ;
-    ngodDataFields.ngoPANNumber =
-        _ngoPANNumberController.text.toString().trim();
-
-    print('@@ngoDarpanNumber' + stateCodeSPO.toString());
-    print('@@ngodDataFields' + spoDataFields.codeSPOs);
-    if (ngodDataFields.ngoDarpanNumber.isEmpty) {
-      Utils.showToast("Please enter Name !", false);
-      return;
-    }
-    if (ngodDataFields.ngoPANNumber.isEmpty) {
-      Utils.showToast("Please enter Mobile number !", false);
-      return;
-    } else {
-      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
-        if (isNetworkAvailable) {
-          Utils.showProgressDialog1(context);
-          ApiController.ngoRegistrationAPiRquest(spoDataFields)
-              .then((response) async {
-            Utils.hideProgressDialog1(context);
-
-            print('@@spoAPiRquest ---' + response.toString());
-            if (response != null && response.status) {
-
-              Navigator.pop(context);
-            }
-          });
-        } else {
-          Utils.showToast(AppConstant.noInternet, true);
-        }
-      });
-    }
-  }*/
 
   Future<void> _RegistraterUserIDSubmit() async {
     print("@@_RegistraterUserIDSubmit----");
@@ -3394,380 +3371,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     }
   }
 
-  /*Widget DPMRegistration() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Visibility(
-            visible: showDPMRegistration,
-            child: Center(
-              child: Container(
-                margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
-                alignment: Alignment.center,
-                child: ListView(
-                  shrinkWrap: true,
-                  children: [
-                    Center(
-                      child: FutureBuilder<List<Data>>(
-                        future: _future,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}');
-                          }
 
-                          if (!snapshot.hasData) {
-                            return const CircularProgressIndicator();
-                          }
-
-                          // Logging for debugging
-                          developer.log('@@snapshot: ${snapshot.data}');
-
-                          List<Data> stateList = snapshot.data;
-
-                          // Ensure selected state is in the list, otherwise select the first
-                          if (_selectedUser == null || !stateList.contains(_selectedUser)) {
-                            _selectedUser = stateList.first;
-                          }
-
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                const Text(
-                                  'Select State:',
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
-                                DropdownButtonFormField<Data>(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
-                                  ),
-                                  onChanged: (user) => setState(() {
-                                    _selectedUser = user;
-                                    stateCodeDPM = int.parse(user.stateCode.toString());
-                                    print('@@statenameSPO: $stateCodeDPM');
-                                    codeDPM = user.code;
-                                    print('@@CodeSPO___1: $codeDPM');
-                                    distNameDPM = user.stateName;
-
-                                    // Update shared preferences and visibility based on the selected state
-                                    if (codeDPM != null) {
-                                      print('@@CodeSPO___66: $codeDPM statename ----- $distNameDPM');
-                                      SharedPrefs.storeSharedValue(AppConstant.txtStateDPmValue, stateCodeDPM);
-                                      isVisibleDitrict = true;
-                                      _getDistrictData(stateCodeDPM);
-                                    } else {
-                                      isVisibleDitrict = false;
-                                    }
-                                    setState(() {});
-                                  }),
-                                  value: _selectedUser,
-                                  items: stateList.map<DropdownMenuItem<Data>>((Data user) {
-                                    return DropdownMenuItem<Data>(
-                                      value: user,
-                                      child: Text(user.stateName),
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                    ,
-
-                    Visibility(
-                      visible: isVisibleDitrict,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            const Text(
-                              'Select District:',
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Center(
-                              child: FutureBuilder<List<DataDsiricst>>(
-                                future: _getDistrictData(stateCodeDPM),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  }
-                                  if (!snapshot.hasData) {
-                                    return const CircularProgressIndicator();
-                                  }
-
-                                  // Logging for debugging
-                                  developer.log('@@snapshot: ${snapshot.data}');
-
-                                  List<DataDsiricst> districtList = snapshot.data;
-
-                                  // Ensure selected district is in the list, otherwise select the first
-                                  if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
-                                    _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
-                                  }
-
-                                  return DropdownButtonFormField<DataDsiricst>(
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.blue[50],
-                                    ),
-                                    onChanged: (districtUser) {
-                                      setState(() {
-                                        _selectedUserDistrict = districtUser;
-                                        distCodeDPM = int.parse(districtUser.districtCode.toString());
-                                        distNameDPMs_distictValues = districtUser.districtName;
-                                        print('@@@Districtuser: ${districtUser.districtName}');
-                                      });
-                                    },
-                                    value: _selectedUserDistrict,
-                                    items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
-                                      return DropdownMenuItem<DataDsiricst>(
-                                        value: district,
-                                        child: Text(district.districtName),
-                                      );
-                                    }).toList(),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                    ,
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        controller: _dpmNAmeController,
-                        decoration: InputDecoration(
-                            label: Text('Name'),
-                            hintText: 'Name',
-                            //prefixIcon
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        keyboardType: TextInputType.number,
-                        controller: _dpmMobileController,
-                        maxLength: 10,
-                        decoration: InputDecoration(
-                            label: Text('Mobile Number'),
-                            hintText: 'Mobile Number',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        controller: _dpmEmailIdController,
-                        decoration: InputDecoration(
-                            label: Text('EmailID'),
-                            hintText: 'EmailID',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        controller: _dpmDestinationController,
-                        decoration: InputDecoration(
-                            label: Text('Designation'),
-                            hintText: 'Designation',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),
-
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 1,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: new TextFormField(
-                              controller: stdControllerDPM,
-                              keyboardType: TextInputType.number,
-                              inputFormatters: <TextInputFormatter>[
-                                FilteringTextInputFormatter.digitsOnly
-                              ],
-                              maxLength: 10,
-                              decoration: InputDecoration(
-                                  label: Text('Std'),
-                                  hintText: 'Std',
-
-                                  //prefixIcon
-
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0))),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: new TextField(
-                              keyboardType: TextInputType.number,
-                              controller: _dpmPhoneNumberController,
-                              maxLength: 10,
-                              decoration: InputDecoration(
-                                  label: Text('Phone Number'),
-                                  hintText: 'Phone Number',
-                                  border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(5.0))),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        controller: _dpmOfficeAddressController,
-                        decoration: InputDecoration(
-                            label: Text('Office Address'),
-                            hintText: 'Office Address',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: new TextField(
-                        maxLength: 6,
-                        controller: _dpmPinCodeController,
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(
-                            label: Text('Pin Code'),
-                            hintText: 'Pin Code',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          // Shown Captcha value to user
-                          Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                  border: Border.all(width: 2, color: red1)),
-                              child: Text(
-                                '${randomString}',
-                                style: TextStyle(
-                                    color: red1, fontWeight: FontWeight.w500),
-                              )),
-                          const SizedBox(
-                            width: 10,
-                          ),
-
-                          // Regenerate captcha value
-                          IconButton(
-                              onPressed: () {
-                                //  buildCaptcha();
-                              },
-                              icon: const Icon(Icons.refresh)),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    // TextFormField to enter captcha value
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                      child: TextFormField(
-                        controller: _dpmCaptchaCodeEnterController,
-
-                        */ /*  onChanged: (value) {
-                        setState(() {
-                          isVerified = false;
-                        });
-                      },*/ /*
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            hintText: "Enter Captcha Value",
-                            labelText: "Enter Captcha Value"),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                      child: ElevatedButton(
-                          child: Text('Submit'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                          ),
-                          onPressed: () {
-                            print('@@DPMMMM Hit here-----Api---------');
-                            _DPMRegistrationSubmit();
-                          }),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
-                      child: ElevatedButton(
-                        child: Text('Reset'),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
-                        ),
-                        onPressed: () {
-                          _dpmNAmeController.clear();
-                          _dpmMobileController.clear();
-                          _dpmPinCodeController.clear();
-                          _dpmOfficeAddressController.clear();
-                          _dpmEmailIdController.clear();
-                          _dpmPhoneNumberController.clear();
-                          _dpmCaptchaCodeEnterController.clear();
-                          _dpmDestinationController.clear();
-                          stdControllerDPM.clear();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }*/
   Widget DPMRegistration() {
     return SingleChildScrollView(
       child: Column(
@@ -4198,7 +3802,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                           child: SizedBox(
                             height: 50, // Adjust height as needed
                             child: TextField(
-                              controller: _captchaController,
+                              controller: _dpmCaptchaCodeEnterController,
                               decoration: InputDecoration(
                                 label: RichText(
                                   text: TextSpan(
@@ -4222,6 +3826,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                               onChanged: (value) {
                                 setState(() {
                                   isVerified = false;
+
                                 });
                               },
                             ),
@@ -4334,95 +3939,127 @@ class _RegisterScreen extends State<RegisterScreen> {
   }
 
   Future<void> _DPMRegistrationSubmit() async {
-    dpmDataFields.stdDPMs = int.parse(stdControllerDPM.text.toString().trim());
-    dpmDataFields.stateDPM = stateCodeDPM;
-    dpmDataFields.distCodeDPM = distCodeDPM; //CodeDPM; testing purpose
-    dpmDataFields.NameDPM = _dpmNAmeController.text.toString().trim();
-    dpmDataFields.mobileNumberDPM = _dpmMobileController.text.toString().trim();
-    dpmDataFields.emailIdDPM = _dpmEmailIdController.text.toString().trim();
-    dpmDataFields.designationDPM =
-        _dpmDestinationController.text.toString().trim();
-    dpmDataFields.PhoneNumberDPM =
-        _dpmPhoneNumberController.text.toString().trim();
-    dpmDataFields.OfficeAddressDPM =
-        _dpmOfficeAddressController.text.toString().trim();
-    dpmDataFields.PinCodeDPM = _dpmPinCodeController.text.toString().trim();
-    dpmDataFields.CaptchaCodeEnterDPM =
-        _dpmCaptchaCodeEnterController.text.toString().trim();
-    dpmDataFields.codeSPOsDPM = codeDPM;
-    dpmDataFields.distNameDPMs = distNameDPM;
-    dpmDataFields.distNameDPMs_distictValue = distNameDPMs_distictValues;
-    print('@@codeDPM.state__Dist_name---1' +
-        dpmDataFields.distNameDPMs.toString());
-    print('@@codeDPM.state__1' + codeDPM.toString());
-    print('@@codeDPM.state___2' + dpmDataFields.codeSPOsDPM.toString());
-    if (dpmDataFields.NameDPM.isEmpty) {
-      Utils.showToast("Please enter Name !", false);
-      return;
-    }
-    if (dpmDataFields.mobileNumberDPM.isEmpty) {
-      Utils.showToast("Please enter Mobile number !", false);
-      return;
-    }
-    if (dpmDataFields.emailIdDPM.isNotEmpty &&
-        !isValidEmail(_spoEmailIdController.text.toString().trim())) {
-      Utils.showToast("Please enter valid email", false);
-      return;
-    }
-    if (dpmDataFields.designationDPM.isEmpty) {
-      Utils.showToast("Please enter Designation !", false);
-      return;
-    }
-    if (dpmDataFields.PhoneNumberDPM.isEmpty) {
-      Utils.showToast("Please enter PhoneNumber !", false);
-      return;
-    }
-    if (dpmDataFields.OfficeAddressDPM.isEmpty) {
-      Utils.showToast("Please enter Office Address !", false);
-      return;
-    }
-    if (dpmDataFields.PinCodeDPM.isEmpty) {
-      Utils.showToast("Please enter PinCode !", false);
-      return;
-    }
-    if (dpmDataFields.CaptchaCodeEnterDPM.isEmpty) {
-      Utils.showToast("Please enter Matched Captcha !", false);
-      return;
-    }
-    if (dpmDataFields.stdDPMs == null || dpmDataFields.stdDPMs == 0) {
-      Utils.showToast("Please enter std !", false);
-      return;
-    } else {
-      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
-        if (isNetworkAvailable) {
-          Utils.showProgressDialog1(context);
-          ApiController.DPMRegistrationAPiRquest(dpmDataFields)
-              .then((response) async {
-            Utils.hideProgressDialog1(context);
+    try {
+      // Safely parse integer values
+      dpmDataFields.stdDPMs = int.tryParse(stdControllerDPM.text.trim()) ?? 0;
+      dpmDataFields.stateDPM = (stateCodeDPM is int) ? stateCodeDPM : int.tryParse(stateCodeDPM?.toString() ?? "") ?? 0;
+      dpmDataFields.distCodeDPM = (distCodeDPM is int) ? distCodeDPM : int.tryParse(distCodeDPM?.toString() ?? "") ?? 0;
+      dpmDataFields.codeSPOsDPM = codeDPM ?? "";
 
-            print('@@dpmDataFields ---1' + response.toString());
-            print('@@dpmDataFields ---2' + response.status.toString());
-            if (response.status) {
-              Utils.showToast(response.message, true);
-              _dpmNAmeController.clear();
-              _dpmMobileController.clear();
-              _dpmPinCodeController.clear();
-              _dpmOfficeAddressController.clear();
-              _dpmEmailIdController.clear();
-              _dpmPhoneNumberController.clear();
-              _dpmCaptchaCodeEnterController.clear();
-              _dpmDestinationController.clear();
-              stdControllerDPM.clear();
-            } else {
-              Utils.showToast(response.message, true);
-            }
-          });
+      // Ensure string fields are properly trimmed
+      dpmDataFields.NameDPM = _dpmNAmeController.text.trim();
+      dpmDataFields.mobileNumberDPM = _dpmMobileController.text.trim();
+      dpmDataFields.emailIdDPM = _dpmEmailIdController.text.trim();
+      dpmDataFields.designationDPM = _dpmDestinationController.text.trim();
+      dpmDataFields.PhoneNumberDPM = _dpmPhoneNumberController.text.trim();
+      dpmDataFields.OfficeAddressDPM = _dpmOfficeAddressController.text.trim();
+      dpmDataFields.PinCodeDPM = _dpmPinCodeController.text.trim();
+      dpmDataFields.CaptchaCodeEnterDPM = _dpmCaptchaCodeEnterController.text.trim();
+      dpmDataFields.distNameDPMs = distNameDPM ?? "";
+      dpmDataFields.distNameDPMs_distictValue = distNameDPMs_distictValues ?? "";
+
+      // Debugging logs
+      print('@@stateDPM: ${dpmDataFields.stateDPM}');
+      print('@@distCodeDPM: ${dpmDataFields.distCodeDPM}');
+      print('@@stdDPMs: ${dpmDataFields.stdDPMs}');
+// Additional validation if needed
+
+      if (dpmDataFields.stateDPM == 0) {
+        Utils.showToast("Invalid State Code. Please select again.", false);
+        return;
+      }
+
+      if (dpmDataFields.distCodeDPM == 0) {
+        Utils.showToast("Invalid District Code. Please select again.", false);
+        return;
+      }
+      // === VALIDATION CHECKS ===
+      if (dpmDataFields.NameDPM.isEmpty) {
+        Utils.showToast("Please enter Name!", false);
+        return;
+      }
+      if (dpmDataFields.mobileNumberDPM.isEmpty) {
+        Utils.showToast("Please enter Mobile number!", false);
+        return;
+      }
+      if (dpmDataFields.emailIdDPM.isNotEmpty && !isValidEmail(dpmDataFields.emailIdDPM)) {
+        Utils.showToast("Please enter a valid email!", false);
+        return;
+      }
+      if (dpmDataFields.designationDPM.isEmpty) {
+        Utils.showToast("Please enter Designation!", false);
+        return;
+      }
+      if (dpmDataFields.PhoneNumberDPM.isEmpty) {
+        Utils.showToast("Please enter Phone Number!", false);
+        return;
+      }
+      if (dpmDataFields.OfficeAddressDPM.isEmpty) {
+        Utils.showToast("Please enter Office Address!", false);
+        return;
+      }
+      if (dpmDataFields.PinCodeDPM.isEmpty) {
+        Utils.showToast("Please enter Pin Code!", false);
+        return;
+      }
+      if (dpmDataFields.CaptchaCodeEnterDPM.isEmpty) {
+        Utils.showToast("Please enter the Matched Captcha!", false);
+        return;
+      }
+      if (dpmDataFields.stdDPMs == 0) {
+        Utils.showToast("Please enter a valid STD!", false);
+        return;
+      }
+
+      // === NETWORK CHECK ===
+      bool isNetworkAvailable = await Utils.isNetworkAvailable();
+      if (!isNetworkAvailable) {
+        Utils.showToast(AppConstant.noInternet, true);
+        return;
+      }
+
+      // Show progress dialog
+      Utils.showProgressDialog1(context);
+
+      try {
+        // === API CALL ===
+        var response = await ApiController.DPMRegistrationAPiRquest(dpmDataFields);
+
+        // Hide progress dialog
+        Utils.hideProgressDialog1(context);
+
+        // Handle API response
+        print('@@DPM API Response: ${response.status}');
+        if (response.status) {
+          Utils.showToast(response.message, true);
+
+          // Clear text fields
+          _dpmNAmeController.clear();
+          _dpmMobileController.clear();
+          _dpmPinCodeController.clear();
+          _dpmOfficeAddressController.clear();
+          _dpmEmailIdController.clear();
+          _dpmPhoneNumberController.clear();
+          _dpmCaptchaCodeEnterController.clear();
+          _dpmDestinationController.clear();
+          stdControllerDPM.clear();
         } else {
-          Utils.showToast(AppConstant.noInternet, true);
+          Utils.showToast(response.message, false);
         }
-      });
+      } catch (apiError) {
+        Utils.hideProgressDialog1(context);
+        print("API Error: $apiError");
+        Utils.showToast("Failed to register. Try again later.", false);
+      }
+    } catch (e, stacktrace) {
+      print("Error in _DPMRegistrationSubmit: $e");
+      print(stacktrace);
+      Utils.showToast("An unexpected error occurred. Please try again.", false);
     }
   }
+
+
+
 
   bool isValidEmail(String input) {
     //Email is opation
