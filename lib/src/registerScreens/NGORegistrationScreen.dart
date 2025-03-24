@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
-import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
-import 'package:mohfw_npcbvi/src/utils/Utils.dart';
+import 'package:marquee/marquee.dart';
 
 class NGORegistrationScreen extends StatefulWidget {
   @override
@@ -11,64 +9,126 @@ class NGORegistrationScreen extends StatefulWidget {
 class _NGORegistrationScreenState extends State<NGORegistrationScreen> {
   final TextEditingController _ngoDarpanNumberController = TextEditingController();
   final TextEditingController _ngoPANNumberController = TextEditingController();
-  bool showNGOResgistration = true;
-  NGODDataFields ngodDataFields = new NGODDataFields();
-
-
+  bool showNGORegistration = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("NGO Registration"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: Text("NGO Registration")),
       body: Column(
         children: [
-          Visibility(
-            visible: showNGOResgistration,
-            child: Center(
+          SizedBox(
+            height: 28,
+            child: Marquee(
+              text: 'NGO Darpan number is mandatory for registration. ',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: Colors.red,
+              ),
+              velocity: 50.0,
+              pauseAfterRound: Duration(seconds: 1),
+              startPadding: 10.0,
+              accelerationDuration: Duration(seconds: 1),
+              accelerationCurve: Curves.linear,
+              decelerationDuration: Duration(milliseconds: 500),
+              decelerationCurve: Curves.easeOut,
+            ),
+          ),
+          Expanded(
+            child: Visibility(
+              visible: showNGORegistration,
               child: Container(
                 margin: EdgeInsets.fromLTRB(10, 30, 10, 10),
-                alignment: Alignment.center,
                 child: ListView(
                   shrinkWrap: true,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    SizedBox(
+                      height: 50,
                       child: TextField(
                         controller: _ngoDarpanNumberController,
                         decoration: InputDecoration(
-                          label: Text('NGO Darpan Number'),
-                          hintText: 'Enter NGO Darpan Number',
+                          label: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'NGO Darpan number ',
+                                  style: TextStyle(color: Colors.black, fontSize: 16.0),
+                                ),
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(color: Colors.red, fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter NGO Darpan number',
+                          prefixIcon: Icon(Icons.business, color: Colors.grey),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+
+                    SizedBox(height: 10),
+                    SizedBox(
+                      height: 50,
                       child: TextField(
                         controller: _ngoPANNumberController,
-                        obscureText: true,
                         decoration: InputDecoration(
-                          label: Text('NGO PAN Number'),
-                          hintText: 'Enter NGO PAN Number',
+                          label: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'NGO PAN number ',
+                                  style: TextStyle(color: Colors.black, fontSize: 16.0),
+                                ),
+                                TextSpan(
+                                  text: '*',
+                                  style: TextStyle(color: Colors.red, fontSize: 16.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter NGO PAN number',
+                          prefixIcon: Icon(Icons.credit_card, color: Colors.grey),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5.0),
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 10, 20.0, 0),
+                    SizedBox(height: 20),
+                    SizedBox(
+                      height: 50,
                       child: ElevatedButton(
-                        child: Text('Verify'),
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.blue,
+                          minimumSize: Size(130, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          elevation: 4,
+                          shadowColor: Colors.black,
                         ),
-                       // onPressed: _NGORegistrationSubmit,
+                        onPressed: () {
+                          print('@@NGO Button click__work pending');
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.check_circle, color: Colors.white),
+                            SizedBox(width: 8),
+                            Text(
+                              'Verify',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -80,45 +140,4 @@ class _NGORegistrationScreenState extends State<NGORegistrationScreen> {
       ),
     );
   }
-
-  /// pending woirk hjere due to api
-  /*Future<void> _NGORegistrationSubmit() async {
-    ngodDataFields.ngoDarpanNumber =
-        _ngoDarpanNumberController.text.toString().trim();
-    ;
-    ngodDataFields.ngoPANNumber =
-        _ngoPANNumberController.text.toString().trim();
-
-    if (ngodDataFields.ngoDarpanNumber.isEmpty) {
-      Utils.showToast("Please enter Name !", false);
-      return;
-    }
-    if (ngodDataFields.ngoPANNumber.isEmpty) {
-      Utils.showToast("Please enter Mobile number !", false);
-      return;
-    } else {
-      Utils.isNetworkAvailable().then((isNetworkAvailable) async {
-        if (isNetworkAvailable) {
-          Utils.showProgressDialog1(context);
-          ApiController.ngoRegistrationAPiRquest(ngodDataFields)
-              .then((response) async {
-            Utils.hideProgressDialog1(context);
-
-            print('@@spoAPiRquest ---' + response.toString());
-            if (response != null && response.status) {
-
-              Navigator.pop(context);
-            }
-          });
-        } else {
-          Utils.showToast(AppConstant.noInternet, true);
-        }
-      });
-    }
-  }*/
-
-}
-class NGODDataFields {
-  String ngoDarpanNumber;
-  String ngoPANNumber;
 }

@@ -130,7 +130,7 @@ class _BothWiseCamp
                                   title: Text('Details for ${entry.ngoName}'),
                                   content: SingleChildScrollView(
                                     child: Table(
-                                      border: TableBorder.all(color: Colors.blue),
+                                      border: TableBorder.all(color: Colors.black),
                                       children: [
                                         _buildTableRow("Organization", "Detail", isHeader: true),
 

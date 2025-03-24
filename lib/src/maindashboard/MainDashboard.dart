@@ -26,6 +26,7 @@ import 'package:mohfw_npcbvi/src/widgets/web_view/DarpanWebview.dart';
 import '../hospitaldashboard/HospitalDashboard.dart';
 import '../loginsignup/RegisterScreen.dart';
 import '../registerScreens/NGORegistrationScreen.dart';
+import '../registerScreens/SPORegistration.dart';
 import 'moreClickdpm/StateWisedpm.dart';
 
 class MainDashboard extends StatefulWidget {
@@ -34,8 +35,24 @@ class MainDashboard extends StatefulWidget {
 
 class _MainDashboard extends State<MainDashboard> {
   bool isLoadingApi = true;
-  String ngoCount, gH_CHC_Count, ppCount, campCount, satellitecentreCount, patientCount, dpm, pmcCount, totalEB, totalEd, spo;
-  String _chosenValue, districtNames, userId, stateNames, fullnameController, _chosenValueRegistrationType, _chosenEyeBank;
+  String ngoCount,
+      gH_CHC_Count,
+      ppCount,
+      campCount,
+      satellitecentreCount,
+      patientCount,
+      dpm,
+      pmcCount,
+      totalEB,
+      totalEd,
+      spo;
+  String _chosenValue,
+      districtNames,
+      userId,
+      stateNames,
+      fullnameController,
+      _chosenValueRegistrationType,
+      _chosenEyeBank;
   double imageTopPositionNGOs = 0; // Default position
   double imageTopPositionGovt = 0; // Default position
 
@@ -50,8 +67,8 @@ class _MainDashboard extends State<MainDashboard> {
   double imageTopPositionDonationCenters = 0; // Default position
 
   bool isTapped = false;
-
-
+  String _appBarTitle = "Dashboard"; // Default title
+  String oganisationTypeGovtPrivateDRopDown, _chosenValueRegisertaion;
 
   @override
   void initState() {
@@ -109,8 +126,6 @@ class _MainDashboard extends State<MainDashboard> {
     });
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -120,20 +135,18 @@ class _MainDashboard extends State<MainDashboard> {
       appBar: new AppBar(
         centerTitle: true,
         title: new Text(
-          'Dashboard',
+          _appBarTitle,
           style: new TextStyle(color: Colors.white),
         ),
-
         actions: <Widget>[
           IconButton(
             icon: Icon(
               Icons.login,
               color: Colors.white,
-
             ),
             onPressed: () {
               //not Removes all previous screens
-          /*    Navigator.push(
+              /*    Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => LoginScreen()),
@@ -142,7 +155,7 @@ class _MainDashboard extends State<MainDashboard> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => LoginScreen()),
-                    (route) => false, // Removes all previous screens
+                (route) => false, // Removes all previous screens
               );
               // do something
             },
@@ -164,27 +177,13 @@ class _MainDashboard extends State<MainDashboard> {
             // Reduce the margin to decrease space// Set the margin here
             child: ListView(
               children: [
-
-                _buildMenuItem(
-                  icon: Icons.dashboard,
-                  title: 'Dashboard',
-                  onTap: () {
-                    setState(() {
-                        Navigator.pop(context);
-                     /* Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => MainDashboard()));*/
-                    });
-                  //  Navigator.pop(context);
-                  },
-                ),
                 _buildMenuItem(
                   icon: Icons.home,
                   title: 'Home',
                   onTap: () {
                     Navigator.pop(context); // Close the drawer first
-                    Future.delayed(Duration(milliseconds: 300), () { // Wait before pushing
+                    Future.delayed(Duration(milliseconds: 300), () {
+                      // Wait before pushing
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -194,8 +193,104 @@ class _MainDashboard extends State<MainDashboard> {
                     });
                   },
                 ),
+                _buildMenuItem(
+                  icon: Icons.dashboard,
+                  title: 'Dashboard',
+                  onTap: () {
+                    setState(() {
+                      _appBarTitle = "Dashboard";
 
+                      Navigator.pop(context);
+                      /* Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => MainDashboard()));*/
+                    });
+                    //  Navigator.pop(context);
+                  },
+                ),
+           /*     _buildDropdownItem(
+                  value: _chosenValueRegisertaion,
+                  hint: 'Registeration',
+                  hintIcon: Icon(Icons.update, color: Colors.black),
+                  // Add an icon to the hint
+                  items: [
+                    {'value': 'NGO', 'icon': Icons.person_add},
+                    // Add an icon here
+                    {'value': 'Govt./Private /Other', 'icon': Icons.update},
+                    {'value': 'SPO', 'icon': Icons.visibility},
+                    {'value': 'DPM', 'icon': Icons.visibility},
+                  ],
 
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenValueRegisertaion = value;
+
+                      if (_chosenValueRegisertaion == "NGO") {
+                        print('@@NGO--1' + _chosenValueRegisertaion);
+
+                        // Ensure push operation runs after setState
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => NGORegistrationScreen()),
+                          );
+                        });
+
+                      } else if (_chosenValueRegisertaion == "SPO") {
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SPORegistration()),
+                          );
+                        });
+                        //getCountries();
+                        *//*  _future = _getStatesDAta();
+                        print('@@showSPORegistration--2' +
+                            _chosenValueRegisertaion);
+                        showNGOResgistration = false;
+                        showSPORegistration = true;
+                        showDPMRegistration = false;
+                        showGOVTPrivate = false;
+                        newUSerGovtPrivateRegisterRadios = false;
+                        registeredUSerGovtPrivateRegsiterations = false;
+                        showHomeScreen = false;*//*
+                      } else if (_chosenValueRegisertaion == "DPM") {
+                        //getCountries();
+                        *//*   _future = _getStatesDAta();
+
+                        // _getDistrictData(18);
+
+                        print('@@showSPORegistration--3' +
+                            _chosenValueRegisertaion +
+                            value.toString());
+                        showNGOResgistration = false;
+                        showSPORegistration = false;
+                        showDPMRegistration = true;
+                        showGOVTPrivate = false;
+                        newUSerGovtPrivateRegisterRadios = false;
+                        showHomeScreen = false;
+                        registeredUSerGovtPrivateRegsiterations = false;*//*
+                      } else if (_chosenValueRegisertaion ==
+                          "Govt./Private /Other") {
+                        *//*    showNGOResgistration = false;
+                        showSPORegistration = false;
+                        showDPMRegistration = false;
+                        showGOVTPrivate = true;
+                        showHomeScreen = false;
+                        // ✅ Set the default selected radio to "New User"
+                        _future = _getStatesDAta();
+                        _value = 1;
+                        newUSerGovtPrivateRegisterRadios = true;
+                        registeredUSerGovtPrivateRegsiterations = false;*//*
+                      }
+                    });
+
+                    Navigator.pop(context);
+                  },
+                ),*/
                 _buildMenuItem(
                   icon: Icons.contact_page,
                   title: 'Contact Us',
@@ -204,28 +299,15 @@ class _MainDashboard extends State<MainDashboard> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ContactusHtmlDisplayScreen()));
-                    });
-                   // Navigator.pop(context);
-                  },
-                ),
-              /*  _buildMenuItem(
-                  icon: Icons.contact_page,
-                  title: 'Registration',
-                  onTap: () {
-                    setState(() {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => RegisterScreen()));
+                              builder: (context) =>
+                                  ContactusHtmlDisplayScreen()));
                     });
                     // Navigator.pop(context);
                   },
                 ),
-*/
                 _buildMenuItem(
                   icon: Icons.login,
-                  title: 'Login',
+                  title: 'Sign In',
                   onTap: () {
                     setState(() {
                       Navigator.push(
@@ -233,10 +315,9 @@ class _MainDashboard extends State<MainDashboard> {
                           MaterialPageRoute(
                               builder: (context) => LoginScreen()));
                     });
-                  //  Navigator.pop(context);
+                    //  Navigator.pop(context);
                   },
                 ),
-
               ],
             ),
           ),
@@ -259,7 +340,6 @@ class _MainDashboard extends State<MainDashboard> {
                     MediaQuery.of(context).padding.top,
                 child: SingleChildScrollView(
                   child: Column(
-
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 15),
@@ -268,17 +348,22 @@ class _MainDashboard extends State<MainDashboard> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MoreClickGetStateWiseNGOForDashboard(),
+                              builder: (context) =>
+                                  MoreClickGetStateWiseNGOForDashboard(),
                             ),
                           );
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -286,7 +371,8 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
@@ -320,13 +406,11 @@ class _MainDashboard extends State<MainDashboard> {
                               duration: Duration(milliseconds: 300),
                               top: 0,
                               left: 30,
-
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(0),
-
                                   child: Image.asset(
                                     'images/ngo_new.png',
                                     fit: BoxFit.cover,
@@ -343,17 +427,22 @@ class _MainDashboard extends State<MainDashboard> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MoreClickGetStateWiseHospitalDashboard(),
+                              builder: (context) =>
+                                  MoreClickGetStateWiseHospitalDashboard(),
                             ),
                           );
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -361,7 +450,8 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
@@ -377,7 +467,9 @@ class _MainDashboard extends State<MainDashboard> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          gH_CHC_Count   != null ? '$gH_CHC_Count  ' : '0',
+                                          gH_CHC_Count != null
+                                              ? '$gH_CHC_Count  '
+                                              : '0',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -393,7 +485,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -416,17 +508,22 @@ class _MainDashboard extends State<MainDashboard> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MoreClickGetStateWiseMedicalColleges(),
+                              builder: (context) =>
+                                  MoreClickGetStateWiseMedicalColleges(),
                             ),
                           );
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -434,7 +531,8 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
@@ -450,7 +548,9 @@ class _MainDashboard extends State<MainDashboard> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          pmcCount      != null ? '$pmcCount     ' : '0',
+                                          pmcCount != null
+                                              ? '$pmcCount     '
+                                              : '0',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -466,7 +566,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -489,17 +589,22 @@ class _MainDashboard extends State<MainDashboard> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MoreClickGetStateWisePrivatePrectioiries(),
+                              builder: (context) =>
+                                  MoreClickGetStateWisePrivatePrectioiries(),
                             ),
                           );
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -507,7 +612,8 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
@@ -523,7 +629,9 @@ class _MainDashboard extends State<MainDashboard> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          ppCount          != null ? '$ppCount         ' : '0',
+                                          ppCount != null
+                                              ? '$ppCount         '
+                                              : '0',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -538,9 +646,8 @@ class _MainDashboard extends State<MainDashboard> {
                             ),
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
-
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -561,15 +668,19 @@ class _MainDashboard extends State<MainDashboard> {
                       GestureDetector(
                         onTap: () {
                           // _handleMoreClick();
-                         // Utils.showToast("work is pending from chnadha due to large data and crash app", true);
+                          // Utils.showToast("work is pending from chnadha due to large data and crash app", true);
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -577,7 +688,8 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
@@ -593,7 +705,9 @@ class _MainDashboard extends State<MainDashboard> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          patientCount != null ? '$patientCount  ' : '0',
+                                          patientCount != null
+                                              ? '$patientCount  '
+                                              : '0',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -609,12 +723,11 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
                                 backgroundColor: Colors.transparent,
-
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
@@ -635,17 +748,22 @@ class _MainDashboard extends State<MainDashboard> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MoreClickGetStateWiseSatelliteCenters(),
+                              builder: (context) =>
+                                  MoreClickGetStateWiseSatelliteCenters(),
                             ),
                           );
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -653,7 +771,8 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
@@ -669,7 +788,9 @@ class _MainDashboard extends State<MainDashboard> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          satellitecentreCount != null ? '$satellitecentreCount  ' : '0',
+                                          satellitecentreCount != null
+                                              ? '$satellitecentreCount  '
+                                              : '0',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -685,7 +806,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -717,10 +838,14 @@ class _MainDashboard extends State<MainDashboard> {
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -728,7 +853,8 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
@@ -744,7 +870,9 @@ class _MainDashboard extends State<MainDashboard> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          campCount != null ? '$campCount  ' : '0',
+                                          campCount != null
+                                              ? '$campCount  '
+                                              : '0',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -760,7 +888,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -790,15 +918,18 @@ class _MainDashboard extends State<MainDashboard> {
                               builder: (context) => StateWisedpm(),
                             ),
                           );
-
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -806,7 +937,8 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
@@ -822,7 +954,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          dpm   != null ? '$dpm    ' : '0',
+                                          dpm != null ? '$dpm    ' : '0',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -838,7 +970,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -866,16 +998,18 @@ class _MainDashboard extends State<MainDashboard> {
                               builder: (context) => SpoDataListclickMore(),
                             ),
                           );
-
-
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -883,7 +1017,8 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
@@ -899,7 +1034,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          spo    != null ? '$spo     ' : '0',
+                                          spo != null ? '$spo     ' : '0',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -915,7 +1050,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -943,16 +1078,18 @@ class _MainDashboard extends State<MainDashboard> {
                               builder: (context) => EyBank(),
                             ),
                           );
-
-
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -960,13 +1097,14 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
                                             'Eye Banks(s)',
                                             style: TextStyle(
-                                              color:eybanks,
+                                              color: eybanks,
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -992,7 +1130,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -1018,16 +1156,18 @@ class _MainDashboard extends State<MainDashboard> {
                               builder: (context) => DonationCentersMoreClick(),
                             ),
                           );
-
-
                         },
                         child: Stack(
                           children: <Widget>[
                             Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 16.0), // Add left and right margin
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
                               child: SizedBox(
-                                width: double.infinity, // Full width inside the margin
-                                height: 100, // Set your desired height
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
                                 child: Card(
                                   color: Colors.white,
                                   elevation: 5,
@@ -1035,13 +1175,14 @@ class _MainDashboard extends State<MainDashboard> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
                                         child: Align(
                                           alignment: Alignment.topRight,
                                           child: Text(
                                             'Donation Centres(s)',
                                             style: TextStyle(
-                                              color:donationcentres,
+                                              color: donationcentres,
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -1051,7 +1192,7 @@ class _MainDashboard extends State<MainDashboard> {
                                       Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          totalEd  != null ? '$totalEd   ' : '0',
+                                          totalEd != null ? '$totalEd   ' : '0',
                                           style: TextStyle(
                                             color: Colors.black,
                                             fontSize: 16,
@@ -1067,7 +1208,7 @@ class _MainDashboard extends State<MainDashboard> {
                             // 🟢 Animated Positioned Image (Moves Up on Tap)
                             AnimatedPositioned(
                               duration: Duration(milliseconds: 300),
-                              top: 0 ,
+                              top: 0,
                               left: 25,
                               child: CircleAvatar(
                                 radius: 15,
@@ -1096,7 +1237,6 @@ class _MainDashboard extends State<MainDashboard> {
           ],
         ),
       ),
-
     );
   }
 
@@ -1106,7 +1246,7 @@ class _MainDashboard extends State<MainDashboard> {
     Function() onTap,
   }) {
     double size =
-    14.0; // You can set a consistent size for both the icon and text
+        14.0; // You can set a consistent size for both the icon and text
 
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
@@ -1126,7 +1266,7 @@ class _MainDashboard extends State<MainDashboard> {
               color: Colors.black,
               fontSize: size,
               fontWeight:
-              FontWeight.normal, // Explicitly set fontWeight to normal
+                  FontWeight.normal, // Explicitly set fontWeight to normal
             ),
           )
         ],
@@ -1139,7 +1279,7 @@ class _MainDashboard extends State<MainDashboard> {
     String value,
     String hint,
     List<Map<String, dynamic>>
-    items, // List of maps to hold both item text and icon data
+        items, // List of maps to hold both item text and icon data
     Function(String) onChanged,
     Icon hintIcon, // Make hintIcon nullable
   }) {
@@ -1153,7 +1293,7 @@ class _MainDashboard extends State<MainDashboard> {
           style: TextStyle(color: Colors.black),
           dropdownColor: Colors.white,
           items:
-          items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
+              items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
             return DropdownMenuItem<String>(
               value: item['value'],
               child: Row(
@@ -1175,25 +1315,27 @@ class _MainDashboard extends State<MainDashboard> {
           }).toList(),
           hint: hintIcon != null
               ? Row(
-            children: [
-              hintIcon, // Only add the icon if it's not null
-              SizedBox(
-                  width: 8.0), // Add space between the icon and hint text
-              Text(
-                hint,
-                style: TextStyle(
-                    color: Colors.black, fontWeight: FontWeight.w500),
-              ),
-            ],
-          )
+                  children: [
+                    hintIcon, // Only add the icon if it's not null
+                    SizedBox(
+                        width: 8.0), // Add space between the icon and hint text
+                    Text(
+                      hint,
+                      style: TextStyle(
+                          color: Colors.black, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                )
               : Text(
-            hint,
-            style: TextStyle(
-                color: Colors.black, fontWeight: FontWeight.w500),
-          ),
+                  hint,
+                  style: TextStyle(
+                      color: Colors.black, fontWeight: FontWeight.w500),
+                ),
           onChanged: onChanged,
         ),
       ),
     );
   }
+
+
 }
