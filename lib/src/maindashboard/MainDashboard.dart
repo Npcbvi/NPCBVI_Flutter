@@ -16,6 +16,8 @@ import 'package:mohfw_npcbvi/src/model/contactus/ContactUS.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/distictNgODashboard/NGODashboards.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickDpm/StateWiseDpm.dart';
 import 'package:mohfw_npcbvi/src/ngo/NgoDashboard.dart';
+import 'package:mohfw_npcbvi/src/registerScreens/DPMRegistration.dart';
+import 'package:mohfw_npcbvi/src/registerScreens/GovvtPrivateHospitalRegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppColor.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -209,7 +211,9 @@ class _MainDashboard extends State<MainDashboard> {
                     //  Navigator.pop(context);
                   },
                 ),
-           /*     _buildDropdownItem(
+
+              // I have prapared this module but it is in comment section now
+              /*  _buildDropdownItem(
                   value: _chosenValueRegisertaion,
                   hint: 'Registeration',
                   hintIcon: Icon(Icons.update, color: Colors.black),
@@ -244,47 +248,30 @@ class _MainDashboard extends State<MainDashboard> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => SPORegistration()),
+
                           );
                         });
-                        //getCountries();
-                        *//*  _future = _getStatesDAta();
-                        print('@@showSPORegistration--2' +
-                            _chosenValueRegisertaion);
-                        showNGOResgistration = false;
-                        showSPORegistration = true;
-                        showDPMRegistration = false;
-                        showGOVTPrivate = false;
-                        newUSerGovtPrivateRegisterRadios = false;
-                        registeredUSerGovtPrivateRegsiterations = false;
-                        showHomeScreen = false;*//*
+
                       } else if (_chosenValueRegisertaion == "DPM") {
                         //getCountries();
-                        *//*   _future = _getStatesDAta();
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DPMRegistration()),
 
-                        // _getDistrictData(18);
-
-                        print('@@showSPORegistration--3' +
-                            _chosenValueRegisertaion +
-                            value.toString());
-                        showNGOResgistration = false;
-                        showSPORegistration = false;
-                        showDPMRegistration = true;
-                        showGOVTPrivate = false;
-                        newUSerGovtPrivateRegisterRadios = false;
-                        showHomeScreen = false;
-                        registeredUSerGovtPrivateRegsiterations = false;*//*
+                          );
+                        });
                       } else if (_chosenValueRegisertaion ==
                           "Govt./Private /Other") {
-                        *//*    showNGOResgistration = false;
-                        showSPORegistration = false;
-                        showDPMRegistration = false;
-                        showGOVTPrivate = true;
-                        showHomeScreen = false;
-                        // ✅ Set the default selected radio to "New User"
-                        _future = _getStatesDAta();
-                        _value = 1;
-                        newUSerGovtPrivateRegisterRadios = true;
-                        registeredUSerGovtPrivateRegsiterations = false;*//*
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => GovvtPrivateHospitalRegisterScreen()),
+
+                          );
+                        });
                       }
                     });
 

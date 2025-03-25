@@ -31,6 +31,9 @@ import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/G
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/GetStateWiseHospitalsForDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreDashboardClickStateWise.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreStateDistrictBoth.dart';
+import 'package:mohfw_npcbvi/src/registerScreens/DPMRegistration.dart';
+import 'package:mohfw_npcbvi/src/registerScreens/GovvtPrivateHospitalRegisterScreen.dart';
+import 'package:mohfw_npcbvi/src/registerScreens/SPORegistration.dart';
 import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:dio/dio.dart';
 import 'package:http/http.dart' as http;
@@ -139,7 +142,6 @@ import '../model/screeningCamp/ScreenCampRegister.dart';
 import '../model/spoModel/dahboardclickdetails/GetSPO_SatelliteCentreApproval.dart';
 import '../model/spoModel/dahboardclickdetails/PrivateMedicalCollegeApproved.dart';
 import '../utils/Utils.dart';
-
 class ApiController {
   static final int timeout = 18;
 
@@ -426,8 +428,134 @@ class ApiController {
     //Way to send url with methodname
   }
 
+
+  static Future<SPORegisterModel> spoRegistrationAPiRquestCopy(
+      SPODataFieldss spoDataFields) async {// just chnage for senarion test
+    SPORegisterModel spoRegisterModel = SPORegisterModel();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+        //Way to send params
+        var body = json.encode({
+          "state_code": spoDataFields.state,
+          "name": spoDataFields.Name,
+          "mobile": spoDataFields.mobileNumber,
+          "email_id": spoDataFields.emailId,
+          "designation": spoDataFields.designation,
+          "std": spoDataFields.stdSPO,
+          "phone_no": spoDataFields.PhoneNumber,
+          "office_address": spoDataFields.OfficeAddress,
+          "pincode": spoDataFields.PinCode,
+          "user_id": "NPCB" + spoDataFields.codeSPOs,
+        });
+        print("@@spoRegistrationAPiRquest" + url + body);
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                headers: headers,
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@spoRegistrationAPiRquest" + url + body);
+        print("@@spoRegistrationAPiRquest--Api" + response1.toString());
+        spoRegisterModel =
+            SPORegisterModel.fromJson(json.decode(response1.data));
+        //  Result result = loginModel.result;
+        //  print("@@Result message----" + result.message);
+        if (spoRegisterModel.status) {
+          Utils.showToast(spoRegisterModel.message, true);
+        } else {
+          Utils.showToast(spoRegisterModel.message, true);
+        }
+        return spoRegisterModel;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+    //Way to send url with methodname
+  }
+
   static Future<DPMRegistartionModel> DPMRegistrationAPiRquest(
       DPMDataFields dpmDataFields) async {
+    DPMRegistartionModel dpmRegistartionModel = DPMRegistartionModel();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      try {
+        var url = ApiConstants.baseUrl + ApiConstants.DpmRegistration;
+        //Way to send headers
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+        //Way to send params
+        var body = json.encode({
+          "state_code": dpmDataFields.stateDPM,
+          "district_code": dpmDataFields.distCodeDPM,
+          "name": dpmDataFields.NameDPM,
+          "mobile": dpmDataFields.mobileNumberDPM,
+          "email_id": dpmDataFields.emailIdDPM,
+          "designation": dpmDataFields.designationDPM,
+          "std": dpmDataFields.stdDPMs,
+          "phone_no": dpmDataFields.PhoneNumberDPM,
+          "office_address": dpmDataFields.OfficeAddressDPM,
+          "pincode": dpmDataFields.PinCodeDPM,
+          "std": dpmDataFields.stdDPMs,
+          //"user_id": "NPCB" + dpmDataFields.codeSPOsDPM,
+          "user_id":
+          dpmDataFields.codeSPOsDPM + "DPM" + dpmDataFields.distNameDPMs,
+          "stateName": dpmDataFields.distNameDPMs,
+          "districtName": dpmDataFields.distNameDPMs_distictValue,
+        });
+        print("@@DPMRegistrationAPiRquest-------" + url + body);
+        //Way to send network calls
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: body,
+            options: new Options(
+                headers: headers,
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@DPMRegistrationAPiRquest" + url + body);
+        print("@@DPMRegistrationAPiRquest--Api" + response1.toString());
+        dpmRegistartionModel =
+            DPMRegistartionModel.fromJson(json.decode(response1.data));
+        print("@@token" + dpmRegistartionModel.message);
+
+        if (dpmRegistartionModel.status) {
+          Utils.showToast(dpmRegistartionModel.message, true);
+        } else {
+          Utils.showToast(dpmRegistartionModel.message, true);
+        }
+        return dpmRegistartionModel;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+
+    //Way to send url with methodname
+  }
+
+  static Future<DPMRegistartionModel> DPMRegistrationAPiRquestCopy(
+      DPMDataFieldss dpmDataFields) async {
     DPMRegistartionModel dpmRegistartionModel = DPMRegistartionModel();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -788,6 +916,77 @@ class ApiController {
       try {
         // Directly use the existing equipmentList from govtPrivateRegistatrionDataFields
         List<EquipmentName> equipmentList =
+            govtPrivateRegistatrionDataFields.equipmentList ?? [];
+
+        // Logging the equipmentList for debugging
+        print("@@equipmentData---apicontroller" + equipmentList.toString());
+
+        var url = ApiConstants.baseUrl +
+            ApiConstants.registration_of_Govt_Private_Other_Hospital;
+
+        Map<String, dynamic> payload = {
+          "h_roleid":
+          govtPrivateRegistatrionDataFields.dropDownvalueOrgnbaistaionTypes,
+          "h_Name": govtPrivateRegistatrionDataFields.organisationNameGovt,
+          "h_MobileNo": govtPrivateRegistatrionDataFields.MobileNoGovt,
+          "h_EmailID": govtPrivateRegistatrionDataFields.EmailIDGovt,
+          "h_Address": govtPrivateRegistatrionDataFields.AddressGovt,
+          "h_PinCode": govtPrivateRegistatrionDataFields.pinCodeGovt,
+          "h_Officer_Name": govtPrivateRegistatrionDataFields.OfficernameGovt,
+          "mode": "",
+          "h_stateid": govtPrivateRegistatrionDataFields.hStateid,
+          "h_districtid": govtPrivateRegistatrionDataFields.hDistrictid,
+          "inserttype": 0, // for insert data and 1 for update data
+          "h_NIN_no": govtPrivateRegistatrionDataFields.HospitalNinNumber,
+          "npcbnumber": "",
+          "equipmentName": equipmentList,
+        };
+
+        print("@@registration_of_Govt_Private_Other_Hospital---" +
+            url +
+            payload.toString());
+
+        Dio dio = new Dio();
+        response1 = await dio.post(url,
+            data: payload,
+            options: new Options(
+                contentType: "application/json",
+                responseType: ResponseType.plain));
+        print("@@registration_of_Govt_Private_Other_Hospital--Api" +
+            response1.toString());
+        // Assuming the API returns a status and message in response
+        // Parse the response1 to update registrationModel accordingly
+        registrationModel =
+            Registration_of_Govt_Private_Other_Hospital_model.fromJson(
+                jsonDecode(response1.data));
+        if (registrationModel.status) {
+          Utils.showToast(registrationModel.message, true);
+        } else {
+          Utils.showToast(registrationModel.message, true);
+        }
+        return registrationModel;
+      } catch (e) {
+        Utils.showToast(e.toString(), true);
+        return null;
+      }
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
+
+  static Future<Registration_of_Govt_Private_Other_Hospital_model>
+  registration_of_Govt_Private_Other_HospitalCopy(GovtPrivateRegistatrionDataFieldss
+  govtPrivateRegistatrionDataFields) async {
+    Registration_of_Govt_Private_Other_Hospital_model registrationModel =
+    Registration_of_Govt_Private_Other_Hospital_model();
+    Response response1;
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+
+    if (isNetworkAvailable) {
+      try {
+        // Directly use the existing equipmentList from govtPrivateRegistatrionDataFields
+        List<DupRegisterEquipmentName > equipmentList =
             govtPrivateRegistatrionDataFields.equipmentList ?? [];
 
         // Logging the equipmentList for debugging
