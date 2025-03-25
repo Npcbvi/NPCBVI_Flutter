@@ -249,7 +249,7 @@ class _LoginScreenState extends State<LoginScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false, // Disables the back button
         centerTitle: true,
-        title: Text('Login', style: TextStyle(color: Colors.white)),
+        title: Text('Sign In', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
           icon: Icon(Icons.dashboard, color: Colors.white),

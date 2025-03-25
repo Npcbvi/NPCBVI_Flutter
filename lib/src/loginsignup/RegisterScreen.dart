@@ -444,7 +444,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                 width: double.infinity,
                 height: 28,
                 child: Marquee(
-                  text: 'NGO Darpan number is mandatory for registration.',
+                  text: 'NGO Darpan number is mandatory for registration. ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
@@ -1633,7 +1633,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                     },
                   ),
                 ),
-
+                SizedBox(height:5),
                 Visibility(
                   visible: isVisibleDitrictGovt,
                   child: Column(
@@ -1684,7 +1684,7 @@ class _RegisterScreen extends State<RegisterScreen> {
                                             BorderRadius.circular(10.0),
                                       ),
                                       filled: true,
-                                      fillColor: Colors.blue[50],
+                                      fillColor: Colors.white,
                                     ),
                                     onChanged: (districtUser) => setState(() {
                                       _selectedUserDistrict = districtUser;

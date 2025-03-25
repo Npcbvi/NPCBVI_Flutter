@@ -60,6 +60,7 @@ import 'dart:developer' as developer;
 import '../model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewClick.dart';
 import '../model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
 import 'DPMReportScreenDisease/DiseaseCatracReportScreen.dart';
+import 'EyeScroolEditClick/EyeScreeningForm.dart';
 import 'govtPrivateApproval/GovtPrivateDetailEqipment.dart';
 import 'newhospitalApproval/NewHospitalNGOAPPlicationDeatils.dart';
 
@@ -488,6 +489,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   title: 'Dashboard',
                   onTap: () {
                     setState(() {
+                      NGOApplicationApplicationsViews = false;
                       NGOlistDropDownDisplayDatas = false;
                       dpmEyeScreeningSchoolDataShow = false;
                       dashboardviewReplace = true;
@@ -522,10 +524,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                     Navigator.pop(context);
                   },
                 ),
-                _buildMenuItem(
+                /*   _buildMenuItem(
                   icon: Icons.update,
                   title: 'Update User',
                   onTap: () {
+                  // cmment due to abhi api ni bbnaa hai demo ke liye tyari hai
                     Navigator.pop(context); // Close the current menu first
 
                     Navigator.push(
@@ -535,7 +538,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       ),
                     );
                   },
-                ),
+                ),*/
                 _buildDropdownItem(
                   value: _chosenValue,
                   hint: 'Approve Application',
@@ -1009,7 +1012,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ),
                 ),
-               /* _buildMenuItem(
+                /* _buildMenuItem(
                   icon: Icons.read_more,
                   title: 'Reports',
                   onTap: () {
@@ -2859,7 +2862,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Table(
-              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              border: TableBorder.all(color: Colors.black, width: 0.5),
               columnWidths: {
                 0: FixedColumnWidth(120.0), // Label column width
                 1: FlexColumnWidth(), // Value column width
@@ -3037,7 +3040,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Table(
-              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              border: TableBorder.all(color: Colors.black, width: 0.5),
               columnWidths: {
                 0: FixedColumnWidth(120.0), // Label column width
                 1: FlexColumnWidth(), // Value column width
@@ -3349,7 +3352,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Table(
-              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              border: TableBorder.all(color: Colors.black, width: 0.5),
               columnWidths: {
                 0: FixedColumnWidth(120.0), // Label column width
                 1: FlexColumnWidth(), // Value column width
@@ -4550,7 +4553,6 @@ class _DPMDashboard extends State<DPMDashboard> {
       return null;
     }
   }
-
   Widget DPMEyeScreenSchooRegisterData() {
     return Column(
       children: [
@@ -4624,13 +4626,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                               value: _selectedUser,
                               items: [
                                 ...snapshot.data.map(
-                                  (user) => DropdownMenuItem(
+                                      (user) => DropdownMenuItem(
                                     value: user,
                                     child: Text(
                                       '${user.name}',
                                       style: TextStyle(
                                           fontSize:
-                                              16), // Text style inside dropdown
+                                          16), // Text style inside dropdown
                                     ),
                                   ),
                                 ),
@@ -4640,24 +4642,23 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     vertical: 15.0, horizontal: 10.0),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
+                                      color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Colors.blueAccent, width: 2.0),
+                                      color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 filled: true,
-                                fillColor: Colors.blue[
-                                    50], // Background color of the dropdown box
+                                fillColor: Colors.white, // Background color of the dropdown box
                               ),
-                              dropdownColor: Colors.blue[50],
+                              dropdownColor: Colors.white,
                               // Background color of the dropdown menu
                               style: TextStyle(color: Colors.black),
                               // Style of the selected item
                               icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.blue), // Dropdown icon style
+                                  color: Colors.black), // Dropdown icon style
                             ),
                           ],
                         ),
@@ -4689,12 +4690,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            const Text(
-                              'Select Month:',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 10),
+
                             // Added space between label and dropdown
                             DropdownButtonFormField<DataGetDPM_ScreeningMonth>(
                               onChanged: (user) => setState(() {
@@ -4707,13 +4703,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                               value: _selectedUserMonth,
                               items: [
                                 ...snapshot.data.map(
-                                  (user) => DropdownMenuItem(
+                                      (user) => DropdownMenuItem(
                                     value: user,
                                     child: Text(
                                       '${user.monthname}',
                                       style: TextStyle(
                                           fontSize:
-                                              16), // Text style inside dropdown
+                                          16), // Text style inside dropdown
                                     ),
                                   ),
                                 ),
@@ -4723,24 +4719,241 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     vertical: 15.0, horizontal: 10.0),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Colors.blue, width: 2.0),
+                                      color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
-                                      color: Colors.blueAccent, width: 2.0),
+                                      color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 filled: true,
-                                fillColor: Colors.blue[
-                                    50], // Background color of the dropdown box
+                                fillColor: Colors.white, // Background color of the dropdown box
                               ),
-                              dropdownColor: Colors.blue[50],
+                              dropdownColor: Colors.white,
                               // Background color of the dropdown menu
                               style: TextStyle(color: Colors.black),
                               // Style of the selected item
                               icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.blue), // Dropdown icon style
+                                  color: Colors.black), // Dropdown icon style
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                EyeScreeningForm(
+                  futureData: _futureEyeScreeningEdit,
+                  controllerNameofSchool: _controllerNameofSchool,
+                  controllerAddressofSchool: _controllerAddressofSchool,
+                  controllerNameofPrincipal: _controllerNameofPrincipal,
+                  controllerTeacherTrained: _controllerTeacherTrained,
+                  controllerNumberofchildrenscreening: _controllerNumberofchildrenscreening,
+                  controllerChildrendetectedwithRefractive: _controllerChildrendetectedwithRefractive,
+                  controllerNumberoffreeGlasses: _controllerNumberoffreeGlasses,
+                  onUpdate: _SchoolEyeScreening_Registration,
+                  onReset: () {
+                    _controllerNameofSchool.clear();
+                    _controllerAddressofSchool.clear();
+                    _controllerNameofPrincipal.clear();
+                    _controllerTeacherTrained.clear();
+                    _controllerNumberofchildrenscreening.clear();
+                    _controllerChildrendetectedwithRefractive.clear();
+                    _controllerNumberoffreeGlasses.clear();
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+/*  Widget DPMEyeScreenSchooRegisterData() {
+    return Column(
+      children: [
+        Visibility(
+          visible: dpmEyeScreeningSchoolDataShow,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                Container(
+                  color: Colors.blue,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'School Eye Screening',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Center(
+                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
+                      List list = snapshot.data
+                          .map<DataGetDPM_ScreeningYear>((district) {
+                        return district;
+                      }).toList();
+                      if (_selectedUser == null ||
+                          list.contains(_selectedUser) == false) {
+                        _selectedUser = list.first;
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const Text(
+                              'Select year:',
+                              style: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(height: 10),
+                            // Added space between label and dropdown
+                            DropdownButtonFormField<DataGetDPM_ScreeningYear>(
+                              onChanged: (userc) => setState(() {
+                                _selectedUser = userc;
+                                var getYear = int.parse(
+                                    userc.name.replaceAll(RegExp(r'\D'), ''));
+                                getfyid = userc.fyid;
+                                print('@@getYear--' + getYear.toString());
+                                print('@@getfyidSelected here----' +
+                                    getfyid.toString());
+                                ;
+                              }),
+                              value: _selectedUser,
+                              items: [
+                                ...snapshot.data.map(
+                                      (user) => DropdownMenuItem(
+                                    value: user,
+                                    child: Text(
+                                      '${user.name}',
+                                      style: TextStyle(
+                                          fontSize:
+                                          16), // Text style inside dropdown
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white, // Background color of the dropdown box
+                              ),
+                              dropdownColor: Colors.white,
+                              // Background color of the dropdown menu
+                              style: TextStyle(color: Colors.black),
+                              // Style of the selected item
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.black), // Dropdown icon style
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                Center(
+                  child: FutureBuilder<List<DataGetDPM_ScreeningMonth>>(
+                    future: _futureMonth,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
+                      List list = snapshot.data
+                          .map<DataGetDPM_ScreeningMonth>((district) {
+                        return district;
+                      }).toList();
+                      if (_selectedUserMonth == null ||
+                          list.contains(_selectedUserMonth) == false) {
+                        _selectedUserMonth = list.first;
+                      }
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+
+                            // Added space between label and dropdown
+                            DropdownButtonFormField<DataGetDPM_ScreeningMonth>(
+                              onChanged: (user) => setState(() {
+                                _selectedUserMonth = user;
+                                var getYear = ((user.monthname).toString());
+                                month_id = ((user.monthId).toString());
+                                print('@@month_id--' + getYear.toString());
+                                print('@@month_id--' + month_id.toString());
+                              }),
+                              value: _selectedUserMonth,
+                              items: [
+                                ...snapshot.data.map(
+                                      (user) => DropdownMenuItem(
+                                    value: user,
+                                    child: Text(
+                                      '${user.monthname}',
+                                      style: TextStyle(
+                                          fontSize:
+                                          16), // Text style inside dropdown
+                                    ),
+                                  ),
+                                ),
+                              ],
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white, // Background color of the dropdown box
+                              ),
+                              dropdownColor: Colors.white,
+                              // Background color of the dropdown menu
+                              style: TextStyle(color: Colors.black),
+                              // Style of the selected item
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.black), // Dropdown icon style
                             ),
                           ],
                         ),
@@ -4796,12 +5009,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       labelText: 'Enter School Name',
                                       floatingLabelBehavior:
-                                          FloatingLabelBehavior
-                                              .always, // Keeps the label fixed
+                                      FloatingLabelBehavior
+                                          .always, // Keeps the label fixed
                                       hintText: offer.schoolName,
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8.0)),
+                                          BorderRadius.circular(8.0)),
                                     ),
                                   ),
                                 ),
@@ -4826,12 +5039,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       labelText: 'Enter School address',
                                       floatingLabelBehavior:
-                                          FloatingLabelBehavior
-                                              .always, // Keeps the label fixed
+                                      FloatingLabelBehavior
+                                          .always, // Keeps the label fixed
                                       hintText: offer.schoolAddress,
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8.0)),
+                                          BorderRadius.circular(8.0)),
                                     ),
                                   ),
                                 ),
@@ -4856,12 +5069,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       labelText: 'Enter principal name',
                                       floatingLabelBehavior:
-                                          FloatingLabelBehavior
-                                              .always, // Keeps the label fixed
+                                      FloatingLabelBehavior
+                                          .always, // Keeps the label fixed
                                       hintText: offer.principal,
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8.0)),
+                                          BorderRadius.circular(8.0)),
                                     ),
                                   ),
                                 ),
@@ -4889,12 +5102,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       labelText: 'Enter Trainer Teacher',
                                       floatingLabelBehavior:
-                                          FloatingLabelBehavior
-                                              .always, // Keeps the label fixed
+                                      FloatingLabelBehavior
+                                          .always, // Keeps the label fixed
                                       hintText: offer.trainedTeacher.toString(),
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8.0)),
+                                          BorderRadius.circular(8.0)),
                                     ),
                                   ),
                                 ),
@@ -4937,17 +5150,17 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   ),
                                   child: TextField(
                                     controller:
-                                        _controllerNumberofchildrenscreening,
+                                    _controllerNumberofchildrenscreening,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       labelText: 'Enter Child Screen',
                                       floatingLabelBehavior:
-                                          FloatingLabelBehavior
-                                              .always, // Keeps the label fixed
+                                      FloatingLabelBehavior
+                                          .always, // Keeps the label fixed
                                       hintText: offer.childScreen.toString(),
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8.0)),
+                                          BorderRadius.circular(8.0)),
                                     ),
                                   ),
                                 ),
@@ -4971,17 +5184,17 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   ),
                                   child: TextField(
                                     controller:
-                                        _controllerChildrendetectedwithRefractive,
+                                    _controllerChildrendetectedwithRefractive,
                                     keyboardType: TextInputType.number,
                                     decoration: InputDecoration(
                                       labelText: 'Enter Child Detect',
                                       floatingLabelBehavior:
-                                          FloatingLabelBehavior
-                                              .always, // Keeps the label fixed
+                                      FloatingLabelBehavior
+                                          .always, // Keeps the label fixed
                                       hintText: offer.childDetect.toString(),
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8.0)),
+                                          BorderRadius.circular(8.0)),
                                     ),
                                   ),
                                 ),
@@ -5009,19 +5222,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       labelText: 'Enter Free Glasses ',
                                       floatingLabelBehavior:
-                                          FloatingLabelBehavior
-                                              .always, // Keeps the label fixed
+                                      FloatingLabelBehavior
+                                          .always, // Keeps the label fixed
                                       hintText: offer.freeglass.toString(),
                                       border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(8.0)),
+                                          BorderRadius.circular(8.0)),
                                     ),
                                   ),
                                 ),
                               ),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                                MainAxisAlignment.spaceEvenly,
                                 children: [
                                   Expanded(
                                     flex: 1,
@@ -5082,7 +5295,8 @@ class _DPMDashboard extends State<DPMDashboard> {
         ),
       ],
     );
-  }
+  }*/
+
 
   Future<void> _SchoolEyeScreening_Registration() async {
     print('@@ Step 1: Edit Clicked');
@@ -5302,7 +5516,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             maxHeight: 300,
                             width: 300,
                             decoration: BoxDecoration(
-                              color: Colors.blue[50],
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             offset: const Offset(0, -3),
@@ -5311,14 +5525,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                             height: 50, // Set consistent height
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
-                              color: Colors.blue[50], // Visible background
-                              border: Border.all(color: Colors.blue, width: 2),
+                              color: Colors.white, // Visible background
+                              border: Border.all(color: Colors.grey, width: 1),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           iconStyleData: const IconStyleData(
                             icon:
-                                Icon(Icons.arrow_drop_down, color: Colors.blue),
+                                Icon(Icons.arrow_drop_down, color: Colors.black),
                           ),
                           menuItemStyleData: MenuItemStyleData(
                             overlayColor:
@@ -5396,7 +5610,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             maxHeight: 300,
                             width: 300,
                             decoration: BoxDecoration(
-                              color: Colors.blue[50],
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             offset: const Offset(0, -3),
@@ -5405,18 +5619,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                             height: 50, // Set consistent height
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
-                              color: Colors.blue[50],
-                              border: Border.all(color: Colors.blue, width: 2),
+                              color: Colors.white,
+                              border: Border.all(color: Colors.grey, width: 1),
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
                           iconStyleData: const IconStyleData(
                             icon:
-                                Icon(Icons.arrow_drop_down, color: Colors.blue),
+                                Icon(Icons.arrow_drop_down, color: Colors.black),
                           ),
                           menuItemStyleData: MenuItemStyleData(
                             overlayColor:
-                                MaterialStateProperty.all(Colors.blue[100]),
+                                MaterialStateProperty.all(Colors.white),
                           ),
                           decoration: const InputDecoration(
                             contentPadding:
@@ -6566,7 +6780,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           ),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.grey, width: 1),
+              border: TableBorder.all(color: Colors.black, width: 1),
               columnWidths: {
                 0: FixedColumnWidth(120), // Adjust column width
                 1: FlexColumnWidth(),
@@ -6756,7 +6970,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           ),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.grey, width: 1),
+              border: TableBorder.all(color: Colors.black, width: 1),
               columnWidths: {
                 0: FixedColumnWidth(120), // Adjust column width
                 1: FlexColumnWidth(),
@@ -6944,7 +7158,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           title: Text("Hospital Details"),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1),
+              border: TableBorder.all(color: Colors.black, width: 1),
               columnWidths: {
                 0: FlexColumnWidth(1),
                 1: FlexColumnWidth(2),
@@ -6981,7 +7195,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       padding: EdgeInsets.all(8.0),
       child: Text(
         text,
-        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
+        style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
       ),
     );
   }
@@ -7088,10 +7302,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                         children: [
                           _buildHeaderCellSrNo('S.No.'),
                           _buildHeaderCell('NGO Name'),
-                          _buildHeaderCell('Action'),
+                          _buildHeaderCellDiseaseDataAction('Action'),
                         ],
                       ),
-                      Divider(color: Colors.blue, height: 1.0),
 
                       // Data Rows
                       ...ddata.map((offer) {
@@ -7128,7 +7341,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           title: Text("Pending Hospital Details"),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1),
+              border: TableBorder.all(color: Colors.black, width: 1),
               columnWidths: {
                 0: FlexColumnWidth(2),
                 1: FlexColumnWidth(3),
@@ -7400,7 +7613,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           title: Text("Private Practitioner Approval Details"),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1),
+              border: TableBorder.all(color: Colors.black, width: 1),
               columnWidths: {
                 0: FlexColumnWidth(2),
                 1: FlexColumnWidth(3),
@@ -7627,7 +7840,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           title: Text("Private Practitioner Pending Details"),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1),
+              border: TableBorder.all(color: Colors.black, width: 1),
               columnWidths: {
                 0: FlexColumnWidth(2),
                 1: FlexColumnWidth(3),
@@ -7907,7 +8120,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 0: FlexColumnWidth(1),
                 1: FlexColumnWidth(2),
               },
-              border: TableBorder.all(color: Colors.grey),
+              border: TableBorder.all(color: Colors.black),
               children: [
                 _buildTableRow('Organisation Name', offer.oName),
                 _buildTableRow('Nodal Officer', offer.nodalOfficerName),
@@ -8194,7 +8407,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 0: FlexColumnWidth(1), // Adjusts column width
                 1: FlexColumnWidth(2),
               },
-              border: TableBorder.all(color: Colors.grey),
+              border: TableBorder.all(color: Colors.black),
               children: [
                 _buildTableRow('Name', offer.oName),
                 _buildTableRow('Nodal Officer Name', offer.nodalOfficerName),
@@ -8448,7 +8661,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 0: IntrinsicColumnWidth(), // Ensure proper width for labels
                 1: FlexColumnWidth(), // Expand the second column
               },
-              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              border: TableBorder.all(color: Colors.black, width: 0.5),
               children: [
                 _buildTableRow('Camp Name:', offer.campname),
                 _buildTableRow('NGO Name:', offer.ngoName),
@@ -8700,7 +8913,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           ),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.grey, width: 1.0),
+              border: TableBorder.all(color: Colors.black, width: 1.0),
               columnWidths: {
                 0: FractionColumnWidth(0.4),
                 1: FractionColumnWidth(0.6),
@@ -9096,7 +9309,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                           // Data Rows
                           ...ddata.map((offer) {
                             return Container(
-                              margin: EdgeInsets.symmetric(vertical: 4),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
@@ -10356,7 +10568,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
 
               // Horizontal Scrolling Header Row
-              SizedBox(width: 8.0),
+              SizedBox(width: 5.0),
 
               FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                 future: _futureCataract,
@@ -10385,144 +10597,161 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
-                      hint: const Text(
-                        'Select Year',
-                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                    child: Container(
+                      height: 50, // ✅ Fixed height to match other dropdowns
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey, width: 1),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      onChanged: (user) {
-                        setState(() {
-                          _selectedUser = user;
-                          getYearCatract = user?.name ?? '';
-                          getfyid = user?.fyid ?? '';
-                          print('@@getYear--$getYearCatract');
-                          print('@@getfyidSelected here----$getfyid');
-                        });
-                      },
-                      value: _selectedUser,
-                      items: list.map((user) {
-                        return DropdownMenuItem<DataGetDPM_ScreeningYear>(
-                          value: user,
-                          child: Text(
-                            user.name,
-                            style: const TextStyle(fontSize: 16),
+                      child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                        isExpanded: true,
+                        hint: const Text(
+                          'Select Year',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                        onChanged: (user) {
+                          setState(() {
+                            _selectedUser = user;
+                            getYearCatract = user?.name ?? '';
+                            getfyid = user?.fyid ?? '';
+                            print('@@getYear--$getYearCatract');
+                            print('@@getfyidSelected here----$getfyid');
+                          });
+                        },
+                        value: _selectedUser,
+                        items: list.map((user) {
+                          return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                            value: user,
+                            child: Text(
+                              user.name,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          );
+                        }).toList(),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 300,
+                          width: 400,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                        );
-                      }).toList(),
-                      dropdownStyleData: DropdownStyleData(
-                        maxHeight: 300,
-                        width: 400,
-                        decoration: BoxDecoration(
-                          color: Colors.blue[50],
-                          borderRadius: BorderRadius.circular(10),
+                          offset: const Offset(0, -3),
                         ),
-                        offset: const Offset(0, -3),
-                      ),
-                      buttonStyleData: ButtonStyleData(
-                        height: 55, // **Fixed height**
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[50],
-                          border: Border.all(color: Colors.blue, width: 1),
-                          borderRadius: BorderRadius.circular(10),
+                        buttonStyleData: ButtonStyleData(
+                          height: 50, // ✅ Fixed height
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
                         ),
-                      ),
-                      iconStyleData: const IconStyleData(
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                      ),
-                      menuItemStyleData: MenuItemStyleData(
-                        overlayColor:
-                            MaterialStateProperty.all(Colors.blue[100]),
-                      ),
-                      decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                        border: InputBorder.none,
+                        iconStyleData: const IconStyleData(
+                          icon:
+                              Icon(Icons.arrow_drop_down, color: Colors.black),
+                        ),
+                        menuItemStyleData: MenuItemStyleData(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.blue[100]),
+                        ),
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
                   );
                 },
               ),
 
-              SizedBox(height: 8.0),
+              SizedBox(height: 5.0),
 
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 22),
+                padding: const EdgeInsets.symmetric(horizontal: 0),
                 // Left & right margin
                 child: Container(
-                  height: 55, // **Fixed height to match the above dropdown**
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  // ✅ Added margin
+                  width: double.infinity,
+                  // ✅ Takes full width safely
+                  height: 50,
+                  // ✅ Set height to 50
                   decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    border: Border.all(color: Colors.blue, width: 1.0),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey, width: 1.0),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
-                  child: DropdownButtonFormField2<String>(
-                    isExpanded: true,
-                    value: lowVisionDatas,
-                    style: const TextStyle(color: Colors.black),
-                    decoration: InputDecoration(
-                      hintText: "Select Type",
-                      hintStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                          vertical: 12, horizontal: 10), // Adjusted padding
-                    ),
-                    buttonStyleData: ButtonStyleData(
-                      height: 55, // **Same height as above dropdown**
-                      padding: EdgeInsets.symmetric(horizontal: 15),
-                    ),
-                    iconStyleData: IconStyleData(
-                      icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                    ),
-                    dropdownStyleData: DropdownStyleData(
-                      decoration: BoxDecoration(
-                        color: Colors.blue[50],
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    items: [
-                      'NGOs',
-                      'Private Practitioner',
-                      'Private Medical College',
-                    ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
-                      return DropdownMenuItem<String>(
-                        value: lowVisionRegistry,
-                        child: Text(
-                          lowVisionRegistry,
-                          style: const TextStyle(color: Colors.black),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButtonFormField2<String>(
+                      isExpanded: true,
+                      value: lowVisionDatas,
+                      style: const TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: "Select Type",
+                        hintStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
                         ),
-                      );
-                    }).toList(),
-                    onChanged: (String lowVisionData) {
-                      setState(() {
-                        lowVisionDatas = lowVisionData;
-                        switch (lowVisionDatas) {
-                          case "NGOs":
-                            lowVisionDataValue = 5;
-                            break;
-                          case "Private Practitioner":
-                            lowVisionDataValue = 12;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
-                            break;
-                          case "Private Medical College":
-                            lowVisionDataValue = 13;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
-                            break;
-                          default:
-                            lowVisionDataValue = 0;
-                        }
-                      });
-                    },
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 10), // ✅ Adjusted padding
+                      ),
+                      buttonStyleData: ButtonStyleData(
+                        height: 50, // ✅ Set height to 50
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                      ),
+                      iconStyleData: IconStyleData(
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 200, // ✅ Prevents overflow issues
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      items: [
+                        'NGOs',
+                        'Private Practitioner',
+                        'Private Medical College',
+                      ].map<DropdownMenuItem<String>>(
+                          (String lowVisionRegistry) {
+                        return DropdownMenuItem<String>(
+                          value: lowVisionRegistry,
+                          child: Text(
+                            lowVisionRegistry,
+                            overflow: TextOverflow.ellipsis,
+                            // ✅ Prevents text overflow
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String lowVisionData) {
+                        setState(() {
+                          lowVisionDatas = lowVisionData ?? '';
+                          switch (lowVisionDatas) {
+                            case "NGOs":
+                              lowVisionDataValue = 5;
+                              break;
+                            case "Private Practitioner":
+                              lowVisionDataValue = 12;
+                              _futureDataBindOrganValuebiggerFive =
+                                  GetDPM_Bindorg_New();
+                              break;
+                            case "Private Medical College":
+                              lowVisionDataValue = 13;
+                              _futureDataBindOrganValuebiggerFive =
+                                  GetDPM_Bindorg_New();
+                              break;
+                            default:
+                              lowVisionDataValue = 0;
+                          }
+                        });
+                      },
+                    ),
                   ),
                 ),
               ),
 
-              SizedBox(height: 8.0),
+              SizedBox(height: 5.0),
               if (lowVisionDataValue == 5)
                 FutureBuilder<List<DataBindOrgan>>(
                   future: _futureBindOrgan,
@@ -10540,8 +10769,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                     }
 
                     List<DataBindOrgan> list = snapshot.data ?? [];
-                    debugPrint('@@snapshot___5: $list');
-                    debugPrint('@@snapshot___5: $lowVisionDataValue');
 
                     if (_selectBindOrgniasation == null ||
                         !list.contains(_selectBindOrgniasation)) {
@@ -10549,12 +10776,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                           list.isNotEmpty ? list.first : null;
                     }
 
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
-                      child: SizedBox(
-                        height: 60, // Set height
-                        width: 312, // Set width
-                        child: DropdownButtonFormField2<DataBindOrgan>(
+                    return Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8), // ✅ Added margin
+                      width: double.infinity, // ✅ Takes full width safely
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        border: Border.all(color: Colors.grey, width: 1.0),
+                        color: Colors.white,
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2<DataBindOrgan>(
+                          isExpanded: true,
+                          // ✅ Ensures dropdown doesn't overflow
                           onChanged: (userbindOrgan) {
                             setState(() {
                               _selectBindOrgniasation = userbindOrgan;
@@ -10573,24 +10807,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                               ),
                             );
                           }).toList(),
-                          decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.blue, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                  color: Colors.blueAccent, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            filled: true,
-                            fillColor: Colors.blue[50],
-                          ),
-                          style: TextStyle(color: Colors.black),
                           iconStyleData: IconStyleData(
-                            icon:
-                                Icon(Icons.arrow_drop_down, color: Colors.blue),
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.black),
                             iconSize: 30,
                           ),
                         ),
@@ -10610,9 +10829,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                       return const CircularProgressIndicator();
                     }
 
-                    List<DataBindOrganValuebiggerFive> list = snapshot.data;
+                    List<DataBindOrganValuebiggerFive> list =
+                        snapshot.data ?? [];
+                    debugPrint('@@snapshot___5: $list');
+                    debugPrint('@@snapshot___5: $lowVisionDataValue');
 
-                    if (list == null || list.isEmpty) {
+                    if (list.isEmpty) {
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(20, 0, 20.0, 0),
                         child: Column(
@@ -10622,22 +10844,22 @@ class _DPMDashboard extends State<DPMDashboard> {
                               style: TextStyle(fontSize: 18, color: Colors.red),
                             ),
                             SizedBox(
-                              height: 55, // Set height
-                              width: 400, // Set width
+                              height: 50, // ✅ Fixed height
+                              width: 300, // ✅ Fixed width
                               child: DropdownButtonFormField2<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
                                 items: [],
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 10.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 1.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: const Text('No items to select'),
@@ -10656,58 +10878,55 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                     return Padding(
                       padding: const EdgeInsets.fromLTRB(20, 0, 20.0, 0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(height: 10),
-                            SizedBox(
-                              height: 55, // Set height
-                              width: 400, // Set width
-                              child: DropdownButtonFormField2<
-                                  DataBindOrganValuebiggerFive>(
-                                onChanged: (userbindOrgan) {
-                                  setState(() {
-                                    _selectBindOrgniasationBiggerFive =
-                                        userbindOrgan;
-                                    bindOrganisationNAme =
-                                        userbindOrgan?.oName ?? '';
-                                    npcbNoCatract = userbindOrgan?.npcbNo ?? '';
-                                  });
-                                },
-                                value: _selectBindOrgniasationBiggerFive,
-                                items: list.map((userbindorgansa) {
-                                  return DropdownMenuItem<
-                                      DataBindOrganValuebiggerFive>(
-                                    value: userbindorgansa,
-                                    child: Text(
-                                      userbindorgansa.oName,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  );
-                                }).toList(),
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blue, width: 1.0),
-                                    borderRadius: BorderRadius.circular(10.0),
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 10),
+                          SizedBox(
+                            height: 50, // ✅ Fixed height
+                            width: 400, // ✅ Fixed width
+                            child: DropdownButtonFormField2<
+                                DataBindOrganValuebiggerFive>(
+                              onChanged: (userbindOrgan) {
+                                setState(() {
+                                  _selectBindOrgniasationBiggerFive =
+                                      userbindOrgan;
+                                  bindOrganisationNAme =
+                                      userbindOrgan?.oName ?? '';
+                                  npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                                });
+                              },
+                              value: _selectBindOrgniasationBiggerFive,
+                              items: list.map((userbindorgansa) {
+                                return DropdownMenuItem<
+                                    DataBindOrganValuebiggerFive>(
+                                  value: userbindorgansa,
+                                  child: Text(
+                                    userbindorgansa.oName,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontSize: 16),
                                   ),
-                                  filled: true,
-                                  fillColor: Colors.blue[50],
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                style: TextStyle(color: Colors.black),
-                                iconStyleData: const IconStyleData(
-                                  icon: Icon(Icons.arrow_drop_down,
-                                      color: Colors.blue),
-                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                              ),
+                              style: const TextStyle(color: Colors.black),
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.black),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },
@@ -10747,11 +10966,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 1.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: Text('No items to select'),
@@ -10806,16 +11025,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 1.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 style: TextStyle(color: Colors.black),
                                 iconStyleData: const IconStyleData(
                                   icon: Icon(Icons.arrow_drop_down,
-                                      color: Colors.blue),
+                                      color: Colors.black),
                                 ),
                               ),
                             ),
@@ -11190,24 +11409,23 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   vertical: 15.0, horizontal: 10.0),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Colors.blue, width: 2.0),
+                                    BorderSide(color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Colors.blueAccent, width: 2.0),
+                                    color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               filled: true,
-                              fillColor: Colors.blue[
-                                  50], // Background color of the dropdown box
+                              fillColor: Colors.white, // Background color of the dropdown box
                             ),
-                            dropdownColor: Colors.blue[50],
+                            dropdownColor: Colors.white,
                             // Background color of the dropdown menu
                             style: TextStyle(color: Colors.black),
                             // Style of the selected item
                             icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.blue), // Dropdown icon style
+                                color: Colors.black), // Dropdown icon style
                           ),
                         ],
                       ),
@@ -11219,9 +11437,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.blue[50],
+                    color: Colors.white,
                     // Background color of the dropdown box
-                    border: Border.all(color: Colors.blue, width: 2.0),
+                    border: Border.all(color: Colors.grey, width: 1.0),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: new DropdownButtonHideUnderline(
@@ -11308,11 +11526,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                'Select:',
+                                'Select Organisation Type',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<DataBindOrgan>(
                                 onChanged: (userbindOrgan) {
                                   setState(() {
@@ -11342,21 +11559,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blueAccent, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -11393,7 +11610,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style:
                                     TextStyle(fontSize: 18, color: Colors.red),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
@@ -11405,11 +11621,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: const Text('No items to select'),
@@ -11434,11 +11650,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                'Select:',
+                                'Select Organisation Type',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: (userbindOrgan) {
@@ -11468,16 +11683,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -11514,7 +11729,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style:
                                     TextStyle(fontSize: 18, color: Colors.red),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
@@ -11526,11 +11740,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: Text('No items to select'),
@@ -11555,7 +11769,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                'Select:',
+                                'Select Organisation Type',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
@@ -11647,11 +11861,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: const Text('No items to select'),
@@ -11710,16 +11924,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -12021,6 +12235,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
               // Horizontal Scrolling Header Row
               SizedBox(width: 8.0),
+
               Center(
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _futureDiabetic,
@@ -12035,119 +12250,122 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                     developer.log('@@snapshot' + snapshot.data.toString());
 
-                    List list =
-                        snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
-                      return district;
-                    }).toList();
+                    List<DataGetDPM_ScreeningYear> list = snapshot.data ?? [];
                     if (_selectedUser == null ||
-                        list.contains(_selectedUser) == false) {
-                      _selectedUser = list.first;
+                        !list.contains(_selectedUser)) {
+                      _selectedUser = list.isNotEmpty ? list.first : null;
                     }
+
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const Text(
-                            'Select year:',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 10),
-                          // Added space between label and dropdown
-                          DropdownButtonFormField<DataGetDPM_ScreeningYear>(
-                            onChanged: (usercn) => setState(() {
-                              _selectedUser = usercn;
-                              getYearDiabitic = usercn.name;
-                              getfyid = usercn.fyid;
-                              print('@@getYearDiabitic--' +
-                                  getYearDiabitic.toString());
-                              print('@@getfyidSelected here----' +
-                                  getfyid.toString());
-                              ;
-                            }),
-                            value: _selectedUser,
-                            items: [
-                              ...snapshot.data.map(
-                                (user) => DropdownMenuItem(
-                                  value: user,
-                                  child: Text(
-                                    '${user.name}',
-                                    style: TextStyle(
-                                        fontSize:
-                                            16), // Text style inside dropdown
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      // ✅ Adjust padding
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              DropdownButtonFormField2<
+                                  DataGetDPM_ScreeningYear>(
+                                isExpanded: true,
+                                // ✅ Prevents overflow
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 10.0),
+                                  // ✅ Better spacing
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                hint: const Text("Select Year"),
+                                value: _selectedUser,
+                                onChanged: (usercn) {
+                                  setState(() {
+                                    _selectedUser = usercn;
+                                    getYearDiabitic = usercn?.name ?? '';
+                                    getfyid = usercn?.fyid ?? '';
+                                    print(
+                                        '@@getYearDiabitic-- $getYearDiabitic');
+                                    print(
+                                        '@@getfyidSelected here---- $getfyid');
+                                  });
+                                },
+                                items: list.map((user) {
+                                  return DropdownMenuItem<
+                                      DataGetDPM_ScreeningYear>(
+                                    value: user,
+                                    child: Text(
+                                      user.name,
+                                      maxLines: 1,
+                                      // ✅ Ensures text fits
+                                      overflow: TextOverflow.ellipsis,
+                                      // ✅ Prevents overflow
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                buttonStyleData: ButtonStyleData(
+                                  height: 30,
+                                  // ✅ Fixed height for the dropdown button
+                                  width: constraints
+                                      .maxWidth, // ✅ Makes it responsive
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 250, // ✅ Limits dropdown height
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                iconStyleData: const IconStyleData(
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Colors.black),
+                                ),
+                                menuItemStyleData: const MenuItemStyleData(
+                                  height: 50,
+                                  // ✅ Ensures dropdown menu items have a fixed height
+                                  padding: EdgeInsets.symmetric(horizontal: 10),
                                 ),
                               ),
                             ],
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.blue, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.blueAccent, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              filled: true,
-                              fillColor: Colors.blue[
-                                  50], // Background color of the dropdown box
-                            ),
-                            dropdownColor: Colors.blue[50],
-                            // Background color of the dropdown menu
-                            style: TextStyle(color: Colors.black),
-                            // Style of the selected item
-                            icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.blue), // Dropdown icon style
-                          ),
-                        ],
+                          );
+                        },
                       ),
                     );
                   },
                 ),
               ),
+SizedBox(height:5),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    // Background color of the dropdown box
-                    border: Border.all(color: Colors.blue, width: 2.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0), // ✅ Same padding
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    return DropdownButtonFormField2<String>(
                       isExpanded: true,
-                      focusColor: Colors.black,
-                      value: lowVisionDatas,
-                      style: TextStyle(color: Colors.white),
-                      iconEnabledColor: Colors.white,
-                      items: <String>[
-                        'NGOs',
-                        'Private Practitioner',
-                        'Private Medical College',
-                      ].map<DropdownMenuItem<String>>(
-                          (String lowVisionRegistry) {
-                        return DropdownMenuItem<String>(
-                          value: lowVisionRegistry,
-                          child: Text(
-                            lowVisionRegistry,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                      hint: Text(
-                        "Select Type",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white, // ✅ Background color
+                        contentPadding:
+                        const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
                         ),
                       ),
+                      value: lowVisionDatas,
                       onChanged: (String lowVisionData) {
                         setState(() {
                           lowVisionDatas = lowVisionData;
@@ -12156,22 +12374,51 @@ class _DPMDashboard extends State<DPMDashboard> {
                             lowVisionDataValue = 5;
                           } else if (lowVisionDatas == "Private Practitioner") {
                             lowVisionDataValue = 12;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
-                          } else if (lowVisionData ==
-                              "Private Medical College") {
+                            _futureDataBindOrganValuebiggerFive = GetDPM_Bindorg_New();
+                          } else if (lowVisionData == "Private Medical College") {
                             lowVisionDataValue = 13;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
+                            _futureDataBindOrganValuebiggerFive = GetDPM_Bindorg_New();
                           } else {
                             lowVisionDataValue = 0;
                           }
                         });
                       },
-                    ),
-                  ),
+                      items: <String>[
+                        'NGOs',
+                        'Private Practitioner',
+                        'Private Medical College',
+                      ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
+                        return DropdownMenuItem<String>(
+                          value: lowVisionRegistry,
+                          child: Text(
+                            lowVisionRegistry,
+                            style: const TextStyle(color: Colors.black, fontSize: 16),
+                          ),
+                        );
+                      }).toList(),
+                      buttonStyleData: ButtonStyleData(
+                        height: 30, // ✅ Increased height for better appearance
+                        width: constraints.maxWidth, // ✅ Responsive width
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                        maxHeight: 250, // ✅ Same as FutureBuilder dropdown
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                      ),
+                      iconStyleData: const IconStyleData(
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                      ),
+                      menuItemStyleData: const MenuItemStyleData(
+                        height: 50, // ✅ Uniform menu item height
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                      ),
+                    );
+                  },
                 ),
               ),
+
 
               if (lowVisionDataValue == 5)
                 Center(
@@ -12186,10 +12433,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         return const CircularProgressIndicator();
                       }
 
-                      List<DataBindOrgan> list = snapshot.data;
-                      developer.log('@@snapshot___5: $list');
-                      print('@@snapshot___5: $lowVisionDataValue');
-
+                      List<DataBindOrgan> list = snapshot.data ?? [];
                       if (_selectBindOrgniasation == null ||
                           !list.contains(_selectBindOrgniasation)) {
                         _selectBindOrgniasation =
@@ -12197,65 +12441,86 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
 
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              const Text(
-                                'Select:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 10),
-                              DropdownButtonFormField<DataBindOrgan>(
-                                onChanged: (userbindOrgan) {
-                                  setState(() {
-                                    _selectBindOrgniasation = userbindOrgan;
-                                    bindOrganisationNAme =
-                                        userbindOrgan?.name ?? '';
-                                    npcbNoDiabitic =
-                                        userbindOrgan?.npcbNo ?? '';
-                                  });
-                                },
-                                value: _selectBindOrgniasation,
-                                items: list.map((userbindorgansa) {
-                                  return DropdownMenuItem<DataBindOrgan>(
-                                    value: userbindorgansa,
-                                    child: Text(
-                                      userbindorgansa.name,
-
-                                      maxLines: 2,
-                                      // Set max lines to 2
-                                      overflow: TextOverflow.ellipsis,
-                                      // Handle overflow
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  );
-                                }).toList(),
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blueAccent, width: 2.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.blue[50],
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        // ✅ Adjusted padding
+                        child: LayoutBuilder(
+                          // ✅ Prevents overflow
+                          builder: (context, constraints) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              // ✅ Align text properly
+                              mainAxisSize: MainAxisSize.min,
+                              // ✅ Prevents taking unnecessary height
+                              children: <Widget>[
+                                const Text(
+                                  'Select Organisation Type',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                dropdownColor: Colors.blue[50],
-                                style: TextStyle(color: Colors.black),
-                                icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
-                              ),
-                            ],
-                          ),
+                                const SizedBox(height: 8), // ✅ Adds spacing
+                                SizedBox(
+                                  height: 50,
+                                  // ✅ Fixed height
+                                  width: constraints.maxWidth,
+                                  // ✅ Ensures it fits the screen
+                                  child: DropdownButtonFormField<DataBindOrgan>(
+                                    onChanged: (userbindOrgan) {
+                                      setState(() {
+                                        _selectBindOrgniasation = userbindOrgan;
+                                        bindOrganisationNAme =
+                                            userbindOrgan?.name ?? '';
+                                        npcbNoDiabitic =
+                                            userbindOrgan?.npcbNo ?? '';
+                                      });
+                                    },
+                                    value: _selectBindOrgniasation,
+                                    items: list.map((userbindorgansa) {
+                                      return DropdownMenuItem<DataBindOrgan>(
+                                        value: userbindorgansa,
+                                        child: SizedBox(
+                                          width: constraints.maxWidth - 60,
+                                          // ✅ Prevents overflow inside dropdown
+                                          child: Text(
+                                            userbindorgansa.name,
+                                            maxLines: 1,
+                                            // ✅ Ensures text fits
+                                            overflow: TextOverflow.ellipsis,
+                                            // ✅ Avoids text overflow
+                                            style:
+                                                const TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Colors.grey, width: 1.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Colors.grey, width: 1.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                    ),
+                                    dropdownColor: Colors.white,
+                                    style: const TextStyle(color: Colors.black),
+                                    icon: const Icon(Icons.arrow_drop_down,
+                                        color: Colors.black),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       );
                     },
@@ -12301,11 +12566,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: const Text('No items to select'),
@@ -12365,16 +12630,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -12394,7 +12659,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Only show CircularProgressIndicator if the connection is still waiting
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        // return const CircularProgressIndicator();
                       }
 
                       // Once data is available, check the list
@@ -12411,7 +12676,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style:
                                     TextStyle(fontSize: 18, color: Colors.red),
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 5),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
@@ -12423,11 +12688,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: Text('No items to select'),
@@ -12487,16 +12752,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -12609,16 +12874,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -12830,85 +13095,100 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               Container(
-                color: Colors.blue,
+                color: Colors.white,
+                padding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    // Cataract Data for Approval Button
                     Expanded(
                       flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print(
-                                'LowVisionRegisterCornealBlindness Data for approval clicked');
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Corneal Blindness Data for approval',
-                                style: TextStyle(
-                                    color: Colors.white), // White text color
+                      child: GestureDetector(
+                        onTap: () {
+                          print(   'Corneal Blindness Data for approval',);
+                          // Add your functionality here
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.approval, color: Colors.blue),
+                              // Approval icon
+                              SizedBox(width: 8),
+                              // Space between icon and text
+                              Expanded(
+                                child: Text(
+                                  'Corneal Blindness Data for approval',
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
                     ),
+                    SizedBox(width: 5), // Space between buttons
+                    // Back Button
                     Expanded(
                       flex: 1,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: GestureDetector(
-                          onTap: () {
-                            // Handle approval action
-                            print(
-                                '@@Corneal Blindness  Data for approval clicked');
-                            setState(() {
-                              dashboardviewReplace = true;
+                      child: GestureDetector(
+                        onTap: () {
+                          print('Back button clicked');
+                          setState(() {
+                            dashboardviewReplace = true;
 
-                              LowVisionRegisterCatracts = false;
-                              LowVisionRegisterDiabitic = false;
-                              LowVisionRegisterGlaucoma = false;
-                              LowVisionRegisterCornealBlindness = false;
-                            });
-
-                            // You can also navigate or update some data here
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Colors.blue, // Blue background color
-                              borderRadius: BorderRadius.circular(5),
-                            ),
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              // Use Alignment.centerLeft, Alignment.centerRight, etc. for other alignments
-                              child: Text(
-                                'Back',
-                                style: TextStyle(
+                            LowVisionRegisterCatracts = false;
+                            LowVisionRegisterDiabitic = false;
+                            LowVisionRegisterGlaucoma = false;
+                            LowVisionRegisterCornealBlindness = false;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.arrow_back, color: Colors.white),
+                              // Back icon
+                              SizedBox(width: 8),
+                              // Space between icon and text
+                              Expanded(
+                                child: Text(
+                                  'Back',
+                                  style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight:
-                                        FontWeight.bold), // White text color
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
-                            ),
+                            ],
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-
               // Horizontal Scrolling Header Row
               SizedBox(width: 8.0),
               Center(
@@ -12975,24 +13255,23 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   vertical: 15.0, horizontal: 10.0),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Colors.blue, width: 2.0),
+                                    BorderSide(color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Colors.blueAccent, width: 2.0),
+                                    color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               filled: true,
-                              fillColor: Colors.blue[
-                                  50], // Background color of the dropdown box
+                              fillColor: Colors.white, // Background color of the dropdown box
                             ),
-                            dropdownColor: Colors.blue[50],
+                            dropdownColor: Colors.white,
                             // Background color of the dropdown menu
                             style: TextStyle(color: Colors.black),
                             // Style of the selected item
                             icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.blue), // Dropdown icon style
+                                color: Colors.black), // Dropdown icon style
                           ),
                         ],
                       ),
@@ -13004,9 +13283,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.blue[50],
+                    color: Colors.white,
                     // Background color of the dropdown box
-                    border: Border.all(color: Colors.blue, width: 2.0),
+                    border: Border.all(color: Colors.grey, width: 1.0),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: new DropdownButtonHideUnderline(
@@ -13093,11 +13372,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                'Select:',
+                                'Select Organnisation Type',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<DataBindOrgan>(
                                 onChanged: (userbindOrgan) {
                                   setState(() {
@@ -13128,21 +13406,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blueAccent, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -13191,11 +13469,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: const Text('No items to select'),
@@ -13220,7 +13498,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                'Select:',
+                                'Select Organisation Type',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
@@ -13255,16 +13533,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -13313,11 +13591,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: Text('No items to select'),
@@ -13377,16 +13655,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -13435,11 +13713,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: const Text('No items to select'),
@@ -13499,13 +13777,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
+
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
                                     color: Colors.blue),
@@ -13548,7 +13827,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         lowVisionDataValue,
                       ),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
@@ -13560,13 +13840,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 "No data found",
-                                style: TextStyle(fontSize: 16, color: Colors.blue),
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.blue),
                               ),
                             ),
                           );
                         } else {
                           // Data available: Show headers and rows
-                          List<DatalowvisionCornealBlindness> ddata = snapshot.data;
+                          List<DatalowvisionCornealBlindness> ddata =
+                              snapshot.data;
 
                           print('@@---ddata: ' + lowVisionDataValue.toString());
 
@@ -13590,10 +13872,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Column(
                                   children: ddata.map((offer) {
                                     return Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         _buildDataCellSrNo(
-                                            (ddata.indexOf(offer) + 1).toString()),
+                                            (ddata.indexOf(offer) + 1)
+                                                .toString()),
                                         _buildDataCell(offer.pUniqueID),
                                         _buildDataCellViewBlue("View", () {
                                           showDialog(
@@ -13602,24 +13886,64 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               return AlertDialog(
                                                 title: Text("Patient Details"),
                                                 content: SingleChildScrollView(
-                                                  scrollDirection: Axis.horizontal,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
                                                   child: DataTable(
                                                     columnSpacing: 10,
-                                                    border: TableBorder.all(color: Colors.blue),
+                                                    border: TableBorder.all(
+                                                        color: Colors.black),
                                                     columns: [
-                                                      DataColumn(label: Text("Organisation", style: TextStyle(fontWeight: FontWeight.bold))),
-                                                      DataColumn(label: Text("Detail", style: TextStyle(fontWeight: FontWeight.bold))),
+                                                      DataColumn(
+                                                          label: Text(
+                                                              "Organisation",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold))),
+                                                      DataColumn(
+                                                          label: Text("Detail",
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold))),
                                                     ],
                                                     rows: [
-                                                      _buildTableRowNew("S.No.", (ddata.indexOf(offer) + 1).toString()),
-                                                      _buildTableRowNew("Patient Id", offer.pUniqueID),
-                                                      _buildTableRowNew("Name of Person", offer.name),
-                                                      _buildTableRowNew("Mobile No.", offer.mobile.toString()),
-                                                      _buildTableRowNew("DOB", Utils.formatDateString(offer.dob)),
-                                                      _buildTableRowNew("Gender", offer.gender),
-                                                      _buildTableRowNew("Organisation Date", offer.addressLine1),
-                                                      _buildTableRowNew("Operated Type", Utils.formatDateString(offer.operatedOn)),
-                                                      _buildTableRowNew("NGO", offer.ngoName.toString()),
+                                                      _buildTableRowNew(
+                                                          "S.No.",
+                                                          (ddata.indexOf(
+                                                                      offer) +
+                                                                  1)
+                                                              .toString()),
+                                                      _buildTableRowNew(
+                                                          "Patient Id",
+                                                          offer.pUniqueID),
+                                                      _buildTableRowNew(
+                                                          "Name of Person",
+                                                          offer.name),
+                                                      _buildTableRowNew(
+                                                          "Mobile No.",
+                                                          offer.mobile
+                                                              .toString()),
+                                                      _buildTableRowNew(
+                                                          "DOB",
+                                                          Utils
+                                                              .formatDateString(
+                                                                  offer.dob)),
+                                                      _buildTableRowNew(
+                                                          "Gender",
+                                                          offer.gender),
+                                                      _buildTableRowNew(
+                                                          "Organisation Date",
+                                                          offer.addressLine1),
+                                                      _buildTableRowNew(
+                                                          "Operated Type",
+                                                          Utils.formatDateString(
+                                                              offer
+                                                                  .operatedOn)),
+                                                      _buildTableRowNew(
+                                                          "NGO",
+                                                          offer.ngoName
+                                                              .toString()),
                                                     ],
                                                   ),
                                                 ),
@@ -13627,7 +13951,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   TextButton(
                                                     child: Text("Close"),
                                                     onPressed: () {
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                   ),
                                                 ],
@@ -13647,19 +13972,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ],
                 ),
-
             ],
           ),
         ),
       ],
     );
   }
+
   DataRow _buildTableRowNew(String field, String value) {
     return DataRow(cells: [
       DataCell(Text(field, style: TextStyle(fontWeight: FontWeight.bold))),
       DataCell(Text(value)),
     ]);
   }
+
   Widget LowVisionRegisterDataShowVRSurgery() {
     return Column(
       children: [
@@ -13667,7 +13993,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: LowVisionRegisterVRSurgery,
           child: Column(
             children: [
-              Container(
+            /*  Container(
                 color: Colors.blue,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -13746,6 +14072,109 @@ class _DPMDashboard extends State<DPMDashboard> {
                     )
                   ],
                 ),
+              ),*/
+              Container(
+                color: Colors.white,
+                padding:
+                const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Glaucoma Data for Approval Button
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          print(   'VR Surgery Data for approval',);
+                          // Add your functionality here
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.visibility, color: Colors.blue),
+                              // Approval icon
+                              SizedBox(width: 8),
+                              // Space between icon and text
+                              Expanded(
+                                child: Text(
+                                  'VR Surgery Data for approval',
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 20), // Space between buttons
+                    // Back Button
+                    Expanded(
+                      flex: 1,
+                      child: GestureDetector(
+                        onTap: () {
+                          print('Back button clicked');
+                          setState(() {
+                            dashboardviewReplace = true;
+
+                            LowVisionRegisterCatracts = false;
+                            LowVisionRegisterDiabitic = false;
+                            LowVisionRegisterGlaucoma = false;
+                            LowVisionRegisterCornealBlindness = false;
+                            LowVisionRegisterVRSurgery = false;
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.blue,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black26,
+                                blurRadius: 4,
+                                offset: Offset(2, 2),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.arrow_back, color: Colors.white),
+                              // Back icon
+                              SizedBox(width: 8),
+                              // Space between icon and text
+                              Expanded(
+                                child: Text(
+                                  'Back',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
 
               // Horizontal Scrolling Header Row
@@ -13814,24 +14243,23 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   vertical: 15.0, horizontal: 10.0),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Colors.blue, width: 2.0),
+                                    BorderSide(color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                    color: Colors.blueAccent, width: 2.0),
+                                    color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               filled: true,
-                              fillColor: Colors.blue[
-                                  50], // Background color of the dropdown box
+                              fillColor: Colors.white, // Background color of the dropdown box
                             ),
-                            dropdownColor: Colors.blue[50],
+                            dropdownColor: Colors.white,
                             // Background color of the dropdown menu
                             style: TextStyle(color: Colors.black),
                             // Style of the selected item
                             icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.blue), // Dropdown icon style
+                                color: Colors.black), // Dropdown icon style
                           ),
                         ],
                       ),
@@ -13843,23 +14271,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Colors.blue[50], // Blue background color
-                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white, // White background
+                    border: Border.all(color: Colors.grey, width: 1), // ✅ Added border
+                    borderRadius: BorderRadius.circular(10), // ✅ Rounded corners
                   ),
-                  child: new DropdownButtonHideUnderline(
+                  child: DropdownButtonHideUnderline(
                     child: DropdownButton<String>(
                       isExpanded: true,
-                      focusColor: Colors.black,
                       value: lowVisionDatas,
-                      //elevation: 5,
-                      style: TextStyle(color: Colors.white),
-                      iconEnabledColor: Colors.white,
+                      style: TextStyle(color: Colors.black), // ✅ Text color
+                      iconEnabledColor: Colors.black, // ✅ Icon color
                       items: <String>[
                         'NGOs',
                         'Private Practitioner',
                         'Private Medical College',
-                      ].map<DropdownMenuItem<String>>(
-                          (String lowVisionRegistry) {
+                      ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
                         return DropdownMenuItem<String>(
                           value: lowVisionRegistry,
                           child: Text(
@@ -13871,9 +14297,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                       hint: Text(
                         "Select Type",
                         style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
+                          color: Colors.black,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                       onChanged: (String lowVisionData) {
                         setState(() {
@@ -13883,8 +14310,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             lowVisionDataValue = 5;
                           } else if (lowVisionDatas == "Private Practitioner") {
                             lowVisionDataValue = 12;
-                          } else if (lowVisionData ==
-                              "Private Medical College") {
+                          } else if (lowVisionDatas == "Private Medical College") {
                             lowVisionDataValue = 13;
                           } else {
                             lowVisionDataValue = 0;
@@ -13895,6 +14321,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
+
 
               if (lowVisionDataValue == 5)
                 Center(
@@ -13926,11 +14353,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                'Select:',
+                                'Select Organisation Type',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<DataBindOrgan>(
                                 onChanged: (userbindOrgan) {
                                   setState(() {
@@ -13960,21 +14386,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blueAccent, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -14023,11 +14449,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: const Text('No items to select'),
@@ -14090,12 +14516,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -14144,11 +14570,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: Text('No items to select'),
@@ -14173,11 +14599,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                'Select:',
+                                'Select Organisation Type',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: (userbindOrgan) {
@@ -14207,16 +14632,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -14265,11 +14690,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       vertical: 15.0, horizontal: 10.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
                                 disabledHint: const Text('No items to select'),
@@ -14294,11 +14719,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                'Select:',
+                                'Select Organisation Type',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: (userbindOrgan) {
@@ -14332,12 +14756,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.blue[50],
+                                  fillColor: Colors.white,
                                 ),
-                                dropdownColor: Colors.blue[50],
+                                dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
+                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -14378,7 +14802,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         lowVisionDataValue,
                       ),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
@@ -14390,7 +14815,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
                                 "No data found",
-                                style: TextStyle(fontSize: 16, color: Colors.blue),
+                                style:
+                                    TextStyle(fontSize: 16, color: Colors.blue),
                               ),
                             ),
                           );
@@ -14417,10 +14843,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 child: Column(
                                   children: ddata.map((offer) {
                                     return Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         _buildDataCellSrNo(
-                                            (ddata.indexOf(offer) + 1).toString()),
+                                            (ddata.indexOf(offer) + 1)
+                                                .toString()),
                                         _buildDataCell(offer.pUniqueID),
                                         _buildDataCellViewBlue("View", () {
                                           showDialog(
@@ -14429,43 +14857,63 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               return AlertDialog(
                                                 title: Text("Patient Details"),
                                                 content: SingleChildScrollView(
-                                                  scrollDirection: Axis.horizontal,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
                                                   child: DataTable(
                                                     columnSpacing: 10,
-                                                    border: TableBorder.all(color: Colors.blue),
+                                                    border: TableBorder.all(
+                                                        color: Colors.black),
                                                     columns: [
                                                       DataColumn(
                                                           label: Text("Field",
                                                               style: TextStyle(
                                                                   fontWeight:
-                                                                  FontWeight.bold))),
+                                                                      FontWeight
+                                                                          .bold))),
                                                       DataColumn(
                                                           label: Text("Value",
                                                               style: TextStyle(
                                                                   fontWeight:
-                                                                  FontWeight.bold))),
+                                                                      FontWeight
+                                                                          .bold))),
                                                     ],
                                                     rows: [
-                                                      _buildTableRowNew("S.No.",
-                                                          (ddata.indexOf(offer) + 1)
+                                                      _buildTableRowNew(
+                                                          "S.No.",
+                                                          (ddata.indexOf(
+                                                                      offer) +
+                                                                  1)
                                                               .toString()),
                                                       _buildTableRowNew(
-                                                          "Patient Id", offer.pUniqueID),
+                                                          "Patient Id",
+                                                          offer.pUniqueID),
                                                       _buildTableRowNew(
-                                                          "Name of Person", offer.name),
+                                                          "Name of Person",
+                                                          offer.name),
                                                       _buildTableRowNew(
-                                                          "Mobile No.", offer.mobile.toString()),
-                                                      _buildTableRowNew("DOB",
-                                                          Utils.formatDateString(offer.dob)),
-                                                      _buildTableRowNew("Gender",
+                                                          "Mobile No.",
+                                                          offer.mobile
+                                                              .toString()),
+                                                      _buildTableRowNew(
+                                                          "DOB",
+                                                          Utils
+                                                              .formatDateString(
+                                                                  offer.dob)),
+                                                      _buildTableRowNew(
+                                                          "Gender",
                                                           offer.gender),
-                                                      _buildTableRowNew("Organisation Date",
+                                                      _buildTableRowNew(
+                                                          "Organisation Date",
                                                           offer.addressLine1),
-                                                      _buildTableRowNew("Operated Type",
+                                                      _buildTableRowNew(
+                                                          "Operated Type",
                                                           Utils.formatDateString(
-                                                              offer.operatedOn)),
-                                                      _buildTableRowNew("NGO",
-                                                          offer.ngoName.toString()),
+                                                              offer
+                                                                  .operatedOn)),
+                                                      _buildTableRowNew(
+                                                          "NGO",
+                                                          offer.ngoName
+                                                              .toString()),
                                                     ],
                                                   ),
                                                 ),
@@ -14473,7 +14921,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   TextButton(
                                                     child: Text("Close"),
                                                     onPressed: () {
-                                                      Navigator.of(context).pop();
+                                                      Navigator.of(context)
+                                                          .pop();
                                                     },
                                                   ),
                                                 ],
@@ -14493,7 +14942,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ],
                 ),
-
             ],
           ),
         ),
@@ -18466,7 +18914,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Table(
-              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              border: TableBorder.all(color: Colors.black, width: 0.5),
               columnWidths: {
                 0: FixedColumnWidth(120.0), // Label column width
                 1: FlexColumnWidth(), // Value column width
@@ -18746,7 +19194,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Table(
-              border: TableBorder.all(color: Colors.grey, width: 0.5),
+              border: TableBorder.all(color: Colors.black, width: 0.5),
               columnWidths: {
                 0: FixedColumnWidth(120.0), // Label column width
                 1: FlexColumnWidth(), // Value column width
