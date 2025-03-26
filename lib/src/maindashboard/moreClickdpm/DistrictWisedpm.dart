@@ -146,11 +146,11 @@ class _DistrictWisedpm
               },
               children: [
                 _buildTableRow("DPM Name", offer.name),
-                _buildTableRow("District Name", offer.districtName),
                 _buildTableRow("Address", offer.officeAddress),
                 _buildTableRow("Mobile", offer.mobile.toString()),
                 _buildTableRow("Email", offer.emailId.toString()),
                 _buildTableRow("District Name", offer.districtName.toString()),
+                _buildTableRow("Entry Date", offer.entry_date ?? "null"),
               ],
             ),
           ),

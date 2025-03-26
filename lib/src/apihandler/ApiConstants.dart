@@ -189,7 +189,7 @@ class ApiConstants {
   static String GetStateWiseCampForDashboard = 'GetStateWiseCampForDashboard';
   static String GetDistrictWiseCampForDashboard = 'GetDistrictWiseCampForDashboard';
   static String GetStateDistrictWiseCampForDashboard = 'GetStateDistrictWiseCampForDashboard';
-
+  static String GetStateDistrictCampWiseDataForDashboard = 'GetStateDistrictCampWiseDataForDashboard';
 
   static String GetStateWiseDPMForDashboard = 'GetStateWiseDPMForDashboard';
 
@@ -221,5 +221,9 @@ class ApiConstants {
   static String Get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold = 'DpmDashboard/api/Get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold';
 
   static String Get_DPM_MouRenew = 'DpmDashboard/api/Get_DPM_MouRenew';
+
+
+  static String GuidelinesForHomePage = 'GuidelinesForHomePage';
+
 
 }

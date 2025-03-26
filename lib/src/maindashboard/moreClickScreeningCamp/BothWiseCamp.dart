@@ -7,6 +7,8 @@ import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreStateDistric
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
+import 'BothWiseCampWiseScreen.dart';
+
 class BothWiseCamp extends StatefulWidget {
   @override
   _BothWiseCamp createState() =>
@@ -37,7 +39,7 @@ class _BothWiseCamp
 
       // Fetch district code
       moreclickCampDistrictCode = await SharedPrefs.getStoreSharedValue(
-        AppConstant.moreclickdistrictCodeHospital,
+        AppConstant.moreclickdistrictCodeCamp,
       ) as String;
       moreclickCampDistrictCodeInt = int.tryParse(moreclickCampDistrictCode ?? '');
 
@@ -107,7 +109,7 @@ class _BothWiseCamp
                     children: [
                       _buildHeaderCellSrNo("S.No."),
                       _buildHeaderCell("NGO Name"),
-                     // _buildHeaderCell("Nodal Officer Name", 150),
+                      // _buildHeaderCell("Nodal Officer Name", 150),
                       _buildHeaderCellDashboardsAction("Action",),
                     ],
                   ),
@@ -123,7 +125,21 @@ class _BothWiseCamp
                           _buildDataCell(entry.ngoName ?? '-'),
                           //_buildDataCell(entry.memberName ?? '-', 150),
                           _buildDataCellViewBlueDashboard("View", () {
-                            showDialog(
+                            SharedPrefs.storeSharedValues(AppConstant.moreclickdistrictCodeCamp,
+                                entry.districtCode.toString());
+                            SharedPrefs.storeSharedValues(AppConstant.moreclickCamptsateCode,
+                                entry.stateCode.toString());
+                            SharedPrefs.storeSharedValues(AppConstant.srNo,
+                                entry.npcbNo.toString());
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BothWiseCampWiseScreen(),
+
+
+                              ),
+                            );
+                            /* showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
@@ -136,6 +152,9 @@ class _BothWiseCamp
 
                                         _buildTableRow("NGO Name", entry.ngoName ?? "-"),
                                         _buildTableRow("Total Camps", entry.countState.toString() ?? "-"),
+                                        _buildTableRow("Entry Date", entry.entry_date ?? "-"),
+                                        _buildTableRow("District Name", entry.districtName ?? "-"),
+                                        _buildTableRow("State Name", entry.stateName ?? "-"),
                                         // Add more fields as necessary
                                       ],
                                     ),
@@ -148,7 +167,7 @@ class _BothWiseCamp
                                   ],
                                 );
                               },
-                            );
+                            );*/
                           }),
 
                         ],
@@ -440,6 +459,7 @@ class _BothWiseCamp
   }
 
   Widget _buildDataCellViewBlueDashboard(
+
       String text, VoidCallback onTap) {
     double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(

@@ -41,6 +41,7 @@ class BothPrivatePractioresData {
   String emailId;
   String ngoName;
   String address;
+  String entry_date;
 
   BothPrivatePractioresData(
       {this.districtCode,
@@ -52,7 +53,8 @@ class BothPrivatePractioresData {
         this.type,
         this.emailId,
         this.ngoName,
-        this.address});
+        this.address,
+        this.entry_date});
 
   BothPrivatePractioresData.fromJson(Map<String, dynamic> json) {
     districtCode = json['district_code'];
@@ -65,6 +67,7 @@ class BothPrivatePractioresData {
     emailId = json['email_id'];
     ngoName = json['ngoName'];
     address = json['address'];
+    entry_date = json['entry_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +82,7 @@ class BothPrivatePractioresData {
     data['email_id'] = this.emailId;
     data['ngoName'] = this.ngoName;
     data['address'] = this.address;
+    data['entry_date'] = this.entry_date;
     return data;
   }
 }

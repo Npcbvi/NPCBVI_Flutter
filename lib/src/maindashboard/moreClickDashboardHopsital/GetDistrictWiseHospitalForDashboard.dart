@@ -28,7 +28,7 @@ class _GetDistrictWiseHospitalForDashboard
   Future<void> fetchMoreclickNgoStateCode() async {
     try {
       moreclickHospitalStatedCodess = await SharedPrefs.getStoreSharedValue(
-        AppConstant.moreclickNgoStatedCode,
+        AppConstant.moreclickHospitalStateCode,
       ) as String;
       if (moreclickHospitalStatedCodess != null) {
         moreclickHospitalStatedCodesss = int.tryParse(moreclickHospitalStatedCodess);

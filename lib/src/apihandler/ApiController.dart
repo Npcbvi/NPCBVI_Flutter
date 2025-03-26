@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/BothWiseCampWise.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewClick.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/EquipemntDetails.dart';
@@ -134,6 +135,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
 import '../model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
+import '../model/guidlines/GuilinessPage.dart';
 import '../model/mainDashbaordMorClick/moreClickCamp/BothWiseCamp.dart';
 import '../model/mainDashbaordMorClick/moreclickprivatepractiories/DistrictwisePrivatePractionries.dart';
 import '../model/mainDashbaordMorClick/morehospitalclick/GetStateWiseHospitalsForDashboard.dart';
@@ -1438,7 +1440,7 @@ class ApiController {
         "state_code": state_code,
         "status": status, // for approved
       });
-      print("@@getDPM_NGOAPProved_pendings--bodyprint--: ${body.toString()}");
+      print("@@getDPM_NGOAPProved_pendings--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7326,7 +7328,7 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWiseMedicalForDashboard;
+      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWiseHospitalForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8342,6 +8344,79 @@ class ApiController {
     }
   }
 
+  static Future<List<DataBothWiseCampWise>>
+  getStateDistrictCampWiseDataForDashboard(int stateId,int districtId,String srNo,String regHospitalId) async {
+    print("@@getStateDistrictCampWiseDataForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictCampWiseDataForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateId": stateId,
+        "districtId":districtId,
+        "srNo":srNo,
+        "regHospitalId":regHospitalId
+
+
+      });
+      print("@@getStateDistrictCampWiseDataForDashboard--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getStateDistrictWiseHospitalForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+     BothWiseCampWise data =
+     BothWiseCampWise.fromJson(responseData);
+
+      if (data.status) {
+        //Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
   static Future<List<StateWiseDpmData>>
   getStateWiseDPMForDashboard() async {
     print("@@getStateWiseDPMForDashboard" + "1");
@@ -9243,6 +9318,39 @@ class ApiController {
       return null;
     }
   }
+
+
+  static Future<List<LstGuidelineFileName>> guidelinesForHomePage() async {
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GuidelinesForHomePage;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+
+      print("@@guidelinesForHomePage--url Response: ${url.toString()}");
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+      print("@@guidelinesForHomePage--Api Response: ${response.toString()}");
+      var responseData = json.decode(response.data);
+      GuilinessPage data = GuilinessPage.fromJson(responseData);
+      return data.data?.lstGuidelineFileName ?? [];
+    } catch (e) {
+      print("Error fetching guidelines: $e");
+      return [];
+    }
+  }
+
 
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

@@ -37,6 +37,8 @@ class SpoListwiseData {
   String officeAddress;
   String emailId;
   String mobile;
+  String entry_date;
+
 
   SpoListwiseData(
       {this.stateCode,
@@ -44,7 +46,8 @@ class SpoListwiseData {
         this.name,
         this.officeAddress,
         this.emailId,
-        this.mobile});
+        this.mobile,
+      this.entry_date});
 
   SpoListwiseData.fromJson(Map<String, dynamic> json) {
     stateCode = json['state_code'];
@@ -53,6 +56,7 @@ class SpoListwiseData {
     officeAddress = json['office_address'];
     emailId = json['email_id'];
     mobile = json['mobile'];
+    entry_date = json['entry_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -63,6 +67,7 @@ class SpoListwiseData {
     data['office_address'] = this.officeAddress;
     data['email_id'] = this.emailId;
     data['mobile'] = this.mobile;
+    data['entry_date'] = this.entry_date;
     return data;
   }
 }

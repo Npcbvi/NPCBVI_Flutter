@@ -41,6 +41,8 @@ class BothDataForHospitalData {
   String emailId;
   String ngoName;
   String address;
+  String entry_date;
+
 
   BothDataForHospitalData(
       {this.districtCode,
@@ -52,7 +54,8 @@ class BothDataForHospitalData {
         this.type,
         this.emailId,
         this.ngoName,
-        this.address});
+        this.address,
+      this.entry_date});
 
   BothDataForHospitalData.fromJson(Map<String, dynamic> json) {
     districtCode = json['district_code'];
@@ -65,6 +68,7 @@ class BothDataForHospitalData {
     emailId = json['email_id'];
     ngoName = json['ngoName'];
     address = json['address'];
+    entry_date = json['entry_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -79,6 +83,7 @@ class BothDataForHospitalData {
     data['email_id'] = this.emailId;
     data['ngoName'] = this.ngoName;
     data['address'] = this.address;
+    data['entry_date'] = this.entry_date;
     return data;
   }
 }

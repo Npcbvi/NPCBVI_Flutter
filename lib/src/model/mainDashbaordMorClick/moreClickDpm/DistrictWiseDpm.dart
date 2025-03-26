@@ -39,6 +39,8 @@ class DistrictWiseDpmData {
   String emailId;
   String mobile;
 
+  String entry_date;
+
   DistrictWiseDpmData(
       {this.districtCode,
         this.stateCode,
@@ -46,7 +48,8 @@ class DistrictWiseDpmData {
         this.name,
         this.officeAddress,
         this.emailId,
-        this.mobile});
+        this.mobile,
+      this.entry_date});
 
   DistrictWiseDpmData.fromJson(Map<String, dynamic> json) {
     districtCode = json['district_code'];
@@ -56,6 +59,7 @@ class DistrictWiseDpmData {
     officeAddress = json['office_address'];
     emailId = json['email_id'];
     mobile = json['mobile'];
+    entry_date = json['entry_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +71,7 @@ class DistrictWiseDpmData {
     data['office_address'] = this.officeAddress;
     data['email_id'] = this.emailId;
     data['mobile'] = this.mobile;
+    data['entry_date'] = this.entry_date;
     return data;
   }
 }

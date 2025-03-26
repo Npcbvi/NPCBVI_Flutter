@@ -38,6 +38,7 @@ class BothWiseCampsData {
   String districtName;
   String ngoName;
   String npcbNo;
+  String entry_date;
 
   BothWiseCampsData(
       {this.districtCode,
@@ -46,7 +47,8 @@ class BothWiseCampsData {
         this.stateName,
         this.districtName,
         this.ngoName,
-        this.npcbNo});
+        this.npcbNo,
+      this.entry_date});
 
   BothWiseCampsData.fromJson(Map<String, dynamic> json) {
     districtCode = json['district_code'];
@@ -56,6 +58,8 @@ class BothWiseCampsData {
     districtName = json['district_name'];
     ngoName = json['ngoName'];
     npcbNo = json['npcbNo'];
+
+    entry_date = json['entry_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -67,6 +71,7 @@ class BothWiseCampsData {
     data['district_name'] = this.districtName;
     data['ngoName'] = this.ngoName;
     data['npcbNo'] = this.npcbNo;
+    data['entry_date'] = this.entry_date;
     return data;
   }
 }

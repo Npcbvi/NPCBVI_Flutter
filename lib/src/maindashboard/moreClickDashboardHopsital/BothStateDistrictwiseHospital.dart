@@ -137,6 +137,9 @@ class _BothStateDistrictwiseHospital
                                         _buildTableRow("Organisation Type", entry.type ?? "-"),
                                         _buildTableRow("Contact No", entry.mobile ?? "-"),
                                         _buildTableRow("Hospital Address", entry.address ?? "-"),
+                                        _buildTableRow("Entry Date", entry.entry_date ?? "-"),
+                                        _buildTableRow("District Name", entry.districtName ?? "-"),
+                                        _buildTableRow("State Name", entry.stateName ?? "-"),
                                         // Add more fields as necessary
                                       ],
                                     ),

@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/BothDataFoMEdicalCollegesl.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickSatelliteCenters/BothSatelliteCenters.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickprivatepractiories/BothPrivatePractiores.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/BothWiseCampWise.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/BothWiseCamp.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/BothDataForHospital.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreStateDistrictBoth.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class BothSatelliteCenters extends StatefulWidget {
+class BothWiseCampWiseScreen extends StatefulWidget {
   @override
-  _BothSatelliteCenters createState() =>
-      _BothSatelliteCenters();
+  _BothWiseCampWiseScreen createState() =>
+      _BothWiseCampWiseScreen();
 }
 
-class _BothSatelliteCenters
-    extends State<BothSatelliteCenters> {
-  String moreclickSatelliteCentersStateCode;
-  int moreclickSatelliteCentersStateCodeInt;
+class _BothWiseCampWiseScreen
+    extends State<BothWiseCampWiseScreen> {
+  String moreclickCampStateCode;
+  int moreclickCampStateCodeInt;
 
-  String moreclickMSatelliteDistrictCode;
-  int moreclickSatelliteDistrictCodeInt;
+  String moreclickCampDistrictCode;
+  int moreclickCampDistrictCodeInt;
+  String srNo;
 
   @override
   void initState() {
@@ -31,22 +31,25 @@ class _BothSatelliteCenters
 
   Future<void> fetchStateAndDistrictCodes() async {
     try {
-      // Fetch state code
-      moreclickSatelliteCentersStateCode = await SharedPrefs.getStoreSharedValue(
-        AppConstant.moreclickSatelliteCentersStateCode,
+      srNo = await SharedPrefs.getStoreSharedValue(
+        AppConstant.srNo,
       ) as String;
-      moreclickSatelliteCentersStateCodeInt = int.tryParse(moreclickSatelliteCentersStateCode ?? '');
+      // Fetch state code
+      moreclickCampStateCode = await SharedPrefs.getStoreSharedValue(
+        AppConstant.moreclickCamptsateCode,
+      ) as String;
+      moreclickCampStateCodeInt = int.tryParse(moreclickCampStateCode ?? '');
 
       // Fetch district code
-      moreclickMSatelliteDistrictCode = await SharedPrefs.getStoreSharedValue(
-        AppConstant.moreclickdistrictCodeSatelliteCentersPRactiories,
+      moreclickCampDistrictCode = await SharedPrefs.getStoreSharedValue(
+        AppConstant.moreclickdistrictCodeCamp,
       ) as String;
-      moreclickSatelliteDistrictCodeInt = int.tryParse(moreclickMSatelliteDistrictCode ?? '');
+      moreclickCampDistrictCodeInt = int.tryParse(moreclickCampDistrictCode ?? '');
 
-      if (moreclickSatelliteDistrictCodeInt == null) {
+      if (moreclickCampDistrictCodeInt == null) {
         debugPrint("Error: Invalid or missing state code.");
       }
-      if (moreclickSatelliteDistrictCodeInt == null) {
+      if (moreclickCampDistrictCodeInt == null) {
         debugPrint("Error: Invalid or missing district code.");
       }
     } catch (e) {
@@ -61,21 +64,24 @@ class _BothSatelliteCenters
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'State & District-wise Hospital',
+          'State & District-Camp wise Hospital',
           style: TextStyle(fontSize: 16.0),
         ),
       ),
-      body: (moreclickSatelliteDistrictCodeInt == null || moreclickSatelliteDistrictCodeInt == null)
+      body: (moreclickCampDistrictCodeInt == null || moreclickCampDistrictCodeInt == null)
           ? const Center(
         child: Text(
           "No valid state or district code found.",
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
         ),
       )
-          : FutureBuilder<List<BothSatelliteCentersData>>(
-        future: ApiController.getStateDistrictWiseSatteliteForDashboard(
-          moreclickSatelliteCentersStateCodeInt,
-          moreclickSatelliteDistrictCodeInt,
+          : FutureBuilder<List<DataBothWiseCampWise>>(
+        future: ApiController.getStateDistrictCampWiseDataForDashboard(
+          moreclickCampStateCodeInt,
+            502,
+            srNo,
+            ""
+
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -108,9 +114,9 @@ class _BothSatelliteCenters
                   child: Row(
                     children: [
                       _buildHeaderCellSrNo("S.No."),
-                      _buildHeaderCell("Darpan No."),
-                     // _buildHeaderCell("Nodal Officer Name", 150),
-                      _buildHeaderCellDashboardsAction("Action"),
+                      _buildHeaderCell("NGO Name"),
+                      // _buildHeaderCell("Nodal Officer Name", 150),
+                      _buildHeaderCellDashboardsAction("Action",),
                     ],
                   ),
                 ),
@@ -136,13 +142,16 @@ class _BothSatelliteCenters
                                       children: [
                                         _buildTableRow("Organization", "Detail", isHeader: true),
 
-                                        _buildTableRow("Organisation Name", entry.ngoName ?? "-"),
-                                        _buildTableRow("Hospital Name", entry.hospitalname ?? "-"),
-                                        _buildTableRow("Total Satellite	", entry.smanagername ?? "-"),
-                                        _buildTableRow("Entry Date", entry.entry_date ?? "-"),
+                                        _buildTableRow("NGO Name", entry.ngoName ?? "-"),
+                                        _buildTableRow("Cam Name", entry.campname.toString() ?? "-"),
+                                        _buildTableRow("Entry Date", entry.entryDate ?? "-"),
                                         _buildTableRow("District Name", entry.districtName ?? "-"),
                                         _buildTableRow("State Name", entry.stateName ?? "-"),
+                                        _buildTableRow("Start Date", entry.startDate ?? "-"),
+                                        _buildTableRow("End  Date", entry.endDate ?? "-"),
+
                                         // Add more fields as necessary
+
                                       ],
                                     ),
                                   ),
@@ -169,32 +178,6 @@ class _BothSatelliteCenters
       ),
     );
   }
-
-
-
-  TableRow _buildTableRow(String field, String value, {bool isHeader = false}) {
-    return TableRow(
-      children: [
-        _buildTableCell(field, isHeader: isHeader),
-        _buildTableCell(value, isHeader: isHeader),
-      ],
-    );
-  }
-
-  Widget _buildTableCell(String text, {bool isHeader = false}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
-          fontSize: isHeader ? 16.0 : 14.0,
-        ),
-      ),
-    );
-  }
-
-
 
   Widget _buildHeaderCell(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -281,6 +264,27 @@ class _BothSatelliteCenters
     );
   }
 
+  /*TableRow _buildTableRow(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            value ?? 'N/A',
+          ),
+        ),
+      ],
+    );
+  }*/
 
 
   Widget _buildHeaderCellTOTalNGO(String text) {
@@ -485,4 +489,27 @@ class _BothSatelliteCenters
       ),
     );
   }
+
+
+  Widget _buildTableCell(String text, {bool isHeader = false}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+          fontSize: isHeader ? 16.0 : 14.0,
+        ),
+      ),
+    );
+  }
+  TableRow _buildTableRow(String field, String value, {bool isHeader = false}) {
+    return TableRow(
+      children: [
+        _buildTableCell(field, isHeader: isHeader),
+        _buildTableCell(value, isHeader: isHeader),
+      ],
+    );
+  }
+
 }

@@ -39,6 +39,7 @@ class nGOmoreStateDistrictBothData {
   String darpanNo;
   String name;
   String address;
+  String entry_date;
 
   nGOmoreStateDistrictBothData(
       {this.districtCode,
@@ -48,7 +49,7 @@ class nGOmoreStateDistrictBothData {
         this.memberName,
         this.darpanNo,
         this.name,
-        this.address});
+        this.address,this.entry_date});
 
   nGOmoreStateDistrictBothData.fromJson(Map<String, dynamic> json) {
     districtCode = json['district_code'];
@@ -59,6 +60,7 @@ class nGOmoreStateDistrictBothData {
     darpanNo = json['darpan_no'];
     name = json['name'];
     address = json['address'];
+    entry_date=json['entry_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,6 +73,7 @@ class nGOmoreStateDistrictBothData {
     data['darpan_no'] = this.darpanNo;
     data['name'] = this.name;
     data['address'] = this.address;
+    data['entry_date'] = this.entry_date;
     return data;
   }
 }

@@ -136,6 +136,9 @@ class _MoreClickGetStateDistrictWiseBothNGo
                                         _buildTableRow("Nodal Officer Name", entry.memberName ?? "-"),
                                         _buildTableRow("NGO Name", entry.name ?? "-"),
                                         _buildTableRow("Address", entry.address ?? "-"),
+                                        _buildTableRow("Entry Date", entry.entry_date ?? "-"),
+                                        _buildTableRow("District Name", entry.districtName ?? "-"),
+                                        _buildTableRow("State Name", entry.stateName ?? "-"),
                                         // Add more fields as necessary
                                       ],
                                     ),
