@@ -6941,7 +6941,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 1: FlexColumnWidth(),
               },
               children: [
-                _buildTableRow("Name", offer.name),
+                _buildTableRow("NGO Name", offer.name),
                 _buildTableRow("Member Name", offer.memberName),
                 _buildTableRow("Hospital Name", offer.hName),
                 _buildTableRow("Address", offer.address),
@@ -7131,7 +7131,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 1: FlexColumnWidth(),
               },
               children: [
-                _buildTableRow("Name", offer.name),
+                _buildTableRow("NGO Name", offer.name),
                 _buildTableRow("Member Name", offer.memberName),
                 _buildTableRow("Hospital Name", offer.hName),
                 _buildTableRow("Address", offer.address),
@@ -7269,7 +7269,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             Row(
                               children: [
                                 _buildHeaderCellSrNo('S.No.'),
-                                _buildHeaderCell('NGO Name'),
+                                _buildHeaderCell('Organisation Name'),
                                 _buildHeaderCell('Action'),
                               ],
                             ),
@@ -7456,7 +7456,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       Row(
                         children: [
                           _buildHeaderCellSrNo('S.No.'),
-                          _buildHeaderCell('NGO Name'),
+                          _buildHeaderCell('Organisation Name'),
                           _buildHeaderCellDiseaseDataAction('Action'),
                         ],
                       ),
@@ -9455,7 +9455,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             child: Row(
                               children: [
                                 _buildHeaderCellSrNo('S.No.'),
-                                _buildHeaderCell('Organisation Name'),
+                                _buildHeaderCell('Satellite Centre Name'),
                                 _buildHeaderCellDiseaseDataAction('Action'),
                               ],
                             ),
