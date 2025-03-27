@@ -6474,13 +6474,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           _buildDataCellViewBlueDiseaseDataAction(
                                               "View", () {
                                             print("@@npcbNo: " + offer.npcbNo);
-                                            Navigator.push(
+                                            Utils.showToast("Next Sprint Report", true);
+
+                                            /*   Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
                                                     DPMReportScreen(),
                                               ),
-                                            );
+                                            );*/
                                           }),
                                         ],
                                       );
@@ -6595,13 +6597,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           "View", () {
                                         print(
                                             "@@Different TypeShowData--here===");
-                                        Navigator.push(
+                                        Utils.showToast("Next Sprint Report", true);
+
+                                        /* Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 DPMPatientPatientDisceaseInnerDataDisplay(),
                                           ),
-                                        );
+                                        );*/
                                       }),
                                     ],
                                   );
