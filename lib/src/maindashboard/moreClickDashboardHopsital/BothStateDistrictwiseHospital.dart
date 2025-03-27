@@ -105,7 +105,7 @@ class _BothStateDistrictwiseHospital
                   child: Row(
                     children: [
                       _buildHeaderCellSrNo("S.No."),
-                      _buildHeaderCell("Darpan No."),
+                      _buildHeaderCell("Organisation Name"),
                      // _buildHeaderCell("Nodal Officer Name", 150),
                       _buildHeaderCellDashboardsAction("Action"),
                     ],

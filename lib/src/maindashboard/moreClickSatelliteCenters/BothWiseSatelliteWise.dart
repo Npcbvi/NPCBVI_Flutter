@@ -1,18 +1,18 @@
-class BothSatelliteCenterss {
+class BothWiseSatelliteWise {
   String message;
   bool status;
-  List<BothSatelliteCentersData> data;
+  List<DataBothWiseSatelliteWise> data;
   Null list;
 
-  BothSatelliteCenterss({this.message, this.status, this.data, this.list});
+  BothWiseSatelliteWise({this.message, this.status, this.data, this.list});
 
-  BothSatelliteCenterss.fromJson(Map<String, dynamic> json) {
+  BothWiseSatelliteWise.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
     if (json['data'] != null) {
-      data = <BothSatelliteCentersData>[];
+      data = <DataBothWiseSatelliteWise>[];
       json['data'].forEach((v) {
-        data.add(new BothSatelliteCentersData.fromJson(v));
+        data.add(new DataBothWiseSatelliteWise.fromJson(v));
       });
     }
     list = json['list'];
@@ -30,46 +30,41 @@ class BothSatelliteCenterss {
   }
 }
 
-class BothSatelliteCentersData {
+class DataBothWiseSatelliteWise {
   int districtCode;
   int stateCode;
   String stateName;
   String districtName;
   String ngoName;
   String hospitalname;
-  String sname;
-  String address;
-  String smanagername;
-  String entry_date;
-  String h_Reg_ID;
+  String campmanagername;
+  String endDate;
+  String startDate;
+  String entryDate;
 
-  String sreg;
-  BothSatelliteCentersData(
+  DataBothWiseSatelliteWise(
       {this.districtCode,
         this.stateCode,
         this.stateName,
         this.districtName,
         this.ngoName,
         this.hospitalname,
-        this.sname,
-        this.address,
-        this.smanagername,
-        this.entry_date,this.sreg,
-        this.h_Reg_ID});
+        this.campmanagername,
+        this.endDate,
+        this.startDate,
+        this.entryDate});
 
-  BothSatelliteCentersData.fromJson(Map<String, dynamic> json) {
+  DataBothWiseSatelliteWise.fromJson(Map<String, dynamic> json) {
     districtCode = json['district_code'];
     stateCode = json['state_code'];
     stateName = json['state_name'];
     districtName = json['district_name'];
     ngoName = json['ngoName'];
     hospitalname = json['hospitalname'];
-    sname = json['sname'];
-    address = json['address'];
-    smanagername = json['smanagername'];
-    entry_date = json['entry_date'];
-    sreg = json['sreg'];
-    h_Reg_ID = json['h_Reg_ID'];
+    campmanagername = json['campmanagername'];
+    endDate = json['end_date'];
+    startDate = json['start_date'];
+    entryDate = json['entry_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -80,12 +75,10 @@ class BothSatelliteCentersData {
     data['district_name'] = this.districtName;
     data['ngoName'] = this.ngoName;
     data['hospitalname'] = this.hospitalname;
-    data['sname'] = this.sname;
-    data['address'] = this.address;
-    data['smanagername'] = this.smanagername;
-    data['entry_date'] = this.entry_date;
-    data['sreg'] = this.sreg;
-    data['h_Reg_ID'] = this.h_Reg_ID;
+    data['campmanagername'] = this.campmanagername;
+    data['end_date'] = this.endDate;
+    data['start_date'] = this.startDate;
+    data['entry_date'] = this.entryDate;
     return data;
   }
 }

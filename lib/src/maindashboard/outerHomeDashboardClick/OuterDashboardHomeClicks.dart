@@ -231,7 +231,22 @@ class _OuterDashboardHomeClicks extends State<OuterDashboardHomeClicks> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Container(
+              padding: EdgeInsets.all(5), // Internal padding for spacing
+              alignment: Alignment.centerLeft, // Aligns text to the left
+              child: RichText(
+                text: TextSpan(
+                  text: 'About NPCBVI',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black, // Text color
+                  ),
+                ),
+              ),
+            ),
             SizedBox(height: 5),
+
             Container(
               margin: EdgeInsets.symmetric(horizontal: 4),
               width: 350,
@@ -262,10 +277,11 @@ class _OuterDashboardHomeClicks extends State<OuterDashboardHomeClicks> {
               elevation: 3, // Adds shadow for depth
               margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12), // Space around the card
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10), // Rounded corners
+                borderRadius: BorderRadius.circular(2), // Rounded corners
               ),
+              color: Colors.blue, // Sets background color to white
               child: Container(
-                padding: EdgeInsets.all(12), // Internal padding for spacing
+                padding: EdgeInsets.all(10), // Internal padding for spacing
                 alignment: Alignment.centerLeft, // Aligns text to the left
                 child: RichText(
                   text: TextSpan(
@@ -280,7 +296,7 @@ class _OuterDashboardHomeClicks extends State<OuterDashboardHomeClicks> {
               ),
             ),
 
-            SizedBox(height: 10),
+            SizedBox(height: 5),
             isLoading
                 ? CircularProgressIndicator() // Show loading indicator
                 : guidelinesFiles.isEmpty
@@ -292,8 +308,10 @@ class _OuterDashboardHomeClicks extends State<OuterDashboardHomeClicks> {
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 2,
-                  margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  margin: EdgeInsets.symmetric(vertical: 2, horizontal: 10),
                   child: ListTile(
+                    visualDensity: VisualDensity(vertical: -4), // Further decreases height
+                    contentPadding: EdgeInsets.symmetric(vertical: 2, horizontal: 10), // Adjust padding
                     title: Text(
                       guidelinesFiles[index].filename,
                       style: TextStyle(

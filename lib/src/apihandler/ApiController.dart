@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickSatelliteCenters/BothWiseSatelliteWise.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/BothWiseCampWise.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewClick.dart';
@@ -1632,7 +1633,7 @@ class ApiController {
         "state_code": state_code,
         "status": status, // for approved
       });
-      print("@@DataDPMRivateMEdicalColleges--bodyprint--: ${body.toString()}");
+      print("@@DataDPMRivateMEdicalColleges--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7994,7 +7995,77 @@ class ApiController {
       return [];
     }
   }
+  static Future<List<DataBothWiseSatelliteWise>>
+  getStateDistrictSatteliteWiseDataForDashboard(int stateId,int districtId,String srNo,String regHospitalId) async {
+    print("@@getStateDistrictSatteliteWiseDataForDashboard" + "1");
+    Response response1;
 
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictSatteliteWiseDataForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateId": stateId,
+        "districtId":districtId,
+        "srNo":srNo,
+        "regHospitalId":regHospitalId
+
+
+      });
+      print("@@getStateDistrictSatteliteWiseDataForDashboard--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getStateDistrictWiseHospitalForDashboard--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      BothWiseSatelliteWise data =
+      BothWiseSatelliteWise.fromJson(responseData);
+
+      if (data.status) {
+        //Utils.showToast(data.message, true);
+        print(
+            "@@showToast--Api Response: ${response
+                .toString()}");
+        // Return the list of data
+        return data.data;
+      } else {
+        print(
+            "@@showToast--2 Response: ${response
+                .toString()}");
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
 
 
   static Future<List<Dpm_application_ngoApplicationsData>> get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List(String npcbNo,String userid,

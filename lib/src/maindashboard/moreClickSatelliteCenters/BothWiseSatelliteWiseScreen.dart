@@ -1,47 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
-import 'package:mohfw_npcbvi/src/maindashboard/MoreClickGetStateDistrictWiseBothNGo.dart';
-import 'package:mohfw_npcbvi/src/maindashboard/moreClickDashboardHopsital/BothStateDistrictwiseHospital.dart';
-import 'package:mohfw_npcbvi/src/maindashboard/moreClickMedicalColleges/BothStateDistrictwiseMEdicalColleges.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/DistrictwiseMedicalColleges.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/GeDistrictWiseHospitalsForDashboard.dart';
-import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreDashboardClickDistrictWise.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickSatelliteCenters/BothWiseSatelliteWise.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/BothWiseCampWise.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreClickCamp/BothWiseCamp.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/BothDataForHospital.dart';
+import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreStateDistrictBoth.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
-class GetDistrictWiseMedicalCollegs extends StatefulWidget {
+class BothWiseSatelliteWiseScreen extends StatefulWidget {
   @override
-  _GetDistrictWiseMedicalCollegs createState() =>
-      _GetDistrictWiseMedicalCollegs();
+  _BothWiseSatelliteWiseScreen createState() =>
+      _BothWiseSatelliteWiseScreen();
 }
 
-class _GetDistrictWiseMedicalCollegs
-    extends State<GetDistrictWiseMedicalCollegs> {
-  String moreclickMEdicalcollegesStatedCodess;
-  int moreclickkMEdicalcollegesStatedCodesss;
+class _BothWiseSatelliteWiseScreen
+    extends State<BothWiseSatelliteWiseScreen> {
+  String moreclickCampStateCode;
+  int moreclickCampStateCodeInt;
+
+  String moreclickCampDistrictCode;
+  int moreclickCampDistrictCodeInt;
+  String srNo,h_Reg_ID;
 
   @override
   void initState() {
     super.initState();
-    fetchMoreclickNgoStateCode();
+    fetchStateAndDistrictCodes();
   }
 
-  Future<void> fetchMoreclickNgoStateCode() async {
+  Future<void> fetchStateAndDistrictCodes() async {
     try {
-      moreclickMEdicalcollegesStatedCodess = await SharedPrefs.getStoreSharedValue(
-        AppConstant.moreclickMedicalcollegsStateCode,
+      h_Reg_ID = await SharedPrefs.getStoreSharedValue(
+        AppConstant.h_Reg_ID,
       ) as String;
-      if (moreclickMEdicalcollegesStatedCodess != null) {
-        moreclickkMEdicalcollegesStatedCodesss = int.tryParse(moreclickMEdicalcollegesStatedCodess);
-        if (moreclickkMEdicalcollegesStatedCodesss == null) {
-          debugPrint("Error: Invalid integer value for state code.");
-        }
-      } else {
-        debugPrint("Error: No value found for 'moreclickNgoStatedCode'.");
+      srNo = await SharedPrefs.getStoreSharedValue(
+        AppConstant.srNo,
+      ) as String;
+      // Fetch state code
+      moreclickCampStateCode = await SharedPrefs.getStoreSharedValue(
+        AppConstant.moreclickSatelliteCentersStateCode,
+      ) as String;
+      moreclickCampStateCodeInt = int.tryParse(moreclickCampStateCode ?? '');
+
+      // Fetch district code
+      moreclickCampDistrictCode = await SharedPrefs.getStoreSharedValue(
+        AppConstant.moreclickdistrictCodeSatelliteCentersPRactiories,
+      ) as String;
+      moreclickCampDistrictCodeInt = int.tryParse(moreclickCampDistrictCode ?? '');
+
+      if (moreclickCampDistrictCodeInt == null) {
+        debugPrint("Error: Invalid or missing state code.");
+      }
+      if (moreclickCampDistrictCodeInt == null) {
+        debugPrint("Error: Invalid or missing district code.");
       }
     } catch (e) {
-      debugPrint("Error fetching 'moreclickNgoStatedCode': $e");
+      debugPrint("Error fetching codes: $e");
     } finally {
       setState(() {});
     }
@@ -52,21 +68,26 @@ class _GetDistrictWiseMedicalCollegs
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'District-wise Private Medical College',
+          'State & District-wise Satelllite Centre(s)',
+          maxLines:2,
           style: TextStyle(fontSize: 16.0),
         ),
       ),
-
-      body: moreclickkMEdicalcollegesStatedCodesss == null
+      body: (moreclickCampDistrictCodeInt == null || moreclickCampDistrictCodeInt == null)
           ? const Center(
         child: Text(
-          "No state code found.",
+          "No valid state or district code found.",
           style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
         ),
       )
-          : FutureBuilder<List<DistrictwiseMedicalCollegesData>>(
-        future: ApiController.getDistrictWiseMedicalForDashboard(
-          moreclickkMEdicalcollegesStatedCodesss,
+          : FutureBuilder<List<DataBothWiseSatelliteWise>>(
+        future: ApiController.getStateDistrictSatteliteWiseDataForDashboard(
+          moreclickCampStateCodeInt,
+            moreclickCampDistrictCodeInt,
+            srNo,
+            h_Reg_ID
+
+
         ),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -91,105 +112,77 @@ class _GetDistrictWiseMedicalCollegs
 
           final data = snapshot.data;
           return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                Row(
-                  children: [
-                    _buildHeaderCellSrNo("S.No."),
-                    _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total Patient"),
-                    _buildHeaderCellDashboardsAction("More"),
-                  ],
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildHeaderCellSrNo("S.No."),
+                      _buildHeaderCell("Satellite Centre Name"),
+                      // _buildHeaderCell("Nodal Officer Name", 150),
+
+                      _buildHeaderCellDashboardsAction("Action",),
+                    ],
+                  ),
                 ),
-                Column(
-                  children: data.map((entry) {
-                    final index = data.indexOf(entry) + 1;
-                    return Row(
-                      children: [
-                        _buildDataCellCellSrNo(index.toString()),
-                        _buildDataCell(entry.districtName),
-                        _buildDataCellTotalNGo(entry.countState.toString()),
-                        _buildDataCellViewBlueDashboard("More", () {
-                          SharedPrefs.storeSharedValues(AppConstant.moreclickdistrictCodeMedicalcollegs,
-                              entry.districtCode.toString());
-                          SharedPrefs.storeSharedValues(AppConstant.moreclickMedicalcollegsStateCode,
-                              entry.stateCode.toString());
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BothStateDistrictwiseMEdicalColleges(),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Column(
+                    children: data.map((entry) {
+                      final index = data.indexOf(entry) + 1;
+                      return Row(
+                        children: [
+                          _buildDataCellCellSrNo(index.toString()),
+                          _buildDataCell(entry.ngoName ?? '-'),
+                          //_buildDataCell(entry.memberName ?? '-', 150),
+                          _buildDataCellViewBlueDashboard("View", () {
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text('Details for ${entry.ngoName}'),
+                                  content: SingleChildScrollView(
+                                    child: Table(
+                                      border: TableBorder.all(color: Colors.black),
+                                      children: [
+                                        _buildTableRow("Organization", "Detail", isHeader: true),
 
+                                        _buildTableRow("Satellite Centre Name", entry.ngoName ?? "-"),
+                                        _buildTableRow("Hospital Name", entry.hospitalname.toString() ?? "-"),
+                                        _buildTableRow("Entry Date", entry.entryDate ?? "-"),
+                                        _buildTableRow("District Name", entry.districtName ?? "-"),
+                                        _buildTableRow("State Name", entry.stateName ?? "-"),
+                                        _buildTableRow("Start Date", entry.startDate ?? "-"),
+                                        _buildTableRow("End  Date", entry.endDate ?? "-"),
 
-                            ),
-                          );
-                        }),
-                      ],
-                    );
-                  }).toList(),
+                                        // Add more fields as necessary
+
+                                      ],
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.of(context).pop(),
+                                      child: const Text("Close"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }),
+
+                        ],
+                      );
+                    }).toList(),
+                  ),
                 ),
               ],
             ),
           );
         },
       ),
-    );
-  }
-
-  TableRow _buildTableRowcall(String title, VoidCallback onTap) {
-    return TableRow(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(title),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: GestureDetector(
-            onTap: onTap,  // Trigger the onTap callback when clicked
-            child: Container(
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              decoration: BoxDecoration(
-                color: Colors.blue,  // Background color of the button
-                borderRadius: BorderRadius.circular(8.0),  // Rounded corners
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    blurRadius: 6,
-                    spreadRadius: 2,
-                  ),
-                ],
-              ),
-              child: Text(
-                "View",  // Customize the "View" text as needed
-                style: TextStyle(
-                  color: Colors.white,  // Text color
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-
-  TableRow _buildTableRow(String label, String value) {
-    return TableRow(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            label,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(value),
-        ),
-      ],
     );
   }
 
@@ -225,6 +218,80 @@ class _GetDistrictWiseMedicalCollegs
       ),
     );
   }
+  Widget _buildDataCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildViewButton(VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 80,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border.all(color: Colors.black, width: 0.1), // Thick border
+        ),
+        child: const Center(
+          child: Text(
+            "View",
+            style: TextStyle(
+              color: Colors.blue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /*TableRow _buildTableRow(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            value ?? 'N/A',
+          ),
+        ),
+      ],
+    );
+  }*/
 
 
   Widget _buildHeaderCellTOTalNGO(String text) {
@@ -233,7 +300,7 @@ class _GetDistrictWiseMedicalCollegs
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
       height: 35,
-      width: screenWidth * 0.15, // 10% of screen width for responsiveness
+      width: screenWidth * 0.18, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -259,14 +326,13 @@ class _GetDistrictWiseMedicalCollegs
     );
   }
 
-
   Widget _buildHeaderCellDashboardsAction(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
       height: 35,
-      width: screenWidth * 0.2, // 30% of screen width for adaptability
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -325,39 +391,6 @@ class _GetDistrictWiseMedicalCollegs
     );
   }
 
-  Widget _buildDataCell(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 3.0), // Left & Right Margin
-
-          child: Text(
-            text,
-            maxLines: 2,
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontSize: screenWidth * 0.04, // Scales with screen width
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
 
 
   Widget _buildDataCellTotalNGo(String text) {
@@ -366,7 +399,7 @@ class _GetDistrictWiseMedicalCollegs
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
       height: 35,
-      width: screenWidth * 0.15,
+      width: screenWidth * 0.18, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -428,8 +461,6 @@ class _GetDistrictWiseMedicalCollegs
     );
   }
 
-
-
   Widget _buildDataCellViewBlueDashboard(
       String text, VoidCallback onTap) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -438,7 +469,7 @@ class _GetDistrictWiseMedicalCollegs
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
         height: 35,
-        width: screenWidth * 0.2, // 30% of screen width for adaptability
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border(
@@ -466,19 +497,26 @@ class _GetDistrictWiseMedicalCollegs
     );
   }
 
-  TextStyle _infoTextStyle() => TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
 
-  TextStyle _highlightTextStyle() => TextStyle(color: Colors.red, fontWeight: FontWeight.w500);
-
-  String getCurrentFinancialYear() {
-
-    DateTime now = DateTime.now();
-    int currentYear = now.year;
-    int nextYear = currentYear + 1;
-    if (now.month >= 4) {
-      return '$currentYear-${nextYear.toString().substring(2)}';
-    } else {
-      return '${currentYear - 1}-${currentYear.toString().substring(2)}';
-    }
+  Widget _buildTableCell(String text, {bool isHeader = false}) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        text,
+        style: TextStyle(
+          fontWeight: isHeader ? FontWeight.bold : FontWeight.normal,
+          fontSize: isHeader ? 16.0 : 14.0,
+        ),
+      ),
+    );
   }
+  TableRow _buildTableRow(String field, String value, {bool isHeader = false}) {
+    return TableRow(
+      children: [
+        _buildTableCell(field, isHeader: isHeader),
+        _buildTableCell(value, isHeader: isHeader),
+      ],
+    );
+  }
+
 }

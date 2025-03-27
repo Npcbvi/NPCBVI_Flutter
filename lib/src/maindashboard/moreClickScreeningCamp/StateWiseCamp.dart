@@ -57,7 +57,7 @@ String   moreclickNgoStatedCodess;
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('State'),
-                    _buildHeaderCellTOTalNGO('Total NGO'),
+                    _buildHeaderCellTOTalNGO('Total\nCamps'),
                     _buildHeaderCellDashboardsAction('Action'),
                   ],
                 ),

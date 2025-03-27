@@ -185,6 +185,8 @@ class ApiConstants {
   static String GetDistrictWiseSatteliteForDashboard = 'GetDistrictWiseSatteliteForDashboard';
   static String GetStateDistrictWiseSatteliteForDashboard = 'GetStateDistrictWiseSatteliteForDashboard';
 
+  static String GetStateDistrictSatteliteWiseDataForDashboard = 'GetStateDistrictSatteliteWiseDataForDashboard';
+
 
   static String GetStateWiseCampForDashboard = 'GetStateWiseCampForDashboard';
   static String GetDistrictWiseCampForDashboard = 'GetDistrictWiseCampForDashboard';

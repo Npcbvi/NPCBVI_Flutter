@@ -2105,8 +2105,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  ppCount_pending != null
-                                                      ? '${ppCount_pending}'
+                                                  pmcCountPending != null
+                                                      ? '${pmcCountPending}'
                                                       : '0',
 
                                                   //  '${ppCount_pending}',
@@ -8821,8 +8821,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                 _buildTableRow('Camp Name:', offer.campname),
                 _buildTableRow('NGO Name:', offer.ngoName),
                 _buildTableRow('Address:', offer.address),
-                _buildTableRow('Start Date:', offer.startDate.toString()),
-                _buildTableRow('Mobile:', offer.endDate.toString()),
+                _buildTableRow('Start Date:',  Utils.formatDateString(offer.startDate.toString())),
+                _buildTableRow('End Date:',  Utils.formatDateString(offer.endDate.toString())),
                 _buildTableRow('Mobile:', offer.mobile.toString()),
                 _buildTableRow(
                     'Camp Manager:', offer.campmanagername.toString()),

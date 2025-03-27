@@ -64,7 +64,7 @@ class _BothWiseCampWiseScreen
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'State & District-Camp wise Hospital',
+          'State & District-Camp wise Detail',
           style: TextStyle(fontSize: 16.0),
         ),
       ),
@@ -144,6 +144,8 @@ class _BothWiseCampWiseScreen
 
                                         _buildTableRow("NGO Name", entry.ngoName ?? "-"),
                                         _buildTableRow("Cam Name", entry.campname.toString() ?? "-"),
+                                        _buildTableRow("Cam Manager", entry.campmanagername.toString() ?? "-"),
+
                                         _buildTableRow("Entry Date", entry.entryDate ?? "-"),
                                         _buildTableRow("District Name", entry.districtName ?? "-"),
                                         _buildTableRow("State Name", entry.stateName ?? "-"),

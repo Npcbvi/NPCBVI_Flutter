@@ -47,4 +47,6 @@ class AppConstant {
 
   static final String SaveOrganisationNameandValue = "SaveOrganisationNameandValue";
   static final String srNo = "srNo";
+  static final String h_Reg_ID = "h_Reg_ID";
+
 }

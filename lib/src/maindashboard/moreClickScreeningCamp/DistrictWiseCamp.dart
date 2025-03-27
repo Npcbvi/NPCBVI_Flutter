@@ -98,7 +98,7 @@ class _DistrictWiseCamp
                   children: [
                     _buildHeaderCellSrNo("S.No."),
                     _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total NGO"),
+                    _buildHeaderCellTOTalNGO("Total Camps"),
                     _buildHeaderCellDashboardsAction("More"),
                   ],
                 ),

@@ -59,7 +59,7 @@ class _BothStateDistrictwiseMEdicalColleges
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'State & District-wise Hospital',
+          'District-wise Private Medical College',
           style: TextStyle(fontSize: 16.0),
         ),
       ),
@@ -106,7 +106,7 @@ class _BothStateDistrictwiseMEdicalColleges
                   child: Row(
                     children: [
                       _buildHeaderCellSrNo("S.No."),
-                      _buildHeaderCell("Darpan No."),
+                      _buildHeaderCell("Organisation Name"),
                      // _buildHeaderCell("Nodal Officer Name", 150),
                       _buildHeaderCellDashboardsAction("Action"),
                     ],

@@ -100,7 +100,7 @@ class _GetDistrictWisePrivatePractiories
                   children: [
                     _buildHeaderCellSrNo("S.No."),
                     _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total NGO"),
+                    _buildHeaderCellTOTalNGO("Total\nHospitals"),
                     _buildHeaderCellDashboardsAction("More",),
                   ],
                 ),

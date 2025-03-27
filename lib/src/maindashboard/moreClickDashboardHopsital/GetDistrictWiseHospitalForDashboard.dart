@@ -95,7 +95,7 @@ class _GetDistrictWiseHospitalForDashboard
                   children: [
                     _buildHeaderCellSrNo("S.No."),
                     _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total NGO"),
+                    _buildHeaderCellTOTalNGO("Total Hospitals"),
                     _buildHeaderCellDashboardsAction("More"),
                   ],
                 ),

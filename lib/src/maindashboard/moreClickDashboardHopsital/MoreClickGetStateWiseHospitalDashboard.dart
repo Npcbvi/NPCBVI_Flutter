@@ -56,7 +56,7 @@ String   moreclickNgoStatedCodess;
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('State'),
-                    _buildHeaderCellTOTalNGO('Total NGO'),
+                    _buildHeaderCellTOTalNGO('Total\nOrganisations',),
                     _buildHeaderCellDashboardsAction('Action'),
                   ],
                 ),
@@ -177,7 +177,7 @@ String   moreclickNgoStatedCodess;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
-      height: 35,
+      height: 45,
       width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
@@ -211,7 +211,7 @@ String   moreclickNgoStatedCodess;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
-      height: 35,
+      height: 45,
       width: screenWidth * 0.18, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
         color: Colors.white,
@@ -244,7 +244,7 @@ String   moreclickNgoStatedCodess;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
-      height: 35,
+      height: 45,
       width: screenWidth * 0.3, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,

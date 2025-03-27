@@ -40,7 +40,7 @@ String   moreclickNgoStatedCodess;
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar( title: Text(
-        'State-wise Private Practitioners',
+        'State-wise Satellite Centres',
         style: TextStyle(
           fontSize: 12.0, // Adjust the size as needed
         ),
@@ -61,7 +61,7 @@ String   moreclickNgoStatedCodess;
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('State'),
-                    _buildHeaderCellTOTalNGO('Total Hospital'),
+                    _buildHeaderCellTOTalNGO('Total\nSatellite'),
                     _buildHeaderCellDashboardsAction('Action'),
                   ],
                 ),

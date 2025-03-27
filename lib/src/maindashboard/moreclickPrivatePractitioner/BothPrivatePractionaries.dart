@@ -60,7 +60,8 @@ class _BothPrivatePractionaries
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'State & District-wise Hospital',
+          'State & District-wise Private Practitioners',
+          maxLines:2,
           style: TextStyle(fontSize: 16.0),
         ),
       ),
@@ -107,7 +108,7 @@ class _BothPrivatePractionaries
                   child: Row(
                     children: [
                       _buildHeaderCellSrNo("S.No."),
-                      _buildHeaderCell("Darpan No."),
+                      _buildHeaderCell("Organisation Name"),
                      // _buildHeaderCell("Nodal Officer Name", 150),
                       _buildHeaderCellDashboardsAction("Action"),
                     ],

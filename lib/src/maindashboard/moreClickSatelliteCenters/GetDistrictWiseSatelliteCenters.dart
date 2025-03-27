@@ -57,7 +57,7 @@ class _GetDistrictWiseSatelliteCenters
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'District-wise Private Practitioners',
+          'District-wise Satellite Centers',
           style: TextStyle(fontSize: 16.0),
         ),
       ),
@@ -102,7 +102,7 @@ class _GetDistrictWiseSatelliteCenters
                   children: [
                     _buildHeaderCellSrNo("S.No."),
                     _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total NGO"),
+                    _buildHeaderCellTOTalNGO("Total Satellite"),
                     _buildHeaderCellDashboardsAction("More"),
                   ],
                 ),

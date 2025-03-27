@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/moreClickSatelliteCenters/BothWiseSatelliteWiseScreen.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickMEdicalColleges/BothDataFoMEdicalCollegesl.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickSatelliteCenters/BothSatelliteCenters.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/moreclickprivatepractiories/BothPrivatePractiores.dart';
@@ -61,7 +62,8 @@ class _BothSatelliteCenters
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'State & District-wise Hospital',
+          'District-wise Satellite Centers Detail',
+
           style: TextStyle(fontSize: 16.0),
         ),
       ),
@@ -108,7 +110,7 @@ class _BothSatelliteCenters
                   child: Row(
                     children: [
                       _buildHeaderCellSrNo("S.No."),
-                      _buildHeaderCell("Darpan No."),
+                      _buildHeaderCell("NGO Name"),
                      // _buildHeaderCell("Nodal Officer Name", 150),
                       _buildHeaderCellDashboardsAction("Action"),
                     ],
@@ -125,7 +127,23 @@ class _BothSatelliteCenters
                           _buildDataCell(entry.ngoName ?? '-'),
                           //_buildDataCell(entry.memberName ?? '-', 150),
                           _buildDataCellViewBlueDashboard("View", () {
-                            showDialog(
+                            SharedPrefs.storeSharedValues(AppConstant.moreclickdistrictCodeSatelliteCentersPRactiories,
+                                entry.districtCode.toString());
+                            SharedPrefs.storeSharedValues(AppConstant.moreclickSatelliteCentersStateCode,
+                                entry.stateCode.toString());
+                            SharedPrefs.storeSharedValues(AppConstant.srNo,
+                                entry.sreg.toString());
+                            SharedPrefs.storeSharedValues(AppConstant.h_Reg_ID,
+                                entry.h_Reg_ID.toString());
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BothWiseSatelliteWiseScreen(),
+
+
+                              ),
+                            );
+                           /* showDialog(
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
@@ -154,7 +172,7 @@ class _BothSatelliteCenters
                                   ],
                                 );
                               },
-                            );
+                            );*/
                           }),
 
                         ],

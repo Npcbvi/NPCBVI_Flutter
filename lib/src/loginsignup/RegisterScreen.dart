@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/LoginScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/UpcomingHomeGuidlines.dart';
+import 'package:mohfw_npcbvi/src/maindashboard/outerHomeDashboardClick/OuterDashboardHomeClicks.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardStateModel.dart';
 import 'package:mohfw_npcbvi/src/model/country_state_model.dart';
@@ -286,14 +287,23 @@ class _RegisterScreen extends State<RegisterScreen> {
                     setState(() {
                       _selectedMenu = 'Home';
                       _appBarTitle="Home";
-                      Navigator.pop(context);
-                      showHomeScreen = true;
+                      Navigator.pop(context); // Close the drawer first
+                      Future.delayed(Duration(milliseconds: 300), () {
+                        // Wait before pushing
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OuterDashboardHomeClicks(),
+                          ),
+                        );
+                      });
+                     /* showHomeScreen = true;
                       showNGOResgistration = false;
                       showSPORegistration = false;
                       showDPMRegistration = false;
                       showGOVTPrivate = false;
                       newUSerGovtPrivateRegisterRadios = false;
-                      registeredUSerGovtPrivateRegsiterations = false;
+                      registeredUSerGovtPrivateRegsiterations = false;*/
                     });
                   },
                 ),

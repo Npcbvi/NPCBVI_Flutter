@@ -2312,7 +2312,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                   borderRadius: BorderRadius.circular(10.0),
                 ),
                 filled: true,
-                fillColor: Colors.blue[50],
+                fillColor: Colors.white,
                 hintText: 'All',
                 hintStyle: const TextStyle(color: Colors.grey),
               ),
@@ -2328,7 +2328,7 @@ class _NgoDashboard extends State<NgoDashboard> {
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 300,
                 decoration: BoxDecoration(
-                  color: Colors.blue[50],
+                  color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
                 ),
                 offset: const Offset(0, -3),
@@ -2389,7 +2389,7 @@ class _NgoDashboard extends State<NgoDashboard> {
               },
 
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
 
             // ✅ Conditional Dropdown for "Hospitals"
             if (dropDownTwoSelcted == 6)
@@ -2460,7 +2460,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                           padding: const EdgeInsets.symmetric(horizontal: 3),
                           // Re
                           decoration: BoxDecoration(
-                            color: Colors.blue[50],
+                            color: Colors.white,
                             border: Border.all(color: Colors.grey, width: 1),
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -2468,7 +2468,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                         dropdownStyleData: DropdownStyleData(
                           maxHeight: 300,
                           decoration: BoxDecoration(
-                            color: Colors.blue[50],
+                            color: Colors.white,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           offset: const Offset(0, -3),
@@ -2612,9 +2612,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
 
 
-                SizedBox(height: 8),
+                SizedBox(height: 5),
                 buildDropdownHospitalType(),
-                SizedBox(height: 8),
+                SizedBox(height: 5),
                 //buildDropdownHospitalTypeHospialSelect(),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),

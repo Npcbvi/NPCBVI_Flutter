@@ -61,7 +61,7 @@ class _BothWiseCamp
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'State & District-wise Hospital',
+          'State & District-wise Camp',
           style: TextStyle(fontSize: 16.0),
         ),
       ),
