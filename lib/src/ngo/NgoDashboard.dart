@@ -247,10 +247,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     _futureVillage = _getVillage(district_code_login, state_code_login, 10011);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
-        ngoDashboardDatas=true;
+        ngoDashboardDatas = true;
         ngoDashboardclicks = true;
-
-
       });
     });
     AddSatelliteManagers = false;
@@ -265,8 +263,6 @@ class _NgoDashboard extends State<NgoDashboard> {
     ngoScreeningCampListss = false;
     AddScreeningCamps = false;
     ngoSATELLITECENTREMANAGERLists = false;
-
-
   }
 
   void getUserData() {
@@ -813,9 +809,9 @@ class _NgoDashboard extends State<NgoDashboard> {
         backgroundColor: Colors.blue,
         title: Text(
           'Welcome ${fullnameController}',
-          maxLines:2,
+          maxLines: 2,
           // Assuming fullnameController has .text
-          style: TextStyle(color: Colors.white,fontSize: 14.0),
+          style: TextStyle(color: Colors.white, fontSize: 14.0),
         ),
         centerTitle: true,
         actions: [
@@ -1341,7 +1337,6 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Column(
             children: [
               Container(
-
                 color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -1371,11 +1366,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                             // Add your logic here for adding a new hospital
                             setState(() {
                               print('@@Add New Record clicked');
-                              Utils.showToast("Complete this in Next Sprint", true);
+                              Utils.showToast(
+                                  "Complete this in Next Sprint", true);
                             });
                           },
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
                             // Add padding to the container
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -1386,7 +1383,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 BoxShadow(
                                   color: Colors.black26,
                                   blurRadius: 6,
-                                  offset: Offset(0, 2), // Slight shadow below the button
+                                  offset: Offset(
+                                      0, 2), // Slight shadow below the button
                                 ),
                               ],
                               border: Border.all(
@@ -1398,7 +1396,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                               mainAxisSize: MainAxisSize.min,
                               // Make the row fit the content
                               children: [
-
                                 // Space between icon and text
                                 Text(
                                   'Add New Hospital',
@@ -1407,14 +1404,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     fontWeight: FontWeight.w500, // Text weight
                                     fontSize: 16, // Slightly smaller font size
                                   ),
-                                  overflow: TextOverflow.ellipsis, // Handle text overflow
+                                  overflow: TextOverflow
+                                      .ellipsis, // Handle text overflow
                                 ),
                               ],
                             ),
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -1745,8 +1742,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                   // Table for the data
                   Table(
-                    border: TableBorder.all(
-                        color: Colors.black, width: 1.0),
+                    border: TableBorder.all(color: Colors.black, width: 1.0),
                     children: [
                       _buildTableRow('Eye Bank ID', offer.eyeBankUniqueID),
                       _buildTableRow('Eye Bank Name', offer.eyebankName),
@@ -1757,11 +1753,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                   ),
                   SizedBox(height: 16.0),
 
-                  // Action Row (with buttons like MOU and Manage Eye Donation)
-                  //  _buildMAnageEyeDonationMOUUI(),
-                  // Manage Eye Donation Button
-
-                  _buildMAnageEyeDonationMOUUI(offer.eyeBankUniqueID),
+                  //_buildMAnageEyeDonationMOUUI(offer.eyeBankUniqueID),
                   SizedBox(height: 16.0),
 
                   // Close Button
@@ -1793,9 +1785,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           visible: ngoCampManagerLists,
           child: Column(
             children: [
-
               Container(
-
                 color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -1811,7 +1801,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             color: Colors.white,
                             fontSize: 12, // Slightly larger font size
                             fontWeight:
-                            FontWeight.w500, // Bold text for prominence
+                                FontWeight.w500, // Bold text for prominence
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -1821,7 +1811,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                         child: GestureDetector(
                           onTap: _addCampManager, // Call the function properly
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
                             // Add padding to the container
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -1832,7 +1823,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 BoxShadow(
                                   color: Colors.black26,
                                   blurRadius: 6,
-                                  offset: Offset(0, 2), // Slight shadow below the button
+                                  offset: Offset(
+                                      0, 2), // Slight shadow below the button
                                 ),
                               ],
                               border: Border.all(
@@ -1844,7 +1836,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                               mainAxisSize: MainAxisSize.min,
                               // Make the row fit the content
                               children: [
-
                                 // Space between icon and text
                                 Text(
                                   'Add Camp Manager',
@@ -1853,14 +1844,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     fontWeight: FontWeight.w500, // Text weight
                                     fontSize: 12, // Slightly smaller font size
                                   ),
-                                  overflow: TextOverflow.ellipsis, // Handle text overflow
+                                  overflow: TextOverflow
+                                      .ellipsis, // Handle text overflow
                                 ),
                               ],
                             ),
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -2006,7 +1997,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             padding: EdgeInsets.symmetric(vertical: 8.0),
                             alignment: Alignment.centerLeft,
                             child: _buildNGOAPPlicationViewDetailsAttachments(
-                               offer.srNo),
+                                offer.srNo),
                           ),
                         ],
                       ),
@@ -2014,7 +2005,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                   ),
                   SizedBox(height: 16.0),
                   // Editable Section
-               /*   Container(
+                  /*   Container(
                     height: 80,
                     width: double.infinity, // Adjust width as needed
                     decoration: BoxDecoration(
@@ -2112,8 +2103,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget _buildNGOAPPlicationViewDetailsAttachments(
-     String srNo ) {
+  Widget _buildNGOAPPlicationViewDetailsAttachments(String srNo) {
     return Container(
       margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: Column(
@@ -2135,16 +2125,16 @@ class _NgoDashboard extends State<NgoDashboard> {
                 details.data.forEach((manager) {
                   print('Manager Name: ${manager.managerName}');
                   // Initialize controllers with fetched details
-                  _userNameController = TextEditingController(
-                      text: manager.managerName);
+                  _userNameController =
+                      TextEditingController(text: manager.managerName);
                   _mobileNumberController =
                       TextEditingController(text: manager.mobile);
-                  _emailIdController = TextEditingController(
-                      text: manager.emailId);
-                  _addressController = TextEditingController(
-                      text: manager.address);
-                  _designationController = TextEditingController(
-                      text: manager.designation);
+                  _emailIdController =
+                      TextEditingController(text: manager.emailId);
+                  _addressController =
+                      TextEditingController(text: manager.address);
+                  _designationController =
+                      TextEditingController(text: manager.designation);
 
                   setState(() {
                     print('@@click on Edit');
@@ -2153,8 +2143,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                     ManageUSerNGOHospt = false;
                     ngoDashboardclicks = false;
-                    EyeDonationCentreRegistrationClickONAddDontaions =
-                    false;
+                    EyeDonationCentreRegistrationClickONAddDontaions = false;
 
                     EyeBankApplication = false;
                     ngoCampManagerLists = false;
@@ -2167,25 +2156,22 @@ class _NgoDashboard extends State<NgoDashboard> {
                     AddSatelliteCenterRedOptionFields = false;
                   });
                   // Dismiss the dialog
-                  Navigator.pop(
-                      context); // Dismiss the dialog after editing
+                  Navigator.pop(context); // Dismiss the dialog after editing
                 });
               } else {
-                Utils.showToast(
-                    "No details found or an error occurred",
-                    true);
+                Utils.showToast("No details found or an error occurred", true);
               }
             } catch (e) {
               print('Error: $e');
               Utils.showToast(
-                  "Failed to fetch details. Please try again.",
-                  true);
+                  "Failed to fetch details. Please try again.", true);
             } // Call function on button click
           }),
         ],
       ),
     );
   }
+
   Widget _buildButtonNewCreate(String text, IconData icon, VoidCallback onTap) {
     return Material(
       color: Colors.white, // Background color
@@ -2223,6 +2209,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
+
 // Helper method to build table rows
 
 // Helper method for button
@@ -2247,6 +2234,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       ],
     );
   }
+
   /*Widget _buildButton(String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -2450,11 +2438,13 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  Widget buildDropdownHospitalType() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+  /* Widget buildDropdownHospitalType() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Add margin here
+
       child: SizedBox(
-        width: 300,
+        height: 60,
+        width: double.infinity, // Full width inside the container
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -2480,10 +2470,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                 height: 50,
                 padding: const EdgeInsets.symmetric(
                     horizontal: 6), // Reduced horizontal padding
-                /* decoration: BoxDecoration(
+                */ /* decoration: BoxDecoration(
                   color: Colors.blue[50],
                   borderRadius: BorderRadius.circular(10),
-                ),*/
+                ),*/ /*
               ),
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 300,
@@ -2540,14 +2530,217 @@ class _NgoDashboard extends State<NgoDashboard> {
                       break;
 
                     default:
-                    /*  dropDownTwoSelcted = 0;
+                    */ /*  dropDownTwoSelcted = 0;
                       selectionBasedHospital = false;
-                      ngoDashboardDatas = false;*/
+                      ngoDashboardDatas = false;*/ /*
                       break;
                   }
                 });
               },
 
+            ),
+            const SizedBox(height: 5),
+
+            // ✅ Conditional Dropdown for "Hospitals"
+            if (dropDownTwoSelcted == 6)
+              SizedBox(
+                height: 100, // Adjust height as needed
+                child: FutureBuilder<List<DataDropDownHospitalSelected>>(
+                  future: _futureDataDropDownHospitalSelected,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
+
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+
+                    List<DataDropDownHospitalSelected> list = snapshot.data ?? [];
+
+                    // Handle case when the list is null or empty
+                    if (list.isEmpty) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        child: const Text(
+                          'No data found',
+                          style: TextStyle(fontSize: 18, color: Colors.red),
+                        ),
+                      );
+                    }
+
+                    // Set the first item as default if none is selected
+                    if (_selectHospitalSelected == null || !list.contains(_selectHospitalSelected)) {
+                      _selectHospitalSelected = list.first;
+                    }
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Select Hospital:',
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                        DropdownButtonFormField2<DataDropDownHospitalSelected>(
+                          value: _selectHospitalSelected,
+                          isExpanded: true,
+                          onChanged: (hospital) {
+                            setState(() {
+                              _selectHospitalSelected = hospital;
+                              hospitalNameFetch = hospital?.hName ?? '';
+                              reghospitalNameFetch = hospital?.hRegID ?? '';
+                            });
+                          },
+                          items: list.map((hospital) {
+                            return DropdownMenuItem<DataDropDownHospitalSelected>(
+                              value: hospital,
+                              child: Text(
+                                hospital.hName,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            );
+                          }).toList(),
+                          buttonStyleData: ButtonStyleData(
+                            height: 60, // ✅ Dropdown height
+                            padding: const EdgeInsets.symmetric(horizontal: 3),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(color: Colors.grey, width: 1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: 300,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            offset: const Offset(0, -3),
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                          ),
+                          hint: const Text(
+                            'Select Hospital',
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                            border: InputBorder.none,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              )
+
+          ],
+        ),
+      ),
+    );
+  }*/
+  /*Widget buildDropdownHospitalType() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: SizedBox(
+        width: double.infinity, // Full width inside the container
+        height:60,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DropdownButtonFormField2<String>(
+              value: _chosenValueMangeTwo,
+              isExpanded: true,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'All',
+                hintStyle: const TextStyle(color: Colors.grey),
+              ),
+              buttonStyleData: ButtonStyleData(
+                height: 50,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 6), // Reduced horizontal padding
+                *//* decoration: BoxDecoration(
+                  color: Colors.blue[50],
+                  borderRadius: BorderRadius.circular(10),
+                ),*//*
+              ),
+              dropdownStyleData: DropdownStyleData(
+                maxHeight: 300,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                offset: const Offset(0, -3),
+              ),
+              iconStyleData: const IconStyleData(
+                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+              ),
+              items: <String>['Hospitals', 'Camps', 'Satellite Centres']
+                  .map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              }).toList(),
+              onChanged: (String value) {
+                setState(() {
+                  _chosenValueMangeTwo = value ?? 'All';
+                  print('@@_chosenValueMangeTwo-- $_chosenValueMangeTwo');
+
+                  switch (_chosenValueMangeTwo) {
+                    case 'Hospitals':
+                      dropDownTwoSelcted = 6;
+                      selectionBasedHospital = true;
+                      _futureDataDropDownHospitalSelected =
+                          GetHospitalNgoForDDL(); // ✅ Future is assigned
+                      break;
+
+                    case 'Camps':
+                      dropDownTwoSelcted = 9;
+                      selectionBasedHospital = false;
+                      ngoDashboardDatas = false;
+                      break;
+
+                    case 'Satellite Centres':
+                      dropDownTwoSelcted = 8;
+                      selectionBasedHospital = false;
+                      ngoDashboardDatas = false;
+                      break;
+
+                    case 'All': // ✅ Fix for 'All' case
+                      dropDownTwoSelcted = 0;
+                      selectionBasedHospital = true;
+                      ngoDashboardDatas = true;
+                      _futureDataDropDownHospitalSelected =
+                          GetHospitalNgoForDDL(); // ✅ Future is properly assigned
+                      break;
+
+                    default:
+                      *//*  dropDownTwoSelcted = 0;
+                      selectionBasedHospital = false;
+                      ngoDashboardDatas = false;*//*
+                      break;
+                  }
+                });
+              },
             ),
             const SizedBox(height: 5),
 
@@ -2593,7 +2786,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                       ),
                       DropdownButtonFormField2<DataDropDownHospitalSelected>(
                         value: _selectHospitalSelected,
-
                         isExpanded: true,
                         onChanged: (hospital) {
                           setState(() {
@@ -2634,6 +2826,185 @@ class _NgoDashboard extends State<NgoDashboard> {
                           offset: const Offset(0, -3),
                         ),
                         iconStyleData: const IconStyleData(
+                          icon:
+                              Icon(Icons.arrow_drop_down, color: Colors.black),
+                        ),
+                        hint: const Text(
+                          'Select Hospital',
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(horizontal: 0),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+          ],
+        ),
+      ),
+    );
+  }*/
+  Widget buildDropdownHospitalType() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: IntrinsicHeight( // ✅ Adjusts height dynamically based on content
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DropdownButtonFormField2<String>(
+              value: _chosenValueMangeTwo,
+              isExpanded: true,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'All',
+                hintStyle: const TextStyle(color: Colors.grey),
+              ),
+              buttonStyleData: ButtonStyleData(
+                height: 50,
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+              ),
+              dropdownStyleData: DropdownStyleData(
+                maxHeight: 300,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                offset: const Offset(0, -3),
+              ),
+              iconStyleData: const IconStyleData(
+                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+              ),
+              items: <String>['Hospitals', 'Camps', 'Satellite Centres']
+                  .map((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(
+                    value,
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                );
+              }).toList(),
+              onChanged: (String value) {
+                setState(() {
+                  _chosenValueMangeTwo = value ?? 'All';
+                  print('@@_chosenValueMangeTwo-- $_chosenValueMangeTwo');
+
+                  switch (_chosenValueMangeTwo) {
+                    case 'Hospitals':
+                      dropDownTwoSelcted = 6;
+                      selectionBasedHospital = true;
+                      _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL();
+                      break;
+                    case 'Camps':
+                      dropDownTwoSelcted = 9;
+                      selectionBasedHospital = false;
+                      ngoDashboardDatas = false;
+                      break;
+                    case 'Satellite Centres':
+                      dropDownTwoSelcted = 8;
+                      selectionBasedHospital = false;
+                      ngoDashboardDatas = false;
+                      break;
+                    case 'All':
+                      dropDownTwoSelcted = 0;
+                      selectionBasedHospital = true;
+                      ngoDashboardDatas = true;
+                      _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL();
+                      break;
+                  }
+                });
+              },
+            ),
+            const SizedBox(height: 5),
+
+            if (dropDownTwoSelcted == 6)
+              FutureBuilder<List<DataDropDownHospitalSelected>>(
+                future: _futureDataDropDownHospitalSelected,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  }
+
+                  List<DataDropDownHospitalSelected> list = snapshot.data ?? [];
+
+                  if (list.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      child: const Text(
+                        'No data found',
+                        style: TextStyle(fontSize: 18, color: Colors.red),
+                      ),
+                    );
+                  }
+
+                  if (_selectHospitalSelected == null || !list.contains(_selectHospitalSelected)) {
+                    _selectHospitalSelected = list.first;
+                  }
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Select Hospital:',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                      DropdownButtonFormField2<DataDropDownHospitalSelected>(
+                        value: _selectHospitalSelected,
+                        isExpanded: true,
+                        onChanged: (hospital) {
+                          setState(() {
+                            _selectHospitalSelected = hospital;
+                            hospitalNameFetch = hospital?.hName ?? '';
+                            reghospitalNameFetch = hospital?.hRegID ?? '';
+                          });
+                        },
+                        items: list.map((hospital) {
+                          return DropdownMenuItem<DataDropDownHospitalSelected>(
+                            value: hospital,
+                            child: Text(
+                              hospital.hName,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 16),
+                            ),
+                          );
+                        }).toList(),
+                        buttonStyleData: ButtonStyleData(
+                          height: 60,
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey, width: 1),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 300,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          offset: const Offset(0, -3),
+                        ),
+                        iconStyleData: const IconStyleData(
                           icon: Icon(Icons.arrow_drop_down, color: Colors.black),
                         ),
                         hint: const Text(
@@ -2655,6 +3026,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
+
   Widget ngoDashboardclick() {
     return Row(
       children: [
@@ -2666,107 +3038,695 @@ class _NgoDashboard extends State<NgoDashboard> {
               children: [
                 SizedBox(height: 8),
                 //working code here and use it on thuisrday
-                FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                  future: _future,
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                  // Add margin here
 
-                    if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    }
-
-                    if (!snapshot.hasData || snapshot.data.isEmpty) {
-                      return Center(child: Text('No data available'));
-                    }
-
-                    List<DataGetDPM_ScreeningYear> list = snapshot.data;
-                    if (_selectedUser == null ||
-                        !list.contains(_selectedUser)) {
-                      _selectedUser = null; // Remove default selection
-                    }
-
-                    // Ensure default selection is set only once when data is first received
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (_selectedUser == null || !list.contains(_selectedUser)) {
-                        setState(() {
-                          _selectedUser = list.first;  // Default to first item
-                          getYearNgoHopital = _selectedUser.name;
-                          getfyidNgoHospital = _selectedUser.fyid;
-                          print('@@Initial Year: $getYearNgoHopital');
-                          print('Initial FYID: $getfyidNgoHospital');
-
-                        });
+                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
                       }
-                    });
 
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 320,
-                            child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
-                              value: _selectedUser,
-                              isExpanded: true,
-                              onChanged: (userc) {
-                                setState(() {
-                                  _selectedUser = userc;
-                                  getYearNgoHopital = userc?.name ?? '';
-                                  getfyidNgoHospital = userc?.fyid ?? '';
-                                  print('@@Selected Year: $getYearNgoHopital');
-                                  print('FYID: $getfyidNgoHospital');
-                                });
-                              },
-                              items: list
-                                  .map((user) => DropdownMenuItem<DataGetDPM_ScreeningYear>(
-                                value: user,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 10),
-                                  child: Text(
-                                    user.name,
-                                    style: const TextStyle(fontSize: 16),
-                                    overflow: TextOverflow.ellipsis,
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }
+
+                      if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return Center(child: Text('No data available'));
+                      }
+
+                      List<DataGetDPM_ScreeningYear> list = snapshot.data;
+                      if (_selectedUser == null ||
+                          !list.contains(_selectedUser)) {
+                        _selectedUser = null; // Remove default selection
+                      }
+
+                      // Ensure default selection is set only once when data is first received
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_selectedUser == null ||
+                            !list.contains(_selectedUser)) {
+                          setState(() {
+                            _selectedUser = list.first; // Default to first item
+                            getYearNgoHopital = _selectedUser.name;
+                            getfyidNgoHospital = _selectedUser.fyid;
+                            print('@@Initial Year: $getYearNgoHopital');
+                            print('Initial FYID: $getfyidNgoHospital');
+                          });
+                        }
+                      });
+
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 0.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 55,
+                              width: double.infinity,
+                              // Full width inside the container
+                              child: DropdownButtonFormField2<
+                                  DataGetDPM_ScreeningYear>(
+                                value: _selectedUser,
+                                isExpanded: true,
+                                onChanged: (userc) {
+                                  setState(() {
+                                    _selectedUser = userc;
+                                    getYearNgoHopital = userc?.name ?? '';
+                                    getfyidNgoHospital = userc?.fyid ?? '';
+                                    print(
+                                        '@@Selected Year: $getYearNgoHopital');
+                                    print('FYID: $getfyidNgoHospital');
+                                  });
+                                },
+                                items: list
+                                    .map((user) => DropdownMenuItem<
+                                            DataGetDPM_ScreeningYear>(
+                                          value: user,
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 0),
+                                            child: Text(
+                                              user.name,
+                                              style:
+                                                  const TextStyle(fontSize: 16),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 300,
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  offset: const Offset(0, -3),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  height: 50,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: Colors.grey, width: 1),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
-                              ))
-                                  .toList(),
-                              dropdownStyleData: DropdownStyleData(
-                                maxHeight: 300,
-                                width: 300,
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[50],
-                                  borderRadius: BorderRadius.circular(10),
+                                iconStyleData: const IconStyleData(
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Colors.black),
                                 ),
-                                offset: const Offset(0, -3),
-                              ),
-                              buttonStyleData: ButtonStyleData(
-                                height: 50,
-                                padding: const EdgeInsets.symmetric(horizontal: 15),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[50],
-                                  border: Border.all(color: Colors.grey, width: 1),
-                                  borderRadius: BorderRadius.circular(10),
+                                menuItemStyleData: MenuItemStyleData(
+                                  overlayColor: MaterialStateProperty.all(
+                                      Colors.blue[100]),
                                 ),
-                              ),
-                              iconStyleData: const IconStyleData(
-                                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                              ),
-                              menuItemStyleData: MenuItemStyleData(
-                                overlayColor: MaterialStateProperty.all(Colors.blue[100]),
-                              ),
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                                border: InputBorder.none,
+                                decoration: const InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.symmetric(horizontal: 10),
+                                  border: InputBorder.none,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                SizedBox(height: 5),
+                buildDropdownHospitalType(),
+                SizedBox(height: 5),
+                //buildDropdownHospitalTypeHospialSelect(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // Validate if a dropdown value is selected
+                      // Show a validation message if no value is selected
+                      // No validation, proceed with the action
+                      print('@@Get button clicked');
+                      setState(() {
+                        ngoDashboardclicks = true;
+                        ngoDashboardDatas = true;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                            BorderRadius.circular(15), // Rounded corners
                       ),
-                    );
-                  },
+                      elevation: 5, // Adds a shadow effect
+                    ),
+                    icon: Icon(Icons.cloud_download, size: 20), // Download icon
+                    label: Text(
+                      'Get Data',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+
+                if (dropDownTwoSelcted == 0)
+                  Visibility(
+                    visible: dropDownTwoSelcted == 0 && ngoDashboardDatas,
+                    // Only show if the condition is met
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Total number of patients (${hospitalNameFetch ?? "All"})',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Data Rows
+                              FutureBuilder<List<DataNGODashboards>>(
+                                future: ApiController.getNGODashboard(
+                                  int.parse(role_id),
+                                  district_code_login,
+                                  state_code_login,
+                                  userId,
+                                  getYearNgoHopital,
+                                  dropDownTwoSelcted,
+                                  reghospitalNameFetch,
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Utils.getEmptyView(
+                                        "Error: ${snapshot.error}");
+                                  } else if (!snapshot.hasData ||
+                                      snapshot.data.isEmpty) {
+                                    return Row(
+                                      children: [
+                                        // Pushes "No data found" to the right
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              30, 20, 30, 0),
+                                          child: Text(
+                                            "No data found",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    List<DataNGODashboards> ddata =
+                                        snapshot.data;
+
+                                    return Column(
+                                      children: [
+                                        // Show header row only if data is available
+                                        Row(
+                                          children: [
+                                            _buildHeaderCell('Disease Type'),
+                                            _buildHeaderCellSrNoDiseaseData(
+                                                'Registered', context),
+                                            _buildHeaderCellSrNoDiseaseData(
+                                                'Operated', context),
+                                          ],
+                                        ),
+                                        // Show data rows
+                                        ...ddata.map((offer) {
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              _buildDataCell(offer.status),
+                                              _buildDataCellSrNoDiseaseData(
+                                                  offer.registered),
+                                              _buildDataCellSrNoDiseaseData(
+                                                  offer.operated),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ],
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (dropDownTwoSelcted == 6)
+                  Visibility(
+                    visible: dropDownTwoSelcted == 6 && ngoDashboardDatas,
+                    // Only show if the condition is met
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Total number of patients (${hospitalNameFetch ?? "Hospitals"})',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Data Rows
+                              FutureBuilder<List<DataNGODashboards>>(
+                                future: ApiController.getNGODashboard(
+                                  int.parse(role_id),
+                                  district_code_login,
+                                  state_code_login,
+                                  userId,
+                                  getYearNgoHopital,
+                                  dropDownTwoSelcted,
+                                  reghospitalNameFetch,
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(
+                                        child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Utils.getEmptyView(
+                                        "Error: ${snapshot.error}");
+                                  } else if (!snapshot.hasData ||
+                                      snapshot.data.isEmpty) {
+                                    return Row(
+                                      children: [
+                                        // Pushes "No data found" to the right
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              30, 20, 30, 0),
+                                          child: Text(
+                                            "No data found",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    List<DataNGODashboards> ddata =
+                                        snapshot.data;
+
+                                    return Column(
+                                      children: [
+                                        // Show header row only if data is available
+                                        Row(
+                                          children: [
+                                            _buildHeaderCell('Disease Type'),
+                                            _buildHeaderCellSrNoDiseaseData(
+                                                'Registered', context),
+                                            _buildHeaderCellSrNoDiseaseData(
+                                                'Operated', context),
+                                          ],
+                                        ),
+                                        // Show data rows
+                                        ...ddata.map((offer) {
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              _buildDataCell(offer.status),
+                                              _buildDataCellSrNoDiseaseData(
+                                                  offer.registered),
+                                              _buildDataCellSrNoDiseaseData(
+                                                  offer.operated),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ],
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                if (dropDownTwoSelcted == 9)
+                  Visibility(
+                    visible: ngoDashboardDatas,
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Patients registered in Camps',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _buildHeaderCell('Disease Type'),
+                              _buildHeaderCellSrNoDiseaseData(
+                                  'Registered', context),
+                              _buildHeaderCellSrNoDiseaseData(
+                                  'Operated', context),
+                            ],
+                          ),
+                        ),
+// Data Rows
+                        FutureBuilder<List<DataNGODashboards>>(
+                          future: ApiController.getNGODashboard(
+                            int.parse(role_id),
+                            district_code_login,
+                            state_code_login,
+                            userId,
+                            getYearNgoHopital,
+                            dropDownTwoSelcted,
+                            reghospitalNameFetch,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
+                              // Display "No data found" on the right side
+                              return Row(
+                                children: [
+                                  // Pushes "No data found" to the right
+                                  Column(
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          "No data found",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            } else {
+                              List<DataNGODashboards> ddata = snapshot.data;
+
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        _buildDataCell(offer.status),
+                                        _buildDataCell(offer.registered),
+                                        _buildDataCell(offer.operated),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                if (dropDownTwoSelcted == 8)
+                  Visibility(
+                    visible: ngoDashboardDatas,
+                    // Only show the table when ngoDashboardDatas is true
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Patients registered in Satellite Centres',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _buildHeaderCell('Disease Type'),
+                              _buildHeaderCellSrNoDiseaseData(
+                                  'Registered', context),
+                              _buildHeaderCellSrNoDiseaseData(
+                                  'Operated', context),
+                            ],
+                          ),
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<DataNGODashboards>>(
+                          future: ApiController.getNGODashboard(
+                            int.parse(role_id),
+                            district_code_login,
+                            state_code_login,
+                            userId,
+                            getYearNgoHopital,
+                            dropDownTwoSelcted,
+                            reghospitalNameFetch,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
+                              // If data is empty, show 'No data found' message
+                              return Center(
+                                  child: Text("No data found",
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.blue)));
+                            } else {
+                              List<DataNGODashboards> ddata = snapshot.data;
+
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        _buildDataCell(offer.status),
+                                        _buildDataCell(offer.registered),
+                                        _buildDataCell(offer.operated),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+/*  Widget ngoDashboardclick() {
+    return Row(
+      children: [
+        Visibility(
+          visible: ngoDashboardclicks,
+          child: Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 8),
+                //working code here and use it on thuisrday
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0), // Add margin here
+
+                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }
+
+                      if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return Center(child: Text('No data available'));
+                      }
+
+                      List<DataGetDPM_ScreeningYear> list = snapshot.data;
+                      if (_selectedUser == null ||
+                          !list.contains(_selectedUser)) {
+                        _selectedUser = null; // Remove default selection
+                      }
+
+                      // Ensure default selection is set only once when data is first received
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_selectedUser == null || !list.contains(_selectedUser)) {
+                          setState(() {
+                            _selectedUser = list.first;  // Default to first item
+                            getYearNgoHopital = _selectedUser.name;
+                            getfyidNgoHospital = _selectedUser.fyid;
+                            print('@@Initial Year: $getYearNgoHopital');
+                            print('Initial FYID: $getfyidNgoHospital');
+
+                          });
+                        }
+                      });
+
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 0.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: 55,
+                              width: double.infinity, // Full width inside the container
+                              child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                                value: _selectedUser,
+                                isExpanded: true,
+                                onChanged: (userc) {
+                                  setState(() {
+                                    _selectedUser = userc;
+                                    getYearNgoHopital = userc?.name ?? '';
+                                    getfyidNgoHospital = userc?.fyid ?? '';
+                                    print('@@Selected Year: $getYearNgoHopital');
+                                    print('FYID: $getfyidNgoHospital');
+                                  });
+                                },
+                                items: list
+                                    .map((user) => DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                                  value: user,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 0),
+                                    child: Text(
+                                      user.name,
+                                      style: const TextStyle(fontSize: 16),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ))
+                                    .toList(),
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 300,
+                                  width: 300,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  offset: const Offset(0, -3),
+                                ),
+                                buttonStyleData: ButtonStyleData(
+                                  height: 50,
+                                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(color: Colors.grey, width: 1),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                iconStyleData: const IconStyleData(
+                                  icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                ),
+                                menuItemStyleData: MenuItemStyleData(
+                                  overlayColor: MaterialStateProperty.all(Colors.blue[100]),
+                                ),
+                                decoration: const InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                  border: InputBorder.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
 
 
@@ -2796,10 +3756,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                       ),
                       elevation: 5, // Adds a shadow effect
                     ),
-                    icon: Icon(Icons.cloud_download, size: 24), // Download icon
+                    icon: Icon(Icons.cloud_download, size: 20), // Download icon
                     label: Text(
                       'Get Data',
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
@@ -3194,7 +4154,547 @@ class _NgoDashboard extends State<NgoDashboard> {
         ),
       ],
     );
-  }
+  }*/
+  /*Widget ngoDashboardclick() {
+    return Row(
+      children: [
+        Visibility(
+          visible: ngoDashboardclicks,
+          child: Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 8),
+                //working code here and use it on thuisrday
+                FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                  future: _future,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+
+                    if (!snapshot.hasData || snapshot.data.isEmpty) {
+                      return Center(child: Text('No data available'));
+                    }
+
+                    List<DataGetDPM_ScreeningYear> list = snapshot.data;
+                    if (_selectedUser == null ||
+                        !list.contains(_selectedUser)) {
+                      _selectedUser = null; // Remove default selection
+                    }
+
+                    // Ensure default selection is set only once when data is first received
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      if (_selectedUser == null || !list.contains(_selectedUser)) {
+                        setState(() {
+                          _selectedUser = list.first;  // Default to first item
+                          getYearNgoHopital = _selectedUser.name;
+                          getfyidNgoHospital = _selectedUser.fyid;
+                          print('@@Initial Year: $getYearNgoHopital');
+                          print('Initial FYID: $getfyidNgoHospital');
+
+                        });
+                      }
+                    });
+
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 320,
+                            child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                              value: _selectedUser,
+                              isExpanded: true,
+                              onChanged: (userc) {
+                                setState(() {
+                                  _selectedUser = userc;
+                                  getYearNgoHopital = userc?.name ?? '';
+                                  getfyidNgoHospital = userc?.fyid ?? '';
+                                  print('@@Selected Year: $getYearNgoHopital');
+                                  print('FYID: $getfyidNgoHospital');
+                                });
+                              },
+                              items: list
+                                  .map((user) => DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                                value: user,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 10),
+                                  child: Text(
+                                    user.name,
+                                    style: const TextStyle(fontSize: 16),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ))
+                                  .toList(),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 300,
+                                width: 300,
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[50],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                offset: const Offset(0, -3),
+                              ),
+                              buttonStyleData: ButtonStyleData(
+                                height: 50,
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[50],
+                                  border: Border.all(color: Colors.grey, width: 1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                              ),
+                              menuItemStyleData: MenuItemStyleData(
+                                overlayColor: MaterialStateProperty.all(Colors.blue[100]),
+                              ),
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+
+
+
+
+                SizedBox(height: 5),
+                buildDropdownHospitalType(),
+                SizedBox(height: 5),
+                //buildDropdownHospitalTypeHospialSelect(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // Validate if a dropdown value is selected
+                      // Show a validation message if no value is selected
+                      // No validation, proceed with the action
+                      print('@@Get button clicked');
+                      setState(() {
+                        ngoDashboardclicks = true;
+                        ngoDashboardDatas=true;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15), // Rounded corners
+                      ),
+                      elevation: 5, // Adds a shadow effect
+                    ),
+                    icon: Icon(Icons.cloud_download, size: 24), // Download icon
+                    label: Text(
+                      'Get Data',
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+
+
+                if (dropDownTwoSelcted == 0)
+
+                  Visibility(
+                    visible: dropDownTwoSelcted == 0 && ngoDashboardDatas, // Only show if the condition is met
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Total number of patients (${hospitalNameFetch ?? "All"})',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Data Rows
+                              FutureBuilder<List<DataNGODashboards>>(
+                                future: ApiController.getNGODashboard(
+                                  int.parse(role_id),
+                                  district_code_login,
+                                  state_code_login,
+                                  userId,
+                                  getYearNgoHopital,
+                                  dropDownTwoSelcted,
+                                  reghospitalNameFetch,
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return Center(child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                    return Row(
+                                      children: [
+                                        // Pushes "No data found" to the right
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(30,20,30,0),
+                                          child: Text(
+                                            "No data found",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    List<DataNGODashboards> ddata = snapshot.data;
+
+                                    return Column(
+                                      children: [
+                                        // Show header row only if data is available
+                                        Row(
+                                          children: [
+                                            _buildHeaderCell('Disease Type'),
+                                            _buildHeaderCellSrNoDiseaseData('Registered', context),
+                                            _buildHeaderCellSrNoDiseaseData('Operated', context),
+                                          ],
+                                        ),
+                                        // Show data rows
+                                        ...ddata.map((offer) {
+                                          return Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              _buildDataCell(offer.status),
+                                              _buildDataCellSrNoDiseaseData(offer.registered),
+                                              _buildDataCellSrNoDiseaseData(offer.operated),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ],
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (dropDownTwoSelcted == 6)
+                  Visibility(
+                    visible: dropDownTwoSelcted == 6 && ngoDashboardDatas, // Only show if the condition is met
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Total number of patients (${hospitalNameFetch ?? "Hospitals"})',
+
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Data Rows
+                              FutureBuilder<List<DataNGODashboards>>(
+                                future: ApiController.getNGODashboard(
+                                  int.parse(role_id),
+                                  district_code_login,
+                                  state_code_login,
+                                  userId,
+                                  getYearNgoHopital,
+                                  dropDownTwoSelcted,
+                                  reghospitalNameFetch,
+                                ),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                    return Center(child: CircularProgressIndicator());
+                                  } else if (snapshot.hasError) {
+                                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                    return Row(
+                                      children: [
+                                        // Pushes "No data found" to the right
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(30,20,30,0),
+                                          child: Text(
+                                            "No data found",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.blue,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  } else {
+                                    List<DataNGODashboards> ddata = snapshot.data;
+
+                                    return Column(
+                                      children: [
+                                        // Show header row only if data is available
+                                        Row(
+                                          children: [
+                                            _buildHeaderCell('Disease Type'),
+                                            _buildHeaderCellSrNoDiseaseData('Registered', context),
+                                            _buildHeaderCellSrNoDiseaseData('Operated', context),
+                                          ],
+                                        ),
+                                        // Show data rows
+                                        ...ddata.map((offer) {
+                                          return Row(
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              _buildDataCell(offer.status),
+                                              _buildDataCellSrNoDiseaseData(offer.registered),
+                                              _buildDataCellSrNoDiseaseData(offer.operated),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ],
+                                    );
+                                  }
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+                if (dropDownTwoSelcted == 9)
+                  Visibility(
+                    visible: ngoDashboardDatas,
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Patients registered in Camps',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _buildHeaderCell('Disease Type'),
+                              _buildHeaderCellSrNoDiseaseData('Registered', context),
+                              _buildHeaderCellSrNoDiseaseData('Operated', context),
+                            ],
+                          ),
+                        ),
+// Data Rows
+                        FutureBuilder<List<DataNGODashboards>>(
+                          future: ApiController.getNGODashboard(
+                            int.parse(role_id),
+                            district_code_login,
+                            state_code_login,
+                            userId,
+                            getYearNgoHopital,
+                            dropDownTwoSelcted,
+                            reghospitalNameFetch,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
+                              // Display "No data found" on the right side
+                              return Row(
+                                children: [
+                                  // Pushes "No data found" to the right
+                                  Column(
+                                    children: [
+                                      Center(
+                                        child: Text(
+                                          "No data found",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            } else {
+                              List<DataNGODashboards> ddata = snapshot.data;
+
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      children: [
+                                        _buildDataCell(offer.status),
+                                        _buildDataCell(offer.registered),
+                                        _buildDataCell(offer.operated),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                if (dropDownTwoSelcted == 8)
+                  Visibility(
+                    visible: ngoDashboardDatas,
+                    // Only show the table when ngoDashboardDatas is true
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Patients registered in Satellite Centres',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              _buildHeaderCell('Disease Type'),
+                              _buildHeaderCellSrNoDiseaseData('Registered', context),
+                              _buildHeaderCellSrNoDiseaseData('Operated', context),
+                            ],
+                          ),
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                        FutureBuilder<List<DataNGODashboards>>(
+                          future: ApiController.getNGODashboard(
+                            int.parse(role_id),
+                            district_code_login,
+                            state_code_login,
+                            userId,
+                            getYearNgoHopital,
+                            dropDownTwoSelcted,
+                            reghospitalNameFetch,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView(
+                                  "Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData ||
+                                snapshot.data.isEmpty) {
+                              // If data is empty, show 'No data found' message
+                              return Center(
+                                  child: Text("No data found",
+                                      style: TextStyle(
+                                          fontSize: 18, color: Colors.blue)));
+                            } else {
+                              List<DataNGODashboards> ddata = snapshot.data;
+
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.start,
+                                      children: [
+                                        _buildDataCell(offer.status),
+                                        _buildDataCell(offer.registered),
+                                        _buildDataCell(offer.operated),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }*/
 
   Widget NGODashboardData() {
     return Column(
@@ -3564,6 +5064,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
+
   Widget _buildButtonNew(String text, IconData icon, VoidCallback onTap) {
     return Material(
       color: Colors.white, // Background color
@@ -3571,9 +5072,12 @@ class _NgoDashboard extends State<NgoDashboard> {
       elevation: 3, // Adds elevation for a smooth shadow effect
       child: InkWell(
         onTap: onTap,
-        borderRadius: BorderRadius.circular(10.0), // Ensures ripple stays inside
-        splashColor: Colors.blue.withOpacity(0.3), // Ripple color
-        highlightColor: Colors.blue.withOpacity(0.1), // Light highlight on press
+        borderRadius: BorderRadius.circular(10.0),
+        // Ensures ripple stays inside
+        splashColor: Colors.blue.withOpacity(0.3),
+        // Ripple color
+        highlightColor: Colors.blue.withOpacity(0.1),
+        // Light highlight on press
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
           decoration: BoxDecoration(
@@ -3605,8 +5109,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
     );
   }
-
-
 
   // Define the callback function that takes the ID
   Widget _buildMAnageEyeDonationMOUUI(String eyeBankID) {
@@ -4299,8 +5801,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                                color: Colors.grey,
-                                                width: 1.0),
+                                                color: Colors.grey, width: 1.0),
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
                                           ),
@@ -4741,8 +6242,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           ),
                                           focusedBorder: OutlineInputBorder(
                                             borderSide: BorderSide(
-                                                color: Colors.grey,
-                                                width: 1.0),
+                                                color: Colors.grey, width: 1.0),
                                             borderRadius:
                                                 BorderRadius.circular(10.0),
                                           ),
@@ -4985,7 +6485,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   Widget _buildMAnageEDITDELETE(String regId) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12), // Dynamic padding
+      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      // Dynamic padding
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8.0),
@@ -4999,7 +6500,8 @@ class _NgoDashboard extends State<NgoDashboard> {
           ),
         ],
       ),
-      child: IntrinsicWidth(  // Adapts to content width
+      child: IntrinsicWidth(
+        // Adapts to content width
         child: Column(
           mainAxisSize: MainAxisSize.min, // Takes minimum height required
           children: [
@@ -5014,7 +6516,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                   SizedBox(height: 2),
                   Text(
                     'Edit',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.green),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green),
                   ),
                 ],
               ),
@@ -5023,7 +6528,10 @@ class _NgoDashboard extends State<NgoDashboard> {
             // Divider
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Container(height: 0.5, width: double.infinity, color: Colors.grey.shade400),
+              child: Container(
+                  height: 0.5,
+                  width: double.infinity,
+                  color: Colors.grey.shade400),
             ),
 
             // Delete Button
@@ -5037,7 +6545,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                   SizedBox(height: 2),
                   Text(
                     'Delete',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.red),
+                    style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red),
                   ),
                 ],
               ),
@@ -5047,9 +6558,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
-
-
-
 
   Widget _buildCAMPMAnageEDITDELETE() {
     return Container(
@@ -5107,7 +6615,6 @@ class _NgoDashboard extends State<NgoDashboard> {
         // Centering content horizontally
         children: [
           _buildButtonNewCreate("Edit", Icons.visibility, () async {
-
             print('@@Edit Ka click');
             try {
               // Call the API to view camp manager details
@@ -5201,7 +6708,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildButton('View', () async {
-       // _buildButtonNew("View Detail", Icons.visibility, () {
+            // _buildButtonNew("View Detail", Icons.visibility, () {
             print('View pressed');
             print('@@fff1--' + darpan_nos);
             print('@@fff1--' + hospitalId);
@@ -5262,15 +6769,15 @@ class _NgoDashboard extends State<NgoDashboard> {
             print('@@fff1--Manage' + district_code_login.toString());
             print('@@fff1--Manage' + userId);
             print('Manage Doctor pressed');
-            _showNgoManageDoctore(context,hospitalId, district_code_login);
+            _showNgoManageDoctore(context, hospitalId, district_code_login);
 
             // Logic for managing doctors
           }),
           _buildSeparator(),
           _buildButton('Upload MoU', () {
             print('@@Upload MoU pressed');
-            _showNgoGetUploadedMouList(context,
-                hospitalId, district_code_login, int.parse(role_id));
+            _showNgoGetUploadedMouList(
+                context, hospitalId, district_code_login, int.parse(role_id));
 
             // Logic for uploading MoU
           }),
@@ -5382,9 +6889,8 @@ class _NgoDashboard extends State<NgoDashboard> {
         // Align buttons to the left
         children: [
           SizedBox(height: 5),
-         // _buildButton('View', () async {
-            _buildButtonNew("View Detail", Icons.visibility, () async {
-
+          // _buildButton('View', () async {
+          _buildButtonNew("View Detail", Icons.visibility, () async {
             print('View pressed');
             print('@@fff1--' + darpan_nos);
             print('@@fff1--' + hospitalId);
@@ -5440,26 +6946,24 @@ class _NgoDashboard extends State<NgoDashboard> {
           }),
           SizedBox(height: 5),
           //_buildSeparator(),
-         // _buildButton('Manage Doctor', () {
+          // _buildButton('Manage Doctor', () {
           _buildButtonNew("Manage Doctor", Icons.visibility, () async {
-
             print('@@fff1--Manage' + darpan_nos);
             print('@@fff1--Manage' + hospitalId);
             print('@@fff1--Manage' + district_code_login.toString());
             print('@@fff1--Manage' + userId);
             print('Manage Doctor pressed');
-            _showNgoManageDoctore(context,hospitalId, district_code_login);
+            _showNgoManageDoctore(context, hospitalId, district_code_login);
 
             // Logic for managing doctors
           }),
           //_buildSeparator(),
           SizedBox(height: 5),
-         // _buildButton('Upload Mou', () {
+          // _buildButton('Upload Mou', () {
           _buildButtonNew("Upload Mou", Icons.visibility, () async {
-
             print('@@Upload MoU pressed chnagehere');
-            _showNgoGetUploadedMouList(context,
-                hospitalId, district_code_login, int.parse(role_id));
+            _showNgoGetUploadedMouList(
+                context, hospitalId, district_code_login, int.parse(role_id));
 
             // Logic for uploading MoU
           }),
@@ -5467,8 +6971,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
-
-
 
   Widget _buildEditMAnageDoctorUploadMOUUINGO() {
     return Container(
@@ -5484,26 +6986,18 @@ class _NgoDashboard extends State<NgoDashboard> {
           SizedBox(height: 5),
           // _buildButton('View', () async {
           _buildButtonNew("'Edit',", Icons.visibility, () async {
-
             print('View pressed');
-
-
-
           }),
           SizedBox(height: 5),
           //_buildSeparator(),
           // _buildButton('Manage Doctor', () {
           _buildButtonNew("Manage Doctor", Icons.visibility, () async {
-
-
-
             // Logic for managing doctors
           }),
           //_buildSeparator(),
           SizedBox(height: 5),
           // _buildButton('Upload Mou', () {
           _buildButtonNew("Upload Mou", Icons.visibility, () async {
-
             print('@@Upload MoU pressed chnagehere');
 
             // Logic for uploading MoU
@@ -5512,7 +7006,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
-
 
   Widget _buildEditNGO() {
     return Container(
@@ -5528,19 +7021,12 @@ class _NgoDashboard extends State<NgoDashboard> {
           SizedBox(height: 5),
           // _buildButton('View', () async {
           _buildButtonNew("'Edit',", Icons.visibility, () async {
-
             print('View pressed');
-
-
-
           }),
-
         ],
       ),
     );
   }
-
-
 
   void _showDialogTableFormViewClickData({
     String darpanNo,
@@ -6467,7 +7953,8 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }*/
-  void _showNgoManageDoctore(BuildContext context, String hospitalId, int districtId) {
+  void _showNgoManageDoctore(
+      BuildContext context, String hospitalId, int districtId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -6486,7 +7973,8 @@ class _NgoDashboard extends State<NgoDashboard> {
               } else if (snapshot.hasError) {
                 return Text("Error: ${snapshot.error}");
               } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                return Text("No data found", style: TextStyle(color: Colors.red));
+                return Text("No data found",
+                    style: TextStyle(color: Colors.red));
               } else {
                 List<DataManageDoctor> ddata = snapshot.data;
                 return SingleChildScrollView(
@@ -6499,7 +7987,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                         children: [
                           _buildHeaderCellSrNo('S.No.', context),
                           _buildHeaderCell('MCI ID'),
-
                           _buildHeaderCellAction('Action'),
                         ],
                       ),
@@ -6508,12 +7995,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                         children: ddata.map((offer) {
                           return Row(
                             children: [
-                              _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                              _buildDataCellSrNo(
+                                  (ddata.indexOf(offer) + 1).toString()),
                               _buildDataCell(offer.mcIID),
-
                               _buildDataCellViewBlue("View", () {
-                                print('@@Add NGO_MAnageDoctorDialog View Clicked for ${offer.dName}');
-                                _showDoctorDetailsDialogAddNGOHospital(context, offer);
+                                print(
+                                    '@@Add NGO_MAnageDoctorDialog View Clicked for ${offer.dName}');
+                                _showDoctorDetailsDialogAddNGOHospital(
+                                    context, offer);
                               }),
                             ],
                           );
@@ -6535,6 +8024,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
+
   void _showDoctorDetailsDialogAddNGOHospital(
       BuildContext context, DataManageDoctor doctor) {
     showDialog(
@@ -6575,17 +8065,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                       padding: EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-
                           // Condition for Edit/Delete based on status
                           if (doctor.status == 'Approved') ...[
                             _buildMAnageEDITDELETE(doctor.hRegID),
-
                           ] else if (doctor.status == 'Pending') ...[
                             _buildMAnageEDITDELETE(doctor.hRegID),
-
                           ] else ...[
                             _buildMAnageEDITDELETE(doctor.hRegID),
-
                           ],
                         ],
                       ),
@@ -6605,8 +8091,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
-
-
 
 /*  void _showNgoGetUploadedMouList(
       String hospitalId, int districtId, int userRoleId) {
@@ -6713,7 +8197,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   // i have chnaged this ciew rest all same
 
-  void _showNgoGetUploadedMouList(BuildContext context, String hospitalId, int districtId,int userRoleId) {
+  void _showNgoGetUploadedMouList(
+      BuildContext context, String hospitalId, int districtId, int userRoleId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -6724,7 +8209,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             'Uploaded MOU',
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
           ),
-          content:   FutureBuilder<List<DataUploadMOUNGO>>(
+          content: FutureBuilder<List<DataUploadMOUNGO>>(
             future: ApiController.getUploadedMouList(
                 hospitalId, districtId, userRoleId),
             builder: (context, snapshot) {
@@ -6733,9 +8218,10 @@ class _NgoDashboard extends State<NgoDashboard> {
               } else if (snapshot.hasError) {
                 return Text("Error: ${snapshot.error}");
               } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                return Text("No data found", style: TextStyle(color: Colors.red));
+                return Text("No data found",
+                    style: TextStyle(color: Colors.red));
               } else {
-                List<DataUploadMOUNGO>  ddata = snapshot.data;
+                List<DataUploadMOUNGO> ddata = snapshot.data;
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Column(
@@ -6794,9 +8280,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
-
-
-
 
   Widget _buildDetailRow(String label, String value) {
     return Padding(
@@ -6865,7 +8348,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Colors.blue, Colors.lightBlue],
-
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -6913,46 +8395,53 @@ class _NgoDashboard extends State<NgoDashboard> {
                       children: [
                         // Username Field
                         SizedBox(height: 5.0),
-                        SizedBox(
-                          height: 50,
-                          child: TextFormField(
-                            controller: _userNameController,
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'User Name',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade700,
-                                        fontSize: 16.0,
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0), // Add margin here
+
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            // Full width inside the container
+                            child: TextFormField(
+                              controller: _userNameController,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'User Name',
+                                        style: TextStyle(
+                                          color: Colors.grey.shade700,
+                                          fontSize: 16.0,
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: ' *',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
+                                      TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade300,
+                                    width: 1.0,
+                                  ),
                                 ),
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                                borderSide: BorderSide(
-                                  color: Colors.grey.shade300,
-                                  width: 1.0,
-                                ),
-                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your name';
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your name';
-                              }
-                              return null;
-                            },
                           ),
                         ),
 
@@ -6997,182 +8486,212 @@ class _NgoDashboard extends State<NgoDashboard> {
                         SizedBox(height: 5.0),
 
                         // Mobile Number Field
-                        SizedBox(
-                          height: 50,
-                          child: TextFormField(
-                            controller: _mobileNumberController,
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Mobile No.',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade700,
-                                        fontSize: 16.0,
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0), // Add margin here
+
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            // Full width inside the container
+                            child: TextFormField(
+                              controller: _mobileNumberController,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Mobile No.',
+                                        style: TextStyle(
+                                          color: Colors.grey.shade700,
+                                          fontSize: 16.0,
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: ' *',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
+                                      TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade300,
+                                    width: 1.0,
+                                  ),
                                 ),
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                                borderSide: BorderSide(
-                                  color: Colors.grey.shade300,
-                                  width: 1.0,
-                                ),
-                              ),
+                              keyboardType: TextInputType.phone,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your mobile number';
+                                } else if (value.length != 10) {
+                                  return 'Please enter a valid 10-digit mobile number';
+                                }
+                                return null;
+                              },
                             ),
-                            keyboardType: TextInputType.phone,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your mobile number';
-                              } else if (value.length != 10) {
-                                return 'Please enter a valid 10-digit mobile number';
-                              }
-                              return null;
-                            },
                           ),
                         ),
 
                         SizedBox(height: 5.0),
 
                         // Email ID Field
-                        SizedBox(
-                          height: 50,
-                          child: TextFormField(
-                            controller: _emailIdController,
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Email ID',
-                                      style: TextStyle(
-                                        color: Colors.grey.shade700,
-                                        fontSize: 16.0,
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0), // Add margin here
+
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            // Full width inside the container
+                            child: TextFormField(
+                              controller: _emailIdController,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Email ID',
+                                        style: TextStyle(
+                                          color: Colors.grey.shade700,
+                                          fontSize: 16.0,
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: ' *',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 16.0,
-                                        fontWeight: FontWeight.bold,
+                                      TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade300,
+                                    width: 1.0,
+                                  ),
                                 ),
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                                borderSide: BorderSide(
-                                  color: Colors.grey.shade300,
-                                  width: 1.0,
-                                ),
-                              ),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email';
+                                } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                    .hasMatch(value)) {
+                                  return 'Please enter a valid email address';
+                                }
+                                return null;
+                              },
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                                  .hasMatch(value)) {
-                                return 'Please enter a valid email address';
-                              }
-                              return null;
-                            },
                           ),
                         ),
 
                         SizedBox(height: 5.0),
 
                         // Address Field
-                        TextFormField(
-                          controller: _addressController,
-                          decoration: InputDecoration(
-                            label: RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Address',
-                                    style: TextStyle(
-                                      color: Colors.grey.shade700,
-                                      fontSize: 16.0,
-                                    ),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0), // Add margin here
+
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            // Full width inside the container
+                            child: TextFormField(
+                              controller: _addressController,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Address',
+                                        style: TextStyle(
+                                          color: Colors.grey.shade700,
+                                          fontSize: 16.0,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  TextSpan(
-                                    text: ' *',
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade300,
+                                    width: 1.0,
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                              borderSide: BorderSide(
-                                color: Colors.grey.shade300,
-                                width: 1.0,
-                              ),
+                              maxLines: 3, // Allows multiline input
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your address';
+                                }
+                                return null;
+                              },
                             ),
                           ),
-                          maxLines: 3, // Allows multiline input
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your address';
-                            }
-                            return null;
-                          },
                         ),
 
                         SizedBox(height: 5.0),
                         // Designation Field
-                        SizedBox(
-                          height: 50,
-                          child: TextFormField(
-                            controller: _designationController,
-                            decoration: InputDecoration(
-                              labelText: 'Designation',
-                              labelStyle: TextStyle(
-                                color: Colors.grey.shade700,
-                                fontSize: 16.0,
-                              ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                                borderSide: BorderSide(
-                                  color: Colors.grey.shade300,
-                                  width: 1.0,
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 0), // Add margin here
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            // Full width inside the container
+                            child: TextFormField(
+                              controller: _designationController,
+                              decoration: InputDecoration(
+                                labelText: 'Designation',
+                                labelStyle: TextStyle(
+                                  color: Colors.grey.shade700,
+                                  fontSize: 16.0,
                                 ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade300,
+                                    width: 1.0,
+                                  ),
                                 ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                  width: 1.0,
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    width: 1,
+                                  ),
                                 ),
-                              ),
-                              hintText: 'Enter your designation',
-                              hintStyle: TextStyle(
-                                color: Colors.grey.shade500,
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    width: 1.0,
+                                  ),
+                                ),
+                                hintText: 'Enter your designation',
+                                hintStyle: TextStyle(
+                                  color: Colors.grey.shade500,
+                                ),
                               ),
                             ),
                           ),
@@ -7181,45 +8700,66 @@ class _NgoDashboard extends State<NgoDashboard> {
                         SizedBox(height: 10.0),
 
                         // Submit and Cancel Buttons
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                if (_formKey.currentState.validate()) {
-                                  // Process the form data
-                                  print("@@_campManagerRegistration--");
-                                  _campManagerRegistration();
-                                }
-                              },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.check, color: Colors.white),
-                                  // Check icon
-                                  SizedBox(width: 8),
-                                  // Space between icon and text
-                                  Text('Submit'),
-                                ],
+                        SizedBox(
+                          height: 40,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState.validate()) {
+                                    // Process the form data
+                                    print("@@_campManagerRegistration--");
+                                    _campManagerRegistration();
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        12), // Adjust radius as needed
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 12), // Button padding
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.check, color: Colors.white),
+                                    // Check icon
+                                    SizedBox(width: 8),
+                                    // Space between icon and text
+                                    Text('Submit'),
+                                  ],
+                                ),
                               ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                // Reset form fields
-                                _resetForm();
-                              },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(Icons.refresh, color: Colors.white),
-                                  // Refresh icon
-                                  SizedBox(width: 8),
-                                  // Space between icon and text
-                                  Text('Reset'),
-                                ],
+                              ElevatedButton(
+                                onPressed: () {
+                                  // Reset form fields
+                                  _resetForm();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        12), // Adjust radius as needed
+                                  ),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 12), // Button padding
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.refresh, color: Colors.white),
+                                    // Refresh icon
+                                    SizedBox(width: 8),
+                                    // Space between icon and text
+                                    Text('Reset'),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -7245,8 +8785,6 @@ class _NgoDashboard extends State<NgoDashboard> {
               children: [
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-
-
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Colors.blue, Colors.lightBlueAccent],
@@ -7303,17 +8841,21 @@ class _NgoDashboard extends State<NgoDashboard> {
                               label: RichText(
                                 text: TextSpan(
                                   text: 'User Name',
-                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
                                   children: [
                                     TextSpan(
                                       text: ' *', // Asterisk for required field
-                                      style: TextStyle(color: Colors.red, fontSize: 16),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 16),
                                     ),
                                   ],
                                 ),
                               ),
                               hintText: 'Enter your name',
-                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12), // Adjust padding inside the field
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 12),
+                              // Adjust padding inside the field
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -7326,7 +8868,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                             },
                           ),
                         ),
-
 
                         SizedBox(height: 5.0),
 
@@ -7377,17 +8918,21 @@ class _NgoDashboard extends State<NgoDashboard> {
                               label: RichText(
                                 text: TextSpan(
                                   text: 'Mobile No.',
-                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
                                   children: [
                                     TextSpan(
                                       text: ' *', // Asterisk in red
-                                      style: TextStyle(color: Colors.red, fontSize: 16),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 16),
                                     ),
                                   ],
                                 ),
                               ),
                               hintText: 'Enter your mobile number',
-                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12), // Adjusts internal spacing
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 12),
+                              // Adjusts internal spacing
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -7415,17 +8960,21 @@ class _NgoDashboard extends State<NgoDashboard> {
                               label: RichText(
                                 text: TextSpan(
                                   text: 'Email ID',
-                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
                                   children: [
                                     TextSpan(
                                       text: ' *', // Asterisk in red
-                                      style: TextStyle(color: Colors.red, fontSize: 16),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 16),
                                     ),
                                   ],
                                 ),
                               ),
                               hintText: 'Enter your email address',
-                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12), // Adjust spacing
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 12),
+                              // Adjust spacing
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -7434,7 +8983,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
-                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                  .hasMatch(value)) {
                                 return 'Please enter a valid email address';
                               }
                               return null;
@@ -7453,22 +9003,27 @@ class _NgoDashboard extends State<NgoDashboard> {
                               label: RichText(
                                 text: TextSpan(
                                   text: 'Address',
-                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
                                   children: [
                                     TextSpan(
                                       text: ' *', // Asterisk in red
-                                      style: TextStyle(color: Colors.red, fontSize: 16),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 16),
                                     ),
                                   ],
                                 ),
                               ),
                               hintText: 'Enter your address',
-                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12), // Adjust spacing
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 12),
+                              // Adjust spacing
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
-                            maxLines: 3, // Allows multiple lines for address input
+                            maxLines: 3,
+                            // Allows multiple lines for address input
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your address';
@@ -7489,17 +9044,21 @@ class _NgoDashboard extends State<NgoDashboard> {
                               label: RichText(
                                 text: TextSpan(
                                   text: 'Designation',
-                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
                                   children: [
                                     TextSpan(
                                       text: ' *', // Asterisk in red
-                                      style: TextStyle(color: Colors.red, fontSize: 16),
+                                      style: TextStyle(
+                                          color: Colors.red, fontSize: 16),
                                     ),
                                   ],
                                 ),
                               ),
                               hintText: 'Enter your designation',
-                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 12), // Adjust spacing
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 12),
+                              // Adjust spacing
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
@@ -7519,26 +9078,38 @@ class _NgoDashboard extends State<NgoDashboard> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(10.0, 10, 10.0, 0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Even spacing
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // Even spacing
                             children: [
                               SizedBox(
                                 width: 120, // Reduced button width
                                 height: 40, // Reduced button height
                                 child: ElevatedButton.icon(
-                                  icon: Icon(Icons.send, color: Colors.white, size: 18), // Smaller icon
+                                  icon: Icon(Icons.send,
+                                      color: Colors.white,
+                                      size: 18), // Smaller icon
                                   label: Text(
                                     'Submit',
-                                    style: TextStyle(fontSize: 14), // Smaller text
+                                    style:
+                                        TextStyle(fontSize: 14), // Smaller text
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue, // Button color
-                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15), // Smaller padding
-                                    minimumSize: Size(120, 40), // Minimum size
-                                    fixedSize: Size(120, 40), // Fixed width & height
-                                    elevation: 3, // Reduced shadow effect
-                                    shadowColor: Colors.black45, // Shadow color
+                                    primary: Colors.blue,
+                                    // Button color
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    // Smaller padding
+                                    minimumSize: Size(120, 40),
+                                    // Minimum size
+                                    fixedSize: Size(120, 40),
+                                    // Fixed width & height
+                                    elevation: 3,
+                                    // Reduced shadow effect
+                                    shadowColor: Colors.black45,
+                                    // Shadow color
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                                      borderRadius: BorderRadius.circular(
+                                          8), // Slightly rounded corners
                                     ),
                                   ),
                                   onPressed: () {
@@ -7549,25 +9120,37 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   },
                                 ),
                               ),
-                              SizedBox(width: 8), // Reduced spacing between buttons
+                              SizedBox(width: 8),
+                              // Reduced spacing between buttons
                               SizedBox(
                                 width: 120, // Reduced button width
                                 height: 40, // Reduced button height
                                 child: ElevatedButton.icon(
-                                  icon: Icon(Icons.refresh, color: Colors.white, size: 18), // Smaller icon
+                                  icon: Icon(Icons.refresh,
+                                      color: Colors.white,
+                                      size: 18), // Smaller icon
                                   label: Text(
                                     'Reset',
-                                    style: TextStyle(fontSize: 14), // Smaller text
+                                    style:
+                                        TextStyle(fontSize: 14), // Smaller text
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.red, // Reset button color
-                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15), // Smaller padding
-                                    minimumSize: Size(120, 40), // Minimum size
-                                    fixedSize: Size(120, 40), // Fixed width & height
-                                    elevation: 3, // Reduced shadow effect
-                                    shadowColor: Colors.black45, // Shadow color
+                                    primary: Colors.red,
+                                    // Reset button color
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    // Smaller padding
+                                    minimumSize: Size(120, 40),
+                                    // Minimum size
+                                    fixedSize: Size(120, 40),
+                                    // Fixed width & height
+                                    elevation: 3,
+                                    // Reduced shadow effect
+                                    shadowColor: Colors.black45,
+                                    // Shadow color
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                                      borderRadius: BorderRadius.circular(
+                                          8), // Slightly rounded corners
                                     ),
                                   ),
                                   onPressed: () {
@@ -7602,8 +9185,7 @@ class _NgoDashboard extends State<NgoDashboard> {
             child: Column(
               children: [
                 Container(
-                    margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-
+                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Colors.blue, Colors.blue],
@@ -7653,67 +9235,73 @@ class _NgoDashboard extends State<NgoDashboard> {
                     key: _formKey1,
                     child: Column(
                       children: [
-                        SizedBox(
-                         width:300,
-                          height:50,
-                          child: TextFormField(
-                            controller: _nGONameController,
-                            decoration: InputDecoration(
-                              labelText: ngoNames.isNotEmpty
-                                  ? ngoNames
-                                  : 'Enter NGO name *',
-                              // Conditional label
-                              hintText: ngoNames.isNotEmpty
-                                  ? ''
-                                  : 'Please provide NGO name',
-                              // Hint text when label is empty
-                              floatingLabelBehavior: FloatingLabelBehavior.auto,
-                              // Ensures the label floats when focused or filled
-                              filled: true,
-                              // Add a background color
-                              fillColor: Colors.white,
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
 
-                              // Light background color to indicate non-editable state
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.grey, width: 1),
-                                // Border when not focused
-                                borderRadius:
-                                    BorderRadius.circular(12), // Rounded corners
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: TextFormField(
+                              controller: _nGONameController,
+                              decoration: InputDecoration(
+                                labelText: ngoNames.isNotEmpty
+                                    ? ngoNames
+                                    : 'Enter NGO name *',
+                                // Conditional label
+                                hintText: ngoNames.isNotEmpty
+                                    ? ''
+                                    : 'Please provide NGO name',
+                                // Hint text when label is empty
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                // Ensures the label floats when focused or filled
+                                filled: true,
+                                // Add a background color
+                                fillColor: Colors.white,
+
+                                // Light background color to indicate non-editable state
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1),
+                                  // Border when not focused
+                                  borderRadius: BorderRadius.circular(
+                                      12), // Rounded corners
+                                ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1),
+                                  // Border color when disabled
+                                  borderRadius: BorderRadius.circular(
+                                      12), // Rounded corners
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 2),
+                                  // Border when focused
+                                  borderRadius: BorderRadius.circular(
+                                      12), // Rounded corners
+                                ),
+                                labelStyle: TextStyle(
+                                  color: Colors.blue
+                                      .shade700, // Label color when the field is focused
+                                ),
+                                hintStyle: TextStyle(
+                                  color: Colors.grey, // Hint text color
+                                ),
                               ),
-                              disabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1),
-                                // Border color when disabled
-                                borderRadius:
-                                    BorderRadius.circular(12), // Rounded corners
+                              style: TextStyle(
+                                color: Colors.red, // Set the text color to red
                               ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 2),
-                                // Border when focused
-                                borderRadius:
-                                    BorderRadius.circular(12), // Rounded corners
-                              ),
-                              labelStyle: TextStyle(
-                                color: Colors.blue
-                                    .shade700, // Label color when the field is focused
-                              ),
-                              hintStyle: TextStyle(
-                                color: Colors.grey, // Hint text color
-                              ),
+                              enabled: false,
+                              // Makes the field non-editable
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter Ngo name';
+                                }
+                                return null;
+                              },
                             ),
-                            style: TextStyle(
-                              color: Colors.red, // Set the text color to red
-                            ),
-                            enabled: false,
-                            // Makes the field non-editable
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter Ngo name';
-                              }
-                              return null;
-                            },
                           ),
                         ),
 
@@ -7721,9 +9309,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                           height: 5,
                         ),
                         Container(
-                          width:300,
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
+
                           color: Colors.white,
-                          margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           child: Padding(
                             padding: const EdgeInsets.all(0.0),
                             child: Container(
@@ -7748,7 +9337,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                                           // Open the calendar on tap
                                           DateTime pickedDate =
-                                          await showDatePicker(
+                                              await showDatePicker(
                                             context: context,
                                             initialDate: DateTime.now(),
                                             firstDate: DateTime(2000),
@@ -7771,7 +9360,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
-                                            BorderRadius.circular(8.0),
+                                                BorderRadius.circular(8.0),
                                             border: Border.all(
                                               color: Colors.grey,
                                               // Border color for this date container
@@ -7804,7 +9393,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                                           // Open the calendar on tap
                                           DateTime pickedDate =
-                                          await showDatePicker(
+                                              await showDatePicker(
                                             context: context,
                                             initialDate: DateTime.now(),
                                             firstDate: DateTime(2000),
@@ -7828,7 +9417,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             borderRadius:
-                                            BorderRadius.circular(8.0),
+                                                BorderRadius.circular(8.0),
                                             border: Border.all(
                                               color: Colors.grey,
                                               // Border color for this date container
@@ -7854,126 +9443,156 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                           ),
                         ),
-                      SizedBox(
-                          height: 5),
+                        SizedBox(height: 5),
                         // Username Field
-                        SizedBox(
-                          height: 50,
-                          width:300,
-                          child: TextFormField(
-                            controller: _campNameController,
-                            // Attach controller
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Camp Name',
-                                      style: TextStyle(
-                                        color:
-                                            Colors.black, // Default label color
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
+
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            child: TextFormField(
+                              controller: _campNameController,
+                              // Attach controller
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Camp Name',
+                                        style: TextStyle(
+                                          color: Colors
+                                              .black, // Default label color
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: ' *',
-                                      style: TextStyle(
-                                        color: Colors
-                                            .red, // Color of the '*' to indicate it's mandatory
+                                      TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                          color: Colors
+                                              .red, // Color of the '*' to indicate it's mandatory
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  // Adds a border around the TextField
+                                  borderRadius: BorderRadius.circular(12),
+                                  // Optional: Makes the border rounded
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade300,
+                                    width:
+                                        1.0, // Optional: Sets the border color and width
+                                  ),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter camp name';
+                                }
+                                return null;
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
+
+                          child: FutureBuilder<List<DataScreeningCampManager>>(
+                            future: _manger,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+
+                              if (!snapshot.hasData) {
+                                return CircularProgressIndicator();
+                              }
+
+                              List<DataScreeningCampManager> list =
+                                  snapshot.data?.toList() ?? [];
+
+                              // Check if _mangerUser is null or not part of the list anymore
+                              if (_mangerUser == null ||
+                                  !list.contains(_mangerUser)) {
+                                _mangerUser = list.isNotEmpty
+                                    ? list.first
+                                    : null; // Set the first item as default
+                              }
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0.0, vertical: 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // Use DropdownButtonFormField2 here
+                                    SizedBox(
+                                      height: 50,
+                                      width: double.infinity,
+                                      child: DropdownButtonFormField2<
+                                          DataScreeningCampManager>(
+                                        value: _mangerUser,
+                                        onChanged: (userc) {
+                                          setState(() {
+                                            _mangerUser = userc;
+                                            getMAnagerNAme =
+                                                userc?.managerName ?? '';
+                                            getmanagerSrNO = int.tryParse(
+                                                    userc?.srNo?.toString() ??
+                                                        '') ??
+                                                0;
+                                            print(
+                                                'getMAnagerNAme: $getMAnagerNAme');
+                                            print(
+                                                'getmanagerSrNO: $getmanagerSrNO');
+                                          });
+                                        },
+                                        items: list.map((user) {
+                                          return DropdownMenuItem<
+                                              DataScreeningCampManager>(
+                                            value: user,
+                                            child: Text(user.managerName,
+                                                style: TextStyle(fontSize: 16)),
+                                          );
+                                        }).toList(),
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 10.0),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 2.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                          hintText: 'Select Camp Manager',
+                                          hintStyle:
+                                              TextStyle(color: Colors.grey),
+                                        ),
+                                        style: TextStyle(color: Colors.black),
+                                        iconStyleData: const IconStyleData(
+                                          icon: Icon(Icons.arrow_drop_down,
+                                              color: Colors.black),
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              border: OutlineInputBorder(
-                                // Adds a border around the TextField
-                                borderRadius: BorderRadius.circular(12),
-                                // Optional: Makes the border rounded
-                                borderSide: BorderSide(
-                                  color: Colors.grey.shade300,
-                                  width:
-                                      1.0, // Optional: Sets the border color and width
-                                ),
-                              ),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter camp name';
-                              }
-                              return null;
+                              );
                             },
                           ),
-                        ),
-
-
-                        FutureBuilder<List<DataScreeningCampManager>>(
-                          future: _manger,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
-
-                            if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
-                            }
-
-                            List<DataScreeningCampManager> list = snapshot.data?.toList() ?? [];
-
-                            // Check if _mangerUser is null or not part of the list anymore
-                            if (_mangerUser == null || !list.contains(_mangerUser)) {
-                              _mangerUser = list.isNotEmpty ? list.first : null; // Set the first item as default
-                            }
-
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Use DropdownButtonFormField2 here
-                                  SizedBox(
-                                    height: 50,
-                                    width:300,
-                                    child: DropdownButtonFormField2<DataScreeningCampManager>(
-                                      value: _mangerUser,
-                                      onChanged: (userc) {
-                                        setState(() {
-                                          _mangerUser = userc;
-                                          getMAnagerNAme = userc?.managerName ?? '';
-                                          getmanagerSrNO = int.tryParse(userc?.srNo?.toString() ?? '') ?? 0;
-                                          print('getMAnagerNAme: $getMAnagerNAme');
-                                          print('getmanagerSrNO: $getmanagerSrNO');
-                                        });
-                                      },
-                                      items: list.map((user) {
-                                        return DropdownMenuItem<DataScreeningCampManager>(
-                                          value: user,
-                                          child: Text(user.managerName, style: TextStyle(fontSize: 16)),
-                                        );
-                                      }).toList(),
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                          borderRadius: BorderRadius.circular(10.0),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: Colors.grey, width: 2.0),
-                                          borderRadius: BorderRadius.circular(10.0),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                        hintText: 'Select Camp Manager',
-                                        hintStyle: TextStyle(color: Colors.grey),
-                                      ),
-                                      style: TextStyle(color: Colors.black),
-                                      iconStyleData: const IconStyleData(
-                                        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
                         ),
                         SizedBox(height: 5),
 
@@ -8102,94 +9721,132 @@ class _NgoDashboard extends State<NgoDashboard> {
                         // Show additional content based on the selected value
                         if (locationTypeValues == 'Urban')
                           // Content to display if "Urban" is selected
-                          Column(
-                            children: [
-                              FutureBuilder<List<DataGetCity>>(
-                                future: _getCity(district_code_login),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  }
-                                  if (!snapshot.hasData) {
-                                    return const CircularProgressIndicator();
-                                  }
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 0), // Add margin here
 
-                                  List<DataGetCity> districtList = snapshot.data;
-
-                                  if (_selectedUserCity == null ||
-                                      !districtList.contains(_selectedUserCity)) {
-                                    _selectedUserCity = districtList.first;
-                                  }
-
-                                  return Padding(
-                                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: <Widget>[
-                                        // Ensuring equal width and height for Dropdown and TextField
-                                        SizedBox(
-                                          width: 300,
-                                          height: 50, // Set a fixed height
-                                          child: DropdownButtonFormField<DataGetCity>(
-                                            decoration: InputDecoration(
-                                              contentPadding: EdgeInsets.symmetric(
-                                                  vertical: 15.0, horizontal: 10.0),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                                borderRadius: BorderRadius.circular(10.0),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                                borderRadius: BorderRadius.circular(10.0),
-                                              ),
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                            ),
-                                            onChanged: (districtUser) => setState(() {
-                                              _selectedUserCity = districtUser;
-                                              distCodeGovtPrivate =
-                                                  int.parse(districtUser.subdistrictCode.toString());
-                                              print('Selected District: ${districtUser.subdistrictCode}');
-                                            }),
-                                            value: _selectedUserCity,
-                                            items: districtList.map((DataGetCity district) {
-                                              return DropdownMenuItem<DataGetCity>(
-                                                value: district,
-                                                child: Text(district.name),
-                                              );
-                                            }).toList(),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                              SizedBox(height: 5),
-                              SizedBox(
-                                width: 300, // Same width as Dropdown
-                                height: 50, // Same height as Dropdown
-                                child: TextFormField(
-                                  controller: _Pincodecontroller,
-                                  decoration: InputDecoration(
-                                    labelText: 'Pin Code*',
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
-                                    ),
-                                  ),
-                                  keyboardType: TextInputType.phone,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter PinCode number';
+                            child: Column(
+                              children: [
+                                FutureBuilder<List<DataGetCity>>(
+                                  future: _getCity(district_code_login),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
                                     }
-                                    return null;
+                                    if (!snapshot.hasData) {
+                                      return const CircularProgressIndicator();
+                                    }
+
+                                    List<DataGetCity> districtList =
+                                        snapshot.data;
+
+                                    if (_selectedUserCity == null ||
+                                        !districtList
+                                            .contains(_selectedUserCity)) {
+                                      _selectedUserCity = districtList.first;
+                                    }
+
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          // Ensuring equal width and height for Dropdown and TextField
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: 50, // Set a fixed height
+                                            child: DropdownButtonFormField<
+                                                DataGetCity>(
+                                              decoration: InputDecoration(
+                                                contentPadding:
+                                                    EdgeInsets.symmetric(
+                                                        vertical: 15.0,
+                                                        horizontal: 10.0),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.grey,
+                                                      width: 1.0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderSide: BorderSide(
+                                                      color: Colors.grey,
+                                                      width: 1.0),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                ),
+                                                filled: true,
+                                                fillColor: Colors.white,
+                                              ),
+                                              onChanged: (districtUser) =>
+                                                  setState(() {
+                                                _selectedUserCity =
+                                                    districtUser;
+                                                distCodeGovtPrivate = int.parse(
+                                                    districtUser.subdistrictCode
+                                                        .toString());
+                                                print(
+                                                    'Selected District: ${districtUser.subdistrictCode}');
+                                              }),
+                                              value: _selectedUserCity,
+                                              items: districtList
+                                                  .map((DataGetCity district) {
+                                                return DropdownMenuItem<
+                                                    DataGetCity>(
+                                                  value: district,
+                                                  child: Text(district.name),
+                                                );
+                                              }).toList(),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
                                   },
                                 ),
-                              ),
-                            ],
-                          )
+                                SizedBox(height: 5),
+                                Container(
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 0, vertical: 0),
+                                  // Add margin here
 
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    // Same width as Dropdown
+                                    height: 50,
+                                    // Same height as Dropdown
+                                    child: TextFormField(
+                                      controller: _Pincodecontroller,
+                                      decoration: InputDecoration(
+                                        labelText: 'Pin Code*',
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          borderSide: BorderSide(
+                                              color: Colors.grey.shade300,
+                                              width: 1.0),
+                                        ),
+                                      ),
+                                      keyboardType: TextInputType.phone,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter PinCode number';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
                         else if (locationTypeValues == 'Rural')
                           // Content to display if "Urban" is selected
 
@@ -8367,40 +10024,48 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 child: TextFormField(
                                   controller: _Pincodecontroller,
                                   decoration: InputDecoration(
-                                    labelText: 'Pin Code', // Normal text label
-                                    suffixText: ' *', // Asterisk for required field
+                                    labelText: 'Pin Code',
+                                    // Normal text label
+                                    suffixText: ' *',
+                                    // Asterisk for required field
                                     suffixStyle: TextStyle(
-                                      color: Colors.red, // Red color for asterisk
+                                      color: Colors.red,
+                                      // Red color for asterisk
                                       fontWeight: FontWeight.bold,
                                     ),
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.grey, // Border when not focused
+                                        color: Colors.grey,
+                                        // Border when not focused
                                         width: 1.5,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.grey, // Border when focused
+                                        color: Colors.grey,
+                                        // Border when focused
                                         width: 2.0,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     errorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.grey, // Border when error occurs
+                                        color: Colors.grey,
+                                        // Border when error occurs
                                         width: 1.5,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                        color: Colors.grey, // Border when focused & error
+                                        color: Colors.grey,
+                                        // Border when focused & error
                                         width: 1.0,
                                       ),
                                       borderRadius: BorderRadius.circular(12),
@@ -8415,161 +10080,174 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   },
                                 ),
                               )
-
                             ],
                           ),
 
                         // Mobile Number Field
                         SizedBox(height: 5),
-                        SizedBox(
-                          height: 50,
-                          width: 300,
-                          child: TextFormField(
-                            controller: _mobileController,
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Mobile No.',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black, // Label color
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
+
+                          child: SizedBox(
+                            height: 50,
+                            width: double.infinity,
+                            child: TextFormField(
+                              controller: _mobileController,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Mobile No.',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black, // Label color
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: ' *',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.red, // Red asterisk for required field
-                                        fontWeight: FontWeight.bold,
+                                      TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.red,
+                                          // Red asterisk for required field
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade300,
+                                    // Default grey border
+                                    width: 1.0,
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    // Grey border when enabled
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    // Grey border when focused
+                                    width: 1.0,
+                                  ),
                                 ),
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                  color: Colors.grey.shade300, // Default grey border
-                                  width: 1.0,
-                                ),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                  color: Colors.grey, // Grey border when enabled
-                                  width: 1.0,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                  color: Colors.grey, // Grey border when focused
-                                  width: 1.0,
-                                ),
-                              ),
+                              keyboardType: TextInputType.phone,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your mobile number';
+                                } else if (value.length != 10) {
+                                  return 'Please enter a valid 10-digit mobile number';
+                                }
+                                return null;
+                              },
                             ),
-                            keyboardType: TextInputType.phone,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your mobile number';
-                              } else if (value.length != 10) {
-                                return 'Please enter a valid 10-digit mobile number';
-                              }
-                              return null;
-                            },
                           ),
                         ),
-
-
 
                         SizedBox(height: 5.0),
 
                         // Email ID Field
 
                         // Address Field
-                        SizedBox(
-                          width:300,
-                          child: TextFormField(
-                            controller: _addresssController, // Attach controller
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  children: [
-                                    TextSpan(
-                                      text: 'Address',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors
-                                            .black, // Regular label text color
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
+
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: TextFormField(
+                              controller: _addresssController,
+                              // Attach controller
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Address',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors
+                                              .black, // Regular label text color
+                                        ),
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: ' *',
-                                      // The asterisk for mandatory field
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color:
-                                            Colors.red, // Color for the asterisk
+                                      TextSpan(
+                                        text: ' *',
+                                        // The asterisk for mandatory field
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors
+                                              .red, // Color for the asterisk
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                // Padding inside the TextFormField
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.grey.shade300,
+                                    // Border color when not focused
+                                    width: 1.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    // Border color when focused
+                                    width: 1.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.red,
+                                    // Border color when there's an error
+                                    width: 1.5,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.redAccent,
+                                    // Border color when focused and there's an error
+                                    width: 2.0,
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              // Padding inside the TextFormField
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.grey.shade300,
-                                  // Border color when not focused
-                                  width: 1.5,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.grey,
-                                  // Border color when focused
-                                  width: 1.0,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.red,
-                                  // Border color when there's an error
-                                  width: 1.5,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              focusedErrorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Colors.redAccent,
-                                  // Border color when focused and there's an error
-                                  width: 2.0,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
+                              maxLines: 3,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your address';
+                                }
+                                return null;
+                              },
                             ),
-                            maxLines: 3,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your address';
-                              }
-                              return null;
-                            },
                           ),
                         ),
 
                         SizedBox(height: 5.0),
                         Container(
-                          width: 350, // Set your desired width
-                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
+
                           child: FutureBuilder<List<Data>>(
                             future: _futureState,
                             builder: (context, snapshot) {
@@ -8578,7 +10256,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                               }
 
                               if (!snapshot.hasData) {
-                                return Center(child: CircularProgressIndicator());
+                                return Center(
+                                    child: CircularProgressIndicator());
                               }
 
                               List<Data> stateList = snapshot.data ?? [];
@@ -8586,8 +10265,9 @@ class _NgoDashboard extends State<NgoDashboard> {
                               // Ensure selected state is in the list, otherwise select the first
                               if (_selectedUserState == null ||
                                   !stateList.contains(_selectedUserState)) {
-                                _selectedUserState =
-                                stateList.isNotEmpty ? stateList.first : null;
+                                _selectedUserState = stateList.isNotEmpty
+                                    ? stateList.first
+                                    : null;
                               }
 
                               return Container(
@@ -8605,44 +10285,55 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     const Text(
                                       'Select State:',
                                       style: TextStyle(
-                                          fontSize: 16, fontWeight: FontWeight.bold),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     DropdownButtonFormField<Data>(
                                       isExpanded: true,
                                       // ✅ Prevent overflow by expanding
                                       decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.symmetric(
-                                            vertical: 15.0, horizontal: 10.0),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                vertical: 15.0,
+                                                horizontal: 10.0),
                                         enabledBorder: OutlineInputBorder(
                                           borderSide: const BorderSide(
                                               color: Colors.grey, width: 1.0),
-                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderSide: const BorderSide(
                                               color: Colors.grey, width: 1.0),
-                                          borderRadius: BorderRadius.circular(10.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
                                         ),
                                         filled: true,
-                                        fillColor: Colors.blue[50],
+                                        fillColor: Colors.white,
                                       ),
                                       onChanged: (user) {
                                         if (user != null) {
                                           setState(() {
                                             _selectedUserState = user;
-                                            stateCodeGovtPrivate = int.tryParse(user.stateCode.toString()) ?? 0;
+                                            stateCodeGovtPrivate = int.tryParse(
+                                                    user.stateCode
+                                                        .toString()) ??
+                                                0;
                                             CodeGovtPrivate = user.code;
 
-                                            isVisibleDitrictGovt = stateCodeGovtPrivate != 0;
+                                            isVisibleDitrictGovt =
+                                                stateCodeGovtPrivate != 0;
                                             if (isVisibleDitrictGovt) {
-                                              _getDistrictData(stateCodeGovtPrivate);
+                                              _getDistrictData(
+                                                  stateCodeGovtPrivate);
                                             }
                                           });
                                         }
                                       },
                                       value: _selectedUserState,
                                       items: stateList
-                                          .map<DropdownMenuItem<Data>>((Data user) {
+                                          .map<DropdownMenuItem<Data>>(
+                                              (Data user) {
                                         return DropdownMenuItem<Data>(
                                           value: user,
                                           child: Text(
@@ -8651,7 +10342,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                             // ✅ Handles long text
                                             maxLines: 1,
                                             // ✅ Restricts to a single line
-                                            style: const TextStyle(fontSize: 14),
+                                            style:
+                                                const TextStyle(fontSize: 14),
                                           ),
                                         );
                                       }).toList(),
@@ -8667,57 +10359,86 @@ class _NgoDashboard extends State<NgoDashboard> {
                         Visibility(
                           visible: isVisibleDitrictGovt,
                           child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 10),
                             child: FutureBuilder<List<DataDsiricst>>(
                               future: _getDistrictData(stateCodeGovtPrivate),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return Center(child: CircularProgressIndicator()); // Loading state
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                      child:
+                                          CircularProgressIndicator()); // Loading state
                                 }
                                 if (snapshot.hasError) {
-                                  return Center(child: Text('Error: ${snapshot.error}')); // Error handling
+                                  return Center(
+                                      child: Text(
+                                          'Error: ${snapshot.error}')); // Error handling
                                 }
-                                if (!snapshot.hasData || snapshot.data.isEmpty) {
-                                  return Center(child: Text('No districts found')); // Handle empty data
+                                if (!snapshot.hasData ||
+                                    snapshot.data.isEmpty) {
+                                  return Center(
+                                      child: Text(
+                                          'No districts found')); // Handle empty data
                                 }
 
                                 List<DataDsiricst> districtList = snapshot.data;
 
                                 // Ensure selected district is valid
                                 if (_selectedUserDistrict == null ||
-                                    !districtList.contains(_selectedUserDistrict)) {
+                                    !districtList
+                                        .contains(_selectedUserDistrict)) {
                                   _selectedUserDistrict = districtList.first;
                                 }
 
                                 return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start, // Align text and dropdown
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  // Align text and dropdown
                                   children: [
-                                    Text('Select District:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                    Text('Select District:',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
                                     SizedBox(
-                                      height: 50, // Prevents RenderFlex overflow
-                                      child: DropdownButtonFormField2<DataDsiricst>(
+                                      width: double.infinity,
+                                      // Full width inside the container
+                                      height: 50,
+                                      // Prevents RenderFlex overflow
+                                      child: DropdownButtonFormField2<
+                                          DataDsiricst>(
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 12, horizontal: 10),
                                           enabledBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                                            borderRadius: BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderSide: BorderSide(color: Colors.grey, width: 1),
-                                            borderRadius: BorderRadius.circular(10.0),
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
                                           ),
                                           filled: true,
                                           fillColor: Colors.white,
                                         ),
-                                        onChanged: (districtUser) => setState(() {
+                                        onChanged: (districtUser) =>
+                                            setState(() {
                                           _selectedUserDistrict = districtUser;
-                                          distCodeGovtPrivate = int.parse(districtUser.districtCode.toString());
+                                          distCodeGovtPrivate = int.parse(
+                                              districtUser.districtCode
+                                                  .toString());
                                         }),
                                         value: _selectedUserDistrict,
-                                        items: districtList.map((DataDsiricst district) {
+                                        items: districtList
+                                            .map((DataDsiricst district) {
                                           return DropdownMenuItem<DataDsiricst>(
                                             value: district,
-                                            child: Text(district.districtName, overflow: TextOverflow.ellipsis),
+                                            child: Text(district.districtName,
+                                                overflow:
+                                                    TextOverflow.ellipsis),
                                           );
                                         }).toList(),
                                       ),
@@ -8728,7 +10449,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ),
                           ),
                         ),
-
 
                         // Designation Field
 
@@ -8742,7 +10462,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 print("@@-----CampRegistration--");
                                 _ScreeningCampRegistration();
                               },
-                              icon: Icon(Icons.check),  // Icon for submit
+                              icon: Icon(Icons.check), // Icon for submit
                               label: Text('Submit'),
                             ),
                             ElevatedButton.icon(
@@ -8750,12 +10470,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 // Reset form fields
                                 _resetForm();
                               },
-                              icon: Icon(Icons.refresh),  // Icon for reset
+                              icon: Icon(Icons.refresh), // Icon for reset
                               label: Text('Reset'),
                             ),
                           ],
                         )
-
                       ],
                     ),
                   ),
@@ -8872,9 +10591,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           visible: ngoScreeningCampListss,
           child: Column(
             children: [
-
               Container(
-
                 color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -8890,7 +10607,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             color: Colors.white,
                             fontSize: 12, // Slightly larger font size
                             fontWeight:
-                            FontWeight.w500, // Bold text for prominence
+                                FontWeight.w500, // Bold text for prominence
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -8898,9 +10615,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                       Align(
                         alignment: Alignment.centerRight, // Align to the right
                         child: GestureDetector(
-                          onTap: _addScreeningCampManager, // Call the function properly
+                          onTap: _addScreeningCampManager,
+                          // Call the function properly
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
                             // Add padding to the container
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -8911,7 +10630,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 BoxShadow(
                                   color: Colors.black26,
                                   blurRadius: 6,
-                                  offset: Offset(0, 2), // Slight shadow below the button
+                                  offset: Offset(
+                                      0, 2), // Slight shadow below the button
                                 ),
                               ],
                               border: Border.all(
@@ -8923,7 +10643,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                               mainAxisSize: MainAxisSize.min,
                               // Make the row fit the content
                               children: [
-
                                 // Space between icon and text
                                 Text(
                                   'Add Screening Camp',
@@ -8932,14 +10651,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     fontWeight: FontWeight.w500, // Text weight
                                     fontSize: 12, // Slightly smaller font size
                                   ),
-                                  overflow: TextOverflow.ellipsis, // Handle text overflow
+                                  overflow: TextOverflow
+                                      .ellipsis, // Handle text overflow
                                 ),
                               ],
                             ),
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -8956,9 +10675,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     Row(
                       children: [
                         _buildHeaderCellSrNo('S.No.', context),
-
                         _buildHeaderCell('Camp Name'),
-
                         _buildHeaderCellAction('View'),
                       ],
                     ),
@@ -9071,7 +10788,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                           Container(
                             padding: EdgeInsets.symmetric(vertical: 8.0),
                             alignment: Alignment.centerLeft,
-
                           ),
                         ],
                       ),
@@ -9289,9 +11005,7 @@ class _NgoDashboard extends State<NgoDashboard> {
           visible: ngoSATELLITECENTREMANAGERLists,
           child: Column(
             children: [
-
               Container(
-
                 color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -9307,7 +11021,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             color: Colors.white,
                             fontSize: 12, // Slightly larger font size
                             fontWeight:
-                            FontWeight.w500, // Bold text for prominence
+                                FontWeight.w500, // Bold text for prominence
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -9315,9 +11029,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                       Align(
                         alignment: Alignment.centerRight, // Align to the right
                         child: GestureDetector(
-                          onTap: _addSatelliteCenterManager,  // Call the function properly
+                          onTap: _addSatelliteCenterManager,
+                          // Call the function properly
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
                             // Add padding to the container
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -9328,7 +11044,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 BoxShadow(
                                   color: Colors.black26,
                                   blurRadius: 6,
-                                  offset: Offset(0, 2), // Slight shadow below the button
+                                  offset: Offset(
+                                      0, 2), // Slight shadow below the button
                                 ),
                               ],
                               border: Border.all(
@@ -9340,7 +11057,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                               mainAxisSize: MainAxisSize.min,
                               // Make the row fit the content
                               children: [
-
                                 // Space between icon and text
                                 Text(
                                   'Add Satellite Manager',
@@ -9349,14 +11065,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     fontWeight: FontWeight.w500, // Text weight
                                     fontSize: 12, // Slightly smaller font size
                                   ),
-                                  overflow: TextOverflow.ellipsis, // Handle text overflow
+                                  overflow: TextOverflow
+                                      .ellipsis, // Handle text overflow
                                 ),
                               ],
                             ),
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -9425,7 +11141,7 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
 // Function to show the dialog with hospital details
- /* void _showHospitalDetailsDialogSATELLITECENTREMANAGERDETAILS(
+  /* void _showHospitalDetailsDialogSATELLITECENTREMANAGERDETAILS(
       DataGetSatelliteCenterList offer) {
     showDialog(
       context: context,
@@ -9530,8 +11246,6 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                   // Action Section
 
-
-
                   // Close Button
                   Align(
                     alignment: Alignment.centerRight,
@@ -9557,7 +11271,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
-
 
 // Helper function to build each vertical row (label and data)
   Widget _buildVerticalRow(String label, String value) {
@@ -9619,7 +11332,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                 // Form for Camp Manager Registration
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(5.0),
                   child: Form(
                     key: _formKeySatelliteManger,
                     child: Column(
@@ -9629,26 +11342,35 @@ class _NgoDashboard extends State<NgoDashboard> {
                           width: 300,
                           height: 50,
                           child: TextFormField(
-                            controller: _userNameControllerStatelliteMangerReg, // Attach controller
+                            controller: _userNameControllerStatelliteMangerReg,
+                            // Attach controller
                             decoration: InputDecoration(
                               label: RichText(
                                 text: TextSpan(
                                   text: 'User Name',
-                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
                                   children: [
                                     TextSpan(
-                                      text: ' *', // Red asterisk for required field
-                                      style: TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold),
+                                      text: ' *',
+                                      // Red asterisk for required field
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 ),
                               ),
                               hintText: 'Enter your name',
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded border
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(12),
+                                // Rounded border
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1.0),
                               ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 16.0),
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -9658,7 +11380,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                             },
                           ),
                         ),
-
 
                         SizedBox(height: 5.0),
 
@@ -9705,26 +11426,36 @@ class _NgoDashboard extends State<NgoDashboard> {
                           width: 300,
                           height: 50,
                           child: TextFormField(
-                            controller: _mobileNumberControllerStatelliteMangerReg, // Attach controller
+                            controller:
+                                _mobileNumberControllerStatelliteMangerReg,
+                            // Attach controller
                             decoration: InputDecoration(
                               label: RichText(
                                 text: TextSpan(
                                   text: 'Mobile No.',
-                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16),
                                   children: [
                                     TextSpan(
-                                      text: ' *', // Red asterisk for required field
-                                      style: TextStyle(color: Colors.red, fontSize: 16, fontWeight: FontWeight.bold),
+                                      text: ' *',
+                                      // Red asterisk for required field
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 ),
                               ),
                               hintText: 'Enter your mobile number',
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded border
-                                borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
+                                borderRadius: BorderRadius.circular(12),
+                                // Rounded border
+                                borderSide: BorderSide(
+                                    color: Colors.grey.shade300, width: 1.0),
                               ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 16.0),
                             ),
                             keyboardType: TextInputType.phone,
                             validator: (value) {
@@ -9766,24 +11497,31 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 ),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded border
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(12),
+                                // Rounded border
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1.0),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderSide:
+                                    BorderSide(color: Colors.grey, width: 1.0),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0), // Blue when focused
+                                borderSide: BorderSide(
+                                    color: Colors.grey,
+                                    width: 1.0), // Blue when focused
                               ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                              contentPadding: EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 16.0),
                             ),
                             keyboardType: TextInputType.emailAddress,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
-                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                  .hasMatch(value)) {
                                 return 'Please enter a valid email address';
                               }
                               return null;
@@ -9791,10 +11529,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ),
                         ),
 
-
                         SizedBox(height: 5.0),
 
-                        Center(
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
                           child: FutureBuilder<List<DataGethospitalForDDL>>(
                             future: _futureDataGethospitalForDDL,
                             builder: (context, snapshot) {
@@ -9818,7 +11557,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 10),
+                                    horizontal: 0.0, vertical: 0),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -9828,52 +11567,58 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           fontSize: 16,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    DropdownButtonFormField<
-                                        DataGethospitalForDDL>(
-                                      value: _dataGethospitalForDDL,
-                                      onChanged: (userc) {
-                                        setState(() {
-                                          _dataGethospitalForDDL = userc;
-                                          gethospitalName = userc?.hName ?? '';
-                                          gethospitalNameSrNOReg =
-                                              userc?.hRegID ?? '';
-                                          print(
-                                              'getMAnagerNAme Year: $gethospitalName');
-                                          print(
-                                              'getmanagerSrNO: $gethospitalNameSrNOReg');
-                                        });
-                                      },
-                                      items: list.map((user) {
-                                        return DropdownMenuItem<
-                                            DataGethospitalForDDL>(
-                                          value: user,
-                                          child: Text(user.hName,
-                                              style: TextStyle(fontSize: 16)),
-                                        );
-                                      }).toList(),
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: 15.0, horizontal: 10.0),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.grey, width: 1.0),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
+                                    SizedBox(
+                                      height: 55,
+                                      // Adjust height as needed
+                                      width: double.infinity,
+                                      // Ensures it takes full width
+                                      child: DropdownButtonFormField<
+                                          DataGethospitalForDDL>(
+                                        value: _dataGethospitalForDDL,
+                                        onChanged: (userc) {
+                                          setState(() {
+                                            _dataGethospitalForDDL = userc;
+                                            gethospitalName =
+                                                userc?.hName ?? '';
+                                            gethospitalNameSrNOReg =
+                                                userc?.hRegID ?? '';
+                                            print(
+                                                'getMAnagerNAme Year: $gethospitalName');
+                                            print(
+                                                'getmanagerSrNO: $gethospitalNameSrNOReg');
+                                          });
+                                        },
+                                        items: list.map((user) {
+                                          return DropdownMenuItem<
+                                              DataGethospitalForDDL>(
+                                            value: user,
+                                            child: Text(user.hName,
+                                                style: TextStyle(fontSize: 16)),
+                                          );
+                                        }).toList(),
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 10.0),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1.0),
+                                            borderRadius:
+                                                BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
                                         ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.grey,
-                                              width: 1.0),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
+                                        dropdownColor: Colors.white,
+                                        style: TextStyle(color: Colors.black),
+                                        icon: Icon(Icons.arrow_drop_down,
+                                            color: Colors.black),
                                       ),
-                                      dropdownColor: Colors.white,
-                                      style: TextStyle(color: Colors.black),
-                                      icon: Icon(Icons.arrow_drop_down,
-                                          color: Colors.black),
                                     ),
                                   ],
                                 ),
@@ -9883,88 +11628,110 @@ class _NgoDashboard extends State<NgoDashboard> {
                         ),
                         SizedBox(height: 5.0),
                         // Address Field
-                        SizedBox(
-                          width: 300,
-                          height:50,
-                          child: TextFormField(
-                            controller: _addressControllerStatelliteMangerReg,
-                            decoration: InputDecoration(
-                              labelText: 'Address*',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded border
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: TextFormField(
+                              controller: _addressControllerStatelliteMangerReg,
+                              decoration: InputDecoration(
+                                labelText: 'Address*',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  // Rounded border
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1.0), // Grey when enabled
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1.0), // Blue when focused
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 12.0,
+                                    horizontal: 16.0), // Better spacing
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0), // Grey when enabled
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0), // Blue when focused
-                              ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0), // Better spacing
+                              maxLines: 3, // Allows multiline input
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your address';
+                                }
+                                return null;
+                              },
                             ),
-                            maxLines: 3, // Allows multiline input
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your address';
-                              }
-                              return null;
-                            },
                           ),
                         ),
 
                         SizedBox(height: 5.0),
 
                         // Designation Field
-                        SizedBox(
-                          width: 300,
-                          height: 50,
-                          child: TextFormField(
-                            controller: _designationControllerStatelliteMangerReg,
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  text: 'Designation', // Normal text
-                                  style: TextStyle(
-                                    fontSize: 16, // Adjust size as needed
-                                    color: Colors.black, // Normal label color
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: ' *', // Asterisk
-                                      style: TextStyle(
-                                        color: Colors.red, // Red color for *
-                                        fontWeight: FontWeight.bold,
+                        Container(
+                          margin: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0), // Add margin here
 
-                                      ),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: TextFormField(
+                              controller:
+                                  _designationControllerStatelliteMangerReg,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    text: 'Designation', // Normal text
+                                    style: TextStyle(
+                                      fontSize: 16, // Adjust size as needed
+                                      color: Colors.black, // Normal label color
                                     ),
-                                  ],
+                                    children: [
+                                      TextSpan(
+                                        text: ' *', // Asterisk
+                                        style: TextStyle(
+                                          color: Colors.red, // Red color for *
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  // Rounded border
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1.0), // Blue when focused
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 12.0, horizontal: 16.0),
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12), // Rounded border
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(color: Colors.grey, width: 1.0), // Blue when focused
-                              ),
-                              contentPadding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your designation';
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your designation';
-                              }
-                              return null;
-                            },
                           ),
                         ),
-
 
                         SizedBox(height: 5.0),
 
@@ -9972,56 +11739,82 @@ class _NgoDashboard extends State<NgoDashboard> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(10.0, 10, 10.0, 0),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Even spacing
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            // Even spacing
                             children: [
                               SizedBox(
                                 width: 120, // Reduced button width
                                 height: 40, // Reduced button height
                                 child: ElevatedButton.icon(
-                                  icon: Icon(Icons.send, color: Colors.white, size: 18), // Smaller icon
+                                  icon: Icon(Icons.send,
+                                      color: Colors.white,
+                                      size: 18), // Smaller icon
                                   label: Text(
                                     'Submit',
-                                    style: TextStyle(fontSize: 14), // Smaller text
+                                    style:
+                                        TextStyle(fontSize: 14), // Smaller text
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.blue, // Button color
-                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15), // Smaller padding
-                                    minimumSize: Size(120, 40), // Minimum size
-                                    fixedSize: Size(120, 40), // Fixed width & height
-                                    elevation: 3, // Reduced shadow effect
-                                    shadowColor: Colors.black45, // Shadow color
+                                    primary: Colors.blue,
+                                    // Button color
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    // Smaller padding
+                                    minimumSize: Size(120, 40),
+                                    // Minimum size
+                                    fixedSize: Size(120, 40),
+                                    // Fixed width & height
+                                    elevation: 3,
+                                    // Reduced shadow effect
+                                    shadowColor: Colors.black45,
+                                    // Shadow color
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                                      borderRadius: BorderRadius.circular(
+                                          8), // Slightly rounded corners
                                     ),
                                   ),
                                   onPressed: () {
-                                    if (_formKeySatelliteManger.currentState.validate()) {
-                                      print("@@_SatteliteMAnagerRegistration--");
+                                    if (_formKeySatelliteManger.currentState
+                                        .validate()) {
+                                      print(
+                                          "@@_SatteliteMAnagerRegistration--");
                                       _satelliteManagersRegistrationRedOption();
                                     }
                                     // _spoRegistrationSubmit();
                                   },
                                 ),
                               ),
-                              SizedBox(width: 8), // Reduced spacing between buttons
+                              SizedBox(width: 8),
+                              // Reduced spacing between buttons
                               SizedBox(
                                 width: 120, // Reduced button width
                                 height: 40, // Reduced button height
                                 child: ElevatedButton.icon(
-                                  icon: Icon(Icons.refresh, color: Colors.white, size: 18), // Smaller icon
+                                  icon: Icon(Icons.refresh,
+                                      color: Colors.white,
+                                      size: 18), // Smaller icon
                                   label: Text(
                                     'Reset',
-                                    style: TextStyle(fontSize: 14), // Smaller text
+                                    style:
+                                        TextStyle(fontSize: 14), // Smaller text
                                   ),
                                   style: ElevatedButton.styleFrom(
-                                    primary: Colors.red, // Reset button color
-                                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15), // Smaller padding
-                                    minimumSize: Size(120, 40), // Minimum size
-                                    fixedSize: Size(120, 40), // Fixed width & height
-                                    elevation: 3, // Reduced shadow effect
-                                    shadowColor: Colors.black45, // Shadow color
+                                    primary: Colors.red,
+                                    // Reset button color
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 15),
+                                    // Smaller padding
+                                    minimumSize: Size(120, 40),
+                                    // Minimum size
+                                    fixedSize: Size(120, 40),
+                                    // Fixed width & height
+                                    elevation: 3,
+                                    // Reduced shadow effect
+                                    shadowColor: Colors.black45,
+                                    // Shadow color
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8), // Slightly rounded corners
+                                      borderRadius: BorderRadius.circular(
+                                          8), // Slightly rounded corners
                                     ),
                                   ),
                                   onPressed: () {
@@ -10032,8 +11825,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                             ],
                           ),
                         ),
-
-
                       ],
                     ),
                   ),
@@ -10132,7 +11923,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                 // Form for Camp Manager Registration
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(5.0),
                   child: Form(
                     key: _formKeySatelliteMangerEditClick,
                     child: Column(
@@ -10512,7 +12303,6 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Column(
             children: [
               Container(
-
                 color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -10528,7 +12318,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             color: Colors.white,
                             fontSize: 12, // Slightly larger font size
                             fontWeight:
-                            FontWeight.w500, // Bold text for prominence
+                                FontWeight.w500, // Bold text for prominence
                           ),
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -10536,9 +12326,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                       Align(
                         alignment: Alignment.centerRight, // Align to the right
                         child: GestureDetector(
-                          onTap: _addSatelliteCenterRedOtionclick, // Call the function properly
+                          onTap: _addSatelliteCenterRedOtionclick,
+                          // Call the function properly
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 8.0, horizontal: 16.0),
                             // Add padding to the container
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -10549,7 +12341,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 BoxShadow(
                                   color: Colors.black26,
                                   blurRadius: 6,
-                                  offset: Offset(0, 2), // Slight shadow below the button
+                                  offset: Offset(
+                                      0, 2), // Slight shadow below the button
                                 ),
                               ],
                               border: Border.all(
@@ -10561,7 +12354,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                               mainAxisSize: MainAxisSize.min,
                               // Make the row fit the content
                               children: [
-
                                 // Space between icon and text
                                 Text(
                                   'Add Satellite Centre',
@@ -10570,14 +12362,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     fontWeight: FontWeight.w500, // Text weight
                                     fontSize: 12, // Slightly smaller font size
                                   ),
-                                  overflow: TextOverflow.ellipsis, // Handle text overflow
+                                  overflow: TextOverflow
+                                      .ellipsis, // Handle text overflow
                                 ),
                               ],
                             ),
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
@@ -10679,8 +12471,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                   // Table for the data
                   Table(
-                    border: TableBorder.all(
-                        color: Colors.black, width: 1.0),
+                    border: TableBorder.all(color: Colors.black, width: 1.0),
                     children: [
                       _buildTableRow('S.No.', offer.srNo.toString()),
                       _buildTableRow('Officer Name', offer.name),
@@ -10799,13 +12590,18 @@ class _NgoDashboard extends State<NgoDashboard> {
                         Container(
                           height: 50, // Set fixed height
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 1), // Border color and width
-                            borderRadius: BorderRadius.circular(8), // Rounded corners
+                            border: Border.all(color: Colors.grey, width: 1),
+                            // Border color and width
+                            borderRadius:
+                                BorderRadius.circular(8), // Rounded corners
                           ),
                           child: TextFormField(
-                            controller: _userSatelliteCentreNameRegCenter, // Attach controller
+                            controller: _userSatelliteCentreNameRegCenter,
+                            // Attach controller
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10), // Adjust padding
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 10),
+                              // Adjust padding
                               label: RichText(
                                 text: TextSpan(
                                   text: 'Satellite Centre Name',
@@ -10825,7 +12621,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 ),
                               ),
                               border: InputBorder.none, // Remove default border
-
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -10836,7 +12631,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ),
                         ),
 
-
                         SizedBox(height: 5.0),
 
                         // Gender Selection
@@ -10845,18 +12639,28 @@ class _NgoDashboard extends State<NgoDashboard> {
                         Container(
                           height: 50, // Fixed height
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 1), // Border color and width
-                            borderRadius: BorderRadius.circular(8), // Rounded corners
+                            border: Border.all(color: Colors.grey, width: 1),
+                            // Border color and width
+                            borderRadius:
+                                BorderRadius.circular(8), // Rounded corners
                           ),
                           child: TextFormField(
-                            controller: _mobileNumberControllerStatelliteMangerRegCenter, // Attach controller
-                            keyboardType: TextInputType.phone, // Numeric keyboard
-                            maxLength: 10, // Restrict input to 10 digits
+                            controller:
+                                _mobileNumberControllerStatelliteMangerRegCenter,
+                            // Attach controller
+                            keyboardType: TextInputType.phone,
+                            // Numeric keyboard
+                            maxLength: 10,
+                            // Restrict input to 10 digits
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10), // Adjust padding
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 10),
+                              // Adjust padding
                               labelText: 'Mobile No.*',
-                              counterText: "", // Hides character count below TextFormField
-                              border: InputBorder.none, // Removes default border
+                              counterText: "",
+                              // Hides character count below TextFormField
+                              border:
+                                  InputBorder.none, // Removes default border
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -10873,7 +12677,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Email ID Field
                         Container(
-                          height: 50, // Same height as the email field
+                          height: 50,
+                          // Same height as the email field
                           width: double.infinity,
                           padding: EdgeInsets.symmetric(horizontal: 12),
                           decoration: BoxDecoration(
@@ -10882,17 +12687,21 @@ class _NgoDashboard extends State<NgoDashboard> {
                             color: Colors.white,
                           ),
                           child: TextFormField(
-                            controller: _emailIdControllerStatelliteMangerRegCenter,
+                            controller:
+                                _emailIdControllerStatelliteMangerRegCenter,
                             keyboardType: TextInputType.emailAddress,
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-                              border: InputBorder.none, // Removes default border
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 10),
+                              border: InputBorder.none,
+                              // Removes default border
                               labelText: 'Email ID*',
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'Please enter your email';
-                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                  .hasMatch(value)) {
                                 return 'Please enter a valid email address';
                               }
                               return null;
@@ -10901,7 +12710,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                         ),
 
                         SizedBox(height: 5.0),
-
 
                         FutureBuilder<List<DataGethospitalForDDL>>(
                           future: _futureDataGethospitalForDDL,
@@ -10914,52 +12722,72 @@ class _NgoDashboard extends State<NgoDashboard> {
                               return CircularProgressIndicator();
                             }
 
-                            List<DataGethospitalForDDL> list = snapshot.data ?? [];
+                            List<DataGethospitalForDDL> list =
+                                snapshot.data ?? [];
 
                             // Ensure _dataGethospitalForDDL is in the list
-                            if (_dataGethospitalForDDL == null || !list.contains(_dataGethospitalForDDL)) {
-                              _dataGethospitalForDDL = list.isNotEmpty ? list.first : null;
+                            if (_dataGethospitalForDDL == null ||
+                                !list.contains(_dataGethospitalForDDL)) {
+                              _dataGethospitalForDDL =
+                                  list.isNotEmpty ? list.first : null;
                             }
 
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 0.0, vertical: 0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
                                     'Hospital Name*',
-                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(height: 8),
                                   Container(
                                     height: 50, // Same height as email field
                                     width: double.infinity,
-                                    padding: EdgeInsets.symmetric(horizontal: 12),
                                     decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey, width: 1.0),
+                                      border: Border.all(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                       color: Colors.white,
                                     ),
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton<DataGethospitalForDDL>(
-                                        value: _dataGethospitalForDDL,
-                                        onChanged: (userc) {
-                                          setState(() {
-                                            _dataGethospitalForDDL = userc;
-                                            gethospitalNameRegRedOption = userc?.hName ?? '';
-                                            gethospitalNameSrNORegRedOption = userc?.hRegID ?? '';
-                                            print('getMAnagerNAme Year: $gethospitalName');
-                                            print('@@gethospitalNameSrNORegRedOption: $gethospitalNameSrNORegRedOption');
-                                          });
-                                        },
-                                        items: list.map((user) {
-                                          return DropdownMenuItem<DataGethospitalForDDL>(
-                                            value: user,
-                                            child: Text(user.hName, style: TextStyle(fontSize: 16)),
-                                          );
-                                        }).toList(),
-                                        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                                        isExpanded: true, // Ensures dropdown takes full width
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 15.0),
+                                      // 👈 Simulating contentPadding
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton<
+                                            DataGethospitalForDDL>(
+                                          value: _dataGethospitalForDDL,
+                                          onChanged: (userc) {
+                                            setState(() {
+                                              _dataGethospitalForDDL = userc;
+                                              gethospitalNameRegRedOption =
+                                                  userc?.hName ?? '';
+                                              gethospitalNameSrNORegRedOption =
+                                                  userc?.hRegID ?? '';
+                                              print(
+                                                  'getMAnagerNAme Year: $gethospitalName');
+                                              print(
+                                                  '@@gethospitalNameSrNORegRedOption: $gethospitalNameSrNORegRedOption');
+                                            });
+                                          },
+                                          items: list.map((user) {
+                                            return DropdownMenuItem<
+                                                DataGethospitalForDDL>(
+                                              value: user,
+                                              child: Text(user.hName,
+                                                  style:
+                                                      TextStyle(fontSize: 16)),
+                                            );
+                                          }).toList(),
+                                          icon: Icon(Icons.arrow_drop_down,
+                                              color: Colors.black),
+                                          isExpanded:
+                                              true, // Ensures dropdown takes full width
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -10968,7 +12796,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                             );
                           },
                         ),
-
 
                         SizedBox(height: 5.0),
                         FutureBuilder<
@@ -10993,8 +12820,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             }
 
                             // Check if _dataCenterOfficeNameSatelliteCenter is null or not part of the list anymore
-                            if (_dataCenterOfficeNameSatelliteCenter ==
-                                    null ||
+                            if (_dataCenterOfficeNameSatelliteCenter == null ||
                                 !list.contains(
                                     _dataCenterOfficeNameSatelliteCenter)) {
                               _dataCenterOfficeNameSatelliteCenter =
@@ -11003,7 +12829,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                             return Padding(
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 20.0, vertical: 10),
+                                  horizontal: 0.0, vertical: 0),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -11015,8 +12841,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   ),
                                   DropdownButtonFormField<
                                       DataCenterOfficeNameSatelliteCenter>(
-                                    value:
-                                        _dataCenterOfficeNameSatelliteCenter,
+                                    value: _dataCenterOfficeNameSatelliteCenter,
                                     onChanged: (userc) {
                                       setState(() {
                                         print('@@DataCenterOfficeNameSatelliteCenter' +
@@ -11059,8 +12884,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
-                                            color: Colors.grey,
-                                            width: 1.0),
+                                            color: Colors.grey, width: 1.0),
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                       ),
@@ -11083,16 +12907,24 @@ class _NgoDashboard extends State<NgoDashboard> {
                         Container(
                           height: 100, // Increased height for multiline input
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey, width: 1), // Border color and width
-                            borderRadius: BorderRadius.circular(8), // Rounded corners
+                            border: Border.all(color: Colors.grey, width: 1),
+                            // Border color and width
+                            borderRadius:
+                                BorderRadius.circular(8), // Rounded corners
                           ),
                           child: TextFormField(
-                            controller: _addressControllerStatelliteMangerRegCenter, // Attach controller
-                            maxLines: 3, // Allows multi-line input
+                            controller:
+                                _addressControllerStatelliteMangerRegCenter,
+                            // Attach controller
+                            maxLines: 3,
+                            // Allows multi-line input
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10), // Adjust padding
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 10),
+                              // Adjust padding
                               labelText: 'Address*',
-                              border: InputBorder.none, // Removes default border
+                              border:
+                                  InputBorder.none, // Removes default border
                             ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
@@ -11113,24 +12945,27 @@ class _NgoDashboard extends State<NgoDashboard> {
                           children: [
                             ElevatedButton.icon(
                               onPressed: () {
-                                if (_formKeySatelliteCneterO.currentState.validate()) {
-                                  print("@@satelliteCenterRegistationRed--Pending work here--");
+                                if (_formKeySatelliteCneterO.currentState
+                                    .validate()) {
+                                  print(
+                                      "@@satelliteCenterRegistationRed--Pending work here--");
                                   _satelliteCentersRegistrationRedOption();
                                 }
                               },
-                              icon: Icon(Icons.check, size: 20), // ✅ Add Check Icon
+                              icon: Icon(Icons.check, size: 20),
+                              // ✅ Add Check Icon
                               label: Text('Submit'),
                             ),
                             ElevatedButton.icon(
                               onPressed: () {
                                 _resetFormSatelliteManager();
                               },
-                              icon: Icon(Icons.refresh, size: 20), // 🔄 Add Reset Icon
+                              icon: Icon(Icons.refresh, size: 20),
+                              // 🔄 Add Reset Icon
                               label: Text('Reset'),
                             ),
                           ],
                         ),
-
                       ],
                     ),
                   ),
