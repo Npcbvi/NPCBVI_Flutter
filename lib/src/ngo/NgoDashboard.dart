@@ -2900,6 +2900,7 @@ class _NgoDashboard extends State<NgoDashboard> {
               }).toList(),
               onChanged: (String value) {
                 setState(() {
+
                   _chosenValueMangeTwo = value ?? 'All';
                   print('@@_chosenValueMangeTwo-- $_chosenValueMangeTwo');
 
