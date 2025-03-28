@@ -33,8 +33,8 @@ class _EyBank extends State<EyBank> {
       appBar: AppBar(
         title: Text(
           'Eye Bank',
-          maxLines: 2,
-          style: TextStyle(fontSize: 12.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
       body: Container(

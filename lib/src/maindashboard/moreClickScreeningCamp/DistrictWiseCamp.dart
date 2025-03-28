@@ -53,7 +53,8 @@ class _DistrictWiseCamp
       appBar: AppBar(
         title: const Text(
           'District-wise Camps',
-          style: TextStyle(fontSize: 16.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
 
@@ -98,7 +99,7 @@ class _DistrictWiseCamp
                   children: [
                     _buildHeaderCellSrNo("S.No."),
                     _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total Camps"),
+                    _buildHeaderCellTOTalNGO("Total"),
                     _buildHeaderCellDashboardsAction("More"),
                   ],
                 ),

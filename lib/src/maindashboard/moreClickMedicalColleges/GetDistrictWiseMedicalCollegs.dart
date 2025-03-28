@@ -53,7 +53,8 @@ class _GetDistrictWiseMedicalCollegs
       appBar: AppBar(
         title: const Text(
           'District-wise Private Medical College',
-          style: TextStyle(fontSize: 16.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
 
@@ -97,7 +98,7 @@ class _GetDistrictWiseMedicalCollegs
                   children: [
                     _buildHeaderCellSrNo("S.No."),
                     _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total Patient"),
+                    _buildHeaderCellTOTalNGO("Total"),
                     _buildHeaderCellDashboardsAction("More"),
                   ],
                 ),

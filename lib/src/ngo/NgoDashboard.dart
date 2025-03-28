@@ -813,8 +813,9 @@ class _NgoDashboard extends State<NgoDashboard> {
         backgroundColor: Colors.blue,
         title: Text(
           'Welcome ${fullnameController}',
+          maxLines:2,
           // Assuming fullnameController has .text
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white,fontSize: 14.0),
         ),
         centerTitle: true,
         actions: [
@@ -952,8 +953,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           value: item['value'],
                           child: Row(
                             children: [
-                              Icon(item['icon'], color: Colors.blue),
-                              SizedBox(width: 6),
+                              Icon(item['icon'], color: Colors.black),
+                              SizedBox(width: 4),
                               Text(item['value']),
                             ],
                           ),
@@ -1340,7 +1341,8 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Column(
             children: [
               Container(
-                color: Colors.white,
+
+                color: Colors.blue,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
@@ -1350,10 +1352,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                       Align(
                         alignment: Alignment.centerLeft, // Align to the left
                         child: Text(
-                          'Hospitals List',
+                          'Hospital List',
                           style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 18, // Slightly larger font size
+                            color: Colors.white,
+                            fontSize: 16, // Slightly larger font size
                             fontWeight:
                                 FontWeight.w500, // Bold text for prominence
                           ),
@@ -1376,9 +1378,9 @@ class _NgoDashboard extends State<NgoDashboard> {
                             padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                             // Add padding to the container
                             decoration: BoxDecoration(
-                              color: Colors.blue,
+                              color: Colors.white,
                               // Background color of the button
-                              borderRadius: BorderRadius.circular(12),
+                              borderRadius: BorderRadius.circular(10),
                               // Rounded corners for the button
                               boxShadow: [
                                 BoxShadow(
@@ -1389,26 +1391,21 @@ class _NgoDashboard extends State<NgoDashboard> {
                               ],
                               border: Border.all(
                                 color: Colors.white, // White border
-                                width: 2, // Border width
+                                width: 1, // Border width
                               ),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               // Make the row fit the content
                               children: [
-                                Icon(
-                                  Icons.add, // Icon for adding a new hospital
-                                  color: Colors.white,
-                                  size: 20, // Adjust icon size
-                                ),
-                                SizedBox(width: 8),
+
                                 // Space between icon and text
                                 Text(
                                   'Add New Hospital',
                                   style: TextStyle(
-                                    color: Colors.white, // Text color
+                                    color: Colors.black, // Text color
                                     fontWeight: FontWeight.w500, // Text weight
-                                    fontSize: 18, // Slightly smaller font size
+                                    fontSize: 16, // Slightly smaller font size
                                   ),
                                   overflow: TextOverflow.ellipsis, // Handle text overflow
                                 ),
@@ -1796,70 +1793,79 @@ class _NgoDashboard extends State<NgoDashboard> {
           visible: ngoCampManagerLists,
           child: Column(
             children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                decoration: BoxDecoration(
-                  color: Colors.white, // Background color
-                  borderRadius: BorderRadius.circular(12.0), // Rounded corners
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 8.0,
-                      offset: Offset(0, 4), // Subtle shadow
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // Title Text
-                    Flexible(
-                      child: Text(
-                        'CAMP MANAGER DETAILS',
-                        maxLines: 3,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14.0,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
 
-                    // Add Camp Manager Button
-                    Flexible(
-                      child: ElevatedButton.icon(
-                        onPressed: _addCampManager,
-                        icon: Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 20.0,
-                        ),
-                        label: Text(
-                          'Add Camp Manager',
+              Container(
+
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // Spaced out both items
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft, // Align to the left
+                        child: Text(
+                          'CAMP MANAGER DETAILS',
                           style: TextStyle(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14.0,
+                            fontSize: 12, // Slightly larger font size
+                            fontWeight:
+                            FontWeight.w500, // Bold text for prominence
                           ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue, // Button background color
-                          onPrimary: Colors.white, // Text and icon color
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0), // Rounded corners
-                            side: BorderSide(color: Colors.white, width: 2.0), // White border
-                          ),
-                          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                          shadowColor: Colors.black.withOpacity(0.2),
-                          elevation: 4.0, // Button shadow elevation
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.centerRight, // Align to the right
+                        child: GestureDetector(
+                          onTap: _addCampManager, // Call the function properly
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            // Add padding to the container
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              // Background color of the button
+                              borderRadius: BorderRadius.circular(10),
+                              // Rounded corners for the button
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 2), // Slight shadow below the button
+                                ),
+                              ],
+                              border: Border.all(
+                                color: Colors.white, // White border
+                                width: 1, // Border width
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              // Make the row fit the content
+                              children: [
 
-                  ],
+                                // Space between icon and text
+                                Text(
+                                  'Add Camp Manager',
+                                  style: TextStyle(
+                                    color: Colors.black, // Text color
+                                    fontWeight: FontWeight.w500, // Text weight
+                                    fontSize: 12, // Slightly smaller font size
+                                  ),
+                                  overflow: TextOverflow.ellipsis, // Handle text overflow
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
                 ),
               ),
+
               // Horizontal Scrolling Table with Header and Data
               SizedBox(width: 8.0),
               SingleChildScrollView(
@@ -7642,7 +7648,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                 // Form for Camp Manager Registration
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(5.0),
                   child: Form(
                     key: _formKey1,
                     child: Column(
@@ -7719,9 +7725,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           color: Colors.white,
                           margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                           child: Padding(
-                            padding: const EdgeInsets.all(2.0),
+                            padding: const EdgeInsets.all(0.0),
                             child: Container(
-                              padding: EdgeInsets.all(4.0),
                               // Padding around both date containers
                               decoration: BoxDecoration(
                                 color: Colors.white,
@@ -7919,14 +7924,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                             }
 
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   // Use DropdownButtonFormField2 here
                                   SizedBox(
                                     height: 50,
-                                    width:320,
+                                    width:300,
                                     child: DropdownButtonFormField2<DataScreeningCampManager>(
                                       value: _mangerUser,
                                       onChanged: (userc) {
@@ -7981,7 +7986,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             Text(
                               'Location Type*',
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 12,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.blue.shade700, // Label color
                               ),
@@ -7996,13 +8001,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                                 // Urban Radio Button
                                 Container(
                                   padding:
-                                      EdgeInsets.symmetric(horizontal: 10.0),
+                                      EdgeInsets.symmetric(horizontal: 5.0),
                                   decoration: BoxDecoration(
                                     color: locationTypeValues == 'Urban'
-                                        ? Colors.blue.shade100
+                                        ? Colors.white
                                         : Colors.transparent,
                                     // Highlight selected option
-                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderRadius: BorderRadius.circular(4.0),
                                     // Rounded corners
                                     border: Border.all(
                                       color: locationTypeValues == 'Urban'
@@ -8031,7 +8036,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                         style: TextStyle(
                                           fontSize: 16,
                                           color: locationTypeValues == 'Urban'
-                                              ? Colors.blue
+                                              ? Colors.black
                                               : Colors.black,
                                           // Text color based on selection
                                           fontWeight: FontWeight.w600,
@@ -8040,17 +8045,17 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     ],
                                   ),
                                 ),
-                                SizedBox(width: 10), // Space between options
+                                SizedBox(width: 5), // Space between options
                                 // Rural Radio Button
                                 Container(
                                   padding:
                                       EdgeInsets.symmetric(horizontal: 8.0),
                                   decoration: BoxDecoration(
                                     color: locationTypeValues == 'Rural'
-                                        ? Colors.blue.shade100
+                                        ? Colors.white
                                         : Colors.transparent,
                                     // Highlight selected option
-                                    borderRadius: BorderRadius.circular(8.0),
+                                    borderRadius: BorderRadius.circular(4.0),
                                     // Rounded corners
                                     border: Border.all(
                                       color: locationTypeValues == 'Rural'
@@ -8109,91 +8114,68 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     return const CircularProgressIndicator();
                                   }
 
-                                  // Logging for debugging
-                                  developer.log('@@snapshot: ${snapshot.data}');
+                                  List<DataGetCity> districtList = snapshot.data;
 
-                                  List<DataGetCity> districtList =
-                                      snapshot.data;
-
-                                  // Ensure selected district is in the list, otherwise select the first one
                                   if (_selectedUserCity == null ||
-                                      !districtList
-                                          .contains(_selectedUserCity)) {
+                                      !districtList.contains(_selectedUserCity)) {
                                     _selectedUserCity = districtList.first;
                                   }
 
                                   return Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                        20, 10, 20.0, 0),
+                                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                                     child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
-                                        DropdownButtonFormField<DataGetCity>(
-                                          decoration: InputDecoration(
-                                            contentPadding:
-                                                EdgeInsets.symmetric(
-                                                    vertical: 15.0,
-                                                    horizontal: 10.0),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.grey,
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
+                                        // Ensuring equal width and height for Dropdown and TextField
+                                        SizedBox(
+                                          width: 300,
+                                          height: 50, // Set a fixed height
+                                          child: DropdownButtonFormField<DataGetCity>(
+                                            decoration: InputDecoration(
+                                              contentPadding: EdgeInsets.symmetric(
+                                                  vertical: 15.0, horizontal: 10.0),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                                borderRadius: BorderRadius.circular(10.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                                borderRadius: BorderRadius.circular(10.0),
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.white,
                                             ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: BorderSide(
-                                                  color: Colors.grey,
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            filled: true,
-                                            fillColor: Colors.white,
+                                            onChanged: (districtUser) => setState(() {
+                                              _selectedUserCity = districtUser;
+                                              distCodeGovtPrivate =
+                                                  int.parse(districtUser.subdistrictCode.toString());
+                                              print('Selected District: ${districtUser.subdistrictCode}');
+                                            }),
+                                            value: _selectedUserCity,
+                                            items: districtList.map((DataGetCity district) {
+                                              return DropdownMenuItem<DataGetCity>(
+                                                value: district,
+                                                child: Text(district.name),
+                                              );
+                                            }).toList(),
                                           ),
-                                          onChanged: (districtUser) =>
-                                              setState(() {
-                                            _selectedUserCity = districtUser;
-                                            distCodeGovtPrivate = int.parse(
-                                                districtUser.subdistrictCode
-                                                    .toString());
-                                            // Update state or further actions here
-                                            print(
-                                                'Selected District: ${districtUser.subdistrictCode}');
-                                          }),
-                                          value: _selectedUserCity,
-                                          items: districtList
-                                              .map((DataGetCity district) {
-                                            return DropdownMenuItem<
-                                                DataGetCity>(
-                                              value: district,
-                                              child: Text(district.name),
-                                            );
-                                          }).toList(),
                                         ),
                                       ],
                                     ),
                                   );
                                 },
                               ),
-                              SizedBox(height: 10),
+                              SizedBox(height: 5),
                               SizedBox(
-                                width:300,
-                                height:50,
+                                width: 300, // Same width as Dropdown
+                                height: 50, // Same height as Dropdown
                                 child: TextFormField(
                                   controller: _Pincodecontroller,
-                                  // Attach controller
                                   decoration: InputDecoration(
                                     labelText: 'Pin Code*',
                                     border: OutlineInputBorder(
-                                      // Adds a border around the TextField
                                       borderRadius: BorderRadius.circular(12),
-                                      // Optional: Makes the border rounded
-                                      borderSide: BorderSide(
-                                          color: Colors.grey.shade300,
-                                          width:
-                                              1.0), // Optional: Sets the border color and width
+                                      borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
                                     ),
                                   ),
                                   keyboardType: TextInputType.phone,
@@ -8204,9 +8186,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     return null;
                                   },
                                 ),
-                              )
+                              ),
                             ],
                           )
+
                         else if (locationTypeValues == 'Rural')
                           // Content to display if "Urban" is selected
 
@@ -8584,48 +8567,65 @@ class _NgoDashboard extends State<NgoDashboard> {
                         ),
 
                         SizedBox(height: 5.0),
-
                         Container(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          width: 350, // Set your desired width
+                          padding: EdgeInsets.symmetric(horizontal: 10),
                           child: FutureBuilder<List<Data>>(
                             future: _futureState,
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return const Center(child: CircularProgressIndicator());
-                              }
                               if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               }
 
-                              List<Data> stateList = snapshot.data ?? [];
-
-                              if (stateList.isEmpty) {
-                                return const Text('No states available');
+                              if (!snapshot.hasData) {
+                                return Center(child: CircularProgressIndicator());
                               }
 
-                              // ✅ Ensure selected state is in the list without causing setState inside FutureBuilder
-                              _selectedUserState ??= stateList.first;
+                              List<Data> stateList = snapshot.data ?? [];
 
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 10),
-                                    child: DropdownButtonFormField2<Data>(
+                              // Ensure selected state is in the list, otherwise select the first
+                              if (_selectedUserState == null ||
+                                  !stateList.contains(_selectedUserState)) {
+                                _selectedUserState =
+                                stateList.isNotEmpty ? stateList.first : null;
+                              }
+
+                              return Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    bottom: BorderSide(
+                                      width: 1.5,
+                                      color: Colors.grey[300],
+                                    ),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    const Text(
+                                      'Select State:',
+                                      style: TextStyle(
+                                          fontSize: 16, fontWeight: FontWeight.bold),
+                                    ),
+                                    DropdownButtonFormField<Data>(
+                                      isExpanded: true,
+                                      // ✅ Prevent overflow by expanding
                                       decoration: InputDecoration(
-                                        contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                        contentPadding: const EdgeInsets.symmetric(
+                                            vertical: 15.0, horizontal: 10.0),
                                         enabledBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                          borderSide: const BorderSide(
+                                              color: Colors.grey, width: 1.0),
                                           borderRadius: BorderRadius.circular(10.0),
                                         ),
                                         focusedBorder: OutlineInputBorder(
-                                          borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                          borderSide: const BorderSide(
+                                              color: Colors.grey, width: 1.0),
                                           borderRadius: BorderRadius.circular(10.0),
                                         ),
                                         filled: true,
-                                        fillColor: Colors.white,
+                                        fillColor: Colors.blue[50],
                                       ),
-                                      value: _selectedUserState,
                                       onChanged: (user) {
                                         if (user != null) {
                                           setState(() {
@@ -8640,23 +8640,30 @@ class _NgoDashboard extends State<NgoDashboard> {
                                           });
                                         }
                                       },
-                                      items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                                      value: _selectedUserState,
+                                      items: stateList
+                                          .map<DropdownMenuItem<Data>>((Data user) {
                                         return DropdownMenuItem<Data>(
                                           value: user,
-                                          child: Text(user.stateName),
+                                          child: Text(
+                                            user.stateName,
+                                            overflow: TextOverflow.ellipsis,
+                                            // ✅ Handles long text
+                                            maxLines: 1,
+                                            // ✅ Restricts to a single line
+                                            style: const TextStyle(fontSize: 14),
+                                          ),
                                         );
                                       }).toList(),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               );
                             },
                           ),
                         ),
+
                         SizedBox(height: 5.0),
-
-
-
                         Visibility(
                           visible: isVisibleDitrictGovt,
                           child: Padding(
@@ -8865,69 +8872,76 @@ class _NgoDashboard extends State<NgoDashboard> {
           visible: ngoScreeningCampListss,
           child: Column(
             children: [
-              Container(
-                margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
 
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.blue, Colors.blue],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12.0),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      blurRadius: 6.0,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: Text(
-                        'Screening Camp',
-                        maxLines: 2,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Flexible(
-                      flex: 3,
-                      child: ElevatedButton.icon(
-                        onPressed: _addScreeningCampManager,
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue, // Background color
-                          onPrimary: Colors.blue, // Text and icon color
-                          shadowColor: Colors.white.withOpacity(0.4),
-                          elevation: 3.0,
-                          padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0),
-                            side: BorderSide(color: Colors.white, width: 2.0), // White border
-                          ),
-                        ),
-                        icon: Icon(Icons.add, color: Colors.white, size: 20.0),
-                        label: Text(
-                          'Add Screening Camp',
+              Container(
+
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // Spaced out both items
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft, // Align to the left
+                        child: Text(
+                          'Screening Camp',
                           style: TextStyle(
                             color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.0,
+                            fontSize: 12, // Slightly larger font size
+                            fontWeight:
+                            FontWeight.w500, // Bold text for prominence
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight, // Align to the right
+                        child: GestureDetector(
+                          onTap: _addScreeningCampManager, // Call the function properly
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            // Add padding to the container
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              // Background color of the button
+                              borderRadius: BorderRadius.circular(10),
+                              // Rounded corners for the button
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 2), // Slight shadow below the button
+                                ),
+                              ],
+                              border: Border.all(
+                                color: Colors.white, // White border
+                                width: 1, // Border width
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              // Make the row fit the content
+                              children: [
+
+                                // Space between icon and text
+                                Text(
+                                  'Add Screening Camp',
+                                  style: TextStyle(
+                                    color: Colors.black, // Text color
+                                    fontWeight: FontWeight.w500, // Text weight
+                                    fontSize: 12, // Slightly smaller font size
+                                  ),
+                                  overflow: TextOverflow.ellipsis, // Handle text overflow
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
 
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
@@ -9275,64 +9289,76 @@ class _NgoDashboard extends State<NgoDashboard> {
           visible: ngoSATELLITECENTREMANAGERLists,
           child: Column(
             children: [
+
               Container(
-                color: Colors.white,
-                // Background color for the container
-                padding: const EdgeInsets.all(16.0),
-                // Padding inside the container
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  // Space between items
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Text to display the title
-                    Flexible(
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        // Align text to the left
+
+                color: Colors.blue,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    // Spaced out both items
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft, // Align to the left
                         child: Text(
-                          'SATELLITE CENTRE MANAGER DETAILS',
-                          maxLines: 2,
+                          'SATELLITE CENTRE MANAGER ',
                           style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14, // Increased font size for emphasis
+                            color: Colors.white,
+                            fontSize: 12, // Slightly larger font size
+                            fontWeight:
+                            FontWeight.w500, // Bold text for prominence
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight, // Align to the right
+                        child: GestureDetector(
+                          onTap: _addSatelliteCenterManager,  // Call the function properly
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            // Add padding to the container
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              // Background color of the button
+                              borderRadius: BorderRadius.circular(10),
+                              // Rounded corners for the button
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 2), // Slight shadow below the button
+                                ),
+                              ],
+                              border: Border.all(
+                                color: Colors.white, // White border
+                                width: 1, // Border width
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              // Make the row fit the content
+                              children: [
+
+                                // Space between icon and text
+                                Text(
+                                  'Add Satellite Manager',
+                                  style: TextStyle(
+                                    color: Colors.black, // Text color
+                                    fontWeight: FontWeight.w500, // Text weight
+                                    fontSize: 12, // Slightly smaller font size
+                                  ),
+                                  overflow: TextOverflow.ellipsis, // Handle text overflow
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
-                    ),
 
-                    // Add Satellite Manager Button
-                    Flexible(
-                      child: ElevatedButton.icon(
-                        onPressed: _addSatelliteCenterManager, // Trigger action on press
-                        icon: Icon(
-                          Icons.add_circle, // Add icon before text
-                          color: Colors.white, // Icon color
-                        ),
-                        label: Text(
-                          'Add Satellite Manager',
-                          maxLines: 2,
-                          style: TextStyle(
-                            color: Colors.white, // Button text color
-                            fontWeight: FontWeight.normal, // Text weight
-                          ),
-                          overflow: TextOverflow.ellipsis, // Text overflow handling
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          primary: Colors.blue, // Background color
-                          onPrimary: Colors.blue, // Text color when not pressed
-                          shadowColor: Colors.blue.withOpacity(0.4), // Shadow effect
-                          padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0), // Rounded corners
-                          ),
-                          side: BorderSide(color: Colors.white, width: 2.0), // White border
-                        ),
-                      ),
-                    ),
-
-                  ],
+                    ],
+                  ),
                 ),
               ),
 
@@ -10486,86 +10512,71 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Column(
             children: [
               Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.white, Colors.white], // Gradient effect
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(12), // Rounded corners
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: Offset(0, 3), // Shadow position
-                    ),
-                  ],
-                ),
+
+                color: Colors.blue,
                 child: Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  // Added padding for spacing
+                  padding: const EdgeInsets.all(8.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    // Space between the texts
+                    // Spaced out both items
                     children: [
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'SATELLITE CENTRE MANAGER',
-                            maxLines: 2,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                              // Increased font size for better visibility
-                              letterSpacing:
-                                  1.2, // Added letter spacing for style
-                            ),
-                            overflow: TextOverflow.ellipsis,
+                      Align(
+                        alignment: Alignment.centerLeft, // Align to the left
+                        child: Text(
+                          'SATELLITE CENTRE MANAGER',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12, // Slightly larger font size
+                            fontWeight:
+                            FontWeight.w500, // Bold text for prominence
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                      SizedBox(width: 4), // Spacing between icon and text
-
-                      Flexible(
+                      Align(
+                        alignment: Alignment.centerRight, // Align to the right
                         child: GestureDetector(
-                          onTap: _addSatelliteCenterRedOtionclick,
+                          onTap: _addSatelliteCenterRedOtionclick, // Call the function properly
                           child: Container(
-                            padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                            padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                            // Add padding to the container
                             decoration: BoxDecoration(
-                              color: Colors.blue, // Background color (change if needed)
-                              border: Border.all(color: Colors.white, width: 2), // Border
-                              borderRadius: BorderRadius.circular(8), // Rounded corners
+                              color: Colors.white,
+                              // Background color of the button
+                              borderRadius: BorderRadius.circular(10),
+                              // Rounded corners for the button
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 2), // Slight shadow below the button
+                                ),
+                              ],
+                              border: Border.all(
+                                color: Colors.white, // White border
+                                width: 1, // Border width
+                              ),
                             ),
                             child: Row(
-                              mainAxisSize: MainAxisSize.min, // Keeps the layout compact
-                              crossAxisAlignment: CrossAxisAlignment.center, // Align items properly
+                              mainAxisSize: MainAxisSize.min,
+                              // Make the row fit the content
                               children: [
-                                Icon(Icons.add_circle, color: Colors.white, size: 20), // Icon
-                                SizedBox(width: 8), // Spacing between icon and text
-                                Expanded( // Ensures text wraps to a new line
-                                  child: Text(
-                                    'Add Satellite Centre',
-                                    maxLines: 2, // Allows text to wrap
-                                    softWrap: true, // Enables wrapping
-                                    overflow: TextOverflow.visible, // Ensures text is visible
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16, // Increased font size
-                                      letterSpacing: 1.2, // Letter spacing for consistency
-                                      decoration: TextDecoration.underline, // Underlined for emphasis
-                                    ),
+
+                                // Space between icon and text
+                                Text(
+                                  'Add Satellite Centre',
+                                  style: TextStyle(
+                                    color: Colors.black, // Text color
+                                    fontWeight: FontWeight.w500, // Text weight
+                                    fontSize: 12, // Slightly smaller font size
                                   ),
+                                  overflow: TextOverflow.ellipsis, // Handle text overflow
                                 ),
                               ],
                             ),
                           ),
                         ),
                       ),
-
 
                     ],
                   ),

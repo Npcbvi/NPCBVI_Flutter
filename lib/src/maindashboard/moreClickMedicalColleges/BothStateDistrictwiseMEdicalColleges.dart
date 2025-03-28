@@ -60,7 +60,8 @@ class _BothStateDistrictwiseMEdicalColleges
       appBar: AppBar(
         title: const Text(
           'District-wise Private Medical College',
-          style: TextStyle(fontSize: 16.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
       body: (moreclickMEdicalCollegesDistrictCodeInt == null || moreclickMEdicalCollegesDistrictCodeInt == null)

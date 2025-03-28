@@ -49,7 +49,9 @@ class _MoreClickGetDistrictWiseNGOForDashboard
       appBar: AppBar(
         title: const Text(
           'District-wise NGOs',
-          style: TextStyle(fontSize: 16.0),
+          style: TextStyle(
+            fontSize: 14.0, // Adjust the size as needed
+          ),
         ),
       ),
 
@@ -93,7 +95,7 @@ class _MoreClickGetDistrictWiseNGOForDashboard
                   children: [
                     _buildHeaderCellSrNo("S.No."),
                     _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total NGO"),
+                    _buildHeaderCellTOTalNGO("Total"),
                     _buildHeaderCellDashboardsAction("More"),
                   ],
                 ),

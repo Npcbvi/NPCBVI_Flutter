@@ -33,8 +33,8 @@ class _DonationCentersMoreClick extends State<DonationCentersMoreClick> {
       appBar: AppBar(
         title: Text(
           'Donation Centers',
-          maxLines: 2,
-          style: TextStyle(fontSize: 12.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
       body: Container(

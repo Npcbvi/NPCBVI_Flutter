@@ -39,9 +39,8 @@ String   moreclickNgoStatedCodess;
     return Scaffold(
       appBar: AppBar( title: Text(
         'State-wise Private Practitioners',
-        style: TextStyle(
-          fontSize: 12.0, // Adjust the size as needed
-        ),
+        maxLines:2,
+        style: TextStyle(fontSize: 14.0),
       ),
 
       ),      body: SingleChildScrollView(
@@ -59,7 +58,7 @@ String   moreclickNgoStatedCodess;
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('State'),
-                    _buildHeaderCellTOTalNGO('Total Hospital'),
+                    _buildHeaderCellTOTalNGO('Total'),
                     _buildHeaderCellDashboardsAction('Action'),
                   ],
                 ),

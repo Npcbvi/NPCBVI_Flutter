@@ -54,8 +54,8 @@ class _DistrictWisedpm
       appBar: AppBar(
         title: const Text(
           'List of District Programme Officers (DPMs) under NPCBVI',
-          maxLines: 2,
-          style: TextStyle(fontSize: 16.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
       body: moreclickDpmStatedCodesss == null

@@ -34,7 +34,7 @@ String   moreclickNgoStatedCodess;
       appBar: AppBar( title: Text(
         'State wise NGOs',
         style: TextStyle(
-          fontSize: 12.0, // Adjust the size as needed
+          fontSize: 14.0, // Adjust the size as needed
         ),
       ),
 
@@ -53,7 +53,7 @@ String   moreclickNgoStatedCodess;
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('State'),
-                    _buildHeaderCellTOTalNGO('Total NGO'),
+                    _buildHeaderCellTOTalNGO('Total'),
                     _buildHeaderCellDashboardsAction('Action'),
                   ],
                 ),

@@ -62,7 +62,7 @@ class _BothPrivatePractionaries
         title: const Text(
           'State & District-wise Private Practitioners',
           maxLines:2,
-          style: TextStyle(fontSize: 16.0),
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
       body: (moreclickPrivatePRactionariesDistrictCodeInt == null || moreclickPrivatePRactionariesDistrictCodeInt == null)

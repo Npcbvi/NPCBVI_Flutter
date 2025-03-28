@@ -289,7 +289,7 @@ class _OuterDashboardHomeClicks extends State<OuterDashboardHomeClicks> {
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
-                      color: Colors.black, // Text color
+                      color: Colors.white, // Text color
                     ),
                   ),
                 ),

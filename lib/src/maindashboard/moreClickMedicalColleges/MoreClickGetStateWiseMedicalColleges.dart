@@ -37,9 +37,8 @@ String   moreclickNgoStatedCodess;
     return Scaffold(
       appBar: AppBar( title: Text(
         'State-wise Private Medical College',
-        style: TextStyle(
-          fontSize: 12.0, // Adjust the size as needed
-        ),
+        maxLines:2,
+        style: TextStyle(fontSize: 14.0),
       ),
 
       ),      body: SingleChildScrollView(

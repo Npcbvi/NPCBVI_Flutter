@@ -59,7 +59,8 @@ class _BothStateDistrictwiseHospital
       appBar: AppBar(
         title: const Text(
           'State & District-wise Hospital',
-          style: TextStyle(fontSize: 16.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
       body: (moreclickHospitalDistrictCodeInt == null || moreclickHospitalDistrictCodeInt == null)

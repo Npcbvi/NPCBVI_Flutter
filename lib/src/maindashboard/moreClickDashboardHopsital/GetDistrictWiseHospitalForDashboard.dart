@@ -51,7 +51,10 @@ class _GetDistrictWiseHospitalForDashboard
       appBar: AppBar(
         title: const Text(
           'District-wise Gov. Hospitals / CHC',
-          style: TextStyle(fontSize: 16.0),
+          maxLines:2,
+          style: TextStyle(
+          fontSize: 14.0, // Adjust the size as needed
+        ),
         ),
       ),
 
@@ -95,7 +98,7 @@ class _GetDistrictWiseHospitalForDashboard
                   children: [
                     _buildHeaderCellSrNo("S.No."),
                     _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total Hospitals"),
+                    _buildHeaderCellTOTalNGO("Total"),
                     _buildHeaderCellDashboardsAction("More"),
                   ],
                 ),

@@ -37,10 +37,8 @@ class _SpoDataListclickMore extends State<SpoDataListclickMore> {
     return Scaffold(
       appBar: AppBar( title: Text(
         'LIST OF STATE PROGRAMME OFFICERS (NPCBVI)',
-        maxLines: 2,
-        style: TextStyle(
-          fontSize: 12.0, // Adjust the size as needed
-        ),
+        maxLines:2,
+        style: TextStyle(fontSize: 14.0),
       ),
 
       ),      body: Container(

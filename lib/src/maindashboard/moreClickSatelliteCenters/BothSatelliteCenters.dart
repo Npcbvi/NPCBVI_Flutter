@@ -64,7 +64,8 @@ class _BothSatelliteCenters
         title: const Text(
           'District-wise Satellite Centers Detail',
 
-          style: TextStyle(fontSize: 16.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
       body: (moreclickSatelliteDistrictCodeInt == null || moreclickSatelliteDistrictCodeInt == null)

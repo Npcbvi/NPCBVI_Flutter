@@ -58,7 +58,9 @@ class _MoreClickGetStateDistrictWiseBothNGo
       appBar: AppBar(
         title: const Text(
           'State & District-wise NGOs',
-          style: TextStyle(fontSize: 16.0),
+          style: TextStyle(
+            fontSize: 14.0, // Adjust the size as needed
+          ),
         ),
       ),
       body: (moreclickNgoStateCodeInt == null || moreclickNgoDistrictCodeInt == null)

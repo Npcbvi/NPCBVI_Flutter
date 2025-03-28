@@ -1357,7 +1357,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   'Passport',
                                   'Ration Card',
                                   'Pan Card',
-                                  'Not Available',
+                                  'Aadhaar Card',
                                 ].map<DropdownMenuItem<String>>((String type) {
                                   return DropdownMenuItem<String>(
                                     value: type,
@@ -2488,6 +2488,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Row(
+
                     children: [
                       // Expanded to take available width
                       Expanded(
@@ -2572,7 +2573,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ),
                 ),
-                Padding(
+           /*     Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     child: Column(
@@ -2585,7 +2586,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       ],
                     ),
                   ),
-                ),
+                ),*/
                 SizedBox(height: 8.0),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),

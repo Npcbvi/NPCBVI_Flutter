@@ -65,7 +65,8 @@ class _BothWiseCampWiseScreen
       appBar: AppBar(
         title: const Text(
           'State & District-Camp wise Detail',
-          style: TextStyle(fontSize: 16.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
       body: (moreclickCampDistrictCodeInt == null || moreclickCampDistrictCodeInt == null)

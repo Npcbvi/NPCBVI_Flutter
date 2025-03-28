@@ -58,7 +58,8 @@ class _GetDistrictWiseSatelliteCenters
       appBar: AppBar(
         title: const Text(
           'District-wise Satellite Centers',
-          style: TextStyle(fontSize: 16.0),
+          maxLines:2,
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
 
@@ -102,7 +103,7 @@ class _GetDistrictWiseSatelliteCenters
                   children: [
                     _buildHeaderCellSrNo("S.No."),
                     _buildHeaderCell("District"),
-                    _buildHeaderCellTOTalNGO("Total Satellite"),
+                    _buildHeaderCellTOTalNGO("Total"),
                     _buildHeaderCellDashboardsAction("More"),
                   ],
                 ),

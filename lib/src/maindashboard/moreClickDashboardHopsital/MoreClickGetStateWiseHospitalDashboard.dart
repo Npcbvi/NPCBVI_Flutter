@@ -36,8 +36,9 @@ String   moreclickNgoStatedCodess;
     return Scaffold(
       appBar: AppBar( title: Text(
         'State-wise Govt. Hospitals / CHC / District Govt. Hospitals',
+        maxLines:2,
         style: TextStyle(
-          fontSize: 12.0, // Adjust the size as needed
+          fontSize: 14.0, // Adjust the size as needed
         ),
       ),
 
@@ -56,7 +57,7 @@ String   moreclickNgoStatedCodess;
                   children: [
                     _buildHeaderCellSrNo('S.No.'),
                     _buildHeaderCell('State'),
-                    _buildHeaderCellTOTalNGO('Total\nOrganisations',),
+                    _buildHeaderCellTOTalNGO('Total',),
                     _buildHeaderCellDashboardsAction('Action'),
                   ],
                 ),
@@ -177,7 +178,7 @@ String   moreclickNgoStatedCodess;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
-      height: 45,
+      height: 35,
       width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
@@ -211,7 +212,7 @@ String   moreclickNgoStatedCodess;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
-      height: 45,
+      height: 35,
       width: screenWidth * 0.18, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
         color: Colors.white,
@@ -244,7 +245,7 @@ String   moreclickNgoStatedCodess;
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 0.0), // Left & Right Margin
-      height: 45,
+      height: 35,
       width: screenWidth * 0.3, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,

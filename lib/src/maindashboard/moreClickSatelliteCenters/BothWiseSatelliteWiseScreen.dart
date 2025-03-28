@@ -70,7 +70,7 @@ class _BothWiseSatelliteWiseScreen
         title: const Text(
           'State & District-wise Satelllite Centre(s)',
           maxLines:2,
-          style: TextStyle(fontSize: 16.0),
+          style: TextStyle(fontSize: 14.0),
         ),
       ),
       body: (moreclickCampDistrictCodeInt == null || moreclickCampDistrictCodeInt == null)
