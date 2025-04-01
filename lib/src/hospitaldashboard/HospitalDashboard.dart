@@ -60,8 +60,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController _mobileNumberDetailsRelationtype =
       TextEditingController();
   TextEditingController _AddressHouse = TextEditingController();
-  TextEditingController _Apartment = TextEditingController();
-  TextEditingController _AreaNearLandMark = TextEditingController();
+ // TextEditingController _Apartment = TextEditingController();
+ // TextEditingController _AreaNearLandMark = TextEditingController();
   TextEditingController _PinCode = TextEditingController();
   TextEditingController fullnameControllers = new TextEditingController();
 
@@ -178,7 +178,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
             "${place.street}, ${place.locality}, ${place.administrativeArea}, ${place.country}";
 
         setState(() {
-          _AreaNearLandMark.text = fullAddress;
+          _AddressHouse.text = fullAddress;
         });
         print("Address: $fullAddress"); // Print address in console
       }
@@ -187,7 +187,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       setState(() {
         _locationMessage = "Error: $e";
         _address = "Failed to get address";
-        _AreaNearLandMark.text = "Error: $e";
+        _AddressHouse.text = "Error: $e";
       });
 
       print("Error getting location: $e"); // Print error in console
@@ -389,8 +389,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         backgroundColor: Colors.blue,
         title: Text(
           'Welcome ${fullnameController}',
+          maxLines:2,
           // Assuming fullnameController has .text
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white, fontSize: 14.0),
         ),
         centerTitle: true,
         actions: [
@@ -1269,10 +1270,37 @@ class _HospitalDashboard extends State<HospitalDashboard> {
             visible: hospitalAddPatientData,
             child: Column(
               children: [
-                _sectionHeader('Patient Registration'),
-                _patientInfoRow(),
+                Container(
+
+                  width: double.infinity, // Ensures the container takes full width
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Adds spacing
+                  color: Colors.blue, // Background color
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                    children: [
+                      Text(
+                        'Patient Registration',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // Ensure text is visible on blue background
+                        ),
+                      ),
+                      Text(
+                        'Today Registered Patient(s): 0',
+                        maxLines:2,
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // Change to white to be visible on blue
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+
                 SizedBox(height: 2.0),
-                _sectionTitle('Registration Type'),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -1326,77 +1354,99 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-                _sectionHeader('Personal Details'),
+                SizedBox(height: 5),
+                Container(
+
+                  width: double.infinity, // Ensures the container takes full width
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Adds spacing
+                  color: Colors.blue, // Background color
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                    children: [
+                      Text(
+                        'Personal Details',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // Ensure text is visible on blue background
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                  padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 0.0),
                   child: Form(
                     key: _formKeyhopsitalPersonalDetal,
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.blue[50],
-                              // Background color of the dropdown box
-                              border:
-                                  Border.all(color: Colors.grey, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String>(
-                                isExpanded: true,
-                                focusColor: Colors.black,
-                                value: VoterIDtype,
-                                style: TextStyle(color: Colors.black),
-                                iconEnabledColor: Colors.black,
-                                items: <String>[
-                                  'Voter ID',
-                                  'Driving License',
-                                  'Passport',
-                                  'Ration Card',
-                                  'Pan Card',
-                                  'Aadhaar Card',
-                                ].map<DropdownMenuItem<String>>((String type) {
-                                  return DropdownMenuItem<String>(
-                                    value: type,
-                                    child: Text(
-                                      type,
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                  );
-                                }).toList(),
-                                hint: Text(
-                                  "Select Type",
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                onChanged: (String newValue) {
-                                  setState(() {
-                                    VoterIDtype = newValue;
-                                    showVoterIDField = VoterIDtype ==
-                                        "Voter ID"; // Show field if "Voter ID" is selected
-                                    showDrivingLicenseField =
-                                        VoterIDtype == "Driving License";
-                                    showPassport = VoterIDtype == "Passport";
-                                    showRationCard =
-                                        VoterIDtype == "Ration Card";
-                                    showPanCard = VoterIDtype == "Pan Card";
 
-                                    showNotAvailble =
-                                        VoterIDtype == "Not Available";
-                                  });
-                                },
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: DropdownButtonFormField2<String>(
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
                               ),
+                              filled: true,
+                              fillColor: Colors.white, // Background color
+                            ),
+                            value: VoterIDtype,
+                            style: TextStyle(color: Colors.black),
+                            items: [
+                              'Voter ID',
+                              'Driving License',
+                              'Passport',
+                              'Ration Card',
+                              'Pan Card',
+                              'Not Available',
+                            ].map((String type) {
+                              return DropdownMenuItem<String>(
+                                value: type,
+                                child: Text(
+                                  type,
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              );
+                            }).toList(),
+                            hint: Text(
+                              "Select Type",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                VoterIDtype = newValue;
+                                showVoterIDField = VoterIDtype == "Voter ID";
+                                showDrivingLicenseField = VoterIDtype == "Driving License";
+                                showPassport = VoterIDtype == "Passport";
+                                showRationCard = VoterIDtype == "Ration Card";
+                                showPanCard = VoterIDtype == "Pan Card";
+                                showNotAvailble = VoterIDtype == "Not Available";
+                              });
+                            },
+                            dropdownStyleData: DropdownStyleData(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white,
+                              ),
+                            ),
+                            iconStyleData: IconStyleData(
+                              iconEnabledColor: Colors.black,
                             ),
                           ),
                         ),
+
+                        SizedBox(height: 5.0),
                         if (showVoterIDField)
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                            padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
 
                             child: _textInputField(
                               controller: _voterIDNumber,
@@ -1410,7 +1460,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         if (showDrivingLicenseField)
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                            padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                             child: _textInputField(
                               controller: _voterIDNumber,
                               labelText: "Driving License No.",
@@ -1423,7 +1473,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         if (showPassport)
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                            padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                             child: _textInputField(
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
@@ -1436,7 +1486,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         if (showRationCard)
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                            padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                             child: _textInputField(
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
@@ -1449,7 +1499,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         if (showPanCard)
                           Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                            padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                             child: _textInputField(
                               controller: _voterIDNumber,
                               keyboardType: TextInputType.number,
@@ -1461,8 +1511,27 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             ),
                           ),
                         if (showNotAvailble)
+
                           SizedBox(height: 10.0),
-                        _sectionTitle('Dependency Type'),
+
+                        Container( margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0), // left, top, right, bottom
+                          width: double.infinity, // Ensures the container takes full width
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15), // Adds spacing
+                          color: Colors.blue, // Background color
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                            children: [
+                              Text(
+                                'Dependency Type',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white, // Ensure text is visible on blue background
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         _radioButtonRow(
                           options: ['Self', 'Dependent'],
                           groupValue: dependencyTypeRadio,
@@ -1489,86 +1558,89 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             children: [
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[50],
-                                    border: Border.all(
-                                        color: Colors.grey, width: 1.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton<String>(
-                                      isExpanded: true,
-                                      focusColor: Colors.black,
-                                      value: relationtypeValue,
-                                      style: TextStyle(color: Colors.black),
-                                      iconEnabledColor: Colors.black,
-                                      items: <String>[
-                                        'Father',
-                                        'Mother',
-                                        'Brother',
-                                        'Sister',
-                                        'Daughter',
-                                        'Spouse',
-                                      ].map<DropdownMenuItem<String>>(
-                                          (String type) {
-                                        return DropdownMenuItem<String>(
-                                          value: type,
-                                          child: Text(
-                                            type,
-                                            style: TextStyle(
-                                                color: Colors.black),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      hint: Text(
-                                        "Relation Type",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      onChanged: (String newValue) {
-                                        setState(() {
-                                          relationtypeValue = newValue;
-
-                                          // Set the relation name dynamically
-                                          if (relationtypeValue == "Father") {
-                                            relationNameController.text =
-                                                "Father's Name";
-                                          } else if (relationtypeValue ==
-                                              "Mother") {
-                                            relationNameController.text =
-                                                "Mother's Name";
-                                          } else if (relationtypeValue ==
-                                              "Brother") {
-                                            relationNameController.text =
-                                                "Brother's Name";
-                                          } else if (relationtypeValue ==
-                                              "Sister") {
-                                            relationNameController.text =
-                                                "Sister's Name";
-                                          } else if (relationtypeValue ==
-                                              "Daughter") {
-                                            relationNameController.text =
-                                                "Daughter's Name";
-                                          } else if (relationtypeValue ==
-                                              "Spouse") {
-                                            relationNameController.text =
-                                                "Spouse's Name";
-                                          } else {
-                                            relationNameController.clear();
-                                          }
-                                        });
-                                      },
+                                child: DropdownButtonFormField2<String>(
+                                  isExpanded: true,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
                                     ),
+                                    filled: true,
+                                    fillColor: Colors.white, // Background color of the dropdown
+                                  ),
+                                  value: relationtypeValue,
+                                  style: TextStyle(color: Colors.black),
+                                  items: <String>[
+                                    'Father',
+                                    'Mother',
+                                    'Brother',
+                                    'Sister',
+                                    'Daughter',
+                                    'Spouse',
+                                  ].map<DropdownMenuItem<String>>((String type) {
+                                    return DropdownMenuItem<String>(
+                                      value: type,
+                                      child: Text(
+                                        type,
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  hint: Text(
+                                    "Relation Type",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
+                                  onChanged: (String newValue) {
+                                    setState(() {
+                                      relationtypeValue = newValue;
+
+                                      // Set the relation name dynamically
+                                      if (relationtypeValue == "Father") {
+                                        relationNameController.text = "Father's Name";
+                                      } else if (relationtypeValue == "Mother") {
+                                        relationNameController.text = "Mother's Name";
+                                      } else if (relationtypeValue == "Brother") {
+                                        relationNameController.text = "Brother's Name";
+                                      } else if (relationtypeValue == "Sister") {
+                                        relationNameController.text = "Sister's Name";
+                                      } else if (relationtypeValue == "Daughter") {
+                                        relationNameController.text = "Daughter's Name";
+                                      } else if (relationtypeValue == "Spouse") {
+                                        relationNameController.text = "Spouse's Name";
+                                      } else {
+                                        relationNameController.clear();
+                                      }
+                                    });
+                                  },
+                                  buttonStyleData: ButtonStyleData(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      // Removed border here
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  iconStyleData: IconStyleData(
+                                    iconEnabledColor: Colors.black,
                                   ),
                                 ),
                               ),
+
+                              SizedBox(height: 5),
                               // Display input field based on selected relation
                               if (relationtypeValue == "Father")
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                   child: _textInputField(
                                     controller: relationFatherController,
                                     labelText: "Father's Name",
@@ -1580,7 +1652,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 ),
                               if (relationtypeValue == "Mother")
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                   child: _textInputField(
                                     controller: relationFatherController,
                                     labelText: "Mother's Name",
@@ -1592,7 +1664,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 ),
                               if (relationtypeValue == "Brother")
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                   child: _textInputField(
                                     controller: relationFatherController,
                                     labelText: "Brother's Name",
@@ -1604,7 +1676,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 ),
                               if (relationtypeValue == "Sister")
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                   child: _textInputField(
                                     controller: relationFatherController,
                                     labelText: "Sister's Name",
@@ -1616,7 +1688,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 ),
                               if (relationtypeValue == "Daughter")
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                   child: _textInputField(
                                     controller: relationFatherController,
                                     labelText: "Daughter's Name",
@@ -1628,7 +1700,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 ),
                               if (relationtypeValue == "Spouse")
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                                  padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                   child: _textInputField(
                                     controller: relationFatherController,
                                     labelText: "Spouse's Name",
@@ -1647,51 +1719,87 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         // This will render nothing when "Self" is selected
 
                         SizedBox(height: 5.0),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-                          child: _textInputField(
-                            controller: _firstNamePatientDetail,
-                            labelText: 'First  Name *',
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your First name';
-                              } else if (value.length != 10) {
-                                return 'Please enter a valid 10-digit mobile number';
-                              }
-                              return null;
-                            },
+                        Container(
+                          margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+                          child: SizedBox(
+                            height: 50, // Adjust height as needed
+                            child: TextFormField(
+                              controller: _firstNamePatientDetail,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    text: 'First Name',
+                                    style: TextStyle(color: Colors.black, fontSize: 16),
+                                    children: [
+                                      TextSpan(
+                                        text: ' *', // Red Asterisk
+                                        style: TextStyle(color: Colors.red, fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                hintText: 'Enter First Name', // Regular hint text
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your First name';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
+
                         SizedBox(height: 5.0),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-                          child: _textInputField(
-                            controller: _lastNamePatientDetail,
-                            labelText: 'Last Name *',
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your Last name';
-                              } else if (value.length != 10) {
-                                return 'Please enter a valid 10-digit mobile number';
-                              }
-                              return null;
-                            },
+                        Container(
+                          margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+
+                          child: SizedBox(
+                            height: 50, // Adjust height as needed
+                            child: TextFormField(
+                              controller: _lastNamePatientDetail,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    text: 'Last Name ',
+                                    style: TextStyle(color: Colors.black, fontSize: 16),
+                                    children: [
+                                      TextSpan(
+                                        text: ' *', // Red Asterisk
+                                        style: TextStyle(color: Colors.red, fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                hintText: 'Enter Last Name *', // Regular hint text
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your Last Name *';
+                                }
+                                return null;
+                              },
+                            ),
                           ),
                         ),
                         SizedBox(height: 5.0),
                         Container(
                           color: Colors.white,
                           child: Padding(
-                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                            padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 // Date Picker Container with fixed height and width
                                 SizedBox(
                                   width: 150, // Set same width for both widgets
-                                  height: 50, // Set desired height
+                                  height: 40, // Set desired height
                                   child: GestureDetector(
                                     onTap: () async {
                                       DateTime pickedDate =
@@ -1746,13 +1854,40 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 SizedBox(width: 5.0),
                                 // Spacing between the widgets
                                 // Age Input Field with same width and height
-                                SizedBox(
-                                  width: 150, // Same width as Date Picker
-                                  height: 50, // Same height as Date Picker
-                                  child: _textInputField(
-                                    controller: _ageController,
-                                    labelText: 'Age *',
-                                    keyboardType: TextInputType.number,
+                                Container(
+                                  margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+
+                                  child: SizedBox(
+                                    width: 150, // Same width as Date Picker
+                                    height: 40,
+                                    child: TextFormField(
+                                      controller: _ageController,
+
+                                      decoration: InputDecoration(
+                                        label: RichText(
+                                          text: TextSpan(
+                                            text: 'Age ',
+                                            style: TextStyle(color: Colors.black, fontSize: 16),
+                                            children: [
+                                              TextSpan(
+                                                text: ' *', // Red Asterisk
+                                                style: TextStyle(color: Colors.red, fontSize: 16),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        hintText: 'Enter Age *', // Regular hint text
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(8.0),
+                                        ),
+                                      ),
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Please enter your Age *';
+                                        }
+                                        return null;
+                                      },
+                                    ),
                                   ),
                                 ),
                               ],
@@ -1760,7 +1895,25 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         ),
                         SizedBox(height: 5.0),
-                        _sectionTitle('Gender'),
+                        Container(
+
+                          width: double.infinity, // Ensures the container takes full width
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Adds spacing
+                          color: Colors.blue, // Background color
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                            children: [
+                              Text(
+                                'Gender',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white, // Ensure text is visible on blue background
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         _radioButtonRow(
                           options: ['Male', 'Female', 'Transgender'],
                           groupValue: gender,
@@ -1775,18 +1928,37 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ),
                 ),
-                _sectionHeader('Mobile Number Details'),
+                Container(
+
+                  width: double.infinity, // Ensures the container takes full width
+                  padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Adds spacing
+                  color: Colors.blue, // Background color
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                    children: [
+                      Text(
+                        'Mobile Number Details',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white, // Ensure text is visible on blue background
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 5),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10, 5, 10.0, 5),
+                  padding: const EdgeInsets.fromLTRB(0, 5, 0.0, 0),
 
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                        padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
 
                         child: Container(
                           decoration: BoxDecoration(
-                            color: Colors.blue[50],
+                            color: Colors.white,
                             border: Border.all(color: Colors.grey, width: 1.0),
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -1905,33 +2077,53 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-                  child: Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 10.0, vertical: 0.0), // Left & Right margins
-                    child: _textInputField(
+                SizedBox(height: 5),
+
+                Container(
+                  margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+
+                  child: SizedBox(
+                    width: double.infinity, // Same width as Date Picker
+                    height: 50,
+                    child: TextFormField(
                       controller: _mobileNumberDetailsRelationtype,
-                      labelText: 'Mobile No *',
-                      maxLength: 10, // Add this
-                      keyboardType: TextInputType.phone,
+                      keyboardType: TextInputType.phone, // Use number pad for phone input
+                      decoration: InputDecoration(
+                        label: RichText(
+                          text: TextSpan(
+                            text: 'Mobile No ',
+                            style: TextStyle(color: Colors.black, fontSize: 16),
+                            children: [
+                              TextSpan(
+                                text: ' *', // Red Asterisk
+                                style: TextStyle(color: Colors.red, fontSize: 16),
+                              ),
+                            ],
+                          ),
+                        ),
+                        hintText: 'Enter Mobile No *', // Regular hint text
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter your mobile number';
-                        } else if (!RegExp(r'^\d{10}$').hasMatch(value)) {
-                          return 'Please enter a valid 10-digit mobile number';
+                          return 'Please enter your Mobile No *';
                         }
                         return null;
                       },
                     ),
                   ),
                 ),
+
+
+                SizedBox(height: 5),
                 Container(
                   color: Colors.white,
-                  margin: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
 
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                    padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -1966,10 +2158,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 }
                               },
                               child: Container(
-                                padding: EdgeInsets.all(12.0),
+                                padding: EdgeInsets.all(10.0),
                                 // Padding inside the box
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[200],
+                                  color: Colors.white,
                                   // Background color of the box
                                   borderRadius: BorderRadius.circular(8.0),
                                   // Rounded corners
@@ -1983,7 +2175,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   // Display the selected date or "From Date"
                                   style: TextStyle(
                                     color: Colors.grey, // Text color
-                                    fontWeight: FontWeight.w800, // Text weight
+                                    fontWeight: FontWeight.w500, // Text weight
                                   ),
                                   overflow: TextOverflow
                                       .ellipsis, // Handle text overflow
@@ -2023,10 +2215,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 }
                               },
                               child: Container(
-                                padding: EdgeInsets.all(12.0),
+                                padding: EdgeInsets.all(10.0),
                                 // Padding inside the box
                                 decoration: BoxDecoration(
-                                  color: Colors.grey[200],
+                                  color: Colors.white,
                                   // Background color of the box
                                   borderRadius: BorderRadius.circular(8.0),
                                   // Rounded corners
@@ -2040,7 +2232,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   // Display the selected date or "From Date"
                                   style: TextStyle(
                                     color: Colors.grey, // Text color
-                                    fontWeight: FontWeight.w800, // Text weight
+                                    fontWeight: FontWeight.w500, // Text weight
                                   ),
                                   overflow: TextOverflow
                                       .ellipsis, // Handle text overflow
@@ -2053,91 +2245,101 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10.0),
+                SizedBox(height: 5.0),
 
-                Column(
-                  children: [
-                    FutureBuilder<List<GetDiseaseForDDLData>>(
-                      future: _futureGetDiseaseForDDLDatas,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
-                        if (!snapshot.hasData) {
-                          return const CircularProgressIndicator();
-                        }
 
-                        // Logging for debugging
-                        developer.log('@@snapshot: ${snapshot.data}');
+          Column(
+            children: [
+            FutureBuilder<List<GetDiseaseForDDLData>>(
+            future: _futureGetDiseaseForDDLDatas,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Error: ${snapshot.error}');
+              }
+              if (!snapshot.hasData) {
+                return const CircularProgressIndicator();
+              }
 
-                        List<GetDiseaseForDDLData> districtList =
-                            snapshot.data;
+              // Logging for debugging
+              developer.log('@@snapshot: ${snapshot.data}');
 
-                        // Ensure selected district is in the list, otherwise select the first one
-                        if (_futureGetDiseaseForDDLDatass == null ||
-                            !districtList
-                                .contains(_futureGetDiseaseForDDLDatass)) {
-                          _futureGetDiseaseForDDLDatass = districtList.first;
-                        }
+              List<GetDiseaseForDDLData> districtList = snapshot.data;
 
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(10, 10, 10.0, 0),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              const Text('Select Diseases:'),
-                              DropdownButtonFormField<GetDiseaseForDDLData>(
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 5.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 2.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.blue[50],
-                                ),
-                                onChanged: (districtUser) => setState(() {
-                                  _futureGetDiseaseForDDLDatass =
-                                      districtUser;
-                                  getDissesID =
-                                      int.parse(districtUser.id.toString());
-                                  // Update state or further actions here
-                                  print(
-                                      'Selected District: ${districtUser.name}');
-                                }),
-                                value: _futureGetDiseaseForDDLDatass,
-                                items: districtList
-                                    .map((GetDiseaseForDDLData district) {
-                                  return DropdownMenuItem<
-                                      GetDiseaseForDDLData>(
-                                    value: district,
-                                    child: Text(district.name),
-                                  );
-                                }).toList(),
-                              ),
-                            ],
-                          ),
+              // Ensure selected district is in the list, otherwise select the first one
+              if (_futureGetDiseaseForDDLDatass == null ||
+                  !districtList.contains(_futureGetDiseaseForDDLDatass)) {
+                _futureGetDiseaseForDDLDatass = districtList.first;
+              }
+
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,  // Align children to the start
+                  crossAxisAlignment: CrossAxisAlignment.start,  // Align items to the left
+                  children: <Widget>[
+                    Text(
+                      'Select Diseases',
+                      textAlign: TextAlign.left,  // Align text to the left
+                      style: TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    DropdownButtonFormField2<GetDiseaseForDDLData>(
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        filled: true,
+                        fillColor: Colors.white,
+                      ),
+                      onChanged: (districtUser) => setState(() {
+                        _futureGetDiseaseForDDLDatass = districtUser;
+                        getDissesID = int.parse(districtUser.id.toString());
+                        // Update state or further actions here
+                        print('Selected District: ${districtUser.name}');
+                      }),
+                      value: _futureGetDiseaseForDDLDatass,
+                      items: districtList.map((GetDiseaseForDDLData district) {
+                        return DropdownMenuItem<GetDiseaseForDDLData>(
+                          value: district,
+                          child: Text(district.name),
                         );
-                      },
+                      }).toList(),
+                      buttonStyleData: ButtonStyleData(
+                        height: 30, // Adjust the button height if needed
+                      ),
+                      dropdownStyleData: DropdownStyleData(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ],
                 ),
-                SizedBox(height: 8.0),
+              );
+            },
+          ),
+        ],
+      ),
+
+        SizedBox(height: 5.0),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                   child: Form(
                     child: Column(
                       children: [
                         Padding(
                           padding:
-                              const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                              const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
                           child: _textInputField(
                             controller: _reportingPlaceController,
                             labelText: 'Reporting Place *',
@@ -2148,10 +2350,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ),
                 ),
-                SizedBox(height: 8.0),
+                SizedBox(height: 5.0),
                 Container(
-                  width: 350, // Set your desired width
-                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+                  width: double.infinity, // Set your desired width
                   child: FutureBuilder<List<Data>>(
                     future: _futureState,
                     builder: (context, snapshot) {
@@ -2166,68 +2368,51 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       List<Data> stateList = snapshot.data ?? [];
 
                       // Ensure selected state is in the list, otherwise select the first
-                      if (_selectedUserState == null ||
-                          !stateList.contains(_selectedUserState)) {
-                        _selectedUserState =
-                            stateList.isNotEmpty ? stateList.first : null;
+                      if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
+                        _selectedUserState = stateList.isNotEmpty ? stateList.first : null;
                       }
 
                       return Container(
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              width: 1.5,
-                              color: Colors.grey[300],
-                            ),
-                          ),
-                        ),
+
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             const Text(
                               'Select State:',
                               style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
+                                  fontSize: 13, fontWeight: FontWeight.bold),
                             ),
-                            DropdownButtonFormField<Data>(
-                              isExpanded: true,
-                              // ✅ Prevent overflow by expanding
+                            DropdownButtonFormField2<Data>(
+                              isExpanded: true, // ✅ Prevent overflow by expanding
                               decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.grey, width: 1.0),
+                                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.grey, width: 1.0),
+                                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 filled: true,
-                                fillColor: Colors.blue[50],
+                                fillColor: Colors.white,
                               ),
                               onChanged: (user) async {
                                 if (user != null) {
                                   setState(() {
                                     _selectedUserState = user;
-                                    stateCodeGovtPrivate =
-                                        int.parse(user.stateCode.toString());
+                                    stateCodeGovtPrivate = int.parse(user.stateCode.toString());
                                     CodeGovtPrivate = user.code;
                                   });
 
-                                  var connectivityResult =
-                                      await Connectivity().checkConnectivity();
-                                  bool isConnected = connectivityResult !=
-                                      ConnectivityResult.none;
+                                  var connectivityResult = await Connectivity().checkConnectivity();
+                                  bool isConnected = connectivityResult != ConnectivityResult.none;
 
                                   if (isConnected) {
                                     setState(() {
                                       isVisibleDitrictGovt = true;
                                     });
-                                    await _getDistrictData(
-                                        stateCodeGovtPrivate);
+                                    await _getDistrictData(stateCodeGovtPrivate);
                                   } else {
                                     setState(() {
                                       isVisibleDitrictGovt = false;
@@ -2236,20 +2421,26 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 }
                               },
                               value: _selectedUserState,
-                              items: stateList
-                                  .map<DropdownMenuItem<Data>>((Data user) {
+                              items: stateList.map<DropdownMenuItem<Data>>((Data user) {
                                 return DropdownMenuItem<Data>(
                                   value: user,
                                   child: Text(
                                     user.stateName,
-                                    overflow: TextOverflow.ellipsis,
-                                    // ✅ Handles long text
-                                    maxLines: 1,
-                                    // ✅ Restricts to a single line
+                                    overflow: TextOverflow.ellipsis, // Handles long text
+                                    maxLines: 1, // Restricts to a single line
                                     style: const TextStyle(fontSize: 14),
                                   ),
                                 );
                               }).toList(),
+                              buttonStyleData: ButtonStyleData(
+                                height: 20, // Adjust the button height if needed
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -2257,45 +2448,41 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     },
                   ),
                 ),
+                SizedBox(height: 5),
+
                 Visibility(
                   visible: isConnected && isVisibleDitrictGovt,
                   // Check for both internet and visibility flag
                   child: Column(
                     children: [
-                      SizedBox(height: 10),
                       Container(
-                        width: 400,
-                        // Set your desired width
-                        padding: EdgeInsets.symmetric(horizontal: 10),
-                        // Optional padding
-
+                        width: double.infinity,
+                        margin: EdgeInsets.fromLTRB(5,0,5,0),
                         child: FutureBuilder<List<DataDsiricst>>(
                           future: _getDistrictData(stateCodeGovtPrivate),
                           builder: (context, snapshot) {
-                            if (snapshot.hasError)
+                            if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
-                            if (!snapshot.hasData)
+                            }
+                            if (!snapshot.hasData) {
                               return Center(child: CircularProgressIndicator());
+                            }
 
                             developer.log('@@snapshot: ${snapshot.data}');
 
-                            List<DataDsiricst> districtList = snapshot.data;
+                            List<DataDsiricst> districtList = snapshot.data ?? [];
 
-                            // Ensure selected district is in the list, otherwise select the first one
-                            if (_selectedUserDistrict == null ||
-                                !districtList.contains(_selectedUserDistrict)) {
-                              _selectedUserDistrict = districtList.first;
+                            if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                              _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
                             }
+
                             if (districtList.isEmpty) {
                               return Container(
                                 padding: EdgeInsets.all(16),
                                 decoration: BoxDecoration(
-                                  border:
-                                      Border.all(color: Colors.grey, width: 1),
-                                  // Blue border
+                                  border: Border.all(color: Colors.grey, width: 1),
                                   borderRadius: BorderRadius.circular(8),
-                                  color:
-                                      Colors.blue[50], // Light blue background
+                                  color: Colors.white,
                                 ),
                                 child: Center(
                                   child: Text(
@@ -2310,131 +2497,143 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               );
                             }
 
-                            // Ensure selected district is in the list, otherwise select the first one
-                            _selectedUserDistrict ??= districtList.first;
-                            return DropdownButtonFormField<DataDsiricst>(
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 15, horizontal: 10),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  borderSide: BorderSide(color: Colors.blue),
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Select District:',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold
+                                  ),
                                 ),
-                                filled: true,
-                                fillColor: Colors.blue[50],
-                              ),
-                              onChanged: (district) {
-                                setState(() {
-                                  _selectedUserDistrict = district;
-                                  distCodeGovtPrivate =
-                                      int.parse(district?.districtCode ?? "0");
-                                });
-                              },
-                              value: _selectedUserDistrict,
-                              items: districtList.map((district) {
-                                return DropdownMenuItem<DataDsiricst>(
-                                  value: district,
-                                  child: Text(district.districtName),
-                                );
-                              }).toList(),
+                                SizedBox(height: 5), // Space between text and dropdown
+                                DropdownButtonFormField<DataDsiricst>(
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      borderSide: BorderSide(color: Colors.grey),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  onChanged: (district) {
+                                    setState(() {
+                                      _selectedUserDistrict = district;
+                                      distCodeGovtPrivate = int.parse(district?.districtCode ?? "0");
+                                    });
+                                  },
+                                  value: _selectedUserDistrict,
+                                  items: districtList.map((district) {
+                                    return DropdownMenuItem<DataDsiricst>(
+                                      value: district,
+                                      child: Text(district.districtName),
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
                             );
                           },
                         ),
                       ),
 
-                      SizedBox(height: 10),
+
+
+                      SizedBox(height: 5),
 
                       // City Dropdown
                       if (_selectedUserDistrict != null)
                         Container(
-                          width: 400,
-                          // Set your desired width here
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          // Optional padding
-
+                          width: double.infinity,
+                          margin: EdgeInsets.fromLTRB(5,0,5,0),
                           child: FutureBuilder<List<DataGetCity>>(
                             future: _getCity(district_code_login),
                             builder: (context, snapshot) {
-                              if (snapshot.hasError)
+                              if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
-                              if (!snapshot.hasData)
-                                return Center(
-                                    child: CircularProgressIndicator());
+                              }
+                              if (!snapshot.hasData) {
+                                return Center(child: CircularProgressIndicator());
+                              }
+print('@@district_code_login'+district_code_login.toString());
+                              List<DataGetCity> districtList = snapshot.data ?? [];
 
-                              List<DataGetCity> districtList = snapshot.data;
                               // Default selection logic
-                              if (_selectedUserCity == null ||
-                                  !districtList.contains(_selectedUserCity)) {
-                                _selectedUserCity = districtList.first;
+                              if (_selectedUserCity == null || !districtList.contains(_selectedUserCity)) {
+                                _selectedUserCity = districtList.isNotEmpty ? districtList.first : null;
                               }
 
-                              return DropdownButtonFormField<DataGetCity>(
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 10),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: Colors.blue),
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Select City:',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                  filled: true,
-                                  fillColor: Colors.blue[50],
-                                ),
-                                onChanged: (city) {
-                                  setState(() {
-                                    _selectedUserCity = city;
-                                    distCodeGovtPrivate =
-                                        city?.subdistrictCode ??
-                                            0; // Removed int.parse
-                                    print(
-                                        '@@distCodeGovtPrivate: ${distCodeGovtPrivate}');
-                                  });
-                                },
-                                value: _selectedUserCity,
-                                items: districtList.map((city) {
-                                  return DropdownMenuItem<DataGetCity>(
-                                    value: city,
-                                    child: Text(city.name),
-                                  );
-                                }).toList(),
+                                  SizedBox(height: 5), // Space between text and dropdown
+                                  DropdownButtonFormField<DataGetCity>(
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Colors.grey),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                    ),
+                                    onChanged: (city) {
+                                      setState(() {
+                                        _selectedUserCity = city;
+                                        distCodeGovtPrivate = city?.subdistrictCode ?? 0;
+                                        print('@@distCodeGovtPrivate: ${distCodeGovtPrivate}');
+                                      });
+                                    },
+                                    value: _selectedUserCity,
+                                    items: districtList.map((city) {
+                                      return DropdownMenuItem<DataGetCity>(
+                                        value: city,
+                                        child: Text(city.name),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
                               );
                             },
                           ),
                         ),
 
-                      SizedBox(height: 10),
+
+                      SizedBox(height: 5),
 
                       // Village Dropdown
                       if (_selectedUserCity != null)
                         Container(
-                          width: 400,
-                          margin: EdgeInsets.symmetric(horizontal: 12),
-                          // Added margin to left and right
+                          width: double.infinity,
+                          margin: EdgeInsets.fromLTRB(5,0,5,0),
                           child: FutureBuilder<List<DataGetVillage>>(
-                            future: _getVillage(district_code_login,
-                                state_code_login, distCodeGovtPrivate),
+                            future: _getVillage(district_code_login, state_code_login, distCodeGovtPrivate),
                             builder: (context, snapshot) {
-                              if (snapshot.hasError)
+                              if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
+                              }
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
                               }
 
-                              List<DataGetVillage> villageList =
-                                  snapshot.data ?? [];
+                              List<DataGetVillage> villageList = snapshot.data ?? [];
 
-                              // 🔔 Check if the village list is empty
+                              // Handle case where village list is empty
                               if (villageList.isEmpty) {
                                 return Container(
                                   padding: EdgeInsets.all(16),
                                   decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.blue, width: 2),
-                                    // Blue border
+                                    border: Border.all(color: Colors.grey, width: 1),
                                     borderRadius: BorderRadius.circular(8),
-                                    color: Colors
-                                        .blue[50], // Light blue background
+                                    color: Colors.grey.shade200, // Light grey background
                                   ),
                                   child: Center(
                                     child: Text(
@@ -2449,59 +2648,96 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 );
                               }
 
-                              // Default selection for village
-                              _selectedUserVillage ??= villageList.first;
+                              // Ensure a valid default selection for _selectedUserVillage
+                              if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
+                                _selectedUserVillage = villageList.first;
+                              }
 
-                              return DropdownButtonFormField<DataGetVillage>(
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15, horizontal: 10),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(color: Colors.blue),
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Select Village:',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                  filled: true,
-                                  fillColor: Colors.blue[50],
-                                ),
-                                onChanged: (village) {
-                                  setState(() {
-                                    _selectedUserVillage = village;
-                                    village_code =
-                                        int.parse(village?.villageCode ?? "0");
-                                  });
-                                },
-                                value: _selectedUserVillage,
-                                items: villageList.map((village) {
-                                  return DropdownMenuItem<DataGetVillage>(
-                                    value: village,
-                                    child: Text(village.name),
-                                  );
-                                }).toList(),
+                                  SizedBox(height: 5), // Space between text and dropdown
+                                  DropdownButtonFormField<DataGetVillage>(
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Colors.grey),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                    ),
+                                    onChanged: (village) {
+                                      if (village != null) {
+                                        setState(() {
+                                          _selectedUserVillage = village;
+                                          village_code = int.parse(village.villageCode ?? "0");
+                                        });
+                                      }
+                                    },
+                                    value: _selectedUserVillage,
+                                    items: villageList.map((village) {
+                                      return DropdownMenuItem<DataGetVillage>(
+                                        value: village,
+                                        child: Text(village.name),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
                               );
                             },
                           ),
                         ),
+
+
                     ],
                   ),
                 ),
-                SizedBox(height: 8.0),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                SizedBox(height: 5.0),
+                Container(
+                  margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
                   child: Row(
-
+                    crossAxisAlignment: CrossAxisAlignment.center, // Align the items vertically centered
                     children: [
-                      // Expanded to take available width
+                      // Address/House/Flat Number TextField
                       Expanded(
-                        child: _textInputField(
-                          controller: _AreaNearLandMark,
-                          labelText: 'Area/ Near Land Mark, etc',
-                          keyboardType: TextInputType.text,
-
-
-
+                        flex: 3, // Adjust width ratio as needed
+                        child: SizedBox(
+                          height: 50, // Adjust height as needed
+                          child: TextField(
+                            controller: _AddressHouse,
+                            decoration: InputDecoration(
+                              label: RichText(
+                                text: TextSpan(
+                                  text: 'Address/ House/ Flat Number',
+                                  style: TextStyle(color: Colors.black, fontSize: 16),
+                                  children: [
+                                    TextSpan(
+                                      text: ' *', // Red Asterisk
+                                      style: TextStyle(color: Colors.red, fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              hintText: 'Enter Address/ House/ Flat Number',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8.0),
+                              ),
+                            ),
+                          ),
                         ),
                       ),
+
+                      // Spacer to add some space between TextField and IconButton
                       SizedBox(width: 10),
+
                       // Location Icon Button
                       Container(
                         decoration: BoxDecoration(
@@ -2510,17 +2746,18 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                         child: IconButton(
                           icon: Icon(Icons.my_location, color: Colors.blue),
-                          onPressed: _getCurrentLocation,
+                          onPressed: _getCurrentLocation, // Function to fetch current location
                         ),
-                      )
-
+                      ),
                     ],
                   ),
                 ),
+
+
                 SizedBox(height: 8.0),
                 // Latitude and Longitude fields
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
+                  padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
                   child: Row(
                     children: [
                       Expanded(
@@ -2544,22 +2781,21 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   ),
                 ),
 
-                SizedBox(height: 8.0),
-                Padding(
+               /* Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     child: Column(
                       children: [
                         _textInputField(
-                          controller: _AddressHouse,
-                          labelText: 'Address/ House/ Flat Number *',
+                          controller: _AreaNearLandMark,
+                          labelText: 'Area/ Near Land Mark, etc',
                           keyboardType: TextInputType.text,
                         ),
                       ],
                     ),
                   ),
-                ),
-                Padding(
+                ),*/
+      /*          Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
                     child: Column(
@@ -2572,7 +2808,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       ],
                     ),
                   ),
-                ),
+                ),*/
            /*     Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
                   child: Form(
@@ -2587,101 +2823,107 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ),
                 ),*/
-                SizedBox(height: 8.0),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
-                  child: Form(
-                    child: Column(
-                      children: [
-                        _textInputField(
-                          controller: _PinCode,
-                          labelText: 'Pin Code',
-                          keyboardType: TextInputType.number,
+                SizedBox(height: 5.0),
+                Container(
+                  margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+                  child: SizedBox(
+                    height: 50, // Adjust height as needed
+                    child: TextField(
+                      controller: _PinCode,
+                      decoration: InputDecoration(
+                        label: RichText(
+                          text: TextSpan(
+                            text: 'Pin Code',
+                            style: TextStyle(color: Colors.black, fontSize: 16),
+                            children: [
+                              TextSpan(
+                                text: ' *', // Red Asterisk
+                                style: TextStyle(color: Colors.red, fontSize: 16),
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
+                        hintText: 'Pin Code', // Regular hint text
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                SizedBox(height: 8.0),
-              Container(
-                width:  double.infinity, // Full width
-                height:80, // Increased height for dropdown
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1, color: Colors.transparent),
-                  ),
-                ),
-                child: FutureBuilder<List<GetLanguageForDDLsDatas>>(
-                  future: _futureStateGetLanguageForDDLsData,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
+                SizedBox(height: 5.0),
+                Container(
+                  width: double.infinity, // Full width
+                  height: 80, // Increased height for dropdown
 
-                    if (!snapshot.hasData) {
-                      return const CircularProgressIndicator();
-                    }
+                  child: FutureBuilder<List<GetLanguageForDDLsDatas>>(
+                    future: _futureStateGetLanguageForDDLsData,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                    // Logging data for debugging
-                    developer.log('@@snapshot: ${snapshot.data}');
+                      if (!snapshot.hasData) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
 
-                    List<GetLanguageForDDLsDatas> stateList = snapshot.data;
+                      // Logging data for debugging
+                      developer.log('@@snapshot: ${snapshot.data}');
 
-                    // Ensure selected state is in the list, otherwise select the first
-                    if (GetLanguageForDDLsDatasa == null ||
-                        !stateList.contains(GetLanguageForDDLsDatasa)) {
-                      GetLanguageForDDLsDatasa = stateList.first;
-                    }
+                      List<GetLanguageForDDLsDatas> stateList = snapshot.data ?? [];
 
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 5, 20.0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            'Communication Language *',
-                          ),
-                          SizedBox(
-                            width: double.infinity, // Let it take full width of parent
-                            child: DropdownButtonFormField<GetLanguageForDDLsDatas>(
+                      // Ensure selected language is in the list, otherwise select the first
+                      if (GetLanguageForDDLsDatasa == null || !stateList.contains(GetLanguageForDDLsDatasa)) {
+                        GetLanguageForDDLsDatasa = stateList.isNotEmpty ? stateList.first : null;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,  // Aligning text to the left
+                          children: [
+                            Text(
+                              'Communication Language *',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                            ),
+                            DropdownButtonFormField<GetLanguageForDDLsDatas>(
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(
-                                    vertical: 15.0, horizontal: 10.0),
+                                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                                 enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey, width: 1.0),
+                                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Colors.grey, width: 1.0),
+                                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
                                   borderRadius: BorderRadius.circular(10.0),
                                 ),
                                 filled: true,
-                                fillColor: Colors.blue[50],
+                                fillColor: Colors.white,
                               ),
                               onChanged: (user) => setState(() {
                                 GetLanguageForDDLsDatasa = user;
-                                stateLKanguage = int.parse(user.id.toString());
+                                stateLKanguage = int.parse(user?.id.toString() ?? "0");
                               }),
                               value: GetLanguageForDDLsDatasa,
                               items: stateList.map<DropdownMenuItem<GetLanguageForDDLsDatas>>(
-                                      (GetLanguageForDDLsDatas user) {
-                                    return DropdownMenuItem<GetLanguageForDDLsDatas>(
-                                      value: user,
-                                      child: Text(user.name),
-                                    );
-                                  }).toList(),
+                                    (GetLanguageForDDLsDatas user) {
+                                  return DropdownMenuItem<GetLanguageForDDLsDatas>(
+                                    value: user,
+                                    child: Text(user.name),
+                                  );
+                                },
+                              ).toList(),
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
 
-              SizedBox(height: 8.0),
+
+
+                SizedBox(height: 5.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -2745,8 +2987,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     _AgePatientDetail.clear();
     _mobileNumberDetailsRelationtype.clear();
     _AddressHouse.clear();
-    _Apartment.clear();
-    _AreaNearLandMark.clear();
+  //  _Apartment.clear();
+  //  _AreaNearLandMark.clear();
     _PinCode.clear();
     _voterIDNumber.clear();
     _reportingPlaceController.clear();
@@ -2818,7 +3060,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       Utils.showToast("Please select a date of birth", false);
       return;
     }
-    if (_AgePatientDetail.text.isEmpty) {
+    if (_ageController.text.isEmpty) {
       print("Error: Age is empty");
       Utils.showToast("Please enter age", false);
       return;
@@ -2838,16 +3080,16 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       Utils.showToast("Please enter house address", false);
       return;
     }
-    if (_Apartment.text.isEmpty) {
+  /*  if (_Apartment.text.isEmpty) {
       print("Error: Apartment is empty");
       Utils.showToast("Please enter apartment", false);
       return;
-    }
-    if (_AreaNearLandMark.text.isEmpty) {
+    }*/
+   /* if (_AreaNearLandMark.text.isEmpty) {
       print("Error: Area/landmark is empty");
       Utils.showToast("Please enter area/landmark", false);
       return;
-    }
+    }*/
     if (_PinCode.text.isEmpty) {
       print("Error: Pin code is empty");
       Utils.showToast("Please enter pin code", false);
@@ -2889,7 +3131,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
         "dob": _dob.toString(),
         //"dob": "12-12-2000",
-        "age": _AgePatientDetail.text.toString(),
+        "age": _ageController.text.toString(),
         "gender": gender.toString(),
         "mobileRelationType": relationtypeValueMobile.toString(),
         "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
@@ -2902,8 +3144,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         "city": distCodeGovtPrivate,
         "village": village_code,
         "address": _AddressHouse.text,
-        "apartment": _Apartment.text,
-        "nearLandMark": _AreaNearLandMark.text,
+        "apartment": "0",
+        "nearLandMark": "0",
         "pincode": _PinCode.text,
         "communicationLanguage": stateLKanguage,
         "loggedInUserStateId": state_code_login,
@@ -2953,8 +3195,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           _AgePatientDetail.clear();
           _mobileNumberDetailsRelationtype.clear();
           _AddressHouse.clear();
-          _Apartment.clear();
-          _AreaNearLandMark.clear();
+         // _Apartment.clear();
+          //_AreaNearLandMark.clear();
           _PinCode.clear();
           _voterIDNumber.clear();
           _reportingPlaceController.clear();
@@ -3047,14 +3289,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           Utils.showToast("Please enter house address", false);
           return;
         }
-        if (_Apartment.text.isEmpty) {
+      /*  if (_Apartment.text.isEmpty) {
           Utils.showToast("Please enter apartment", false);
           return;
-        }
-        if (_AreaNearLandMark.text.isEmpty) {
+        }*/
+     /*   if (_AreaNearLandMark.text.isEmpty) {
           Utils.showToast("Please enter area/landmark", false);
           return;
-        }
+        }*/
         if (_PinCode.text.isEmpty) {
           Utils.showToast("Please enter pin code", false);
           return;
@@ -3103,8 +3345,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         "city": 0,
         "village": 0,
         "address": _AddressHouse.text,
-        "apartment": _Apartment.text,
-        "nearLandMark": _AreaNearLandMark.text,
+        "apartment": "0",
+        "nearLandMark":"0",
         "pincode": _PinCode.text,
         "communicationLanguage": stateLKanguage,
         "loggedInUserStateId": state_code_login ?? "",
@@ -3236,9 +3478,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min, // Ensures the column only takes required height
       children: options
           .map((option) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 1.0), // Reduce from 4.0 to 2.0
+        padding: const EdgeInsets.symmetric(vertical: 0.0), // Reduce from 4.0 to 2.0
         child: Row(
           children: [
             Radio<String>(
@@ -3250,7 +3493,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
               child: Text(
                 option,
                 style: TextStyle(
-                  fontSize: 14.0,
+                  fontSize: 13.0,
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
                 ),
@@ -3294,15 +3537,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
-              color: Colors.blue,
-              width: 2.0,
+              color: Colors.grey,
+              width: 1.0,
             ),
           ),
           errorBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
-              color: Colors.red,
-              width: 2.0,
+              color: Colors.grey,
+              width: 1.0,
             ),
           ),
           enabledBorder: OutlineInputBorder(
@@ -3319,6 +3562,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }
+
+
 
 
 
@@ -3385,7 +3630,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           options: new Options(
               contentType: "application/json",
               responseType: ResponseType.plain));
-      print("@@Response--Api" + body.toString());
+      print('@@district_code_login'+"https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetCity".toString()+body.toString());
+
       print("@@Response--Api=====" + response1.toString());
       dashboardDistrictModel = GetCity.fromJson(json.decode(response1.data));
       if (dashboardDistrictModel.status) {
@@ -3473,36 +3719,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     }
   }
 
-  Widget _patientInfoRow() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Flexible(
-            child: Align(
-              alignment: Alignment.center,
-              child: GestureDetector(
-                onTap: () {
-                  // Handle the tap event here
-                  print('@@Today Registered Patient');
-                  setState(() {
-                    // Update future values to fetch data
-                  });
-                },
-                child: Text(
-                  'Today Registered Patient(s) : 0',
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w800),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   Future<void> showLogoutDialog() async {
     showDialog(

@@ -48,9 +48,9 @@ String Gender;
     return Scaffold(
       appBar: AppBar( title: Text(
         'Cataract Patient Records for DPM Approval',
-        style: TextStyle(
-        fontSize: 12.0, // Adjust the size as needed
-    ),
+        maxLines:2,
+        // Assuming fullnameController has .text
+        style: TextStyle(color: Colors.white, fontSize: 12.0),
       ),
 
       ),      body: SingleChildScrollView(

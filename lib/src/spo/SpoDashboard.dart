@@ -446,9 +446,8 @@ class _SpoDashboard extends State<SpoDashboard> {
       appBar: new AppBar(
         backgroundColor: Colors.blue,
         title: new Text('Welcome ' + '${fullnameController}',
-            style: new TextStyle(
-              color: Colors.white,
-            )),
+            maxLines:2,
+          style: TextStyle(color: Colors.white, fontSize: 14.0)),
         centerTitle: true,
         /* leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
@@ -3708,43 +3707,54 @@ class _SpoDashboard extends State<SpoDashboard> {
   }
 
   Widget _buildHeaderCellSrNoDashboard(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 40,
-      width: 45, // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
     );
   }
+  
   Widget _buildDataCellSrNoDashboards(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 40,
-      width: 45,
-      // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        // Aligns text to the left
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           style: TextStyle(
             fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
           ),
         ),
       ),
@@ -3752,46 +3762,55 @@ class _SpoDashboard extends State<SpoDashboard> {
   }
 
   Widget _buildHeaderCellDashboardDistrict(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 40,
-      width:80, // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.3,
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
-          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
     );
   }
   Widget _buildDataCellDistrict(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-        height: 40,
-        width:80,
-      // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.3,
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
           maxLines: 3,
           style: TextStyle(
-            fontSize: 11.0, // Set font size here
             fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
@@ -3800,22 +3819,26 @@ class _SpoDashboard extends State<SpoDashboard> {
 
 
   Widget _buildHeaderCellDashboardsTotal(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 40,
-      width:50, // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
-          overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
           ),
         ),
       ),
@@ -3824,46 +3847,53 @@ class _SpoDashboard extends State<SpoDashboard> {
 
 
   Widget _buildHeaderCellDashboardsAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 40,
-      width:60,
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
-          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
     );
   }
   Widget _buildDataCellDashboardTotal(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 40,
-      width:50,
-      // Fixed width to ensure horizontal scrolling
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
-          maxLines: 3,
           style: TextStyle(
-            fontSize: 11.0, // Set font size here
-            fontWeight: FontWeight.normal,
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
           ),
         ),
       ),
@@ -3921,23 +3951,29 @@ class _SpoDashboard extends State<SpoDashboard> {
   }
 
   Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: onTap, // Trigger the callback when the cell is clicked
       child: Container(
-        height: 40,
-        width:60, // Fixed width to ensure horizontal scrolling
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(
-            width: 0.1,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+            bottom:
+            BorderSide(width: 0.1, color: Colors.black), // Bottom border
           ),
         ),
-        child: Center(
+        child: Align(
+          alignment: Alignment.centerLeft,
           child: Text(
             text,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
             ),
           ),
         ),
@@ -4780,7 +4816,7 @@ class _SpoDashboard extends State<SpoDashboard> {
     }
   }
 
-  void showDiseaseDialogApprovedPatintFinance() {
+  /*void showDiseaseDialogApprovedPatintFinance() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -4810,7 +4846,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
                         FutureBuilder<List<ApprovedclickPatientsData>>(
                           future: ApiController.getSPO_PatientApproval(
@@ -4887,7 +4922,95 @@ class _SpoDashboard extends State<SpoDashboard> {
         );
       },
     );
+  }*/
+  void showDiseaseDialogApprovedPatintFinance() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        double screenWidth = MediaQuery.of(context).size.width;
+        double screenHeight = MediaQuery.of(context).size.height;
+
+        return AlertDialog(
+          title: Text('District-wise Records (Approved)'),
+          content: Container(
+            width: screenWidth * 0.99,
+            height: screenHeight * 0.7,
+            child: FutureBuilder<List<ApprovedclickPatientsData>>(
+              future: ApiController.getSPO_PatientApproval(
+                district_code_login, state_code_login,
+                currentFinancialYear, statusApproved,
+              ),
+              builder: (context, snapshot) {
+                // Show loader while waiting for response
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  Utils.showProgressDialog(context);
+              //    return const Center(child: CircularProgressIndicator());
+                } else {
+                  Utils.hideProgressDialog(context);
+                }
+
+                if (snapshot.hasError) {
+                  return Utils.getEmptyView("Error: ${snapshot.error}");
+                } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                  return Utils.getEmptyView("No data found");
+                } else {
+                  List<ApprovedclickPatientsData> ddata = snapshot.data;
+
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      children: [
+                        // Header Row (Shown only when data is available)
+                        if (ddata.isNotEmpty)
+                          Row(
+                            children: [
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
+                            ],
+                          ),
+                        // Data Rows
+                        Column(
+                          children: ddata.map((offer) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildDataCellSrNoDashboards(
+                                    (ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCellDistrict(offer.districtName),
+                                _buildDataCellDashboardTotal(
+                                    offer.totalCount.toString()),
+                                _buildDataCellViewBlueDashboard("View", () {
+                                  print('@@Edit clicked for item: ${offer.districtName}');
+                                  showDiseaseApprovedPatintViewClick();
+                                }),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
+
+
+
 
   void showDiseaseApprovedPatintViewClick() {
     showDialog(
@@ -4919,7 +5042,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
                         FutureBuilder<
                             List<GetSPO_DiseasewiseRecordsApprovalData>>(
