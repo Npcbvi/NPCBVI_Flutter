@@ -276,7 +276,7 @@ class _ScreeningCenterUpComings extends State<ScreeningCenterUpComings> {
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical, // Allow vertical scrolling
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1), // Table border color and width
+              border: TableBorder.all(color: Colors.black, width: 1), // Table border color and width
               columnWidths: {
                 0: FlexColumnWidth(2), // First column (labels) takes more space
                 1: FlexColumnWidth(3), // Second column (values) takes more space

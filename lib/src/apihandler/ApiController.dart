@@ -33,6 +33,7 @@ import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/G
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/morehospitalclick/GetStateWiseHospitalsForDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreDashboardClickStateWise.dart';
 import 'package:mohfw_npcbvi/src/model/mainDashbaordMorClick/nGOmoreStateDistrictBoth.dart';
+import 'package:mohfw_npcbvi/src/model/patientCount/PatientCountDetail.dart';
 import 'package:mohfw_npcbvi/src/registerScreens/DPMRegistration.dart';
 import 'package:mohfw_npcbvi/src/registerScreens/GovvtPrivateHospitalRegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/registerScreens/SPORegistration.dart';
@@ -189,7 +190,7 @@ class ApiController {
         if (result.status) {
           SharedPrefs.saveUser(loginModel.result.data);
 
-         // Utils.showToast(result.message, true);
+          // Utils.showToast(result.message, true);
         }
         return loginModel;
       } catch (e) {
@@ -433,7 +434,8 @@ class ApiController {
 
 
   static Future<SPORegisterModel> spoRegistrationAPiRquestCopy(
-      SPODataFieldss spoDataFields) async {// just chnage for senarion test
+      SPODataFieldss spoDataFields) async {
+    // just chnage for senarion test
     SPORegisterModel spoRegisterModel = SPORegisterModel();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -623,7 +625,7 @@ class ApiController {
     //Way to send url with methodname
   }
 
- /* static Future<SPORegisterModel> ngoRegistrationAPiRquest(
+  /* static Future<SPORegisterModel> ngoRegistrationAPiRquest(
       SPODataFields spoDataFields) async {
     SPORegisterModel spoRegisterModel = SPORegisterModel();
     Response response1;
@@ -979,8 +981,9 @@ class ApiController {
   }
 
   static Future<Registration_of_Govt_Private_Other_Hospital_model>
-  registration_of_Govt_Private_Other_HospitalCopy(GovtPrivateRegistatrionDataFieldss
-  govtPrivateRegistatrionDataFields) async {
+  registration_of_Govt_Private_Other_HospitalCopy(
+      GovtPrivateRegistatrionDataFieldss
+      govtPrivateRegistatrionDataFields) async {
     Registration_of_Govt_Private_Other_Hospital_model registrationModel =
     Registration_of_Govt_Private_Other_Hospital_model();
     Response response1;
@@ -989,7 +992,7 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         // Directly use the existing equipmentList from govtPrivateRegistatrionDataFields
-        List<DupRegisterEquipmentName > equipmentList =
+        List<DupRegisterEquipmentName> equipmentList =
             govtPrivateRegistatrionDataFields.equipmentList ?? [];
 
         // Logging the equipmentList for debugging
@@ -1279,7 +1282,7 @@ class ApiController {
       NGOAPPlicationDropDownDPm.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -1287,7 +1290,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1338,15 +1341,15 @@ class ApiController {
       GetNewHospitalData data = GetNewHospitalData.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1400,11 +1403,11 @@ class ApiController {
       DPMGovtPrivateOrganisationTypeData.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -1441,7 +1444,8 @@ class ApiController {
         "state_code": state_code,
         "status": status, // for approved
       });
-      print("@@getDPM_NGOAPProved_pendings--bodyprint--: ${url+body.toString()}");
+      print("@@getDPM_NGOAPProved_pendings--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1464,15 +1468,15 @@ class ApiController {
       GetDPM_NGOAPProved_pending.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1528,7 +1532,7 @@ class ApiController {
       getDPMGH_clickAPProved.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -1536,7 +1540,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1591,15 +1595,15 @@ class ApiController {
       GetDPM_PrivatePartition.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1633,7 +1637,8 @@ class ApiController {
         "state_code": state_code,
         "status": status, // for approved
       });
-      print("@@DataDPMRivateMEdicalColleges--bodyprint--: ${url+body.toString()}");
+      print("@@DataDPMRivateMEdicalColleges--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -1656,15 +1661,15 @@ class ApiController {
       DPMRivateMEdicalColleges.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1709,22 +1714,23 @@ class ApiController {
         ),
       );
 
-      print("@@GetDPM_SatelliteCentre--Api Response: ${url}+ ${body.toString()}+${response.toString()}");
+      print("@@GetDPM_SatelliteCentre--Api Response: ${url}+ ${body
+          .toString()}+${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
       DPMsatteliteCenter data = DPMsatteliteCenter.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1782,11 +1788,11 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1837,7 +1843,8 @@ class ApiController {
         ),
       );
 
-      print("@@GetDPM_SatelliteCentre--Api Response yaha se kyuuu--: ${url+body+response.toString()}");
+      print("@@GetDPM_SatelliteCentre--Api Response yaha se kyuuu--: ${url +
+          body + response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
@@ -1848,11 +1855,11 @@ class ApiController {
         // Return the list of data
         return data.dataw;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1909,15 +1916,15 @@ class ApiController {
       GetDPM_PrivatePartition.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -1981,7 +1988,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2042,11 +2049,11 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2108,7 +2115,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2164,7 +2171,7 @@ class ApiController {
       GetDPM_EyeScreeningEdit.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -2172,7 +2179,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2244,11 +2251,11 @@ class ApiController {
         if (data.status) {
           //Utils.showToast(data.message, true);
         } else {
-         // Utils.showToast(data.message, true);
+          // Utils.showToast(data.message, true);
         }
         return data;
       } catch (e) {
-      //  Utils.showToast(e.toString(), true);
+        //  Utils.showToast(e.toString(), true);
       }
     }
   }
@@ -2309,15 +2316,15 @@ class ApiController {
       lowvisionregister_Glaucoma.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2378,15 +2385,15 @@ class ApiController {
       lowvisionregister_cataract.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2451,11 +2458,11 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2520,11 +2527,11 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2584,15 +2591,15 @@ class ApiController {
       lowvisionVRSurgery data = lowvisionVRSurgery.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2653,7 +2660,7 @@ class ApiController {
           responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -2661,7 +2668,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2728,7 +2735,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2785,7 +2792,7 @@ class ApiController {
       GetDPMSquint data = GetDPMSquint.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -2793,7 +2800,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -2856,11 +2863,11 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -2929,15 +2936,15 @@ class ApiController {
       ReportScreen data = ReportScreen.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -2997,15 +3004,15 @@ class ApiController {
       GetDPMCataractPatientView.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3070,11 +3077,11 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3133,15 +3140,15 @@ class ApiController {
       GetHospitalList data = GetHospitalList.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3201,7 +3208,7 @@ class ApiController {
         // Return the list of hospital details
         return data.data.hospitalDetails ?? []; // Handle null case
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -3259,15 +3266,15 @@ class ApiController {
       DoctorlinkedwithHospital.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3322,7 +3329,7 @@ class ApiController {
       GetDoctorDetailsById.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -3330,7 +3337,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3364,7 +3371,7 @@ class ApiController {
         "userId": userId,
 
       });
-      print("@@getAllNgoService--bodyprint--: ${url+body.toString()}");
+      print("@@getAllNgoService--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -3386,15 +3393,15 @@ class ApiController {
       GetAllNgoService.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3450,15 +3457,15 @@ class ApiController {
       UploadMOUNGO.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3497,7 +3504,7 @@ class ApiController {
 
 
       });
-      print("@@getEyeBankDonationList--bodyprint--: ${url+body.toString()}");
+      print("@@getEyeBankDonationList--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -3518,22 +3525,23 @@ class ApiController {
       AddEyeBank data = AddEyeBank.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
   }
 
   static Future<List<etEyeDonationCenterListByNOGData>>
-  getEyeDonationCenterListByNGO(int stateId, int districtid, String userId,String eyeBankById) async {
+  getEyeDonationCenterListByNGO(int stateId, int districtid, String userId,
+      String eyeBankById) async {
     print("@@getEyeDonationCenterListByNGO" + "1");
     Response response1;
 
@@ -3556,7 +3564,7 @@ class ApiController {
 
       // Define the request body
       var body = json.encode({
-"eyeBankById":eyeBankById,
+        "eyeBankById": eyeBankById,
         "stateId": stateId,
         "districtId": districtid,
 
@@ -3564,7 +3572,8 @@ class ApiController {
 
 
       });
-      print("@@getEyeDonationCenterListByNGO--bodyprint--: ${url+body.toString()}");
+      print("@@getEyeDonationCenterListByNGO--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -3578,32 +3587,35 @@ class ApiController {
       );
 
       print(
-          "@@getEyeDonationCenterListByNGO--Api Response: ${response.toString()}");
+          "@@getEyeDonationCenterListByNGO--Api Response: ${response
+              .toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      etEyeDonationCenterListByNOG data = etEyeDonationCenterListByNOG.fromJson(responseData);
+      etEyeDonationCenterListByNOG data = etEyeDonationCenterListByNOG.fromJson(
+          responseData);
 
       if (data.status) {
         //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       /// Utils.showToast(data.message, true);
+        /// Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
   }
 
   static Future<RegistryDonatiopnCenterClick>
-  getRegistrationEyeDonationCenterByNGO(String eyeDonationCenterName,String officerName,
-      String mobileNo,String emailId,
-      int state, int district, String address,String pincode,
-      String eyeBankId,String entryBy,String eyeDonationCenter_ID) async {
+  getRegistrationEyeDonationCenterByNGO(String eyeDonationCenterName,
+      String officerName,
+      String mobileNo, String emailId,
+      int state, int district, String address, String pincode,
+      String eyeBankId, String entryBy, String eyeDonationCenter_ID) async {
     print("@@getRegistrationEyeDonationCenterByNGO" + "1");
     Response response1;
 
@@ -3616,7 +3628,8 @@ class ApiController {
     try {
       // Define the URL and headers
       var url =
-          ApiConstants.baseUrl + ApiConstants.RegistrationEyeDonationCenterByNGO;
+          ApiConstants.baseUrl +
+              ApiConstants.RegistrationEyeDonationCenterByNGO;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -3628,16 +3641,17 @@ class ApiController {
         "eyeDonationCenterName": eyeDonationCenterName,
         "officerName": officerName,
         "mobileNo": mobileNo,
-        "emailId":emailId,
+        "emailId": emailId,
         "state": state,
         "district": district,
         "address": address,
         "pincode": pincode,
-        "eyeBankId":eyeBankId,
+        "eyeBankId": eyeBankId,
         "entryBy": entryBy,
-        "eyeDonationCenter_ID":eyeDonationCenter_ID,
+        "eyeDonationCenter_ID": eyeDonationCenter_ID,
       });
-      print("@@getRegistrationEyeDonationCenterByNGO--bodyprint--: ${url+body.toString()}");
+      print("@@getRegistrationEyeDonationCenterByNGO--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -3651,11 +3665,13 @@ class ApiController {
       );
 
       print(
-          "@@getRegistrationEyeDonationCenterByNGO--Api Response: ${response.toString()}");
+          "@@getRegistrationEyeDonationCenterByNGO--Api Response: ${response
+              .toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      RegistryDonatiopnCenterClick data = RegistryDonatiopnCenterClick.fromJson(responseData);
+      RegistryDonatiopnCenterClick data = RegistryDonatiopnCenterClick.fromJson(
+          responseData);
 
       if (data.status) {
         //Utils.showToast(data.message, true);
@@ -3666,7 +3682,7 @@ class ApiController {
       }
     } catch (e) {
       Utils.showToast("Eye Donation Center already exists Center", true);
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
 
     }
   }
@@ -3725,7 +3741,7 @@ class ApiController {
       NgoCampMangerList data = NgoCampMangerList.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -3733,7 +3749,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -3791,23 +3807,22 @@ class ApiController {
       ManageDoctor data = ManageDoctor.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
 
       return [];
     }
   }
 
 
-  static Future<AddCampMagerRegister> campManagerRegistration(
-      String userName,
+  static Future<AddCampMagerRegister> campManagerRegistration(String userName,
       String gender,
       String mobileNo,
       String emailId,
@@ -3860,7 +3875,8 @@ class ApiController {
         "sr_no": srNo,
       });
 
-      print("@@campManagerRegistration--ParamsCheck with platform---" + url + body.toString());
+      print("@@campManagerRegistration--ParamsCheck with platform---" + url +
+          body.toString());
 
       // Making the network call
       Dio dio = Dio();
@@ -3877,26 +3893,28 @@ class ApiController {
       if (response1.data != null) {
         addCampMagerRegister = AddCampMagerRegister.fromJson(response1.data);
 
-        if (addCampMagerRegister.message=="Camp Manager Registered Successfully.") {
+        if (addCampMagerRegister.message ==
+            "Camp Manager Registered Successfully.") {
           print("@@Result message----1: " + addCampMagerRegister.message);
           Utils.showToast(addCampMagerRegister.message, true);
-
         } else {
-          Utils.showToast(addCampMagerRegister.message ?? "Registration failed", true);
+          Utils.showToast(
+              addCampMagerRegister.message ?? "Registration failed", true);
         }
       } else {
         Utils.showToast("No data received from server", true);
       }
 
       return addCampMagerRegister;
-
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return null;
     }
   }
-  static Future<GetCampManagerDetailsByIdEditData> getCampManagerDetailsById(int sR_No, String entryBy) async {
+
+  static Future<GetCampManagerDetailsByIdEditData> getCampManagerDetailsById(
+      int sR_No, String entryBy) async {
     print("@@getCampManagerDetailsById" + "1");
     Response response1;
 
@@ -3904,7 +3922,7 @@ class ApiController {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (!isNetworkAvailable) {
       Utils.showToast(AppConstant.noInternet, true);
-      return null;  // Return null for network issues
+      return null; // Return null for network issues
     }
 
     try {
@@ -3921,7 +3939,8 @@ class ApiController {
         "sR_No": sR_No,
         "entryBy": entryBy
       });
-      print("@@getCampManagerDetailsById--bodyprint--: ${url+body.toString()}");
+      print(
+          "@@getCampManagerDetailsById--bodyprint--: ${url + body.toString()}");
 
       // Create Dio instance and make the request
       Dio dio = Dio();
@@ -3935,27 +3954,29 @@ class ApiController {
         ),
       );
 
-      print("@@getCampManagerDetailsById--Api Response: ${response.toString()}");
+      print(
+          "@@getCampManagerDetailsById--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetCampManagerDetailsByIdEditData data = GetCampManagerDetailsByIdEditData.fromJson(responseData);
+      GetCampManagerDetailsByIdEditData data = GetCampManagerDetailsByIdEditData
+          .fromJson(responseData);
 
       // Check the status of the response
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return data; // Return the entire data object
       } else {
         //Utils.showToast(data.message, true);
         return null; // Return null if the status is false
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return null; // Return null on exceptions
     }
   }
-  static Future<updateCampManagerDetails> updateCampManager(
-      String userName,
+
+  static Future<updateCampManagerDetails> updateCampManager(String userName,
       String gender,
       String mobileNo,
       String emailId,
@@ -4023,24 +4044,25 @@ class ApiController {
 
       // Check if the response data is valid before parsing
       if (response1.data != null) {
-        updateCampManagerDetailss = updateCampManagerDetails.fromJson(response1.data);
+        updateCampManagerDetailss =
+            updateCampManagerDetails.fromJson(response1.data);
 
-        if (updateCampManagerDetailss.message=="Camp Manager Details Updated Successfully.") {
+        if (updateCampManagerDetailss.message ==
+            "Camp Manager Details Updated Successfully.") {
           print("@@Result message----1: " + updateCampManagerDetailss.message);
           Utils.showToast(updateCampManagerDetailss.message, true);
-
         } else {
-          Utils.showToast(updateCampManagerDetailss.message ?? "Registration failed", true);
+          Utils.showToast(
+              updateCampManagerDetailss.message ?? "Registration failed", true);
         }
       } else {
         Utils.showToast("No data received from server", true);
       }
 
       return updateCampManagerDetailss;
-
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return null;
     }
   }
@@ -4099,19 +4121,20 @@ class ApiController {
       ScreeningCampList data = ScreeningCampList.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
 
       return [];
     }
   }
+
   static Future<List<DataScreeningCampManager>>
   getCampManager(int district_code, String entryBy) async {
     print("@@getCampManager--APProvedWala--" + "1");
@@ -4158,28 +4181,30 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-     ScreeningCampManager data =
-     ScreeningCampManager.fromJson(responseData);
+      ScreeningCampManager data =
+      ScreeningCampManager.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
-  static Future<ScreenCampRegister> campRegistration(
-      String ngoName,String campName,String startDate,String endDate,int campManagerName,
-      String mobileNo,String address,int locationType,int campStateId,int campDistrictid,
-      String emailId,int cityId,int villageId, int town,int blockId,String pinCode,int districtid,
-      int stateId,String userId,String entryBy,String darpanNumber ) async {
+  static Future<ScreenCampRegister> campRegistration(String ngoName,
+      String campName, String startDate, String endDate, int campManagerName,
+      String mobileNo, String address, int locationType, int campStateId,
+      int campDistrictid,
+      String emailId, int cityId, int villageId, int town, int blockId,
+      String pinCode, int districtid,
+      int stateId, String userId, String entryBy, String darpanNumber) async {
     ScreenCampRegister registrationModel = ScreenCampRegister();
     Response response1;
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -4202,14 +4227,14 @@ class ApiController {
           "emailId": emailId,
           "cityId": cityId,
           "villageId": villageId,
-          "town":town,
-          "blockId":blockId,
+          "town": town,
+          "blockId": blockId,
           "pinCode": pinCode,
-          "districtid":districtid,
+          "districtid": districtid,
           "stateId": stateId,
           "userId": userId,
           "entryBy": entryBy,
-          "darpanNumber":darpanNumber,
+          "darpanNumber": darpanNumber,
         };
 
         print("@@campRegistration---" + url + payload.toString());
@@ -4232,7 +4257,7 @@ class ApiController {
         }
         return registrationModel;
       } catch (e) {
-     //   Utils.showToast(e.toString(), true);
+        //   Utils.showToast(e.toString(), true);
         return null;
       }
     } else {
@@ -4240,9 +4265,6 @@ class ApiController {
       return null;
     }
   }
-
-
-
 
 
   static Future<List<DataGetSatelliteCenterList>>
@@ -4295,18 +4317,19 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetSatelliteCenterList data = GetSatelliteCenterList.fromJson(responseData);
+      GetSatelliteCenterList data = GetSatelliteCenterList.fromJson(
+          responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -4328,8 +4351,7 @@ class ApiController {
       String darpanNumber,
       String loggedInNgoName,
       String loggedInStateName,
-      String loggedInDistrictName
-     ) async {
+      String loggedInDistrictName) async {
     ngoSatelliteManagerRegistration ngoSatelliteManagerRegistrations;
     // Check for network availability
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -4339,7 +4361,8 @@ class ApiController {
     }
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.SatelliteManagerRegistration;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.SatelliteManagerRegistration;
       // Headers for the request
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -4353,17 +4376,17 @@ class ApiController {
 
         "userName": userName,
         "gender": gender,
-        "mobileNo":mobileNo,
+        "mobileNo": mobileNo,
         "emailId": emailId,
         "hospitalId": hospitalId,
         "designation": designation,
-        "officeAddress":officeAddress,
+        "officeAddress": officeAddress,
         "districtid": districtId,
         "stateId": stateId,
         "userId": userId,
         "entryBy": entryBy,
-        "darpanNumber":darpanNumber,
-        "loggedInNgoName":loggedInNgoName,
+        "darpanNumber": darpanNumber,
+        "loggedInNgoName": loggedInNgoName,
         "loggedInStateName": loggedInStateName,
         "loggedInDistrictName": loggedInDistrictName,
 
@@ -4385,28 +4408,32 @@ class ApiController {
 
       // Check if the response data is valid before parsing
       if (response1.data != null) {
-        ngoSatelliteManagerRegistrations = ngoSatelliteManagerRegistration.fromJson(response1.data);
+        ngoSatelliteManagerRegistrations =
+            ngoSatelliteManagerRegistration.fromJson(response1.data);
 
         if (ngoSatelliteManagerRegistrations.status) {
-          print("@@Result message----1: " + ngoSatelliteManagerRegistrations.message);
+          print("@@Result message----1: " +
+              ngoSatelliteManagerRegistrations.message);
           Utils.showToast(ngoSatelliteManagerRegistrations.message, true);
-
         } else {
-          Utils.showToast(ngoSatelliteManagerRegistrations.message ?? "Registration failed", true);
+          Utils.showToast(
+              ngoSatelliteManagerRegistrations.message ?? "Registration failed",
+              true);
         }
       } else {
         Utils.showToast("No data received from server", true);
       }
 
       return ngoSatelliteManagerRegistrations;
-
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return null;
     }
   }
-  static Future<GetSatelliteManagerById> getSatelliteManagerById(int sR_No, String entryBy) async {
+
+  static Future<GetSatelliteManagerById> getSatelliteManagerById(int sR_No,
+      String entryBy) async {
     print("@@GetSatelliteManagerById" + "1");
     Response response1;
 
@@ -4414,7 +4441,7 @@ class ApiController {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (!isNetworkAvailable) {
       Utils.showToast(AppConstant.noInternet, true);
-      return null;  // Return null for network issues
+      return null; // Return null for network issues
     }
 
     try {
@@ -4449,23 +4476,24 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetSatelliteManagerById data = GetSatelliteManagerById.fromJson(responseData);
+      GetSatelliteManagerById data = GetSatelliteManagerById.fromJson(
+          responseData);
 
       // Check the status of the response
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return data; // Return the entire data object
       } else {
         //Utils.showToast(data.message, true);
         return null; // Return null if the status is false
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return null; // Return null on exceptions
     }
   }
-  static Future<SatelitteMangerDetails> UpdateSatelliteManager(
-      String userName,
+
+  static Future<SatelitteMangerDetails> UpdateSatelliteManager(String userName,
       String gender,
       String mobileNo,
       String emailId,
@@ -4533,29 +4561,30 @@ class ApiController {
 
       // Check if the response data is valid before parsing
       if (response1.data != null) {
-        updateCampManagerDetailss = SatelitteMangerDetails.fromJson(response1.data);
+        updateCampManagerDetailss =
+            SatelitteMangerDetails.fromJson(response1.data);
 
         if (updateCampManagerDetailss.status) {
           print("@@Result message----1: " + updateCampManagerDetailss.message);
           Utils.showToast(updateCampManagerDetailss.message, true);
-
         } else {
-          Utils.showToast(updateCampManagerDetailss.message ?? "Registration failed", true);
+          Utils.showToast(
+              updateCampManagerDetailss.message ?? "Registration failed", true);
         }
       } else {
         Utils.showToast("No data received from server", true);
       }
 
       return updateCampManagerDetailss;
-
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return null;
     }
   }
 
-  static Future<List<DataGetSatelliteCenterList>> getSatelliteCenterLists(int stateId, int districtid, String entryBy) async {
+  static Future<List<DataGetSatelliteCenterList>> getSatelliteCenterLists(
+      int stateId, int districtid, String entryBy) async {
     print("@@getSatelliteCenterLists" + "1");
     Response response1;
 
@@ -4604,18 +4633,19 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      GetSatelliteCenterList data = GetSatelliteCenterList.fromJson(responseData);
+      GetSatelliteCenterList data = GetSatelliteCenterList.fromJson(
+          responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -4624,7 +4654,7 @@ class ApiController {
 
   static Future<SatelliteCenterRegistation> satelliteCenterRegistation(
       String satelliteCenterName,
-   //   int gender,
+      //   int gender,
       String hospitalId,
       int centerOfficerName,
       String mobileNo,
@@ -4636,8 +4666,7 @@ class ApiController {
       int stateId,
       String userId,
       int entryBy,
-      String darpanNumber,
-      ) async {
+      String darpanNumber,) async {
     SatelliteCenterRegistation satelliteCenterRegistation;
     // Check for network availability
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -4647,7 +4676,8 @@ class ApiController {
     }
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.SetallightCenterRegistration;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.SetallightCenterRegistration;
       // Headers for the request
       Map<String, String> headers = {
         "Content-Type": "application/json",
@@ -4661,21 +4691,22 @@ class ApiController {
 
         "satelliteCenterName": satelliteCenterName,
         "hospitalId": hospitalId,
-        "centerOfficerName":centerOfficerName,
-        "mobileNo":mobileNo,
+        "centerOfficerName": centerOfficerName,
+        "mobileNo": mobileNo,
         "emailId": emailId,
 
-        "officeAddress":officeAddress,
+        "officeAddress": officeAddress,
         "districtid": districtId,
         "stateId": stateId,
         "userId": userId,
         "entryBy": entryBy,
-        "darpanNumber":darpanNumber,
+        "darpanNumber": darpanNumber,
 
 
       });
 
-      print("@@satelliteCenterRegistationRed--ParamsCheck with platform---" + url + body.toString());
+      print("@@satelliteCenterRegistationRed--ParamsCheck with platform---" +
+          url + body.toString());
 
       // Making the network call
       Dio dio = Dio();
@@ -4690,30 +4721,33 @@ class ApiController {
 
       // Check if the response data is valid before parsing
       if (response1.data != null) {
-        satelliteCenterRegistation = SatelliteCenterRegistation.fromJson(response1.data);
+        satelliteCenterRegistation =
+            SatelliteCenterRegistation.fromJson(response1.data);
 
         if (satelliteCenterRegistation.status) {
-          print("@@@@satelliteCenterRegistationRed message----1: " + satelliteCenterRegistation.message);
+          print("@@@@satelliteCenterRegistationRed message----1: " +
+              satelliteCenterRegistation.message);
           Utils.showToast(satelliteCenterRegistation.message, true);
-
         } else {
-          Utils.showToast(satelliteCenterRegistation.message ?? "Registration failed", true);
+          Utils.showToast(
+              satelliteCenterRegistation.message ?? "Registration failed",
+              true);
         }
       } else {
         Utils.showToast("No data received from server", true);
       }
 
       return satelliteCenterRegistation;
-
     } catch (e) {
       print("@@Error during registration: " + e.toString());
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return null;
     }
   }
 
   static Future<List<DataHospitalDashboard>>
-  hospitalDashboard(int userRoleType, int districtid, int stateid, String userId,
+  hospitalDashboard(int userRoleType, int districtid, int stateid,
+      String userId,
       String financialYear, int organizationType, String ngoId) async {
     print("@@hospitalDashboard" + "1");
     Response response1;
@@ -4767,15 +4801,15 @@ class ApiController {
       HospitalDashboard data = HospitalDashboard.fromJson(responseData);
 
       if (data.status) {
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
 
       return [];
     }
@@ -4836,7 +4870,8 @@ class ApiController {
         print("@@Response--Api" + response1.toString());
         getSpoDashobardData =
             SpoDashobardData.fromJson(json.decode(response1.data));
-        print("@@getSpoDashobardData====+ " + getSpoDashobardData.data.toString());
+        print("@@getSpoDashobardData====+ " +
+            getSpoDashobardData.data.toString());
 
         print("@@getSpoDashobardData----" + getSpoDashobardData.message);
         if (getSpoDashobardData.status) {
@@ -4846,7 +4881,7 @@ class ApiController {
         }
         return getSpoDashobardData;
       } catch (e) {
-      //  Utils.showToast(e.toString(), true);
+        //  Utils.showToast(e.toString(), true);
         return null;
       }
     } else {
@@ -4854,6 +4889,7 @@ class ApiController {
       return null;
     }
   }
+
   static Future<List<SPODashboardDPMClickViewData>> getSPO_DPM_View(
       int stateid) async {
     print("@@SPODashboardDPMClickViewData" + "1");
@@ -4880,7 +4916,8 @@ class ApiController {
         "stateid": stateid,
 
       });
-      print("@@SPODashboardDPMClickViewData--bodyprint--: ${url + body.toString()}");
+      print("@@SPODashboardDPMClickViewData--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -4899,22 +4936,25 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-      SPODashboardDPMClickView data = SPODashboardDPMClickView.fromJson(responseData);
+      SPODashboardDPMClickView data = SPODashboardDPMClickView.fromJson(
+          responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
-  static Future<List<EyeSurgeonsData>> getSPO_RegisteredEyesurgeonList(int stateid, String userid) async {
+
+  static Future<List<EyeSurgeonsData>> getSPO_RegisteredEyesurgeonList(
+      int stateid, String userid) async {
     print("@@getSPO_RegisteredEyesurgeonList: 1");
 
     // Check network availability
@@ -4926,7 +4966,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_RegisteredEyesurgeonList;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_RegisteredEyesurgeonList;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -4949,14 +4990,17 @@ class ApiController {
         options: Options(
           headers: headers,
           contentType: "application/json",
-          responseType: ResponseType.json,  // Use ResponseType.json to get the data already parsed
+          responseType: ResponseType
+              .json, // Use ResponseType.json to get the data already parsed
         ),
       );
 
-      print("@@getSPO_RegisteredEyesurgeonList--Api Response: ${response.toString()}");
+      print("@@getSPO_RegisteredEyesurgeonList--Api Response: ${response
+          .toString()}");
 
       // Access response data directly
-      var responseData = response.data; // response.data is already a Map<String, dynamic>
+      var responseData = response
+          .data; // response.data is already a Map<String, dynamic>
 
       // Check the response
       EyeSurgeons data = EyeSurgeons.fromJson(responseData);
@@ -4969,17 +5013,20 @@ class ApiController {
         return data.data;
       } else {
         print("@@22: ${response.toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
       print("@@33--Error: $e");
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
-  static Future<List<EyeBankApprovalDataData>> getSPO_EyeBankApplicationApproval(int eyeBankUniqueID, int eyeBankingRole_id,int stateId, int districtId) async {
+  static Future<
+      List<EyeBankApprovalDataData>> getSPO_EyeBankApplicationApproval(
+      int eyeBankUniqueID, int eyeBankingRole_id, int stateId,
+      int districtId) async {
     print("@@getSPO_EyeBankApplicationApproval: 1");
 
     // Check network availability
@@ -4991,7 +5038,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_EyeBankApplicationApproval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_EyeBankApplicationApproval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -5016,37 +5064,43 @@ class ApiController {
         options: Options(
           headers: headers,
           contentType: "application/json",
-          responseType: ResponseType.json,  // Use ResponseType.json to get the data already parsed
+          responseType: ResponseType
+              .json, // Use ResponseType.json to get the data already parsed
         ),
       );
 
-      print("@@getSPO_EyeBankApplicationApproval--Api Response: ${response.toString()}");
+      print("@@getSPO_EyeBankApplicationApproval--Api Response: ${response
+          .toString()}");
 
       // Access response data directly
-      var responseData = response.data; // response.data is already a Map<String, dynamic>
+      var responseData = response
+          .data; // response.data is already a Map<String, dynamic>
 
       // Check the response
       EyeBankApproval data = EyeBankApproval.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         print("@@11: ${response.toString()}");
 
         // Return the list of data
         return data.data;
       } else {
         print("@@22: ${response.toString()}");
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
       print("@@33--Error: $e");
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
-  static Future<List<EyeBankDonationApprovalData>> getSPO_EyeDonationApplicationApproval(int eyeBankUniqueID, int eyeBankingRole_id,int stateId, int districtId) async {
+  static Future<
+      List<EyeBankDonationApprovalData>> getSPO_EyeDonationApplicationApproval(
+      int eyeBankUniqueID, int eyeBankingRole_id, int stateId,
+      int districtId) async {
     print("@@getSPO_EyeDonationApplicationApproval: 1");
 
     // Check network availability
@@ -5058,7 +5112,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_EyeDonationApplicationApproval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_EyeDonationApplicationApproval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -5073,7 +5128,8 @@ class ApiController {
         "districtId": districtId
       });
       print("@@getSPO_EyeDonationApplicationApproval--URL: $url");
-      print("@@getSPO_EyeDonationApplicationApproval--body: ${body.toString()}");
+      print(
+          "@@getSPO_EyeDonationApplicationApproval--body: ${body.toString()}");
 
       // Create Dio instance and make the request
       Dio dio = Dio();
@@ -5083,35 +5139,40 @@ class ApiController {
         options: Options(
           headers: headers,
           contentType: "application/json",
-          responseType: ResponseType.json,  // Use ResponseType.json to get the data already parsed
+          responseType: ResponseType
+              .json, // Use ResponseType.json to get the data already parsed
         ),
       );
 
-      print("@@getSPO_EyeDonationApplicationApproval--Api Response: ${response.toString()}");
+      print("@@getSPO_EyeDonationApplicationApproval--Api Response: ${response
+          .toString()}");
 
       // Access response data directly
-      var responseData = response.data; // response.data is already a Map<String, dynamic>
+      var responseData = response
+          .data; // response.data is already a Map<String, dynamic>
 
       // Check the response
-      EyeBankDonationApproval data = EyeBankDonationApproval.fromJson(responseData);
+      EyeBankDonationApproval data = EyeBankDonationApproval.fromJson(
+          responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print("@@11: ${response.toString()}");
 
         // Return the list of data
         return data.data;
       } else {
         print("@@22: ${response.toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
       print("@@33--Error: $e");
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   /*static Future<PatientRegistrations> hopitalPatientRegistration(
       int registrationType,   String patientImage,String idType,String idName,String dependencyType,
       String relationType,String relationName,String firstName,String lastName,String dob,
@@ -5194,13 +5255,6 @@ class ApiController {
       return null;
     }
   }*/
-
-
-
-
-
-
-
 
 
 /*
@@ -5319,7 +5373,7 @@ class ApiController {
   }*/
   static Future<List<ApprovedclickPatientsData>>
   getSPO_PatientApproval(int district_code, int state_code,
-      String financialYear,int status) async {
+      String financialYear, int status) async {
     print("@@getSPO_PatientApproval" + "1");
     Response response1;
 
@@ -5369,21 +5423,22 @@ class ApiController {
       ApprovedclickPatients.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<GetSPO_DiseasewiseRecordsApprovalData>>
   getSPO_DiseasewiseRecordsApproval(int district_code, int state_code,
-      String financialYear,int status) async {
+      String financialYear, int status) async {
     print("@@getSPO_DiseasewiseRecordsApproval" + "1");
     Response response1;
 
@@ -5396,7 +5451,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_DiseasewiseRecordsApproval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_DiseasewiseRecordsApproval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -5410,7 +5466,8 @@ class ApiController {
         "financialYear": financialYear,
         "status": status, // for approved
       });
-      print("@@getSPO_DiseasewiseRecordsApproval--bodyprint--: ${body.toString()}");
+      print("@@getSPO_DiseasewiseRecordsApproval--bodyprint--: ${body
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -5437,18 +5494,18 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<GetSPO_Patients_Approved_ViewData>>
   getSPO_Patients_Approved_View(int district_code, int state_code,
-      String financialYear,int status,int diseaseid) async {
+      String financialYear, int status, int diseaseid) async {
     print("@@getSPO_Patients_Approved_View" + "1");
     Response response1;
 
@@ -5461,7 +5518,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_Patients_Approved_View;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_Patients_Approved_View;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -5474,7 +5532,7 @@ class ApiController {
         "state_code": state_code,
         "financialYear": financialYear,
         "mode": "",
-        "diseaseid":diseaseid// for approved
+        "diseaseid": diseaseid // for approved
       });
       print("@@getSPO_Patients_Approved_View--bodyprint--: ${body.toString()}");
       // Create Dio instance and make the request
@@ -5499,15 +5557,15 @@ class ApiController {
       GetSPO_Patients_Approved_View.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5515,7 +5573,7 @@ class ApiController {
 
   static Future<List<NGOApprovalClickData>>
   getSPO_DistrictNgoApproval(int district_code, int state_code,
-      String financialYear,int status) async {
+      String financialYear, int status) async {
     print("@@getSPO_DistrictNgoApproval" + "1");
     Response response1;
 
@@ -5543,7 +5601,7 @@ class ApiController {
         "status": status,
 
       });
-      print("@@getSPO_DistrictNgoApproval--bodyprint--: ${body.toString()}");
+      print("@@getSPO_DistrictNgoApproval--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -5566,22 +5624,22 @@ class ApiController {
       NGOApprovalClick.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       /// Utils.showToast(data.message, true);
+        /// Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<NGOAPPRovedClickListDetailData>>
   getSPO_DistrictNgoApproval_lists(int district_code, int state_code,
-      String financialYear,int status) async {
+      String financialYear, int status) async {
     print("@@getSPO_DistrictNgoApproval_lists" + "1");
     Response response1;
 
@@ -5594,7 +5652,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.getSPO_DistrictNgoApproval_list;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.getSPO_DistrictNgoApproval_list;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -5609,7 +5668,8 @@ class ApiController {
         "status": status,
 
       });
-      print("@@getSPO_DistrictNgoApproval_lists--bodyprint--: ${body.toString()}");
+      print("@@getSPO_DistrictNgoApproval_lists--bodyprint--: ${url+body
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -5632,7 +5692,7 @@ class ApiController {
       NGOAPPRovedClickListDetail.fromJson(responseData);
 
       if (data.status) {
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -5642,11 +5702,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5654,7 +5714,7 @@ class ApiController {
 
   static Future<List<GetSPO_GHCHCOtherApprovalsData>>
   GetSPO_GHCHCOtherApprovalsDatas(int district_code, int state_code,
-      int status,String financialYear) async {
+      int status, String financialYear) async {
     print("@@GetSPO_GHCHCOtherApprovalsDatas--APProvedWala--" + "1");
     Response response1;
 
@@ -5681,7 +5741,8 @@ class ApiController {
         "status": status, // for approved
         "financialYear": financialYear, // for approved
       });
-      print("@@GetSPO_GHCHCOtherApprovalsDatas--bodyprint--: ${body.toString()}");
+      print(
+          "@@GetSPO_GHCHCOtherApprovalsDatas--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -5704,22 +5765,22 @@ class ApiController {
       GetSPO_GHCHCOtherApprovals.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<GHC_approvalListData>>
   getSPO_GHCHCOtherApproval_list(int district_code, int state_code,
-      String financialYear,int status) async {
+      String financialYear, int status) async {
     print("@@getSPO_GHCHCOtherApproval_list" + "1");
     Response response1;
 
@@ -5732,7 +5793,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_GHCHCOtherApproval_list;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_GHCHCOtherApproval_list;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -5747,7 +5809,8 @@ class ApiController {
         "status": status,
 
       });
-      print("@@getSPO_GHCHCOtherApproval_list--bodyprint--: ${body.toString()}");
+      print(
+          "@@getSPO_GHCHCOtherApproval_list--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -5770,7 +5833,7 @@ class ApiController {
       GHC_approvalList.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -5780,11 +5843,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -5792,7 +5855,7 @@ class ApiController {
 
   static Future<List<PrivateMedicalCollegeApprovedData>>
   getSPO_PrivatePractitionerApproval(int district_code, int state_code,
-      int status,String financialYear) async {
+      int status, String financialYear) async {
     print("@@getSPO_PrivatePractitionerApproval--APProvedWala--" + "1");
     Response response1;
 
@@ -5805,7 +5868,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_PrivatePractitionerApproval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_PrivatePractitionerApproval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -5819,7 +5883,8 @@ class ApiController {
         "status": status, // for approved
         "financialYear": financialYear, // for approved
       });
-      print("@@getSPO_PrivatePractitionerApproval--bodyprint--: ${url+body.toString()}");
+      print("@@getSPO_PrivatePractitionerApproval--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -5842,7 +5907,7 @@ class ApiController {
       PrivateMedicalCollegeApproved.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
@@ -5850,14 +5915,14 @@ class ApiController {
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<PrivatePractionriesData>>
   getSPO_PrivatePractitionerApproval_list(int district_code, int state_code,
-      String financialYear,int status) async {
+      String financialYear, int status) async {
     print("@@getSPO_PrivatePractitionerApproval_list" + "1");
     Response response1;
 
@@ -5870,7 +5935,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_PrivatePractitionerApproval_list;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_PrivatePractitionerApproval_list;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -5885,7 +5951,8 @@ class ApiController {
         "status": status,
 
       });
-      print("@@getSPO_PrivatePractitionerApproval_list--bodyprint--: ${body.toString()}");
+      print("@@getSPO_PrivatePractitionerApproval_list--bodyprint--: ${url+body
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -5908,7 +5975,7 @@ class ApiController {
       PrivatePractionries.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -5918,18 +5985,18 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<PrivateMedicalCollegeApprovedData>>
   getSPO_PrivateMedicalCollegeApproval(int district_code, int state_code,
-      int status,String financialYear) async {
+      int status, String financialYear) async {
     print("@@getSPO_PrivateMedicalCollegeApproval--APProvedWala--" + "1");
     Response response1;
 
@@ -5942,7 +6009,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_PrivateMedicalCollegeApproval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_PrivateMedicalCollegeApproval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -5956,7 +6024,8 @@ class ApiController {
         "status": status, // for approved
         "financialYear": financialYear, // for approved
       });
-      print("@@getSPO_PrivateMedicalCollegeApproval--bodyprint--: ${url+body.toString()}");
+      print("@@getSPO_PrivateMedicalCollegeApproval--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -5983,17 +6052,18 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-  //    Utils.showToast(e.toString(), true);
+      //    Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<PrivateMedicalCollgeAPProvalListData>>
   getSPO_PrivateMedicalCollegeApproval_list(int district_code, int state_code,
-      String financialYear,int status) async {
+      String financialYear, int status) async {
     print("@@getSPO_PrivatePractitionerApproval_list" + "1");
     Response response1;
 
@@ -6006,7 +6076,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_PrivateMedicalCollegeApproval_list;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_PrivateMedicalCollegeApproval_list;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6021,7 +6092,8 @@ class ApiController {
         "status": status,
 
       });
-      print("@@getSPO_PrivatePractitionerApproval_list--bodyprint--: ${body.toString()}");
+      print("@@getSPO_PrivatePractitionerApproval_list--bodyprint--: ${body
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6044,7 +6116,7 @@ class ApiController {
       PrivateMedicalCollgeAPProvalList.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6054,11 +6126,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6066,7 +6138,7 @@ class ApiController {
 
   static Future<List<ScreeningCampCompltedData>>
   getSPO_ScreeningCampApproval(int district_code, int state_code,
-      String campType,String financialYear,String mode) async {
+      String campType, String financialYear, String mode) async {
     print("@@getSPO_ScreeningCampApproval--APProvedWala--" + "1");
     Response response1;
 
@@ -6079,7 +6151,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_ScreeningCampApproval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_ScreeningCampApproval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6094,7 +6167,8 @@ class ApiController {
         "financialYear": financialYear, // for approved
         "mode": "", // for approved
       });
-      print("@@getSPO_ScreeningCampApproval--bodyprint--: ${url+body.toString()}");
+      print("@@getSPO_ScreeningCampApproval--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6117,22 +6191,22 @@ class ApiController {
       ScreeningCampComplted.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<ScreeningCampCompletedListData>>
   getSPOScreeningCampApproval_list(int district_code, int state_code,
-      String campType,String financialYear,String mode) async {
+      String campType, String financialYear, String mode) async {
     print("@@getSPOScreeningCampApproval_list" + "1");
     Response response1;
 
@@ -6145,7 +6219,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPOScreeningCampApproval_list;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPOScreeningCampApproval_list;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6161,7 +6236,8 @@ class ApiController {
         "mode": "", // for approved
 
       });
-      print("@@getSPOScreeningCampApproval_list--bodyprint--: ${body.toString()}");
+      print("@@getSPOScreeningCampApproval_list--bodyprint--: ${body
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6184,7 +6260,7 @@ class ApiController {
       ScreeningCampCompletedList.fromJson(responseData);
 
       if (data.status) {
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6194,11 +6270,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6206,7 +6282,7 @@ class ApiController {
 
   static Future<List<ScreeningCampCompltedData>>
   getSPO_ScreeningCampApprovalOnGoing(int district_code, int state_code,
-      String campType,String financialYear,String mode) async {
+      String campType, String financialYear, String mode) async {
     print("@@getSPO_ScreeningCampApproval--APProvedWala--" + "1");
     Response response1;
 
@@ -6219,7 +6295,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_ScreeningCampApproval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_ScreeningCampApproval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6234,7 +6311,8 @@ class ApiController {
         "financialYear": financialYear, // for approved
         "mode": "", // for approved
       });
-      print("@@getSPO_ScreeningCampApproval--bodyprint--: ${url+body.toString()}");
+      print("@@getSPO_ScreeningCampApproval--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6257,22 +6335,22 @@ class ApiController {
       ScreeningCampComplted.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<ScreeningCampCompletedListData>>
   getSPOScreeningCampApproval_listOnGoing(int district_code, int state_code,
-      String campType,String financialYear,String mode) async {
+      String campType, String financialYear, String mode) async {
     print("@@getSPOScreeningCampApproval_list" + "1");
     Response response1;
 
@@ -6285,7 +6363,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPOScreeningCampApproval_list;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPOScreeningCampApproval_list;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6301,7 +6380,8 @@ class ApiController {
         "mode": "", // for approved
 
       });
-      print("@@getSPOScreeningCampApproval_listOnGoing--bodyprint--: ${body.toString()}");
+      print("@@getSPOScreeningCampApproval_listOnGoing--bodyprint--: ${body
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6324,7 +6404,7 @@ class ApiController {
       ScreeningCampCompletedList.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6334,11 +6414,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6346,7 +6426,7 @@ class ApiController {
 
   static Future<List<ScreeningCampCompltedData>>
   getSPO_ScreeningCampApprovalUpComing(int district_code, int state_code,
-      String campType,String financialYear,String mode) async {
+      String campType, String financialYear, String mode) async {
     print("@@getSPO_ScreeningCampApproval--APProvedWala--" + "1");
     Response response1;
 
@@ -6359,7 +6439,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_ScreeningCampApproval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_ScreeningCampApproval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6374,7 +6455,8 @@ class ApiController {
         "financialYear": financialYear, // for approved
         "mode": "", // for approved
       });
-      print("@@getSPO_ScreeningCampApproval--bodyprint--: ${url+body.toString()}");
+      print("@@getSPO_ScreeningCampApproval--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6401,18 +6483,18 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<ScreeningCampCompletedListData>>
   getSPOScreeningCampApproval_listUpComing(int district_code, int state_code,
-      String campType,String financialYear,String mode) async {
+      String campType, String financialYear, String mode) async {
     print("@@getSPOScreeningCampApproval_list" + "1");
     Response response1;
 
@@ -6425,7 +6507,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPOScreeningCampApproval_list;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPOScreeningCampApproval_list;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6441,7 +6524,8 @@ class ApiController {
         "mode": "", // for approved
 
       });
-      print("@@getSPOScreeningCampApproval_list--bodyprint--: ${body.toString()}");
+      print("@@getSPOScreeningCampApproval_list--bodyprint--: ${body
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6464,7 +6548,7 @@ class ApiController {
       ScreeningCampCompletedList.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6474,11 +6558,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6486,7 +6570,7 @@ class ApiController {
 
   static Future<List<GetSPO_SatelliteCentreApprovalData>>
   getSPO_SatelliteCentreApproval(int district_code, int state_code,
-      int status,String financialYear) async {
+      int status, String financialYear) async {
     print("@@getSPO_SatelliteCentreApproval--APProvedWala--" + "1");
     Response response1;
 
@@ -6499,7 +6583,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_SatelliteCentreApproval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_SatelliteCentreApproval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6513,7 +6598,8 @@ class ApiController {
         "status": status, // for approved
         "financialYear": financialYear, // for approved
       });
-      print("@@getSPO_SatelliteCentreApproval--bodyprint--: ${url+body.toString()}");
+      print("@@getSPO_SatelliteCentreApproval--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6536,22 +6622,22 @@ class ApiController {
       GetSPO_SatelliteCentreApproval.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<SatelliteCenterListDataData>>
   getSPO_SatelliteCentreApproval_list(int district_code, int state_code,
-      int status,String financialYear) async {
+      int status, String financialYear) async {
     print("@@getSPO_SatelliteCentreApproval_list" + "1");
     Response response1;
 
@@ -6564,7 +6650,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetSPO_SatelliteCentreApproval_list;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetSPO_SatelliteCentreApproval_list;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6579,7 +6666,8 @@ class ApiController {
         "financialYear": financialYear, // for approved
 
       });
-      print("@@getSPO_SatelliteCentreApproval_list--bodyprint--: ${body.toString()}");
+      print("@@getSPO_SatelliteCentreApproval_list--bodyprint--: ${body
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6612,11 +6700,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-    //    Utils.showToast(data.message, true);
+        //    Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -6673,7 +6761,7 @@ class ApiController {
       SendTODPMCataract.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6683,14 +6771,15 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<SendTODPMCataractData>>
   getGovtPvtOther_Diabetic(int district_code, int state_code,
       String userid) async {
@@ -6720,7 +6809,8 @@ class ApiController {
         "userid": userid, // for approved
 
       });
-      print("@@getGovtPvtOther_Diabetic--bodyprint--: ${url+body.toString()}");
+      print(
+          "@@getGovtPvtOther_Diabetic--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6753,14 +6843,15 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<SendTODPMCataractData>>
   getGovtPvtOther_Glaucoma(int district_code, int state_code,
       String userid) async {
@@ -6790,7 +6881,8 @@ class ApiController {
         "userid": userid, // for approved
 
       });
-      print("@@getGovtPvtOther_Glaucoma--bodyprint--: ${url+body.toString()}");
+      print(
+          "@@getGovtPvtOther_Glaucoma--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6823,14 +6915,15 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<SendTODPMCataractData>>
   getGovtPvtOther_CornealBlindness(int district_code, int state_code,
       String userid) async {
@@ -6846,7 +6939,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetGovtPvtOther_CornealBlindness;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetGovtPvtOther_CornealBlindness;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -6860,7 +6954,8 @@ class ApiController {
         "userid": userid, // for approved
 
       });
-      print("@@GetGovtPvtOther_CornealBlindness--bodyprint--: ${url+body.toString()}");
+      print("@@GetGovtPvtOther_CornealBlindness--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6883,7 +6978,7 @@ class ApiController {
       SendTODPMCataract.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6893,14 +6988,15 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<sendTODPMVRSurgeryData>>
   getGovtPvtOther_VRSurgery(int district_code, int state_code,
       String userid) async {
@@ -6930,7 +7026,8 @@ class ApiController {
         "userid": userid, // for approved
 
       });
-      print("@@GetGovtPvtOther_VRSurgery--bodyprint--: ${url+body.toString()}");
+      print(
+          "@@GetGovtPvtOther_VRSurgery--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6953,7 +7050,7 @@ class ApiController {
       sendTODPMVRSurgery.fromJson(responseData);
 
       if (data.status) {
-       /// Utils.showToast(data.message, true);
+        /// Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -6963,11 +7060,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-  //    Utils.showToast(e.toString(), true);
+      //    Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7026,7 +7123,7 @@ class ApiController {
       nGOmoreDashboardClickStateWise.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7036,11 +7133,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7059,7 +7156,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWiseNGOForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDistrictWiseNGOForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7072,7 +7170,8 @@ class ApiController {
 
 
       });
-      print("@@GetStateWiseNGOForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@GetStateWiseNGOForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7095,7 +7194,7 @@ class ApiController {
       nGOmoreDashboardClickDistrictWise.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7105,16 +7204,17 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<nGOmoreStateDistrictBothData>>
-  GetStateDistrictWiseNGOForDashboard(int stateId,int districtId) async {
+  GetStateDistrictWiseNGOForDashboard(int stateId, int districtId) async {
     print("@@GetStateDistrictWiseNGOForDashboard" + "1");
     Response response1;
 
@@ -7127,7 +7227,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWiseNGOForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateDistrictWiseNGOForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7137,11 +7238,12 @@ class ApiController {
       // Define the request body
       var body = json.encode({
         "stateId": stateId,
-        "districtId":districtId,
+        "districtId": districtId,
 
 
       });
-      print("@@GetStateDistrictWiseNGOForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@GetStateDistrictWiseNGOForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7174,11 +7276,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7197,7 +7299,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateWiseHospitalsForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateWiseHospitalsForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7206,7 +7309,8 @@ class ApiController {
 
       // Define the request body
 
-      print("@@GetStateWiseHospitalsForDashboard--bodyprint--: ${url.toString()}");
+      print("@@GetStateWiseHospitalsForDashboard--bodyprint--: ${url
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.get(
@@ -7228,7 +7332,7 @@ class ApiController {
       GetStateWiseHospitalsForDashboard.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7238,11 +7342,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7261,7 +7365,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWiseHospitalForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDistrictWiseHospitalForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7274,7 +7379,8 @@ class ApiController {
 
 
       });
-      print("@@getDistrictWiseHospitalForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getDistrictWiseHospitalForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7297,7 +7403,7 @@ class ApiController {
       GeDistrictWiseHospitalsForDashboard.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7307,16 +7413,17 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<BothDataForHospitalData>>
-  getStateDistrictWiseHospitalForDashboard(int stateId,int districtId) async {
+  getStateDistrictWiseHospitalForDashboard(int stateId, int districtId) async {
     print("@@getStateDistrictWiseHospitalForDashboard" + "1");
     Response response1;
 
@@ -7329,7 +7436,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWiseHospitalForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateDistrictWiseHospitalForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7339,11 +7447,12 @@ class ApiController {
       // Define the request body
       var body = json.encode({
         "stateId": stateId,
-        "districtId":districtId,
+        "districtId": districtId,
 
 
       });
-      print("@@getStateDistrictWiseHospitalForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getStateDistrictWiseHospitalForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7366,7 +7475,7 @@ class ApiController {
       BothDataForHospital.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7380,7 +7489,7 @@ class ApiController {
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7400,7 +7509,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateWiseMedicalForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateWiseMedicalForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7409,7 +7519,8 @@ class ApiController {
 
       // Define the request body
 
-      print("@@GetStateWiseHospitalsForDashboard--bodyprint--: ${url.toString()}");
+      print("@@GetStateWiseHospitalsForDashboard--bodyprint--: ${url
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.get(
@@ -7431,7 +7542,7 @@ class ApiController {
       stateWiseMedicalCollegs.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7441,11 +7552,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7464,7 +7575,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWiseMedicalForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDistrictWiseMedicalForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7477,7 +7589,8 @@ class ApiController {
 
 
       });
-      print("@@getDistrictWiseHospitalForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getDistrictWiseHospitalForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7500,7 +7613,7 @@ class ApiController {
       DistrictwiseMedicalColleges.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7510,16 +7623,17 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<BothDataFoMEdicalCollegesllData>>
-  getStateDistrictWiseMedicalForDashboard(int stateId,int districtId) async {
+  getStateDistrictWiseMedicalForDashboard(int stateId, int districtId) async {
     print("@@getStateDistrictWiseMedicalForDashboard" + "1");
     Response response1;
 
@@ -7532,7 +7646,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWiseMedicalForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateDistrictWiseMedicalForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7542,11 +7657,12 @@ class ApiController {
       // Define the request body
       var body = json.encode({
         "stateId": stateId,
-        "districtId":districtId,
+        "districtId": districtId,
 
 
       });
-      print("@@getStateDistrictWiseMedicalForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getStateDistrictWiseMedicalForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7579,11 +7695,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7603,7 +7719,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateWisePractitionerForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateWisePractitionerForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7612,7 +7729,8 @@ class ApiController {
 
       // Define the request body
 
-      print("@@getStateWisePractitionerForDashboard--bodyprint--: ${url.toString()}");
+      print("@@getStateWisePractitionerForDashboard--bodyprint--: ${url
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.get(
@@ -7634,7 +7752,7 @@ class ApiController {
       stateWisePrivatePractiories.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7644,11 +7762,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-    //    Utils.showToast(data.message, true);
+        //    Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-  ///    Utils.showToast(e.toString(), true);
+      ///    Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7667,7 +7785,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWisePractitionerForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDistrictWisePractitionerForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7680,7 +7799,8 @@ class ApiController {
 
 
       });
-      print("@@getDistrictWisePractitionerForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getDistrictWisePractitionerForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7703,7 +7823,7 @@ class ApiController {
       DistrictwisePrivatePractionries.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7713,17 +7833,18 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<BothPrivatePractioresData>>
-  getStateDistrictWisePractitionerForDashboard(int stateId,int districtId) async {
+  getStateDistrictWisePractitionerForDashboard(int stateId,
+      int districtId) async {
     print("@@GetStateDistrictWisePractitionerForDashboard" + "1");
     Response response1;
 
@@ -7736,7 +7857,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWisePractitionerForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateDistrictWisePractitionerForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7746,11 +7868,12 @@ class ApiController {
       // Define the request body
       var body = json.encode({
         "stateId": stateId,
-        "districtId":districtId,
+        "districtId": districtId,
 
 
       });
-      print("@@getStateDistrictWiseMedicalForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getStateDistrictWiseMedicalForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7773,7 +7896,7 @@ class ApiController {
       BothPrivatePractiores.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7783,11 +7906,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7807,7 +7930,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateWiseSatteliteForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateWiseSatteliteForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7816,7 +7940,8 @@ class ApiController {
 
       // Define the request body
 
-      print("@@getStateWisePractitionerForDashboard--bodyprint--: ${url.toString()}");
+      print("@@getStateWisePractitionerForDashboard--bodyprint--: ${url
+          .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.get(
@@ -7838,7 +7963,7 @@ class ApiController {
       stateWiseSatelliteCenterss.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7848,11 +7973,11 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
@@ -7871,7 +7996,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWiseSatteliteForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDistrictWiseSatteliteForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7884,7 +8010,8 @@ class ApiController {
 
 
       });
-      print("@@getDistrictWiseSatteliteForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getDistrictWiseSatteliteForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7907,7 +8034,7 @@ class ApiController {
       DistrictwiseSatelliteCentyers.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7917,17 +8044,17 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-     // Utils.showToast(e.toString(), true);
+      // Utils.showToast(e.toString(), true);
       return [];
     }
   }
 
   static Future<List<BothSatelliteCentersData>>
-  getStateDistrictWiseSatteliteForDashboard(int stateId,int districtId) async {
+  getStateDistrictWiseSatteliteForDashboard(int stateId, int districtId) async {
     print("@@GetStateDistrictWiseSatteliteForDashboard" + "1");
     Response response1;
 
@@ -7940,7 +8067,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWiseSatteliteForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateDistrictWiseSatteliteForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -7950,11 +8078,12 @@ class ApiController {
       // Define the request body
       var body = json.encode({
         "stateId": stateId,
-        "districtId":districtId,
+        "districtId": districtId,
 
 
       });
-      print("@@GetStateDistrictWiseSatteliteForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@GetStateDistrictWiseSatteliteForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -7977,7 +8106,7 @@ class ApiController {
       BothSatelliteCenterss.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -7987,16 +8116,18 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<DataBothWiseSatelliteWise>>
-  getStateDistrictSatteliteWiseDataForDashboard(int stateId,int districtId,String srNo,String regHospitalId) async {
+  getStateDistrictSatteliteWiseDataForDashboard(int stateId, int districtId,
+      String srNo, String regHospitalId) async {
     print("@@getStateDistrictSatteliteWiseDataForDashboard" + "1");
     Response response1;
 
@@ -8009,7 +8140,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictSatteliteWiseDataForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateDistrictSatteliteWiseDataForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8019,13 +8151,13 @@ class ApiController {
       // Define the request body
       var body = json.encode({
         "stateId": stateId,
-        "districtId":districtId,
-        "srNo":srNo,
-        "regHospitalId":regHospitalId
-
-
+        "districtId": districtId,
+        "srNo": srNo,
+        "regHospitalId": regHospitalId
       });
-      print("@@getStateDistrictSatteliteWiseDataForDashboard--bodyprint--: ${url+body.toString()}");
+      print(
+          "@@getStateDistrictSatteliteWiseDataForDashboard--bodyprint--: ${url +
+              body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -8068,8 +8200,10 @@ class ApiController {
   }
 
 
-  static Future<List<Dpm_application_ngoApplicationsData>> get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List(String npcbNo,String userid,
-      int status ,int stateId,int districtId,int organisationType) async {
+  static Future<List<
+      Dpm_application_ngoApplicationsData>> get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List(
+      String npcbNo, String userid,
+      int status, int stateId, int districtId, int organisationType) async {
     print("@@get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List" + "1");
     Response response1;
 
@@ -8082,7 +8216,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8091,16 +8226,18 @@ class ApiController {
 
       // Define the request body
       var body = json.encode({
-        "npcbNo":npcbNo,
-        "userid":userid,
-          "status":status,
+        "npcbNo": npcbNo,
+        "userid": userid,
+        "status": status,
         "stateId": stateId,
-        "districtId":districtId,
-        "organisationType":organisationType,
+        "districtId": districtId,
+        "organisationType": organisationType,
 
 
       });
-      print("@@get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List--bodyprint--: ${url+body.toString()}");
+      print(
+          "@@get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List--bodyprint--: ${url +
+              body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -8123,7 +8260,7 @@ class ApiController {
       Dpm_application_ngoApplications.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -8133,16 +8270,19 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-   //   Utils.showToast(e.toString(), true);
+      //   Utils.showToast(e.toString(), true);
       return [];
     }
   }
-  static Future<List<GovtPrivateHospitalData>> get_DPM_Applications_GovtPrivate_applications(String npcbNo,String userid,
-      int status ,int stateId,int districtId,int organisationType) async {
+
+  static Future<List<
+      GovtPrivateHospitalData>> get_DPM_Applications_GovtPrivate_applications(
+      String npcbNo, String userid,
+      int status, int stateId, int districtId, int organisationType) async {
     print("@@get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List_govt" + "1");
     Response response1;
 
@@ -8155,7 +8295,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.Get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8164,16 +8305,18 @@ class ApiController {
 
       // Define the request body
       var body = json.encode({
-        "npcbNo":npcbNo,
-        "userid":userid,
-        "status":status,
+        "npcbNo": npcbNo,
+        "userid": userid,
+        "status": status,
         "stateId": stateId,
-        "districtId":districtId,
-        "organisationType":organisationType,
+        "districtId": districtId,
+        "organisationType": organisationType,
 
 
       });
-      print("@@get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List_govt--bodyprint--: ${url+body.toString()}");
+      print(
+          "@@get_DPM_Applications_NGO_GOV_CHC_HOSPITALS_List_govt--bodyprint--: ${url +
+              body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -8196,7 +8339,7 @@ class ApiController {
       GovtPrivateHospital.fromJson(responseData);
 
       if (data.status) {
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -8206,14 +8349,15 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<StateWiseCampData>>
   getStateWiseCampForDashboard() async {
     print("@@getStateWiseCampForDashboard" + "1");
@@ -8228,7 +8372,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateWiseCampForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateWiseCampForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8269,14 +8414,15 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-     //   Utils.showToast(data.message, true);
+        //   Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<DistrictWiseCampsData>>
   getDistrictWiseCampForDashboard(int stateId) async {
     print("@@getDistrictWiseCampForDashboard" + "1");
@@ -8291,7 +8437,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetDistrictWiseCampForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDistrictWiseCampForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8304,7 +8451,8 @@ class ApiController {
 
 
       });
-      print("@@getDistrictWiseCampForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getDistrictWiseCampForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -8327,7 +8475,7 @@ class ApiController {
       DistrictWiseCamps.fromJson(responseData);
 
       if (data.status) {
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         print(
             "@@showToast--Api Response: ${response
                 .toString()}");
@@ -8337,16 +8485,17 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-      //  Utils.showToast(data.message, true);
+        //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
-    //  Utils.showToast(e.toString(), true);
+      //  Utils.showToast(e.toString(), true);
       return [];
     }
   }
+
   static Future<List<BothWiseCampsData>>
-  getStateDistrictWiseCampForDashboard(int stateId,int districtId) async {
+  getStateDistrictWiseCampForDashboard(int stateId, int districtId) async {
     print("@@getStateDistrictWiseHospitalForDashboard" + "1");
     Response response1;
 
@@ -8359,7 +8508,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictWiseCampForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateDistrictWiseCampForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8369,11 +8519,12 @@ class ApiController {
       // Define the request body
       var body = json.encode({
         "stateId": stateId,
-        "districtId":districtId,
+        "districtId": districtId,
 
 
       });
-      print("@@getStateDistrictWiseHospitalForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getStateDistrictWiseHospitalForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -8406,7 +8557,7 @@ class ApiController {
         print(
             "@@showToast--2 Response: ${response
                 .toString()}");
-       // Utils.showToast(data.message, true);
+        // Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
@@ -8416,7 +8567,8 @@ class ApiController {
   }
 
   static Future<List<DataBothWiseCampWise>>
-  getStateDistrictCampWiseDataForDashboard(int stateId,int districtId,String srNo,String regHospitalId) async {
+  getStateDistrictCampWiseDataForDashboard(int stateId, int districtId,
+      String srNo, String regHospitalId) async {
     print("@@getStateDistrictCampWiseDataForDashboard" + "1");
     Response response1;
 
@@ -8429,7 +8581,8 @@ class ApiController {
 
     try {
       // Define the URL and headers
-      var url = ApiConstants.baseUrl + ApiConstants.GetStateDistrictCampWiseDataForDashboard;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetStateDistrictCampWiseDataForDashboard;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8439,13 +8592,12 @@ class ApiController {
       // Define the request body
       var body = json.encode({
         "stateId": stateId,
-        "districtId":districtId,
-        "srNo":srNo,
-        "regHospitalId":regHospitalId
-
-
+        "districtId": districtId,
+        "srNo": srNo,
+        "regHospitalId": regHospitalId
       });
-      print("@@getStateDistrictCampWiseDataForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getStateDistrictCampWiseDataForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -8464,8 +8616,8 @@ class ApiController {
 
       // Parse the response
       var responseData = json.decode(response.data);
-     BothWiseCampWise data =
-     BothWiseCampWise.fromJson(responseData);
+      BothWiseCampWise data =
+      BothWiseCampWise.fromJson(responseData);
 
       if (data.status) {
         //Utils.showToast(data.message, true);
@@ -8579,7 +8731,8 @@ class ApiController {
 
 
       });
-      print("@@getDistrictWiseCampForDashboard--bodyprint--: ${url+body.toString()}");
+      print("@@getDistrictWiseCampForDashboard--bodyprint--: ${url +
+          body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -8687,7 +8840,8 @@ class ApiController {
   }
 
 
-  static Future<List<DataHospitallinkedwithNGO>> getHospitalsLinkedWithNGO(String npcbNo) async {
+  static Future<List<DataHospitallinkedwithNGO>> getHospitalsLinkedWithNGO(
+      String npcbNo) async {
     print("@@getHospitalsLinkedWithNGO - Start");
 
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -8697,7 +8851,8 @@ class ApiController {
     }
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_HospitalLinkedWithNGO;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.Get_DPM_HospitalLinkedWithNGO;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8721,7 +8876,8 @@ class ApiController {
         ),
       );
 
-      print("@@getHospitalsLinkedWithNGO - API Response: ${response.toString()}");
+      print(
+          "@@getHospitalsLinkedWithNGO - API Response: ${response.toString()}");
 
       var responseData = json.decode(response.data);
       HospitallinkedwithNGO data = HospitallinkedwithNGO.fromJson(responseData);
@@ -8739,7 +8895,8 @@ class ApiController {
     }
   }
 
-  static Future<List<DataHospitalDetailsView>> get_DPM_ViewHospitalDetails(String hospitalId) async {
+  static Future<List<DataHospitalDetailsView>> get_DPM_ViewHospitalDetails(
+      String hospitalId) async {
     print("@@get_DPM_ViewHospitalDetails - Start");
 
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -8773,10 +8930,11 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_ViewHospitalDetails - API Response: ${response.toString()}");
+      print("@@get_DPM_ViewHospitalDetails - API Response: ${response
+          .toString()}");
 
       var responseData = json.decode(response.data);
-     HospitalDetailsView data = HospitalDetailsView.fromJson(responseData);
+      HospitalDetailsView data = HospitalDetailsView.fromJson(responseData);
 
       if (data.status) {
         return data.data;
@@ -8791,7 +8949,9 @@ class ApiController {
     }
   }
 
-  static Future<List<DataEquipemntDetails>> get_DPM_ViewHospitalequipmentDetails(String hospitalId) async {
+  static Future<
+      List<DataEquipemntDetails>> get_DPM_ViewHospitalequipmentDetails(
+      String hospitalId) async {
     print("@@get_DPM_ViewHospitalequipmentDetails - Start");
 
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -8801,7 +8961,8 @@ class ApiController {
     }
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_ViewHospitalequipmentDetails;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.Get_DPM_ViewHospitalequipmentDetails;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8825,7 +8986,8 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_ViewHospitalequipmentDetails - API Response: ${response.toString()}");
+      print("@@get_DPM_ViewHospitalequipmentDetails - API Response: ${response
+          .toString()}");
 
       var responseData = json.decode(response.data);
       EquipemntDetails data = EquipemntDetails.fromJson(responseData);
@@ -8842,7 +9004,9 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataMouDetails>> get_DPM_ViewMOU(String darpan_No,String user_ID) async {
+
+  static Future<List<DataMouDetails>> get_DPM_ViewMOU(String darpan_No,
+      String user_ID) async {
     print("@@get_DPM_ViewMOU - Start");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String districtCode_loginFetch =
@@ -8901,7 +9065,8 @@ class ApiController {
     }
   }
 
-  static Future<List<DataDoctorlinkHospitals>> get_DPM_DoctorLinkedWithHospital(String npcbNo) async {
+  static Future<List<DataDoctorlinkHospitals>> get_DPM_DoctorLinkedWithHospital(
+      String npcbNo) async {
     print("@@get_DPM_DoctorLinkedWithHospital - Start");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String districtCode_loginFetch =
@@ -8914,7 +9079,8 @@ class ApiController {
     }
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_DoctorLinkedWithHospital;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.Get_DPM_DoctorLinkedWithHospital;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8940,7 +9106,8 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_DoctorLinkedWithHospital - API Response: ${response.toString()}");
+      print("@@get_DPM_DoctorLinkedWithHospital - API Response: ${response
+          .toString()}");
 
       var responseData = json.decode(response.data);
       DoctorlinkHospitals data = DoctorlinkHospitals.fromJson(responseData);
@@ -8957,8 +9124,12 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataNGoAPPlicationApprovedFinalScreen>> get_DPM_Ngo_Application_Approve_Reject_Hold(int application_Status,
-      String reason_Hold_Reject,int stateid,int districtid,String userid,String darpan,String npcbnumber) async {
+
+  static Future<List<
+      DataNGoAPPlicationApprovedFinalScreen>> get_DPM_Ngo_Application_Approve_Reject_Hold(
+      int application_Status,
+      String reason_Hold_Reject, int stateid, int districtid, String userid,
+      String darpan, String npcbnumber) async {
     print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - Start");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String districtCode_loginFetch =
@@ -8970,7 +9141,8 @@ class ApiController {
     }
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_Ngo_Application_Approve_Reject_Hold;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.Get_DPM_Ngo_Application_Approve_Reject_Hold;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -8978,23 +9150,24 @@ class ApiController {
       };
 
       var body = json.encode({
-       /* "application_Status": 1,
+        /* "application_Status": 1,
         "reason_Hold_Reject": "",
         "stateid": 100,
         "districtid": 1001,
         "userid": "TTTest11001",
         "ngonumber": "up_20184013",
         "npcbnumber": "01840131001"*/
-      "application_Status": application_Status,
-      "reason_Hold_Reject": reason_Hold_Reject,
-      "stateid": stateid,
-      "districtid": districtid,
-      "userid": userid,
-      "ngonumber": darpan,
-      "npcbnumber": npcbnumber,
+        "application_Status": application_Status,
+        "reason_Hold_Reject": reason_Hold_Reject,
+        "stateid": stateid,
+        "districtid": districtid,
+        "userid": userid,
+        "ngonumber": darpan,
+        "npcbnumber": npcbnumber,
       });
 
-      print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - Request: ${url + body}");
+      print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - Request: ${url +
+          body}");
 
       Dio dio = Dio();
       Response response = await dio.post(
@@ -9007,10 +9180,13 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - API Response: ${response.toString()}");
+      print(
+          "@@get_DPM_Ngo_Application_Approve_Reject_Hold - API Response: ${response
+              .toString()}");
 
       var responseData = json.decode(response.data);
-      NGoAPPlicationApprovedFinalScreen data = NGoAPPlicationApprovedFinalScreen.fromJson(responseData);
+      NGoAPPlicationApprovedFinalScreen data = NGoAPPlicationApprovedFinalScreen
+          .fromJson(responseData);
 
       if (data.status) {
         return data.data;
@@ -9024,7 +9200,10 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<NewDatahospitaldetailsview>> get_DPM_ViewNewHospitalDetailss(String hospitalId) async {
+
+  static Future<
+      List<NewDatahospitaldetailsview>> get_DPM_ViewNewHospitalDetailss(
+      String hospitalId) async {
     print("@@get_DPM_ViewNewHospitalDetails - Start");
 
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -9058,7 +9237,8 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_ViewHospitalDetails - API Response: ${response.toString()}");
+      print("@@get_DPM_ViewHospitalDetails - API Response: ${response
+          .toString()}");
 
       var responseData = json.decode(response.data);
       hospitaldetailsview data = hospitaldetailsview.fromJson(responseData);
@@ -9077,8 +9257,11 @@ class ApiController {
   }
 
 
-  static Future<List<DataNGoAPPlicationApprovedFinalScreen>> get_DPM_Hospital_Application_Approve_Reject_Hold(int application_Status,
-      String reason_Hold_Reject,int stateid,int districtid,String userid,String darpan,String npcbnumber) async {
+  static Future<List<
+      DataNGoAPPlicationApprovedFinalScreen>> get_DPM_Hospital_Application_Approve_Reject_Hold(
+      int application_Status,
+      String reason_Hold_Reject, int stateid, int districtid, String userid,
+      String darpan, String npcbnumber) async {
     print("@@get_DPM_Hospital_Application_Approve_Reject_Hold - Start");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String districtCode_loginFetch =
@@ -9090,7 +9273,8 @@ class ApiController {
     }
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_Hospital_Application_Approve_Reject_Hold;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.Get_DPM_Hospital_Application_Approve_Reject_Hold;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -9114,7 +9298,8 @@ class ApiController {
         "npcbnumber": npcbnumber,
       });
 
-      print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - Request: ${url + body}");
+      print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - Request: ${url +
+          body}");
 
       Dio dio = Dio();
       Response response = await dio.post(
@@ -9127,10 +9312,13 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_Ngo_Application_Approve_Reject_Hold - API Response: ${response.toString()}");
+      print(
+          "@@get_DPM_Ngo_Application_Approve_Reject_Hold - API Response: ${response
+              .toString()}");
 
       var responseData = json.decode(response.data);
-      NGoAPPlicationApprovedFinalScreen data = NGoAPPlicationApprovedFinalScreen.fromJson(responseData);
+      NGoAPPlicationApprovedFinalScreen data = NGoAPPlicationApprovedFinalScreen
+          .fromJson(responseData);
 
       if (data.status) {
         return data.data;
@@ -9144,8 +9332,11 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataGovtPrivateDetails>> get_DPM_Government_District_Hospital_list_Approval
-      (int district_code,int state_code,String npcbno,String financialYear,int organisationType) async {
+
+  static Future<List<
+      DataGovtPrivateDetails>> get_DPM_Government_District_Hospital_list_Approval
+      (int district_code, int state_code, String npcbno, String financialYear,
+      int organisationType) async {
     print("@@get_DPM_Government_District_Hospital_list_Approval - Start");
 
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -9155,7 +9346,8 @@ class ApiController {
     }
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_Government_District_Hospital_list_Approval;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.Get_DPM_Government_District_Hospital_list_Approval;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -9163,14 +9355,16 @@ class ApiController {
       };
 
       var body = json.encode({
-          "district_code": district_code,
-          "state_code": state_code,
-          "npcbno": npcbno,
-          "financialYear":financialYear,
-          "organisationType": organisationType
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationType
       });
 
-      print("@@get_DPM_Government_District_Hospital_list_Approval - Request: ${url + body}");
+      print(
+          "@@get_DPM_Government_District_Hospital_list_Approval - Request: ${url +
+              body}");
 
       Dio dio = Dio();
       Response response = await dio.post(
@@ -9183,7 +9377,9 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_Government_District_Hospital_list_Approval - API Response: ${response.toString()}");
+      print(
+          "@@get_DPM_Government_District_Hospital_list_Approval - API Response: ${response
+              .toString()}");
 
       var responseData = json.decode(response.data);
       GovtPrivateDetails data = GovtPrivateDetails.fromJson(responseData);
@@ -9200,7 +9396,9 @@ class ApiController {
       return [];
     }
   }
-  static Future<List<DataDoctorlinkwithGovtPrivate>> getDPM_DoctorList(int districtCode,int StateCode,int roleId,String npcbNo) async {
+
+  static Future<List<DataDoctorlinkwithGovtPrivate>> getDPM_DoctorList(
+      int districtCode, int StateCode, int roleId, String npcbNo) async {
     print("@@getDPM_DoctorList - Start");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.getString(AppConstant.distritcCode) ?? "";
@@ -9222,7 +9420,7 @@ class ApiController {
         "district_code": 1001,
         "state_code": 100,
         "roleId": 10,
-        "npcbNo":npcbNo,
+        "npcbNo": npcbNo,
       });
 
       print("@@getDPM_DoctorList - Request: ${url + body}");
@@ -9241,7 +9439,8 @@ class ApiController {
       print("@@getDPM_DoctorList - API Response: ${response.toString()}");
 
       var responseData = json.decode(response.data);
-      DoctorlinkwithGovtPrivate data = DoctorlinkwithGovtPrivate.fromJson(responseData);
+      DoctorlinkwithGovtPrivate data = DoctorlinkwithGovtPrivate.fromJson(
+          responseData);
 
       if (data.status) {
         return data.data;
@@ -9256,8 +9455,11 @@ class ApiController {
     }
   }
 
-  static Future<List<DataGovtPrivateApprovedFinalScreen>> get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold(int application_Status,
-      String reason_Hold_Reject,int stateid,int districtid,String userid,String ngonumber,String npcbnumber,String orgType) async {
+  static Future<List<
+      DataGovtPrivateApprovedFinalScreen>> get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold(
+      int application_Status,
+      String reason_Hold_Reject, int stateid, int districtid, String userid,
+      String ngonumber, String npcbnumber, String orgType) async {
     print("@@get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold - Start");
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String districtCode_loginFetch =
@@ -9269,7 +9471,8 @@ class ApiController {
     }
 
     try {
-      var url = ApiConstants.baseUrl + ApiConstants.Get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold;
+      var url = ApiConstants.baseUrl +
+          ApiConstants.Get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold;
       Map<String, String> headers = {
         "Content-Type": "application/json",
         "apikey": "Key123",
@@ -9294,10 +9497,12 @@ class ApiController {
         "userid": userid,
         "ngonumber": "",
         "npcbnumber": npcbnumber,
-        "orgType":orgType,
+        "orgType": orgType,
       });
 
-      print("@@get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold - Request: ${url + body}");
+      print(
+          "@@get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold - Request: ${url +
+              body}");
 
       Dio dio = Dio();
       Response response = await dio.post(
@@ -9310,10 +9515,13 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold - API Response: ${response.toString()}");
+      print(
+          "@@get_DPM_GOV_PVT_OTHER_Application_Approve_Reject_Hold - API Response: ${response
+              .toString()}");
 
       var responseData = json.decode(response.data);
-      GovtPrivateApprovedFinalScreen data = GovtPrivateApprovedFinalScreen.fromJson(responseData);
+      GovtPrivateApprovedFinalScreen data = GovtPrivateApprovedFinalScreen
+          .fromJson(responseData);
 
       if (data.status) {
         return data.data;
@@ -9329,9 +9537,8 @@ class ApiController {
   }
 
 
-
-  static Future<ApproveMOURenewClick> get_DPM_MouRenew(
-      int h_Reg_ID, String userid) async {
+  static Future<ApproveMOURenewClick> get_DPM_MouRenew(int h_Reg_ID,
+      String userid) async {
     print("@@get_DPM_MouRenew" + "1");
 
     // Check network availability
@@ -9422,6 +9629,27 @@ class ApiController {
     }
   }
 
+  static Future<DataPatientCountDetail> fetchPatientCount() async {
+    final String apiUrl =
+        ApiConstants.baseUrl + ApiConstants.GetTodayAllPatientRegistred;
 
+    try {
+      final response = await http.get(Uri.parse(apiUrl));
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+
+        if (data["status"] == true && data["data"] != null) {
+          return DataPatientCountDetail.fromJson(data["data"][0]);
+        }
+      } else {
+        print("Error: API request failed with status code ${response
+            .statusCode}");
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+    return null; // Return null if API fails
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

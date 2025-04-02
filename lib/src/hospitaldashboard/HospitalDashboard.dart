@@ -35,6 +35,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
 import 'package:image/image.dart' as img;
 import '../loginsignup/LoginScreen.dart';
+import '../model/patientCount/PatientCountDetail.dart';
 import '../model/spoModel/GetLanguageForDDLs.dart';
 import '../model/spoModel/GetLanguageForDDLs.dart';
 import '../model/spoModel/PatientRegistrations.dart';
@@ -153,7 +154,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   String _address = "No address found";
   TextEditingController _latitudeController = TextEditingController();
   TextEditingController _longitudeController = TextEditingController();
-
+  int patientCount = 0;
   // Function to get current position
   Future<void> _getCurrentLocation() async {
     try {
@@ -303,7 +304,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       print('Error picking or processing image: $e');
     }
   }
-
+  Future<void> getPatientCount() async {
+    DataPatientCountDetail data = await ApiController.fetchPatientCount();
+    if (data != null) {
+      setState(() {
+        patientCount = data.patientCount ?? 0;
+      });
+    }
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -497,6 +505,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                       _chosenValue = value ?? '';
                       if (_chosenValue == "Add Patient") {
                         print('@@NGO---Hospital--1 $_chosenValue');
+                        getPatientCount(); // Call API
                         hospitalAddPatientData = true;
                         hospitalDashboardclickDsiplay = false;
                         //_showPopupMenu();
@@ -1287,7 +1296,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         ),
                       ),
                       Text(
-                        'Today Registered Patient(s): 0',
+                        "Today Registered Patient(s): $patientCount",
                         maxLines:2,
                         style: TextStyle(
                           fontSize: 13,

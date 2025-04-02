@@ -22,6 +22,7 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
   String fullnameController, getYearNgoHopital, getfyidNgoHospital;
   int status, district_code_login, state_code_login;
   String role_id, userId;
+  String currentFinancialYear;
 
   @override
   void initState() {
@@ -49,6 +50,8 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
   }
 
   Widget build(BuildContext context) {
+    currentFinancialYear = getCurrentFinancialYear();
+
     return Scaffold(
       appBar: AppBar(title: Text('NGO Approval List')),
       body: SingleChildScrollView(
@@ -88,85 +91,72 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
               ),
             ),
 
-            Divider(color: Colors.blue, height: 1.0),
 
             // Data Table (Header and Rows in Single ScrollView)
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.zero, // Remove any horizontal padding
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start, // Align children to the left
-                children: [
-                  // Header Row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start, // Ensure items align to the left
-                    children: [
-                      _buildHeaderCellSrNo('S.No.'),
-                      _buildHeaderCell('NGO Name'),
-                      // _buildHeaderCell('Member Name'),
-                      /* _buildHeaderCell('Hospital Name'),
-          _buildHeaderCell('Address'),
-          _buildHeaderCell('Nodal Officer Name'),
-          _buildHeaderCell('Mobile No'),
-          _buildHeaderCell('Email Id'), */
-                      _buildHeaderCellDashboardsAction('Action'),
-                    ],
-                  ),
-                  Divider(color: Colors.blue, height: 1.0),
-
-                  // Data Rows
-                  FutureBuilder<List<NGOAPPRovedClickListDetailData>>(
-                    future: ApiController.getSPO_DistrictNgoApproval_lists(568, 33, "2024-2025", statusApproved),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Utils.getEmptyView("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                        // No data found aligned with header
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft, // Ensure left alignment
-                            child: Text(
-                              "No data found",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+              child: FutureBuilder<List<NGOAPPRovedClickListDetailData>>(
+                future: ApiController.getSPO_DistrictNgoApproval_lists(district_code_login, state_code_login, currentFinancialYear, statusApproved),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Utils.getEmptyView("Error: ${snapshot.error}");
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    // No data found, so display only "No data found" message
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
                           ),
-                        );
-                      } else {
-                        List<NGOAPPRovedClickListDetailData> ddata = snapshot.data;
-                        return Column(
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<NGOAPPRovedClickListDetailData> ddata = snapshot.data;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start, // Align children to the left
+                      children: [
+                        // Header Row (Displayed only when data is available)
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start, // Ensure items align to the left
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('NGO Name'),
+                            _buildHeaderCellDashboardsAction('Action'),
+                          ],
+                        ),
+                        Divider(color: Colors.blue, height: 1.0),
+
+                        // Data Rows
+                        Column(
                           children: ddata.map((offer) {
                             return Row(
                               mainAxisAlignment: MainAxisAlignment.start, // Ensure items align to the left
                               children: [
-                                _buildDataCellCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
                                 _buildDataCell(offer.name),
-                                // _buildDataCell(offer.memberName),
-                                /* _buildDataCell(offer.hName),
-                    _buildDataCell(offer.address),
-                    _buildDataCell(offer.nodalOfficerName),
-                    _buildDataCell(offer.mobile.toString()),
-                    _buildDataCell(offer.emailid.toString()), */
                                 _buildDataCellViewBlueDashboard("View", () {
-                                  // Pass the offer object to the function that shows the details in a dialog
                                   _showDetailsDialog(context, offer);
                                 }),
                               ],
                             );
                           }).toList(),
-                        );
-                      }
-                    },
-                  ),
-                ],
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
             ),
+
 
           ],
         ),
@@ -183,7 +173,7 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical, // Allow vertical scrolling
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1), // Table border color and width
+              border: TableBorder.all(color: Colors.black, width: 1), // Table border color and width
               columnWidths: {
                 0: FlexColumnWidth(2), // First column (labels) takes more space
                 1: FlexColumnWidth(3), // Second column (values) takes more space
@@ -211,6 +201,22 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
       },
     );
   }
+  String getCurrentFinancialYear() {
+    DateTime now = DateTime.now();
+    int currentYear = now.year;
+    int nextYear = currentYear + 1;
+    String financialYear;
+
+    if (now.month >= 4) {
+      // Financial year starts in April
+      financialYear = '$currentYear-${nextYear.toString().substring(2)}';
+    } else {
+      financialYear =
+      '${currentYear - 1}-${currentYear.toString().substring(2)}';
+    }
+
+    return financialYear;
+  }
 
 // Helper method to build each row in the table
   TableRow _buildTableRow(String label, String value) {
@@ -234,23 +240,29 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
 
 
   Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: onTap, // Trigger the callback when the cell is clicked
       child: Container(
-        height: 50,
-        width:60, // Fixed width to ensure horizontal scrolling
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(
-            width: 0.1,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+            bottom:
+            BorderSide(width: 0.1, color: Colors.black), // Bottom border
           ),
         ),
-        child: Center(
+        child: Align(
+          alignment: Alignment.centerLeft,
           child: Text(
             text,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
             ),
           ),
         ),
@@ -266,81 +278,143 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
   TextStyle _highlightTextStyle() {
     return const TextStyle(color: Colors.red, fontWeight: FontWeight.w500);
   }
-  Widget _buildHeaderCellDashboardsAction(String text) {
+  Widget _buildDataCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 50,
-      width:60,
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
+      child: Align(
+        alignment: Alignment.centerLeft,
         child: Text(
           text,
-          overflow: TextOverflow.ellipsis,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCellDashboardsAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 0.0),
+          child: Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildHeaderCell(String title) {
-    return Container(
-      width: 150,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      child: Center(child: Text(title, style: _infoTextStyle(), textAlign: TextAlign.center)),
-    );
-  }
-
-
-  Widget _buildDataCell(String value) {
-    return Container(
-      width: 150,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      child: Center(child: Text(value, style: const TextStyle(color: Colors.black), textAlign: TextAlign.center)),
-    );
-  }
-  Widget _buildDataCellCellSrNo(String value) {
-    return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      child: Center(child: Text(value, style: const TextStyle(color: Colors.black), textAlign: TextAlign.center)),
-    );
-  }
-  Widget _buildHeaderCellSrNo(String title) {
-    return Container(
-      height: 50,
-      width: 50,
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      child: Center(child: Text(title, style: _infoTextStyle(), textAlign: TextAlign.center)),
-    );
-  }
 }

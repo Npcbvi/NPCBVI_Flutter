@@ -393,6 +393,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       appBar: new AppBar(
         backgroundColor: Colors.blue,
         title: new Text('Welcome ' + '${fullnameController}',
+            maxLines:2,
             style: new TextStyle(
               color: Colors.white,
             )),

@@ -150,7 +150,7 @@ class _SpoDashboard extends State<SpoDashboard> {
     SPO_ScreeningCampUpComing=false;
 
     _getSPOashbnoardData();
-    _futures = ApiController.getSPO_RegisteredEyesurgeonList(100, "NPCBTT");
+    _futures = ApiController.getSPO_RegisteredEyesurgeonList(state_code_login, "NPCBTT");
   }
 
   void _getSPOashbnoardData() {
@@ -162,9 +162,9 @@ class _SpoDashboard extends State<SpoDashboard> {
           final response = await ApiController.getSPO_dashboard(
               district_code_login,
               state_code_login,
-              569,
+              0,
               userId,
-              role_id,
+              "",
               status,
               currentFinancialYear);
           Utils.hideProgressDialog(context);
@@ -782,6 +782,28 @@ class _SpoDashboard extends State<SpoDashboard> {
               child: Row(
                 children: [
                   // Login Type and District in a Row
+                  const SizedBox(width: 5),
+                  Container(
+                    margin: EdgeInsets.only(right: 10),
+                    // Right margin for spacing
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Login Type:',
+                          style: TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(height: 5),
+                        Text(
+                          'SPO',
+                          style: TextStyle(
+                              color: Colors.red, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 5),
                   Container(
                     margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
                     // Margin for spacing
@@ -831,51 +853,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                   ),
 
                   // Space between Row and State Column
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 5),
 
-                  // State in a Column with margin
-                  Container(
-                    margin: EdgeInsets.only(right: 10),
-                    // Right margin for spacing
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Login Type:',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          'SPO',
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    margin: EdgeInsets.only(right: 10),
-                    // Right margin for spacing
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'District',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                            '${districtNames.isNotEmpty ? districtNames : null}',
 
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -5564,11 +5544,10 @@ class _SpoDashboard extends State<SpoDashboard> {
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
                         FutureBuilder<List<NGOApprovalClickData>>(
                           future: ApiController.getSPO_DistrictNgoApproval(
-                            568, 33, currentFinancialYear, statusApproved,
+                            district_code_login, state_code_login, currentFinancialYear, statusApproved,
                             //district_code_login, state_code_login, currentFinancialYear, statusApproved,
                           ),
                           builder: (context, snapshot) {
@@ -5684,14 +5663,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
                         FutureBuilder<List<NGOApprovalClickData>>(
                           future: ApiController.getSPO_DistrictNgoApproval(
-                              568, 33, currentFinancialYear, statusPending
+                              district_code_login, state_code_login, currentFinancialYear, statusPending
                               //district_code_login, state_code_login, currentFinancialYear, statusApproved,
 
-                              ),
+                          ),
                           builder: (context, snapshot) {
                             // Show loader while waiting for response
                             if (snapshot.connectionState ==
@@ -5978,7 +5956,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                   ],
                 ),
               ),
-              Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<GetSPO_GHCHCOtherApprovalsData>>(
                 future: ApiController.GetSPO_GHCHCOtherApprovalsDatas(
@@ -6058,138 +6035,102 @@ class _SpoDashboard extends State<SpoDashboard> {
             children: [
               // Horizontal Scrolling Header Row
               SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
                 child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                      padding: EdgeInsets.all(10),
-                                      width: 160.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(12),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                            Colors.black.withOpacity(0.1),
-                                            blurRadius: 8,
-                                            offset: Offset(0, 4),
-                                          ),
-                                        ],
-                                        border: Border.all(
-                                            color: Colors.red, width: 1.5),
-                                      ),
+                  margin: EdgeInsets.zero,
+                  child: Padding(
+                    padding: EdgeInsets.zero,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded( // Expands to available space
+                          child: Container(
+                            color: Colors.blue,
+                            child: Padding(
+                              padding: EdgeInsets.zero,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded( // This ensures the text container takes full width
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      width: double.infinity, // Takes full width
                                       child: Text(
                                         'Govt. / CHC / Other Hospitals (Pending)',
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                          color: Colors.red,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
                                         ),
                                       ),
                                     ),
+                                  ),
 
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          /*   GetDPM_GH_PendingClickShowData =
-                                          false;*/
+                                  const SizedBox(width: 10),
 
-                                          GetSPO_GHA_PendingClickShowData=false;
-                                          SPOLcikONDPMMEnus = false;
-                                          RegisteredEyesurgeon = false;
-                                          eyeBankDonationApprovals=false;
-                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
-                                          eyeBankApprovals=false;
-                                          eyeBankCollections=false;
-                                          GetSPO_GH_APPorovedClickShowData=false;
-                                          SPO_PrivatePartitionPorovedClickShowData=false;
-                                          SPO_ScreeningCampUpComing=false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 8),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                          BorderRadius.circular(8),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                              Colors.black.withOpacity(0.1),
-                                              blurRadius: 6,
-                                              offset: Offset(0, 3),
+                                  InkWell(
+                                    onTap: () {
+                                      print('@@back Pressed----display---');
+                                      setState(() {
+                                        dashboardviewReplace = true;
+                                        GetSPO_GHA_PendingClickShowData = false;
+                                        SPOLcikONDPMMEnus = false;
+                                        RegisteredEyesurgeon = false;
+                                        eyeBankDonationApprovals = false;
+                                        RegisteredEyesurgeonsEstimateTargetAllocations = false;
+                                        eyeBankApprovals = false;
+                                        eyeBankCollections = false;
+                                        GetSPO_GH_APPorovedClickShowData = false;
+                                        SPO_PrivatePartitionPorovedClickShowData = false;
+                                        SPO_ScreeningCampUpComing = false;
+                                      });
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blue,
+                                        borderRadius: BorderRadius.circular(8),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.1),
+                                            blurRadius: 6,
+                                            offset: Offset(0, 3),
+                                          ),
+                                        ],
+                                        border: Border.all(color: Colors.white, width: 1),
+                                      ),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18),
+                                          SizedBox(width: 8),
+                                          Text(
+                                            'Back',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 14,
                                             ),
-                                          ],
-                                          border: Border.all(
-                                              color: Colors.red, width: 1.5),
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_back_ios_new,
-                                              color: Colors.red,
-                                              size: 18,
-                                            ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              'Back',
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
                                     ),
+                                  ),
 
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
+                                  const SizedBox(width: 10),
+                                ],
                               ),
                             ),
                           ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
               ),
+
               SizedBox(width: 8.0),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -6202,7 +6143,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                   ],
                 ),
               ),
-              Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<GetSPO_GHCHCOtherApprovalsData>>(
                 future: ApiController.GetSPO_GHCHCOtherApprovalsDatas(
@@ -6408,7 +6348,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                   ],
                 ),
               ),
-              Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
                 future: ApiController.getSPO_PrivatePractitionerApproval(
@@ -6822,7 +6761,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                   ],
                 ),
               ),
-              Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
                 future: ApiController.getSPO_PrivateMedicalCollegeApproval(
@@ -7936,83 +7874,8 @@ class _SpoDashboard extends State<SpoDashboard> {
 
 
 
-  Widget _buildHeaderCellSrNoEyeScreen(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.035, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellEyeScreen(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellSrNoGovtPrivate(String text) {
-    return Container(
-      height: 35,
-      width: 70, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildHeaderCellSrNo(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -8073,107 +7936,9 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  Widget _buildHeaderCellNGOAction(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellActionGovtPrivate(String text) {
-    return Container(
-      height: 35,
-      width: 90, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellGovtPrivateNgo(String text) {
-    return Container(
-      height: 35,
-      width: 130, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellEyeScreen(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildDataCell(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -8234,124 +7999,10 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  Widget _buildDataCellViewBlueSmasllShow(String text, VoidCallback onTap) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 35,
-        width: screenWidth * 0.18, // 30% of screen width for adaptability
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-            bottom:
-            BorderSide(width: 0.1, color: Colors.black), // Bottom border
-          ),
-        ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              color: Colors.blue,
-              fontSize: screenWidth * 0.04, // Scales with screen width
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellNGOActionSmallShow(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.18, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
 
-  Widget _buildDataCellViewBlueEyeScreen(String text, VoidCallback onTap) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 35,
-        width: screenWidth * 0.3, // 30% of screen width for adaptability
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(width: 0.1, color: Colors.black), // Top border
 
-            bottom:
-            BorderSide(width: 0.1, color: Colors.black), // Bottom border
-          ),
-        ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              color: Colors.blue,
-              fontSize: screenWidth * 0.04, // Scales with screen width
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildDataCellSrNoEyScreen(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        // Aligns text to the left
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.03, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildDataCellSrNo(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -8381,257 +8032,14 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  //related disease Data view
-  Widget _buildHeaderCellSrNoDiseaseData(String text, BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.035, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellDiseaseData(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
 
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellSrNoDiseaseDataTotal(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.035, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellDiseaseDataAction(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellSrNoDiseaseData(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        // Aligns text to the left
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.03, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellDiseaseData(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellDiseaseDataSettingUp(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellDiseaseDataSettingUp(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 3,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellDiseaseTotal(String text) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.035, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildDataCellViewBlueDiseaseDataAction(
       String text, VoidCallback onTap) {

@@ -12,6 +12,7 @@ import 'package:mohfw_npcbvi/src/loginsignup/ForgotPasswordScreen.dart';
 import 'package:mohfw_npcbvi/src/loginsignup/RegisterScreen.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/MainDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/guidlines/GuilinessPage.dart';
+import 'package:mohfw_npcbvi/src/model/patientCount/PatientCountDetail.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -23,8 +24,16 @@ class OuterDashboardHomeClicks extends StatefulWidget {
 class _OuterDashboardHomeClicks extends State<OuterDashboardHomeClicks> {
   List<LstGuidelineFileName> guidelinesFiles = [];
   bool isLoading = true;
+  int patientCount = 0;
 
-
+  Future<void> getPatientCount() async {
+    DataPatientCountDetail data = await ApiController.fetchPatientCount();
+    if (data != null) {
+      setState(() {
+        patientCount = data.patientCount ?? 0;
+      });
+    }
+  }
   @override
   void initState() {
     super.initState();
@@ -124,107 +133,14 @@ class _OuterDashboardHomeClicks extends State<OuterDashboardHomeClicks> {
 
 
   @override
- /* Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white, // or Colors.blueGrey[50]
-      appBar: AppBar(
-        automaticallyImplyLeading: false, // Disables the back button
-        centerTitle: true,
-        title: Text('Home', style: TextStyle(color: Colors.white)),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.dashboard, color: Colors.white),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => MainDashboard()));
-            },
-          )
-        ],
-      ),
-      body: Container(
-        height: double.infinity, // Ensures full height
-        width: double.infinity, // Ensures full width
-        child: Stack(
 
-          children: [
-            SingleChildScrollView(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                *//*  SizedBox(
-                    height: 28,
-                    child: Marquee(
-                      text: 'NGO Darpan number is mandatory for registration.',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: Colors.red,
-                      ),
-                      velocity: 50.0,
-                      pauseAfterRound: Duration(seconds: 1),
-                      startPadding: 10.0,
-                      accelerationDuration: Duration(seconds: 1),
-                      accelerationCurve: Curves.linear,
-                      decelerationDuration: Duration(milliseconds: 500),
-                      decelerationCurve: Curves.easeOut,
-                    ),
-                  ),*//*
-                  SizedBox(height: 5),
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 4),
-                    width: 350, // Set the desired width
-                    child: RichText(
-                      text: TextSpan(
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            color: Colors.black,
-                            fontSize: 15),
-                        children: [
-                          TextSpan(
-                            text:
-                            'National Programme for Control of Blindness & Visual Impairment (NPCBVI) was launched in the year 1976 as a 100% Centrally'
-                              'Sponsored scheme with the goal to reduce the prevalence of blindness from 1.4% to 0.3%',
-                          ),
-
-                          TextSpan(
-                            text: '\nRead more',
-                            style: TextStyle(
-                                color: Colors.blue, fontWeight: FontWeight.bold),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = showDataAlert,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-
-    );
-  }*/
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         centerTitle: true,
         title: Text('Home', style: TextStyle(color: Colors.white)),
-       /* actions: [
-          IconButton(
-            icon: Icon(Icons.dashboard, color: Colors.white),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MainDashboard()),
-              );
-            },
-          )
-        ],*/
+
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -273,6 +189,42 @@ class _OuterDashboardHomeClicks extends State<OuterDashboardHomeClicks> {
               ),
             ),
             SizedBox(height: 10),
+            Card(
+              elevation: 3, // Adds shadow for depth
+              margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12), // Space around the card
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(2), // Rounded corners
+              ),
+              color: Colors.blue, // Sets background color to blue
+              child: Container(
+                padding: EdgeInsets.all(10), // Internal padding for spacing
+                alignment: Alignment.centerLeft, // Aligns text to the left
+                child: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: "Today's (Patients) Registered:  ", // First part
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.white, // Text color
+                        ),
+                      ),
+                      TextSpan(
+                        text: "$patientCount", // Second part (Dynamic value can be used here)
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                          color: Colors.white, // Different color for emphasis
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            SizedBox(height: 5),
             Card(
               elevation: 3, // Adds shadow for depth
               margin: EdgeInsets.symmetric(vertical: 6, horizontal: 12), // Space around the card

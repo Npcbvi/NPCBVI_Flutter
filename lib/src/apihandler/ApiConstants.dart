@@ -227,5 +227,7 @@ class ApiConstants {
 
   static String GuidelinesForHomePage = 'GuidelinesForHomePage';
 
+  static String GetTodayAllPatientRegistred = 'GetTodayAllPatientRegistred';
+
 
 }
