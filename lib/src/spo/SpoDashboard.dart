@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
@@ -2850,9 +2851,9 @@ class _SpoDashboard extends State<SpoDashboard> {
                     // Data Table Header
                     Row(
                       children: [
-                        _buildHeaderCellSrNo('S.No.'),
+                        _buildHeaderCellSrNoDashboard('S.No.'),
                         _buildHeaderCell('District'),
-                        _buildHeaderCell('User ID'),
+                       // _buildHeaderCellDiseaseData('User ID'),
                         /*_buildHeaderCell('Name'),
                         _buildHeaderCell('Address'),
                         _buildHeaderCell('Mobile No.'),
@@ -2860,7 +2861,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         _buildHeaderCell('Status'),
                         _buildHeaderCellACtiveDeactive('Activate/Deactivate'),*/
                         //in comment next sprint
-                         _buildHeaderCell('Action'),
+                         _buildHeaderCellDashboardsAction('Action'),
                       ],
                     ),
                     const Divider(color: Colors.blue, height: 1.0),
@@ -2915,7 +2916,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCell(offer.districtName ?? 'N/A'),
                                   // Handle null
-                                  _buildDataCell(offer.userId ?? 'N/A'),
+                                //  _buildDataCell(offer.userId ?? 'N/A'),
                                   // Add field if necessary
                                   /* _buildDataCell(offer.name ?? 'N/A'),
                                  _buildDataCell(offer.address ?? 'N/A'),
@@ -2956,7 +2957,7 @@ class _SpoDashboard extends State<SpoDashboard> {
           title: Text('Details for ${offer.districtName}'),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1), // Adds borders to the table
+              border: TableBorder.all(color: Colors.black, width: 1), // Adds borders to the table
               children: [
                 TableRow(
                   children: [
@@ -3684,27 +3685,6 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  Widget _buildHeaderCellSrNo(String text) {
-    return Container(
-      height: 40,
-      width: 50, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildHeaderCellSrNoDashboard(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -3901,54 +3881,8 @@ class _SpoDashboard extends State<SpoDashboard> {
   }
 
 
-  Widget _buildHeaderCell(String text) {
-    return Container(
-      height: 40,
-      width:100, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
 
 
-  Widget _buildDataCell(String text) {
-    return Container(
-      height: 40,
-      width:100,
-      // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          maxLines: 3,
-          style: TextStyle(
-            fontSize: 11.0, // Set font size here
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -3974,30 +3908,6 @@ class _SpoDashboard extends State<SpoDashboard> {
               fontWeight: FontWeight.normal,
               color: Colors.blue,
               fontSize: screenWidth * 0.04, // Scales with screen width
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-  Widget _buildDataCellViewBlue(String text, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 40,
-        width:100, // Fixed width to ensure horizontal scrolling
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            width: 0.1,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
             ),
           ),
         ),
@@ -4030,28 +3940,6 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  Widget _buildDataCellSrNo(String text) {
-    return Container(
-      height: 40,
-      width: 50,
-      // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ),
-    );
-  }
   Widget eyeBankApproval() {
     return SingleChildScrollView(
       child: Column(
@@ -4087,103 +3975,130 @@ class _SpoDashboard extends State<SpoDashboard> {
                             'Select District:',
                             style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
-                          Center(
-                            child: FutureBuilder<List<DataDsiricst>>(
-                              future: _getDistrictData(state_code_login), // API call to get districts
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                }
-                                if (!snapshot.hasData) {
-                                  return const CircularProgressIndicator(); // Loading indicator
-                                }
+                          FutureBuilder<List<DataDsiricst>>(
+                            future: _getDistrictData(state_code_login), // API call to get districts
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+                              if (!snapshot.hasData) {
+                                return const CircularProgressIndicator(); // Loading indicator
+                              }
 
-                                List<DataDsiricst> districtList = snapshot.data;
+                              List<DataDsiricst> districtList = snapshot.data ?? [];
 
-                                // Ensure selected district is in the list, otherwise select the first one
-                                if (_selectedUserDistrict == null ||
-                                    !districtList.contains(_selectedUserDistrict)) {
-                                  _selectedUserDistrict =
-                                  districtList.isNotEmpty ? districtList.first : null;
-                                }
+                              // Ensure selected district is in the list, otherwise select the first one
+                              if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                                _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
+                              }
 
-                                return DropdownButtonFormField<DataDsiricst>(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
+                              return DropdownButtonFormField2<DataDsiricst>(
+                                isExpanded: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  onChanged: (districtUser) {
-                                    setState(() {
-                                      _selectedUserDistrict = districtUser;
-                                      distCodeDPM = int.parse(districtUser.districtCode.toString());
-                                      print('@@@Districtuser: ${districtUser.districtName}');
-                                    });
-                                  },
-                                  value: _selectedUserDistrict,
-                                  items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
-                                    return DropdownMenuItem<DataDsiricst>(
-                                      value: district,
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.location_city, color: Colors.blue), // Icon for each item
-                                          SizedBox(width: 10),
-                                          Text(district.districtName),
-                                        ],
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 300, // Adjust dropdown max height
+                                  offset: const Offset(0, -10), // Move dropdown upwards
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 5,
+                                        spreadRadius: 1,
                                       ),
-                                    );
-                                  }).toList(),
-                                  icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Custom drop-down icon
-                                  iconSize: 30, // Customize the icon size
-                                );
-                              },
-                            ),
+                                    ],
+                                  ),
+                                ),
+                                onChanged: (districtUser) {
+                                  setState(() {
+                                    _selectedUserDistrict = districtUser;
+                                    distCodeDPM = int.parse(districtUser?.districtCode.toString() ?? "0");
+                                    print('@@@Districtuser: ${districtUser?.districtName}');
+                                  });
+                                },
+                                value: _selectedUserDistrict,
+                                items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                  return DropdownMenuItem<DataDsiricst>(
+                                    value: district,
+                                    child: Text(district.districtName),
+                                  );
+                                }).toList(),
+                                hint: Icon(Icons.arrow_drop_down, color: Colors.black), // Corrected icon usage
+                              );
+                            },
                           ),
                         ],
                       ),
                     ),
 
+
+
                     const SizedBox(
                       height: 5,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 5, 20.0, 0),
-                      child: ElevatedButton(
-                          child: Text('Submit'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              isSubmitPressed = true; // Mark as submit pressed
-                            });
-                            print('@@DPMMMM Hit here-----Api---------');
-                          }),
-                    ),
 
-                    // Display SingleChildScrollView only if submit is pressed and district is selected
-                    if (isSubmitPressed && _selectedUserDistrict != null)
+                SizedBox(
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(130, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    elevation: 4,
+                    shadowColor: Colors.black,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      isSubmitPressed = true; // Update state on button press
+                    });
+                    print('@@DPMMMM Hit here-----Api---------');
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.chevron_right, color: Colors.white),
+                      SizedBox(width: 8),
+                      Text(
+                        'Submit',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+                // Display SingleChildScrollView only if submit is pressed and district is selected
+                  /*  if (isSubmitPressed && _selectedUserDistrict != null)
                       SingleChildScrollView(
                         scrollDirection: Axis.horizontal,
                         child: Column(
                           children: [
                             Row(
                               children: [
-                                _buildDataCellSrNo('S.No.'),
-                                _buildDataCell('Id'),
-                                _buildDataCell('Eye Bank Name'),
-                                _buildHeaderCell('Action'),
+                                _buildHeaderCellSrNoDashboard('S.No.'),
+                                _buildHeaderCell('Id'),
+                               // _buildDataCell('Eye Bank Name'),
+                                _buildHeaderCellDashboardsAction('Action'),
                               ],
                             ),
-                            const Divider(color: Colors.blue, height: 1.0),
                             //eyeBankingRole_id=15 in case of Eye Bank Static send
                             FutureBuilder<List<EyeBankApprovalDataData>>(
                               future: ApiController
@@ -4233,15 +4148,15 @@ class _SpoDashboard extends State<SpoDashboard> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          _buildDataCellSrNo(
+                                          _buildDataCellSrNoDashboards(
                                               (ddata.indexOf(offer) + 1)
                                                   .toString()),
                                           _buildDataCell(
                                               offer.eyeBankUniqueID ?? 'N/A'),
-                                          _buildDataCell(
-                                              offer.eyebankName ?? 'N/A'),
+                                         *//* _buildDataCell(
+                                              offer.eyebankName ?? 'N/A'),*//*
 
-                                          _buildDataCellViewBlue("View More", () {
+                                          _buildDataCellViewBlueDiseaseDataAction("View More", () {
                                             _showViewMoreDialog(context, offer);
                                           }),
                                         ],
@@ -4253,8 +4168,62 @@ class _SpoDashboard extends State<SpoDashboard> {
                             ),
                           ],
                         ),
-                      ),
-                  ],
+                      ),*/
+                  if (isSubmitPressed && _selectedUserDistrict != null)
+              SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  FutureBuilder<List<EyeBankApprovalDataData>>(
+                    future: ApiController.getSPO_EyeBankApplicationApproval(
+                        0, 15, state_code_login, district_code_login),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(child: Text("Error: ${snapshot.error}")),
+                        );
+                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(child: Text("No data found", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+                        );
+                      } else {
+                        List<EyeBankApprovalDataData> ddata = snapshot.data;
+                        return Column(
+                          children: [
+                            // Show header row only when data is available
+                            Row(
+                              children: [
+                                _buildHeaderCellSrNoDashboard('S.No.'),
+                                _buildHeaderCell('Id'),
+                                _buildHeaderCellDashboardsAction('Action'),
+                              ],
+                            ),
+                            ...ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.eyeBankUniqueID ?? 'N/A'),
+                                  _buildDataCellViewBlueDiseaseDataAction("View More", () {
+                                    _showViewMoreDialog(context, offer);
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ],
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
+
+              )],
                 ),
               ),
             ),
@@ -4272,7 +4241,7 @@ class _SpoDashboard extends State<SpoDashboard> {
           title: Text('Details for ${offer.eyebankName ?? 'N/A'}'),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1),
+              border: TableBorder.all(color: Colors.black, width: 1),
               children: [
                 TableRow(
                   children: [
@@ -4355,182 +4324,196 @@ class _SpoDashboard extends State<SpoDashboard> {
                       ),
                     ),
 
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const Text(
-                            'Select District:',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          Center(
-                            child: FutureBuilder<List<DataDsiricst>>(
-                              future: _getDistrictData(state_code_login), // API call to get districts
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                }
-                                if (!snapshot.hasData) {
-                                  return const CircularProgressIndicator(); // Loading indicator
-                                }
-
-                                List<DataDsiricst> districtList = snapshot.data;
-
-                                // Ensure selected district is in the list, otherwise select the first one
-                                if (_selectedUserDistrict == null ||
-                                    !districtList.contains(_selectedUserDistrict)) {
-                                  _selectedUserDistrict =
-                                  districtList.isNotEmpty ? districtList.first : null;
-                                }
-
-                                return DropdownButtonFormField<DataDsiricst>(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blue, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.blueAccent, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
-                                  ),
-                                  onChanged: (districtUser) {
-                                    setState(() {
-                                      _selectedUserDistrict = districtUser;
-                                      distCodeDPM = int.parse(districtUser.districtCode.toString());
-                                      print('@@@Districtuser: ${districtUser.districtName}');
-                                    });
-                                  },
-                                  value: _selectedUserDistrict,
-                                  items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
-                                    return DropdownMenuItem<DataDsiricst>(
-                                      value: district,
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.location_city, color: Colors.blue), // Icon for each item
-                                          SizedBox(width: 10),
-                                          Text(district.districtName),
-                                        ],
-                                      ),
-                                    );
-                                  }).toList(),
-                                  icon: Icon(Icons.arrow_drop_down, color: Colors.blue), // Custom drop-down icon
-                                  iconSize: 30, // Customize the icon size
-                                );
-                              },
-                            ),
-                          ),
-                        ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      const Text(
+                        'Select District:',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                       ),
-                    ),
+                      Center(
+                        child: FutureBuilder<List<DataDsiricst>>(
+                          future: _getDistrictData(state_code_login), // API call to get districts
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+                            if (!snapshot.hasData) {
+                              return const CircularProgressIndicator(); // Loading indicator
+                            }
+
+                            List<DataDsiricst> districtList = snapshot.data ?? [];
+
+                            // Ensure selected district is in the list, otherwise select the first one
+                            if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                              _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
+                            }
+
+                            return DropdownButtonFormField2<DataDsiricst>(
+                              isExpanded: true,
+                              decoration: InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 300, // Set max height of dropdown
+                                elevation: 8, // Drop shadow elevation
+                                offset: const Offset(0, -5), // Controls dropdown positioning
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+
+                                  color: Colors.white, // Background color
+                                ),
+                              ),
+                              onChanged: (districtUser) {
+                                setState(() {
+                                  _selectedUserDistrict = districtUser;
+                                  distCodeDPM = int.parse(districtUser?.districtCode.toString() ?? "0");
+                                  print('@@@Districtuser: ${districtUser?.districtName}');
+                                });
+                              },
+                              value: _selectedUserDistrict,
+                              items: districtList.map<DropdownMenuItem<DataDsiricst>>((DataDsiricst district) {
+                                return DropdownMenuItem<DataDsiricst>(
+                                  value: district,
+                                  child: Row(
+                                    children: [
+                                      Text(district.districtName),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                              iconStyleData: IconStyleData(
+                                icon: Icon(Icons.arrow_drop_down, color: Colors.black), // Custom drop-down icon
+                                iconSize: 30, // Customize the icon size
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
 
 
-                    const SizedBox(
+
+                const SizedBox(
                       height: 5,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 5, 20.0, 0),
+                    SizedBox(
+                      height: 50,
                       child: ElevatedButton(
-                          child: Text('Submit'),
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.blue,
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(130, 50),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              isSubmitPressed = true; // Mark as submit pressed
-                            });
-                            print('@@DPMMMM Hit here-----Api---------');
-                          }),
-                    ),
-
-                    // Display SingleChildScrollView only if submit is pressed and district is selected
-                    if (isSubmitPressed && _selectedUserDistrict != null)
-                      SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Column(
+                          elevation: 4,
+                          shadowColor: Colors.black,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isSubmitPressed = true; // Update state on button press
+                          });
+                          print('@@DPMMMM Hit here-----Api---------');
+                        },
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Row(
-                              children: [
-                                _buildDataCellSrNo('S.No.'),
-                                _buildDataCell('Id'),
-                                _buildDataCell('Eye Bank Name'),
-                                _buildHeaderCell('Action'),
-                              ],
-                            ),
-                            const Divider(color: Colors.blue, height: 1.0),
-                            //eyeBankingRole_id=16 in case of Eye Donation Static send
-                            FutureBuilder<List<EyeBankDonationApprovalData>>(
-                              future: ApiController
-                                  .getSPO_EyeDonationApplicationApproval(
-                                   /*   0, 2, 100, 1001*/0,16,state_code_login,district_code_login),
-                              builder: (context, snapshot) {
-                                // Show progress dialog when the request is in progress
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  Utils.showProgressDialog(context);
-                                } else {
-                                  if (snapshot.connectionState !=
-                                      ConnectionState.waiting) {
-                                    Utils.hideProgressDialog(context);
-                                  }
-                                }
-
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                } else if (snapshot.hasError) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Center(
-                                      child: Text("Error: ${snapshot.error}"),
-                                    ),
-                                  );
-                                } else if (!snapshot.hasData ||
-                                    snapshot.data.isEmpty) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        _buildDataCell('No data found'),
-                                      ],
-                                    ),
-                                  );
-                                } else {
-                                  List<EyeBankDonationApprovalData> ddata =
-                                      snapshot.data;
-                                  return Column(
-                                    children: ddata.map((offer) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          _buildDataCellSrNo(
-                                              (ddata.indexOf(offer) + 1)
-                                                  .toString()),
-                                          _buildDataCell(
-                                              offer.eyeBankUniqueID ?? 'N/A'),
-                                          _buildDataCell(
-                                              offer.eyebankName ?? 'N/A'),
-                                          _buildDataCellViewBlue("View More", () {
-                                            _showViewMoreDialogEyeDonation(context, offer);
-                                          }),
-                                        ],
-                                      );
-                                    }).toList(),
-                                  );
-                                }
-                              },
+                            Icon(Icons.chevron_right, color: Colors.white),
+                            SizedBox(width: 8),
+                            Text(
+                              'Submit',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
                           ],
                         ),
                       ),
-                  ],
+                    ),
+
+                    // Display SingleChildScrollView only if submit is pressed and district is selected
+                  if (isSubmitPressed && _selectedUserDistrict != null)
+              SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: FutureBuilder<List<EyeBankDonationApprovalData>>(
+                future: ApiController.getSPO_EyeDonationApplicationApproval(
+                    0, 16, state_code_login, district_code_login),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    Utils.showProgressDialog(context);
+                  } else {
+                    Utils.hideProgressDialog(context);
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(child: Text("Error: ${snapshot.error}")),
+                    );
+                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    );
+                  } else {
+                    List<EyeBankDonationApprovalData> ddata = snapshot.data;
+
+                    return Column(
+                      children: [
+                        // ✅ Show table headers only if data is available
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNoDashboard('S.No.'),
+                            _buildHeaderCell('Id'),
+                          //  _buildDataCell('Eye Bank Name'),
+                            _buildHeaderCellDashboardsAction('Action'),
+                          ],
+                        ),
+                        Column(
+                          children: ddata.map((offer) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                _buildDataCellSrNoDashboards((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCell(offer.eyeBankUniqueID ?? 'N/A'),
+                              //  _buildDataCell(offer.eyebankName ?? 'N/A'),
+                                _buildDataCellViewBlueDiseaseDataAction("View More", () {
+                                  _showViewMoreDialogEyeDonation(context, offer);
+                                }),
+                              ],
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    );
+                  }
+                },
+              ),
+            )
+
+        ],
                 ),
               ),
             ),
@@ -4548,7 +4531,7 @@ class _SpoDashboard extends State<SpoDashboard> {
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical,  // Make the content scrollable if it's long
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1),  // Table border color and width
+              border: TableBorder.all(color: Colors.black, width: 1),  // Table border color and width
               children: [
                 _buildTableRow('ID', offer.eyeBankUniqueID ?? 'N/A'),
                 _buildTableRow('Eye Bank Name', offer.eyebankName ?? 'N/A'),
@@ -7813,7 +7796,7 @@ class _SpoDashboard extends State<SpoDashboard> {
           title: Text("Hospital Details"),
           content: SingleChildScrollView(
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1),
+              border: TableBorder.all(color: Colors.black, width: 1),
               columnWidths: {
                 0: FlexColumnWidth(1),
                 1: FlexColumnWidth(2),
@@ -7949,25 +7932,361 @@ class _SpoDashboard extends State<SpoDashboard> {
 
 
 
-  Widget _buildHeaderCellDiseaseDataAction(String text) {
+
+
+
+
+  Widget _buildHeaderCellSrNoEyeScreen(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
       height: 35,
-      width: 80, // Fixed width to ensure horizontal scrolling
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellEyeScreen(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellSrNoGovtPrivate(String text) {
+    return Container(
+      height: 35,
+      width: 70, // Fixed width to ensure horizontal scrolling
       decoration: BoxDecoration(
         color: Colors.white, // Background color for header cells
         border: Border.all(
-          width: 0.5,
+          width: 0.1,
         ),
       ),
       //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
       child: Center(
         child: Text(
           text,
-          maxLines: 3,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 0.0),
+          child: Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellNGOAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellActionGovtPrivate(String text) {
+    return Container(
+      height: 35,
+      width: 90, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
           overflow: TextOverflow.ellipsis,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellGovtPrivateNgo(String text) {
+    return Container(
+      height: 35,
+      width: 130, // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellEyeScreen(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellViewBlue(String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+            bottom:
+            BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellViewBlueSmasllShow(String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.18, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+            bottom:
+            BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellNGOActionSmallShow(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.18, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
           ),
         ),
       ),
@@ -7975,26 +8294,370 @@ class _SpoDashboard extends State<SpoDashboard> {
   }
 
 
-  Widget _buildDataCellViewBlueDiseaseDataAction(
-      String text, VoidCallback onTap) {
+  Widget _buildDataCellViewBlueEyeScreen(String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: onTap, // Trigger the callback when the cell is clicked
       child: Container(
         height: 35,
-        width: 80,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(
-            width: 0.1,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+            bottom:
+            BorderSide(width: 0.1, color: Colors.black), // Bottom border
           ),
         ),
-        child: Center(
+        child: Align(
+          alignment: Alignment.centerLeft,
           child: Text(
             text,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
               color: Colors.blue,
-              fontSize: 14, // Set font size to 16 pixels
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellSrNoEyScreen(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  //related disease Data view
+  Widget _buildHeaderCellSrNoDiseaseData(String text, BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellDiseaseData(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellSrNoDiseaseDataTotal(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellDiseaseDataAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellSrNoDiseaseData(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellDiseaseData(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellDiseaseDataSettingUp(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellDiseaseDataSettingUp(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 3,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellDiseaseTotal(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellViewBlueDiseaseDataAction(
+      String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+            bottom:
+            BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
             ),
           ),
         ),
