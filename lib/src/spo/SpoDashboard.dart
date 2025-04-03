@@ -6096,7 +6096,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     child: Container(
                                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                       decoration: BoxDecoration(
-                                        color: Colors.blue,
+                                        color: Colors.white,
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: [
                                           BoxShadow(
@@ -6110,8 +6110,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 18),
-                                          SizedBox(width: 8),
                                           Text(
                                             'Back',
                                             style: TextStyle(
@@ -6358,6 +6356,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   _buildDataCellDashboardTotal(offer.countstate.toString()),
                                   _buildDataCellViewBlueDashboard("View", () {
                                     Navigator.of(context).pop();
+
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
