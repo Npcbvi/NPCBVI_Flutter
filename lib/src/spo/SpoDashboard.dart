@@ -150,9 +150,13 @@ class _SpoDashboard extends State<SpoDashboard> {
     SPO_ScreeningCampUpComing=false;
 
     _getSPOashbnoardData();
-    _futures = ApiController.getSPO_RegisteredEyesurgeonList(state_code_login, "NPCBTT");
+    //_futures = ApiController.getSPO_RegisteredEyesurgeonList(state_code_login, "NPCBTT");
   }
-
+  void _fetchSurgeonData() {
+    setState(() {
+      _futures = ApiController.getSPO_RegisteredEyesurgeonList(state_code_login, userId);
+    });
+  }
   void _getSPOashbnoardData() {
     getUserData();
     Utils.isNetworkAvailable().then((isNetworkAvailable) async {
@@ -638,6 +642,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         GetSPO_GHA_PendingClickShowData=false;
                         SPO_PrivatePartitionPorovedClickShowData=false;
                         SPO_ScreeningCampUpComing=false;
+                        // Fetch Eye Surgeons Data
+                        _fetchSurgeonData();
 
                       } else if (_chosenValue ==
                           "Estimate Target Allocation") {
@@ -3179,119 +3185,97 @@ class _SpoDashboard extends State<SpoDashboard> {
             children: [
               // Top Info Bar
               Container(
-                color: Colors.white70,
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      'Registered Eye Surgeon',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Registered Eye Surgeon',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],
                 ),
               ),
               // Data Rows
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        _buildDataCellSrNoeyeSereonsssSrNo('S.No.'),
-                        _buildDataCellSrNoeyeSereonsss('Action'),
-                      // _buildDataCellSrNoeyeSereonsss('In Government Sector'),
-                        _buildDataCellSrNoeyeSereonsss('View'),
-                        /* _buildDataCellSrNoeyeSereonsss(
-                            'In Private Medical College'),
-                        _buildDataCellSrNoeyeSereonsss(
-                            'In Private Practitioner'),*/
-                      ],
-                    ),
-                    const Divider(color: Colors.blue, height: 1.0),
-                    FutureBuilder<List<EyeSurgeonsData>>(
-                      future: _futures, // Cached future
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          Utils.showProgressDialog(context);
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          Utils.hideProgressDialog(context);
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                              child: Text("Error: ${snapshot.error}"),
-                            ),
-                          );
-                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child:
-                                _buildDataCellSrNoeyeSereonsss('No data found'),
-                          );
-                        }
+      FutureBuilder<List<EyeSurgeonsData>>(
+        future: _futures, // Cached future
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            Utils.showProgressDialog(context);
+            return const Center(child: CircularProgressIndicator());
+          }
 
-                        Utils.hideProgressDialog(context);
+          Utils.hideProgressDialog(context);
 
-                        List<EyeSurgeonsData> ddata = snapshot.data;
-                        return Column(
-                          children: ddata.map((offer) {
-                            return Row(
-                              children: [
-                                _buildDataCellSrNoeyeSereonsssSrNo(
-                                    (ddata.indexOf(offer) + 1).toString()),
-                                SizedBox(
-                                  height: 40,
-                                  width: 150,
-                                  child: createButton(
-                                    text: 'Submit',
-                                    onPressed: () {
-                                      Utils.showToast("Next Sprint add!", true);
-                                    },
-                                  ),
-                                ),
-                            /*    _buildEditableDataCell(
-                                  offer.totalGov.toString(),
-                                  onChanged: (value) {
-                                    print('@@Edited value: $value');
-                                  },
-                                ),
-                                _buildEditableDataCell(
-                                  offer.totalngo.toString(),
-                                  onChanged: (value) {
-                                    print('@@Edited value: $value');
-                                  },
-                                ),
-                                _buildEditableDataCell(
-                                  offer.totalPMC.toString(),
-                                  onChanged: (value) {
-                                    print('@@Edited value: $value');
-                                  },
-                                ),
-                                _buildEditableDataCell(
-                                  offer.totalPP.toString(),
-                                  onChanged: (value) {
-                                    print('@@Edited value: $value');
-                                  },
-                                ),*/
-                                _buildDataCellViewBlueEyeSurgeons("View More", () {
-                                  _showEyeSurgeonDetailsDialog(context, offer);
-                                }),
-                              ],
-                            );
-                          }).toList(),
-                        );
-                      },
-                    ),
-                  ],
-                ),
+          if (snapshot.hasError) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(child: Text("Error: ${snapshot.error}")),
+            );
+          }
+
+          if (!snapshot.hasData || snapshot.data.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(child: Text('No data found',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold))),
+            );
+          }
+
+          List<EyeSurgeonsData> ddata = snapshot.data;
+
+          return Column(
+            children: [
+              // Table Header
+              Row(
+                children: [
+                  _buildDataCellSrNoeyeSereonsssSrNo('S.No.'),
+                  _buildDataCellSrNoeyeSereonsss('Action'),
+                  _buildDataCellSrNoeyeSereonsss('View'),
+                ],
               ),
+
+              // Table Rows (Surgeons Data)
+              ...ddata.asMap().entries.map((entry) {
+                int index = entry.key;
+                EyeSurgeonsData offer = entry.value;
+
+                return Row(
+                  children: [
+                    _buildDataCellSrNoeyeSereonsssSrNo((index + 1).toString()),
+                    SizedBox(
+                      height: 40,
+                      width: 150,
+                      child: createButton(
+                        text: 'Submit',
+                        onPressed: () {
+                          Utils.showToast("Next Sprint add!", true);
+                        },
+                      ),
+                    ),
+                    _buildDataCellViewBlueEyeSurgeons("View More", () {
+                      _showEyeSurgeonDetailsDialog(context, offer);
+                    }),
+                  ],
+                );
+              }).toList(),
             ],
+          );
+        },
+      ),
+
+      ],
           ),
         ),
       ],
@@ -3737,6 +3721,63 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+  Widget _buildHeaderCellDashboardDistrictthree(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellDistrictthree(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
 
   Widget _buildHeaderCellDashboardDistrict(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -5603,7 +5644,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         Row(
                           children: [
                             _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('District'),
+                            _buildHeaderCellDashboardDistrictthree('District'),
                             _buildHeaderCellDashboardsTotal('Total'),
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
@@ -5648,7 +5689,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       _buildDataCellSrNoDashboards(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.districtName),
+                                      _buildDataCellDistrictthree(offer.districtName),
                                       _buildDataCellDashboardTotal(
                                           offer.countstate.toString()),
                                       _buildDataCellViewBlueDashboard("View", () {
@@ -5722,7 +5763,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         Row(
                           children: [
                             _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('District'),
+                            _buildHeaderCellDashboardDistrictthree('District'),
                             _buildHeaderCellDashboardsTotal('Total'),
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
@@ -5768,7 +5809,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       _buildDataCellSrNoDashboards(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.districtName),
+                                      _buildDataCellDistrictthree(offer.districtName),
                                       _buildDataCellDashboardTotal(
                                           offer.countstate.toString()),
                                       _buildDataCellViewBlueDashboard("View", () {

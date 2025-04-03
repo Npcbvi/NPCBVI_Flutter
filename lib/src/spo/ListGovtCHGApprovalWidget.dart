@@ -138,67 +138,77 @@ class _ListGovtCHGApprovalWidget extends State<ListGovtCHGApprovalWidget> {
             ),
 
             // Data Table (Header and Rows in Single ScrollView)
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: FutureBuilder<List<GHC_approvalListData>>(
-                future: ApiController.getSPO_GHCHCOtherApproval_list(
-                    district_code_login, state_code_login, currentFinancialYear, 2
-                ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Utils.getEmptyView("Error: ${snapshot.error}");
-                  } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // ❌ No data found → Show message only
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "No data found",
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
+            SizedBox(
+              width:double.infinity,
+              child: SingleChildScrollView(
+
+                scrollDirection: Axis.horizontal, // ✅ Allow horizontal scrolling if content is wider
+                child: FutureBuilder<List<GHC_approvalListData>>(
+                  future: ApiController.getSPO_GHCHCOtherApproval_list(
+                      district_code_login, state_code_login, currentFinancialYear, 2
+                  ),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Utils.getEmptyView("Error: ${snapshot.error}");
+                    } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                      // ❌ No data found → Show message only
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "No data found",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  } else {
-                    List<GHC_approvalListData> ddata = snapshot.data;
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start, // Ensure left alignment
-                      children: [
-                        // ✅ Show Header Only When Data is Available
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
+                      );
+                    } else {
+                      List<GHC_approvalListData> ddata = snapshot.data;
+                      return Container(
+                        color: Colors.transparent,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start, // ✅ Align left
                           children: [
-                            _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('Organisation Name'),
-                            _buildHeaderCellDashboardsAction('Action'),
+                            // ✅ Show Header Only When Data is Available
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                _buildHeaderCellSrNo('S.No.'),
+                                _buildHeaderCell('Organisation Name'),
+                                _buildHeaderCellDashboardsAction('Action'),
+                              ],
+                            ),
+
+                            // ✅ Data Rows
+                            Column(
+                              children: ddata.map((offer) {
+                                return Container(
+                                  color: Colors.transparent,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start, // Ensure items align to the left
+                                    children: [
+                                      _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.oName),
+                                      _buildDataCellViewBlueDashboard("View", () {
+                                        _showDetailsDialogGovtCHCList(context, offer);
+                                      }),
+                                    ],
+                                  ),
+                                );
+                              }).toList(),
+                            ),
                           ],
                         ),
-
-                        // ✅ Data Rows
-                        Column(
-                          children: ddata.map((offer) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.start, // Ensure items align to the left
-                              children: [
-                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
-                                _buildDataCell(offer.oName),
-                                _buildDataCellViewBlueDashboard("View", () {
-                                  _showDetailsDialogGovtCHCList(context, offer);
-                                }),
-                              ],
-                            );
-                          }).toList(),
-                        ),
-                      ],
-                    );
-                  }
-                },
+                      );
+                    }
+                  },
+                ),
               ),
             ),
 
@@ -273,7 +283,7 @@ class _ListGovtCHGApprovalWidget extends State<ListGovtCHGApprovalWidget> {
       onTap: onTap, // Trigger the callback when the cell is clicked
       child: Container(
         height: 35,
-        width: screenWidth * 0.3, // 30% of screen width for adaptability
+        width: screenWidth * 0.5, // 30% of screen width for adaptability
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border(
@@ -317,6 +327,7 @@ class _ListGovtCHGApprovalWidget extends State<ListGovtCHGApprovalWidget> {
 
     return Container(
       height: 35,
+
       width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
         color: Colors.white,
@@ -451,7 +462,7 @@ class _ListGovtCHGApprovalWidget extends State<ListGovtCHGApprovalWidget> {
 
     return Container(
       height: 35,
-      width: screenWidth * 0.3, // 30% of screen width for adaptability
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(

@@ -11,12 +11,7 @@ class CampDashboard extends StatefulWidget {
 }
 
 class _CampDashboard extends State<CampDashboard> {
-  String _chosenValue,
-      districtNames,
-      userId,
-      stateNames,
-      fullnameController,
-      role_id;
+  String districtNames, userId, stateNames, fullnameController, role_id,_chosenValue;
   int status, district_code_login, state_code_login;
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
@@ -142,136 +137,120 @@ class _CampDashboard extends State<CampDashboard> {
         ],
       ),
       drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text(
-                'Menu',
-                style: TextStyle(color: Colors.white, fontSize: 24),
-              ),
+        child: Container(
+          width: 100.0, // Set the width of the drawer
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white70, Colors.white70],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
             ),
-            ListTile(
-              leading: Icon(Icons.dashboard),
-              title: Text('Dashboard'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to Dashboard screen
-              },
+          ),
+          child: Container(
+            margin: EdgeInsets.all(8.0), // Set the margin here
+            child: ListView(
+              children: [
+
+
+                _buildMenuItem(
+                  icon: Icons.dashboard,
+                  title: 'Dashboard',
+                  onTap: () {
+                    setState(() {
+                      print('@@dashboardviewReplace----display---');
+
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+                _buildDropdownItem(
+                  value: _chosenValue,
+                  hint: 'Register Patient',
+                  hintIcon: Icon(Icons.update, color: Colors.black),
+                  // Add an icon to the hint
+                  items: [
+                    {'value': 'Add Patient', 'icon': Icons.person_add},
+                    // Add an icon here
+                    {'value': 'Update Patient', 'icon': Icons.update},
+                    {'value': 'Screening Entry', 'icon': Icons.visibility},
+                  ],
+                  onChanged: (String value) {
+                    setState(() {
+                      _chosenValue = value ?? '';
+                      if (_chosenValue == "Add Patient") {
+                        print('@@NGO---Hospital--1 $_chosenValue');
+
+                        //_showPopupMenu();
+                      } else if (_chosenValue == "Update Patient") {
+
+                      } else if (_chosenValue == "Screening Entry") {
+                      }
+                    });
+
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
             ),
-            ListTile(
-              leading: Icon(Icons.people),
-              title: Text('DPMs'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to DPMs screen
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.approval),
-              title: Text('Eye Bank Approval'),
-              onTap: () {
-                Navigator.pop(context);
-                // Navigate to Eye Bank Approval screen
-              },
-            ),
-          ],
+          ),
         ),
       ),
 
-      body: SingleChildScrollView(
-
-        child: Column(
+      body:SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
           children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
+            // Login Type & District Container
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 5), // Adds spacing on both sides
               child: Row(
                 children: [
-                  // Login Type and District in a Row
-                  Container(
-                    margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                    // Margin for spacing
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 20),
-                          // Space between Login Type and District
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Login Type:',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                'DPM',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'District:',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              '${districtNames}',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  // Space between Row and State Column
-                  const SizedBox(width: 40),
-
-                  // State in a Column with margin
-                  Container(
-                    margin: EdgeInsets.only(right: 10),
-                    // Right margin for spacing
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'State:',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          '${stateNames}',
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
+                  _buildInfoColumn("Login Type", "Camp Manager"),
+                  SizedBox(width: 5),
+                  _buildInfoColumn("District", districtNames),
                 ],
               ),
             ),
 
+            SizedBox(width: 5), // Space between columns
 
+            // State Container
+            _buildInfoColumn("State", stateNames),
+
+
+            SizedBox(width: 5), // Space between columns
+
+            // Login ID Container
+            _buildInfoColumn("Login Id", userId),
           ],
         ),
       ),
     );
   }
+  /// A helper function to create reusable labeled text columns.
+  Widget _buildInfoColumn(String title, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: 5),
+        Text(
+          value,
+          style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
   void _showChangePasswordDialog() {
     showDialog(
       context: context,
@@ -389,5 +368,92 @@ class _CampDashboard extends State<CampDashboard> {
           (route) => false,
     );
   }
+  Widget _buildMenuItem({
+    IconData icon,
+    String title,
+    Function() onTap,
+  }) {
+    double size =
+    14.0; // You can set a consistent size for both the icon and text
+
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
+      // Reduce the vertical padding
+      title: Row(
+        children: [
+          Icon(icon, color: Colors.black, size: size),
+          // Set icon size
+          SizedBox(
+            width: 8.0,
+            height: 4.0,
+          ),
+          // Add space between the icon and the text
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: size,
+              fontWeight:
+              FontWeight.normal, // Explicitly set fontWeight to normal
+            ),
+          )
+        ],
+      ),
+      onTap: onTap,
+    );
+  }
+  Widget _buildDropdownItem({
+    GlobalKey key,
+    String value,
+    String hint,
+    List<Map<String, dynamic>> items, // List of maps with text and icon
+    Function(String) onChanged,
+    Icon hintIcon, // Hint Icon (nullable)
+    double dropdownWidth = 120.0, // Width of the dropdown
+  }) {
+    double textSize = 14.0; // Smaller text size for dropdown items
+
+    return Container(
+      width: dropdownWidth, // Custom width
+      padding: EdgeInsets.symmetric(horizontal: 8), // Padding for better styling
+
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          key: key,
+          value: value,
+          style: TextStyle(color: Colors.black, fontSize: textSize), // Smaller text
+          dropdownColor: Colors.white,
+          isExpanded: true, // Ensure text fits within the box
+          items: items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
+            return DropdownMenuItem<String>(
+              value: item['value'],
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: 4), // Reduce vertical padding
+                child: Row(
+                  children: [
+                    Icon(item['icon'], color: Colors.black, size: textSize), // Smaller icon
+                    SizedBox(width: 8.0), // Space between icon and text
+                    Text(item['value'], style: TextStyle(color: Colors.black, fontSize: textSize)),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+          hint: hintIcon != null
+              ? Row(
+            children: [
+              hintIcon, // Only add if not null
+              SizedBox(width: 8.0), // Space
+              Text(hint, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: textSize)),
+            ],
+          )
+              : Text(hint, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: textSize)),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
+
 
 }

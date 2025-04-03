@@ -171,7 +171,6 @@ class _ListGovtCHGPending extends State<ListGovtCHGPending> {
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
 
                         // ✅ Data Rows
                         Column(

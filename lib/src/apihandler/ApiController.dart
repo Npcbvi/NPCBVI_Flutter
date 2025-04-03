@@ -4980,7 +4980,7 @@ class ApiController {
         "userid": userid,
       });
       print("@@getSPO_RegisteredEyesurgeonList--URL: $url");
-      print("@@getSPO_RegisteredEyesurgeonList--body: ${body.toString()}");
+      print("@@getSPO_RegisteredEyesurgeonList--body: ${url+body.toString()}");
 
       // Create Dio instance and make the request
       Dio dio = Dio();
