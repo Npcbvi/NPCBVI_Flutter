@@ -3703,7 +3703,7 @@ class _SpoDashboard extends State<SpoDashboard> {
           text,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
+            fontSize: screenWidth * 0.035, // Scales with screen width
           ),
         ),
       ),
@@ -3743,7 +3743,7 @@ class _SpoDashboard extends State<SpoDashboard> {
 
     return Container(
       height: 35,
-      width: screenWidth * 0.3,
+      width: screenWidth * 0.5,
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -3771,7 +3771,7 @@ class _SpoDashboard extends State<SpoDashboard> {
 
     return Container(
       height: 35,
-      width: screenWidth * 0.3,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -3784,7 +3784,7 @@ class _SpoDashboard extends State<SpoDashboard> {
         alignment: Alignment.centerLeft,
         child: Text(
           text,
-          maxLines: 3,
+          maxLines: 2,
           style: TextStyle(
             fontWeight: FontWeight.normal,
             fontSize: screenWidth * 0.04, // Scales with screen width
@@ -3793,7 +3793,32 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+  Widget _buildHeaderCellSrNoDiseaseDataTotal(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
 
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildHeaderCellDashboardsTotal(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -3851,6 +3876,30 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
   Widget _buildDataCellDashboardTotal(String text) {
+    /*double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
+          ),
+        ),
+      ),
+    );*/
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Container(
@@ -3878,10 +3927,8 @@ class _SpoDashboard extends State<SpoDashboard> {
   }
 
 
-
-
-
-  Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
+  Widget _buildDataCellViewBlueDashboard(
+      String text, VoidCallback onTap) {
     double screenWidth = MediaQuery.of(context).size.width;
     return GestureDetector(
       onTap: onTap, // Trigger the callback when the cell is clicked
@@ -5840,7 +5887,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                   children: [
                     Expanded(
                       child: Text(
-                        'District-wise Gove. / CHC / Other Hospitals (Approved)', // Added spacing between words
+                        'District-wise Govt. / CHC / Other Hospitals (Approved)', // Added spacing between words
                         maxLines: 2,
                         textAlign: TextAlign.left, // Align text to the left
                         style: TextStyle(
@@ -5901,31 +5948,20 @@ class _SpoDashboard extends State<SpoDashboard> {
               ),
 
 
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNoDashboard('S.No.'),
-                    _buildHeaderCellDashboardDistrict('District'),
-                    _buildHeaderCellDashboardsTotal('Total'),
-                    _buildHeaderCellDashboardsAction('Action'),
-                  ],
-                ),
-              ),
-              // Data Rows
               FutureBuilder<List<GetSPO_GHCHCOtherApprovalsData>>(
                 future: ApiController.GetSPO_GHCHCOtherApprovalsDatas(
-                    district_code_login,
-                    state_code_login,
-                    statusApproved,
-                    currentFinancialYear),
+                  district_code_login,
+                  state_code_login,
+                  statusApproved,
+                  currentFinancialYear,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
+                    // Show "No data found" if there's no data
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -5936,45 +5972,59 @@ class _SpoDashboard extends State<SpoDashboard> {
                         ),
                       ),
                     );
+
                   } else {
                     List<GetSPO_GHCHCOtherApprovalsData> ddata = snapshot.data;
-                    print('@@---GetSPO_GHCHCOtherApprovalsData' +
-                        ddata.length.toString());
+                    print('@@---GetSPO_GHCHCOtherApprovalsData' + ddata.length.toString());
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ✅ Header row will only be displayed if data is available
+                          Row(
                             children: [
-                              _buildDataCellSrNoDashboards(
-                                  (ddata.indexOf(offer) + 1)
-                                      .toString()),
-                              _buildDataCellDistrict(offer.districtName),
-                              _buildDataCellDashboardTotal(
-                                  offer.countstate.toString()),
-                              _buildDataCellViewBlueDashboard("View", () {
-                                Navigator.of(context).pop();
-
-                                Navigator.push(
-
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ListGovtCHGApprovalWidget(
-                                            districtName:
-                                            offer.districtName),
-                                  ),
-                                );
-                              }),
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+
+                          // ✅ Display Data Rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                    (ddata.indexOf(offer) + 1).toString(),
+                                  ),
+                                  _buildDataCellDistrict(offer.districtName),
+                                  _buildDataCellDashboardTotal(offer.countstate.toString()),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ListGovtCHGApprovalWidget(
+                                          districtName: offer.districtName,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -6088,31 +6138,20 @@ class _SpoDashboard extends State<SpoDashboard> {
               ),
 
               SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNoDashboard('S.No.'),
-                    _buildHeaderCellDashboardDistrict('District'),
-                    _buildHeaderCellDashboardsTotal('Total'),
-                    _buildHeaderCellDashboardsAction('Action'),
-                  ],
-                ),
-              ),
-              // Data Rows
               FutureBuilder<List<GetSPO_GHCHCOtherApprovalsData>>(
                 future: ApiController.GetSPO_GHCHCOtherApprovalsDatas(
-                    district_code_login,
-                    state_code_login,
-                    statusPending,
-                    currentFinancialYear),
+                  district_code_login,
+                  state_code_login,
+                  statusPending,
+                  currentFinancialYear,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
+                    // Show "No data found" if there's no data
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -6125,43 +6164,56 @@ class _SpoDashboard extends State<SpoDashboard> {
                     );
                   } else {
                     List<GetSPO_GHCHCOtherApprovalsData> ddata = snapshot.data;
-                    print('@@---getDPM_GetDPM_GHAPProved_pendings' +
-                        ddata.length.toString());
+                    print('@@---getDPM_GetDPM_GHAPProved_pendings ${ddata.length}');
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ✅ Display the header row only if data is available
+                          Row(
                             children: [
-                              _buildDataCellSrNoDashboards(
-                                  (ddata.indexOf(offer) + 1)
-                                      .toString()),
-                              _buildDataCellDistrict(offer.districtName),
-                              _buildDataCellDashboardTotal(
-                                  offer.countstate.toString()),
-                              _buildDataCellViewBlueDashboard("View", () {
-                                Navigator.of(context).pop();
-
-                                Navigator.push(
-
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ListGovtCHGPending(
-                                            districtName:
-                                            offer.districtName),
-                                  ),
-                                );
-                              }),
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+
+                          // ✅ Display data rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                    (ddata.indexOf(offer) + 1).toString(),
+                                  ),
+                                  _buildDataCellDistrict(offer.districtName),
+                                  _buildDataCellDashboardTotal(offer.countstate.toString()),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ListGovtCHGPending(
+                                          districtName: offer.districtName,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -6249,31 +6301,20 @@ class _SpoDashboard extends State<SpoDashboard> {
               ),
 
               SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNoDashboard('S.No.'),
-                    _buildHeaderCellDashboardDistrict('District'),
-                    _buildHeaderCellDashboardsTotal('Total'),
-                    _buildHeaderCellDashboardsAction('Action'),
-                  ],
-                ),
-              ),
-              // Data Rows
               FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
                 future: ApiController.getSPO_PrivatePractitionerApproval(
-                    district_code_login,
-                    state_code_login,
-                    statusApproved,
-                    currentFinancialYear),
+                  district_code_login,
+                  state_code_login,
+                  statusApproved,
+                  currentFinancialYear,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
+                    // Show "No data found" when no data is available
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -6286,44 +6327,57 @@ class _SpoDashboard extends State<SpoDashboard> {
                     );
                   } else {
                     List<PrivateMedicalCollegeApprovedData> ddata = snapshot.data;
-                    print('@@---PrivateMedicalCollegeApprovedData' +
-                        ddata.length.toString());
+                    print('@@---PrivateMedicalCollegeApprovedData ${ddata.length}');
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ✅ Display header row **only if data is available**
+                          Row(
                             children: [
-                              _buildDataCellSrNoDashboards(
-                                  (ddata.indexOf(offer) + 1)
-                                      .toString()),
-                              _buildDataCellDistrict(offer.districtName),
-                              _buildDataCellDashboardTotal(
-                                  offer.countstate.toString()),
-                              _buildDataCellViewBlueDashboard("View", () {
-                                Navigator.of(context).pop();
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
 
-                                Navigator.push(
-
-                                  context,
-                                  MaterialPageRoute(
-
-                                    builder: (context) =>
-                                        ListPrivatePractionriesApproval(
-                                            districtName:
-                                            offer.districtName),
-                                  ),
-                                );
-                              }),
                             ],
-                          );
-                        }).toList(),
+                          ),
+
+                          // ✅ Display data rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                    (ddata.indexOf(offer) + 1).toString(),
+                                  ),
+                                  _buildDataCellDistrict(offer.districtName),
+                                  _buildDataCellDashboardTotal(offer.countstate.toString()),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ListPrivatePractionriesApproval(
+                                          districtName: offer.districtName,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -6408,31 +6462,20 @@ class _SpoDashboard extends State<SpoDashboard> {
                 ),
               ),
 
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNoDashboard('S.No.'),
-                    _buildHeaderCellDashboardDistrict('District'),
-                    _buildHeaderCellDashboardsTotal('Total'),
-                    _buildHeaderCellDashboardsAction('Action'),
-                  ],
-                ),
-              ),
-              // Data Rows
               FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
                 future: ApiController.getSPO_PrivatePractitionerApproval(
-                    district_code_login,
-                    state_code_login,
-                    statusPending,
-                    currentFinancialYear),
+                  district_code_login,
+                  state_code_login,
+                  statusPending,
+                  currentFinancialYear,
+                ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
+                    // Show "No data found" when no data is available
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -6445,44 +6488,56 @@ class _SpoDashboard extends State<SpoDashboard> {
                     );
                   } else {
                     List<PrivateMedicalCollegeApprovedData> ddata = snapshot.data;
-                    print('@@---PrivateMedicalCollegeApprovedData' +
-                        ddata.length.toString());
+                    print('@@---PrivateMedicalCollegeApprovedData ${ddata.length}');
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ✅ Display header row **only if data is available**
+                          Row(
                             children: [
-                              _buildDataCellSrNoDashboards(
-                                  (ddata.indexOf(offer) + 1)
-                                      .toString()),
-                              _buildDataCellDistrict(offer.districtName),
-                              _buildDataCellDashboardTotal(
-                                  offer.countstate.toString()),
-                              _buildDataCellViewBlueDashboard("View", () {
-                                Navigator.of(context).pop();
-
-                                Navigator.push(
-
-                                  context,
-                                  MaterialPageRoute(
-
-                                    builder: (context) =>
-                                        ListPrivatePractionriesPending(
-                                            districtName:
-                                            offer.districtName),
-                                  ),
-                                );
-                              }),
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+
+                          // ✅ Display data rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                    (ddata.indexOf(offer) + 1).toString(),
+                                  ),
+                                  _buildDataCellDistrict(offer.districtName),
+                                  _buildDataCellDashboardTotal(offer.countstate.toString()),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ListPrivatePractionriesPending(
+                                          districtName: offer.districtName,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -6597,7 +6652,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                     print('@@---PrivateMedicalCollegeApprovedData: ${ddata.length}');
 
                     return SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
+
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,  // Ensures left alignment
                         children: [
@@ -6606,17 +6661,26 @@ class _SpoDashboard extends State<SpoDashboard> {
                             children: [
                               _buildHeaderCellSrNoDashboard('S.No.'),
                               _buildHeaderCellDashboardDistrict('District'),
-                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellSrNoDiseaseDataTotal('Total'),
                               _buildHeaderCellDashboardsAction('Action'),
+
                             ],
                           ),
-
                           // **Data Rows**
                           Column(
                             children: ddata.map((offer) {
                               return Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
+                                 /* _buildDataCellSrNo(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCell(offer.name),
+                                  _buildDataCellViewBlueDiseaseDataAction(
+                                      'View', () {
+                                    _showDetailDialogSatelliteCentreNumbersClcik(
+                                        context, offer);
+                                  }),*/
+
                                   _buildDataCellSrNoDashboards(
                                       (ddata.indexOf(offer) + 1).toString()),
                                   _buildDataCellDistrict(offer.districtName),
