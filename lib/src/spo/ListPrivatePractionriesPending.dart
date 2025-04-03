@@ -55,7 +55,8 @@ class _ListPrivatePractionriesPending extends State<ListPrivatePractionriesPendi
   Widget build(BuildContext context) {
     currentFinancialYear = getCurrentFinancialYear();
     return Scaffold(
-      appBar: AppBar(title: Text('Private Practitioner(s) (Pending)')),
+      appBar: AppBar(title: Text('Private Practitioner(s) (Pending)' ,maxLines: 2, // Limits text to 2 lines
+        style: TextStyle(color: Colors.white, fontSize: 14.0),)),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -79,96 +80,55 @@ class _ListPrivatePractionriesPending extends State<ListPrivatePractionriesPendi
                 ),
               ),
             ),
-            Row(
-              children: [
-                // Status Container
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10.0),
-                    padding: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Colors.red,
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.approval,
-                          color: Colors.red,
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'Private Practitioner(s) (Pending)',
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                // Back Button Container
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SpoDashboard()),
-                    );
-                  },
-                  child: Container(
-                    width: 100.0,
-                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Colors.red,
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.arrow_back,
-                          color: Colors.red,
-                          size: 16,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          'Back',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
             Container(
-              margin: EdgeInsets.symmetric(vertical: 8.0), // Adjust vertical margin
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0, // Thickness of the line
+              width: double.infinity, // Full width
+              color: Colors.blue, // Background color
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Private Practitioner(s) (Pending)',
+                      maxLines: 2,
+                      textAlign: TextAlign.left, // Align text to the left
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      Navigator.of(context).pop();
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SpoDashboard()),
+                      );
+                    },
+                    child: Container(
+                      width: 80.0,
+                      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text('Back',
+
+                            overflow: TextOverflow.ellipsis, style: TextStyle( color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
+                      ),
+                    ),
+                  ),
+
+
+
+
+                ],
               ),
             ),
 

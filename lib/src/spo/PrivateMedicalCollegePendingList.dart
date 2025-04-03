@@ -56,7 +56,8 @@ class _PrivateMedicalCollegePendingList extends State<PrivateMedicalCollegePendi
   Widget build(BuildContext context) {
     currentFinancialYear = getCurrentFinancialYear();
     return Scaffold(
-      appBar: AppBar(title: Text('Private Medical College(Pending)')),
+      appBar: AppBar(title: Text('Private Medical College(Pending)' ,maxLines: 2, // Limits text to 2 lines
+        style: TextStyle(color: Colors.white, fontSize: 14.0),)),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -80,177 +81,128 @@ class _PrivateMedicalCollegePendingList extends State<PrivateMedicalCollegePendi
                 ),
               ),
             ),
-            Row(
-              children: [
-                // Status Container
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10.0),
-                    padding: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Colors.red,
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.approval,
-                          color: Colors.red,
-                        ),
-                        SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'Private Medical College(Pending)',
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                // Back Button Container
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => SpoDashboard()),
-                    );
-                  },
-                  child: Container(
-                    width: 100.0,
-                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: Colors.red,
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.arrow_back,
-                          color: Colors.red,
-                          size: 16,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          'Back',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-
             Container(
-              margin: EdgeInsets.symmetric(vertical: 8.0), // Adjust vertical margin
-              child: Divider(
-                color: Colors.grey,
-                height: 1.0, // Thickness of the line
+              width: double.infinity, // Full width
+              color: Colors.blue, // Background color
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Private Medical College(Pending)',
+                      maxLines: 2,
+                      textAlign: TextAlign.left, // Align text to the left
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      Navigator.of(context).pop();
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SpoDashboard()),
+                      );
+                    },
+                    child: Container(
+                      width: 80.0,
+                      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text('Back',
+
+                            overflow: TextOverflow.ellipsis, style: TextStyle( color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500)),
+                      ),
+                    ),
+                  ),
+
+
+
+
+                ],
               ),
             ),
 
 
+
             // Data Table (Header and Rows in Single ScrollView)
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start, // Ensure left alignment
-                children: [
-                  // Header Row
-                  Row(
-                    children: [
-                      _buildHeaderCellSrNo('S.No.'),
-                      _buildHeaderCell('NGO Name'),
-                      // _buildHeaderCell('Member Name'),
-                      /* _buildHeaderCell('Hospital Name'),
-          _buildHeaderCell('Address'),
-          _buildHeaderCell('Nodal Officer Name'),
-          _buildHeaderCell('Mobile No'),
-          _buildHeaderCell('Email Id'), */
-                      _buildHeaderCellDashboardsAction('Action'),
-                    ],
-                  ),
+            FutureBuilder<List<PrivateMedicalCollgeAPProvalListData>>(
+              future: ApiController.getSPO_PrivateMedicalCollegeApproval_list(
+                  district_code_login,
+                  state_code_login,
+                  currentFinancialYear,
+                  1
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Utils.getEmptyView("Error: ${snapshot.error}");
+                } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                  // Show "No data found" if the list is empty
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        "No data found",
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  List<PrivateMedicalCollgeAPProvalListData> ddata = snapshot.data;
 
-                  // Data Rows
-                  FutureBuilder<List<PrivateMedicalCollgeAPProvalListData>>(
-                     future: ApiController.getSPO_PrivateMedicalCollegeApproval_list(district_code_login, state_code_login,currentFinancialYear , 1),
-                    //future: ApiController.getSPO_PrivateMedicalCollegeApproval_list(575, 33,"2022-2023" , 1),
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // **Header Row (Only shown if data exists)**
+                        Row(
+                          children: [
+                            _buildHeaderCellSrNo('S.No.'),
+                            _buildHeaderCell('NGO Name'),
+                            _buildHeaderCellDashboardsAction('Action'),
+                          ],
+                        ),
 
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Utils.getEmptyView("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                        // No data found aligned with header
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft, // Ensure left alignment
-                            child: Text(
-                              "No data found",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        );
-                      } else {
-                        List<PrivateMedicalCollgeAPProvalListData> ddata = snapshot.data;
-                        return Column(
+                        // **Data Rows**
+                        Column(
                           children: ddata.map((offer) {
                             return Row(
-                              mainAxisAlignment: MainAxisAlignment.start, // Ensure items align to the left
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                _buildDataCellCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
                                 _buildDataCell(offer.oName),
-                                //  _buildDataCell(offer.nodalOfficerName),
-                                /* _buildDataCell(offer.hName),
-
-                    _buildDataCell(offer.address),
-                    _buildDataCell(offer.nodalOfficerName),
-                    _buildDataCell(offer.mobile.toString()),
-                    _buildDataCell(offer.emailid.toString()), */
                                 _buildDataCellViewBlueDashboard("View", () {
-                                  // Pass the offer object to the function that shows the details in a dialog
                                   _showDetailsDialogprivatePractioneries(context, offer);
                                 }),
                               ],
                             );
                           }).toList(),
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
             ),
+
           ],
         ),
       ),
@@ -311,31 +263,6 @@ class _PrivateMedicalCollegePendingList extends State<PrivateMedicalCollegePendi
     );
   }
 
-  Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 50,
-        width:60, // Fixed width to ensure horizontal scrolling
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border.all(
-            width: 0.1,
-          ),
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   TextStyle _infoTextStyle() {
     return const TextStyle(color: Colors.black, fontWeight: FontWeight.w500);
   }
@@ -343,37 +270,31 @@ class _PrivateMedicalCollegePendingList extends State<PrivateMedicalCollegePendi
   TextStyle _highlightTextStyle() {
     return const TextStyle(color: Colors.red, fontWeight: FontWeight.w500);
   }
+  Widget _buildDataCellViewBlueDashboard(String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black), // Top border
 
-  Widget _buildHeaderCell(String title) {
-    return Container(
-      width: 200,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+            bottom:
+            BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
         ),
-      ),
-      child: Center(child: Text(title, style: _infoTextStyle(), textAlign: TextAlign.center)),
-    );
-  }
-  Widget _buildHeaderCellDashboardsAction(String text) {
-    return Container(
-      height: 50,
-      width:60,
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
           ),
         ),
       ),
@@ -381,43 +302,144 @@ class _PrivateMedicalCollegePendingList extends State<PrivateMedicalCollegePendi
   }
 
 
-  Widget _buildDataCell(String value) {
+
+
+  Widget _buildDataCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 200,
-      height: 50,
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      child: Center(child: Text(value, style: const TextStyle(color: Colors.black), textAlign: TextAlign.center)),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
     );
   }
-  Widget _buildDataCellCellSrNo(String value) {
+  Widget _buildDataCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      width: 50,
-      height: 50,
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      child: Center(child: Text(value, style: const TextStyle(color: Colors.black), textAlign: TextAlign.center)),
+      child: Align(
+        // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
+          ),
+        ),
+      ),
     );
   }
-  Widget _buildHeaderCellSrNo(String title) {
+  Widget _buildHeaderCellSrNo(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Container(
-      height: 50,
-      width: 50,
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
       decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.5,
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
       ),
-      child: Center(child: Text(title, style: _infoTextStyle(), textAlign: TextAlign.center)),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCellDashboardsAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildHeaderCell(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(4.0, 0.0, 0.0, 0.0),
+          child: Text(
+            text,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
     );
   }
   String getCurrentFinancialYear() {

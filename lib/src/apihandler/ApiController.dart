@@ -5400,7 +5400,7 @@ class ApiController {
         "financialYear": financialYear,
         "status": status, // for approved
       });
-      print("@@DataGetDPM_PrivatePartition--bodyprint--: ${body.toString()}");
+      print("@@DataGetDPM_PrivatePartition--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -6092,7 +6092,7 @@ class ApiController {
         "status": status,
 
       });
-      print("@@getSPO_PrivatePractitionerApproval_list--bodyprint--: ${body
+      print("@@getSPO_PrivatePractitionerApproval_list--bodyprint--: ${url+body
           .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();

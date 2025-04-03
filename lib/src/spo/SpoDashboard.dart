@@ -779,86 +779,103 @@ class _SpoDashboard extends State<SpoDashboard> {
         child: Column(
           children: [
             SingleChildScrollView(
-              child: Row(
-                children: [
-                  // Login Type and District in a Row
-                  const SizedBox(width: 5),
-                  Container(
-                    margin: EdgeInsets.only(right: 10),
-                    // Right margin for spacing
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Login Type:',
-                          style: TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.w500),
-                        ),
-                        const SizedBox(height: 5),
-                        Text(
-                          'SPO',
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w500),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 5),
-                  Container(
-                    margin: EdgeInsets.fromLTRB(5, 5, 5, 5),
-                    // Margin for spacing
-                    child: Row(
-                      children: [
-                        Container(
-                          margin: EdgeInsets.only(right: 10),
-                          // Space between Login Type and District
-                          child: Column(
-                            children: [
-                              Text(
-                                'Login ID:',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                '${userId}',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center, // Center content vertically
+                  crossAxisAlignment: CrossAxisAlignment.center, // Center content horizontally
+                  children: [
+                    Container(
+                      alignment: Alignment.center, // Ensures Row is centered inside Container
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center, // Centers Row horizontally
+                        children: [
+                          // Login Type Column
+                          Container(
+                            margin: EdgeInsets.only(right: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Login Type:',
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  'SPO',
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.w500
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'State:',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
+
+                          // Login ID & State Column
+                          Container(
+                            margin: EdgeInsets.all(5),
+                            child: Row(
+                              children: [
+                                // Login ID Column
+                                Container(
+                                  margin: EdgeInsets.only(right: 10),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        'Login ID:',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        '${userId}',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                // State Column
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'State:',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      '${stateNames}',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 5),
-                            Text(
-                              '${stateNames}',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-
-                  // Space between Row and State Column
-                  const SizedBox(width: 5),
-
-
-                ],
+                  ],
+                ),
               ),
             ),
+            
+
 
             Visibility(
               visible: dashboardviewReplace,
@@ -1574,8 +1591,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                                                   const EdgeInsets.fromLTRB(
                                                       20, 10, 20.0, 0),
                                               child: new Text(
-                                                  ppCount_pending != null
-                                                      ? '${ppCount_pending}'
+                                                  pmcCountPending != null
+                                                      ? '${pmcCountPending}'
                                                       : '0',
 
                                                   //  '${ppCount_pending}',
@@ -5814,137 +5831,76 @@ class _SpoDashboard extends State<SpoDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                      padding: EdgeInsets.all(10),
-                                      width: 160.0,
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(12),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                            Colors.black.withOpacity(0.1),
-                                            blurRadius: 8,
-                                            offset: Offset(0, 4),
-                                          ),
-                                        ],
-                                        border: Border.all(
-                                            color: Colors.red, width: 1.5),
-                                      ),
-                                      child: Text(
-                                        'Govt. / CHC / Other Hospitals (Approved)',
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          SPOLcikONDPMMEnus = false;
-                                          RegisteredEyesurgeon = false;
-                                          eyeBankDonationApprovals=false;
-                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
-                                          eyeBankApprovals=false;
-                                          eyeBankCollections=false;
-                                          GetSPO_GH_APPorovedClickShowData=false;
-                                          GetSPO_GHA_PendingClickShowData=false;
-                                          SPO_PrivatePartitionPorovedClickShowData=false;
-                                          SPO_ScreeningCampUpComing=false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12, vertical: 8),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white,
-                                          borderRadius:
-                                          BorderRadius.circular(8),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color:
-                                              Colors.black.withOpacity(0.1),
-                                              blurRadius: 6,
-                                              offset: Offset(0, 3),
-                                            ),
-                                          ],
-                                          border: Border.all(
-                                              color: Colors.red, width: 1.5),
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_back_ios_new,
-                                              color: Colors.red,
-                                              size: 18,
-                                            ),
-                                            SizedBox(width: 8),
-                                            Text(
-                                              'Back',
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 14,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'District-wise Gove. / CHC / Other Hospitals (Approved)', // Added spacing between words
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          SPOLcikONDPMMEnus = false;
+                          RegisteredEyesurgeon = false;
+                          eyeBankDonationApprovals = false;
+                          RegisteredEyesurgeonsEstimateTargetAllocations = false;
+                          eyeBankApprovals = false;
+                          eyeBankCollections = false;
+                          GetSPO_GH_APPorovedClickShowData = false;
+                          GetSPO_GHA_PendingClickShowData = false;
+                          SPO_PrivatePartitionPorovedClickShowData = false;
+                          SPO_ScreeningCampUpComing = false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(width: 8.0),
+
+
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -6055,7 +6011,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       margin: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                                       width: double.infinity, // Takes full width
                                       child: Text(
-                                        'Govt. / CHC / Other Hospitals (Pending)',
+                                        'District-wise Gove./ CHC / Other Hospital(s) (Pending)',
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
                                         textAlign: TextAlign.center,
@@ -6104,12 +6060,12 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       child: Row(
                                         mainAxisSize: MainAxisSize.min,
                                         children: [
-                                          Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 18),
+                                          Icon(Icons.arrow_back_ios_new, color: Colors.black, size: 18),
                                           SizedBox(width: 8),
                                           Text(
                                             'Back',
                                             style: TextStyle(
-                                              color: Colors.white,
+                                              color: Colors.black,
                                               fontWeight: FontWeight.w600,
                                               fontSize: 14,
                                             ),
@@ -6222,120 +6178,76 @@ class _SpoDashboard extends State<SpoDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
 
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 8),
-                                      padding: EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.red.withOpacity(0.1),
-                                        // Light red background
-                                        border: Border.all(
-                                            color: Colors.red,
-                                            width: 1), // Red border
-                                      ),
-                                      child: Text(
-                                        'Private Practitioners (Approved)',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          // Set a font size for better readability
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        overflow: TextOverflow
-                                            .ellipsis, // Handle text overflow
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          GetSPO_GHA_PendingClickShowData=false;
-                                          SPOLcikONDPMMEnus = false;
-                                          RegisteredEyesurgeon = false;
-                                          eyeBankDonationApprovals=false;
-                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
-                                          eyeBankApprovals=false;
-                                          eyeBankCollections=false;
-                                          GetSPO_GH_APPorovedClickShowData=false;
-                                          SPO_PrivatePartitionPorovedClickShowData=false;
-                                          SPO_ScreeningCampUpComing=false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 16.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
-                                          // Light red background
-                                          borderRadius:
-                                          BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.red,
-                                              width: 1), // Red border
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center, // Center the content
-                                          children: [
-                                            // Space between the icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'District-wise Private Practitioners (Approved)', // Added spacing between words
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetSPO_GHA_PendingClickShowData=false;
+                          SPOLcikONDPMMEnus = false;
+                          RegisteredEyesurgeon = false;
+                          eyeBankDonationApprovals=false;
+                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                          eyeBankApprovals=false;
+                          eyeBankCollections=false;
+                          GetSPO_GH_APPorovedClickShowData=false;
+                          SPO_PrivatePartitionPorovedClickShowData=false;
+                          SPO_ScreeningCampUpComing=false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
               SizedBox(width: 8.0),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -6426,122 +6338,76 @@ class _SpoDashboard extends State<SpoDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 8),
-                                      padding: EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.red.withOpacity(0.1),
-                                        // Light red background
-                                        border: Border.all(
-                                            color: Colors.red,
-                                            width: 1), // Red border
-                                      ),
-                                      child: Text(
-                                        'Private Practitioners (Pendingh)',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          // Set a font size for better readability
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        overflow: TextOverflow
-                                            .ellipsis, // Handle text overflow
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          GetSPO_GHA_PendingClickShowData=false;
-                                          SPOLcikONDPMMEnus = false;
-                                          RegisteredEyesurgeon = false;
-                                          eyeBankDonationApprovals=false;
-                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
-                                          eyeBankApprovals=false;
-                                          eyeBankCollections=false;
-                                          GetSPO_GH_APPorovedClickShowData=false;
-                                          SPO_PrivatePartitionPorovedClickShowData=false;
-                                          SPO_PrivatePartitionPendingClickShowData=false;
-                                          SPO_ScreeningCampUpComing=false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 16.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
-                                          // Light red background
-                                          borderRadius:
-                                          BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.red,
-                                              width: 1), // Red border
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center, // Center the content
-                                          children: [
-                                            // Space between the icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'District-wise Private Practitioners (Pending)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetSPO_GHA_PendingClickShowData=false;
+                          SPOLcikONDPMMEnus = false;
+                          RegisteredEyesurgeon = false;
+                          eyeBankDonationApprovals=false;
+                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                          eyeBankApprovals=false;
+                          eyeBankCollections=false;
+                          GetSPO_GH_APPorovedClickShowData=false;
+                          SPO_PrivatePartitionPorovedClickShowData=false;
+                          SPO_PrivatePartitionPendingClickShowData=false;
+                          SPO_ScreeningCampUpComing=false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              SizedBox(width: 8.0),
+
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -6553,7 +6419,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                   ],
                 ),
               ),
-              Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
                 future: ApiController.getSPO_PrivatePractitionerApproval(
@@ -6633,135 +6498,77 @@ class _SpoDashboard extends State<SpoDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 8),
-                                      padding: EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.red.withOpacity(0.1),
-                                        // Light red background
-                                        border: Border.all(
-                                            color: Colors.red,
-                                            width: 1), // Red border
-                                      ),
-                                      child: Text(
-                                        'Private Medical College (Approved)',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          // Set a font size for better readability
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        overflow: TextOverflow
-                                            .ellipsis, // Handle text overflow
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          GetSPO_GHA_PendingClickShowData=false;
-                                          SPOLcikONDPMMEnus = false;
-                                          RegisteredEyesurgeon = false;
-                                          eyeBankDonationApprovals=false;
-                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
-                                          eyeBankApprovals=false;
-                                          eyeBankCollections=false;
-                                          GetSPO_GH_APPorovedClickShowData=false;
-                                          SPO_PrivatePartitionPorovedClickShowData=false;
-                                          SPO_PrivatePartitionPendingClickShowData=false;
-                                          SPO_PivateMEdicalColleges=false;
-                                          SPO_ScreeningCampUpComing=false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 16.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
-                                          // Light red background
-                                          borderRadius:
-                                          BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.red,
-                                              width: 1), // Red border
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center, // Center the content
-                                          children: [
-                                            // Space between the icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'District-wise Private Medical College (Approved)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNoDashboard('S.No.'),
-                    _buildHeaderCellDashboardDistrict('District'),
-                    _buildHeaderCellDashboardsTotal('Total'),
-                    _buildHeaderCellDashboardsAction('Action'),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetSPO_GHA_PendingClickShowData=false;
+                          SPOLcikONDPMMEnus = false;
+                          RegisteredEyesurgeon = false;
+                          eyeBankDonationApprovals=false;
+                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                          eyeBankApprovals=false;
+                          eyeBankCollections=false;
+                          GetSPO_GH_APPorovedClickShowData=false;
+                          SPO_PrivatePartitionPorovedClickShowData=false;
+                          SPO_PrivatePartitionPendingClickShowData=false;
+                          SPO_PivateMEdicalColleges=false;
+                          SPO_ScreeningCampUpComing=false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              // Data Rows
+
               FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
                 future: ApiController.getSPO_PrivateMedicalCollegeApproval(
                     district_code_login,
@@ -6774,7 +6581,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
+                    // Show "No data found" message if list is empty
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -6787,41 +6594,56 @@ class _SpoDashboard extends State<SpoDashboard> {
                     );
                   } else {
                     List<PrivateMedicalCollegeApprovedData> ddata = snapshot.data;
-                    print('@@---PrivateMedicalCollegeApprovedData' +
-                        ddata.length.toString());
+                    print('@@---PrivateMedicalCollegeApprovedData: ${ddata.length}');
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,  // Ensures left alignment
+                        children: [
+                          // ✅ **Show Header Only If Data Exists**
+                          Row(
                             children: [
-                              _buildDataCellSrNoDashboards(
-                                  (ddata.indexOf(offer) + 1)
-                                      .toString()),
-                              _buildDataCellDistrict(offer.districtName),
-                              _buildDataCellDashboardTotal(
-                                  offer.countstate.toString()),
-                              _buildDataCellViewBlueDashboard("View", () {
-                                Navigator.of(context).pop();
-
-                                Navigator.push(context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PrivateMedicalCollegeAPProvalList(
-                                            districtName:
-                                            offer.districtName),
-                                  ),
-                                );
-                              }),
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+
+                          // **Data Rows**
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCellDistrict(offer.districtName),
+                                  _buildDataCellDashboardTotal(offer.countstate.toString()),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    Navigator.of(context).pop();
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => PrivateMedicalCollegeAPProvalList(
+                                          districtName: offer.districtName,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -6836,137 +6658,77 @@ class _SpoDashboard extends State<SpoDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 8),
-                                      padding: EdgeInsets.all(12),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(8),
-                                        color: Colors.red.withOpacity(0.1),
-                                        // Light red background
-                                        border: Border.all(
-                                            color: Colors.red,
-                                            width: 1), // Red border
-                                      ),
-                                      child: Text(
-                                        'Private Medical College (Approved)',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          // Set a font size for better readability
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        overflow: TextOverflow
-                                            .ellipsis, // Handle text overflow
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          GetSPO_GHA_PendingClickShowData=false;
-                                          SPOLcikONDPMMEnus = false;
-                                          RegisteredEyesurgeon = false;
-                                          eyeBankDonationApprovals=false;
-                                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
-                                          eyeBankApprovals=false;
-                                          eyeBankCollections=false;
-                                          GetSPO_GH_APPorovedClickShowData=false;
-                                          SPO_PrivatePartitionPorovedClickShowData=false;
-                                          SPO_PrivatePartitionPendingClickShowData=false;
-                                          SPO_PivateMEdicalColleges=false;
-                                          SPO_PivateMEdicalCollegesPending=false;
-                                          SPO_ScreeningCampUpComing=false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 16.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.red.withOpacity(0.1),
-                                          // Light red background
-                                          borderRadius:
-                                          BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.red,
-                                              width: 1), // Red border
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment
-                                              .center, // Center the content
-                                          children: [
-                                            // Space between the icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Private Medical College (Pending)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNoDashboard('S.No.'),
-                    _buildHeaderCellDashboardDistrict('District'),
-                    _buildHeaderCellDashboardsTotal('Total'),
-                    _buildHeaderCellDashboardsAction('Action'),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetSPO_GHA_PendingClickShowData=false;
+                          SPOLcikONDPMMEnus = false;
+                          RegisteredEyesurgeon = false;
+                          eyeBankDonationApprovals=false;
+                          RegisteredEyesurgeonsEstimateTargetAllocations=false;
+                          eyeBankApprovals=false;
+                          eyeBankCollections=false;
+                          GetSPO_GH_APPorovedClickShowData=false;
+                          SPO_PrivatePartitionPorovedClickShowData=false;
+                          SPO_PrivatePartitionPendingClickShowData=false;
+                          SPO_PivateMEdicalColleges=false;
+                          SPO_PivateMEdicalCollegesPending=false;
+                          SPO_ScreeningCampUpComing=false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
               FutureBuilder<List<PrivateMedicalCollegeApprovedData>>(
                 future: ApiController.getSPO_PrivateMedicalCollegeApproval(
                     district_code_login,
@@ -6975,11 +6737,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                     currentFinancialYear),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
+                    // Show "No data found" message when there is no data
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -6992,41 +6754,56 @@ class _SpoDashboard extends State<SpoDashboard> {
                     );
                   } else {
                     List<PrivateMedicalCollegeApprovedData> ddata = snapshot.data;
-                    print('@@---PrivateMedicalCollegeApprovedData' +
-                        ddata.length.toString());
+                    print('@@---PrivateMedicalCollegeApprovedData: ${ddata.length}');
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ✅ Show header row **ONLY IF** data exists
+                          Row(
                             children: [
-                              _buildDataCellSrNoDashboards(
-                                  (ddata.indexOf(offer) + 1)
-                                      .toString()),
-                              _buildDataCellDistrict(offer.districtName),
-                              _buildDataCellDashboardTotal(
-                                  offer.countstate.toString()),
-                              _buildDataCellViewBlueDashboard("View", () {
-                                Navigator.of(context).pop();
-
-                                Navigator.push(context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        PrivateMedicalCollegePendingList(
-                                            districtName:
-                                            offer.districtName),
-                                  ),
-                                );
-                              }),
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+
+                          // ✅ Show data rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCellDistrict(offer.districtName),
+                                  _buildDataCellDashboardTotal(
+                                      offer.countstate.toString()),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => PrivateMedicalCollegePendingList(
+                                          districtName: offer.districtName,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -7042,116 +6819,95 @@ class _SpoDashboard extends State<SpoDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-            Container(
-            color: Colors.white70,
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // Text Container
-                Expanded(
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Colors.red.withOpacity(0.1), // Light red background
-                      border: Border.all(
-                        color: Colors.red,
-                        width: 1, // Red border
-                      ),
-                    ),
-                    child: Text(
-                      'District-wise Screening Camp(s) (Completed)',
-                      style: TextStyle(
-                        fontSize: 14, // Set font size for better readability
-                        color: Colors.red,
-                        fontWeight: FontWeight.w500,
-                      ),
-                      overflow: TextOverflow.ellipsis, // Handle text overflow
-                      maxLines: 2, // Limit text to 2 lines
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                // Back Button
-                InkWell(
-                  onTap: () {
-                    print('@@back Pressed----display---');
-                    setState(() {
-                      dashboardviewReplace = true;
-                      GetSPO_GHA_PendingClickShowData = false;
-                      SPOLcikONDPMMEnus = false;
-                      RegisteredEyesurgeon = false;
-                      eyeBankDonationApprovals = false;
-                      RegisteredEyesurgeonsEstimateTargetAllocations = false;
-                      eyeBankApprovals = false;
-                      eyeBankCollections = false;
-                      GetSPO_GH_APPorovedClickShowData = false;
-                      SPO_PrivatePartitionPorovedClickShowData = false;
-                      SPO_PrivatePartitionPendingClickShowData = false;
-                      SPO_PivateMEdicalColleges = false;
-                      SPO_PivateMEdicalCollegesPending = false;
-                      SPO_ScreeningCampCompleteds = false;
-                      SPO_ScreeningCampOngoing = false;
-                      SPO_ScreeningCampUpComing=false;
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1), // Light red background
-                      borderRadius: BorderRadius.circular(8.0), // Rounded corners
-                      border: Border.all(color: Colors.red, width: 1), // Red border
-                    ),
-                    child: Text(
-                      'Back',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
 
-            SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
                   children: [
-                    _buildHeaderCellSrNoDashboard('S.No.'),
-                    _buildHeaderCellDashboardDistrict('District'),
-                    _buildHeaderCellDashboardsTotal('Total'),
-                    _buildHeaderCellDashboardsAction('Action'),
+                    Expanded(
+                      child: Text(
+                        'District-wise Screening Camp(s) (Completed)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetSPO_GHA_PendingClickShowData = false;
+                          SPOLcikONDPMMEnus = false;
+                          RegisteredEyesurgeon = false;
+                          eyeBankDonationApprovals = false;
+                          RegisteredEyesurgeonsEstimateTargetAllocations = false;
+                          eyeBankApprovals = false;
+                          eyeBankCollections = false;
+                          GetSPO_GH_APPorovedClickShowData = false;
+                          SPO_PrivatePartitionPorovedClickShowData = false;
+                          SPO_PrivatePartitionPendingClickShowData = false;
+                          SPO_PivateMEdicalColleges = false;
+                          SPO_PivateMEdicalCollegesPending = false;
+                          SPO_ScreeningCampCompleteds = false;
+                          SPO_ScreeningCampOngoing = false;
+                          SPO_ScreeningCampUpComing=false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
               FutureBuilder<List<ScreeningCampCompltedData>>(
-             /*   future: ApiController.getSPO_ScreeningCampApproval(
-                    610,
-                    33,
-                    "Completed",
-
-                    "2019-2020",
-                    ""),*/
                 future: ApiController.getSPO_ScreeningCampApproval(
-                    district_code_login,
-                    state_code_login,
-                    "Completed",
-                    currentFinancialYear,
-                ""),
+                  district_code_login,
+                  state_code_login,
+                  "Completed",
+                  currentFinancialYear,
+                  "",
+                ),
                 builder: (context, snapshot) {
-
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
+                    // Show "No data found" message when there is no data
                     return Align(
                       alignment: Alignment.centerLeft,
                       child: Padding(
@@ -7164,41 +6920,56 @@ class _SpoDashboard extends State<SpoDashboard> {
                     );
                   } else {
                     List<ScreeningCampCompltedData> ddata = snapshot.data;
-                    print('@@---PrivateMedicalCollegeApprovedData' +
-                        ddata.length.toString());
+                    print('@@---ScreeningCampCompletedData Count: ${ddata.length}');
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ✅ Show header row **ONLY IF** data exists
+                          Row(
                             children: [
-                              _buildDataCellSrNoDashboards(
-                                  (ddata.indexOf(offer) + 1)
-                                      .toString()),
-                              _buildDataCellDistrict(offer.districtName),
-                              _buildDataCellDashboardTotal(
-                                  offer.countstate.toString()),
-                              _buildDataCellViewBlueDashboard("View", () {
-                                Navigator.of(context).pop();
-
-                                Navigator.push(context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ScreeningCenterCompleted(
-                                            districtName:
-                                            offer.districtName),
-                                  ),
-                                );
-                              }),
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+
+                          // ✅ Show data rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCellDistrict(offer.districtName),
+                                  _buildDataCellDashboardTotal(
+                                      offer.countstate.toString()),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ScreeningCenterCompleted(
+                                          districtName: offer.districtName,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -7215,40 +6986,28 @@ class _SpoDashboard extends State<SpoDashboard> {
             children: [
               // Horizontal Scrolling Header Row
               Container(
-                color: Colors.white70,
-                padding: const EdgeInsets.all(8.0),
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
                   children: [
-                    // Text Container
                     Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.red.withOpacity(0.1), // Light red background
-                          border: Border.all(
-                            color: Colors.red,
-                            width: 1, // Red border
-                          ),
+                      child: Text(
+                        'District-wise Screening Camp(s) (Onging)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
-                        child: Text(
-                          'District-wise Screening Camp(s) (Onging)',
-                          style: TextStyle(
-                            fontSize: 14, // Set font size for better readability
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow: TextOverflow.ellipsis, // Handle text overflow
-                          maxLines: 2, // Limit text to 2 lines
-                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    // Back Button
-                    InkWell(
+                    GestureDetector(
                       onTap: () {
-                        print('@@back Pressed----display---');
+                        print('Back button pressed');
                         setState(() {
                           dashboardviewReplace = true;
                           GetSPO_GHA_PendingClickShowData = false;
@@ -7271,24 +7030,34 @@ class _SpoDashboard extends State<SpoDashboard> {
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1), // Light red background
-                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
-                          border: Border.all(color: Colors.red, width: 1), // Red border
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
                         ),
                         child: Text(
                           'Back',
                           style: TextStyle(
-                            color: Colors.red,
+                            color: Colors.black,
                             fontWeight: FontWeight.w500,
+                            fontSize: 16,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-
-              SizedBox(width: 8.0),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -7300,7 +7069,6 @@ class _SpoDashboard extends State<SpoDashboard> {
                   ],
                 ),
               ),
-              Divider(color: Colors.blue, height: 1.0),
               // Data Rows
               FutureBuilder<List<ScreeningCampCompltedData>>(
                 /*   future: ApiController.getSPO_ScreeningCampApproval(
@@ -7387,41 +7155,30 @@ class _SpoDashboard extends State<SpoDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
+
               Container(
-                color: Colors.white70,
-                padding: const EdgeInsets.all(8.0),
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
                   children: [
-                    // Text Container
                     Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.red.withOpacity(0.1), // Light red background
-                          border: Border.all(
-                            color: Colors.red,
-                            width: 1, // Red border
-                          ),
+                      child: Text(
+                        'District-wise Screening Camp(s) (UpComing)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
-                        child: Text(
-                          'District-wise Screening Camp(s) (UpComing)',
-                          style: TextStyle(
-                            fontSize: 14, // Set font size for better readability
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow: TextOverflow.ellipsis, // Handle text overflow
-                          maxLines: 2, // Limit text to 2 lines
-                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    // Back Button
-                    InkWell(
+                    GestureDetector(
                       onTap: () {
-                        print('@@back Pressed----display---');
+                        print('Back button pressed');
                         setState(() {
                           dashboardviewReplace = true;
                           GetSPO_GHA_PendingClickShowData = false;
@@ -7444,16 +7201,28 @@ class _SpoDashboard extends State<SpoDashboard> {
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1), // Light red background
-                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
-                          border: Border.all(color: Colors.red, width: 1), // Red border
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
                         ),
                         child: Text(
                           'Back',
                           style: TextStyle(
-                            color: Colors.red,
+                            color: Colors.black,
                             fontWeight: FontWeight.w500,
+                            fontSize: 16,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
@@ -7461,46 +7230,25 @@ class _SpoDashboard extends State<SpoDashboard> {
                 ),
               ),
 
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNoDashboard('S.No.'),
-                    _buildHeaderCellDashboardDistrict('District'),
-                    _buildHeaderCellDashboardsTotal('Total'),
-                    _buildHeaderCellDashboardsAction('Action'),
-                  ],
-                ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
               FutureBuilder<List<ScreeningCampCompltedData>>(
-                /*   future: ApiController.getSPO_ScreeningCampApproval(
-                    610,
-                    33,
-                    "Completed",
-
-                    "2019-2020",
-                    ""),*/
                 future: ApiController.getSPO_ScreeningCampApprovalUpComing(
-                    district_code_login,
-                    state_code_login,
-                    "Comming",
-                    currentFinancialYear,
-                    ""),
+                  district_code_login,
+                  state_code_login,
+                  "Comming",
+                  currentFinancialYear,
+                  "",
+                ),
                 builder: (context, snapshot) {
-
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                    // Show "No data found" message when there is no data
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
                         child: Text(
                           "No data found",
                           style: TextStyle(fontSize: 16, color: Colors.blue),
@@ -7509,42 +7257,55 @@ class _SpoDashboard extends State<SpoDashboard> {
                     );
                   } else {
                     List<ScreeningCampCompltedData> ddata = snapshot.data;
-                    print('@@---PrivateMedicalCollegeApprovedData' +
-                        ddata.length.toString());
+                    print('@@---Screening Camp Upcoming Data Count: ${ddata.length}');
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ✅ Show header row **ONLY IF** data exists
+                          Row(
                             children: [
-                              _buildDataCellSrNoDashboards(
-                                  (ddata.indexOf(offer) + 1)
-                                      .toString()),
-                              _buildDataCellDistrict(offer.districtName),
-                              _buildDataCellDashboardTotal(
-                                  offer.countstate.toString()),
-                              _buildDataCellViewBlueDashboard("View", () {
-                                Navigator.of(context).pop();
-
-                                Navigator.push(context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        ScreeningCenterUpComings(
-
-                                            districtName:
-                                            offer.districtName),
-                                  ),
-                                );
-                              }),
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+
+                          // ✅ Show data rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                      (ddata.indexOf(offer) + 1).toString()),
+                                  _buildDataCellDistrict(offer.districtName),
+                                  _buildDataCellDashboardTotal(offer.countstate.toString()),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => ScreeningCenterUpComings(
+                                          districtName: offer.districtName,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),
@@ -7561,40 +7322,28 @@ class _SpoDashboard extends State<SpoDashboard> {
             children: [
               // Horizontal Scrolling Header Row
               Container(
-                color: Colors.white70,
-                padding: const EdgeInsets.all(8.0),
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
                   children: [
-                    // Text Container
                     Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.red.withOpacity(0.1), // Light red background
-                          border: Border.all(
-                            color: Colors.red,
-                            width: 1, // Red border
-                          ),
+                      child: Text(
+                        'District-wise Satellite Centres',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
-                        child: Text(
-                          'District-wise Satellite Centres',
-                          style: TextStyle(
-                            fontSize: 14, // Set font size for better readability
-                            color: Colors.red,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          overflow: TextOverflow.ellipsis, // Handle text overflow
-                          maxLines: 2, // Limit text to 2 lines
-                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    // Back Button
-                    InkWell(
+                    GestureDetector(
                       onTap: () {
-                        print('@@back Pressed----display---');
+                        print('Back button pressed');
                         setState(() {
                           dashboardviewReplace = true;
                           GetSPO_GHA_PendingClickShowData = false;
@@ -7613,111 +7362,119 @@ class _SpoDashboard extends State<SpoDashboard> {
                           SPO_ScreeningCampOngoing=false;
                           SPO_SatelliteCentres=false;
                           SPO_ScreeningCampUpComing=false;
-
                         });
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1), // Light red background
-                          borderRadius: BorderRadius.circular(8.0), // Rounded corners
-                          border: Border.all(color: Colors.red, width: 1), // Red border
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
                         ),
                         child: Text(
                           'Back',
                           style: TextStyle(
-                            color: Colors.red,
+                            color: Colors.black,
                             fontWeight: FontWeight.w500,
+                            fontSize: 16,
                           ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-
-              SizedBox(width: 8.0),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    _buildHeaderCellSrNoDashboard('S.No.'),
-                    _buildHeaderCellDashboardDistrict('District'),
-                    _buildHeaderCellDashboardsTotal('Total'),
-                    _buildHeaderCellDashboardsAction('Action'),
-                  ],
-                ),
-              ),
-              Divider(color: Colors.blue, height: 1.0),
-              // Data Rows
               FutureBuilder<List<GetSPO_SatelliteCentreApprovalData>>(
-                /*   future: ApiController.getSPO_ScreeningCampApproval(
-                    610,
-                    33,
-                    "Completed",
-
-                    "2019-2020",
-                    ""),*/
                 future: ApiController.getSPO_SatelliteCentreApproval(
-                    district_code_login,
-                    state_code_login,
-                   statusApproved,
-                    currentFinancialYear),
+                  district_code_login,
+                  state_code_login,
+                  statusApproved,
+                  currentFinancialYear,
+                ),
                 builder: (context, snapshot) {
-
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Utils.getEmptyView("Error: ${snapshot.error}");
                   } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                    // Align "No data found" message to the left
-                    return Align(
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                    // Show "No data found" when there is no data
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft, // Ensure left alignment
                         child: Text(
                           "No data found",
-                          style: TextStyle(fontSize: 16, color: Colors.blue),
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     );
                   } else {
                     List<GetSPO_SatelliteCentreApprovalData> ddata = snapshot.data;
-                    print('@@---PrivateMedicalCollegeApprovedData' +
-                        ddata.length.toString());
+                    print('@@---SatelliteCentreApprovalData Count: ${ddata.length}');
+
                     return SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Column(
-                        children: ddata.map((offer) {
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // ✅ Show header row **ONLY IF** data exists
+                          Row(
                             children: [
-                              _buildDataCellSrNoDashboards(
-                                  (ddata.indexOf(offer) + 1)
-                                      .toString()),
-                              _buildDataCellDistrict(offer.districtName),
-                              _buildDataCellDashboardTotal(
-                                  offer.countstate.toString()),
-                              _buildDataCellViewBlueDashboard("View", () {
-                                Navigator.of(context).pop();
-
-                                Navigator.push(context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SatelliteCentresList(
-                                            districtName:
-                                            offer.districtName),
-                                  ),
-                                );
-                              }),
+                              _buildHeaderCellSrNoDashboard('S.No.'),
+                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellDashboardsTotal('Total'),
+                              _buildHeaderCellDashboardsAction('Action'),
                             ],
-                          );
-                        }).toList(),
+                          ),
+
+                          // ✅ Show data rows
+                          Column(
+                            children: ddata.map((offer) {
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDashboards(
+                                    (ddata.indexOf(offer) + 1).toString(),
+                                  ),
+                                  _buildDataCellDistrict(offer.districtName),
+                                  _buildDataCellDashboardTotal(offer.countstate.toString()),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    Navigator.of(context).pop();
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SatelliteCentresList(
+                                          districtName: offer.districtName,
+                                        ),
+                                      ),
+                                    );
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ),
+                        ],
                       ),
                     );
                   }
                 },
               ),
+
             ],
           ),
         ),

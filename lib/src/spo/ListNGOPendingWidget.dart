@@ -69,7 +69,8 @@ class _ListNGOPendingWidget extends State<ListNGOPendingWidget> {
     currentFinancialYear = getCurrentFinancialYear();
 
     return Scaffold(
-      appBar: AppBar(title: Text('NGO Approval List')),
+      appBar: AppBar(title: Text('NGO(s) (Pending)', maxLines: 2, // Limits text to 2 lines
+        style: TextStyle(color: Colors.white, fontSize: 14.0),)),
       body: SingleChildScrollView(
         child: Column(
           children: [

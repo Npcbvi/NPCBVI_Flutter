@@ -3,6 +3,7 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/GHC_approvalList.dart';
 import 'package:mohfw_npcbvi/src/model/spoModel/dahboardclickdetails/NGOAPPRovedClickListDetail.dart';
+import 'package:mohfw_npcbvi/src/spo/SpoDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class ListGovtCHGPending extends StatefulWidget {
@@ -53,7 +54,9 @@ class _ListGovtCHGPending extends State<ListGovtCHGPending> {
   Widget build(BuildContext context) {
     currentFinancialYear = getCurrentFinancialYear();
     return Scaffold(
-      appBar: AppBar(title: Text('NGO Pending List')),
+      appBar: AppBar(title: Text('List District-wise Gove./ CHC / Other Hospital(s) (Pending)',
+        maxLines: 2, // Limits text to 2 lines
+        style: TextStyle(color: Colors.white, fontSize: 14.0),)),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -78,7 +81,55 @@ class _ListGovtCHGPending extends State<ListGovtCHGPending> {
               ),
             ),
 
+            Container(
+              width: double.infinity, // Full width
+              color: Colors.blue, // Background color
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Govt. / CHC / Other Hospitals (Pending)', // Added spacing between words
+                      maxLines: 2,
+                      textAlign: TextAlign.left, // Align text to the left
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () {
+                      Navigator.of(context).pop();
 
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SpoDashboard()),
+                      );
+                    },
+                    child: Container(
+                      width: 80.0,
+                      padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Center(
+                        child: Text('Back', overflow: TextOverflow.ellipsis, style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+                      ),
+                    ),
+                  ),
+
+
+
+
+                ],
+              ),
+            ),
             // Data Table (Header and Rows in Single ScrollView)
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
