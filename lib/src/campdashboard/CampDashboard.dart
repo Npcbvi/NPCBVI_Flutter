@@ -484,7 +484,6 @@ class _CampDashboard extends State<CampDashboard> {
       ),
     );
   }
-
   Widget ngoDashboardclick() {
     return Row(
       children: [
