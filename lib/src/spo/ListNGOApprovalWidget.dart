@@ -6,9 +6,10 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class ListNGOApprovalWidget extends StatefulWidget {
   final String districtName;
+  final int districtCode;
 
   // Constructor to accept districtName
-  ListNGOApprovalWidget({Key key,  this.districtName}) : super(key: key);
+  ListNGOApprovalWidget({Key key,  this.districtName, this.districtCode}) : super(key: key);
   @override
   _ListNGOApprovalWidget createState() => _ListNGOApprovalWidget();
 }
@@ -99,7 +100,7 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.zero, // Remove any horizontal padding
               child: FutureBuilder<List<NGOAPPRovedClickListDetailData>>(
-                future: ApiController.getSPO_DistrictNgoApproval_lists(district_code_login, state_code_login, currentFinancialYear, statusApproved),
+                future: ApiController.getSPO_DistrictNgoApproval_lists(widget.districtCode, state_code_login, currentFinancialYear, statusApproved),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());

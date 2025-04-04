@@ -5466,7 +5466,7 @@ class ApiController {
         "financialYear": financialYear,
         "status": status, // for approved
       });
-      print("@@getSPO_DiseasewiseRecordsApproval--bodyprint--: ${body
+      print("@@getSPO_DiseasewiseRecordsApproval--bodyprint--: ${url+body
           .toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
@@ -5534,7 +5534,7 @@ class ApiController {
         "mode": "",
         "diseaseid": diseaseid // for approved
       });
-      print("@@getSPO_Patients_Approved_View--bodyprint--: ${body.toString()}");
+      print("@@getSPO_Patients_Approved_View--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(

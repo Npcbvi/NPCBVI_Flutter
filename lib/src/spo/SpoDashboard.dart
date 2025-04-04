@@ -3777,8 +3777,61 @@ class _SpoDashboard extends State<SpoDashboard> {
       ),
     );
   }
+  Widget _buildHeaderCellDashboardDistrictForPatientFince(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
 
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
 
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellDistrictForPatientFince(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.3, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
   Widget _buildHeaderCellDashboardDistrict(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -5032,8 +5085,8 @@ class _SpoDashboard extends State<SpoDashboard> {
                         if (ddata.isNotEmpty)
                           Row(
                             children: [
-                              _buildHeaderCellSrNoDashboard('S.No.'),
-                              _buildHeaderCellDashboardDistrict('District'),
+                              _buildHeaderCellSrNoDashboard('S.Nos.'),
+                              _buildHeaderCellDashboardDistrictForPatientFince('District'),
                               _buildHeaderCellDashboardsTotal('Total'),
                               _buildHeaderCellDashboardsAction('Action'),
                             ],
@@ -5046,12 +5099,13 @@ class _SpoDashboard extends State<SpoDashboard> {
                               children: [
                                 _buildDataCellSrNoDashboards(
                                     (ddata.indexOf(offer) + 1).toString()),
-                                _buildDataCellDistrict(offer.districtName),
+                                _buildDataCellDistrictForPatientFince(offer.districtName),
                                 _buildDataCellDashboardTotal(
                                     offer.totalCount.toString()),
                                 _buildDataCellViewBlueDashboard("View", () {
-                                  print('@@Edit clicked for item: ${offer.districtName}');
-                                  showDiseaseApprovedPatintViewClick();
+                                  print('@@district_code for item: ${offer.districtCode}');
+                                  showDiseaseApprovedPatintViewClick(offer.districtCode);
+
                                 }),
                               ],
                             );
@@ -5080,7 +5134,7 @@ class _SpoDashboard extends State<SpoDashboard> {
 
 
 
-  void showDiseaseApprovedPatintViewClick() {
+  void showDiseaseApprovedPatintViewClick(int district_code_spo ) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -5105,7 +5159,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         Row(
                           children: [
                             _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('Disease '),
+                            _buildHeaderCellDashboardDistrictForPatientFince('Disease '),
                             _buildHeaderCellDashboardsTotal('Total'),
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
@@ -5117,11 +5171,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                               ApiController.getSPO_DiseasewiseRecordsApproval(
                             /*   district_code_login,
                             state_code_login,
-                            currentFinancialYear,
                             "",
+
                             diseaseid,*/
                             // 568, 33, "2024-2025", statusApproved,
-                            district_code_login, state_code_login,
+                                district_code_spo, state_code_login,
                             currentFinancialYear, statusApproved,
                           ),
                           builder: (context, snapshot) {
@@ -5147,14 +5201,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       _buildDataCellSrNoDashboards(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.diseaseName),
+                                      _buildDataCellDistrictForPatientFince(offer.diseaseName),
                                       _buildDataCellDashboardTotal(
                                           offer.totalApproPending.toString()),
                                       _buildDataCellViewBlueDashboard("View", () {
                                         print("@@npcbNo: " +
                                             offer.diseaseId.toString());
                                         showDiseaseGetSPO_Patients_Approved_View(
-                                            offer.diseaseId);
+                                            offer.districtCode,offer.diseaseId);
                                       }),
                                     ],
                                   );
@@ -5183,7 +5237,7 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  void showDiseasePendingPatintViewClick() {
+  void showDiseasePendingPatintViewClick(int districtCodeSPo) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -5208,7 +5262,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         Row(
                           children: [
                             _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('Disease '),
+                            _buildHeaderCellDashboardDistrictForPatientFince('Disease '),
                             _buildHeaderCellDashboardsTotal('Total'),
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
@@ -5225,7 +5279,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                             "",
                             diseaseid,*/
                             // 568, 33, "2024-2025", statusPending, in case of pending
-                            district_code_login, state_code_login,
+                                districtCodeSPo, state_code_login,
                             currentFinancialYear, statusPending,
                           ),
                           builder: (context, snapshot) {
@@ -5251,14 +5305,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       _buildDataCellSrNoDashboards(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.diseaseName),
+                                      _buildDataCellDistrictForPatientFince(offer.diseaseName),
                                       _buildDataCellDashboardTotal(
                                           offer.totalApproPending.toString()),
                                       _buildDataCellViewBlueDashboard("View", () {
                                         print("@@npcbNo: " +
                                             offer.diseaseId.toString());
                                         showDiseaseGetSPO_Patients_Pending_View(
-                                            offer.diseaseId);
+                                            offer.districtCode,offer.diseaseId);
                                       }),
                                     ],
                                   );
@@ -5287,106 +5341,91 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  void showDiseaseGetSPO_Patients_Approved_View(int diseaseId) {
+  void showDiseaseGetSPO_Patients_Approved_View(int districtCodeSPO,int diseaseId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        // Get screen size
         double screenWidth = MediaQuery.of(context).size.width;
         double screenHeight = MediaQuery.of(context).size.height;
-
         return AlertDialog(
           title: Text('Disease Data'),
           content: Container(
-            width: screenWidth * 0.9, // 90% of screen width
-            height: screenHeight * 0.7, // 70% of screen height
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  // Combined Horizontal Scrolling for Header and Data Rows
-                  SingleChildScrollView(
+            width: screenWidth * 1.0,
+            height: screenHeight * 0.7,
+            child: FutureBuilder<List<GetSPO_Patients_Approved_ViewData>>(
+              future: ApiController.getSPO_Patients_Approved_View(
+                districtCodeSPO,
+                state_code_login,
+                currentFinancialYear,
+                statusApproved,
+                diseaseId,
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Utils.getEmptyView("Error: ${snapshot.error}");
+                } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                  return Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "No data found",
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                } else {
+                  List<GetSPO_Patients_Approved_ViewData> ddata = snapshot.data;
+                  print('@@---ddata: ${ddata.length}');
+
+                  return SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('NGO'),
-                            _buildHeaderCell('Approved'),
-                            _buildHeaderCell('Action'),
+
+                            _buildHeaderCellSrNoDashboard('S.No'),
+                            _buildHeaderCellDashboardDistrictForPatientFince('NGO'),
+                            _buildHeaderCellDashboardsTotal('Total'),
+                            _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
+
                         // Data Rows
-                        FutureBuilder<List<GetSPO_Patients_Approved_ViewData>>(
-                          future: ApiController.getSPO_Patients_Approved_View(
-                            /*   district_code_login,
-                            state_code_login,
-                            currentFinancialYear,
-                            "",
-                            diseaseid,*/
-                               //  568, 33, "2024-2025", statusApproved,diseaseId,
-                            district_code_login, state_code_login,
-                            currentFinancialYear, statusApproved, diseaseId,
-                          ),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Utils.getEmptyView(
-                                  "Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData ||
-                                snapshot.data.isEmpty) {
-                              // Return a TextField displaying 'No data found'
-                              return Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    "No data found",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.black54,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              );
-                            }else {
-                              List<GetSPO_Patients_Approved_ViewData> ddata =
-                                  snapshot.data;
-                              print('@@---ddata: ' + ddata.length.toString());
-                              return Column(
-                                children: ddata.map((offer) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      _buildDataCellSrNo(
-                                          (ddata.indexOf(offer) + 1)
-                                              .toString()),
-                                      _buildDataCell(offer.ngoname),
-                                      _buildDataCell(offer.total.toString()),
-                                      _buildDataCellViewBlue("View", () {
-                                        print("@@npcbNo: " +
-                                            offer.ngoname.toString());
-                                      }),
-                                    ],
-                                  );
-                                }).toList(),
-                              );
-                            }
-                          },
-                        ),
+                        ...ddata.map((offer) {
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              _buildDataCellSrNoDashboards(
+                                (ddata.indexOf(offer) + 1).toString(),
+                              ),
+                              _buildDataCellDistrictForPatientFince(offer.ngoname),
+                              _buildDataCellDashboardTotal(offer.total.toString()),
+                              _buildDataCellViewBlueDashboard("View", () {
+                                print("@@npcbNo: ${offer.ngoname}");
+                              }),
+
+
+                            ],
+                          );
+                        }).toList(),
                       ],
                     ),
-                  ),
-                ],
-              ),
+                  );
+                }
+              },
             ),
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
               child: Text('Close'),
               onPressed: () {
@@ -5399,7 +5438,8 @@ class _SpoDashboard extends State<SpoDashboard> {
     );
   }
 
-  void showDiseaseGetSPO_Patients_Pending_View(int diseaseId) {
+
+  void showDiseaseGetSPO_Patients_Pending_View(int districtcodeSPO,int diseaseId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -5423,17 +5463,17 @@ class _SpoDashboard extends State<SpoDashboard> {
                         // Header Row
                         Row(
                           children: [
-                            _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('NGO'),
-                            _buildHeaderCell('Approved'),
-                            _buildHeaderCell('Action'),
+
+                            _buildHeaderCellSrNoDashboard('S.No'),
+                            _buildHeaderCellDashboardDistrictForPatientFince('NGO'),
+                            _buildHeaderCellDashboardsTotal('Total'),
+                            _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
                         FutureBuilder<List<GetSPO_Patients_Approved_ViewData>>(
                           future: ApiController.getSPO_Patients_Approved_View(
-                            district_code_login,
+                            districtcodeSPO,
                             state_code_login,
                             currentFinancialYear,
                             statusPending,
@@ -5473,14 +5513,16 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNo(
-                                          (ddata.indexOf(offer) + 1)
-                                              .toString()),
-                                      _buildDataCell(offer.ngoname),
-                                      _buildDataCell(offer.total.toString()),
-                                      _buildDataCellViewBlue("View", () {
+
+                                      _buildDataCellSrNoDashboards(
+                                        (ddata.indexOf(offer) + 1).toString(),
+                                      ),
+                                      _buildDataCellDistrictForPatientFince(offer.ngoname),
+                                      _buildDataCellDashboardTotal(offer.total.toString()),
+                                      _buildDataCellViewBlueDashboard("View", () {
                                         print("@@npcbNo: ${offer.ngoname}");
                                       }),
+
                                     ],
                                   );
                                 }).toList(),
@@ -5533,12 +5575,11 @@ class _SpoDashboard extends State<SpoDashboard> {
                         Row(
                           children: [
                             _buildHeaderCellSrNoDashboard('S.No.'),
-                            _buildHeaderCellDashboardDistrict('District Name'),
+                            _buildHeaderCellDashboardDistrictForPatientFince('District Name'),
                             _buildHeaderCellDashboardsTotal('Total'),
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),
-                        Divider(color: Colors.blue, height: 1.0),
                         // Data Rows
                         FutureBuilder<List<ApprovedclickPatientsData>>(
                           future: ApiController.getSPO_PatientApproval(
@@ -5582,14 +5623,14 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       _buildDataCellSrNoDashboards(
                                           (ddata.indexOf(offer) + 1)
                                               .toString()),
-                                      _buildDataCellDistrict(offer.districtName),
+                                      _buildDataCellDistrictForPatientFince(offer.districtName),
                                       _buildDataCellDashboardTotal(
                                           offer.totalCount.toString()),
                                       _buildDataCellViewBlueDashboard("View", () {
                                         print(
                                             '@@Edit clicked for item: ${offer.districtName}');
                                         // You can add further actions here if needed
-                                        showDiseasePendingPatintViewClick();
+                                        showDiseasePendingPatintViewClick(offer.districtCode);
                                       }),
                                     ],
                                   );
@@ -5705,6 +5746,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 ListNGOApprovalWidget(
+                                                    districtCode: offer.districtCode,
                                                     districtName:
                                                         offer.districtName),
                                           ),
