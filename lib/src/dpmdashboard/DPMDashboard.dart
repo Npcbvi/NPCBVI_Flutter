@@ -4687,7 +4687,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                         child:
-                        DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                            DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
                           hint: const Text(
                             'Select Year',
                             style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -4709,7 +4709,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               value: user,
                               child: Padding(
                                 padding:
-                                const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Text(
                                   user.name,
                                   style: const TextStyle(fontSize: 16),
@@ -4742,11 +4742,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ),
                           menuItemStyleData: MenuItemStyleData(
                             overlayColor:
-                            MaterialStateProperty.all(Colors.blue[100]),
+                                MaterialStateProperty.all(Colors.blue[100]),
                           ),
                           decoration: const InputDecoration(
                             contentPadding:
-                            EdgeInsets.symmetric(horizontal: 10),
+                                EdgeInsets.symmetric(horizontal: 10),
                             border: InputBorder.none,
                           ),
                         ),
@@ -4784,7 +4784,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                         child:
-                        DropdownButtonFormField2<DataGetDPM_ScreeningMonth>(
+                            DropdownButtonFormField2<DataGetDPM_ScreeningMonth>(
                           hint: const Text(
                             'Select Month',
                             style: TextStyle(fontSize: 16, color: Colors.grey),
@@ -4804,7 +4804,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               value: user,
                               child: Padding(
                                 padding:
-                                const EdgeInsets.symmetric(vertical: 10),
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Text(
                                   user.monthname,
                                   style: const TextStyle(fontSize: 16),
@@ -4836,11 +4836,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ),
                           menuItemStyleData: MenuItemStyleData(
                             overlayColor:
-                            MaterialStateProperty.all(Colors.white),
+                                MaterialStateProperty.all(Colors.white),
                           ),
                           decoration: const InputDecoration(
                             contentPadding:
-                            EdgeInsets.symmetric(horizontal: 10),
+                                EdgeInsets.symmetric(horizontal: 10),
                             border: InputBorder.none,
                           ),
                         ),
@@ -6587,7 +6587,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             Utils.showToast(
                                                 "Next Sprint Report", true);
 
-                                            /*   Navigator.push(
+                                           /*    Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
@@ -10729,16 +10729,21 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       flex: 2,
                       child: Text(
-                        'Cataract Data for Approval', // Added spacing between words
+                        'Cataract Data for Approval',
+                        // Added spacing between words
                         maxLines: 2,
                         textAlign: TextAlign.left, // Align text to the left
                         style: TextStyle(
@@ -10787,13 +10792,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                           decoration: BoxDecoration(
                             color: Colors.white, // ✅ White background
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey), // ✅ Light border for visibility
+                            border: Border.all(
+                                color: Colors
+                                    .grey), // ✅ Light border for visibility
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
-
                                 child: Text(
                                   'Back',
                                   style: TextStyle(
@@ -10810,444 +10816,333 @@ class _DPMDashboard extends State<DPMDashboard> {
                         ),
                       ),
                     ),
-
-
-
-
-
                   ],
                 ),
               ),
               // Horizontal Scrolling Header Row
-              SizedBox(width: 5.0),
+              SizedBox(height: 5.0),
 
-              FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                future: _futureCataract,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
+              Container(
+                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                  future: _futureCataract,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error: ${snapshot.error}');
+                    }
 
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    // return const CircularProgressIndicator();
-                  }
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // return const CircularProgressIndicator();
+                    }
 
-                  if (snapshot.data == null || snapshot.data.isEmpty) {
-                    return const Text(
-                      'No data found',
-                      style: TextStyle(fontSize: 16, color: Colors.red),
-                    );
-                  }
+                    if (snapshot.data == null || snapshot.data.isEmpty) {
+                      return const Text(
+                        'No data found',
+                        style: TextStyle(fontSize: 16, color: Colors.red),
+                      );
+                    }
 
-                  List<DataGetDPM_ScreeningYear> list = snapshot.data ?? [];
+                    List<DataGetDPM_ScreeningYear> list = snapshot.data ?? [];
 
-                  if (_selectedUser == null || !list.contains(_selectedUser)) {
-                    _selectedUser =
-                        list.first; // Set first item as default selection
-                  }
+                    if (_selectedUser == null ||
+                        !list.contains(_selectedUser)) {
+                      _selectedUser =
+                          list.first; // Set first item as default selection
+                    }
 
-                  return Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                    child: Container(
-                      height: 50, // ✅ Fixed height to match other dropdowns
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey, width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
-                        isExpanded: true,
-                        hint: const Text(
-                          'Select Year',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
+                      child: Container(
+                        height: 50, // ✅ Fixed height to match other dropdowns
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(color: Colors.grey, width: 1),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        onChanged: (user) {
-                          setState(() {
-                            _selectedUser = user;
-                            getYearCatract = user?.name ?? '';
-                            getfyid = user?.fyid ?? '';
-                            print('@@getYear--$getYearCatract');
-                            print('@@getfyidSelected here----$getfyid');
-                          });
-                        },
-                        value: _selectedUser,
-                        items: list.map((user) {
-                          return DropdownMenuItem<DataGetDPM_ScreeningYear>(
-                            value: user,
-                            child: Text(
-                              user.name,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          );
-                        }).toList(),
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 300,
-                          width: 300,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
+                        child:
+                            DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                          isExpanded: true,
+                          hint: const Text(
+                            'Select Year',
+                            style: TextStyle(fontSize: 16, color: Colors.grey),
                           ),
-                          offset: const Offset(0, -3),
-                        ),
-                        buttonStyleData: ButtonStyleData(
-                          height: 50, // ✅ Fixed height
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon:
-                              Icon(Icons.arrow_drop_down, color: Colors.black),
-                        ),
-                        menuItemStyleData: MenuItemStyleData(
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.blue[100]),
-                        ),
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                          border: InputBorder.none,
+                          onChanged: (user) {
+                            setState(() {
+                              _selectedUser = user;
+                              getYearCatract = user?.name ?? '';
+                              getfyid = user?.fyid ?? '';
+                              print('@@getYear--$getYearCatract');
+                              print('@@getfyidSelected here----$getfyid');
+                            });
+                          },
+                          value: _selectedUser,
+                          items: list.map((user) {
+                            return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                              value: user,
+                              child: Text(
+                                user.name,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            );
+                          }).toList(),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: 300,
+                            width: 300,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            offset: const Offset(0, -3),
+                          ),
+                          buttonStyleData: ButtonStyleData(
+                            height: 50, // ✅ Fixed height
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(Icons.arrow_drop_down,
+                                color: Colors.black),
+                          ),
+                          menuItemStyleData: MenuItemStyleData(
+                            overlayColor:
+                                MaterialStateProperty.all(Colors.white),
+                          ),
+                          decoration: const InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(horizontal: 5),
+                            border: InputBorder.none,
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
 
               SizedBox(height: 5.0),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 0),
-                // Left & right margin
-                child: Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  // ✅ Added margin
-                  width: double.infinity,
-                  // ✅ Takes full width safely
-                  height: 50,
-                  // ✅ Set height to 50
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    border: Border.all(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButtonFormField2<String>(
-                      isExpanded: true,
-                      value: lowVisionDatas,
-                      style: const TextStyle(color: Colors.black),
-                      decoration: InputDecoration(
-                        hintText: "Select Type",
-                        hintStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10, horizontal: 5), // ✅ Adjusted padding
+              Container(
+                margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                // ✅ Added margin
+                width: double.infinity,
+                // ✅ Takes full width safely
+                height: 50,
+                // ✅ Set height to 50
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButtonFormField2<String>(
+                    isExpanded: true,
+                    value: lowVisionDatas,
+                    style: const TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      hintText: "Select Type",
+                      hintStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
-                      buttonStyleData: ButtonStyleData(
-                        height: 50, // ✅ Set height to 50
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                      ),
-                      iconStyleData: IconStyleData(
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                      ),
-                      dropdownStyleData: DropdownStyleData(
-                        maxHeight: 300,
-                        width: 300,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      items: [
-                        'NGOs',
-                        'Private Practitioner',
-                        'Private Medical College',
-                      ].map<DropdownMenuItem<String>>(
-                          (String lowVisionRegistry) {
-                        return DropdownMenuItem<String>(
-                          value: lowVisionRegistry,
-                          child: Text(
-                            lowVisionRegistry,
-                            overflow: TextOverflow.ellipsis,
-                            // ✅ Prevents text overflow
-                            style: const TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (String lowVisionData) {
-                        setState(() {
-                          lowVisionDatas = lowVisionData ?? '';
-                          switch (lowVisionDatas) {
-                            case "NGOs":
-                              lowVisionDataValue = 5;
-                              break;
-                            case "Private Practitioner":
-                              lowVisionDataValue = 12;
-                              _futureDataBindOrganValuebiggerFive =
-                                  GetDPM_Bindorg_New();
-                              break;
-                            case "Private Medical College":
-                              lowVisionDataValue = 13;
-                              _futureDataBindOrganValuebiggerFive =
-                                  GetDPM_Bindorg_New();
-                              break;
-                            default:
-                              lowVisionDataValue = 0;
-                          }
-                        });
-                      },
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 5), // ✅ Adjusted padding
                     ),
+                    buttonStyleData: ButtonStyleData(
+                      height: 50, // ✅ Set height to 50
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                    ),
+                    iconStyleData: IconStyleData(
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 300,
+                      width: 300,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    items: [
+                      'NGOs',
+                      'Private Practitioner',
+                      'Private Medical College',
+                    ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
+                      return DropdownMenuItem<String>(
+                        value: lowVisionRegistry,
+                        child: Text(
+                          lowVisionRegistry,
+                          overflow: TextOverflow.ellipsis,
+                          // ✅ Prevents text overflow
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (String lowVisionData) {
+                      setState(() {
+                        lowVisionDatas = lowVisionData ?? '';
+                        switch (lowVisionDatas) {
+                          case "NGOs":
+                            lowVisionDataValue = 5;
+                            break;
+                          case "Private Practitioner":
+                            lowVisionDataValue = 12;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
+                            break;
+                          case "Private Medical College":
+                            lowVisionDataValue = 13;
+                            _futureDataBindOrganValuebiggerFive =
+                                GetDPM_Bindorg_New();
+                            break;
+                          default:
+                            lowVisionDataValue = 0;
+                        }
+                      });
+                    },
                   ),
                 ),
               ),
 
               SizedBox(height: 5.0),
               if (lowVisionDataValue == 5)
-                FutureBuilder<List<DataBindOrgan>>(
-                  future: _futureBindOrgan,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}',
-                          style: TextStyle(color: Colors.red));
-                    }
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  child: FutureBuilder<List<DataBindOrgan>>(
+                    future: _futureBindOrgan,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}',
+                            style: TextStyle(color: Colors.red));
+                      }
 
-                    if (!snapshot.hasData ||
-                        snapshot.data == null ||
-                        snapshot.data.isEmpty) {
-                      return const Text('No data available',
-                          style: TextStyle(color: Colors.red, fontSize: 16));
-                    }
+                      if (!snapshot.hasData ||
+                          snapshot.data == null ||
+                          snapshot.data.isEmpty) {
+                        return const Text('No data available',
+                            style: TextStyle(color: Colors.red, fontSize: 16));
+                      }
 
-                    List<DataBindOrgan> list = snapshot.data ?? [];
+                      List<DataBindOrgan> list = snapshot.data ?? [];
 
-                    if (_selectBindOrgniasation == null ||
-                        !list.contains(_selectBindOrgniasation)) {
-                      _selectBindOrgniasation =
-                          list.isNotEmpty ? list.first : null;
-                    }
+                      if (_selectBindOrgniasation == null ||
+                          !list.contains(_selectBindOrgniasation)) {
+                        _selectBindOrgniasation =
+                            list.isNotEmpty ? list.first : null;
+                      }
 
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8), // ✅ Added margin
-                      width: double.infinity, // ✅ Takes full width safely
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                        color: Colors.white,
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton2<DataBindOrgan>(
-                          isExpanded: true,
-                          // ✅ Ensures dropdown doesn't overflow
-                          onChanged: (userbindOrgan) {
-                            setState(() {
-                              _selectBindOrgniasation = userbindOrgan;
-                              bindOrganisationNAme = userbindOrgan?.name ?? '';
-                              npcbNoCatract = userbindOrgan?.npcbNo ?? '';
-                            });
-                          },
-                          value: _selectBindOrgniasation,
-                          items: list.map((userbindorgansa) {
-                            return DropdownMenuItem<DataBindOrgan>(
-                              value: userbindorgansa,
-                              child: Text(
-                                userbindorgansa.name,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            );
-                          }).toList(),
-                          iconStyleData: IconStyleData(
-                            icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.black),
-                            iconSize: 30,
+                      return Container(
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 0, vertical: 8), // ✅ Added margin
+                        width: double.infinity, // ✅ Takes full width safely
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          border: Border.all(color: Colors.grey, width: 1.0),
+                          color: Colors.white,
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2<DataBindOrgan>(
+                            isExpanded: true,
+                            // ✅ Ensures dropdown doesn't overflow
+                            onChanged: (userbindOrgan) {
+                              setState(() {
+                                _selectBindOrgniasation = userbindOrgan;
+                                bindOrganisationNAme =
+                                    userbindOrgan?.name ?? '';
+                                npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                              });
+                            },
+                            value: _selectBindOrgniasation,
+                            items: list.map((userbindorgansa) {
+                              return DropdownMenuItem<DataBindOrgan>(
+                                value: userbindorgansa,
+                                child: Text(
+                                  userbindorgansa.name,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              );
+                            }).toList(),
+                            iconStyleData: IconStyleData(
+                              icon: Icon(Icons.arrow_drop_down,
+                                  color: Colors.black),
+                              iconSize: 30,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 )
               else if (lowVisionDataValue == 12)
-                FutureBuilder<List<DataBindOrganValuebiggerFive>>(
-                  future: _futureDataBindOrganValuebiggerFive,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                    future: _futureDataBindOrganValuebiggerFive,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      //   return const CircularProgressIndicator();
-                    }
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        //   return const CircularProgressIndicator();
+                      }
 
-                    List<DataBindOrganValuebiggerFive> list =
-                        snapshot.data ?? [];
-                    debugPrint('@@snapshot___5: $list');
-                    debugPrint('@@snapshot___5: $lowVisionDataValue');
+                      List<DataBindOrganValuebiggerFive> list =
+                          snapshot.data ?? [];
+                      debugPrint('@@snapshot___5: $list');
+                      debugPrint('@@snapshot___5: $lowVisionDataValue');
 
-                    if (list.isEmpty) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20.0, 0),
-                        child: Column(
-                          children: [
-                            const Text(
-                              'No data found',
-                              style: TextStyle(fontSize: 18, color: Colors.red),
-                            ),
-                            SizedBox(
-                              height: 50, // ✅ Fixed height
-                              width: 300, // ✅ Fixed width
-                              child: DropdownButtonFormField2<
-                                  DataBindOrganValuebiggerFive>(
-                                onChanged: null,
-                                items: [],
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                ),
-                                hint: const Text('No items available'),
-                                disabledHint: const Text('No items to select'),
+                      if (list.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'No data found',
+                                style:
+                                    TextStyle(fontSize: 18, color: Colors.red),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    if (_selectBindOrgniasationBiggerFive == null ||
-                        !list.contains(_selectBindOrgniasationBiggerFive)) {
-                      _selectBindOrgniasationBiggerFive =
-                          list.isNotEmpty ? list.first : null;
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20.0, 0),
-                      child: Column(
-                        children: <Widget>[
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            height: 50, // ✅ Fixed height
-                            width: 400, // ✅ Fixed width
-                            child: DropdownButtonFormField2<
-                                DataBindOrganValuebiggerFive>(
-                              onChanged: (userbindOrgan) {
-                                setState(() {
-                                  _selectBindOrgniasationBiggerFive =
-                                      userbindOrgan;
-                                  bindOrganisationNAme =
-                                      userbindOrgan?.oName ?? '';
-                                  npcbNoCatract = userbindOrgan?.npcbNo ?? '';
-                                });
-                              },
-                              value: _selectBindOrgniasationBiggerFive,
-                              items: list.map((userbindorgansa) {
-                                return DropdownMenuItem<
+                              SizedBox(
+                                height: 50, // ✅ Fixed height
+                                width: double.infinity, // ✅ Fixed width
+                                child: DropdownButtonFormField2<
                                     DataBindOrganValuebiggerFive>(
-                                  value: userbindorgansa,
-                                  child: Text(
-                                    userbindorgansa.oName,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(fontSize: 16),
+                                  onChanged: null,
+                                  items: [],
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 5.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
                                   ),
-                                );
-                              }).toList(),
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 10.0, horizontal: 10.0),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                      color: Colors.grey, width: 1.0),
-                                  borderRadius: BorderRadius.circular(10.0),
+                                  hint: const Text('No items available'),
+                                  disabledHint:
+                                      const Text('No items to select'),
                                 ),
-                                filled: true,
-                                fillColor: Colors.white,
                               ),
-                              style: const TextStyle(color: Colors.black),
-                              iconStyleData: const IconStyleData(
-                                icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.black),
-                              ),
-                            ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
-                  },
-                )
-              else if (lowVisionDataValue == 13)
-                FutureBuilder<List<DataBindOrganValuebiggerFive>>(
-                  future: _futureDataBindOrganValuebiggerFive,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
+                        );
+                      }
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      //  return const CircularProgressIndicator();
-                    }
+                      if (_selectBindOrgniasationBiggerFive == null ||
+                          !list.contains(_selectBindOrgniasationBiggerFive)) {
+                        _selectBindOrgniasationBiggerFive =
+                            list.isNotEmpty ? list.first : null;
+                      }
 
-                    List<DataBindOrganValuebiggerFive> list = snapshot.data;
-
-                    if (list == null || list.isEmpty) {
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 0, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: Column(
-                          children: [
-                            const Text(
-                              'No data found',
-                              style: TextStyle(fontSize: 18, color: Colors.red),
-                            ),
-                            SizedBox(
-                              height: 55, // Set height
-                              width: 400, // Set width
-                              child: DropdownButtonFormField2<
-                                  DataBindOrganValuebiggerFive>(
-                                onChanged: null,
-                                items: [],
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                ),
-                                hint: const Text('No items available'),
-                                disabledHint: Text('No items to select'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    if (_selectBindOrgniasationBiggerFive == null ||
-                        !list.contains(_selectBindOrgniasationBiggerFive)) {
-                      _selectBindOrgniasationBiggerFive =
-                          list.isNotEmpty ? list.first : null;
-                    }
-
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20.0, 0),
-                      child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(
-                              height: 55, // Set height
-                              width: 400, // Set width
+                              height: 50, // ✅ Fixed height
+                              width: double.infinity, // ✅ Fixed width
                               child: DropdownButtonFormField2<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: (userbindOrgan) {
@@ -11268,22 +11163,28 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       userbindorgansa.oName,
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 16),
+                                      style: const TextStyle(fontSize: 16),
                                     ),
                                   );
                                 }).toList(),
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 5.0),
+                                  focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    // Change color
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
                                         color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
                                   fillColor: Colors.white,
                                 ),
-                                style: TextStyle(color: Colors.black),
+                                style: const TextStyle(color: Colors.black),
                                 iconStyleData: const IconStyleData(
                                   icon: Icon(Icons.arrow_drop_down,
                                       color: Colors.black),
@@ -11292,11 +11193,157 @@ class _DPMDashboard extends State<DPMDashboard> {
                             ),
                           ],
                         ),
-                      ),
-                    );
-                  },
-                ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 13)
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                    future: _futureDataBindOrganValuebiggerFive,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
 
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const CircularProgressIndicator();
+                      }
+
+                      // Ensure list is not null
+                      List<DataBindOrganValuebiggerFive> list =
+                          snapshot.data ?? [];
+
+                      if (list.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'No data found',
+                                style:
+                                    TextStyle(fontSize: 18, color: Colors.red),
+                              ),
+                              DropdownButtonFormField<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: null,
+                                // Disabled
+                                items: [],
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 10.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                hint: const Text('No items available'),
+                                disabledHint: const Text('No items to select'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // Ensure selected item exists and update using setState inside addPostFrameCallback
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_selectBindOrgniasationBiggerFive == null ||
+                            !list.contains(_selectBindOrgniasationBiggerFive)) {
+                          setState(() {
+                            _selectBindOrgniasationBiggerFive = list.first;
+                          });
+                        }
+                      });
+
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
+                        child: SingleChildScrollView(
+                          // ✅ Prevent overflow
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Select Organisation Type',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 8),
+                              // ✅ Adds spacing before dropdown
+                              SizedBox(
+                                height: 50, // ✅ Fixed height
+                                width: 400, // ✅ Fixed width
+                                child: DropdownButtonFormField<
+                                    DataBindOrganValuebiggerFive>(
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive =
+                                          userbindOrgan;
+                                      bindOrganisationNAme =
+                                          userbindOrgan?.oName ?? '';
+                                      npcbNoCatract =
+                                          userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<
+                                        DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: ConstrainedBox(
+                                        // ✅ Constrain Text width
+                                        constraints: BoxConstraints(
+                                            maxWidth: 200), // Adjust width
+                                        child: Text(
+                                          userbindorgansa.oName,
+                                          softWrap: false,
+                                          // ✅ Prevents wrapping
+                                          overflow: TextOverflow.ellipsis,
+                                          // ✅ Adds '...' if too long
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 5.0),
+                                    // ✅ Removes blue border when focused
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      // Change color
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  dropdownColor: Colors.white,
+                                  style: TextStyle(color: Colors.black),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -11492,16 +11539,21 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       flex: 2,
                       child: Text(
-                        'Glaucoma Data for Approval', // Added spacing between words
+                        'Glaucoma Data for Approval',
+                        // Added spacing between words
                         maxLines: 2,
                         textAlign: TextAlign.left, // Align text to the left
                         style: TextStyle(
@@ -11532,13 +11584,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                           decoration: BoxDecoration(
                             color: Colors.white, // ✅ White background
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey), // ✅ Light border for visibility
+                            border: Border.all(
+                                color: Colors
+                                    .grey), // ✅ Light border for visibility
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
-
                                 child: Text(
                                   'Back',
                                   style: TextStyle(
@@ -11555,18 +11608,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                         ),
                       ),
                     ),
-
-
-
-
-
                   ],
                 ),
               ),
               // Horizontal Scrolling Header Row
-              SizedBox(height: 8.0),
+              SizedBox(height: 5.0),
 
-              Center(
+              Container(
+                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _future,
                   builder: (context, snapshot) {
@@ -11591,7 +11640,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 20.0, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -11670,8 +11719,9 @@ class _DPMDashboard extends State<DPMDashboard> {
               SizedBox(height: 5), // Space between label and dropdown
 
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20.0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                 child: Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   decoration: BoxDecoration(
                     color: Colors.white, // Background color of the dropdown box
                     border: Border.all(color: Colors.grey, width: 1.0),
@@ -11744,7 +11794,8 @@ class _DPMDashboard extends State<DPMDashboard> {
 
               SizedBox(height: 5), // Space between label and dropdown
               if (lowVisionDataValue == 5)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrgan>>(
                     future: _futureBindOrgan,
                     builder: (context, snapshot) {
@@ -11768,7 +11819,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10.0),
+                            horizontal: 0.0, vertical: 0.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           // Prevents unnecessary height usage
@@ -11816,7 +11867,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                              vertical: 15.0, horizontal: 10.0),
+                                              vertical: 15.0, horizontal: 5.0),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: const BorderSide(
                                             color: Colors.grey, width: 1.0),
@@ -11847,7 +11898,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 12)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -11866,7 +11918,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // If the list is empty or null, show an empty dropdown with a message
                       if (list == null || list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -11882,7 +11934,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Empty list as no items are available
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -11908,7 +11965,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Render dropdown with data if available
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -11948,7 +12005,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 }).toList(),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -11970,7 +12032,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 13)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -11988,7 +12051,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       if (list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -12003,7 +12066,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 items: [],
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -12031,7 +12099,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       });
 
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           // ✅ Prevent overflow
                           child: Column(
@@ -12042,7 +12110,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 8),
                               // ✅ Adds spacing before dropdown
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
@@ -12077,10 +12144,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 }).toList(),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   // ✅ Removes blue border when focused
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey, width: 1.0), // Change color
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    // Change color
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
@@ -12104,7 +12173,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 0)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -12123,7 +12193,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // If the list is empty or null, show an empty dropdown with a message
                       if (list == null || list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -12131,7 +12201,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style:
                                     TextStyle(fontSize: 18, color: Colors.red),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
@@ -12140,7 +12209,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Empty list as no items are available
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -12166,7 +12235,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Render dropdown with data if available
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -12176,7 +12245,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: (userbindOrgan) {
@@ -12203,7 +12271,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 }).toList(),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -12422,16 +12490,21 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       flex: 2,
                       child: Text(
-                        'Diabetic Data for Approval', // Added spacing between words
+                        'Diabetic Data for Approval',
+                        // Added spacing between words
                         maxLines: 2,
                         textAlign: TextAlign.left, // Align text to the left
                         style: TextStyle(
@@ -12461,13 +12534,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                           decoration: BoxDecoration(
                             color: Colors.white, // ✅ White background
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey), // ✅ Light border for visibility
+                            border: Border.all(
+                                color: Colors
+                                    .grey), // ✅ Light border for visibility
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
-
                                 child: Text(
                                   'Back',
                                   style: TextStyle(
@@ -12484,18 +12558,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                         ),
                       ),
                     ),
-
-
-
-
-
                   ],
                 ),
               ),
               // Horizontal Scrolling Header Row
-              SizedBox(width: 8.0),
+              SizedBox(height: 5.0),
 
-              Center(
+              Container(
+                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _futureDiabetic,
                   builder: (context, snapshot) {
@@ -12516,7 +12586,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 0.0),
                       // ✅ Adjust padding
                       child: LayoutBuilder(
                         builder: (context, constraints) {
@@ -12530,7 +12600,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // ✅ Prevents overflow
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 10.0),
+                                      vertical: 10.0, horizontal: 5.0),
                                   // ✅ Better spacing
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
@@ -12604,8 +12674,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                 ),
               ),
               SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              Container(
+                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                 // ✅ Same padding
                 child: LayoutBuilder(
                   builder: (context, constraints) {
@@ -12688,7 +12758,8 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
 
               if (lowVisionDataValue == 5)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrgan>>(
                     future: _futureBindOrgan,
                     builder: (context, snapshot) {
@@ -12708,7 +12779,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
 
                       return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
                         // ✅ Adjusted padding
                         child: LayoutBuilder(
                           // ✅ Prevents overflow
@@ -12728,7 +12799,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                const SizedBox(height: 8), // ✅ Adds spacing
                                 SizedBox(
                                   height: 50,
                                   // ✅ Fixed height
@@ -12766,7 +12836,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                              vertical: 10.0, horizontal: 10.0),
+                                              vertical: 10.0, horizontal: 5.0),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: const BorderSide(
                                             color: Colors.grey, width: 1.0),
@@ -12797,7 +12867,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 12)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -12816,7 +12887,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // If the list is empty or null, show an empty dropdown with a message
                       if (list == null || list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -12824,7 +12895,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style:
                                     TextStyle(fontSize: 18, color: Colors.red),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
@@ -12833,7 +12903,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Empty list as no items are available
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -12859,7 +12929,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Render dropdown with data if available
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -12900,7 +12970,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 }).toList(),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    // Change color
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -12922,7 +12998,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 13)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -12930,18 +13007,17 @@ class _DPMDashboard extends State<DPMDashboard> {
                         return Text('Error: ${snapshot.error}');
                       }
 
-                      // Only show CircularProgressIndicator if the connection is still waiting
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        // return const CircularProgressIndicator();
+                        return const CircularProgressIndicator();
                       }
 
-                      // Once data is available, check the list
-                      List<DataBindOrganValuebiggerFive> list = snapshot.data;
+                      // Ensure list is not null
+                      List<DataBindOrganValuebiggerFive> list =
+                          snapshot.data ?? [];
 
-                      // If no data is found, show an empty dropdown with a message
-                      if (list == null || list.isEmpty) {
+                      if (list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -12949,16 +13025,19 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style:
                                     TextStyle(fontSize: 18, color: Colors.red),
                               ),
-                              SizedBox(height: 5),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
-                                // Disable dropdown if there's no data
+                                // Disabled
                                 items: [],
-                                // Provide an empty list
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 15.0, horizontal: 10.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -12968,77 +13047,95 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
-                                disabledHint: Text('No items to select'),
+                                disabledHint: const Text('No items to select'),
                               ),
                             ],
                           ),
                         );
                       }
 
-                      // Select first item if not already selected
-                      if (_selectBindOrgniasationBiggerFive == null ||
-                          !list.contains(_selectBindOrgniasationBiggerFive)) {
-                        _selectBindOrgniasationBiggerFive =
-                            list.isNotEmpty ? list.first : null;
-                      }
+                      // Ensure selected item exists and update using setState inside addPostFrameCallback
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_selectBindOrgniasationBiggerFive == null ||
+                            !list.contains(_selectBindOrgniasationBiggerFive)) {
+                          setState(() {
+                            _selectBindOrgniasationBiggerFive = list.first;
+                          });
+                        }
+                      });
 
-                      // Render the dropdown with available data
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
+                          // ✅ Prevent overflow
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Select Organisation Type',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Select Organisation Type',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
-                              DropdownButtonFormField<
-                                  DataBindOrganValuebiggerFive>(
-                                onChanged: (userbindOrgan) {
-                                  setState(() {
-                                    _selectBindOrgniasationBiggerFive =
-                                        userbindOrgan;
-                                    bindOrganisationNAme =
-                                        userbindOrgan?.oName ?? '';
-                                    npcbNoDiabitic =
-                                        userbindOrgan?.npcbNo ?? '';
-                                  });
-                                },
-                                value: _selectBindOrgniasationBiggerFive,
-                                items: list.map((userbindorgansa) {
-                                  return DropdownMenuItem<
-                                      DataBindOrganValuebiggerFive>(
-                                    value: userbindorgansa,
-                                    child: Text(
-                                      userbindorgansa.oName,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 16),
+                              SizedBox(height: 8),
+                              // ✅ Adds spacing before dropdown
+                              SizedBox(
+                                height: 50, // ✅ Fixed height
+                                width: 400, // ✅ Fixed width
+                                child: DropdownButtonFormField<
+                                    DataBindOrganValuebiggerFive>(
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive =
+                                          userbindOrgan;
+                                      bindOrganisationNAme =
+                                          userbindOrgan?.oName ?? '';
+                                      npcbNoDiabitic =
+                                          userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<
+                                        DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: ConstrainedBox(
+                                        // ✅ Constrain Text width
+                                        constraints: BoxConstraints(
+                                            maxWidth: 200), // Adjust width
+                                        child: Text(
+                                          userbindorgansa.oName,
+                                          softWrap: false,
+                                          // ✅ Prevents wrapping
+                                          overflow: TextOverflow.ellipsis,
+                                          // ✅ Adds '...' if too long
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 5.0),
+                                    // ✅ Removes blue border when focused
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      // Change color
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                  );
-                                }).toList(),
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1),
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
                                   ),
-                                  filled: true,
-                                  fillColor: Colors.white,
+                                  dropdownColor: Colors.white,
+                                  style: TextStyle(color: Colors.black),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Colors.black),
                                 ),
-                                dropdownColor: Colors.white,
-                                style: TextStyle(color: Colors.black),
-                                icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -13048,7 +13145,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 0)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -13067,7 +13165,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // If the list is empty or null, show an empty dropdown with a message
                       if (list == null || list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -13083,7 +13181,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Empty list as no items are available
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -13109,7 +13207,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Render dropdown with data if available
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -13123,7 +13221,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: (userbindOrgan) {
@@ -13151,7 +13248,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 }).toList(),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -13374,18 +13471,22 @@ class _DPMDashboard extends State<DPMDashboard> {
           visible: LowVisionRegisterCornealBlindness,
           child: Column(
             children: [
-
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       flex: 2,
                       child: Text(
-                        'Corneal Blindness Data for approval', // Added spacing between words
+                        'Corneal Blindness Data for approval',
+                        // Added spacing between words
                         maxLines: 2,
                         textAlign: TextAlign.left, // Align text to the left
                         style: TextStyle(
@@ -13415,13 +13516,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                           decoration: BoxDecoration(
                             color: Colors.white, // ✅ White background
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey), // ✅ Light border for visibility
+                            border: Border.all(
+                                color: Colors
+                                    .grey), // ✅ Light border for visibility
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
-
                                 child: Text(
                                   'Back',
                                   style: TextStyle(
@@ -13438,18 +13540,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                         ),
                       ),
                     ),
-
-
-
-
-
                   ],
                 ),
               ),
               // Horizontal Scrolling Header Row
-              SizedBox(width: 5.0),
+              SizedBox(height: 5.0),
 
-              Center(
+              Container(
+                margin: const EdgeInsets.fromLTRB(5, 0, 5, 0), // Margin applied
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _future,
                   builder: (context, snapshot) {
@@ -13462,7 +13560,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     }
 
                     if (!snapshot.hasData || snapshot.data.isEmpty) {
-                      return Text("No data available");
+                      return const Text("No data available");
                     }
 
                     List<DataGetDPM_ScreeningYear> list = snapshot.data;
@@ -13473,78 +13571,71 @@ class _DPMDashboard extends State<DPMDashboard> {
                     }
 
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        // Aligns text to the left
-                        children: <Widget>[
-                          // Adds spacing before dropdown
-
-                          DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
-                            isExpanded: true,
-                            value: _selectedUser,
-                            onChanged: (userc) {
-                              setState(() {
-                                _selectedUser = userc;
-                                getYearCornealBlindness = userc.name;
-                                getfyid = userc.fyid;
-                                print('@@getYearCornealBlindness--' +
-                                    getYearCornealBlindness.toString());
-                                print('@@getfyidSelected----' +
-                                    getfyid.toString());
-                              });
-                            },
-                            items: list.map((user) {
-                              return DropdownMenuItem<DataGetDPM_ScreeningYear>(
-                                value: user,
-                                child: Text(
-                                  user.name,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              );
-                            }).toList(),
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1.0),
-                                borderRadius: BorderRadius.circular(10.0),
-                              ),
-                              filled: true,
-                              fillColor: Colors.white,
+                      padding: const EdgeInsets.all(0),
+                      child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                        isExpanded: true,
+                        value: _selectedUser,
+                        onChanged: (user) {
+                          setState(() {
+                            _selectedUser = user;
+                            getYearCornealBlindness = user.name;
+                            getfyid = user.fyid;
+                            print(
+                                '@@getYearCornealBlindness-- $getYearCornealBlindness');
+                            print('@@getfyidSelected---- $getfyid');
+                          });
+                        },
+                        items: list.map((user) {
+                          return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                            value: user,
+                            child: Text(
+                              user.name,
+                              style: const TextStyle(fontSize: 16),
                             ),
-                            dropdownStyleData: DropdownStyleData(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                            buttonStyleData: ButtonStyleData(
-                              height: 20,
-                              padding: EdgeInsets.symmetric(horizontal: 10),
-                            ),
-                            iconStyleData: IconStyleData(
-                              icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.black),
-                            ),
+                          );
+                        }).toList(),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 15.0, horizontal: 5.0),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        ],
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          offset:
+                              const Offset(0, 8), // Adjust dropdown position
+                        ),
+                        buttonStyleData: ButtonStyleData(
+                          height: 20, // Adjusted for better UI
+                        ),
+                        iconStyleData: const IconStyleData(
+                          icon:
+                              Icon(Icons.arrow_drop_down, color: Colors.black),
+                        ),
                       ),
                     );
                   },
                 ),
               ),
 
-              SizedBox(width: 5.0),
+              SizedBox(height: 5.0),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                 child: Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     // Background color of the dropdown box
@@ -13604,9 +13695,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-              SizedBox(width: 5.0),
+              SizedBox(height: 5.0),
               if (lowVisionDataValue == 5)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrgan>>(
                     future: _futureBindOrgan,
                     builder: (context, snapshot) {
@@ -13630,7 +13722,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10.0),
+                            horizontal: 0.0, vertical: 0.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           // Prevents unnecessary height usage
@@ -13676,7 +13768,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                              vertical: 15.0, horizontal: 10.0),
+                                              vertical: 15.0, horizontal: 5.0),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: const BorderSide(
                                             color: Colors.grey, width: 1.0),
@@ -13707,7 +13799,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 12)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -13726,7 +13819,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // If the list is empty or null, show an empty dropdown with a message
                       if (list == null || list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -13742,7 +13835,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Empty list as no items are available
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -13768,7 +13861,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Render dropdown with data if available
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -13809,7 +13902,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 }).toList(),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    // Change color
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -13831,7 +13930,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 13)
-                Center(
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -13839,18 +13939,17 @@ class _DPMDashboard extends State<DPMDashboard> {
                         return Text('Error: ${snapshot.error}');
                       }
 
-                      // Only show CircularProgressIndicator if the connection is still waiting
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const CircularProgressIndicator();
                       }
 
-                      // Once data is available, check the list
-                      List<DataBindOrganValuebiggerFive> list = snapshot.data;
+                      // Ensure list is not null
+                      List<DataBindOrganValuebiggerFive> list =
+                          snapshot.data ?? [];
 
-                      // If no data is found, show an empty dropdown with a message
-                      if (list == null || list.isEmpty) {
+                      if (list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -13861,12 +13960,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
-                                // Disable dropdown if there's no data
+                                // Disabled
                                 items: [],
-                                // Provide an empty list
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 15.0, horizontal: 10.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -13876,76 +13979,95 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   fillColor: Colors.white,
                                 ),
                                 hint: const Text('No items available'),
-                                disabledHint: Text('No items to select'),
+                                disabledHint: const Text('No items to select'),
                               ),
                             ],
                           ),
                         );
                       }
 
-                      // Select first item if not already selected
-                      if (_selectBindOrgniasationBiggerFive == null ||
-                          !list.contains(_selectBindOrgniasationBiggerFive)) {
-                        _selectBindOrgniasationBiggerFive =
-                            list.isNotEmpty ? list.first : null;
-                      }
+                      // Ensure selected item exists and update using setState inside addPostFrameCallback
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_selectBindOrgniasationBiggerFive == null ||
+                            !list.contains(_selectBindOrgniasationBiggerFive)) {
+                          setState(() {
+                            _selectBindOrgniasationBiggerFive = list.first;
+                          });
+                        }
+                      });
 
-                      // Render the dropdown with available data
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
+                          // ✅ Prevent overflow
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: Text(
-                                  'Select Organisation Type',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Select Organisation Type',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              DropdownButtonFormField<
-                                  DataBindOrganValuebiggerFive>(
-                                onChanged: (userbindOrgan) {
-                                  setState(() {
-                                    _selectBindOrgniasationBiggerFive =
-                                        userbindOrgan;
-                                    bindOrganisationNAme =
-                                        userbindOrgan?.oName ?? '';
-                                    npcbNoCornealBlindness =
-                                        userbindOrgan?.npcbNo ?? '';
-                                  });
-                                },
-                                value: _selectBindOrgniasationBiggerFive,
-                                items: list.map((userbindorgansa) {
-                                  return DropdownMenuItem<
-                                      DataBindOrganValuebiggerFive>(
-                                    value: userbindorgansa,
-                                    child: Text(
-                                      userbindorgansa.oName,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 16),
+                              SizedBox(height: 8),
+                              // ✅ Adds spacing before dropdown
+                              SizedBox(
+                                height: 50, // ✅ Fixed height
+                                width: 400, // ✅ Fixed width
+                                child: DropdownButtonFormField<
+                                    DataBindOrganValuebiggerFive>(
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive =
+                                          userbindOrgan;
+                                      bindOrganisationNAme =
+                                          userbindOrgan?.oName ?? '';
+                                      npcbNoCornealBlindness =
+                                          userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<
+                                        DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: ConstrainedBox(
+                                        // ✅ Constrain Text width
+                                        constraints: BoxConstraints(
+                                            maxWidth: 200), // Adjust width
+                                        child: Text(
+                                          userbindorgansa.oName,
+                                          softWrap: false,
+                                          // ✅ Prevents wrapping
+                                          overflow: TextOverflow.ellipsis,
+                                          // ✅ Adds '...' if too long
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 5.0),
+                                    // ✅ Removes blue border when focused
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      // Change color
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                  );
-                                }).toList(),
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
                                   ),
-                                  filled: true,
-                                  fillColor: Colors.white,
+                                  dropdownColor: Colors.white,
+                                  style: TextStyle(color: Colors.black),
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Colors.black),
                                 ),
-                                dropdownColor: Colors.white,
-                                style: TextStyle(color: Colors.black),
-                                icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.black),
                               ),
                             ],
                           ),
@@ -13955,7 +14077,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 0)
-                Center(
+                Container(
+                  margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -13974,7 +14097,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // If the list is empty or null, show an empty dropdown with a message
                       if (list == null || list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -13982,7 +14105,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style:
                                     TextStyle(fontSize: 18, color: Colors.red),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
@@ -13991,7 +14113,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Empty list as no items are available
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -14017,7 +14139,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Render dropdown with data if available
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -14027,7 +14149,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: (userbindOrgan) {
@@ -14354,16 +14475,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                 ),
               ),*/
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       flex: 2,
                       child: Text(
-                        'VR Surgery Data for approval', // Added spacing between words
+                        'VR Surgery Data for approval',
+                        // Added spacing between words
                         maxLines: 2,
                         textAlign: TextAlign.left, // Align text to the left
                         style: TextStyle(
@@ -14394,13 +14520,14 @@ class _DPMDashboard extends State<DPMDashboard> {
                           decoration: BoxDecoration(
                             color: Colors.white, // ✅ White background
                             borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey), // ✅ Light border for visibility
+                            border: Border.all(
+                                color: Colors
+                                    .grey), // ✅ Light border for visibility
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Expanded(
-
                                 child: Text(
                                   'Back',
                                   style: TextStyle(
@@ -14417,17 +14544,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                         ),
                       ),
                     ),
-
-
-
-
-
                   ],
                 ),
               ),
               // Horizontal Scrolling Header Row
-              SizedBox(width: 8.0),
-              Center(
+              SizedBox(height: 5.0),
+              Container(
+                margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _future,
                   builder: (context, snapshot) {
@@ -14450,11 +14573,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                       _selectedUser = list.first;
                     }
                     return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          SizedBox(height: 10),
                           // Added space between label and dropdown
                           DropdownButtonFormField<DataGetDPM_ScreeningYear>(
                             onChanged: (userc) => setState(() {
@@ -14483,7 +14605,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             ],
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
+                                  vertical: 15.0, horizontal: 5.0),
                               enabledBorder: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Colors.grey, width: 1.0),
@@ -14511,9 +14633,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                   },
                 ),
               ),
+              SizedBox(height:5),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                 child: Container(
+                  margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     // White background
@@ -14574,7 +14698,8 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
 
               if (lowVisionDataValue == 5)
-                Center(
+                Container(
+                  margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrgan>>(
                     future: _futureBindOrgan,
                     builder: (context, snapshot) {
@@ -14598,7 +14723,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       return Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 10.0),
+                            horizontal: 0.0, vertical: 0.0),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           // Prevents Column from taking full height
@@ -14612,7 +14737,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                             ),
-                            const SizedBox(height: 10), // Spacing
 
                             /// Wrapping Dropdown in `Row` with `Expanded`
                             Row(
@@ -14647,7 +14771,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                              vertical: 15.0, horizontal: 10.0),
+                                              vertical: 15.0, horizontal: 5.0),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: const BorderSide(
                                             color: Colors.grey, width: 1.0),
@@ -14678,7 +14802,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 12)
-                Center(
+                Container(
+                  margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -14697,7 +14823,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // If the list is empty or null, show an empty dropdown with a message
                       if (list == null || list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -14713,7 +14839,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Empty list as no items are available
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -14739,17 +14865,16 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Render dropdown with data if available
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Text(
-                                'Select',
+                                'Select Organisation type',
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              SizedBox(height: 10),
                               DropdownButtonFormField<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: (userbindOrgan) {
@@ -14776,14 +14901,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 }).toList(),
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey, width: 1.0), // Removes blue focus border
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    // Removes blue focus border
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
+                                        color: Colors.grey, width: 1.0),
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   filled: true,
@@ -14802,7 +14929,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 13)
-                Center(
+                Container(
+                    margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -14821,7 +14949,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // If no data is found, show an empty dropdown with a message
                       if (list == null || list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -14837,9 +14965,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Provide an empty list
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
+                                      vertical: 15.0, horizontal: 5.0),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey, width: 1.0), // Removes blue focus border
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    // Removes blue focus border
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
@@ -14867,7 +14997,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Render the dropdown with available data
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -14909,7 +15039,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 15.0, horizontal: 10.0),
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey, width: 1.0), // Removes blue focus border
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    // Removes blue focus border
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
@@ -14933,7 +15065,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 )
               else if (lowVisionDataValue == 0)
-                Center(
+                Container(
+                    margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -14952,7 +15085,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // If the list is empty or null, show an empty dropdown with a message
                       if (list == null || list.isEmpty) {
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                           child: Column(
                             children: [
                               const Text(
@@ -14969,6 +15102,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 15.0, horizontal: 10.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    // Removes blue focus border
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -14994,7 +15133,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Render dropdown with data if available
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -15035,6 +15174,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.symmetric(
                                       vertical: 15.0, horizontal: 10.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    // Removes blue focus border
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
