@@ -1,9 +1,16 @@
+import 'dart:convert';
+
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../loginsignup/LoginScreen.dart';
+import 'package:http/http.dart' as http;
+
+import '../model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 
 class CampDashboard extends StatefulWidget {
   @override
@@ -11,16 +18,33 @@ class CampDashboard extends StatefulWidget {
 }
 
 class _CampDashboard extends State<CampDashboard> {
-  String districtNames, userId, stateNames, fullnameController, role_id,_chosenValue;
+  bool ngoDashboardDatas = false;
+  int dropDownTwoSelcted = 0;
+
+  String districtNames, userId, stateNames, fullnameController, role_id,_chosenValue,
+      getYearNgoHopital, getfyidNgoHospital;
   int status, district_code_login, state_code_login;
   TextEditingController _oldPasswordControllere = new TextEditingController();
   TextEditingController _newPasswordontrollere = new TextEditingController();
   TextEditingController _confirmnPasswordontrollere =
   new TextEditingController();
+  bool ngoDashboardclicks = false;
+  Future<List<DataGetDPM_ScreeningYear>> _future;
+  DataGetDPM_ScreeningYear _selectedUser;
+  String hospitalNameFetch, reghospitalNameFetch,_chosenValueMangeTwo;
+
+
   @override
   void initState() {
     super.initState();
     getUserData();
+    _future = getDPM_ScreeningYear();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {
+        ngoDashboardDatas = true;
+        ngoDashboardclicks = true;
+      });
+    });
   }
 
   void getUserData() {
@@ -197,31 +221,38 @@ class _CampDashboard extends State<CampDashboard> {
       ),
 
       body:SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
+        child: Column(
           children: [
-            // Login Type & District Container
-            Container(
-              margin: EdgeInsets.symmetric(horizontal: 5), // Adds spacing on both sides
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  _buildInfoColumn("Login Type", "Camp Manager"),
-                  SizedBox(width: 5),
-                  _buildInfoColumn("District", districtNames),
+                  // Login Type & District Container
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 5), // Adds spacing on both sides
+                    child: Row(
+                      children: [
+                        _buildInfoColumn("Login Type", "Camp Manager"),
+                        SizedBox(width: 5),
+                        _buildInfoColumn("District", districtNames),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(width: 5), // Space between columns
+
+                  // State Container
+                  _buildInfoColumn("State", stateNames),
+
+
+                  SizedBox(width: 5), // Space between columns
+
+                  // Login ID Container
+                  _buildInfoColumn("Login Id", userId),
                 ],
               ),
             ),
-
-            SizedBox(width: 5), // Space between columns
-
-            // State Container
-            _buildInfoColumn("State", stateNames),
-
-
-            SizedBox(width: 5), // Space between columns
-
-            // Login ID Container
-            _buildInfoColumn("Login Id", userId),
+            ngoDashboardclick(),
           ],
         ),
       ),
@@ -454,6 +485,353 @@ class _CampDashboard extends State<CampDashboard> {
     );
   }
 
+  Widget ngoDashboardclick() {
+    return Row(
+      children: [
+        Visibility(
+          visible: ngoDashboardclicks,
+          child: Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 10),
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0), // Match the hospital dropdown
+                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }
+
+                      if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return const Center(child: Text('No data available'));
+                      }
+
+                      List<DataGetDPM_ScreeningYear> list = snapshot.data;
+                      if (_selectedUser == null || !list.contains(_selectedUser)) {
+                        _selectedUser = null;
+                      }
+
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_selectedUser == null || !list.contains(_selectedUser)) {
+                          setState(() {
+                            _selectedUser = list.first;
+                            getYearNgoHopital = _selectedUser.name;
+                            getfyidNgoHospital = _selectedUser.fyid;
+                          });
+                        }
+                      });
+
+                      return SizedBox(
+                        height: 50, // Match height
+                        child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                          value: _selectedUser,
+                          isExpanded: true,
+                          onChanged: (userc) {
+                            setState(() {
+                              _selectedUser = userc;
+                              getYearNgoHopital = userc?.name ?? '';
+                              getfyidNgoHospital = userc?.fyid ?? '';
+                            });
+                          },
+                          items: list.map((user) {
+                            return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                              value: user,
+                              child: Text(
+                                user.name,
+                                style: const TextStyle(fontSize: 16),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          }).toList(),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          buttonStyleData: ButtonStyleData(
+                            height: 50,
+
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: 300,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            offset: const Offset(0, -3),
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
 
 
+                SizedBox(height: 5),
+                buildDropdownHospitalType(),
+                SizedBox(height: 5),
+                //buildDropdownHospitalTypeHospialSelect(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 10),
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      // Validate if a dropdown value is selected
+                      // Show a validation message if no value is selected
+                      // No validation, proceed with the action
+                      print('@@Get button clicked');
+                      setState(() {
+                        ngoDashboardclicks = true;
+                        ngoDashboardDatas = true;
+                      });
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding:
+                      EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(15), // Rounded corners
+                      ),
+                      elevation: 5, // Adds a shadow effect
+                    ),
+                    icon: Icon(Icons.cloud_download, size: 20), // Download icon
+                    label: Text(
+                      'Get Data',
+                      style:
+                      TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+
+                if (dropDownTwoSelcted == 0)
+                  Visibility(
+                    visible: dropDownTwoSelcted == 0 && ngoDashboardDatas,
+                    // Only show if the condition is met
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Total number of patients (${hospitalNameFetch ?? "All"})',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Data Rows
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                if (dropDownTwoSelcted == 6)
+                  Visibility(
+                    visible: dropDownTwoSelcted == 6 && ngoDashboardDatas,
+                    // Only show if the condition is met
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Total number of patients (${hospitalNameFetch ?? "Hospitals"})',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Data Rows
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                if (dropDownTwoSelcted == 9)
+                  Visibility(
+                    visible: ngoDashboardDatas,
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Patients registered in Camps',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+// Data Rows
+                      ],
+                    ),
+                  ),
+                if (dropDownTwoSelcted == 8)
+                  Visibility(
+                    visible: ngoDashboardDatas,
+                    // Only show the table when ngoDashboardDatas is true
+                    child: Column(
+                      children: [
+                        Container(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  'Patients registered in Satellite Centres',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        // Horizontal Scrolling Header Row
+                        Divider(color: Colors.blue, height: 1.0),
+                        // Data Rows
+                      ],
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+  Widget buildDropdownHospitalType() {
+
+    return Container(
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: SizedBox(
+        height: 50,
+        child: DropdownButtonFormField2<String>(
+          value: _chosenValueMangeTwo,
+          isExpanded: true,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+            enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            filled: true,
+            fillColor: Colors.white,
+            hintText: 'All',
+            hintStyle: const TextStyle(color: Colors.grey),
+          ),
+          buttonStyleData: ButtonStyleData(
+            height: 50,
+          ),
+          dropdownStyleData: DropdownStyleData(
+            maxHeight: 300,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            offset: const Offset(0, -3),
+          ),
+          iconStyleData: const IconStyleData(
+            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+          ),
+          items: <String>['Hospitals', 'Camps', 'Satellite Centres'].map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(
+                value,
+                style: const TextStyle(fontSize: 16, color: Colors.black),
+                overflow: TextOverflow.ellipsis,
+              ),
+            );
+          }).toList(),
+          onChanged: (String value) {
+            setState(() {
+              _chosenValueMangeTwo = value ?? 'All';
+              print('@@_chosenValueMangeTwo-- $_chosenValueMangeTwo');
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  Future<List<DataGetDPM_ScreeningYear>> getDPM_ScreeningYear() async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      final response = await http.post(Uri.parse(
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final GetDPM_ScreeningYear dashboardStateModel =
+      GetDPM_ScreeningYear.fromJson(json);
+
+      return dashboardStateModel.data;
+    } else {
+      Utils.showToast(AppConstant.noInternet, true);
+      return null;
+    }
+  }
 }

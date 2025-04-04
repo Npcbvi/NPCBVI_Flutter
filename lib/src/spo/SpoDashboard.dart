@@ -5085,7 +5085,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                         if (ddata.isNotEmpty)
                           Row(
                             children: [
-                              _buildHeaderCellSrNoDashboard('S.Nos.'),
+                              _buildHeaderCellSrNoDashboard('S.No'),
                               _buildHeaderCellDashboardDistrictForPatientFince('District'),
                               _buildHeaderCellDashboardsTotal('Total'),
                               _buildHeaderCellDashboardsAction('Action'),

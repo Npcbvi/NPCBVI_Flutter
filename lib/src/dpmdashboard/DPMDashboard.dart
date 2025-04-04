@@ -3471,25 +3471,30 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-              SizedBox(width: 8.0),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+              SizedBox(width: 5.0),
+              Container(
+                margin:EdgeInsets.fromLTRB(5, 5, 5, 0),
                 child: DropdownButtonFormField2<String>(
                   value: ngoApproveRevenuMOU,
                   isExpanded: true,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.lightBlue,
+                    fillColor: Colors.white,
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 14, horizontal: 10),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
+                      // Adds a border around the TextField
+                      borderRadius: BorderRadius.circular(12),
+                      // Optional: Makes the border rounded
+                      borderSide: BorderSide(
+                          color: Colors.grey,
+                          width:
+                          1.0), // Optional: Sets the border color and width
                     ),
                   ),
                   iconStyleData: const IconStyleData(
                     // ✅ Correct Parameter
-                    icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
                   ),
                   style: const TextStyle(color: Colors.white),
                   dropdownStyleData: DropdownStyleData(
@@ -3509,13 +3514,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Text(
                         ngoApproveRevenueMOUs,
                         style: const TextStyle(color: Colors.black),
+                        overflow: TextOverflow.ellipsis, // ✅ truncates with ellipsis
+                        maxLines: 1,                     // ✅ keeps text in one line
                       ),
                     );
                   }).toList(),
                   hint: const Text(
                     "Select Organisation Type",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -3539,24 +3546,31 @@ class _DPMDashboard extends State<DPMDashboard> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+              SizedBox(width: 5.0),
+              Container(
+                margin:EdgeInsets.fromLTRB(5, 5, 5, 0),
+
                 child: DropdownButtonFormField2<String>(
                   value: ngodependOrganbisatioSelectValue,
                   isExpanded: true,
                   decoration: InputDecoration(
                     filled: true,
-                    fillColor: Colors.lightBlue,
+                    fillColor: Colors.white,
                     contentPadding: const EdgeInsets.symmetric(
                         vertical: 14, horizontal: 10),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
+                      // Adds a border around the TextField
+                      borderRadius: BorderRadius.circular(12),
+                      // Optional: Makes the border rounded
+                      borderSide: BorderSide(
+                          color: Colors.grey,
+                          width:
+                          1.0), // Optional: Sets the border color and width
                     ),
                   ),
                   iconStyleData: const IconStyleData(
                     // ✅ Correct Parameter
-                    icon: Icon(Icons.arrow_drop_down, color: Colors.white),
+                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
                   ),
                   style: const TextStyle(color: Colors.black),
                   dropdownStyleData: DropdownStyleData(
@@ -3581,7 +3595,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   hint: const Text(
                     "Select Status type",
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
@@ -9416,57 +9430,52 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  void _showDetailDialogScreeningCampsComingd(
-      BuildContext context, DataDPMScreeningCamp offer) {
+
+
+
+    void _showDetailDialogScreeningCampsComingd(
+      BuildContext context, DataDPMScreeningCamp  offer) {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Screening Camp Details"),
+          title: Text(
+            'Screening Camp Details',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          ),
           content: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columns: [
-                DataColumn(label: Text('Organisation')),
-                DataColumn(label: Text('Detail')),
-              ],
-              rows: [
-                DataRow(cells: [
-                  DataCell(Text('Camp Name')),
-                  DataCell(Text(offer.campname)),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('NGO Name')),
-                  DataCell(Text(offer.ngoName)),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('Address')),
-                  DataCell(Text(offer.address)),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('Mobile')),
-                  DataCell(Text(offer.mobile.toString())),
-                ]),
-                DataRow(cells: [
-                  DataCell(Text('Email')),
-                  DataCell(Text(offer.emailId.toString())),
-                ]),
-                // Add more rows as needed
+            child: Table(
+              border: TableBorder.all(color: Colors.black, width: 1.0),
+              columnWidths: {
+                0: FractionColumnWidth(0.4),
+                1: FractionColumnWidth(0.6),
+              },
+              children: [
+                _buildTableRow('Camp Name', offer.campname),
+                _buildTableRow('NGO Name', offer.ngoName),
+                _buildTableRow('Address', offer.address),
+                _buildTableRow('Mobile', offer.mobile.toString()),
+                _buildTableRow('Email', offer.emailId.toString()),
               ],
             ),
           ),
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
-              child: Text('Close'),
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ],
         );
       },
     );
   }
+
+
 
   /// here we are showing the SatelliteCentre Data aon DPm Dashboard.
   Widget DPM_SatelliteCentreDisplayDatas() {
@@ -12004,8 +12013,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   );
                                 }).toList(),
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 5.0),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 5.0),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
                                         color: Colors.grey, width: 1.0),
@@ -12143,8 +12152,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   );
                                 }).toList(),
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 5.0),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 10.0, horizontal: 5.0),
                                   // ✅ Removes blue border when focused
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
@@ -12686,7 +12695,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         fillColor: Colors.white,
                         // ✅ Background color
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 10.0),
+                            vertical: 10.0, horizontal: 5.0),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
                               const BorderSide(color: Colors.grey, width: 1.0),
