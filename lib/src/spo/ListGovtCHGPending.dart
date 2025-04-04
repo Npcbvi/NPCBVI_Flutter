@@ -8,9 +8,11 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class ListGovtCHGPending extends StatefulWidget {
   final String districtName;
+  final int districtCode;
+
 
   // Constructor to accept districtName
-  ListGovtCHGPending({Key key,  this.districtName}) : super(key: key);
+  ListGovtCHGPending({Key key,  this.districtName, this.districtCode}) : super(key: key);
   @override
   _ListGovtCHGPending createState() => _ListGovtCHGPending();
 }
@@ -135,7 +137,7 @@ class _ListGovtCHGPending extends State<ListGovtCHGPending> {
               scrollDirection: Axis.horizontal,
               child: FutureBuilder<List<GHC_approvalListData>>(
                 future: ApiController.getSPO_GHCHCOtherApproval_list(
-                    district_code_login, state_code_login, currentFinancialYear, 1
+                    widget.districtCode, state_code_login, currentFinancialYear, 1
                 ),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {

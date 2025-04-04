@@ -5866,6 +5866,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 ListNGOPendingWidget(
+                                                    districtCode: offer.districtCode,
                                                     districtName:
                                                         offer.districtName),
                                           ),
@@ -6091,7 +6092,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ListGovtCHGApprovalWidget(
+                                        builder: (context) => ListGovtCHGApprovalWidget(districtCode:offer.districtCode,
                                           districtName: offer.districtName,
                                         ),
                                       ),
@@ -6278,7 +6279,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => ListGovtCHGPending(
+                                        builder: (context) => ListGovtCHGPending(districtCode:offer.districtCode,
                                           districtName: offer.districtName,
                                         ),
                                       ),
@@ -6444,6 +6445,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => ListPrivatePractionriesApproval(
+                                          districtCode:offer.districtCode,
                                           districtName: offer.districtName,
                                         ),
                                       ),
@@ -6604,6 +6606,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => ListPrivatePractionriesPending(
+                                          districtCode:offer.districtCode,
                                           districtName: offer.districtName,
                                         ),
                                       ),
@@ -6773,7 +6776,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => PrivateMedicalCollegeAPProvalList(
+                                        builder: (context) => PrivateMedicalCollegeAPProvalList(districtCode:offer.districtCode,
                                           districtName: offer.districtName,
                                         ),
                                       ),
@@ -6934,6 +6937,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => PrivateMedicalCollegePendingList(
+                                          districtCode:offer.districtCode,
                                           districtName: offer.districtName,
                                         ),
                                       ),
@@ -7100,6 +7104,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => ScreeningCenterCompleted(
+                                          districtCode:offer.districtCode,
                                           districtName: offer.districtName,
                                         ),
                                       ),
@@ -7272,6 +7277,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         ScreeningCenterOngoing(
+                                            districtCode:offer.districtCode,
                                             districtName:
                                             offer.districtName),
                                   ),
@@ -7436,6 +7442,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => ScreeningCenterUpComings(
+                                          districtCode:offer.districtCode,
                                           districtName: offer.districtName,
                                         ),
                                       ),
@@ -7444,6 +7451,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                 ],
                               );
                             }).toList(),
+
                           ),
                         ],
                       ),
@@ -7605,6 +7613,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => SatelliteCentresList(
+                                          districtCode:offer.districtCode,
                                           districtName: offer.districtName,
                                         ),
                                       ),

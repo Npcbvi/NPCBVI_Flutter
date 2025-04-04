@@ -9,9 +9,10 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class ListPrivatePractionriesPending extends StatefulWidget {
   final String districtName;
+  final int districtCode;
 
   // Constructor to accept districtName
-  ListPrivatePractionriesPending({Key key,  this.districtName}) : super(key: key);
+  ListPrivatePractionriesPending({Key key,  this.districtName, this.districtCode}) : super(key: key);
   @override
   _ListPrivatePractionriesPending createState() => _ListPrivatePractionriesPending();
 }
@@ -136,7 +137,7 @@ class _ListPrivatePractionriesPending extends State<ListPrivatePractionriesPendi
             // Data Table (Header and Rows in Single ScrollView)
             FutureBuilder<List<PrivatePractionriesData>>(
               future: ApiController.getSPO_PrivatePractitionerApproval_list(
-                  district_code_login, state_code_login, currentFinancialYear, 1
+                  widget.districtCode, state_code_login, currentFinancialYear, 1
               ),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {

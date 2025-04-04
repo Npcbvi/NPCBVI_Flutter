@@ -10,9 +10,10 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class PrivateMedicalCollegeAPProvalList extends StatefulWidget {
   final String districtName;
+  final int districtCode;
 
   // Constructor to accept districtName
-  PrivateMedicalCollegeAPProvalList({Key key,  this.districtName}) : super(key: key);
+  PrivateMedicalCollegeAPProvalList({Key key,  this.districtName, this.districtCode}) : super(key: key);
   @override
   _PrivateMedicalCollegeAPProvalList createState() => _PrivateMedicalCollegeAPProvalList();
 }
@@ -138,7 +139,7 @@ class _PrivateMedicalCollegeAPProvalList extends State<PrivateMedicalCollegeAPPr
             // Data Table (Header and Rows in Single ScrollView)
             FutureBuilder<List<PrivateMedicalCollgeAPProvalListData>>(
               future: ApiController.getSPO_PrivateMedicalCollegeApproval_list(
-                  district_code_login, state_code_login, currentFinancialYear, 2),
+                  widget.districtCode, state_code_login, currentFinancialYear, 2),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());

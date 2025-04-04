@@ -13,9 +13,10 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class SatelliteCentresList extends StatefulWidget {
   final String districtName;
+  final int districtCode;
 
   // Constructor to accept districtName
-  SatelliteCentresList({Key key,  this.districtName}) : super(key: key);
+  SatelliteCentresList({Key key,  this.districtName, this.districtCode}) : super(key: key);
   @override
   _SatelliteCentresList createState() => _SatelliteCentresList();
 }
@@ -141,7 +142,7 @@ class _SatelliteCentresList extends State<SatelliteCentresList> {
             // Data Table (Header and Rows in Single ScrollView)
             FutureBuilder<List<SatelliteCenterListDataData>>(
               future: ApiController.getSPO_SatelliteCentreApproval_list(
-                district_code_login,
+                widget.districtCode,
                 state_code_login,
                 statusApproved,
                 currentFinancialYear,

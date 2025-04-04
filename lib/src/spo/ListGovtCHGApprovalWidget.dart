@@ -9,9 +9,10 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class ListGovtCHGApprovalWidget extends StatefulWidget {
   final String districtName;
+  final int districtCode;
 
   // Constructor to accept districtName
-  ListGovtCHGApprovalWidget({Key key,  this.districtName}) : super(key: key);
+  ListGovtCHGApprovalWidget({Key key,  this.districtName, this.districtCode}) : super(key: key);
   @override
   _ListGovtCHGApprovalWidget createState() => _ListGovtCHGApprovalWidget();
 }
@@ -145,7 +146,7 @@ class _ListGovtCHGApprovalWidget extends State<ListGovtCHGApprovalWidget> {
                 scrollDirection: Axis.horizontal, // ✅ Allow horizontal scrolling if content is wider
                 child: FutureBuilder<List<GHC_approvalListData>>(
                   future: ApiController.getSPO_GHCHCOtherApproval_list(
-                      district_code_login, state_code_login, currentFinancialYear, 2
+                      widget.districtCode, state_code_login, currentFinancialYear, 2
                   ),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {

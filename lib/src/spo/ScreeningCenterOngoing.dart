@@ -11,9 +11,10 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class ScreeningCenterOngoing extends StatefulWidget {
   final String districtName;
+  final int districtCode;
 
   // Constructor to accept districtName
-  ScreeningCenterOngoing({Key key,  this.districtName}) : super(key: key);
+  ScreeningCenterOngoing({Key key,  this.districtName, this.districtCode}) : super(key: key);
   @override
   _ScreeningCenterOngoing createState() => _ScreeningCenterOngoing();
 }
@@ -139,7 +140,7 @@ class _ScreeningCenterOngoing extends State<ScreeningCenterOngoing> {
             // Data Table (Header and Rows in Single ScrollView)
             FutureBuilder<List<ScreeningCampCompletedListData>>(
               future: ApiController.getSPOScreeningCampApproval_listOnGoing(
-                district_code_login,
+                widget.districtCode,
                 state_code_login,
                 "Ongoing",
                 currentFinancialYear,
