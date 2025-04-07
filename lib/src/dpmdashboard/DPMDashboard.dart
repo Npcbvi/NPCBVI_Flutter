@@ -462,7 +462,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 });
               }
             },
-            icon: Icon(Icons.more_vert, color: Colors.black), // Menu icon color
+            icon: Icon(Icons.more_vert, color: Colors.white), // Menu icon color
           ),
         ],
       ),

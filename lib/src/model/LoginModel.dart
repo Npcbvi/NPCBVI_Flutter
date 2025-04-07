@@ -117,6 +117,7 @@ class DataList {
   int status;
   String memberName;
   String name;
+  String ngoid;
 
   DataList(
       {this.entryBy,
@@ -125,7 +126,7 @@ class DataList {
         this.orgaddress,
         this.status,
         this.memberName,
-        this.name});
+        this.name,this.ngoid});
 
   DataList.fromJson(Map<String, dynamic> json) {
     entryBy = json['entryBy'];
@@ -135,6 +136,7 @@ class DataList {
     status = json['status'];
     memberName = json['member_name'];
     name = json['name'];
+ngoid= json['ngoid'];
   }
 
   Map<String, dynamic> toJson() {
@@ -146,6 +148,7 @@ class DataList {
     data['status'] = this.status;
     data['member_name'] = this.memberName;
     data['name'] = this.name;
+    data[ngoid]=this.ngoid;
     return data;
   }
 }

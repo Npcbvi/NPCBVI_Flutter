@@ -11,8 +11,12 @@ import '../loginsignup/LoginScreen.dart';
 import 'package:http/http.dart' as http;
 
 import '../model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
+import 'CampAddPatient.dart';
 
 class CampDashboard extends StatefulWidget {
+  final dynamic responseResult;
+
+  const CampDashboard({Key key, this.responseResult}) : super(key: key); // Or use a specific type if you know it
   @override
   _CampDashboard createState() => _CampDashboard();
 }
@@ -20,6 +24,7 @@ class CampDashboard extends StatefulWidget {
 class _CampDashboard extends State<CampDashboard> {
   bool ngoDashboardDatas = false;
   int dropDownTwoSelcted = 0;
+  bool selectionCampHospital = false;
 
   String districtNames, userId, stateNames, fullnameController, role_id,_chosenValue,
       getYearNgoHopital, getfyidNgoHospital;
@@ -31,7 +36,7 @@ class _CampDashboard extends State<CampDashboard> {
   bool ngoDashboardclicks = false;
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
-  String hospitalNameFetch, reghospitalNameFetch,_chosenValueMangeTwo;
+  String hospitalNameFetch, reghospitalNameFetch,_chosenValueMangeTwo,ngoid;
 
 
   @override
@@ -47,8 +52,10 @@ class _CampDashboard extends State<CampDashboard> {
     });
   }
 
-  void getUserData() {
+  Future<void> getUserData() async {
     try {
+      final storedNgoId = await SharedPrefs.getStoreSharedValue(AppConstant.ngoid); // get ngoid from shared prefs
+
       SharedPrefs.getUser().then((user) {
         setState(() {
           fullnameController = user.name;
@@ -68,6 +75,8 @@ class _CampDashboard extends State<CampDashboard> {
           print('@@6' + user.districtName);
           print('@@7' + state_code_login.toString());
           print('@@8' + district_code_login.toString());
+
+          print('@@storedNgoId ' + storedNgoId.toString());
           // Assuming you fetch the value from login or a previous screen
           String reportingPlace =
               fullnameController; // Replace with actual value
@@ -77,6 +86,7 @@ class _CampDashboard extends State<CampDashboard> {
     } catch (e) {
       print(e);
     }
+
   }
 
   @override
@@ -156,7 +166,7 @@ class _CampDashboard extends State<CampDashboard> {
                 });
               }
             },
-            icon: Icon(Icons.more_vert, color: Colors.black), // Menu icon color
+            icon: Icon(Icons.more_vert, color: Colors.white), // Menu icon color
           ),
         ],
       ),
@@ -202,8 +212,12 @@ class _CampDashboard extends State<CampDashboard> {
                     setState(() {
                       _chosenValue = value ?? '';
                       if (_chosenValue == "Add Patient") {
-                        print('@@NGO---Hospital--1 $_chosenValue');
-
+                        print('@@Camp---Add Patient--1 $_chosenValue');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CampAddPatient()),
+                        );
                         //_showPopupMenu();
                       } else if (_chosenValue == "Update Patient") {
 
@@ -211,7 +225,7 @@ class _CampDashboard extends State<CampDashboard> {
                       }
                     });
 
-                    Navigator.pop(context);
+                  //  Navigator.pop(context);
                   },
                 ),
               ],
@@ -670,7 +684,7 @@ class _CampDashboard extends State<CampDashboard> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text(
-                                  'Total number of patients (${hospitalNameFetch ?? "Hospitals"})',
+                                  'Total number of patients (${hospitalNameFetch ?? "Camps"})',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w800,
@@ -809,8 +823,33 @@ class _CampDashboard extends State<CampDashboard> {
           }).toList(),
           onChanged: (String value) {
             setState(() {
+
               _chosenValueMangeTwo = value ?? 'All';
               print('@@_chosenValueMangeTwo-- $_chosenValueMangeTwo');
+
+              switch (_chosenValueMangeTwo) {
+                case 'Hospitals':
+                  dropDownTwoSelcted = 6;
+                  selectionCampHospital = true;
+                //  _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL();
+                  break;
+                case 'Camps':
+                  dropDownTwoSelcted = 9;
+                  selectionCampHospital = false;
+                  ngoDashboardDatas = false;
+                  break;
+                case 'Satellite Centres':
+                  dropDownTwoSelcted = 8;
+                  selectionCampHospital = false;
+                  ngoDashboardDatas = false;
+                  break;
+                case 'All':
+                  dropDownTwoSelcted = 0;
+                  selectionCampHospital = true;
+                  ngoDashboardDatas = true;
+               //   _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL();
+                  break;
+              }
             });
           },
         ),

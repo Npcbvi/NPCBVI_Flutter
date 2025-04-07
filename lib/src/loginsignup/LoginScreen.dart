@@ -105,6 +105,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 data.status.toString());
             SharedPrefs.storeSharedValues(AppConstant.ngoName,
                 data.ngoName.toString());
+            if (data.ngoid != null && data.ngoid.toString().isNotEmpty) {
+              SharedPrefs.storeSharedValues(AppConstant.ngoid, data.ngoid.toString());
+            }
             print("@@@status-----" + data.entryBy.toString());
             print("@@@status-----" + data.status.toString());
 

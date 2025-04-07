@@ -2285,9 +2285,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   ),
                 ),
                 SizedBox(height: 5.0),
-
-
-          Column(
+                Column(
             children: [
             FutureBuilder<List<GetDiseaseForDDLData>>(
             future: _futureGetDiseaseForDDLDatas,
@@ -2369,8 +2367,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           ),
         ],
       ),
-
-        SizedBox(height: 5.0),
+                SizedBox(height: 5.0),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                   child: Form(

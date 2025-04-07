@@ -508,6 +508,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                 });
               }
             },
+            icon: Icon(Icons.more_vert, color: Colors.white), // Menu icon color
           ),
         ],
 

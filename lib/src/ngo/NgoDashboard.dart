@@ -872,7 +872,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                 });
               }
             },
-            icon: Icon(Icons.more_vert, color: Colors.black), // Menu icon color
+            icon: Icon(Icons.more_vert, color: Colors.white), // Menu icon color
           ),
         ],
       ),
@@ -2848,8 +2848,8 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }*/
   Widget buildDropdownHospitalType() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+    return  Container(
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: IntrinsicHeight( // ✅ Adjusts height dynamically based on content
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -2869,12 +2869,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                 ),
                 filled: true,
                 fillColor: Colors.white,
-                hintText: 'All',
+                hintText: '  All',
                 hintStyle: const TextStyle(color: Colors.grey),
               ),
               buttonStyleData: ButtonStyleData(
                 height: 50,
                 padding: const EdgeInsets.symmetric(horizontal: 6),
+
               ),
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 300,
@@ -2920,7 +2921,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       selectionBasedHospital = false;
                       ngoDashboardDatas = false;
                       break;
-                    case 'All':
+                    case '  All':
                       dropDownTwoSelcted = 0;
                       selectionBasedHospital = true;
                       ngoDashboardDatas = true;
@@ -2930,7 +2931,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                 });
               },
             ),
-            const SizedBox(height: 5),
 
             if (dropDownTwoSelcted == 6)
               FutureBuilder<List<DataDropDownHospitalSelected>>(
@@ -3039,8 +3039,8 @@ class _NgoDashboard extends State<NgoDashboard> {
               children: [
                 SizedBox(height: 8),
                 //working code here and use it on thuisrday
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+         /*       Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0), // Match the hospital dropdown
                   // Add margin here
 
                   child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
@@ -3157,8 +3157,94 @@ class _NgoDashboard extends State<NgoDashboard> {
                       );
                     },
                   ),
-                ),
+                ),*/
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0), // Match the hospital dropdown
+                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                    future: _future,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
 
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }
+
+                      if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return const Center(child: Text('No data available'));
+                      }
+
+                      List<DataGetDPM_ScreeningYear> list = snapshot.data;
+                      if (_selectedUser == null || !list.contains(_selectedUser)) {
+                        _selectedUser = null;
+                      }
+
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_selectedUser == null || !list.contains(_selectedUser)) {
+                          setState(() {
+                            _selectedUser = list.first;
+                            getYearNgoHopital = _selectedUser.name;
+                            getfyidNgoHospital = _selectedUser.fyid;
+                          });
+                        }
+                      });
+
+                      return SizedBox(
+                        height: 50, // Match height
+                        child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                          value: _selectedUser,
+                          isExpanded: true,
+                          onChanged: (userc) {
+                            setState(() {
+                              _selectedUser = userc;
+                              getYearNgoHopital = userc?.name ?? '';
+                              getfyidNgoHospital = userc?.fyid ?? '';
+                            });
+                          },
+                          items: list.map((user) {
+                            return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                              value: user,
+                              child: Text(
+                                user.name,
+                                style: const TextStyle(fontSize: 16),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            );
+                          }).toList(),
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 1),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            filled: true,
+                            fillColor: Colors.white,
+                          ),
+                          buttonStyleData: ButtonStyleData(
+                            height: 50,
+
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: 300,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            offset: const Offset(0, -3),
+                          ),
+                          iconStyleData: const IconStyleData(
+                            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 SizedBox(height: 5),
                 buildDropdownHospitalType(),
                 SizedBox(height: 5),
@@ -3438,19 +3524,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ),
                         ),
                         // Horizontal Scrolling Header Row
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              _buildHeaderCell('Disease Type'),
-                              _buildHeaderCellSrNoDiseaseData(
-                                  'Registered', context),
-                              _buildHeaderCellSrNoDiseaseData(
-                                  'Operated', context),
-                            ],
-                          ),
-                        ),
-// Data Rows
                         FutureBuilder<List<DataNGODashboards>>(
                           future: ApiController.getNGODashboard(
                             int.parse(role_id),
@@ -3462,33 +3535,20 @@ class _NgoDashboard extends State<NgoDashboard> {
                             reghospitalNameFetch,
                           ),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
-                              return Utils.getEmptyView(
-                                  "Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData ||
-                                snapshot.data.isEmpty) {
-                              // Display "No data found" on the right side
-                              return Row(
-                                children: [
-                                  // Pushes "No data found" to the right
-                                  Column(
-                                    children: [
-                                      Center(
-                                        child: Text(
-                                          "No data found",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.blue,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  "No data found",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                ],
+                                ),
                               );
                             } else {
                               List<DataNGODashboards> ddata = snapshot.data;
@@ -3496,22 +3556,34 @@ class _NgoDashboard extends State<NgoDashboard> {
                               return SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Column(
-                                  children: ddata.map((offer) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // ✅ Header only when data exists
+                                    Row(
                                       children: [
-                                        _buildDataCell(offer.status),
-                                        _buildDataCell(offer.registered),
-                                        _buildDataCell(offer.operated),
+                                        _buildHeaderCell('Disease Type'),
+                                        _buildHeaderCellSrNoDiseaseData('Registered', context),
+                                        _buildHeaderCellSrNoDiseaseData('Operated', context),
                                       ],
-                                    );
-                                  }).toList(),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    // ✅ Data rows
+                                    ...ddata.map((offer) {
+                                      return Row(
+                                        children: [
+                                          _buildDataCell(offer.status),
+                                          _buildDataCell(offer.registered),
+                                          _buildDataCell(offer.operated),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ],
                                 ),
                               );
                             }
                           },
-                        ),
+                        )
+
                       ],
                     ),
                   ),
@@ -3540,20 +3612,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                           ),
                         ),
                         // Horizontal Scrolling Header Row
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              _buildHeaderCell('Disease Type'),
-                              _buildHeaderCellSrNoDiseaseData(
-                                  'Registered', context),
-                              _buildHeaderCellSrNoDiseaseData(
-                                  'Operated', context),
-                            ],
-                          ),
-                        ),
-                        Divider(color: Colors.blue, height: 1.0),
-                        // Data Rows
                         FutureBuilder<List<DataNGODashboards>>(
                           future: ApiController.getNGODashboard(
                             int.parse(role_id),
@@ -3565,41 +3623,53 @@ class _NgoDashboard extends State<NgoDashboard> {
                             reghospitalNameFetch,
                           ),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
                             } else if (snapshot.hasError) {
-                              return Utils.getEmptyView(
-                                  "Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData ||
-                                snapshot.data.isEmpty) {
-                              // If data is empty, show 'No data found' message
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              // ❌ No data case
                               return Center(
-                                  child: Text("No data found",
-                                      style: TextStyle(
-                                          fontSize: 18, color: Colors.blue)));
+                                child: Text(
+                                  "No data found",
+                                  style: TextStyle(fontSize: 18, color: Colors.blue),
+                                ),
+                              );
                             } else {
+                              // ✅ Data exists
                               List<DataNGODashboards> ddata = snapshot.data;
 
                               return SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Column(
-                                  children: ddata.map((offer) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    // ✅ Header
+                                    Row(
                                       children: [
-                                        _buildDataCell(offer.status),
-                                        _buildDataCell(offer.registered),
-                                        _buildDataCell(offer.operated),
+                                        _buildHeaderCell('Disease Type'),
+                                        _buildHeaderCellSrNoDiseaseData('Registered', context),
+                                        _buildHeaderCellSrNoDiseaseData('Operated', context),
                                       ],
-                                    );
-                                  }).toList(),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    // ✅ Data rows
+                                    ...ddata.map((offer) {
+                                      return Row(
+                                        children: [
+                                          _buildDataCell(offer.status),
+                                          _buildDataCell(offer.registered),
+                                          _buildDataCell(offer.operated),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ],
                                 ),
                               );
                             }
                           },
-                        ),
+                        )
+
                       ],
                     ),
                   ),
