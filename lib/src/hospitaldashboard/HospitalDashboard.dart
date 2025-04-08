@@ -40,7 +40,9 @@ import '../model/spoModel/GetLanguageForDDLs.dart';
 import '../model/spoModel/GetLanguageForDDLs.dart';
 import '../model/spoModel/PatientRegistrations.dart';
 import 'SenTODPMCornealBlindnessListData.dart';
-
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geocoding/geocoding.dart';
 class HospitalDashboard extends StatefulWidget {
   @override
   _HospitalDashboard createState() => _HospitalDashboard();
@@ -77,7 +79,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   final GlobalKey _dropdownKey = GlobalKey();
 
   final GlobalKey _dropdownKeySenTODPM = GlobalKey();
-
+  bool _isCityInitialized = false;
   String _chosenValueLOWVision,
       _chosenValueLOWVisionSendTODM,
       _chosenEyeBank,
@@ -114,7 +116,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   File _image;
   String _selectedDateText = 'Screening Date *'; // Initially set to "From Date"
   String _selectedDateTextToDate = 'Tentative Surgery Date *';
-  String _dob = 'Date of birth';
+  String _dob = '  Date of birth';
   Future<List<Data>> _futureState;
   Data _selectedUserState;
   DataDsiricst _selectedUserDistrict;
@@ -1871,12 +1873,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                           width: 1.0,
                                         ),
                                       ),
-                                      alignment: Alignment.center,
+                                      alignment: Alignment.centerLeft,  // Left side, vertically centered
                                       child: Text(
                                         _dob.isEmpty ? "Select Date" : _dob,
                                         style: TextStyle(
                                           color: Colors.grey,
-                                          fontWeight: FontWeight.w800,
+
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -2929,16 +2931,20 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                         List<DataGetCity> cityList = snapshot.data ?? [];
 
                                         if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
-                                          _selectedUserCity = cityList.first;
+                                        //  _selectedUserCity = cityList.first;
+                                          _selectedUserCity = cityList.isNotEmpty ? cityList.first : 0;
+
+
                                           print('@@_selectedUserCity--' + _selectedUserCity.toString());
                                           distCodeGovtPrivateCity = int.parse(_selectedUserCity?.subdistrictCode.toString() ?? "0");
+
                                         }
 
                                         return Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              'Select City:',
+                                              'Select City/Town',
                                               style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                             ),
                                             SizedBox(
@@ -2963,6 +2969,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                                   setState(() {
                                                     _selectedUserCity = city;
                                                     distCodeGovtPrivateCity = city?.subdistrictCode ?? 0;
+                                                 print('@@distCodeGovtPrivateCity'+distCodeGovtPrivateCity.toString());
+
                                                   });
                                                 },
                                                 value: _selectedUserCity,
@@ -2994,7 +3002,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           width: double.infinity,
                           margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: FutureBuilder<List<DataGetVillage>>(
-                            future: _getVillage(district_code_login, state_code_login, distCodeGovtPrivateCity),
+                        //    future: _getVillage(district_code_login, state_code_login, distCodeGovtPrivateCity),
+                                future: _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
+
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
@@ -3101,25 +3111,33 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           child: TextField(
                             controller: _AddressHouse,
                             decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  text: 'Address/ House/ Flat Number',
-                                  style: TextStyle(color: Colors.grey, fontSize: 16),
-                                  children: [
-                                    TextSpan(
-                                      text: ' *', // Red Asterisk
-                                      style: TextStyle(color: Colors.red, fontSize: 16),
+                              label: Align(
+                                alignment: Alignment.centerLeft,
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  alignment: Alignment.centerLeft,
+                                  child: RichText(
+                                    text: TextSpan(
+                                      text: 'Address/ House/ Flat Number',
+                                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                                      children: [
+                                        TextSpan(
+
+                                          text: ' *',
+                                          style: TextStyle(color: Colors.red, fontSize: 16),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
                               ),
                               hintText: 'Enter Address/ House/ Flat Number',
                               hintStyle: TextStyle(color: Colors.black),
-
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
+
                           ),
                         ),
                       ),
@@ -3137,8 +3155,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                           child: IconButton(
                             icon: Icon(Icons.my_location, color: Colors.blue),
-                            onPressed: _getCurrentLocation, // Function to fetch current location
-                          ),
+                         //   onPressed: _getCurrentLocation, // Function to fetch current location
+                              onPressed: () {
+                           //     openMapDialog(context, state, district, city); // ✅ Just call it
+                                openMapDialog(context, "Maharashtra", "Pune", "Hadapsar");
+                              }
+                         ),
                         ),
                       ),
                     ],
@@ -4448,4 +4470,58 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       print('Error: $e');
     }
   }
+
+
+  void openMapDialog(BuildContext context, String state, String district, String city) async {
+    String fullAddress = '$city, $district, $state';
+
+
+    try {
+      List<Location> locations = await locationFromAddress(fullAddress);
+
+      if (locations.isNotEmpty) {
+        LatLng latLng = LatLng(locations[0].latitude, locations[0].longitude);
+
+        showDialog(
+          context: context,
+          builder: (context) {
+            return Dialog(
+              child: Column(
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(8),
+                    alignment: Alignment.centerRight,
+                    child: IconButton(
+                      icon: Icon(Icons.close),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                  Expanded(
+                    child: GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: latLng,
+                        zoom: 14.0,
+                      ),
+                      markers: {
+                        Marker(
+                          markerId: MarkerId('location_marker'),
+                          position: latLng,
+                          infoWindow: InfoWindow(title: city),
+                        ),
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      } else {
+        print('No location found');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
 }

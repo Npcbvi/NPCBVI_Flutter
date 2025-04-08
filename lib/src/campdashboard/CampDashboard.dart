@@ -2,11 +2,14 @@ import 'dart:convert';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/campdashboard/ViewDashboardClickScreen.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/model/camp/CampDashboard.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../apihandler/ApiController.dart';
 import '../loginsignup/LoginScreen.dart';
 import 'package:http/http.dart' as http;
 
@@ -14,17 +17,15 @@ import '../model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'CampAddPatient.dart';
 
 class CampDashboard extends StatefulWidget {
-  final dynamic responseResult;
 
-  const CampDashboard({Key key, this.responseResult}) : super(key: key); // Or use a specific type if you know it
+  const CampDashboard({Key key}) : super(key: key); // Or use a specific type if you know it
   @override
   _CampDashboard createState() => _CampDashboard();
 }
 
 class _CampDashboard extends State<CampDashboard> {
   bool ngoDashboardDatas = false;
-  int dropDownTwoSelcted = 0;
-  bool selectionCampHospital = false;
+  int dropDownTwoSelcted = 9;
 
   String districtNames, userId, stateNames, fullnameController, role_id,_chosenValue,
       getYearNgoHopital, getfyidNgoHospital;
@@ -44,6 +45,7 @@ class _CampDashboard extends State<CampDashboard> {
     super.initState();
     getUserData();
     _future = getDPM_ScreeningYear();
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {
         ngoDashboardDatas = true;
@@ -509,7 +511,7 @@ class _CampDashboard extends State<CampDashboard> {
               children: [
                 SizedBox(height: 10),
                 Container(
-                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0), // Match the hospital dropdown
+                  margin: const EdgeInsets.fromLTRB(5, 0, 5, 0), // Match the hospital dropdown
                   child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                     future: _future,
                     builder: (context, snapshot) {
@@ -555,15 +557,18 @@ class _CampDashboard extends State<CampDashboard> {
                           items: list.map((user) {
                             return DropdownMenuItem<DataGetDPM_ScreeningYear>(
                               value: user,
-                              child: Text(
-                                user.name,
-                                style: const TextStyle(fontSize: 16),
-                                overflow: TextOverflow.ellipsis,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 2), // 🔥 Match this with hospital dropdown
+                                child: Text(
+                                  user.name,
+                                  style: const TextStyle(fontSize: 16),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             );
                           }).toList(),
                           decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 5),
+                            contentPadding: const EdgeInsets.symmetric(horizontal: 2), // 🔥 Match this with hospital dropdown
                             enabledBorder: OutlineInputBorder(
                               borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                               borderRadius: BorderRadius.circular(10.0),
@@ -575,9 +580,8 @@ class _CampDashboard extends State<CampDashboard> {
                             filled: true,
                             fillColor: Colors.white,
                           ),
-                          buttonStyleData: ButtonStyleData(
+                          buttonStyleData: const ButtonStyleData(
                             height: 50,
-
                           ),
                           dropdownStyleData: DropdownStyleData(
                             maxHeight: 300,
@@ -595,6 +599,7 @@ class _CampDashboard extends State<CampDashboard> {
                     },
                   ),
                 ),
+
 
 
                 SizedBox(height: 5),
@@ -633,81 +638,6 @@ class _CampDashboard extends State<CampDashboard> {
                   ),
                 ),
 
-                if (dropDownTwoSelcted == 0)
-                  Visibility(
-                    visible: dropDownTwoSelcted == 0 && ngoDashboardDatas,
-                    // Only show if the condition is met
-                    child: Column(
-                      children: [
-                        Container(
-                          color: Colors.blue,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Total number of patients (${hospitalNameFetch ?? "All"})',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Horizontal Scrolling Header Row
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Data Rows
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                if (dropDownTwoSelcted == 6)
-                  Visibility(
-                    visible: dropDownTwoSelcted == 6 && ngoDashboardDatas,
-                    // Only show if the condition is met
-                    child: Column(
-                      children: [
-                        Container(
-                          color: Colors.blue,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Total number of patients (${hospitalNameFetch ?? "Camps"})',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Horizontal Scrolling Header Row
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // Data Rows
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
                 if (dropDownTwoSelcted == 9)
                   Visibility(
                     visible: ngoDashboardDatas,
@@ -732,40 +662,93 @@ class _CampDashboard extends State<CampDashboard> {
                           ),
                         ),
                         // Horizontal Scrolling Header Row
-// Data Rows
-                      ],
-                    ),
-                  ),
-                if (dropDownTwoSelcted == 8)
-                  Visibility(
-                    visible: ngoDashboardDatas,
-                    // Only show the table when ngoDashboardDatas is true
-                    child: Column(
-                      children: [
-                        Container(
-                          color: Colors.blue,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Patients registered in Satellite Centres',
+                        FutureBuilder<List<CampDashboardData>>(
+                          future: ApiController.getCampDashboardData(
+                            int.parse(role_id),
+                            district_code_login,
+                            state_code_login,
+                            userId,
+                            getYearNgoHopital,
+                            dropDownTwoSelcted,
+                            reghospitalNameFetch,
+                          ),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Utils.getEmptyView("Error: ${snapshot.error}");
+                            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Center(
+                                child: Text(
+                                  "No data found",
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
+                                    fontSize: 16,
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Horizontal Scrolling Header Row
-                        Divider(color: Colors.blue, height: 1.0),
-                        // Data Rows
+                              );
+                            } else {
+                              List<CampDashboardData> ddata = snapshot.data;
+
+                              return SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Container(
+                                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      // ✅ Header row
+                                      Row(
+                                        children: [
+                                          _buildHeaderCellCampName('Camp Name'),
+                                          _buildHeaderCellSrNoDiseaseDataTotal('Total', context),
+                                          _buildHeaderCellDiseaseDataAction('Action'),
+                                        ],
+                                      ),
+
+                                      // ✅ Data rows with alternate colors
+                                      ...ddata.asMap().entries.map((entry) {
+                                        int index = entry.key;
+                                        CampDashboardData offer = entry.value;
+
+                                        Color bgColor = index.isEven ? Colors.white : Colors.white;
+
+                                        return Container(
+                                          color: bgColor, // 🔥 Set background color
+                                          child: Row(
+                                            children: [
+                                              _buildDataCellCampName(offer.campName),
+                                              _buildDataCellTotal(offer.totalpatient.toString()),
+                                              _buildDataCellViewBlueDiseaseDataAction(
+                                                "View", () {
+                                                print(
+                                                    '@@Edit clicked for item:');
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>ViewDashboardClickScreen(year:getYearNgoHopital,offer: offer),
+                                                  ),
+                                                );
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }).toList(),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                        )
+
+
                       ],
                     ),
                   ),
+
               ],
             ),
           ),
@@ -774,9 +757,8 @@ class _CampDashboard extends State<CampDashboard> {
     );
   }
   Widget buildDropdownHospitalType() {
-
     return Container(
-      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: SizedBox(
         height: 50,
         child: DropdownButtonFormField2<String>(
@@ -794,10 +776,11 @@ class _CampDashboard extends State<CampDashboard> {
             ),
             filled: true,
             fillColor: Colors.white,
-            hintText: 'All',
-            hintStyle: const TextStyle(color: Colors.grey),
+            hintText: '  Camps',
+
+            hintStyle: const TextStyle(color: Colors.black),
           ),
-          buttonStyleData: ButtonStyleData(
+          buttonStyleData: const ButtonStyleData(
             height: 50,
           ),
           dropdownStyleData: DropdownStyleData(
@@ -811,43 +794,29 @@ class _CampDashboard extends State<CampDashboard> {
           iconStyleData: const IconStyleData(
             icon: Icon(Icons.arrow_drop_down, color: Colors.black),
           ),
-          items: <String>['Hospitals', 'Camps', 'Satellite Centres'].map((String value) {
+          items: <String>['Camps'].map((String value) {
             return DropdownMenuItem<String>(
               value: value,
-              child: Text(
-                value,
-                style: const TextStyle(fontSize: 16, color: Colors.black),
-                overflow: TextOverflow.ellipsis,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: Text(
+                  value,
+                  style: const TextStyle(fontSize: 16, color: Colors.black),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             );
           }).toList(),
           onChanged: (String value) {
             setState(() {
-
-              _chosenValueMangeTwo = value ?? 'All';
+              _chosenValueMangeTwo = value ?? 'Camps';
               print('@@_chosenValueMangeTwo-- $_chosenValueMangeTwo');
 
               switch (_chosenValueMangeTwo) {
-                case 'Hospitals':
-                  dropDownTwoSelcted = 6;
-                  selectionCampHospital = true;
-                //  _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL();
-                  break;
                 case 'Camps':
                   dropDownTwoSelcted = 9;
-                  selectionCampHospital = false;
-                  ngoDashboardDatas = false;
-                  break;
-                case 'Satellite Centres':
-                  dropDownTwoSelcted = 8;
-                  selectionCampHospital = false;
-                  ngoDashboardDatas = false;
-                  break;
-                case 'All':
-                  dropDownTwoSelcted = 0;
-                  selectionCampHospital = true;
+                  ngoDashboardclicks = true;
                   ngoDashboardDatas = true;
-               //   _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL();
                   break;
               }
             });
@@ -856,6 +825,8 @@ class _CampDashboard extends State<CampDashboard> {
       ),
     );
   }
+
+
 
   Future<List<DataGetDPM_ScreeningYear>> getDPM_ScreeningYear() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
@@ -871,5 +842,235 @@ class _CampDashboard extends State<CampDashboard> {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
+  }
+
+
+  Widget _buildHeaderCellCampName(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  Widget _buildDataCellCampName(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellTotal(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.2, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Define the callback function that takes the ID
+  Widget _buildHeaderCellSrNoDiseaseDataTotal(String text, BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.2, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035,
+            // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellDiseaseDataAction(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.2, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDataCellViewBlueDiseaseDataAction(
+      String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.3, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+            bottom:
+            BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildButtonNew(String text, IconData icon, VoidCallback onTap) {
+    return Material(
+      color: Colors.transparent, // Let the Container handle background
+      borderRadius: BorderRadius.circular(10.0),
+      elevation: 3, // Shadow
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(10.0),
+        splashColor: Colors.white.withOpacity(0.3),
+        highlightColor: Colors.white.withOpacity(0.1),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+          decoration: BoxDecoration(
+            color: Colors.blue, // 🔵 Background color
+            borderRadius: BorderRadius.circular(10.0),
+            border: Border.all(color: Colors.blue, width: 1), // 🔵 Border
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: Colors.white, size: 12), // ⚪ White icon
+              const SizedBox(width: 4),
+              Text(
+                text,
+                style: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white, // ⚪ White text
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget ViewClickDashboard(
+     ) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: Column(
+        children: [
+          SizedBox(height: 5),
+          _buildButtonNew("View Detail", Icons.visibility, () {
+            print('@@Click of NGO APllication View pressed');
+
+          }),
+        ],
+      ),
+    );
   }
 }

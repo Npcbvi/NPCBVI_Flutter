@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickSatelliteCenters/BothWiseSatelliteWise.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/BothWiseCampWise.dart';
+import 'package:mohfw_npcbvi/src/model/camp/ViewDashboardclick.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewClick.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/EquipemntDetails.dart';
@@ -135,6 +136,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../model/camp/CampDashboard.dart';
 import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
 import '../model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
 import '../model/guidlines/GuilinessPage.dart';
@@ -9651,5 +9653,145 @@ class ApiController {
     }
     return null; // Return null if API fails
   }
+
+  static Future<List<CampDashboardData>>
+  getCampDashboardData(int userRoleType, int districtid, int stateid, String userId,
+      String financialYear, int organizationType, String ngoId) async {
+    print("@@getCampDashboardData" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.getCampDashboardData;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+
+        "userRoleType": userRoleType,
+        "districtId": districtid,
+        "stateId": stateid,
+        "userId": userId,
+        "financialYear": financialYear,
+        "organizationType": organizationType,
+        "ngoId": "0"
+      });
+      print("@@getCampDashboardData--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getCampDashboardData--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      CampDashboard data = CampDashboard.fromJson(responseData);
+
+      if (data.status) {
+        //Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //  Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+
+  static Future<List<ViewDashboardclickData>>
+  viewCampForDashboard(int stateId, int districtId, String campManagerId, String ngoId,
+      String campId, String campNPCBId, String financialYear) async {
+    print("@@viewCampForDashboard" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url =
+          ApiConstants.baseUrl + ApiConstants.viewCampForDashboard;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+
+        "stateId": stateId,
+        "districtId": districtId,
+        "campManagerId": campManagerId,
+        "ngoId": ngoId,
+        "campId": campId,
+        "campNPCBId": campNPCBId,
+        "financialYear": financialYear
+      });
+      print("@@viewCampForDashboard--bodyprint--: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getCampDashboardData--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ViewDashboardclick data = ViewDashboardclick.fromJson(responseData);
+
+      if (data.status) {
+        //Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //  Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/
