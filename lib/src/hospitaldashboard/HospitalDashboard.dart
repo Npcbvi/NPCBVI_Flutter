@@ -157,6 +157,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   TextEditingController _latitudeController = TextEditingController();
   TextEditingController _longitudeController = TextEditingController();
   int patientCount = 0;
+  String selectedStateName,selectedDistrictName,selectedCityName,selectedVillageName;
   // Function to get current position
   Future<void> _getCurrentLocation() async {
     try {
@@ -2757,6 +2758,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                       if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
                         _selectedUserState = stateList.isNotEmpty ? stateList.first : null;
+                         selectedStateName = _selectedUserState.stateName.toString(); // <-- Save the state name here
+                        print('@@selectedStateName'+selectedStateName.toString());
+
                       }
 
                       return Container(
@@ -2788,8 +2792,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   if (user != null) {
                                     setState(() {
                                       _selectedUserState = user;
+                                       selectedStateName = user.stateName; // <-- Save the state name here
                                       stateCodeGovtPrivate = int.parse(user.stateCode.toString());
                                       CodeGovtPrivate = user.code;
+                                      print('@@selectedStateName'+selectedStateName.toString());
                                     });
 
                                     var connectivityResult = await Connectivity().checkConnectivity();
@@ -2862,7 +2868,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : 0;
                               print('@@_selectedUserDistrict--' + _selectedUserDistrict.toString());
                               distCodeGovtPrivate = int.parse(_selectedUserDistrict?.districtCode.toString() ?? "0");
-                            }
+                            selectedDistrictName= _selectedUserDistrict.districtName.toString();
+                           print(' @@selectedStateName'+selectedDistrictName);
+                           }
 
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2897,6 +2905,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                         print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
                                         distCodeGovtPrivate = int.parse(district?.districtCode.toString() ?? "0");
                                         print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
+                                         selectedDistrictName= district.districtName.toString();
+                                        print('@@selectedDistrictName--1' + selectedDistrictName.toString());
+
                                       });
                                     },
 
@@ -2937,7 +2948,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                                           print('@@_selectedUserCity--' + _selectedUserCity.toString());
                                           distCodeGovtPrivateCity = int.parse(_selectedUserCity?.subdistrictCode.toString() ?? "0");
-
+                                          selectedCityName= _selectedUserCity.name.toString();
+                                          print('@@selectedCityName--' + selectedCityName.toString());
                                         }
 
                                         return Column(
@@ -2970,7 +2982,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                                     _selectedUserCity = city;
                                                     distCodeGovtPrivateCity = city?.subdistrictCode ?? 0;
                                                  print('@@distCodeGovtPrivateCity'+distCodeGovtPrivateCity.toString());
-
+                                                    selectedCityName= city.name.toString();
+                                                    print('@@selectedCityName--' + selectedCityName.toString());
                                                   });
                                                 },
                                                 value: _selectedUserCity,
@@ -3018,6 +3031,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                               if (villageList.isNotEmpty) {
                                 if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
                                   _selectedUserVillage = villageList.first; // Set the first element if invalid
+                                  selectedVillageName= _selectedUserVillage.name.toString();
+                                  print('@@selectedVillageName--' + selectedVillageName.toString());
                                 }
                               } else {
                                 _selectedUserVillage = null;
@@ -3075,6 +3090,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                           setState(() {
                                             _selectedUserVillage = village;
                                             village_code = int.parse(village.villageCode ?? "0");
+                                            selectedVillageName= village.name.toString();
+                                            print('@@selectedVillageName--' + selectedVillageName.toString());
                                           });
                                         }
                                       },
@@ -3096,6 +3113,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ],
                   ),
                 ),
+
 
                 SizedBox(height: 5.0),
                 Container(
@@ -3158,7 +3176,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                          //   onPressed: _getCurrentLocation, // Function to fetch current location
                               onPressed: () {
                            //     openMapDialog(context, state, district, city); // ✅ Just call it
-                                openMapDialog(context, "Maharashtra", "Pune", "Hadapsar");
+                                openMapDialog(context, selectedStateName, selectedDistrictName, selectedCityName);
                               }
                          ),
                         ),
