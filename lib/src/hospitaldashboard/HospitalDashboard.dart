@@ -2449,6 +2449,15 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                       stateCodeGovtPrivate = int.parse(user.stateCode.toString());
                                       CodeGovtPrivate = user.code;
                                       print('@@selectedStateName'+selectedStateName.toString());
+
+
+                                      // RESET dependent data
+                                      _selectedUserDistrict = null;
+                                      _selectedUserCity = null;
+                                      _selectedUserVillage = null;
+
+                                      isVisibleDitrictGovt = false;
+                                      _isCityInitialized = false;
                                     });
 
                                     var connectivityResult = await Connectivity().checkConnectivity();
