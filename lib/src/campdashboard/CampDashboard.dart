@@ -240,31 +240,50 @@ class _CampDashboard extends State<CampDashboard> {
         child: Column(
           children: [
             SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
+              child: Column(
                 children: [
-                  // Login Type & District Container
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: 5), // Adds spacing on both sides
-                    child: Row(
-                      children: [
-                        _buildInfoColumn("Login Type", "Camp Manager"),
-                        SizedBox(width: 5),
-                        _buildInfoColumn("District", districtNames),
-                      ],
-                    ),
+                  SizedBox(height: 5),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(child: _buildInfoColumn("Login Type", "Camp Manager")),
+                              SizedBox(width: 20),
+                              Expanded(child: _buildInfoColumn("District", districtNames)),
+                              SizedBox(width: 20),
+                              Expanded(child: _buildInfoColumn("", "")), // Placeholder
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
 
-                  SizedBox(width: 5), // Space between columns
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(child: _buildInfoColumn("State", stateNames)),
+                              SizedBox(width: 20),
+                              Expanded(child: _buildInfoColumn("Login Id", userId)),
+                              SizedBox(width: 20),
+                              Expanded(child: _buildInfoColumn("", "")),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
 
-                  // State Container
-                  _buildInfoColumn("State", stateNames),
-
-
-                  SizedBox(width: 5), // Space between columns
-
-                  // Login ID Container
-                  _buildInfoColumn("Login Id", userId),
                 ],
               ),
             ),
@@ -289,6 +308,7 @@ class _CampDashboard extends State<CampDashboard> {
         SizedBox(height: 5),
         Text(
           value,
+          maxLines: 1,
           style: TextStyle(
             color: Colors.red,
             fontWeight: FontWeight.w500,
@@ -462,7 +482,7 @@ class _CampDashboard extends State<CampDashboard> {
 
     return Container(
       width: dropdownWidth, // Custom width
-      padding: EdgeInsets.symmetric(horizontal: 8), // Padding for better styling
+      padding: EdgeInsets.symmetric(horizontal: 0), // Padding for better styling
 
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
@@ -479,7 +499,7 @@ class _CampDashboard extends State<CampDashboard> {
                 child: Row(
                   children: [
                     Icon(item['icon'], color: Colors.black, size: textSize), // Smaller icon
-                    SizedBox(width: 8.0), // Space between icon and text
+SizedBox(width:8),
                     Text(item['value'], style: TextStyle(color: Colors.black, fontSize: textSize)),
                   ],
                 ),

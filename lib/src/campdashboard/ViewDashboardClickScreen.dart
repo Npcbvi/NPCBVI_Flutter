@@ -94,13 +94,18 @@ print('@@campManagerId'+widget.offer.campManagerId .toString());
                         _buildInfoColumn("Year", widget.year ?? 'N/A'),
                       ],
                     ),
+                    SizedBox(height: 10),
                     Row(
                       children: [
                         _buildInfoColumn("Start Date", offer.startDate ?? 'N/A'),
-                        SizedBox(width: 5),
+                        SizedBox(width: 10),
+
                         _buildInfoColumn("End Date", offer.endDate ?? 'N/A'),
+                        SizedBox(width: 10),
+                        _buildInfoColumn("", ""),
                       ],
                     ),
+                    SizedBox(height: 10),
                     Row(
                       children: [
                         _buildInfoColumn("Address", offer.address ?? 'N/A'),
