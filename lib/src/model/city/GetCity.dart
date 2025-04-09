@@ -2,7 +2,7 @@ class GetCity {
   String message;
   bool status;
   List<DataGetCity> data;
-  Null list;
+  dynamic list;
 
   GetCity({this.message, this.status, this.data, this.list});
 
@@ -12,21 +12,21 @@ class GetCity {
     if (json['data'] != null) {
       data = <DataGetCity>[];
       json['data'].forEach((v) {
-        data.add(new DataGetCity.fromJson(v));
+        data.add(DataGetCity.fromJson(v));
       });
     }
     list = json['list'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = this.message;
-    data['status'] = this.status;
-    if (this.data != null) {
-      data['data'] = this.data.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> json = {};
+    json['message'] = message;
+    json['status'] = status;
+    if (data != null) {
+      json['data'] = data.map((v) => v.toJson()).toList();
     }
-    data['list'] = this.list;
-    return data;
+    json['list'] = list;
+    return json;
   }
 }
 
@@ -42,9 +42,24 @@ class DataGetCity {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
-    data['subdistrict_code'] = this.subdistrictCode;
-    return data;
+    return {
+      'name': name,
+      'subdistrict_code': subdistrictCode,
+    };
   }
+
+  // ✅ Override equality and hashCode
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is DataGetCity &&
+              runtimeType == other.runtimeType &&
+              subdistrictCode == other.subdistrictCode;
+
+  @override
+  int get hashCode => subdistrictCode.hashCode;
+
+  @override
+  String toString() =>
+      'DataGetCity(name: $name, subdistrictCode: $subdistrictCode)';
 }

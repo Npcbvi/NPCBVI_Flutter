@@ -931,7 +931,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                           Icon(Icons.supervised_user_circle,
                               color: Colors.black),
                           SizedBox(width: 6),
-                          Text('Manage Users'),
+                          Text(
+                            'Manage Users',
+                            style: TextStyle(color: Colors.black),
+                          ),
                         ],
                       ),
                       isExpanded: true,
@@ -7362,7 +7365,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  static Future<ViewClickHospitalDetails> viewHospitalDetails(
+ /* static Future<ViewClickHospitalDetails> viewHospitalDetails(
     String darpanNo,
     String hospitalId,
     int districtId,
@@ -7393,7 +7396,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         "districtId": districtId,
         "userId": userId,
       });
-      print("@@GetHospitalList - Request Body: $body");
+      print("@@GetHospitalList - Request Body: $url+$body");
 
       // Create Dio instance and make the request
       Dio dio = Dio();
@@ -7423,10 +7426,79 @@ class _NgoDashboard extends State<NgoDashboard> {
         return ViewClickHospitalDetails(message: data.message, status: false);
       }
     } catch (e) {
-      Utils.showToast("Error: ${e.toString()}", true);
-      return ViewClickHospitalDetails(message: "Error occurred", status: false);
+      //Utils.showToast("Error: ${e.toString()}", true);
+    //  return ViewClickHospitalDetails(message: "Error occurred", status: false);
+    }
+  }*/
+  static Future<ViewClickHospitalDetails> viewHospitalDetails(
+      String darpanNo,
+      String hospitalId,
+      int districtId,
+      String userId,
+      ) async {
+    print("@@GetHospitalList - Initiating request");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return ViewClickHospitalDetails(message: "No internet", status: false);
+    }
+
+    try {
+      // Define the URL and headers
+      final url = "${ApiConstants.baseUrl}${ApiConstants.VeiwHospitalDetails}";
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "darpanNo": darpanNo,
+        "hospitalId": hospitalId,
+        "districtId": districtId,
+        "userId": userId,
+      });
+      print("@@GetHospitalList - Request Body: $url + $body");
+
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@GetHospitalList - API Response: ${response.data}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ViewClickHospitalDetails data = ViewClickHospitalDetails.fromJson(responseData);
+
+      // Safe null-aware check for status
+      if (data.status == true) {
+        Utils.showToast(data.message ?? "Success", true);
+        return data;
+      } else {
+     //   Utils.showToast(data.message ?? "Something went wrong", true);
+        return ViewClickHospitalDetails(
+          message: data.message ?? "Data not found",
+          status: false,
+        );
+      }
+    } catch (e) {
+      print("@@GetHospitalList - Exception: $e");
+     // Utils.showToast("Something went wrong: ${e.toString()}", true);
+    //  return ViewClickHospitalDetails(message: "Error occurred", status: false);
     }
   }
+
 
   static Future<HospitallinkedwithNGO> getHospitalData(
     String hospitalId,
@@ -8679,6 +8751,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             width: double.infinity,
                             // Full width inside the container
                             child: TextFormField(
+                              maxLines: 1, // Allows multiline input
                               controller: _addressController,
                               decoration: InputDecoration(
                                 label: RichText(
@@ -8710,7 +8783,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   ),
                                 ),
                               ),
-                              maxLines: 3, // Allows multiline input
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return 'Please enter your address';

@@ -2393,356 +2393,6 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   ),
                 ),
                 SizedBox(height: 5.0),
-              /*  Container(
-                  margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
-                  width: double.infinity, // Set your desired width
-                  child: FutureBuilder<List<Data>>(
-                    future: _futureState,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
-
-                      if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-
-                      List<Data> stateList = snapshot.data ?? [];
-
-                      // Ensure selected state is in the list, otherwise select the first
-                      if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
-                        _selectedUserState = stateList.isNotEmpty ? stateList.first : null;
-                      }
-
-                      return Container(
-
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            const Text(
-                              'Select State:',
-                              style: TextStyle(
-                                  fontSize: 13, fontWeight: FontWeight.bold),
-                            ),
-                            DropdownButtonFormField2<Data>(
-                              isExpanded: true, // ✅ Prevent overflow by expanding
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                filled: true,
-                                fillColor: Colors.white,
-                              ),
-                              onChanged: (user) async {
-                                if (user != null) {
-                                  setState(() {
-                                    _selectedUserState = user;
-                                    stateCodeGovtPrivate = int.parse(user.stateCode.toString());
-                                    CodeGovtPrivate = user.code;
-                                  });
-
-                                  var connectivityResult = await Connectivity().checkConnectivity();
-                                  bool isConnected = connectivityResult != ConnectivityResult.none;
-
-                                  if (isConnected) {
-                                    setState(() {
-                                      isVisibleDitrictGovt = true;
-                                    });
-                                    await _getDistrictData(stateCodeGovtPrivate);
-                                  } else {
-                                    setState(() {
-                                      isVisibleDitrictGovt = false;
-                                    });
-                                  }
-                                }
-                              },
-                              value: _selectedUserState,
-                              items: stateList.map<DropdownMenuItem<Data>>((Data user) {
-                                return DropdownMenuItem<Data>(
-                                  value: user,
-                                  child: Text(
-                                    user.stateName,
-                                    overflow: TextOverflow.ellipsis, // Handles long text
-                                    maxLines: 1, // Restricts to a single line
-                                    style: const TextStyle(fontSize: 14),
-                                  ),
-                                );
-                              }).toList(),
-                              buttonStyleData: ButtonStyleData(
-                                height: 20, // Adjust the button height if needed
-                              ),
-                              dropdownStyleData: DropdownStyleData(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                SizedBox(height: 5),
-
-                Visibility(
-                  visible: isConnected && isVisibleDitrictGovt,
-                  // Check for both internet and visibility flag
-                  child: Column(
-                    children: [
-                      Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                        child: FutureBuilder<List<DataDsiricst>>(
-                          future: _getDistrictData(stateCodeGovtPrivate),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
-
-                            if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                              return Container(
-                                padding: EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey, width: 1),
-                                  borderRadius: BorderRadius.circular(8),
-                                  color: Colors.white,
-                                ),
-                                child: Center(
-                                  child: Text(
-                                    'No data found',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            }
-
-                            developer.log('@@snapshot: ${snapshot.data}');
-                            List<DataDsiricst> districtList = snapshot.data ?? [];
-
-                            // Default to first item if _selectedUserDistrict is null or not in the list
-                            if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
-                              _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : null;
-                            }
-
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Select District:',
-                                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 5),
-                                DropdownButtonFormField<DataDsiricst>(
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      borderSide: BorderSide(color: Colors.grey),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                  ),
-                                  onChanged: (district) {
-                                    setState(() {
-                                      _selectedUserDistrict = district;
-                                      distCodeGovtPrivate = int.parse(district?.districtCode.toString() ?? "0");
-                                      print('@@distCodeGovtPrivate--11' + distCodeGovtPrivate.toString());
-                                    });
-                                  },
-                                  value: _selectedUserDistrict,
-                                  items: districtList.map((district) {
-                                    return DropdownMenuItem<DataDsiricst>(
-                                      value: district,
-                                      child: Text(district.districtName),
-                                    );
-                                  }).toList(),
-                                ),
-                                SizedBox(height: 5),
-                                // Show City Dropdown if a District is selected
-                                if (_selectedUserDistrict != null)
-                                  Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                    child: FutureBuilder<List<DataGetCity>>(
-                                      future: _getCity(distCodeGovtPrivate),  // Fetch cities based on selected district
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasError) {
-                                          return Text('Error: ${snapshot.error}');
-                                        }
-
-                                        if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                                          return Center(child: CircularProgressIndicator());
-                                        }
-                                        developer.log('@@snapshot: ${snapshot.data}');
-                                        List<DataGetCity> cityList = snapshot.data ?? [];
-
-                                        // If _selectedUserCity is null or not found in the cityList, set it to the first item
-                                        if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
-                                          _selectedUserCity = cityList.isNotEmpty ? cityList.first : null;
-                                        }
-
-                                        return Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Select City:',
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            DropdownButtonFormField<DataGetCity>(
-                                              decoration: InputDecoration(
-                                                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                                border: OutlineInputBorder(
-                                                  borderRadius: BorderRadius.circular(10),
-                                                  borderSide: BorderSide(color: Colors.grey),
-                                                ),
-                                                filled: true,
-                                                fillColor: Colors.white,
-                                              ),
-                                              onChanged: (city) {
-                                                setState(() {
-                                                  _selectedUserCity = city;
-                                                  distCodeGovtPrivate = city?.subdistrictCode ?? 0;
-                                                  print('@@distCodeGovtPrivate: ${distCodeGovtPrivate.toString()}');
-                                                });
-                                              },
-                                              value: _selectedUserCity,
-                                              items: cityList.map((city) {
-                                                return DropdownMenuItem<DataGetCity>(
-                                                  value: city,
-                                                  child: Text(city.name),
-                                                );
-                                              }).toList(),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-
-
-
-
-                      SizedBox(height: 5),
-
-                      // Village Dropdown
-                      if (_selectedUserCity != null)
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.fromLTRB(5,0,5,0),
-                          child: FutureBuilder<List<DataGetVillage>>(
-                            future: _getVillage(district_code_login, state_code_login, distCodeGovtPrivate),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              }
-                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator());
-                              }
-
-                              List<DataGetVillage> villageList = snapshot.data ?? [];
-                              if (villageList.isNotEmpty) {
-                                // Safely check if _selectedUserVillage is valid
-                                if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
-                                  _selectedUserVillage = villageList.first; // Set the first element if invalid
-                                }
-                              } else {
-                                // Handle case where villageList is empty (optional, based on your use case)
-                                _selectedUserVillage = null;
-                              }
-                              // Handle case where village list is empty
-                              if (villageList.isEmpty) {
-                                return Container(
-                                  padding: EdgeInsets.all(16),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.grey, width: 1),
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Colors.grey.shade200, // Light grey background
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      'No data found',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.blue,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }
-
-                              // Ensure a valid default selection for _selectedUserVillage
-                              if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
-                                _selectedUserVillage = villageList.first;
-                              }
-
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Select Village:',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(height: 5), // Space between text and dropdown
-                                  DropdownButtonFormField<DataGetVillage>(
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide(color: Colors.grey),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                    ),
-                                    onChanged: (village) {
-                                      if (village != null) {
-                                        setState(() {
-                                          _selectedUserVillage = village;
-                                          village_code = int.parse(village.villageCode ?? "0");
-                                        });
-                                      }
-                                    },
-                                    value: _selectedUserVillage,
-                                    items: villageList.map((village) {
-                                      return DropdownMenuItem<DataGetVillage>(
-                                        value: village,
-                                        child: Text(village.name),
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ),
-
-
-                    ],
-                  ),
-                ),*/
                 Container(
                   margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
                   width: double.infinity,
@@ -2904,13 +2554,19 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                                     onChanged: (district) {
                                       setState(() {
-                                        _selectedUserDistrict = district;
+                                       /* _selectedUserDistrict = district;
                                         print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
                                         distCodeGovtPrivate = int.parse(district?.districtCode.toString() ?? "0");
                                         print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
                                          selectedDistrictName= district.districtName.toString();
                                         print('@@selectedDistrictName--1' + selectedDistrictName.toString());
-
+*/
+                                        _selectedUserDistrict = district;
+                                        print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
+                                        distCodeGovtPrivate = int.parse(district?.districtCode.toString() ?? "0");
+                                        print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
+                                        _selectedUserCity = null;
+                                        _isCityInitialized = false; // Reset when district changes
                                       });
                                     },
 
@@ -2951,7 +2607,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                               List<DataGetCity> cityList = snapshot.data ?? [];
                               developer.log('@@snapshot' + snapshot.data.toString());
-                              if (cityList.isNotEmpty) {
+                             /* if (cityList.isNotEmpty) {
                                 if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
                                   //  _selectedUserCity = cityList.first;
                                   _selectedUserCity = cityList.isNotEmpty ? cityList.first : 0;
@@ -2964,8 +2620,28 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 }
                               } else {
                                 _selectedUserCity = null;
-                              }
+                              }*/
+                              if (cityList.isNotEmpty) {
+                                if (!_isCityInitialized) {
+                                  if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
+                                    //  _selectedUserCity = cityList.first;
+                                 //   _selectedUserCity = cityList.isNotEmpty ? cityList.first : 0;
+                                    _selectedUserCity = cityList.firstWhere(
+                                          (item) => item.subdistrictCode == distCodeGovtPrivateCity,
+                                      orElse: () => cityList.first,
+                                    );
 
+                                    print('@@_selectedUserCity--' + _selectedUserCity.toString());
+                                    distCodeGovtPrivateCity = int.parse(_selectedUserCity?.subdistrictCode.toString() ?? "0");
+                                    selectedCityName= _selectedUserCity.name.toString();
+                                    print('@@selectedCityName--' + selectedCityName.toString());
+                                    _isCityInitialized = true; // ✅ Set this here
+                                  }
+                                }
+                              } else {
+                                _selectedUserCity = null;
+                                _isCityInitialized = false;
+                              }
                               return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -3132,31 +2808,25 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     children: [
                       // Address/House/Flat Number TextField
                       Expanded(
-                        flex: 3, // Adjust width ratio as needed
+                        flex: 3,
                         child: SizedBox(
-                          height: 45, // Adjust height as needed
+                          height: 45,
                           child: TextField(
                             controller: _AddressHouse,
-                            maxLines: 1, // ✅ Force single line
+                            maxLines: 1, // Force single line
+                            textAlignVertical: TextAlignVertical.center, // Center text vertically
                             decoration: InputDecoration(
-                              label: Align(
-                                alignment: Alignment.centerLeft,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  alignment: Alignment.centerLeft,
-                                  child: RichText(
-                                    text: TextSpan(
-                                      text: 'Address/ House/ Flat Number',
-                                      style: TextStyle(color: Colors.grey, fontSize: 16),
-                                      children: [
-                                        TextSpan(
-
-                                          text: ' *',
-                                          style: TextStyle(color: Colors.red, fontSize: 16),
-                                        ),
-                                      ],
+                              contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                              label: RichText(
+                                text: TextSpan(
+                                  text: 'Address/ House/ Flat Number',
+                                  style: TextStyle(color: Colors.grey, fontSize: 16),
+                                  children: [
+                                    TextSpan(
+                                      text: ' *',
+                                      style: TextStyle(color: Colors.red, fontSize: 16),
                                     ),
-                                  ),
+                                  ],
                                 ),
                               ),
                               hintText: 'Enter Address/ House/ Flat Number',
@@ -3165,10 +2835,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 borderRadius: BorderRadius.circular(8.0),
                               ),
                             ),
-
                           ),
                         ),
                       ),
+
 
                       // Spacer to add some space between TextField and IconButton
                       SizedBox(width: 10),
@@ -3184,11 +2854,22 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           child: IconButton(
                             icon: Icon(Icons.my_location, color: Colors.blue),
                          //   onPressed: _getCurrentLocation, // Function to fetch current location
-                              onPressed: () {
-                           //     openMapDialog(context, state, district, city); // ✅ Just call it
+                            onPressed: () {
+                              if (selectedDistrictName != null && selectedDistrictName.isNotEmpty &&
+                                  selectedCityName != null && selectedCityName.isNotEmpty) {
                                 openMapDialog(context, selectedStateName, selectedDistrictName, selectedCityName);
+                              } else {
+                                // Show error or toast/snackbar
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Please select State, District, and City first."),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
                               }
-                         ),
+                            },
+
+                          ),
                         ),
                       ),
                     ],
