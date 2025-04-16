@@ -114,8 +114,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       showNotAvailble = false;
   bool showSelf = false, Dependent = false;
   File _image;
-  String _selectedDateText = 'Screening Date *'; // Initially set to "From Date"
-  String _selectedDateTextToDate = 'Tentative Surgery Date *';
+  String _selectedDateText = 'Screening Date'; // Initially set to "From Date"
+  String _selectedDateTextToDate = 'Tentative Date';
   String _dob = '  Date of birth';
   Future<List<Data>> _futureState;
   Data _selectedUserState;
@@ -169,6 +169,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
    double sharedFontSize = 14.0;
    Color sharedFontColor = Colors.black;
    FontWeight sharedFontWeight = FontWeight.normal;
+  bool _isVillageInitialized = false;
   Future<void> _getCurrentLocation() async {
     try {
       Position position = await _determinePosition();
@@ -330,6 +331,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     // TODO: implement initState
     super.initState();
     // To generate number on loading of page
+    print('@@calling everytime');
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       if (result != ConnectivityResult.none) {
         print("🌐 Internet Available. Uploading Local Data...");
@@ -538,7 +540,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     Navigator.pop(context);
                   },
                 ),
-                _buildMenuItem(
+               /* _buildMenuItem(
                   icon: Icons.assignment,
                   title: 'Add PNJA',
                   onTap: () {
@@ -599,7 +601,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                     Navigator.pop(context);
                   },
-                ),
+                ),*/
                 _buildDropdownItem(
                   key: _dropdownKeySenTODPM,
                   value: _chosenValueLOWVisionSendTODM,
@@ -856,7 +858,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 5.0),
                       width: MediaQuery.of(context).size.width * 0.45, // Same width
-                      height: 55, // Same height
+                      height: 50, // Same height
                       child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                         future: _future,
                         builder: (context, snapshot) {
@@ -917,7 +919,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             items: list.map((user) {
                               return DropdownMenuItem<DataGetDPM_ScreeningYear>(
                                 value: user,
-                                child: Text(user.name, style: TextStyle(fontSize: 16)),
+                                child: Text(user.name, style: TextStyle(fontSize: 14)),
                               );
                             }).toList(),
                             decoration: InputDecoration(
@@ -948,7 +950,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             ),
                             iconStyleData: IconStyleData(
                               icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                              iconSize: 24,
+                              iconSize: 20,
                             ),
                           );
                         },
@@ -966,7 +968,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                   child: SizedBox(
-                    height: 40,
+                    height: 40, // Same height
                     child: ElevatedButton(
                       onPressed: () {
                         print('Get button clicked');
@@ -1016,7 +1018,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                       // Data Table with FutureBuilder
                       Container(
-                        margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                        margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
                         child: FutureBuilder<List<DataHospitalDashboard>>(
                           future: ApiController.hospitalDashboard(
                               int.parse(role_id),
@@ -1046,8 +1048,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                     Row(
                                       children: [
                                         _buildHeaderCellDiseaseData('Disease Type'),
-                                        _buildHeaderCellDiseaseData('Registered'),
-                                        _buildHeaderCellDiseaseData('Operated'),
+                                        _buildHeaderCellDiseaseDataRegistered('Registered'),
+                                        _buildHeaderCellDiseaseDataRegistered('Operated'),
                                       ],
                                     ),
                                     // Data Rows
@@ -1057,8 +1059,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                           mainAxisAlignment: MainAxisAlignment.start,
                                           children: [
                                             _buildDataCellDiseaseData(offer.status),
-                                            _buildDataCellDiseaseData(offer.registered),
-                                            _buildDataCellDiseaseData(offer.operated),
+                                            _buildDataCellDiseaseDataRegistered(offer.registered),
+                                            _buildDataCellDiseaseDataRegistered(offer.operated),
                                           ],
                                         );
                                       }).toList(),
@@ -1086,7 +1088,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     return Container(
       margin: EdgeInsets.fromLTRB(10, 5, 10, 0),
       width: double.infinity,
-      height: 55, // Same height
+      height: 50, // Same height
       alignment: Alignment.centerLeft,
       decoration: BoxDecoration(
         color: Colors.white,
@@ -1570,6 +1572,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           ),
                         if (showNotAvailble)
 
+
                           SizedBox(height: 10.0),
 
                         Container( margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0), // left, top, right, bottom
@@ -1781,7 +1784,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         Container(
                           margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
                           child: SizedBox(
-                            height: 40, // Adjust height as needed
+                            height: 45, // Adjust height as needed
                             child: TextFormField(
                               controller: _firstNamePatientDetail,
                               decoration: InputDecoration(
@@ -1799,10 +1802,19 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 ),
                                 hintText: 'Enter First Name',
                                 hintStyle: TextStyle(color: Colors.black),
-                                // Set hint text color
-                                border: OutlineInputBorder(
+                                // Border when the field is not focused
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey), // Grey border
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
+
+                                // Border when the field is focused
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey, width: 2), // Grey border when focused
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                // Set hint text color
+
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -1819,7 +1831,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
 
                           child: SizedBox(
-                            height: 40, // Adjust height as needed
+                            height: 45, // Adjust height as needed
                             child: TextFormField(
                               controller: _lastNamePatientDetail,
                               decoration: InputDecoration(
@@ -1838,7 +1850,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 hintText: 'Enter Last Name *',
                                 hintStyle: TextStyle(color: Colors.black),
                                 // Regular hint text
-                                border: OutlineInputBorder(
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey), // Grey border
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+
+                                // Border when the field is focused
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey, width: 1), // Grey border when focused
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                               ),
@@ -1922,7 +1941,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                                 SizedBox(
                                   width: 150, // Set same width for both widgets
-                                  height: 40, // Adjust height as needed
+                                  height: 45, // Adjust height as needed
                                   child: GestureDetector(
                                     onTap: () async {
                                       DateTime pickedDate = await showDatePicker(
@@ -1933,11 +1952,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                       );
 
                                       if (pickedDate != null) {
-                                        String formattedDateForDisplay =
-                                            "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // For UI display
-
-                                        String formattedDateForAPI =
-                                        DateFormat('yyyy-MM-dd').format(pickedDate); // For API request
+                                        String formattedDateForDisplay = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // For UI display
+                                        String formattedDateForAPI = DateFormat('yyyy-MM-dd').format(pickedDate); // For API request
 
                                         setState(() {
                                           _dob = formattedDateForAPI; // Use this for the API
@@ -1957,45 +1973,22 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                           width: 1.0,
                                         ),
                                       ),
-                                      alignment: Alignment.centerLeft, // Left side, vertically centered
+                                      alignment: Alignment.centerLeft, // Align text to the left
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 6.0), // Adjust padding as needed
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            // Label with a red asterisk when _dob is empty
-                                            RichText(
-                                              text: TextSpan(
-                                                text: 'Date of birth',
-                                                style: TextStyle(
-                                                  color: Colors.grey, // Color for the label
-                                                  fontSize: 16,
-                                                ),
-                                                children: [
-                                                  TextSpan(
-                                                    text: ' *', // Red Asterisk
-                                                    style: TextStyle(
-                                                      color: Colors.red,
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            // Text display for the date (or prompt)
-                                            Text(
-                                              _dob.isEmpty ? "Select date" : _dob,
-                                              style: TextStyle(
-                                                color: (_dob.isEmpty || _dob == "Select date") ? Colors.grey : Colors.black,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ],
+                                        child: Text(
+                                          _dob.isEmpty ? "Select date" : _dob,
+                                          style: TextStyle(
+                                            color: (_dob.isEmpty || _dob == "Select date") ? Colors.grey : Colors.black,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ),
                                   ),
                                 ),
+
+
 
 
 
@@ -2008,7 +2001,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                                   child: SizedBox(
                                     width: 150, // Same width as Date Picker
-                                    height: 40,
+                                    height: 45,
                                     child: TextFormField(
                                       controller: _ageController,
                                       readOnly: true,   // 🔒 Prevents editing
@@ -2254,7 +2247,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                   child: SizedBox(
                     width: double.infinity, // Same width as Date Picker
-                    height: 40,
+                    height: 45, // Adjust height as needed
                     child: TextFormField(
                       controller: _mobileNumberDetailsRelationtype,
                       keyboardType: TextInputType.phone, // Use number pad for phone input
@@ -2274,7 +2267,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         hintText: 'Enter Mobile No *',
                         hintStyle: TextStyle(color: Colors.black),
 // Regular hint text
-                        border: OutlineInputBorder(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey), // Grey border
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+
+                        // Border when the field is focused
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 2), // Grey border when focused
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
@@ -2293,121 +2293,97 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 Container(
                   color: Colors.white,
                   margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: GestureDetector(
-                              onTap: () async {
-                                // Handle the tap event here
-                                print('@@Add New Record clicked');
+                        Container(
+                          child: Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  print('@@From Date clicked');
+                                  DateTime pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1700),
+                                    lastDate: DateTime(2101),
+                                  );
 
-                                // Open the calendar on tap
-                                DateTime pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  // Default date to show
-                                  firstDate: DateTime(1700),
-                                  // The earliest allowed date
-                                  lastDate:
-                                      DateTime(2101), // The latest allowed date
-                                );
+                                  if (pickedDate != null) {
+                                    String formattedDate = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                    setState(() {
+                                      _selectedDateText = formattedDate;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width * 0.4, // 50% of screen width
+                                  height: 40, // Set the fixed height
+                                  padding: EdgeInsets.all(10.0),
 
-                                if (pickedDate != null) {
-                                  // Handle the selected date (e.g., display or save it)
-                                  String formattedDate =
-                                      "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                  decoration: BoxDecoration(
 
-                                  // Update the state with the selected date
-                                  setState(() {
-                                    _selectedDateText = formattedDate;
-                                  });
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10.0),
-                                // Padding inside the box
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  // Background color of the box
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  // Rounded corners
-                                  border: Border.all(
-                                    color: Colors.grey, // Border color
-                                    width: 1.0, // Border width
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    border: Border.all(color: Colors.grey, width: 1.0),
+
                                   ),
-                                ),
-                                child: Text(
-                                  _selectedDateText,
-                                  // Display the selected date or "From Date"
-                                  style: TextStyle(
-                                    color: Colors.grey, // Text color
-                                    fontWeight: FontWeight.w500, // Text weight
+
+                                  child: Text(
+                                    _selectedDateText.isEmpty ? 'Screening Date' : _selectedDateText,
+                                    style: TextStyle(
+                                      color: _selectedDateText.isEmpty ? Colors.grey : Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow
-                                      .ellipsis, // Handle text overflow
                                 ),
                               ),
                             ),
                           ),
                         ),
-                        Flexible(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: GestureDetector(
-                              onTap: () async {
-                                // Handle the tap event here
-                                print('@@Add New Record clicked');
+                        SizedBox(width: 30), // Space between the two fields
+                        Container(
+                          child: Expanded(
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: GestureDetector(
+                                onTap: () async {
+                                  print('@@To Date clicked');
+                                  DateTime pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(1700),
+                                    lastDate: DateTime(2101),
+                                  );
 
-                                // Open the calendar on tap
-                                DateTime pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  // Default date to show
-                                  firstDate: DateTime(1700),
-                                  // The earliest allowed date
-                                  lastDate:
-                                      DateTime(2101), // The latest allowed date
-                                );
-
-                                if (pickedDate != null) {
-                                  // Handle the selected date (e.g., display or save it)
-                                  String formattedDate =
-                                      "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-
-                                  // Update the state with the selected date
-                                  setState(() {
-                                    _selectedDateTextToDate = formattedDate;
-                                  });
-                                }
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10.0),
-                                // Padding inside the box
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  // Background color of the box
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  // Rounded corners
-                                  border: Border.all(
-                                    color: Colors.grey, // Border color
-                                    width: 1.0, // Border width
+                                  if (pickedDate != null) {
+                                    String formattedDate = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                    setState(() {
+                                      _selectedDateTextToDate = formattedDate;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width * 0.4, // 50% of screen width
+                                  height: 40, // Set the fixed height
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    border: Border.all(color: Colors.grey, width: 1.0),
                                   ),
-                                ),
-                                child: Text(
-                                  _selectedDateTextToDate,
-                                  // Display the selected date or "From Date"
-                                  style: TextStyle(
-                                    color: Colors.grey, // Text color
-                                    fontWeight: FontWeight.w500, // Text weight
+                                  child: Text(
+                                    _selectedDateTextToDate.isEmpty ? 'Tentative Date' : _selectedDateTextToDate,
+                                    style: TextStyle(
+                                      color: _selectedDateTextToDate.isEmpty ? Colors.grey : Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  overflow: TextOverflow
-                                      .ellipsis, // Handle text overflow
                                 ),
                               ),
                             ),
@@ -2417,6 +2393,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     ),
                   ),
                 ),
+
 
                 SizedBox(height: 5.0),
                 Column(
@@ -2693,16 +2670,29 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                   child: DropdownButtonFormField<DataDsiricst>(
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                      filled: true,
+                                      fillColor: Colors.white,
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide(color: Colors.grey),
+                                        borderSide: BorderSide(color: Colors.grey), // 👈 grey border
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Colors.grey), // 👈 grey border
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(10),
-                                        borderSide: BorderSide(color: Colors.grey),
+                                        borderSide: BorderSide(color: Colors.grey), // 👈 grey border
+
                                       ),
-                                      filled: true,
-                                      fillColor: Colors.white,
+                                      errorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Colors.grey), // 👈 still grey
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        borderSide: BorderSide(color: Colors.grey), // 👈 grey even on error
+                                      ),
                                     ),
                                     onChanged: (district) {
                                       if (district != null && district.districtName != 'Select District') {
@@ -2811,14 +2801,22 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                         fillColor: Colors.white,
                                       ),
                                       onChanged: (city) {
+
                                         if (city != null && city.subdistrictCode != -1) {
                                           setState(() {
                                             _selectedUserCity = city;
                                             distCodeGovtPrivateCity = city.subdistrictCode;
                                             selectedCityName = city.name;
                                             _selectedUserVillage = null; // Reset previous village
-                                            _villageFuture = _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity); // ⬅️ Cache here
-                                            print('@@selectedCityName-- $selectedCityName');
+                                            print('@@selectedCityName--1 $distCodeGovtPrivate');
+                                            print('@@selectedCityName--2 $stateCodeGovtPrivate');
+                                            print('@@selectedCityName--3 $distCodeGovtPrivateCity');
+                                            // RESET village values
+                                            _selectedUserVillage = null;
+                                            selectedVillageName = '';
+                                            _isVillageInitialized = false;
+
+                                            _villageFuture = _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity);
                                             // 👉 HIDE the city dropdown after selection
                                           //  _showCityDropdown = false;
                                           });
@@ -2849,20 +2847,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                           width: double.infinity,
                           margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: FutureBuilder<List<DataGetVillage>>(
+
                             //future: _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
                       //      future: _villageFuture ??= _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
                             future: (distCodeGovtPrivate != -1 && distCodeGovtPrivateCity != -1)
                                 ? _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity)
                                 : Future.value([]),
                             builder: (context, snapshot) {
-                            /*  if (snapshot.hasError) {
-                                return Text('Error: ${snapshot.error}');
-                              }
-
                               if (snapshot.connectionState == ConnectionState.waiting) {
-                                return Center(child: CircularProgressIndicator());
-                              }
-*/       if (snapshot.connectionState == ConnectionState.waiting) {
                              //   return Center(child: CircularProgressIndicator());
                               } else if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
@@ -2923,6 +2915,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
+
                                     'Select Village:',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                   ),
@@ -3159,7 +3152,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         hintText: 'Pin Code',
                         hintStyle: TextStyle(color: Colors.black),
 // Regular hint text
-                        border: OutlineInputBorder(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey), // Grey border
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+
+                        // Border when the field is focused
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 1), // Grey border when focused
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
@@ -3331,9 +3331,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     _selectedUserDistrict = null;
     _selectedUserCity = null;
     _selectedUserVillage = null;
+    // ✅ Reset the name variables too
+    selectedStateName = "";
+    selectedDistrictName = "";
+    selectedCityName = "";
+    selectedVillageName = "";
     _PinCode.clear();
     _voterIDNumber.clear();
-    _reportingPlaceController.clear();
+  //  _reportingPlaceController.clear();
     relationFatherController.clear();
 
     // Reset dropdowns and radio buttons
@@ -3361,7 +3366,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     setState(() {});
 
     // Optional: Show a toast message
-    Utils.showToast("Form has been reset!", true);
+    //Utils.showToast("Form has been reset!", true);
   }
 
   Future<String> compressAndEncodeImage(String imagePath) async {
@@ -3388,11 +3393,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       Utils.showToast("Please enter first name", false);
       return;
     }
-   /* if (_image == null) {
+    if (_image == null) {
       print("Error: Image is not selected");
       Utils.showToast("Please select an image", false);
       return;
-    }*/
+    }
     if (_lastNamePatientDetail.text.isEmpty) {
       print("Error: Last name is empty");
       Utils.showToast("Please enter last name", false);
@@ -3464,8 +3469,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       FormData formData = FormData.fromMap({
         "registrationType": registerationtypeRadioValueinAPi,
         "patientImage": multipartFile,
+
         "idType": VoterIDtype.toString(),
-        "idName": _voterIDNumber.text.toString(),
+     //   "idName": _voterIDNumber.text.toString(),
+        "idName": _voterIDNumber.text.toString().trim().isEmpty ? "0" : _voterIDNumber.text.toString(),
         "dependencyType": dependencyTypeRadio.toString(),
         "relationType": relationtypeValue.toString(),
         "relationName": relationFatherController.text.toString(),
@@ -3546,7 +3553,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           _selectedUserDistrict = null;
           _selectedUserCity = null;
           _selectedUserVillage = null;
-
+          selectedStateName = "";
+          selectedDistrictName = "";
+          selectedCityName = "";
+          selectedVillageName = "";
           // ❗Optional: Clear dropdown lists if you're maintaining them
           // stateList.clear();
           // districtList.clear();
@@ -3556,7 +3566,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           //_AreaNearLandMark.clear();
           _PinCode.clear();
           _voterIDNumber.clear();
-          _reportingPlaceController.clear();
+         // _reportingPlaceController.clear();
           relationFatherController.clear();
 
           // Reset dropdowns and radio buttons
@@ -3621,10 +3631,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           Utils.showToast("Please enter first name", false);
           return;
         }
-       /* if (_image == null) {
+        if (_image == null) {
           Utils.showToast("Please select an image", false);
           return;
-        }*/
+        }
         if (_lastNamePatientDetail.text.isEmpty) {
           Utils.showToast("Please enter last name", false);
           return;
@@ -3681,7 +3691,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       FormData formData = FormData.fromMap({
         "registrationType": registerationtypeRadioValueinAPi,
         "patientImage": multipartFile,
-        "idType": VoterIDtype.toString(),
+       // "idType": VoterIDtype.toString(),
+        "idName": _voterIDNumber.text.toString().trim().isEmpty ? "0" : _voterIDNumber.text.toString(),
+
         "idName": _voterIDNumber.text,
         "dependencyType": dependencyTypeRadio.toString(),
         "relationType": relationtypeValue.toString(),
@@ -4384,6 +4396,58 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }*/
+  Widget _buildHeaderCellDiseaseDataRegistered(String text) {
+    return Container(
+      height: 35,
+      width: MediaQuery.of(context).size.width * 0.3, // 30% of screen width
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(width: 0.1),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 2, // Restrict lines for readability
+          overflow: TextOverflow.ellipsis,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: MediaQuery.of(context).size.width * 0.04, // Responsive font size
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+
+
+  Widget _buildDataCellDiseaseDataRegistered(String text) {
+    return Container(
+      height: 35,
+      width: MediaQuery.of(context).size.width * 0.3, // 30% of screen width
+      // Fixed width to ensure horizontal scrolling
+      decoration: BoxDecoration(
+        color: Colors.white, // Background color for header cells
+        border: Border.all(
+          width: 0.1,
+        ),
+      ),
+      // padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
+      child: Center(
+        child: Text(
+          text,
+          maxLines: 3,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14, // Set font size to 16 pixels
+          ),
+        ),
+      ),
+    );
+  }
+
 
   Widget _buildHeaderCellDiseaseData(String text) {
     return Container(
@@ -4490,6 +4554,23 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         LatLng initialLatLng = LatLng(locations[0].latitude, locations[0].longitude);
         updatedLatLng = initialLatLng;
 
+        // Fetch address & pincode initially
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          initialLatLng.latitude,
+          initialLatLng.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          Placemark place = placemarks[0];
+          updatedAddress = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
+          updatedPincode = place.postalCode ?? '';
+
+          _AddressHouse.text = updatedAddress;
+          _PinCode.text = updatedPincode;
+          _latitudeController.text = initialLatLng.latitude.toString();
+          _longitudeController.text = initialLatLng.longitude.toString();
+        }
+
         showDialog(
           context: context,
           builder: (context) {
@@ -4530,14 +4611,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 : {},
                             onTap: (LatLng tappedLatLng) async {
                               updatedLatLng = tappedLatLng;
-                              print('Latitude: ${tappedLatLng.latitude}');
-                              print('Longitude: ${tappedLatLng.longitude}');
                               _latitudeController.text = tappedLatLng.latitude.toString();
                               _longitudeController.text = tappedLatLng.longitude.toString();
+
                               List<Placemark> placemarks = await placemarkFromCoordinates(
                                 tappedLatLng.latitude,
                                 tappedLatLng.longitude,
-
                               );
 
                               if (placemarks.isNotEmpty) {
@@ -4545,17 +4624,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                 setState(() {
                                   updatedAddress = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
                                   updatedPincode = place.postalCode ?? '';
-
                                 });
 
-                              //  print('Tapped Address: $updatedAddress');
                                 _AddressHouse.text = updatedAddress;
-                              //  print('Pincode: $updatedPincode');
                                 _PinCode.text = updatedPincode;
                               }
 
-                              // Refresh map marker
-                              setState(() {}); // Rebuild dialog to show updated marker
+                              setState(() {}); // Refresh UI to update marker
                             },
                           ),
                         ),
@@ -4586,16 +4661,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     }
   }
 
+
   Widget buildDropdownHospitalType() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 5.0),
       width: MediaQuery.of(context).size.width * 0.45, // Same width
-      height: 55, // Same height
+      height: 50, // Same height
       child: DropdownButtonFormField2<String>(
         value: _chosenValueMangeTwo,
         style: TextStyle(color: Colors.black),
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 10),
+          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
           enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey, width: 1.0),
             borderRadius: BorderRadius.circular(5.0),
@@ -4615,23 +4691,33 @@ class _HospitalDashboard extends State<HospitalDashboard> {
             borderRadius: BorderRadius.circular(5.0),
           ),
         ),
+        iconStyleData: IconStyleData(
+          icon: Icon(Icons.arrow_drop_down, color: Colors.black), // 👈 black icon
+          openMenuIcon: Icon(Icons.arrow_drop_up, color: Colors.black), // Optional
+        ),
         items: <String>['Hospitals'].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
             child: Text(
               value,
+
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: Colors.black),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 14, // Change the font size as needed
+              ),
             ),
           );
         }).toList(),
-        onChanged: (String value) {
+     /*   onChanged: (String value) {
           setState(() {
             _chosenValueMangeTwo = value ?? 'All';
           });
-        },
+        },*/
+        onChanged: null, // 👈 disables interaction
         buttonStyleData: ButtonStyleData(
-          height: 60, // Match height
+          height: 50, // Match height
+
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5.0),
           ),

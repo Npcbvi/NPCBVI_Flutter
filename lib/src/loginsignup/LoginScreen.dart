@@ -358,7 +358,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         hintText: 'Enter Login ID',
                         prefixIcon: Icon(Icons.person),
-                        border: OutlineInputBorder(
+                        // Border styles for enabled and focused states
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey), // Grey border
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 1), // Blue border when focused
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
@@ -385,7 +391,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         hintText: 'Enter Password', // Regular hint text
                         prefixIcon: Icon(Icons.lock),
-                        border: OutlineInputBorder(
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey), // Grey border
+                          borderRadius: BorderRadius.circular(8.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey, width: 1), // Blue border when focused
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),

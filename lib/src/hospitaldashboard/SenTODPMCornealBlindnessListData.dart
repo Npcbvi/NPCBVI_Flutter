@@ -48,9 +48,9 @@ String Gender;
     return Scaffold(
       appBar: AppBar( title: Text(
         'Corneal Blindness patient records for DPM approval',
-        maxLines:2,
+        maxLines: 2,
         // Assuming fullnameController has .text
-        style: TextStyle(color: Colors.white, fontSize: 12.0),
+        style: TextStyle(color: Colors.white, fontSize: 14.0),
       ),
 
       ),
@@ -60,6 +60,33 @@ String Gender;
             // Info Bar
             // Data Table
             _buildUserInfo(),
+            Container(
+              width: double.infinity, // Full width
+              color: Colors.blue, // Background color
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Corneal Blindness patient records for DPM approval',
+                      maxLines: 2,
+                      textAlign: TextAlign.center, // Align text to the left
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+
+
+
+
+                ],
+              ),
+            ),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Column(
@@ -154,7 +181,7 @@ String Gender;
           content: SingleChildScrollView(
             scrollDirection: Axis.vertical, // Allow vertical scrolling
             child: Table(
-              border: TableBorder.all(color: Colors.blue, width: 1), // Table border color and width
+              border: TableBorder.all(color: Colors.black, width: 1), // Table border color and width
               columnWidths: {
                 0: FlexColumnWidth(2), // First column (labels) takes more space
                 1: FlexColumnWidth(3), // Second column (values) takes more space

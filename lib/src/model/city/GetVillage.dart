@@ -35,7 +35,15 @@ class DataGetVillage {
   int villageCode;
 
   DataGetVillage({this.name, this.villageCode});
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is DataGetVillage &&
+              runtimeType == other.runtimeType &&
+              villageCode == other.villageCode;
 
+  @override
+  int get hashCode => villageCode.hashCode;
   DataGetVillage.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     villageCode = json['village_code'];
