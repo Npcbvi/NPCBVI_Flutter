@@ -122,11 +122,19 @@ class _MainDashboard extends State<MainDashboard> {
       }
     }
 
-    Utils.hideProgressDialog1(context); // Ensure this is always called
+  /*  Utils.hideProgressDialog1(context); // Ensure this is always called
     setState(() {
       isLoadingApi = false;
-    });
+    });*/
+    // Move this outside to ensure it runs only after success or failure
+    if (success || attempt >= maxRetries) {
+      Utils.hideProgressDialog1(context);
+      setState(() {
+        isLoadingApi = false;
+      });
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {

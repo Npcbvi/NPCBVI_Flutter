@@ -614,7 +614,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     {'value': 'Glaucoma', 'icon': Icons.healing},
                     {'value': 'Corneal Blindness', 'icon': Icons.healing},
                     {'value': 'VR Surgery', 'icon': Icons.healing},
-                    {'value': 'Childhood Blindness', 'icon': Icons.child_care},
+                  //  {'value': 'Childhood Blindness', 'icon': Icons.child_care},
                   ],
                   onChanged: (String value) {
                     setState(() {
@@ -664,10 +664,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                             builder: (context) => SenTODPMVRSurgeryListData(),
                           ),
                         );
-                      } else if (_chosenValueLOWVisionSendTODM ==
+                      }/* else if (_chosenValueLOWVisionSendTODM ==
                           "Childhood Blindness") {
                         print('Childhood Blindness selected');
-                      } else {
+                      } */else {
                         print('Other value selected');
                       }
                     });
@@ -679,6 +679,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         ),
       ),
       body: SingleChildScrollView(
+
         child: Column(
           children: [
 
@@ -2274,7 +2275,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
                         // Border when the field is focused
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey, width: 2), // Grey border when focused
+                          borderSide: BorderSide(color: Colors.grey, width: 1), // Grey border when focused
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
@@ -3383,8 +3384,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     return base64Encode(compressedImage);
   }
 
-//Comment here for Offline ki bajah se other working fine
-  Future<void> ApipatientRegistration() async {
+  /*Future<void> ApipatientRegistration() async {
     print("### Starting patient registration ###");
 
     // Validation checks for inputs
@@ -3393,11 +3393,11 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       Utils.showToast("Please enter first name", false);
       return;
     }
-    if (_image == null) {
+   *//* if (_image == null) {
       print("Error: Image is not selected");
       Utils.showToast("Please select an image", false);
       return;
-    }
+    }*//*
     if (_lastNamePatientDetail.text.isEmpty) {
       print("Error: Last name is empty");
       Utils.showToast("Please enter last name", false);
@@ -3428,16 +3428,16 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       Utils.showToast("Please enter house address", false);
       return;
     }
-  /*  if (_Apartment.text.isEmpty) {
+  *//*  if (_Apartment.text.isEmpty) {
       print("Error: Apartment is empty");
       Utils.showToast("Please enter apartment", false);
       return;
-    }*/
-   /* if (_AreaNearLandMark.text.isEmpty) {
+    }*//*
+   *//* if (_AreaNearLandMark.text.isEmpty) {
       print("Error: Area/landmark is empty");
       Utils.showToast("Please enter area/landmark", false);
       return;
-    }*/
+    }*//*
     if (_PinCode.text.isEmpty) {
       print("Error: Pin code is empty");
       Utils.showToast("Please enter pin code", false);
@@ -3464,12 +3464,13 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         compressedImage.path,
         filename: "patient_image_${DateTime.now().millisecondsSinceEpoch}.jpg",
       );
+      print("### multipartFile ###"+multipartFile.toString());
 
       // Prepare form data
       FormData formData = FormData.fromMap({
         "registrationType": registerationtypeRadioValueinAPi,
         "patientImage": multipartFile,
-
+     //   "patientImage": multipartFile != null ? multipartFile : "", // Send empty string if null
         "idType": VoterIDtype.toString(),
      //   "idName": _voterIDNumber.text.toString(),
         "idName": _voterIDNumber.text.toString().trim().isEmpty ? "0" : _voterIDNumber.text.toString(),
@@ -3612,7 +3613,217 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         Utils.showToast("Unexpected error occurred", false);
       }
     }
+  }*/
+
+  Future<void> ApipatientRegistration() async {
+    FormData formData;
+    print("### Starting patient registration ###");
+
+    // Validation checks for inputs
+    if (_firstNamePatientDetail.text.isEmpty) {
+      print("Error: First name is empty");
+      Utils.showToast("Please enter first name", false);
+      return;
+    }
+
+    if (_lastNamePatientDetail.text.isEmpty) {
+      print("Error: Last name is empty");
+      Utils.showToast("Please enter last name", false);
+      return;
+    }
+
+    if (_dob.isEmpty || _dob == "Select Date") {
+      print("Error: Date of birth is not selected");
+      Utils.showToast("Please select a date of birth", false);
+      return;
+    }
+
+    if (_ageController.text.isEmpty) {
+      print("Error: Age is empty");
+      Utils.showToast("Please enter age", false);
+      return;
+    }
+
+    if (_mobileNumberDetailsRelationtype.text.isEmpty) {
+      print("Error: Mobile number is empty");
+      Utils.showToast("Please enter mobile number", false);
+      return;
+    } else if (_mobileNumberDetailsRelationtype.text.length != 10) {
+      print("Error: Mobile number must be 10 digits");
+      Utils.showToast("Please enter a valid 10-digit mobile number", false);
+      return;
+    }
+
+    if (_AddressHouse.text.isEmpty) {
+      print("Error: House address is empty");
+      Utils.showToast("Please enter house address", false);
+      return;
+    }
+
+    if (_PinCode.text.isEmpty) {
+      print("Error: Pin code is empty");
+      Utils.showToast("Please enter pin code", false);
+      return;
+    }
+
+    Utils.showProgressDialog1(context);
+
+    try {
+      MultipartFile multipartFile;
+      if (_image != null) {
+        final tempDir = await getTemporaryDirectory();
+        final targetPath = '${tempDir.path}/compressed_image.jpg';
+
+        File compressedImage = await FlutterImageCompress.compressAndGetFile(
+          _image.path,
+          targetPath,
+          quality: 80,
+        );
+
+        if (compressedImage != null) {
+          print("###Compressed image available, preparing multipart file...");
+          multipartFile = await MultipartFile.fromFile(
+            compressedImage.path,
+            filename: "patient_image_${DateTime.now().millisecondsSinceEpoch}.jpg",
+          );
+        }else{
+          print("###Compressed image is null, sending empty patientImage field...");
+
+          // You can send empty string if the API expects the field
+          formData.fields.add(MapEntry("patientImage", ""));
+        }
+      }
+
+      // Prepare form data
+       formData = FormData.fromMap({
+        "registrationType": registerationtypeRadioValueinAPi,
+        "idType": VoterIDtype.toString(),
+        "idName": _voterIDNumber.text.trim().isEmpty ? "0" : _voterIDNumber.text,
+        "dependencyType": dependencyTypeRadio.toString(),
+        "relationType": relationtypeValue.toString(),
+        "relationName": relationFatherController.text,
+        "firstName": _firstNamePatientDetail.text,
+        "lastName": _lastNamePatientDetail.text,
+        "dob": _dob,
+        "age": _ageController.text,
+        "gender": gender.toString(),
+        "mobileRelationType": relationtypeValueMobile.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text,
+        "screeningDate": _selectedDateText,
+        "tentativeSurgeryDate": _selectedDateTextToDate,
+        "disease": getDissesID.toString(),
+        "reportingPlace": _reportingPlaceController.text,
+        "state": state_code_login,
+        "district": district_code_login,
+        "city": distCodeGovtPrivate,
+        "village": village_code,
+        "address": _AddressHouse.text,
+        "apartment": "0",
+        "nearLandMark": "0",
+        "pincode": _PinCode.text,
+        "communicationLanguage": stateLKanguage,
+        "loggedInUserStateId": state_code_login,
+        "loggedInUserDistrictId": district_code_login,
+        "entryBy": entryby,
+        "loggedInNgoId": "10126",
+        "programeId": "002",
+        "loggedInUserRole": int.parse(role_id),
+        "userId": userId,
+      });
+
+      // Conditionally add the image or an empty string
+      if (multipartFile != null) {
+        formData.files.add(MapEntry("patientImage", multipartFile));
+      } else {
+        formData.fields.add(MapEntry("patientImage", ""));
+      }
+
+      print(
+          "Form data prepared successfully. Payload: ${formData.fields.toString()}");
+      print("Form data prepared successfully. Fields:");
+      for (int i = 0; i < formData.fields.length; i++) {
+        var field = formData.fields[i];
+        print("Index $i: Key = ${field.key}, Value = ${field.value}");
+      }
+
+      final dio = Dio();
+      final url = "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
+      print("url: ${url}");
+      dio.options.headers = {
+        'Content-Type': 'multipart/form-data',
+      };
+
+      final response = await dio.post(url, data: formData);
+      print("API response received: ${response.toString()}");
+
+      print("API response received: ${response.statusCode}");
+
+      Utils.hideProgressDialog1(context);
+
+      if (response.statusCode == 200) {
+        final result = PatientRegistrations.fromJson(response.data);
+        if (result.status) {
+          Utils.showToast(result.message, true);
+
+          // Clear form
+          _firstNamePatientDetail.clear();
+          _lastNamePatientDetail.clear();
+          _AgePatientDetail.clear();
+          _mobileNumberDetailsRelationtype.clear();
+          _AddressHouse.clear();
+          _ageController.clear();
+          _latitudeController.clear();
+          _longitudeController.clear();
+          _selectedUserState = null;
+          _selectedUserDistrict = null;
+          _selectedUserCity = null;
+          _selectedUserVillage = null;
+          selectedStateName = "";
+          selectedDistrictName = "";
+          selectedCityName = "";
+          selectedVillageName = "";
+          _PinCode.clear();
+          _voterIDNumber.clear();
+          relationFatherController.clear();
+          registerationtypeRadioValueinAPi = null;
+          VoterIDtype = null;
+          dependencyTypeRadio = null;
+          relationtypeValue = null;
+          gender = null;
+          relationtypeValueMobile = null;
+          getDissesID = null;
+          stateLKanguage = null;
+          distCodeGovtPrivate = null;
+          village_code = null;
+          _dob = "Select Date";
+          _selectedDateText = "Select Date";
+          _selectedDateTextToDate = "Select Date";
+          _image = null;
+
+          setState(() {});
+          Utils.showToast("Form has been reset!", true);
+        } else {
+          Utils.showToast("Registration failed: ${result.message}", false);
+        }
+      } else {
+        Utils.showToast(
+          "Failed to register. Status code: ${response.statusCode}",
+          false,
+        );
+      }
+    } catch (e) {
+      Utils.hideProgressDialog1(context);
+      print("Error: $e");
+
+      if (e is DioError && e.response != null) {
+        print("DioError Response: ${e.response?.data}");
+        Utils.showToast("Error: ${e.response?.data}", false);
+      } else {
+        Utils.showToast("Unexpected error occurred", false);
+      }
+    }
   }
+
 
   Future<void> ApipatientRegistrations(
       {Map<String, dynamic> patientData}) async {
@@ -3631,10 +3842,10 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           Utils.showToast("Please enter first name", false);
           return;
         }
-        if (_image == null) {
+       /* if (_image == null) {
           Utils.showToast("Please select an image", false);
           return;
-        }
+        }*/
         if (_lastNamePatientDetail.text.isEmpty) {
           Utils.showToast("Please enter last name", false);
           return;
@@ -4266,25 +4477,31 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     String title,
     Function() onTap,
   }) {
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
-      title: Row(
-        children: [
-          Icon(icon, color: sharedFontColor, size: sharedFontSize),
-          SizedBox(width: 8.0),
-          Text(
-            title,
-            style: TextStyle(
-              color: sharedFontColor,
-              fontSize: sharedFontSize,
-              fontWeight: sharedFontWeight,
-            ),
-          )
-        ],
-      ),
+    return GestureDetector(
       onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(left: 10.0, top: 30.0, right: 10.0),  // Apply left, top, and right margin
+        padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),  // Custom padding
+        child: Row(
+          children: [
+            Icon(icon, color: sharedFontColor, size: sharedFontSize),
+            SizedBox(width: 8.0),
+            Text(
+              title,
+              style: TextStyle(
+                color: sharedFontColor,
+                fontSize: sharedFontSize,
+                fontWeight: sharedFontWeight,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
+
+
+
   Widget _buildDropdownItem({
     GlobalKey key,
     String value,
@@ -4296,22 +4513,29 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(vertical: 0),
       title: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
+        child: DropdownButtonFormField2<String>(
           key: key,
           value: value,
-          style: TextStyle(color: sharedFontColor, fontSize: sharedFontSize),
-          dropdownColor: Colors.white,
+          isExpanded: true,
+          style: TextStyle(color: Colors.black, fontSize: sharedFontSize), // Text color black
+          dropdownStyleData: DropdownStyleData(
+            offset: Offset(0, 8), // Controls the dropdown's position
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+          ),
           items: items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
             return DropdownMenuItem<String>(
               value: item['value'],
               child: Row(
                 children: [
-                  Icon(item['icon'], color: sharedFontColor, size: sharedFontSize),
+                  Icon(item['icon'], color: Colors.black, size: sharedFontSize), // Icon color black
                   SizedBox(width: 8.0),
                   Text(
                     item['value'],
                     style: TextStyle(
-                      color: sharedFontColor,
+                      color: Colors.black, // Text color black
                       fontSize: sharedFontSize,
                     ),
                   ),
@@ -4327,7 +4551,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
               Text(
                 hint,
                 style: TextStyle(
-                  color: sharedFontColor,
+                  color: Colors.black, // Text color black for hint
                   fontSize: sharedFontSize,
                   fontWeight: FontWeight.w500,
                 ),
@@ -4337,9 +4561,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
               : Text(
             hint,
             style: TextStyle(
-              color: sharedFontColor,
+              color: Colors.black, // Text color black for hint
               fontSize: sharedFontSize,
-              fontWeight: FontWeight.w500,
             ),
           ),
           onChanged: onChanged,
@@ -4347,6 +4570,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       ),
     );
   }
+
 
   //related disease Data view
   Widget _buildHeaderCellSrNoDiseaseData(String text) {

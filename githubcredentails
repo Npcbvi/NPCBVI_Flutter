@@ -374,3 +374,272 @@ Dropdwon code here below show
                      },
                    ),
                  )
+
+
+// unnesaary code here
+Future<MultipartFile> prepareMultipartFile(File imageFile) async {
+    print("###prepareMultipartFile_1");
+    final tempDir = await getTemporaryDirectory();
+    final targetPath = '${tempDir.path}/compressed_image.jpg';
+    File compressedImage = await FlutterImageCompress.compressAndGetFile(
+      _image.path,
+      targetPath,
+      quality: 80,
+    );
+
+
+    if (compressedImage == null) throw Exception("Image compression failed");
+
+    // Prepare MultipartFile for image
+    MultipartFile multipartFile = await MultipartFile.fromFile(
+      compressedImage.path,
+      filename: "patient_image_${DateTime
+          .now()
+          .millisecondsSinceEpoch}.jpg",
+    );
+    print("### multipartFile ###" + multipartFile.toString());
+    print("###prepareMultipartFile_2");
+  }
+
+  Future<void> ApipatientRegistration() async {
+    print("### Starting patient registration_1");
+
+    // Validation checks for inputs
+    if (_firstNamePatientDetail.text.isEmpty) {
+      print("Error: First name is empty");
+      Utils.showToast("Please enter first name", false);
+      return;
+    }
+   /* if (_image == null) {
+      print("Error: Image is not selected");
+      Utils.showToast("Please select an image", false);
+      return;
+    }*/
+    print("### Starting patient registration_2");
+
+    if (_lastNamePatientDetail.text.isEmpty) {
+      print("Error: Last name is empty");
+      Utils.showToast("Please enter last name", false);
+      return;
+    }
+    if (_dob.isEmpty || _dob == "Select Date") {
+      print("Error: Date of birth is not selected");
+      Utils.showToast("Please select a date of birth", false);
+      return;
+    }
+    print("### Starting patient registration_3");
+
+    if (_ageController.text.isEmpty) {
+      print("Error: Age is empty");
+      Utils.showToast("Please enter age", false);
+      return;
+    }
+    if (_mobileNumberDetailsRelationtype.text.isEmpty) {
+      print("Error: Mobile number is empty");
+      Utils.showToast("Please enter mobile number", false);
+      return;
+    }
+
+    else if (_mobileNumberDetailsRelationtype.text.length != 10) {
+      print("Error: Mobile number must be 10 digits");
+      Utils.showToast("Please enter a valid 10-digit mobile number", false);
+      return;
+    }
+    print("### Starting patient registration_4");
+
+    if (_AddressHouse.text.isEmpty) {
+      print("Error: House address is empty");
+      Utils.showToast("Please enter house address", false);
+      return;
+    }
+  /*  if (_Apartment.text.isEmpty) {
+      print("Error: Apartment is empty");
+      Utils.showToast("Please enter apartment", false);
+      return;
+    }*/
+   /* if (_AreaNearLandMark.text.isEmpty) {
+      print("Error: Area/landmark is empty");
+      Utils.showToast("Please enter area/landmark", false);
+      return;
+    }*/
+    if (_PinCode.text.isEmpty) {
+      print("Error: Pin code is empty");
+      Utils.showToast("Please enter pin code", false);
+      return;
+    }
+    print("### Starting patient registration_5");
+
+    // Show progress dialog
+    Utils.showProgressDialog1(context);
+
+    try {
+      // Compress image
+/*      final tempDir = await getTemporaryDirectory();
+      final targetPath = '${tempDir.path}/compressed_image.jpg';
+      File compressedImage = await FlutterImageCompress.compressAndGetFile(
+        _image.path,
+        targetPath,
+        quality: 80,
+      );
+
+      if (compressedImage == null) throw Exception("Image compression failed");
+
+      // Prepare MultipartFile for image
+      MultipartFile multipartFile = await MultipartFile.fromFile(
+        compressedImage.path,
+        filename: "patient_image_${DateTime.now().millisecondsSinceEpoch}.jpg",
+      );
+      print("### multipartFile ###"+multipartFile.toString());*/
+      MultipartFile multipartFile;
+
+      if (_image != null) {
+        multipartFile = await prepareMultipartFile(_image);
+      }
+      // Prepare form data
+      FormData formData = FormData.fromMap({
+        "registrationType": registerationtypeRadioValueinAPi,
+      //  "patientImage": multipartFile,
+        "patientImage": multipartFile ?? "",
+        "idType": VoterIDtype.toString(),
+     //   "idName": _voterIDNumber.text.toString(),
+        "idName": _voterIDNumber.text.toString().trim().isEmpty ? "0" : _voterIDNumber.text.toString(),
+        "dependencyType": dependencyTypeRadio.toString(),
+        "relationType": relationtypeValue.toString(),
+        "relationName": relationFatherController.text.toString(),
+        "firstName": _firstNamePatientDetail.text.toString(),
+        "lastName": _lastNamePatientDetail.text.toString(),
+
+        "dob": _dob.toString(),
+        //"dob": "12-12-2000",
+        "age": _ageController.text.toString(),
+        "gender": gender.toString(),
+        "mobileRelationType": relationtypeValueMobile.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text.toString(),
+        "screeningDate": _selectedDateText,
+        "tentativeSurgeryDate": _selectedDateTextToDate,
+        "disease": getDissesID.toString(),
+        "reportingPlace": _reportingPlaceController.text,
+        "state": state_code_login,
+        "district": district_code_login,
+        "city": distCodeGovtPrivate,
+        "village": village_code,
+        "address": _AddressHouse.text,
+        "apartment": "0",
+        "nearLandMark": "0",
+        "pincode": _PinCode.text,
+        "communicationLanguage": stateLKanguage,
+        "loggedInUserStateId": state_code_login,
+        "loggedInUserDistrictId": district_code_login,
+        "entryBy": entryby,
+        "loggedInNgoId": "10126",
+        "programeId": "002",
+        "loggedInUserRole": int.parse(role_id),
+        "userId": userId,
+      });
+      print(
+          "Form data prepared successfully. Payload: ${formData.fields.toString()}");
+      print("Form data prepared successfully. Fields:");
+      for (int i = 0; i < formData.fields.length; i++) {
+        var field = formData.fields[i];
+        print("Index $i: Key = ${field.key}, Value = ${field.value}");
+      }
+      // API URL
+      final dio = Dio();
+      final url =
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
+      print("url: ${url}");
+// Prepare headers
+      final headers = {
+        'Content-Type': 'multipart/form-data',
+        // Correctly specify the content type
+      };
+
+// Set up Dio options
+      dio.options.headers = headers;
+
+      final response = await dio.post(
+        url,
+        data: formData, // FormData object with your fields
+      );
+
+      print("API response received: ${response.statusCode}");
+
+      Utils.hideProgressDialog1(context);
+
+      if (response.statusCode == 200) {
+        final result = PatientRegistrations.fromJson(response.data);
+        if (result.status) {
+          Utils.showToast(result.message, true);
+          _firstNamePatientDetail.clear();
+          _lastNamePatientDetail.clear();
+          _AgePatientDetail.clear();
+          _mobileNumberDetailsRelationtype.clear();
+          _AddressHouse.clear();
+          _ageController.clear();
+          _latitudeController.clear();
+          _longitudeController.clear();
+          // ❗Clear selected dropdown values
+          _selectedUserState = null;
+          _selectedUserDistrict = null;
+          _selectedUserCity = null;
+          _selectedUserVillage = null;
+          selectedStateName = "";
+          selectedDistrictName = "";
+          selectedCityName = "";
+          selectedVillageName = "";
+          // ❗Optional: Clear dropdown lists if you're maintaining them
+          // stateList.clear();
+          // districtList.clear();
+          // cityList.clear();
+          // villageList.clear();
+         // _Apartment.clear();
+          //_AreaNearLandMark.clear();
+          _PinCode.clear();
+          _voterIDNumber.clear();
+         // _reportingPlaceController.clear();
+          relationFatherController.clear();
+
+          // Reset dropdowns and radio buttons
+          registerationtypeRadioValueinAPi = null;
+          VoterIDtype = null;
+          dependencyTypeRadio = null;
+          relationtypeValue = null;
+          gender = null;
+          relationtypeValueMobile = null;
+          getDissesID = null;
+          stateLKanguage = null;
+          distCodeGovtPrivate = null;
+          village_code = null;
+
+          // Reset date pickers
+          _dob = "Select Date";
+          _selectedDateText = "Select Date";
+          _selectedDateTextToDate = "Select Date";
+
+          // Clear image
+          _image = null;
+
+          // Trigger UI update
+          setState(() {});
+
+          // Optional: Show a toast message
+          Utils.showToast("Form has been reset!", true);
+        } else {
+          Utils.showToast("Registration failed: ${result.message}", false);
+        }
+      } else {
+        Utils.showToast(
+            "Failed to register. Status code: ${response.statusCode}", false);
+      }
+    } catch (e) {
+      Utils.hideProgressDialog1(context);
+      print("Error: $e");
+
+      if (e is DioError && e.response != null) {
+        print("DioError Response: ${e.response?.data}");
+        Utils.showToast("Error: ${e.response?.data}", false);
+      } else {
+        Utils.showToast("Unexpected error occurred", false);
+      }
+    }
+  }

@@ -6839,7 +6839,66 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ],
                 ),
               ),
-
+              /*Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'NGO(s)(Approved)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          NGO_APPorovedClickShowData = false;
+                          NGO_PendingClickShowData = false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),*/
               // Data Section
               SizedBox(
                 height: 300, // Set fixed height

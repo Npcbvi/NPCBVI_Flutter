@@ -470,7 +470,10 @@ String Gender;
           child: Row(
             children: [
 
-
+              _buildUserInfoGrid(
+                  'Login Type:', 'Hospital', Colors.black, Colors.red),
+              _buildUserInfoGrid('Login Id:', userId?.toString() ?? 'N/A',
+                  Colors.black, Colors.red),
               _buildUserInfoGrid('District:',
                   districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
               _buildUserInfoGrid('State:', stateNames?.toString() ?? 'N/A',
