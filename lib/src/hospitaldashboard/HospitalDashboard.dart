@@ -1677,7 +1677,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                                       } else if (relationtypeValue == "Spouse") {
                                         relationNameController.text = "Spouse's Name";
                                       } else {
-                                        relationNameController.clear();
+                                        relationNameController.text = "";
+
                                       }
                                     });
                                   },
@@ -3345,14 +3346,14 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     relationFatherController.clear();
 
     // Reset dropdowns and radio buttons
-    registerationtypeRadioValueinAPi = null;
+   // registerationtypeRadioValueinAPi = null;
 
     VoterIDtype = null;
    // dependencyTypeRadio = null;
-    relationtypeValue = null;
+    //relationtypeValue = null;
    // gender = null;
-    relationtypeValueMobile = null;
-    getDissesID = null;
+   // relationtypeValueMobile = null;
+   // getDissesID = null;
     stateLKanguage = null;
     distCodeGovtPrivate = null;
     village_code = null;
@@ -3703,7 +3704,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
         "idName": _voterIDNumber.text.trim().isEmpty ? "0" : _voterIDNumber.text,
         "dependencyType": dependencyTypeRadio.toString(),
         "relationType": relationtypeValue.toString(),
-        "relationName": relationFatherController.text,
+    //    "relationName": relationFatherController.text,// error here
+         "relationName":"f",
         "firstName": _firstNamePatientDetail.text,
         "lastName": _lastNamePatientDetail.text,
         "dob": _dob,
@@ -3786,24 +3788,24 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           selectedVillageName = "";
           _PinCode.clear();
           _voterIDNumber.clear();
-          relationFatherController.clear();
-          registerationtypeRadioValueinAPi = null;
+         // relationFatherController.clear();
+         // registerationtypeRadioValueinAPi = null;
           VoterIDtype = null;
       //    dependencyTypeRadio = null;
-          relationtypeValue = null;
+         // relationtypeValue = null;
          // gender = null;
           relationtypeValueMobile = null;
-          getDissesID = null;
+         // getDissesID = null;
           stateLKanguage = null;
           distCodeGovtPrivate = null;
-          village_code = null;
+          //village_code = null;
           _dob = "Select Date";
           _selectedDateText = "Select Date";
           _selectedDateTextToDate = "Select Date";
-          _image = null;
+         // _image = null;
 
           setState(() {});
-          Utils.showToast("Form has been reset!", true);
+        //  Utils.showToast("Form has been reset!", true);
         } else {
           Utils.showToast("Registration failed: ${result.message}", false);
         }

@@ -6775,7 +6775,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Header Section
-              Container(
+             /* Container(
                 color: Colors.white70,
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -6838,8 +6838,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ],
                 ),
-              ),
-              /*Container(
+              ),*/
+              Container(
                 width: double.infinity, // Full width
                 color: Colors.blue, // Background color
                 padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
@@ -6898,7 +6898,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ],
                 ),
-              ),*/
+              ),
               // Data Section
               SizedBox(
                 height: 300, // Set fixed height
@@ -7166,32 +7166,28 @@ class _DPMDashboard extends State<DPMDashboard> {
               // Header Section (Always Visible)
 
               Container(
-                color: Colors.white70,
-                padding: const EdgeInsets.all(8.0),
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
                   children: [
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10.0),
-                      padding: EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.hourglass_top, color: Colors.orange),
-                          SizedBox(width: 8),
-                          Text(
-                            'NGO(s) (Pending)',
-                            style: TextStyle(
-                              color: Colors.orange,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ],
+                    Expanded(
+                      child: Text(
+                        'NGO(s) (Pending)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    InkWell(
+                    GestureDetector(
                       onTap: () {
+                        print('Back button pressed');
                         setState(() {
                           dashboardviewReplace = true;
                           NGO_PendingClickShowData = false;
@@ -7199,37 +7195,36 @@ class _DPMDashboard extends State<DPMDashboard> {
                         });
                       },
                       child: Container(
-                        width: 100.0,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 8.0, horizontal: 12.0),
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.white, width: 1),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.arrow_back,
-                                color: Colors.white, size: 16),
-                            SizedBox(width: 5),
-                            Text(
-                              'Back',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
                             ),
                           ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
                   ],
                 ),
               ),
-
               // Data Section
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
@@ -7354,69 +7349,64 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Header Section
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  color: Colors.white70,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          width: 160.0,
-                          child: Text(
-                            'Govt. / CHC / Other Hospitals (Approved)',
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                            ),
-                          ),
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Govt. / CHC / Other Hospitals (Approved)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
                         ),
-                        const SizedBox(width: 10),
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              dashboardviewReplace = true;
-                              GetDPM_GH_PendingClickShowData = false;
-                              GetDPM_GH_APPorovedClickShowData = false;
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 8),
-                            decoration: BoxDecoration(
-                              color: Colors.blue,
-                              borderRadius: BorderRadius.circular(8),
-                              border:
-                                  Border.all(color: Colors.white, width: 1.5),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.arrow_back_ios_new,
-                                    color: Colors.white, size: 18),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Back',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ],
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetDPM_GH_PendingClickShowData = false;
+                          GetDPM_GH_APPorovedClickShowData = false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
 
@@ -7553,31 +7543,29 @@ class _DPMDashboard extends State<DPMDashboard> {
         // Header Section
         Visibility(
           visible: GetDPM_GH_PendingClickShowData,
-          child: Container(
-            color: Colors.white70,
-            padding: const EdgeInsets.all(8.0),
+          child:  Container(
+            width: double.infinity, // Full width
+            color: Colors.blue, // Background color
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
               children: [
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10.0),
-                  padding: EdgeInsets.all(10.0),
-                  child: Center(
-                    child: Text(
-                      'GOVT.CHC Hospital \n (Pending)',
-                      maxLines: 3,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                Expanded(
+                  child: Text(
+                    'GOVT.CHC Hospital \n (Pending)',
+                    maxLines: 2,
+                    textAlign: TextAlign.left, // Align text to the left
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
                     ),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
-                const SizedBox(width: 10),
-                InkWell(
+                GestureDetector(
                   onTap: () {
+                    print('Back button pressed');
                     setState(() {
                       dashboardviewReplace = true;
                       GetDPM_GH_PendingClickShowData = false;
@@ -7585,26 +7573,30 @@ class _DPMDashboard extends State<DPMDashboard> {
                     });
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.white, width: 1.5),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(Icons.arrow_back_ios_new,
-                            color: Colors.white, size: 16),
-                        SizedBox(width: 8),
-                        Text(
-                          'Back',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 6,
+                          offset: Offset(0, 2), // Shadow effect
                         ),
                       ],
+                      border: Border.all(
+                        color: Colors.white, // White border
+                        width: 1,
+                      ),
+                    ),
+                    child: Text(
+                      'Back',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
@@ -7731,154 +7723,70 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Shown Captcha value to user
-                                    /*      Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
 
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*/
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 8),
-                                      padding: EdgeInsets.all(12),
-                                      child: Text(
-                                        'Private Practitioners (Approved)',
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          // Set a font size for better readability
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        overflow: TextOverflow
-                                            .ellipsis, // Handle text overflow
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          GetDPM_PrivatePartitionPorovedClickShowData =
-                                              false;
-                                          DPM_PrivatePartitionP_PendingClickShowData =
-                                              false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 8.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue,
-                                          // Light red background
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.white,
-                                              width: 1), // White border
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          // Wrap content size
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          // Center the content
-                                          children: [
-                                            Icon(Icons.arrow_back,
-                                                color: Colors.white, size: 20),
-                                            // Back icon
-                                            SizedBox(width: 5),
-                                            // Space between icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Private Practitioners (Approved)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetDPM_PrivatePartitionPorovedClickShowData =
+                          false;
+                          DPM_PrivatePartitionP_PendingClickShowData =
+                          false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
               SizedBox(width: 8.0),
               FutureBuilder<List<DataGetDPM_PrivatePartition>>(
                 future: ApiController.getDPM_PrivatePartition(
@@ -8000,112 +7908,69 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      padding: EdgeInsets.all(10),
-                                      child: Text(
-                                        'Private Practitioner(s) (Pending)',
-                                        maxLines: 2,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        overflow: TextOverflow
-                                            .ellipsis, // Handles text overflow gracefully
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          GetDPM_PrivatePartitionPorovedClickShowData =
-                                              false;
-                                          DPM_PrivatePartitionP_PendingClickShowData =
-                                              false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 8.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue,
-                                          // Light red background
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.white,
-                                              width: 1), // White border
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          // Wrap content size
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          // Center the content
-                                          children: [
-                                            Icon(Icons.arrow_back,
-                                                color: Colors.white, size: 20),
-                                            // Back icon
-                                            SizedBox(width: 5),
-                                            // Space between icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Private Practitioner(s) (Pending)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          GetDPM_PrivatePartitionPorovedClickShowData =
+                          false;
+                          DPM_PrivatePartitionP_PendingClickShowData =
+                          false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
+
               SizedBox(width: 8.0),
               FutureBuilder<List<DataGetDPM_PrivatePartition>>(
                 future: ApiController.getDPM_PrivatePartition(
@@ -8228,153 +8093,67 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Shown Captcha value to user
-                                    /* Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Private Medical College(s) (Approved)',
 
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*/
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 12, vertical: 8),
-                                      padding: EdgeInsets.all(12),
-                                      width: 180.0,
-                                      child: Center(
-                                        child: Text(
-                                          'Private Medical College(s) (Approved)',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          DPM_privateMEdicalCollegeApprovedData =
-                                              false;
-                                          DPM_privateMEdicalCollegePendingData =
-                                              false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: 8.0, horizontal: 16.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue,
-                                          // Light red background
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.white,
-                                              width: 1), // White border
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          // Wrap content size
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          // Center the content
-                                          children: [
-                                            Icon(Icons.arrow_back,
-                                                color: Colors.white, size: 20),
-                                            // Back icon
-                                            SizedBox(width: 8),
-                                            // Space between icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          DPM_privateMEdicalCollegeApprovedData =
+                          false;
+                          DPM_privateMEdicalCollegePendingData =
+                          false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(width: 8.0),
@@ -8496,172 +8275,67 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    // Shown Captcha value to user
-                                    /* Container(
-                                        child: Text(
-                                      'District:',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${districtNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Private Medical College(s) (Pending)',
 
-                                    Container(
-                                        child: Text(
-                                      'State :',
-                                      style: TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    Container(
-                                        child: Text(
-                                      '${stateNames}',
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.w500),
-                                    )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),*/
-                                    Container(
-                                      margin: const EdgeInsets.fromLTRB(
-                                          10, 0, 10, 0),
-                                      padding: const EdgeInsets.all(8.0),
-                                      // Padding for better spacing
-                                      width: 150.0,
-
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.pending_actions,
-                                            // Pending-related icon
-                                            color: Colors.red,
-                                            size: 20.0,
-                                          ),
-                                          const SizedBox(width: 8.0),
-                                          // Space between the icon and the text
-                                          Expanded(
-                                            child: Text(
-                                              'Private Medical College(s) (Pending)',
-                                              style: const TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14.0,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                              // Handle text overflow gracefully
-                                              maxLines:
-                                                  3, // Restrict to a single line
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          DPM_privateMEdicalCollegeApprovedData =
-                                              false;
-                                          DPM_privateMEdicalCollegePendingData =
-                                              false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0, vertical: 8.0),
-                                        // Padding for a better touch area
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue,
-                                          // Light red background
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.white,
-                                              width:
-                                                  1.0), // Border for emphasis
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          // Wrap content horizontally
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_back, // Back icon
-                                              color: Colors.white,
-                                              size: 20.0,
-                                            ),
-                                            const SizedBox(width: 8.0),
-                                            // Space between icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14.0,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          DPM_privateMEdicalCollegeApprovedData =
+                          false;
+                          DPM_privateMEdicalCollegePendingData =
+                          false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(width: 8.0),
@@ -8785,133 +8459,65 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.fromLTRB(
-                                          10, 0, 10, 0),
-                                      padding: const EdgeInsets.all(8.0),
-                                      // Padding for better spacing
-                                      width: 180.0,
-                                      // Slightly increased width for better alignment
-
-                                      child: Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        // Wrap content horizontally
-                                        children: [
-                                          Icon(
-                                            Icons.campaign,
-                                            // Relevant icon for "camp"
-                                            color: Colors.red,
-                                            size: 20.0,
-                                          ),
-                                          const SizedBox(width: 8.0),
-                                          // Space between the icon and text
-                                          Expanded(
-                                            child: Text(
-                                              'Screening Camp(s)',
-                                              style: const TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14.0,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                              // Handle long text gracefully
-                                              maxLines:
-                                                  3, // Restrict to a single line
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          ScreeningCamp = false;
-                                          ScreeningCampOngoing = false;
-                                          ScreeningCampComing = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 16.0, vertical: 8.0),
-                                        // Add padding for a better touch area
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue,
-                                          // Light red background
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.white,
-                                              width: 1.0), // Red border
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          // Wrap content horizontally
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_back, // Back icon
-                                              color: Colors.white,
-                                              size: 20.0,
-                                            ),
-                                            const SizedBox(width: 8.0),
-                                            // Space between the icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              // Handle text overflow gracefully
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize:
-                                                    14.0, // Slightly increased font size for better readability
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Screening Camp(s)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          ScreeningCamp = false;
+                          ScreeningCampOngoing = false;
+                          ScreeningCampComing = false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(width: 8.0),
@@ -9049,126 +8655,65 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 5.0),
-                                      // Adjust margins
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 8.0),
-                                      // Add padding
-
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .center, // Center the content
-                                        children: [
-                                          Icon(
-                                            Icons.campaign, // Campaign icon
-                                            color: Colors.red,
-                                            size: 20.0,
-                                          ),
-                                          const SizedBox(width: 8.0),
-                                          // Space between icon and text
-                                          Text(
-                                            'Screening Camp(s)',
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize:
-                                                  14.0, // Adjust font size for better visibility
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          ScreeningCamp = false;
-                                          ScreeningCampOngoing = false;
-                                          ScreeningCampComing = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 12.0, vertical: 8.0),
-                                        // Add padding
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue,
-                                          // Light red background
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          // Rounded corners
-                                          border: Border.all(
-                                              color: Colors.white,
-                                              width: 1.0), // Red border
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          // Adjust width to content
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_back, // Back icon
-                                              color: Colors.white,
-                                              size: 20.0,
-                                            ),
-                                            const SizedBox(width: 5.0),
-                                            // Space between icon and text
-                                            Text(
-                                              'Back',
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize:
-                                                    14.0, // Adjust font size
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Screening Camp(s)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          ScreeningCamp = false;
+                          ScreeningCampOngoing = false;
+                          ScreeningCampComing = false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(width: 8.0),
@@ -9300,118 +8845,65 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Horizontal Scrolling Header Row
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                  child: Container(
-                    color: Colors.white70,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-                            child: Container(
-                              color: Colors.white70,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.symmetric(
-                                          horizontal: 10.0, vertical: 5.0),
-                                      padding: EdgeInsets.all(10.0),
-                                      // Padding inside the container
-
-                                      child: Row(
-                                        children: [
-                                          Icon(
-                                            Icons.campaign,
-                                            color: Colors.red,
-                                            size: 24.0,
-                                          ),
-                                          SizedBox(width: 8.0),
-                                          Text(
-                                            'Screening Camp(s)',
-                                            style: TextStyle(
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 14.0,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    InkWell(
-                                      onTap: () {
-                                        print('@@back Pressed----display---');
-                                        setState(() {
-                                          dashboardviewReplace = true;
-                                          ScreeningCamp = false;
-                                          ScreeningCampOngoing = false;
-                                          ScreeningCampComing = false;
-                                        });
-                                      },
-                                      child: Container(
-                                        margin: EdgeInsets.symmetric(
-                                            horizontal: 10.0, vertical: 5.0),
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 15.0, vertical: 10.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.blue,
-                                          // Light red background for emphasis
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          border: Border.all(
-                                              color: Colors
-                                                  .white), // Red border for better visibility
-                                        ),
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Icon(
-                                              Icons.arrow_back,
-                                              // Back arrow icon
-                                              color: Colors.white,
-                                              size: 18.0,
-                                            ),
-                                            SizedBox(width: 8.0),
-                                            // Spacing between icon and text
-                                            Text(
-                                              'Back',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 14.0,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                        ],
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Screening Camp(s)',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          ScreeningCamp = false;
+                          ScreeningCampOngoing = false;
+                          ScreeningCampComing = false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
+                            ),
+                          ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
+                          ),
+                        ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               SizedBox(width: 8.0),
@@ -9545,74 +9037,65 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Header with Back Button
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  margin: EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        child: Row(
-                          children: [
-                            Icon(Icons.location_on, color: Colors.red),
-                            SizedBox(width: 8),
-                            Text(
-                              'Satellite Centre',
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
+              Container(
+                width: double.infinity, // Full width
+                color: Colors.blue, // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Satellite Centre',
+                        maxLines: 2,
+                        textAlign: TextAlign.left, // Align text to the left
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        print('Back button pressed');
+                        setState(() {
+                          dashboardviewReplace = true;
+                          satelliteCentreShowData = false;
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 6,
+                              offset: Offset(0, 2), // Shadow effect
                             ),
                           ],
-                        ),
-                      ),
-                      SizedBox(width: 10),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            dashboardviewReplace = true;
-                            satelliteCentreShowData = false;
-                          });
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              vertical: 8.0, horizontal: 16.0),
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            // Light red background
-                            borderRadius: BorderRadius.circular(8.0),
-                            // Rounded corners
-                            border: Border.all(
-                                color: Colors.white, width: 1), // White border
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            // Wrap content size
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            // Center the content
-                            children: [
-                              Icon(Icons.arrow_back,
-                                  color: Colors.white, size: 20), // Back icon
-                              SizedBox(width: 8), // Space between icon and text
-                              Text(
-                                'Back',
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
+                          border: Border.all(
+                            color: Colors.white, // White border
+                            width: 1,
                           ),
                         ),
+                        child: Text(
+                          'Back',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-
               // Data Rows with FutureBuilder
               FutureBuilder<List<DataDPMsatteliteCenter>>(
                 future:
