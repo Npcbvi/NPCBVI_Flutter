@@ -104,7 +104,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
   final ImagePicker _picker = ImagePicker();
   final _formKeyhopsitalPersonalDetal = GlobalKey<FormState>();
   String gender = 'Male'; // Default gender
-  var dependencyTypeRadio;
+  String dependencyTypeRadio = "Self"; // Default value set to "Self"
+  bool showSelf = false, Dependent = false;
   int voterIDTypeValue = 0;
   bool showVoterIDField = false,
       showDrivingLicenseField = false,
@@ -112,7 +113,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       showRationCard = false,
       showPanCard = false,
       showNotAvailble = false;
-  bool showSelf = false, Dependent = false;
+
   File _image;
   String _selectedDateText = 'Screening Date'; // Initially set to "From Date"
   String _selectedDateTextToDate = 'Tentative Date';
@@ -1597,6 +1598,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                         _radioButtonRow(
                           options: ['Self', 'Dependent'],
                           groupValue: dependencyTypeRadio,
+
                           onChanged: (value) {
                             setState(() {
                               dependencyTypeRadio = value;
@@ -3346,9 +3348,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     registerationtypeRadioValueinAPi = null;
 
     VoterIDtype = null;
-    dependencyTypeRadio = null;
+   // dependencyTypeRadio = null;
     relationtypeValue = null;
-    gender = null;
+   // gender = null;
     relationtypeValueMobile = null;
     getDissesID = null;
     stateLKanguage = null;
@@ -3787,9 +3789,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           relationFatherController.clear();
           registerationtypeRadioValueinAPi = null;
           VoterIDtype = null;
-          dependencyTypeRadio = null;
+      //    dependencyTypeRadio = null;
           relationtypeValue = null;
-          gender = null;
+         // gender = null;
           relationtypeValueMobile = null;
           getDissesID = null;
           stateLKanguage = null;
@@ -4480,7 +4482,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: EdgeInsets.only(left: 10.0, top: 30.0, right: 10.0),  // Apply left, top, and right margin
+        margin: EdgeInsets.only(left: 12.0, top: 30.0, right: 10.0),  // Apply left, top, and right margin
         padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),  // Custom padding
         child: Row(
           children: [
@@ -4537,6 +4539,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                     style: TextStyle(
                       color: Colors.black, // Text color black
                       fontSize: sharedFontSize,
+                      fontWeight:sharedFontWeight,
                     ),
                   ),
                 ],
@@ -4553,7 +4556,7 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                 style: TextStyle(
                   color: Colors.black, // Text color black for hint
                   fontSize: sharedFontSize,
-                  fontWeight: FontWeight.w500,
+                  fontWeight:sharedFontWeight,
                 ),
               ),
             ],
