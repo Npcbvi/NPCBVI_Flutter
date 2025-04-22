@@ -169,7 +169,7 @@ class _ListGovtCHGPending extends State<ListGovtCHGPending> {
                         Row(
                           children: [
                             _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('NGO Name'),
+                            _buildHeaderCell('Ngo Name'),
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),

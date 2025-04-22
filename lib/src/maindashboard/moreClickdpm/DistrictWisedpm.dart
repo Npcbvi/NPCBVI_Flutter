@@ -150,7 +150,8 @@ class _DistrictWisedpm
                 _buildTableRow("Mobile", offer.mobile.toString()),
                 _buildTableRow("Email", offer.emailId.toString()),
                 _buildTableRow("District Name", offer.districtName.toString()),
-                _buildTableRow("Entry Date", offer.entry_date ?? "null"),
+                _buildTableRow("Entry Date", offer.entry_date ?? "N/A"),
+
               ],
             ),
           ),

@@ -171,7 +171,7 @@ class _ListPrivatePractionriesPending extends State<ListPrivatePractionriesPendi
                         Row(
                           children: [
                             _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('NGO Name'),
+                            _buildHeaderCell('Ngo Name'),
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),

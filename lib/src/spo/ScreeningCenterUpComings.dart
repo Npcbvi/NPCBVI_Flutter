@@ -185,7 +185,7 @@ class _ScreeningCenterUpComings extends State<ScreeningCenterUpComings> {
                       Row(
                         children: [
                           _buildHeaderCellSrNo('S.No.'),
-                          _buildHeaderCell('NGO Name'),
+                          _buildHeaderCell('Ngo Name'),
                           _buildHeaderCellDashboardsAction('Action'),
                         ],
                       ),

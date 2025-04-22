@@ -170,7 +170,7 @@ class _ListPrivatePractionriesApproval extends State<ListPrivatePractionriesAppr
                         Row(
                           children: [
                             _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('NGO Name'),
+                            _buildHeaderCell('Ngo Name'),
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),

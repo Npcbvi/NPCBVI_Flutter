@@ -132,7 +132,7 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
                           mainAxisAlignment: MainAxisAlignment.start, // Ensure items align to the left
                           children: [
                             _buildHeaderCellSrNo('S.No.'),
-                            _buildHeaderCell('NGO Name'),
+                            _buildHeaderCell('Ngo Name'),
                             _buildHeaderCellDashboardsAction('Action'),
                           ],
                         ),
@@ -182,7 +182,7 @@ class _ListNGOApprovalWidget extends State<ListNGOApprovalWidget> {
                 1: FlexColumnWidth(3), // Second column (values) takes more space
               },
               children: [
-                _buildTableRow('NGO Name', offer.name),
+                _buildTableRow('Ngo Name', offer.name),
                 _buildTableRow('Member Name', offer.memberName),
                 _buildTableRow('Hospital Name', offer.hName),
                 _buildTableRow('Address', offer.address),

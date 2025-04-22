@@ -131,7 +131,7 @@ class _SpoDataListclickMore extends State<SpoDataListclickMore> {
                 _buildTableRow("Address", offer.officeAddress),
                 _buildTableRow("Mobile", offer.mobile.toString()),
                 _buildTableRow("Email", offer.emailId.toString()),
-                _buildTableRow("Entry Date", offer.entry_date ?? "null"),
+                _buildTableRow("Entry Date", offer.entry_date ?? "N/A"),
 
               ],
             ),

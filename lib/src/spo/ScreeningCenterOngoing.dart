@@ -178,7 +178,7 @@ class _ScreeningCenterOngoing extends State<ScreeningCenterOngoing> {
                       Row(
                         children: [
                           _buildHeaderCellSrNo('S.No.'),
-                          _buildHeaderCell('NGO Name'),
+                          _buildHeaderCell('Ngo Name'),
                           _buildHeaderCellDashboardsAction('Action'),
                         ],
                       ),

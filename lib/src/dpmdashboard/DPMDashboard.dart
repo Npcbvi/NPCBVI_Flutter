@@ -197,8 +197,9 @@ class _DPMDashboard extends State<DPMDashboard> {
       TextEditingController();
   TextEditingController _controllerNumberoffreeGlasses =
       TextEditingController();
+
   String getfyid;
-  var month_id;
+  String month_id;
   bool LowVisionRegisterCatracts = false;
   bool patinetInnerPandingDataDisplay = false;
   String LowVisionRegisterDataShowsValue;
@@ -260,6 +261,9 @@ class _DPMDashboard extends State<DPMDashboard> {
   final TextEditingController _addressController = TextEditingController();
   int trained_teachers, child_screens, child_detects, freeglasss;
   Future<List<DataGetDPM_NGOAPProved_pending>> _futureData;
+  double sharedFontSize = 14.0;
+  Color sharedFontColor = Colors.black;
+  FontWeight sharedFontWeight = FontWeight.normal;
 
   @override
   void initState() {
@@ -957,58 +961,33 @@ class _DPMDashboard extends State<DPMDashboard> {
                     }
                   },
                 ),*/
-                DropdownButtonHideUnderline(
-                  // ✅ Hide the grey underline
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                    child: DropdownButton<String>(
-                      key: _dropdownKeyApplications,
-                      value: _chhoseApplication,
-                      hint: Row(
-                        children: [
-                          Icon(Icons.local_hospital, color: Colors.black),
-                          SizedBox(width: 6),
-                          Text('Application'),
-                        ],
-                      ),
-                      isExpanded: true,
-                      icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
-                      // Dropdown arrow
-                      items: [
-                        {
-                          'value': 'NGOs/Private/Govt/Other',
-                          'icon': Icons.healing
-                        },
-                        {'value': 'Eye Bank', 'icon': Icons.visibility},
-                        {'value': 'Eye Donation', 'icon': Icons.favorite},
-                      ].map((item) {
-                        return DropdownMenuItem<String>(
-                          value: item['value'],
-                          child: Row(
-                            children: [
-                              Icon(item['icon'], color: Colors.blue),
-                              SizedBox(width: 6),
-                              Text(item['value']),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (String value) {
-                        if (value == null) return;
 
-                        setState(() {
-                          _chhoseApplication = value;
-                        });
+                _buildDropdownItem(
+                  key: _dropdownKeyApplications,
+                  value: _chhoseApplication,
+                  hint: 'Application',
+                  hintIcon: Icon(Icons.local_hospital,
+                      color: Colors.black, size: sharedFontSize),
+                  items: [
+                    {'value': 'NGOs/Private/Govt/Other', 'icon': Icons.healing},
+                    {'value': 'Eye Bank', 'icon': Icons.visibility},
+                    {'value': 'Eye Donation', 'icon': Icons.favorite},
+                  ],
+                  onChanged: (String value) {
+                    if (value == null) return;
 
-                        if (_chhoseApplication == "NGOs/Private/Govt/Other") {
-                          Future.delayed(Duration(milliseconds: 30), () {
-                            _showPopupMenuNGOsPrivateGovtApplications();
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ),
+                    setState(() {
+                      _chhoseApplication = value;
+                    });
+
+                    if (value == "NGOs/Private/Govt/Other") {
+                      Future.delayed(Duration(milliseconds: 30), () {
+                        _showPopupMenuNGOsPrivateGovtApplications();
+                      });
+                    }
+                  },
+                )
+
                 /* _buildMenuItem(
                   icon: Icons.read_more,
                   title: 'Reports',
@@ -3473,7 +3452,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
               SizedBox(width: 5.0),
               Container(
-                margin:EdgeInsets.fromLTRB(5, 5, 5, 0),
+                margin: EdgeInsets.fromLTRB(5, 5, 5, 0),
                 child: DropdownButtonFormField2<String>(
                   value: ngoApproveRevenuMOU,
                   isExpanded: true,
@@ -3489,7 +3468,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       borderSide: BorderSide(
                           color: Colors.grey,
                           width:
-                          1.0), // Optional: Sets the border color and width
+                              1.0), // Optional: Sets the border color and width
                     ),
                   ),
                   iconStyleData: const IconStyleData(
@@ -3514,8 +3493,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                       child: Text(
                         ngoApproveRevenueMOUs,
                         style: const TextStyle(color: Colors.black),
-                        overflow: TextOverflow.ellipsis, // ✅ truncates with ellipsis
-                        maxLines: 1,                     // ✅ keeps text in one line
+                        overflow: TextOverflow.ellipsis,
+                        // ✅ truncates with ellipsis
+                        maxLines: 1, // ✅ keeps text in one line
                       ),
                     );
                   }).toList(),
@@ -3548,8 +3528,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
               SizedBox(width: 5.0),
               Container(
-                margin:EdgeInsets.fromLTRB(5, 5, 5, 0),
-
+                margin: EdgeInsets.fromLTRB(5, 5, 5, 0),
                 child: DropdownButtonFormField2<String>(
                   value: ngodependOrganbisatioSelectValue,
                   isExpanded: true,
@@ -3565,7 +3544,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       borderSide: BorderSide(
                           color: Colors.grey,
                           width:
-                          1.0), // Optional: Sets the border color and width
+                              1.0), // Optional: Sets the border color and width
                     ),
                   ),
                   iconStyleData: const IconStyleData(
@@ -5595,9 +5574,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                       // Ensure the selected user is valid and in the list
                       if (_selectedUser == null ||
                           !list.contains(_selectedUser)) {
-                        _selectedUser = null; // Remove default selection
+                        _selectedUser = list.first;
+                        getfyid = _selectedUser?.fyid ?? 0;
+                        print(
+                            '@@_selectedUser set by default to: ${_selectedUser?.name}');
+                        print('@@getfyid__1__First time Get: $getfyid');
                       }
+                      // ✅ Insert hint at top
 
+                      /* if (_selectedUser == null || !list.contains(_selectedUser)) {
+                        _selectedUser = list.first;
+                        print('@@_selectedUserDistrict--' + _selectedUser.toString());
+                        getfyid = int.parse(_selectedUser.fyid.toString() ?? "0");
+                        print('@@getfyid__1' + getfyid);
+                      }*/
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
                         child:
@@ -5609,9 +5599,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           onChanged: (userc) {
                             setState(() {
                               _selectedUser = userc;
-                              var getYear = int.parse(
-                                  userc?.name.replaceAll(RegExp(r'\D'), '') ??
-                                      '0');
+                              var getYear = int.parse(userc?.name);
                               getfyid = userc?.fyid ?? 0;
                               print('@@getYear--$getYear');
                               print('@@getfyidSelected here----$getfyid');
@@ -5692,7 +5680,13 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       if (_selectedUserMonth == null ||
                           !list.contains(_selectedUserMonth)) {
-                        _selectedUserMonth = null; // Remove default selection
+                        //   _selectedUserMonth = null; // Remove default selection
+                        _selectedUserMonth = list.first;
+                        month_id =
+                            (_selectedUserMonth?.monthId ?? 0).toString();
+                        print(
+                            '@@_selectedUser set by default to: ${_selectedUserMonth?.monthId}');
+                        print('@@getfyid__1__First time Get: $month_id');
                       }
 
                       return Padding(
@@ -6601,7 +6595,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             Utils.showToast(
                                                 "Next Sprint Report", true);
 
-                                           /*    Navigator.push(
+                                            /*    Navigator.push(
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
@@ -6775,7 +6769,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           child: Column(
             children: [
               // Header Section
-             /* Container(
+              /* Container(
                 color: Colors.white70,
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -6840,11 +6834,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                 ),
               ),*/
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -6869,7 +6867,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -6934,7 +6933,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                             Row(
                               children: [
                                 _buildHeaderCellSrNo('S.No.'),
-                                _buildHeaderCell('NGO Name'),
+                                _buildHeaderCell('Ngo Name'),
                                 _buildHeaderCellDiseaseDataAction('Action'),
                               ],
                             ),
@@ -7133,7 +7132,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 1: FlexColumnWidth(),
               },
               children: [
-                _buildTableRow("NGO Name", offer.name),
+                _buildTableRow("Ngo Name", offer.name),
                 _buildTableRow("Member Name", offer.memberName),
                 _buildTableRow("Hospital Name", offer.hName),
                 _buildTableRow("Address", offer.address),
@@ -7166,11 +7165,15 @@ class _DPMDashboard extends State<DPMDashboard> {
               // Header Section (Always Visible)
 
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -7195,7 +7198,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -7265,7 +7269,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               _buildHeaderCell('NGO Name'),
                               _buildHeaderCell('Action'),*/
                               _buildHeaderCellSrNo('S.No.'),
-                              _buildHeaderCell('NGO Name'),
+                              _buildHeaderCell('Ngo Name'),
                               _buildHeaderCellDiseaseDataAction('Action'),
                             ],
                           ),
@@ -7318,7 +7322,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 1: FlexColumnWidth(),
               },
               children: [
-                _buildTableRow("NGO Name", offer.name),
+                _buildTableRow("Ngo Name", offer.name),
                 _buildTableRow("Member Name", offer.memberName),
                 _buildTableRow("Hospital Name", offer.hName),
                 _buildTableRow("Address", offer.address),
@@ -7350,11 +7354,15 @@ class _DPMDashboard extends State<DPMDashboard> {
             children: [
               // Header Section
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -7379,7 +7387,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -7507,8 +7516,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     _buildTableHeader("Detail"),
                   ],
                 ),
-                _buildTableRow("Organization Name", offer.oName),
-                _buildTableRow("NGO Name", offer.ngoName),
+                _buildTableRow("Organisation Name", offer.oName),
+                _buildTableRow("Ngo Name", offer.ngoName),
                 _buildTableRow("Address", offer.address),
                 _buildTableRow("Nodal Officer", offer.nodalOfficerName),
                 _buildTableRow("Mobile", offer.mobile.toString()),
@@ -7543,12 +7552,16 @@ class _DPMDashboard extends State<DPMDashboard> {
         // Header Section
         Visibility(
           visible: GetDPM_GH_PendingClickShowData,
-          child:  Container(
-            width: double.infinity, // Full width
-            color: Colors.blue, // Background color
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+          child: Container(
+            width: double.infinity,
+            // Full width
+            color: Colors.blue,
+            // Background color
+            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            // Padding for spacing
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              // Space between text and button
               children: [
                 Expanded(
                   child: Text(
@@ -7573,7 +7586,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     });
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    padding:
+                        EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -7692,8 +7706,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                     _buildTableHeader("Detail"),
                   ],
                 ),
-                _buildTableRow("Organization Name", offer.oName),
-                _buildTableRow("NGO Name", offer.ngoName),
+                _buildTableRow("Organisation Name", offer.oName),
+                _buildTableRow("Ngo Name", offer.ngoName),
                 _buildTableRow("Address", offer.address),
                 _buildTableRow("Nodal Officer", offer.nodalOfficerName),
                 _buildTableRow("Mobile", offer.mobile.toString()),
@@ -7725,11 +7739,15 @@ class _DPMDashboard extends State<DPMDashboard> {
               // Horizontal Scrolling Header Row
 
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -7749,14 +7767,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                         print('Back button pressed');
                         setState(() {
                           dashboardviewReplace = true;
-                          GetDPM_PrivatePartitionPorovedClickShowData =
-                          false;
-                          DPM_PrivatePartitionP_PendingClickShowData =
-                          false;
+                          GetDPM_PrivatePartitionPorovedClickShowData = false;
+                          DPM_PrivatePartitionP_PendingClickShowData = false;
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -7823,7 +7840,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                           Row(
                             children: [
                               _buildHeaderCellSrNo('S.No.'),
-                              _buildHeaderCell('NGO Name'),
+                              _buildHeaderCell('Ngo Name'),
                               _buildHeaderCellDiseaseDataAction('Action'),
                             ],
                           ),
@@ -7880,7 +7897,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     _buildTableHeader("Detail"),
                   ],
                 ),
-                _buildTableRow("Organization Name", offer.oName),
+                _buildTableRow("Organisation Name", offer.oName),
                 _buildTableRow("Nodal Officer", offer.nodalOfficerName),
                 _buildTableRow("Address", offer.address),
                 _buildTableRow("Mobile", offer.mobile.toString()),
@@ -7909,11 +7926,15 @@ class _DPMDashboard extends State<DPMDashboard> {
             children: [
               // Horizontal Scrolling Header Row
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -7933,14 +7954,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                         print('Back button pressed');
                         setState(() {
                           dashboardviewReplace = true;
-                          GetDPM_PrivatePartitionPorovedClickShowData =
-                          false;
-                          DPM_PrivatePartitionP_PendingClickShowData =
-                          false;
+                          GetDPM_PrivatePartitionPorovedClickShowData = false;
+                          DPM_PrivatePartitionP_PendingClickShowData = false;
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -8064,7 +8084,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     _buildTableHeader("Detail"),
                   ],
                 ),
-                _buildTableRow("Organization Name", offer.oName),
+                _buildTableRow("Organisation Name", offer.oName),
                 _buildTableRow("Nodal Officer", offer.nodalOfficerName),
                 _buildTableRow("Address", offer.address),
                 _buildTableRow("Mobile", offer.mobile.toString()),
@@ -8094,11 +8114,15 @@ class _DPMDashboard extends State<DPMDashboard> {
             children: [
               // Horizontal Scrolling Header Row
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -8119,14 +8143,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                         print('Back button pressed');
                         setState(() {
                           dashboardviewReplace = true;
-                          DPM_privateMEdicalCollegeApprovedData =
-                          false;
-                          DPM_privateMEdicalCollegePendingData =
-                          false;
+                          DPM_privateMEdicalCollegeApprovedData = false;
+                          DPM_privateMEdicalCollegePendingData = false;
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -8276,11 +8299,15 @@ class _DPMDashboard extends State<DPMDashboard> {
             children: [
               // Horizontal Scrolling Header Row
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -8301,14 +8328,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                         print('Back button pressed');
                         setState(() {
                           dashboardviewReplace = true;
-                          DPM_privateMEdicalCollegeApprovedData =
-                          false;
-                          DPM_privateMEdicalCollegePendingData =
-                          false;
+                          DPM_privateMEdicalCollegeApprovedData = false;
+                          DPM_privateMEdicalCollegePendingData = false;
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -8460,11 +8486,15 @@ class _DPMDashboard extends State<DPMDashboard> {
             children: [
               // Horizontal Scrolling Header Row
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -8490,7 +8520,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -8617,7 +8648,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               border: TableBorder.all(color: Colors.black, width: 0.5),
               children: [
                 _buildTableRow('Camp Name:', offer.campname),
-                _buildTableRow('NGO Name:', offer.ngoName),
+                _buildTableRow('Ngo Name:', offer.ngoName),
                 _buildTableRow('Address:', offer.address),
                 _buildTableRow('Start Date:',
                     Utils.formatDateString(offer.startDate.toString())),
@@ -8656,11 +8687,15 @@ class _DPMDashboard extends State<DPMDashboard> {
             children: [
               // Horizontal Scrolling Header Row
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -8686,7 +8721,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -8814,7 +8850,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               },
               children: [
                 _buildTableRow('Camp Name', offer.campname),
-                _buildTableRow('NGO Name', offer.ngoName),
+                _buildTableRow('Ngo Name', offer.ngoName),
                 _buildTableRow('Address', offer.address),
                 _buildTableRow('Mobile', offer.mobile.toString()),
                 _buildTableRow('Email', offer.emailId.toString()),
@@ -8846,11 +8882,15 @@ class _DPMDashboard extends State<DPMDashboard> {
             children: [
               // Horizontal Scrolling Header Row
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -8876,7 +8916,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -8981,11 +9022,8 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-
-
-
-    void _showDetailDialogScreeningCampsComingd(
-      BuildContext context, DataDPMScreeningCamp  offer) {
+  void _showDetailDialogScreeningCampsComingd(
+      BuildContext context, DataDPMScreeningCamp offer) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -9003,7 +9041,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               },
               children: [
                 _buildTableRow('Camp Name', offer.campname),
-                _buildTableRow('NGO Name', offer.ngoName),
+                _buildTableRow('Ngo Name', offer.ngoName),
                 _buildTableRow('Address', offer.address),
                 _buildTableRow('Mobile', offer.mobile.toString()),
                 _buildTableRow('Email', offer.emailId.toString()),
@@ -9026,8 +9064,6 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-
-
   /// here we are showing the SatelliteCentre Data aon DPm Dashboard.
   Widget DPM_SatelliteCentreDisplayDatas() {
     return Column(
@@ -9038,11 +9074,15 @@ class _DPMDashboard extends State<DPMDashboard> {
             children: [
               // Header with Back Button
               Container(
-                width: double.infinity, // Full width
-                color: Colors.blue, // Background color
-                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12), // Padding for spacing
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween, // Space between text and button
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
                   children: [
                     Expanded(
                       child: Text(
@@ -9066,7 +9106,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         });
                       },
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                        padding: EdgeInsets.symmetric(
+                            vertical: 8.0, horizontal: 16.0),
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
@@ -10141,13 +10182,16 @@ class _DPMDashboard extends State<DPMDashboard> {
     });
   }*/
   Future<void> _SchoolEyeScreening_RegistrationADDnewRecord() async {
-    print('@@I am clicking here--1');
+    print('@@I am clicking here--1__10121');
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
-
+    print('@@I am clicking here--1__10121' + schoolidSaved);
     _getSchoolEyeScreening_Registrations.yearid = int.tryParse(getfyid) ?? 0;
-    _getSchoolEyeScreening_Registrations.monthid = int.tryParse(month_id) ?? 0;
+    print('@@Year ID: ${_getSchoolEyeScreening_Registrations.yearid}');
+
+    _getSchoolEyeScreening_Registrations.monthid = 1; // static pass here now
+    print('@@Month ID: ${_getSchoolEyeScreening_Registrations.monthid}');
     _getSchoolEyeScreening_Registrations.entry_by = userId;
     _getSchoolEyeScreening_Registrations.status = 1; // for update
     _getSchoolEyeScreening_Registrations.school_name =
@@ -10182,7 +10226,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     print('@@I am clicking here--20');
 
     // Validation checks for empty text fields
-    /* if (_getSchoolEyeScreening_Registrations.school_name.isEmpty) {
+    if (_getSchoolEyeScreening_Registrations.school_name.isEmpty) {
       Utils.showToast("Please enter School Name!", false);
       return;
     }
@@ -10194,24 +10238,30 @@ class _DPMDashboard extends State<DPMDashboard> {
       Utils.showToast("Please enter Name of Principal!", false);
       return;
     }
-*/
+
     // Validation for numerical inputs
-    /* if (trained_teachers <= 0) {
-      Utils.showToast("Please enter a valid number for Trained teachers!", false);
+    if (trained_teachers <= 0) {
+      Utils.showToast(
+          "Please enter a valid number for Trained teachers!", false);
       return;
     }
     if (child_screens <= 0) {
-      Utils.showToast("Please enter a valid number for Number of children screened!", false);
+      Utils.showToast(
+          "Please enter a valid number for Number of children screened!",
+          false);
       return;
     }
     if (child_detects <= 0) {
-      Utils.showToast("Please enter a valid number for Children detected with Refractive Errors!", false);
+      Utils.showToast(
+          "Please enter a valid number for Children detected with Refractive Errors!",
+          false);
       return;
     }
     if (freeglasss <= 0) {
-      Utils.showToast("Please enter a valid number for Number of free Glasses!", false);
+      Utils.showToast(
+          "Please enter a valid number for Number of free Glasses!", false);
       return;
-    }*/
+    }
 
     // Check for network availability before sending data
     Utils.isNetworkAvailable().then((isNetworkAvailable) async {
@@ -10557,7 +10607,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               SizedBox(height: 5.0),
               if (lowVisionDataValue == 5)
                 Container(
-                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrgan>>(
                     future: _futureBindOrgan,
                     builder: (context, snapshot) {
@@ -10575,50 +10625,71 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       List<DataBindOrgan> list = snapshot.data ?? [];
 
+                      // ✅ Set default selected item
                       if (_selectBindOrgniasation == null ||
                           !list.contains(_selectBindOrgniasation)) {
                         _selectBindOrgniasation =
                             list.isNotEmpty ? list.first : null;
                       }
 
-                      return Container(
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 0, vertical: 8), // ✅ Added margin
-                        width: double.infinity, // ✅ Takes full width safely
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          border: Border.all(color: Colors.grey, width: 1.0),
-                          color: Colors.white,
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2<DataBindOrgan>(
-                            isExpanded: true,
-                            // ✅ Ensures dropdown doesn't overflow
-                            onChanged: (userbindOrgan) {
-                              setState(() {
-                                _selectBindOrgniasation = userbindOrgan;
-                                bindOrganisationNAme =
-                                    userbindOrgan?.name ?? '';
-                                npcbNoCatract = userbindOrgan?.npcbNo ?? '';
-                              });
-                            },
-                            value: _selectBindOrgniasation,
-                            items: list.map((userbindorgansa) {
-                              return DropdownMenuItem<DataBindOrgan>(
-                                value: userbindorgansa,
-                                child: Text(
-                                  userbindorgansa.name,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(fontSize: 16),
-                                ),
-                              );
-                            }).toList(),
-                            iconStyleData: IconStyleData(
-                              icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.black),
-                              iconSize: 30,
-                            ),
+                      return DropdownButtonFormField2<DataBindOrgan>(
+                        isExpanded: true,
+                        value: _selectBindOrgniasation,
+                        decoration: InputDecoration(
+                          isDense: true,
+                          contentPadding: EdgeInsets.zero,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
+                        ),
+                        hint: const Text(
+                          'Select Organization',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                        items: list.map((item) {
+                          return DropdownMenuItem<DataBindOrgan>(
+                            value: item,
+                            child: Text(
+                              item.name,
+                              style: const TextStyle(fontSize: 16),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (userbindOrgan) {
+                          setState(() {
+                            _selectBindOrgniasation = userbindOrgan;
+                            bindOrganisationNAme = userbindOrgan?.name ?? '';
+                            npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                          });
+                        },
+                        buttonStyleData: ButtonStyleData(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.grey),
+                            color: Colors.white,
+                          ),
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 300,
+                          width: 300,
+                          offset: const Offset(0, -3),
+                          // ✅ Adjust dropdown position here
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                        ),
+                        iconStyleData: const IconStyleData(
+                          icon:
+                              Icon(Icons.arrow_drop_down, color: Colors.black),
+                          iconSize: 30,
+                        ),
+                        menuItemStyleData: MenuItemStyleData(
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.blue[100]),
                         ),
                       );
                     },
@@ -10662,7 +10733,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   items: [],
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 5.0),
+                                        vertical: 10.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
                                           color: Colors.grey, width: 1.0),
@@ -10720,11 +10791,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 }).toList(),
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 5.0),
+                                      vertical: 10.0, horizontal: 10.0),
                                   focusedBorder: OutlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Colors.grey, width: 1.0),
-                                    // Change color
                                     borderRadius: BorderRadius.circular(10.0),
                                   ),
                                   enabledBorder: OutlineInputBorder(
@@ -10740,6 +10810,25 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   icon: Icon(Icons.arrow_drop_down,
                                       color: Colors.black),
                                 ),
+
+                                /// 👇 Add this block to control dropdown position & styling
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 300,
+                                  width: 300,
+                                  offset: const Offset(0, 5),
+                                  // ⬇️ Moves dropdown 5px down
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -10750,7 +10839,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 )
               else if (lowVisionDataValue == 13)
                 Container(
-                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -10762,50 +10851,43 @@ class _DPMDashboard extends State<DPMDashboard> {
                         return const CircularProgressIndicator();
                       }
 
-                      // Ensure list is not null
                       List<DataBindOrganValuebiggerFive> list =
                           snapshot.data ?? [];
 
                       if (list.isEmpty) {
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
-                          child: Column(
-                            children: [
-                              const Text(
-                                'No data found',
-                                style:
-                                    TextStyle(fontSize: 18, color: Colors.red),
-                              ),
-                              DropdownButtonFormField<
-                                  DataBindOrganValuebiggerFive>(
-                                onChanged: null,
-                                // Disabled
-                                items: [],
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.grey, width: 1.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.white,
+                        return Column(
+                          children: [
+                            const Text(
+                              'No data found',
+                              style: TextStyle(fontSize: 18, color: Colors.red),
+                            ),
+                            DropdownButtonFormField2<
+                                DataBindOrganValuebiggerFive>(
+                              onChanged: null,
+                              items: [],
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 15.0, horizontal: 10.0),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
                                 ),
-                                hint: const Text('No items available'),
-                                disabledHint: const Text('No items to select'),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
                               ),
-                            ],
-                          ),
+                              hint: const Text('No items available'),
+                              disabledHint: const Text('No items to select'),
+                            ),
+                          ],
                         );
                       }
 
-                      // Ensure selected item exists and update using setState inside addPostFrameCallback
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         if (_selectBindOrgniasationBiggerFive == null ||
                             !list.contains(_selectBindOrgniasationBiggerFive)) {
@@ -10815,86 +10897,95 @@ class _DPMDashboard extends State<DPMDashboard> {
                         }
                       });
 
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
-                        child: SingleChildScrollView(
-                          // ✅ Prevent overflow
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Select Organisation Type',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 8),
-                              // ✅ Adds spacing before dropdown
-                              SizedBox(
-                                height: 50, // ✅ Fixed height
-                                width: 400, // ✅ Fixed width
-                                child: DropdownButtonFormField<
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'Select Organisation Type',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          SizedBox(
+                            height: 50,
+                            width: 400,
+                            child: DropdownButtonFormField2<
+                                DataBindOrganValuebiggerFive>(
+                              isExpanded: true,
+                              value: _selectBindOrgniasationBiggerFive,
+                              onChanged: (userbindOrgan) {
+                                setState(() {
+                                  _selectBindOrgniasationBiggerFive =
+                                      userbindOrgan;
+                                  bindOrganisationNAme =
+                                      userbindOrgan?.oName ?? '';
+                                  npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                                });
+                              },
+                              items: list.map((userbindorgansa) {
+                                return DropdownMenuItem<
                                     DataBindOrganValuebiggerFive>(
-                                  value: _selectBindOrgniasationBiggerFive,
-                                  onChanged: (userbindOrgan) {
-                                    setState(() {
-                                      _selectBindOrgniasationBiggerFive =
-                                          userbindOrgan;
-                                      bindOrganisationNAme =
-                                          userbindOrgan?.oName ?? '';
-                                      npcbNoCatract =
-                                          userbindOrgan?.npcbNo ?? '';
-                                    });
-                                  },
-                                  items: list.map((userbindorgansa) {
-                                    return DropdownMenuItem<
-                                        DataBindOrganValuebiggerFive>(
-                                      value: userbindorgansa,
-                                      child: ConstrainedBox(
-                                        // ✅ Constrain Text width
-                                        constraints: BoxConstraints(
-                                            maxWidth: 200), // Adjust width
-                                        child: Text(
-                                          userbindorgansa.oName,
-                                          softWrap: false,
-                                          // ✅ Prevents wrapping
-                                          overflow: TextOverflow.ellipsis,
-                                          // ✅ Adds '...' if too long
-                                          style: TextStyle(fontSize: 16),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 5.0),
-                                    // ✅ Removes blue border when focused
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      // Change color
-                                      borderRadius: BorderRadius.circular(10.0),
+                                  value: userbindorgansa,
+                                  child: ConstrainedBox(
+                                    constraints:
+                                        const BoxConstraints(maxWidth: 200),
+                                    child: Text(
+                                      userbindorgansa.oName,
+                                      softWrap: false,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(fontSize: 16),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.white,
                                   ),
-                                  dropdownColor: Colors.white,
-                                  style: TextStyle(color: Colors.black),
-                                  icon: Icon(Icons.arrow_drop_down,
-                                      color: Colors.black),
+                                );
+                              }).toList(),
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 15, horizontal: 5),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
+                              ),
+                              buttonStyleData: ButtonStyleData(
+                                height: 50,
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 300,
+                                width: 300,
+                                offset: const Offset(0, -3),
+                                // 👈 Adjust dropdown position
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                            ],
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Colors.black),
+                                iconSize: 30,
+                              ),
+                              menuItemStyleData: MenuItemStyleData(
+                                overlayColor:
+                                    MaterialStateProperty.all(Colors.blue[100]),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       );
                     },
                   ),
                 ),
+
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -11038,7 +11129,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                       "Operated On",
                                                       Utils.formatDateString(
                                                           offer.operatedOn)),
-                                                  _buildDataRow("NGO Name",
+                                                  _buildDataRow("Ngo Name",
                                                       offer.ngoName.toString()),
                                                 ],
                                               ),
@@ -11992,7 +12083,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                                   offer
                                                                       .operatedOn)),
                                                           _buildDataRow(
-                                                              "NGO Name",
+                                                              "Ngo Name",
                                                               offer.ngoName
                                                                   .toString()),
                                                         ],
@@ -12151,7 +12242,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // ✅ Prevents overflow
                                 decoration: InputDecoration(
                                   contentPadding: const EdgeInsets.symmetric(
-                                      vertical: 10.0, horizontal: 5.0),
+                                      vertical: 10.0, horizontal: 10.0),
                                   // ✅ Better spacing
                                   enabledBorder: OutlineInputBorder(
                                     borderSide: const BorderSide(
@@ -12237,7 +12328,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         fillColor: Colors.white,
                         // ✅ Background color
                         contentPadding: const EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 5.0),
+                            vertical: 10.0, horizontal: 10.0),
                         enabledBorder: OutlineInputBorder(
                           borderSide:
                               const BorderSide(color: Colors.grey, width: 1.0),
@@ -12841,171 +12932,111 @@ class _DPMDashboard extends State<DPMDashboard> {
               if (lowvisionDiabiticDataDispla)
                 Column(
                   children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        children: [
-                          // Header Row
-                          Row(
-                            children: [
-                              _buildHeaderCellSrNoDiseaseData('S.No.', context),
-                              _buildHeaderCell('Patient Id'),
-                              _buildHeaderCellNGOAction('Action'),
-                            ],
-                          ),
-
-                          // Data Rows
-                          FutureBuilder<List<Datalowvisonregister_diabitic>>(
-                            future: ApiController.getDPM_Daiabetic(
-                              district_code_login,
-                              state_code_login,
-                              npcbNoDiabitic,
-                              getYearDiabitic,
-                              lowVisionDataValue,
+                    FutureBuilder<List<Datalowvisonregister_diabitic>>(
+                      future: ApiController.getDPM_Daiabetic(
+                        district_code_login,
+                        state_code_login,
+                        npcbNoDiabitic,
+                        getYearDiabitic,
+                        lowVisionDataValue,
+                      ),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Container(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Text(
+                              "No data found",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
                             ),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else if (snapshot.hasError) {
-                                return Utils.getEmptyView(
-                                    "Error: ${snapshot.error}");
-                              } else if (!snapshot.hasData ||
-                                  snapshot.data.isEmpty) {
-                                return Container(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Text(
-                                    "No data found",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                List<Datalowvisonregister_diabitic> ddata =
-                                    snapshot.data;
+                          );
+                        } else {
+                          List<Datalowvisonregister_diabitic> ddata = snapshot.data;
 
-                                print('@@---ddata: ' +
-                                    lowVisionDataValue.toString());
-                                return SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Column(
-                                    children: ddata.map((offer) {
-                                      return Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          _buildDataCellSrNoDiseaseData(
-                                              (ddata.indexOf(offer) + 1)
-                                                  .toString()),
-                                          _buildDataCell(offer.pUniqueID),
-                                          /*   _buildDataCell(offer.name),
-                                          _buildDataCell(
-                                              offer.mobile.toString()),
-                                          _buildDataCell(Utils.formatDateString(
-                                              offer.dob)),
-                                          _buildDataCell(offer.gender),
-                                          _buildDataCell(offer.addressLine1),
-                                          _buildDataCell(Utils.formatDateString(
-                                              offer.operatedOn)),
-                                          _buildDataCell(
-                                              offer.ngoName.toString()),*/
-                                          _buildDataCellViewBlue("View", () {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title:
-                                                      Text("Patient Details"),
-                                                  content:
-                                                      SingleChildScrollView(
-                                                    child: DataTable(
-                                                      border: TableBorder.all(
-                                                          color: Colors.blue),
-                                                      columns: [
-                                                        DataColumn(
-                                                          label: Text(
-                                                            'Field',
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ),
-                                                        DataColumn(
-                                                          label: Text(
-                                                            'Value',
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                      rows: [
-                                                        _buildDataRow(
-                                                            "Sr. No.",
-                                                            (ddata.indexOf(
-                                                                        offer) +
-                                                                    1)
-                                                                .toString()),
-                                                        _buildDataRow(
-                                                            "Unique ID",
-                                                            offer.pUniqueID),
-                                                        _buildDataRow(
-                                                            "Name", offer.name),
-                                                        _buildDataRow(
-                                                            "Mobile",
-                                                            offer.mobile
-                                                                .toString()),
-                                                        _buildDataRow(
-                                                            "DOB",
-                                                            Utils
-                                                                .formatDateString(
-                                                                    offer.dob)),
-                                                        _buildDataRow("Gender",
-                                                            offer.gender),
-                                                        _buildDataRow("Address",
-                                                            offer.addressLine1),
-                                                        _buildDataRow(
-                                                            "Operated On",
-                                                            Utils.formatDateString(
-                                                                offer
-                                                                    .operatedOn)),
-                                                        _buildDataRow(
-                                                            "NGO Name",
-                                                            offer.ngoName
-                                                                .toString()),
-                                                      ],
+                          return SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Column(
+                              children: [
+                                // Display headers only when data is available
+                                Row(
+                                  children: [
+                                    _buildHeaderCellSrNoDiseaseData('S.No.', context),
+                                    _buildHeaderCell('Patient Id'),
+                                    _buildHeaderCellNGOAction('Action'),
+                                  ],
+                                ),
+                                // Display data rows
+                                ...ddata.map((offer) {
+                                  return Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      _buildDataCellSrNoDiseaseData((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCell(offer.pUniqueID),
+                                      _buildDataCellViewBlue("View", () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text("Patient Details"),
+                                              content: SingleChildScrollView(
+                                                child: DataTable(
+                                                  border: TableBorder.all(color: Colors.blue),
+                                                  columns: [
+                                                    DataColumn(
+                                                      label: Text(
+                                                        'Field',
+                                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                                      ),
                                                     ),
-                                                  ),
-                                                  actions: [
-                                                    TextButton(
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop(); // Close the dialog
-                                                      },
-                                                      child: Text("Close"),
+                                                    DataColumn(
+                                                      label: Text(
+                                                        'Value',
+                                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                                      ),
                                                     ),
                                                   ],
-                                                );
-                                              },
+                                                  rows: [
+                                                    _buildDataRow("Sr. No.", (ddata.indexOf(offer) + 1).toString()),
+                                                    _buildDataRow("Unique ID", offer.pUniqueID),
+                                                    _buildDataRow("Name", offer.name),
+                                                    _buildDataRow("Mobile", offer.mobile.toString()),
+                                                    _buildDataRow("DOB", Utils.formatDateString(offer.dob)),
+                                                    _buildDataRow("Gender", offer.gender),
+                                                    _buildDataRow("Address", offer.addressLine1),
+                                                    _buildDataRow("Operated On", Utils.formatDateString(offer.operatedOn)),
+                                                    _buildDataRow("Ngo Name", offer.ngoName.toString()),
+                                                  ],
+                                                ),
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop(); // Close the dialog
+                                                  },
+                                                  child: Text("Close"),
+                                                ),
+                                              ],
                                             );
-                                          }),
-                                        ],
-                                      );
-                                    }).toList(),
-                                  ),
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
+                                          },
+                                        );
+                                      }),
+                                    ],
+                                  );
+                                }).toList(),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                    )
+
                   ],
                 ),
             ],
@@ -13629,7 +13660,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 )
               else if (lowVisionDataValue == 0)
                 Container(
-                  margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -14101,7 +14132,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               // Horizontal Scrolling Header Row
               SizedBox(height: 5.0),
               Container(
-                margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                   future: _future,
                   builder: (context, snapshot) {
@@ -14184,11 +14215,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                   },
                 ),
               ),
-              SizedBox(height:5),
+              SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                 child: Container(
-                  margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     // White background
@@ -14250,7 +14281,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
               if (lowVisionDataValue == 5)
                 Container(
-                  margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrgan>>(
                     future: _futureBindOrgan,
                     builder: (context, snapshot) {
@@ -14354,8 +14385,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 )
               else if (lowVisionDataValue == 12)
                 Container(
-                  margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
-
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -14481,7 +14511,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 )
               else if (lowVisionDataValue == 13)
                 Container(
-                    margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -14617,7 +14647,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 )
               else if (lowVisionDataValue == 0)
                 Container(
-                    margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
                     builder: (context, snapshot) {
@@ -18375,6 +18405,110 @@ class _DPMDashboard extends State<DPMDashboard> {
     String title,
     Function() onTap,
   }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(left: 12.0, top: 30.0, right: 10.0),
+        // Apply left, top, and right margin
+        padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
+        // Custom padding
+        child: Row(
+          children: [
+            Icon(icon, color: sharedFontColor, size: sharedFontSize),
+            SizedBox(width: 8.0),
+            Text(
+              title,
+              style: TextStyle(
+                color: sharedFontColor,
+                fontSize: sharedFontSize,
+                fontWeight: sharedFontWeight,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownItem({
+    GlobalKey key,
+    String value,
+    String hint,
+    List<Map<String, dynamic>> items,
+    Function(String) onChanged,
+    Icon hintIcon,
+  }) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(vertical: 0),
+      title: DropdownButtonHideUnderline(
+        child: DropdownButtonFormField2<String>(
+          key: key,
+          value: value,
+          isExpanded: true,
+          style: TextStyle(color: Colors.black, fontSize: sharedFontSize),
+          // Text color black
+          dropdownStyleData: DropdownStyleData(
+            offset: Offset(0, 8), // Controls the dropdown's position
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+          ),
+          items:
+              items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
+            return DropdownMenuItem<String>(
+              value: item['value'],
+              child: Row(
+                children: [
+                  Icon(item['icon'], color: Colors.black, size: sharedFontSize),
+                  // Icon color black
+                  SizedBox(width: 8.0),
+                  Text(
+                    item['value'],
+                    style: TextStyle(
+                      color: Colors.black, // Text color black
+                      fontSize: sharedFontSize,
+                      fontWeight: sharedFontWeight,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          hint: hintIcon != null
+              ? Row(
+                  children: [
+                    hintIcon,
+                    SizedBox(width: 8.0),
+                    Text(
+                      hint,
+                      style: TextStyle(
+                        color: Colors.black, // Text color black for hint
+                        fontSize: sharedFontSize,
+                        fontWeight: sharedFontWeight,
+                      ),
+                    ),
+                  ],
+                )
+              : Text(
+                  hint,
+                  style: TextStyle(
+                    color: Colors.black, // Text color black for hint
+                    fontSize: sharedFontSize,
+                  ),
+                ),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
+/*
+  Widget _buildMenuItem({
+    IconData icon,
+    String title,
+    Function() onTap,
+  }) {
     double size =
         14.0; // You can set a consistent size for both the icon and text
 
@@ -18466,6 +18600,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       ),
     );
   }
+*/
 
   void _showPopupMenuNGOsPrivateGovtApplications() async {
     // Wait for the widget tree to be fully built
@@ -18569,7 +18704,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           Navigator.pop(context);
           break;
 
-        case 3:
+        /* case 3:
           print("CHC/Govt.Sub-Dist. Hospital Application(s)");
           break;
 
@@ -18583,7 +18718,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           break;
 
         default:
-          print("Unknown selection");
+          print("Unknown selection");*/
       }
     });
   }
@@ -18699,7 +18834,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.blueAccent, width: 1.5),
+                    border: Border.all(color: Colors.grey, width: 1),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey.withOpacity(0.2),
@@ -18716,7 +18851,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       isExpanded: true,
                       value: oganisationTypeGovtPrivateDRopDownApplications,
                       iconStyleData: IconStyleData(
-                        icon: Icon(Icons.arrow_drop_down, color: Colors.blue),
+                        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
                       ),
                       items: [
                         'NGOs',
@@ -18747,31 +18882,56 @@ class _DPMDashboard extends State<DPMDashboard> {
                   ),
                 ),
               ),
-              // Submit Button
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 5, 20.0, 0),
-                child: ElevatedButton(
-                  child: Text('Submit'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                    child: SizedBox(
+                      width: 150, // Set the width
+                      height: 40, // Set the height
+                      child: ElevatedButton(
+                        onPressed: () {
+                          print('@@lowvisionCataractDataDispla-- click------');
+                          setState(() {
+                            print("@@oganisationTypeGovtPrivateDRopDownApplications--1 " +
+                                oganisationTypeGovtPrivateDRopDownApplications);
+                            if (oganisationTypeGovtPrivateDRopDownApplications ==
+                                null) {
+                              Utils.showToast(
+                                  "Please Select oganisation Type !", false);
+                            } else {
+                              organisationGovtPrivateSelectionAfterApplications =
+                                  true;
+                            }
+                          });
+                        },
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 12), // Adjust padding
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(10), // Rounded corners
+                          ),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          // Prevents extra spacing
+                          children: [
+                            Icon(Icons.send, color: Colors.white),
+                            // Change the icon as needed
+                            SizedBox(width: 8),
+                            // Space between icon and text
+                            Text('Submit', style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      print(
-                          "@@oganisationTypeGovtPrivateDRopDownApplications--1 " +
-                              oganisationTypeGovtPrivateDRopDownApplications);
-                      if (oganisationTypeGovtPrivateDRopDownApplications ==
-                          null) {
-                        Utils.showToast(
-                            "Please Select oganisation Type !", false);
-                      } else {
-                        organisationGovtPrivateSelectionAfterApplications =
-                            true;
-                      }
-                    });
-                  },
-                ),
+                ],
               ),
+
+              // Submit Button
 
               // Display data after submission
               Visibility(
@@ -18900,8 +19060,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                 1: FlexColumnWidth(), // Value column width
               },
               children: [
-                _buildTableRow('NGO Darpan No', offer.darpanNo),
-                _buildTableRow('NGO Name:', offer.name),
+                _buildTableRow('Ngo Darpan No', offer.darpanNo),
+                _buildTableRow('Ngo Name:', offer.name),
                 _buildTableRow('Member Name:', offer.memberName),
                 _buildTableRow('NPCB No', offer.npcbNo),
                 _buildTableRow('Email:', offer.emailid),
@@ -18959,11 +19119,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                 child: Container(
                   padding: EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
-                    color: Colors.lightBlue,
+                    color: Colors.white,
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.blueAccent.withOpacity(0.2),
+                        color: Colors.grey,
                         blurRadius: 8,
                         spreadRadius: 1,
                         offset: Offset(0, 4),
@@ -18978,7 +19138,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       icon: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.arrow_drop_down, color: Colors.white),
+                          Icon(Icons.arrow_drop_down, color: Colors.black),
                         ],
                       ),
                       style: TextStyle(color: Colors.black, fontSize: 16),
@@ -19016,7 +19176,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       hint: Text(
                         "Select Organisation Type",
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 16,
                             fontWeight: FontWeight.bold),
                       ),
@@ -19182,7 +19342,7 @@ class _DPMDashboard extends State<DPMDashboard> {
               children: [
                 _buildTableRow('NPCB No', offer.npcbNo),
 
-                _buildTableRow('NGO Name:', offer.oName),
+                _buildTableRow('Ngo Name:', offer.oName),
                 _buildTableRow('Member Name:', offer.nodalOfficerName),
                 _buildTableRow('Email:', offer.emailId),
                 _buildTableRow('District:', offer.districtName),

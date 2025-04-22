@@ -1975,7 +1975,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     ),
                     children: [
                       _buildTableRowNGO('S.No.', offer.srNo),
-                      _buildTableRowNGO('NGO Name', offer.managerName),
+                      _buildTableRowNGO('Ngo Name', offer.managerName),
                       _buildTableRowNGO('User ID', offer.userId),
                       _buildTableRowNGO('Officer Name', offer.managerName),
                       _buildTableRowNGO('Mobile Number', offer.mobile),
@@ -7143,7 +7143,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     children: [
                       _buildTableRow('Darpan No.', darpanNo),
                       _buildTableRow('PAN Number', panNumber),
-                      _buildTableRow('NGO Name', ngoName),
+                      _buildTableRow('Ngo Name', ngoName),
                       _buildTableRow('Member Name', memberName),
                       _buildTableRow('Email ID', emailId),
                       _buildTableRow('Mobile Number', mobileNumber),
@@ -9390,7 +9390,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                               decoration: InputDecoration(
                                 labelText: ngoNames.isNotEmpty
                                     ? ngoNames
-                                    : 'Enter NGO name *',
+                                    : 'Enter Ngo name *',
                                 // Conditional label
                                 hintText: ngoNames.isNotEmpty
                                     ? ''

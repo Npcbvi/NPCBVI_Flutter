@@ -134,13 +134,13 @@ class _MoreClickGetStateDistrictWiseBothNGo
                                       children: [
                                         _buildTableRow("Organization", "Detail", isHeader: true),
 
-                                        _buildTableRow("Darpan No", entry.darpanNo ?? "-"),
-                                        _buildTableRow("Nodal Officer Name", entry.memberName ?? "-"),
-                                        _buildTableRow("NGO Name", entry.name ?? "-"),
-                                        _buildTableRow("Address", entry.address ?? "-"),
-                                        _buildTableRow("Entry Date", entry.entry_date ?? "-"),
-                                        _buildTableRow("District Name", entry.districtName ?? "-"),
-                                        _buildTableRow("State Name", entry.stateName ?? "-"),
+                                        _buildTableRow("Darpan No",(entry.darpanNo?.trim().isEmpty ?? true) ? "N/A" : entry.darpanNo),
+                                        _buildTableRow("Nodal Officer Name", (entry.memberName?.trim().isEmpty ?? true) ? "N/A" : entry.memberName),
+                                        _buildTableRow("Ngo Name", (entry.name?.trim().isEmpty ?? true) ? "N/A" : entry.name),
+                                        _buildTableRow("Address",(entry.address?.trim().isEmpty ?? true) ? "N/A" : entry.address),
+                                        _buildTableRow("Entry Date", (entry.entry_date?.trim().isEmpty ?? true) ? "N/A" : entry.entry_date),
+                                        _buildTableRow("District Name",(entry.districtName?.trim().isEmpty ?? true) ? "N/A" : entry.districtName),
+                                        _buildTableRow("State Name", (entry.stateName?.trim().isEmpty ?? true) ? "N/A" : entry.stateName)
                                         // Add more fields as necessary
                                       ],
                                     ),

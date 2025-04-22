@@ -73,7 +73,10 @@ class _HospitalsListScreenState extends State<HospitalsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Hospitals Linked with NGO")),
+      appBar: AppBar(title: Text("Hospitals Linked with NGO",  maxLines: 2,
+          style: new TextStyle(
+            color: Colors.white,
+          ))),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(
