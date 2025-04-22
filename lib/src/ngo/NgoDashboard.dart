@@ -232,7 +232,9 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   TextEditingController _eyeDonationCentreNameControllerEditclick =
       new TextEditingController();
-
+  double sharedFontSize = 14.0;
+  Color sharedFontColor = Colors.black;
+  FontWeight sharedFontWeight = FontWeight.normal;
   @override
   void initState() {
     // TODO: implement initState
@@ -919,66 +921,41 @@ class _NgoDashboard extends State<NgoDashboard> {
                   },
                 ),
                 //_buildDropdown(),
-                DropdownButtonHideUnderline(
-                  // ✅ Hide the grey underline
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
-                    child: DropdownButton<String>(
-                      key: _dropdownKey,
-                      value: _chosenValue,
-                      hint: Row(
-                        children: [
-                          Icon(Icons.supervised_user_circle,
-                              color: Colors.black),
-                          SizedBox(width: 6),
-                          Text(
-                            'Manage Users',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ],
-                      ),
-                      isExpanded: true,
-                      icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                      // Dropdown arrow
-                      items: [
-                        {'value': 'NGO Hospital', 'icon': Icons.local_hospital},
-                        {'value': 'Screening Camp', 'icon': Icons.campaign},
-                        {
-                          'value': 'Satellite Center',
-                          'icon': Icons.satellite_alt
-                        },
-                      ].map((item) {
-                        return DropdownMenuItem<String>(
-                          value: item['value'],
-                          child: Row(
-                            children: [
-                              Icon(item['icon'], color: Colors.black),
-                              SizedBox(width: 4),
-                              Text(item['value']),
-                            ],
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (String value) {
-                        setState(() {
-                          _chosenValue = value ?? '';
-                          if (_chosenValue == "NGO Hospital") {
-                            print('@@NGO---Hospital--1 $_chosenValue');
-                            Future.delayed(Duration(milliseconds: 30), () {
-                              _showPopupMenu();
-                            });
-                          } else if (_chosenValue == "Screening Camp") {
-                            print('@@Screening--1 $_chosenValue');
-                            _showPopupMenuScreeningCamp();
-                          } else if (_chosenValue == "Satellite Center") {
-                            print('@@Sattelite--1 $_chosenValue');
-                            _showPopupMenuSatelliteCenter();
-                          }
+
+
+                _buildDropdownItem(
+                  key: _dropdownKey,
+                  value: _chosenValue,
+                  hint: 'Manage Users',
+                  hintIcon: Icon(Icons.supervised_user_circle,
+                      color: Colors.black, size: sharedFontSize),
+                  items: [
+                    {'value': 'NGO Hospital', 'icon': Icons.local_hospital},
+                    {'value': 'Screening Camp', 'icon': Icons.campaign},
+                    {
+                      'value': 'Satellite Center',
+                      'icon': Icons.satellite_alt
+                    },
+                  ],
+                  onChanged: (String value) {
+                    if (value == null) return;
+
+                    setState(() {
+                      _chosenValue = value ?? '';
+                      if (_chosenValue == "NGO Hospital") {
+                        print('@@NGO---Hospital--1 $_chosenValue');
+                        Future.delayed(Duration(milliseconds: 30), () {
+                          _showPopupMenu();
                         });
-                      },
-                    ),
-                  ),
-                ),
+                      } else if (_chosenValue == "Screening Camp") {
+                        print('@@Screening--1 $_chosenValue');
+                        _showPopupMenuScreeningCamp();
+                      } else if (_chosenValue == "Satellite Center") {
+                        print('@@Sattelite--1 $_chosenValue');
+                        _showPopupMenuSatelliteCenter();
+                      }
+                    });
+                  }),
 
                 _buildMenuItem(
                   icon: Icons.dashboard,
@@ -1369,8 +1346,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                             // Add your logic here for adding a new hospital
                             setState(() {
                               print('@@Add New Record clicked');
-                              Utils.showToast(
-                                  "Complete this in Next Sprint", true);
+                             /* Utils.showToast(
+                                  "Complete this in Next Sprint", true);*/
                             });
                           },
                           child: Container(
@@ -1597,49 +1574,27 @@ class _NgoDashboard extends State<NgoDashboard> {
           child: Column(
             children: [
               Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.blue, Colors.blueAccent],
-                    // Gradient background
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(15), // Rounded corners
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black26,
-                      offset: Offset(2, 4),
-                      blurRadius: 6,
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
+                child: Center(
+                  child: Text(
+                    'Eye Bank Application',
+                    // Added spacing between words
+                    maxLines: 2,
+                    textAlign: TextAlign.left, // Align text to the left
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                     ),
-                  ],
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  // Increased padding for better spacing
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            'Eye Bank Application',
-                            style: TextStyle(
-                              fontSize: 16, // Larger font size for prominence
-                              color: Colors.white,
-                              fontWeight: FontWeight.w900, // Bolder font weight
-                              letterSpacing:
-                                  1.5, // Adding space between letters for a modern touch
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    ],
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ),
-
               // Horizontal Scrolling Table with Header and Data
               SizedBox(width: 10.0),
               SingleChildScrollView(
@@ -2882,6 +2837,7 @@ class _NgoDashboard extends State<NgoDashboard> {
               ),
               dropdownStyleData: DropdownStyleData(
                 maxHeight: 300,
+                width: 300,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(10),
@@ -2992,7 +2948,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                           );
                         }).toList(),
                         buttonStyleData: ButtonStyleData(
-                          height: 60,
+                          height: 50,
                           padding: const EdgeInsets.symmetric(horizontal: 3),
                           decoration: BoxDecoration(
                             color: Colors.white,
@@ -8487,48 +8443,27 @@ class _NgoDashboard extends State<NgoDashboard> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.blue, Colors.lightBlue],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    borderRadius: BorderRadius.circular(12.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 8.0,
-                        offset: Offset(0, 4),
+                  width: double.infinity,
+                  // Full width
+                  color: Colors.blue,
+                  // Background color
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  // Padding for spacing
+                  child: Center(
+                    child: Text(
+                      'Camp Manager Registration',
+                      // Added spacing between words
+                      maxLines: 2,
+                      textAlign: TextAlign.left, // Align text to the left
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 16.0, horizontal: 24.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.group_add,
-                          color: Colors.white,
-                          size: 15.0,
-                        ),
-                        SizedBox(width: 10.0),
-                        Text(
-                          'Camp Manager Registration',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15.0,
-                            letterSpacing: 1.2,
-                          ),
-                        ),
-                      ],
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
-
                 // Form for Camp Manager Registration
                 Padding(
                   padding: const EdgeInsets.all(5.0),
@@ -8539,8 +8474,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                         // Username Field
                         SizedBox(height: 5.0),
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 0), // Add margin here
+                          margin: EdgeInsets.fromLTRB(5,0,5,0),
 
                           child: SizedBox(
                             height: 50,
@@ -8591,7 +8525,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                         SizedBox(height: 5.0),
 
                         // Gender Selection
-                        Text('Gender*'),
+
                         Row(
                           children: [
                             Radio<String>(
@@ -8630,8 +8564,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Mobile Number Field
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 0), // Add margin here
+                          margin: EdgeInsets.fromLTRB(5,0,5,0),// Add margin here
 
                           child: SizedBox(
                             height: 50,
@@ -8686,8 +8619,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Email ID Field
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 0), // Add margin here
+                          margin: EdgeInsets.fromLTRB(5,0,5,0),
 
                           child: SizedBox(
                             height: 50,
@@ -8743,9 +8675,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Address Field
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 0), // Add margin here
-
+                          margin: EdgeInsets.fromLTRB(5,0,5,0),
                           child: SizedBox(
                             height: 50,
                             width: double.infinity,
@@ -8796,8 +8726,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                         SizedBox(height: 5.0),
                         // Designation Field
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 0), // Add margin here
+                          margin: EdgeInsets.fromLTRB(5,0,5,0),
                           child: SizedBox(
                             height: 50,
                             width: double.infinity,
@@ -8927,47 +8856,27 @@ class _NgoDashboard extends State<NgoDashboard> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.blue, Colors.lightBlueAccent],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 10,
-                        offset: Offset(0, 4),
+                  width: double.infinity,
+                  // Full width
+                  color: Colors.blue,
+                  // Background color
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  // Padding for spacing
+                  child: Center(
+                    child: Text(
+                      'Camp Manager Registration',
+                      // Added spacing between words
+                      maxLines: 2,
+                      textAlign: TextAlign.left, // Align text to the left
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ],
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12.0, horizontal: 16.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.assignment_ind,
-                          color: Colors.white,
-                          size: 24.0,
-                        ),
-                        SizedBox(width: 8.0),
-                        Text(
-                          'Camp Manager Registration',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0,
-                          ),
-                        ),
-                      ],
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
-
                 // Form for Camp Manager Registration
                 Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -9328,59 +9237,37 @@ class _NgoDashboard extends State<NgoDashboard> {
             child: Column(
               children: [
                 Container(
-                  margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Colors.blue, Colors.blue],
-                      // Gradient color
-                    ),
-                    borderRadius: BorderRadius.circular(12.0),
-                    // Rounded corners
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black26,
-                        blurRadius: 6.0,
-                        offset: Offset(0, 2), // Shadow positioning
+                  width: double.infinity,
+                  // Full width
+                  color: Colors.blue,
+                  // Background color
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  // Padding for spacing
+                  child: Center(
+                    child: Text(
+                      'Camp Registration',
+                      // Added spacing between words
+                      maxLines: 2,
+                      textAlign: TextAlign.left, // Align text to the left
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
-                    ],
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    // Larger padding for a spacious feel
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.event_note, // Add an icon for a modern touch
-                          color: Colors.white,
-                          size: 15.0,
-                        ),
-                        SizedBox(width: 10),
-                        // Add space between the icon and text
-                        Text(
-                          'Camp Registration',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
-                            fontSize:
-                                15.0, // Increased font size for prominence
-                          ),
-                        ),
-                      ],
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
-
                 // Form for Camp Manager Registration
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Form(
                     key: _formKey1,
                     child: Column(
                       children: [
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
+                          margin: EdgeInsets.fromLTRB(
+                              5,0,5,0), // Add margin here
 
                           child: SizedBox(
                             width: double.infinity,
@@ -9452,8 +9339,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                           height: 5,
                         ),
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
+                          margin: EdgeInsets.fromLTRB(
+                              5,0,5,0), // Add margin here
 
                           color: Colors.white,
                           child: Padding(
@@ -9589,8 +9476,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                         SizedBox(height: 5),
                         // Username Field
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
+                          margin: EdgeInsets.fromLTRB(
+                              5,0,5,0), // Add margin here
 
                           child: SizedBox(
                             height: 50,
@@ -9642,9 +9529,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                         SizedBox(height: 5),
 
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
-
+                          margin: EdgeInsets.fromLTRB(
+                              5,0,5,0), // Add margin here
                           child: FutureBuilder<List<DataScreeningCampManager>>(
                             future: _manger,
                             builder: (context, snapshot) {
@@ -9865,9 +9751,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                         if (locationTypeValues == 'Urban')
                           // Content to display if "Urban" is selected
                           Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 0), // Add margin here
-
+                            margin: EdgeInsets.fromLTRB(
+                                5,0,5,0), // Add margin here
                             child: Column(
                               children: [
                                 FutureBuilder<List<DataGetCity>>(
@@ -10022,7 +9907,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                                     return Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          20, 10, 20.0, 0),
+                                          0, 0, 0.0, 0),
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -10104,7 +9989,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                                     return Padding(
                                       padding: const EdgeInsets.fromLTRB(
-                                          20, 10, 20.0, 0),
+                                          0, 0, 0.0, 0),
                                       child: Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
@@ -10161,66 +10046,69 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   },
                                 ),
                               ),
-                              SizedBox(
-                                height: 50,
-                                width: 300,
-                                child: TextFormField(
-                                  controller: _Pincodecontroller,
-                                  decoration: InputDecoration(
-                                    labelText: 'Pin Code',
-                                    // Normal text label
-                                    suffixText: ' *',
-                                    // Asterisk for required field
-                                    suffixStyle: TextStyle(
-                                      color: Colors.red,
-                                      // Red color for asterisk
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        // Border when not focused
-                                        width: 1.5,
+                              Container(
+    margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: SizedBox(
+                                  height: 50,
+                                  width: double.infinity,
+                                  child: TextFormField(
+                                    controller: _Pincodecontroller,
+                                    decoration: InputDecoration(
+                                      labelText: 'Pin Code',
+                                      // Normal text label
+                                      suffixText: ' *',
+                                      // Asterisk for required field
+                                      suffixStyle: TextStyle(
+                                        color: Colors.red,
+                                        // Red color for asterisk
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        // Border when focused
-                                        width: 2.0,
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    errorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        // Border when error occurs
-                                        width: 1.5,
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                          // Border when not focused
+                                          width: 1.5,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        // Border when focused & error
-                                        width: 1.0,
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                          // Border when focused
+                                          width: 2.0,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
                                       ),
-                                      borderRadius: BorderRadius.circular(12),
+                                      errorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                          // Border when error occurs
+                                          width: 1.5,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      focusedErrorBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                          // Border when focused & error
+                                          width: 1.0,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
                                     ),
+                                    keyboardType: TextInputType.phone,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter Pin Code number';
+                                      }
+                                      return null;
+                                    },
                                   ),
-                                  keyboardType: TextInputType.phone,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter Pin Code number';
-                                    }
-                                    return null;
-                                  },
                                 ),
                               )
                             ],
@@ -10229,8 +10117,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                         // Mobile Number Field
                         SizedBox(height: 5),
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
+                          margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
 
                           child: SizedBox(
                             height: 50,
@@ -10304,8 +10191,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Address Field
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
+                          margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
 
                           child: SizedBox(
                             width: double.infinity,
@@ -10388,8 +10274,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         SizedBox(height: 5.0),
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
+    margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
 
                           child: FutureBuilder<List<Data>>(
                             future: _futureState,
@@ -11475,59 +11360,62 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                 // Form for Camp Manager Registration
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Form(
                     key: _formKeySatelliteManger,
                     child: Column(
                       children: [
+                        SizedBox(height: 5.0),
                         // Username Field
-                        SizedBox(
-                          width: 300,
-                          height: 50,
-                          child: TextFormField(
-                            controller: _userNameControllerStatelliteMangerReg,
-                            // Attach controller
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  text: 'User Name',
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16),
-                                  children: [
-                                    TextSpan(
-                                      text: ' *',
-                                      // Red asterisk for required field
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: TextFormField(
+                              controller: _userNameControllerStatelliteMangerReg,
+                              // Attach controller
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    text: 'User Name',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 16),
+                                    children: [
+                                      TextSpan(
+                                        text: ' *',
+                                        // Red asterisk for required field
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                                hintText: 'Enter your name',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  // Rounded border
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1.0),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 12.0, horizontal: 16.0),
                               ),
-                              hintText: 'Enter your name',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                // Rounded border
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1.0),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 12.0, horizontal: 16.0),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your name';
+                                }
+                                return null;
+                              },
                             ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your name';
-                              }
-                              return null;
-                            },
                           ),
                         ),
 
                         SizedBox(height: 5.0),
 
                         // Gender Selection
-                        Text('Gender*'),
                         Row(
                           children: [
                             Radio<int>(
@@ -11565,118 +11453,123 @@ class _NgoDashboard extends State<NgoDashboard> {
                         SizedBox(height: 5.0),
 
                         // Mobile Number Field
-                        SizedBox(
-                          width: 300,
-                          height: 50,
-                          child: TextFormField(
-                            controller:
-                                _mobileNumberControllerStatelliteMangerReg,
-                            // Attach controller
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  text: 'Mobile No.',
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16),
-                                  children: [
-                                    TextSpan(
-                                      text: ' *',
-                                      // Red asterisk for required field
-                                      style: TextStyle(
-                                          color: Colors.red,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: TextFormField(
+                              controller:
+                                  _mobileNumberControllerStatelliteMangerReg,
+                              // Attach controller
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    text: 'Mobile No.',
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 16),
+                                    children: [
+                                      TextSpan(
+                                        text: ' *',
+                                        // Red asterisk for required field
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                                hintText: 'Enter your mobile number',
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  // Rounded border
+                                  borderSide: BorderSide(
+                                      color: Colors.grey.shade300, width: 1.0),
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 12.0, horizontal: 16.0),
                               ),
-                              hintText: 'Enter your mobile number',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                // Rounded border
-                                borderSide: BorderSide(
-                                    color: Colors.grey.shade300, width: 1.0),
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 12.0, horizontal: 16.0),
+                              keyboardType: TextInputType.phone,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your mobile number';
+                                } else if (value.length != 10) {
+                                  return 'Please enter a valid 10-digit mobile number';
+                                }
+                                return null;
+                              },
                             ),
-                            keyboardType: TextInputType.phone,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your mobile number';
-                              } else if (value.length != 10) {
-                                return 'Please enter a valid 10-digit mobile number';
-                              }
-                              return null;
-                            },
                           ),
                         ),
 
                         SizedBox(height: 5.0),
 
                         // Email ID Field
-                        SizedBox(
-                          width: 300,
-                          height: 50,
-                          child: TextFormField(
-                            controller: _emailIdControllerStatelliteMangerReg,
-                            decoration: InputDecoration(
-                              label: RichText(
-                                text: TextSpan(
-                                  text: 'Email ID', // Normal text
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.black, // Normal label color
-                                  ),
-                                  children: [
-                                    TextSpan(
-                                      text: ' *', // Asterisk
-                                      style: TextStyle(
-                                        color: Colors.red, // Red color for *
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: SizedBox(
+                            width: double.infinity,
+                            height: 50,
+                            child: TextFormField(
+                              controller: _emailIdControllerStatelliteMangerReg,
+                              decoration: InputDecoration(
+                                label: RichText(
+                                  text: TextSpan(
+                                    text: 'Email ID', // Normal text
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.black, // Normal label color
                                     ),
-                                  ],
+                                    children: [
+                                      TextSpan(
+                                        text: ' *', // Asterisk
+                                        style: TextStyle(
+                                          color: Colors.red, // Red color for *
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  // Rounded border
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide:
+                                      BorderSide(color: Colors.grey, width: 1.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                      color: Colors.grey,
+                                      width: 1.0), // Blue when focused
+                                ),
+                                contentPadding: EdgeInsets.symmetric(
+                                    vertical: 12.0, horizontal: 16.0),
                               ),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                // Rounded border
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1.0),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide:
-                                    BorderSide(color: Colors.grey, width: 1.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                    color: Colors.grey,
-                                    width: 1.0), // Blue when focused
-                              ),
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 12.0, horizontal: 16.0),
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your email';
+                                } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                    .hasMatch(value)) {
+                                  return 'Please enter a valid email address';
+                                }
+                                return null;
+                              },
                             ),
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter your email';
-                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                                  .hasMatch(value)) {
-                                return 'Please enter a valid email address';
-                              }
-                              return null;
-                            },
                           ),
                         ),
 
                         SizedBox(height: 5.0),
 
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: FutureBuilder<List<DataGethospitalForDDL>>(
                             future: _futureDataGethospitalForDDL,
                             builder: (context, snapshot) {
@@ -11772,8 +11665,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                         SizedBox(height: 5.0),
                         // Address Field
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: SizedBox(
                             width: double.infinity,
                             height: 50,
@@ -11818,8 +11710,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Designation Field
                         Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 0), // Add margin here
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
 
                           child: SizedBox(
                             width: double.infinity,
@@ -12724,13 +12615,16 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                 // Form for Camp Manager Registration
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Form(
                     key: _formKeySatelliteCneterO,
                     child: Column(
                       children: [
                         // Username Field
+                        SizedBox(height: 5.0),
                         Container(
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+
                           height: 50, // Set fixed height
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1),
@@ -12780,6 +12674,8 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         // Mobile Number Field
                         Container(
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+
                           height: 50, // Fixed height
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1),
@@ -12823,7 +12719,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                           height: 50,
                           // Same height as the email field
                           width: double.infinity,
-                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1.0),
                             borderRadius: BorderRadius.circular(10.0),
@@ -12854,200 +12750,207 @@ class _NgoDashboard extends State<NgoDashboard> {
 
                         SizedBox(height: 5.0),
 
-                        FutureBuilder<List<DataGethospitalForDDL>>(
-                          future: _futureDataGethospitalForDDL,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: FutureBuilder<List<DataGethospitalForDDL>>(
+                            future: _futureDataGethospitalForDDL,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
 
-                            if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
-                            }
+                              if (!snapshot.hasData) {
+                                return CircularProgressIndicator();
+                              }
 
-                            List<DataGethospitalForDDL> list =
-                                snapshot.data ?? [];
+                              List<DataGethospitalForDDL> list =
+                                  snapshot.data ?? [];
 
-                            // Ensure _dataGethospitalForDDL is in the list
-                            if (_dataGethospitalForDDL == null ||
-                                !list.contains(_dataGethospitalForDDL)) {
-                              _dataGethospitalForDDL =
-                                  list.isNotEmpty ? list.first : null;
-                            }
+                              // Ensure _dataGethospitalForDDL is in the list
+                              if (_dataGethospitalForDDL == null ||
+                                  !list.contains(_dataGethospitalForDDL)) {
+                                _dataGethospitalForDDL =
+                                    list.isNotEmpty ? list.first : null;
+                              }
 
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 0.0, vertical: 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Hospital Name*',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Container(
-                                    height: 50, // Same height as email field
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      color: Colors.white,
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0.0, vertical: 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                      'Hospital Name*',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 15.0),
-                                      // 👈 Simulating contentPadding
-                                      child: DropdownButtonHideUnderline(
-                                        child: DropdownButton<
-                                            DataGethospitalForDDL>(
-                                          value: _dataGethospitalForDDL,
-                                          onChanged: (userc) {
-                                            setState(() {
-                                              _dataGethospitalForDDL = userc;
-                                              gethospitalNameRegRedOption =
-                                                  userc?.hName ?? '';
-                                              gethospitalNameSrNORegRedOption =
-                                                  userc?.hRegID ?? '';
-                                              print(
-                                                  'getMAnagerNAme Year: $gethospitalName');
-                                              print(
-                                                  '@@gethospitalNameSrNORegRedOption: $gethospitalNameSrNORegRedOption');
-                                            });
-                                          },
-                                          items: list.map((user) {
-                                            return DropdownMenuItem<
-                                                DataGethospitalForDDL>(
-                                              value: user,
-                                              child: Text(user.hName,
-                                                  style:
-                                                      TextStyle(fontSize: 16)),
-                                            );
-                                          }).toList(),
-                                          icon: Icon(Icons.arrow_drop_down,
-                                              color: Colors.black),
-                                          isExpanded:
-                                              true, // Ensures dropdown takes full width
+                                    Container(
+                                      height: 50, // Same height as email field
+                                      width: double.infinity,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.grey, width: 1.0),
+                                        borderRadius: BorderRadius.circular(10.0),
+                                        color: Colors.white,
+                                      ),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 15.0),
+                                        // 👈 Simulating contentPadding
+                                        child: DropdownButtonHideUnderline(
+                                          child: DropdownButton<
+                                              DataGethospitalForDDL>(
+                                            value: _dataGethospitalForDDL,
+                                            onChanged: (userc) {
+                                              setState(() {
+                                                _dataGethospitalForDDL = userc;
+                                                gethospitalNameRegRedOption =
+                                                    userc?.hName ?? '';
+                                                gethospitalNameSrNORegRedOption =
+                                                    userc?.hRegID ?? '';
+                                                print(
+                                                    'getMAnagerNAme Year: $gethospitalName');
+                                                print(
+                                                    '@@gethospitalNameSrNORegRedOption: $gethospitalNameSrNORegRedOption');
+                                              });
+                                            },
+                                            items: list.map((user) {
+                                              return DropdownMenuItem<
+                                                  DataGethospitalForDDL>(
+                                                value: user,
+                                                child: Text(user.hName,
+                                                    style:
+                                                        TextStyle(fontSize: 16)),
+                                              );
+                                            }).toList(),
+                                            icon: Icon(Icons.arrow_drop_down,
+                                                color: Colors.black),
+                                            isExpanded:
+                                                true, // Ensures dropdown takes full width
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
 
                         SizedBox(height: 5.0),
-                        FutureBuilder<
-                            List<DataCenterOfficeNameSatelliteCenter>>(
-                          future: _futureCenterOfficerName,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              return Text('Error: ${snapshot.error}');
-                            }
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: FutureBuilder<
+                              List<DataCenterOfficeNameSatelliteCenter>>(
+                            future: _futureCenterOfficerName,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
 
-                            if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
-                            }
+                              if (!snapshot.hasData) {
+                                return CircularProgressIndicator();
+                              }
 
-                            List<DataCenterOfficeNameSatelliteCenter> list =
-                                snapshot.data;
-                            print('@@DataCenterOfficeNameSatelliteCenter' +
-                                list.toString());
-                            // Check if list is empty and handle accordingly
-                            if (list.isEmpty) {
-                              return Text('No managers available.');
-                            }
+                              List<DataCenterOfficeNameSatelliteCenter> list =
+                                  snapshot.data;
+                              print('@@DataCenterOfficeNameSatelliteCenter' +
+                                  list.toString());
+                              // Check if list is empty and handle accordingly
+                              if (list.isEmpty) {
+                                return Text('No managers available.');
+                              }
 
-                            // Check if _dataCenterOfficeNameSatelliteCenter is null or not part of the list anymore
-                            if (_dataCenterOfficeNameSatelliteCenter == null ||
-                                !list.contains(
-                                    _dataCenterOfficeNameSatelliteCenter)) {
-                              _dataCenterOfficeNameSatelliteCenter =
-                                  list.first; // Set the first item as default
-                            }
+                              // Check if _dataCenterOfficeNameSatelliteCenter is null or not part of the list anymore
+                              if (_dataCenterOfficeNameSatelliteCenter == null ||
+                                  !list.contains(
+                                      _dataCenterOfficeNameSatelliteCenter)) {
+                                _dataCenterOfficeNameSatelliteCenter =
+                                    list.first; // Set the first item as default
+                              }
 
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 0.0, vertical: 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Centre Officer Name*',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  DropdownButtonFormField<
-                                      DataCenterOfficeNameSatelliteCenter>(
-                                    value: _dataCenterOfficeNameSatelliteCenter,
-                                    onChanged: (userc) {
-                                      setState(() {
-                                        print('@@DataCenterOfficeNameSatelliteCenter' +
-                                            _dataCenterOfficeNameSatelliteCenter
-                                                .toString());
-                                        print(
-                                            '@@DataCenterOfficeNameSatelliteCenteruserc' +
-                                                userc.srNo.toString());
-
-                                        _dataCenterOfficeNameSatelliteCenter =
-                                            userc;
-                                        getCenterOfficerName =
-                                            userc?.name ?? '';
-                                        getCenterOfficerNameSRNo =
-                                            userc?.srNo ?? '';
-
-                                        print(
-                                            '@@getCenterOfficerName Year: $getCenterOfficerName');
-                                        print('@@getCenterOfficerNameSRNo:' +
-                                            getCenterOfficerNameSRNo
-                                                .toString());
-                                      });
-                                    },
-                                    items: list.map((user) {
-                                      return DropdownMenuItem<
-                                          DataCenterOfficeNameSatelliteCenter>(
-                                        value: user,
-                                        child: Text(user.name,
-                                            style: TextStyle(fontSize: 16)),
-                                      );
-                                    }).toList(),
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 15.0, horizontal: 10.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white,
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0.0, vertical: 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Centre Officer Name*',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                    dropdownColor: Colors.white,
-                                    style: TextStyle(color: Colors.black),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
+                                    DropdownButtonFormField<
+                                        DataCenterOfficeNameSatelliteCenter>(
+                                      value: _dataCenterOfficeNameSatelliteCenter,
+                                      onChanged: (userc) {
+                                        setState(() {
+                                          print('@@DataCenterOfficeNameSatelliteCenter' +
+                                              _dataCenterOfficeNameSatelliteCenter
+                                                  .toString());
+                                          print(
+                                              '@@DataCenterOfficeNameSatelliteCenteruserc' +
+                                                  userc.srNo.toString());
+
+                                          _dataCenterOfficeNameSatelliteCenter =
+                                              userc;
+                                          getCenterOfficerName =
+                                              userc?.name ?? '';
+                                          getCenterOfficerNameSRNo =
+                                              userc?.srNo ?? '';
+
+                                          print(
+                                              '@@getCenterOfficerName Year: $getCenterOfficerName');
+                                          print('@@getCenterOfficerNameSRNo:' +
+                                              getCenterOfficerNameSRNo
+                                                  .toString());
+                                        });
+                                      },
+                                      items: list.map((user) {
+                                        return DropdownMenuItem<
+                                            DataCenterOfficeNameSatelliteCenter>(
+                                          value: user,
+                                          child: Text(user.name,
+                                              style: TextStyle(fontSize: 16)),
+                                        );
+                                      }).toList(),
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 15.0, horizontal: 10.0),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.grey, width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              color: Colors.grey, width: 1.0),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                      ),
+                                      dropdownColor: Colors.white,
+                                      style: TextStyle(color: Colors.black),
+                                      icon: Icon(Icons.arrow_drop_down,
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
                         ),
 
-                        SizedBox(height: 10.0),
+                        SizedBox(height: 5.0),
                         // Address Field
                         Container(
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                           height: 100, // Increased height for multiline input
                           decoration: BoxDecoration(
                             border: Border.all(color: Colors.grey, width: 1),
@@ -13243,7 +13146,109 @@ class _NgoDashboard extends State<NgoDashboard> {
       (route) => false,
     );
   }
+  Widget _buildMenuItem({
+    IconData icon,
+    String title,
+    Function() onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(left: 12.0, top: 30.0, right: 10.0),
+        // Apply left, top, and right margin
+        padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
+        // Custom padding
+        child: Row(
+          children: [
+            Icon(icon, color: sharedFontColor, size: sharedFontSize),
+            SizedBox(width: 8.0),
+            Text(
+              title,
+              style: TextStyle(
+                color: sharedFontColor,
+                fontSize: sharedFontSize,
+                fontWeight: sharedFontWeight,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
+  Widget _buildDropdownItem({
+    GlobalKey key,
+    String value,
+    String hint,
+    List<Map<String, dynamic>> items,
+    Function(String) onChanged,
+    Icon hintIcon,
+  }) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(vertical: 0),
+      title: DropdownButtonHideUnderline(
+        child: DropdownButtonFormField2<String>(
+          key: key,
+          value: value,
+          isExpanded: true,
+          style: TextStyle(color: Colors.black, fontSize: sharedFontSize),
+          // Text color black
+          dropdownStyleData: DropdownStyleData(
+            offset: Offset(0, 8), // Controls the dropdown's position
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+          ),
+          items:
+          items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
+            return DropdownMenuItem<String>(
+              value: item['value'],
+              child: Row(
+                children: [
+                  Icon(item['icon'], color: Colors.black, size: sharedFontSize),
+                  // Icon color black
+                  SizedBox(width: 8.0),
+                  Text(
+                    item['value'],
+                    style: TextStyle(
+                      color: Colors.black, // Text color black
+                      fontSize: sharedFontSize,
+                      fontWeight: sharedFontWeight,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+          hint: hintIcon != null
+              ? Row(
+            children: [
+              hintIcon,
+              SizedBox(width: 8.0),
+              Text(
+                hint,
+                style: TextStyle(
+                  color: Colors.black, // Text color black for hint
+                  fontSize: sharedFontSize,
+                  fontWeight: sharedFontWeight,
+                ),
+              ),
+            ],
+          )
+              : Text(
+            hint,
+            style: TextStyle(
+              color: Colors.black, // Text color black for hint
+              fontSize: sharedFontSize,
+            ),
+          ),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+/*
   Widget _buildMenuItem({
     IconData icon,
     String title,
@@ -13340,6 +13345,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
+*/
 
   Future<void> geteyeBankById() async {
     // Use await to get the actual value from SharedPrefs

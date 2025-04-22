@@ -12400,115 +12400,121 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
 
               if (lowVisionDataValue == 5)
-                Container(
-                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  child: FutureBuilder<List<DataBindOrgan>>(
-                    future: _futureBindOrgan,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
 
-                      if (!snapshot.hasData || snapshot.data == null) {
-                        //  return const CircularProgressIndicator();
-                      }
+    Container(
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+      child: FutureBuilder<List<DataBindOrgan>>(
+        future: _futureBindOrgan,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          }
 
-                      List<DataBindOrgan> list = snapshot.data ?? [];
-                      if (_selectBindOrgniasation == null ||
-                          !list.contains(_selectBindOrgniasation)) {
-                        _selectBindOrgniasation =
-                            list.isNotEmpty ? list.first : null;
-                      }
+          if (!snapshot.hasData || snapshot.data == null) {
+            //  return const CircularProgressIndicator();
+          }
 
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
-                        // ✅ Adjusted padding
-                        child: LayoutBuilder(
-                          // ✅ Prevents overflow
-                          builder: (context, constraints) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              // ✅ Align text properly
-                              mainAxisSize: MainAxisSize.min,
-                              // ✅ Prevents taking unnecessary height
-                              children: <Widget>[
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Select Organisation Type',
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 50,
-                                  // ✅ Fixed height
-                                  width: constraints.maxWidth,
-                                  // ✅ Ensures it fits the screen
-                                  child: DropdownButtonFormField<DataBindOrgan>(
-                                    onChanged: (userbindOrgan) {
-                                      setState(() {
-                                        _selectBindOrgniasation = userbindOrgan;
-                                        bindOrganisationNAme =
-                                            userbindOrgan?.name ?? '';
-                                        npcbNoDiabitic =
-                                            userbindOrgan?.npcbNo ?? '';
-                                      });
-                                    },
-                                    value: _selectBindOrgniasation,
-                                    items: list.map((userbindorgansa) {
-                                      return DropdownMenuItem<DataBindOrgan>(
-                                        value: userbindorgansa,
-                                        child: SizedBox(
-                                          width: constraints.maxWidth - 60,
-                                          // ✅ Prevents overflow inside dropdown
-                                          child: Text(
-                                            userbindorgansa.name,
-                                            maxLines: 1,
-                                            // ✅ Ensures text fits
-                                            overflow: TextOverflow.ellipsis,
-                                            // ✅ Avoids text overflow
-                                            style:
-                                                const TextStyle(fontSize: 16),
-                                          ),
-                                        ),
-                                      );
-                                    }).toList(),
-                                    decoration: InputDecoration(
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                              vertical: 10.0, horizontal: 5.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: const BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                    ),
-                                    dropdownColor: Colors.white,
-                                    style: const TextStyle(color: Colors.black),
-                                    icon: const Icon(Icons.arrow_drop_down,
-                                        color: Colors.black),
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
+          List<DataBindOrgan> list = snapshot.data ?? [];
+          if (_selectBindOrgniasation == null ||
+              !list.contains(_selectBindOrgniasation)) {
+            _selectBindOrgniasation =
+            list.isNotEmpty ? list.first : null;
+          }
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 0.0),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Select Organisation Type',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 50,
+                      width: constraints.maxWidth,
+                      child: DropdownButtonFormField2<DataBindOrgan>(
+                        value: _selectBindOrgniasation,
+                        onChanged: (userbindOrgan) {
+                          setState(() {
+                            _selectBindOrgniasation = userbindOrgan;
+                            bindOrganisationNAme = userbindOrgan?.name ?? '';
+                            npcbNoDiabitic = userbindOrgan?.npcbNo ?? '';
+                          });
+                        },
+                        items: list.map((userbindorgansa) {
+                          return DropdownMenuItem<DataBindOrgan>(
+                            value: userbindorgansa,
+                            child: SizedBox(
+                              width: constraints.maxWidth - 60,
+                              child: Text(
+                                userbindorgansa.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                        decoration: InputDecoration(
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 10.0, horizontal: 5.0),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                            const BorderSide(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
                         ),
-                      );
-                    },
-                  ),
-                )
-              else if (lowVisionDataValue == 12)
+                        iconStyleData: const IconStyleData(
+                          icon:
+                          Icon(Icons.arrow_drop_down, color: Colors.black),
+                        ),
+                       style: const TextStyle(color: Colors.black),
+
+                        // ✅ Customize button size here
+                        buttonStyleData: ButtonStyleData(
+                          height: 50,
+                          width: constraints.maxWidth,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+
+                        // Optional: dropdown size and position
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 250,
+                          offset: const Offset(0, -10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          );
+        },
+      ),
+    )
+
+    else if (lowVisionDataValue == 12)
                 Container(
                   margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
