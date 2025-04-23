@@ -414,10 +414,14 @@ class _NgoDashboard extends State<NgoDashboard> {
     });
   }
 
-  void _handleMenuSelection(int value) {
+ /* void _handleMenuSelection(int value)  async {
+
     switch (value) {
       case 1:
         print("@@Add Ngo Hospital");
+        // Delay to avoid conflict with showMenu pop
+        await Future.delayed(Duration(milliseconds: 100));
+
         _hospitalListFuture = ApiController.getHospitalList(
           darpan_nos,
           district_code_login,
@@ -450,9 +454,57 @@ class _NgoDashboard extends State<NgoDashboard> {
       default:
         print("Unknown selection");
     }
+  }*/
+
+  void _handleMenuSelection(int value) async {
+    switch (value) {
+      case 1:
+        print("@@Add NGO Hospital");
+
+        // Delay to avoid conflict with showMenu pop
+        await Future.delayed(Duration(milliseconds: 100));
+
+        setState(() {
+          _hospitalListFuture = ApiController.getHospitalList(
+            darpan_nos,
+            district_code_login,
+            userId,
+          );
+          ManageUSerNGOHospt = true;
+          ngoDashboardclicks = false;
+          EyeDonationCentreRegistrationClickONAddDontaions = false;
+
+          EyeBankApplication = false;
+          mangeEyDonationClick = false;
+          ngoCampManagerLists = false;
+          CampManagerRegisterartions = false;
+          CampManagerRegisterartionsEdit = false;
+          SatelliteManagerRegisterartionsEdit = false;
+
+          ngoScreeningCampListss = false;
+          AddScreeningCamps = false;
+          _future = getDPM_ScreeningYear();
+          ngoSATELLITECENTREMANAGERLists = false;
+          AddSatelliteManagers = false;
+          satelliteCenterMenuListdisplay = false;
+          AddSatelliteCenterRedOptionFields = false;
+          Navigator.of(context).pop();
+        });
+
+        // Only close drawer if it's open (optional)
+        if (Scaffold.of(context).isDrawerOpen) {
+          Navigator.of(context).pop();
+        }
+
+        break;
+
+      default:
+        print("Unknown selection");
+    }
   }
 
-  void _handleMenuSelectionScreeninCamp(int value) {
+
+ /* void _handleMenuSelectionScreeninCamp(int value) {
     switch (value) {
       case 1:
         print("@@Camp Manager");
@@ -504,9 +556,71 @@ class _NgoDashboard extends State<NgoDashboard> {
       default:
         print("Unknown selection");
     }
+  }*/
+  void _handleMenuSelectionScreeninCamp(int value) async {
+    // Add a delay to wait for showMenu pop to complete
+    await Future.delayed(Duration(milliseconds: 100));
+
+    switch (value) {
+      case 1:
+        print("@@Camp Manager");
+        _future = getDPM_ScreeningYear();
+        EyeBankApplication = false;
+        mangeEyDonationClick = false;
+        ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions = false;
+
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists = true;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit = false;
+
+        ngoScreeningCampListss = false;
+        AddScreeningCamps = false;
+        ngoSATELLITECENTREMANAGERLists = false;
+        AddSatelliteManagers = false;
+        satelliteCenterMenuListdisplay = false;
+        AddSatelliteCenterRedOptionFields = false;
+        Navigator.pop(context);
+
+        break;
+
+      case 2:
+        print("@@Screening Camp");
+        _future = getDPM_ScreeningYear();
+        EyeBankApplication = false;
+        mangeEyDonationClick = false;
+        ngoDashboardclicks = false;
+        EyeDonationCentreRegistrationClickONAddDontaions = false;
+
+        ManageUSerNGOHospt = false;
+        ngoCampManagerLists = false;
+        CampManagerRegisterartions = false;
+        CampManagerRegisterartionsEdit = false;
+        SatelliteManagerRegisterartionsEdit = false;
+
+        ngoScreeningCampListss = true;
+        AddScreeningCamps = false;
+        ngoSATELLITECENTREMANAGERLists = false;
+        AddSatelliteManagers = false;
+        satelliteCenterMenuListdisplay = false;
+        AddSatelliteCenterRedOptionFields = false;
+        Navigator.pop(context);
+        break;
+
+      default:
+        print("Unknown selection");
+    }
+
+    // Only pop if you're sure it's a Drawer or similar
+    if (Scaffold.of(context).isDrawerOpen) {
+      Navigator.pop(context);
+    }
   }
 
-  void _showPopupMenuScreeningCamp() async {
+
+  /*void _showPopupMenuScreeningCamp() async {
     // Ensure the dropdown and overlay render boxes are valid
     final RenderBox dropdownRenderBox =
         _dropdownKey.currentContext?.findRenderObject() as RenderBox;
@@ -541,10 +655,48 @@ class _NgoDashboard extends State<NgoDashboard> {
       elevation: 8.0,
     ).then((selectedValue) {
       if (selectedValue != null) {
-        _handleMenuSelectionScreeninCamp(selectedValue);
+        Future.delayed(Duration(milliseconds: 100), () {
+          _handleMenuSelectionScreeninCamp(selectedValue);
+        });
+      }
+    });
+  }*/
+  void _showPopupMenuScreeningCamp() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final RenderBox dropdownRenderBox =
+      _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+      final RenderBox overlayRenderBox =
+      Overlay.of(context).context.findRenderObject() as RenderBox;
+
+      if (dropdownRenderBox == null || overlayRenderBox == null) {
+        print("❌ RenderBox or OverlayRenderBox is null");
+        return;
+      }
+
+      final RelativeRect position = RelativeRect.fromRect(
+        dropdownRenderBox.localToGlobal(Offset.zero) & dropdownRenderBox.size,
+        Offset.zero & overlayRenderBox.size,
+      );
+
+      final selectedValue = await showMenu<int>(
+        context: context,
+        position: position,
+        items: [
+          PopupMenuItem<int>(value: 1, child: Text("Camp Manager")),
+          PopupMenuItem<int>(value: 2, child: Text("Screening Camp")),
+        ],
+        elevation: 8.0,
+      );
+
+      if (selectedValue != null) {
+        // Let the popup fully close before triggering logic
+        Future.delayed(Duration(milliseconds: 100), () {
+          _handleMenuSelectionScreeninCamp(selectedValue);
+        });
       }
     });
   }
+
 
   void _showPopupMenuSatelliteCenter() async {
     // Ensure the dropdown and overlay render boxes are valid
@@ -2403,415 +2555,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
-  /* Widget buildDropdownHospitalType() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 20, vertical: 0), // Add margin here
 
-      child: SizedBox(
-        height: 60,
-        width: double.infinity, // Full width inside the container
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DropdownButtonFormField2<String>(
-              value: _chosenValueMangeTwo,
-              isExpanded: true,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                hintText: 'All',
-                hintStyle: const TextStyle(color: Colors.grey),
-              ),
-              buttonStyleData: ButtonStyleData(
-                height: 50,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 6), // Reduced horizontal padding
-                */ /* decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(10),
-                ),*/ /*
-              ),
-              dropdownStyleData: DropdownStyleData(
-                maxHeight: 300,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                offset: const Offset(0, -3),
-              ),
-              iconStyleData: const IconStyleData(
-                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-              ),
-              items: <String>['Hospitals', 'Camps', 'Satellite Centres']
-                  .map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                );
-              }).toList(),
-              onChanged: (String value) {
-                setState(() {
-                  _chosenValueMangeTwo = value ?? 'All';
-                  print('@@_chosenValueMangeTwo-- $_chosenValueMangeTwo');
-
-
-                  switch (_chosenValueMangeTwo) {
-                    case 'Hospitals':
-                      dropDownTwoSelcted = 6;
-                      selectionBasedHospital = true;
-                      _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL(); // ✅ Future is assigned
-                      break;
-
-                    case 'Camps':
-                      dropDownTwoSelcted = 9;
-                      selectionBasedHospital = false;
-                      ngoDashboardDatas = false;
-                      break;
-
-                    case 'Satellite Centres':
-                      dropDownTwoSelcted = 8;
-                      selectionBasedHospital = false;
-                      ngoDashboardDatas = false;
-                      break;
-
-                    case 'All': // ✅ Fix for 'All' case
-                      dropDownTwoSelcted = 0;
-                      selectionBasedHospital = true;
-                      ngoDashboardDatas = true;
-                      _futureDataDropDownHospitalSelected = GetHospitalNgoForDDL(); // ✅ Future is properly assigned
-                      break;
-
-                    default:
-                    */ /*  dropDownTwoSelcted = 0;
-                      selectionBasedHospital = false;
-                      ngoDashboardDatas = false;*/ /*
-                      break;
-                  }
-                });
-              },
-
-            ),
-            const SizedBox(height: 5),
-
-            // ✅ Conditional Dropdown for "Hospitals"
-            if (dropDownTwoSelcted == 6)
-              SizedBox(
-                height: 100, // Adjust height as needed
-                child: FutureBuilder<List<DataDropDownHospitalSelected>>(
-                  future: _futureDataDropDownHospitalSelected,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
-
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    }
-
-                    List<DataDropDownHospitalSelected> list = snapshot.data ?? [];
-
-                    // Handle case when the list is null or empty
-                    if (list.isEmpty) {
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: const Text(
-                          'No data found',
-                          style: TextStyle(fontSize: 18, color: Colors.red),
-                        ),
-                      );
-                    }
-
-                    // Set the first item as default if none is selected
-                    if (_selectHospitalSelected == null || !list.contains(_selectHospitalSelected)) {
-                      _selectHospitalSelected = list.first;
-                    }
-
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Select Hospital:',
-                          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        ),
-                        DropdownButtonFormField2<DataDropDownHospitalSelected>(
-                          value: _selectHospitalSelected,
-                          isExpanded: true,
-                          onChanged: (hospital) {
-                            setState(() {
-                              _selectHospitalSelected = hospital;
-                              hospitalNameFetch = hospital?.hName ?? '';
-                              reghospitalNameFetch = hospital?.hRegID ?? '';
-                            });
-                          },
-                          items: list.map((hospital) {
-                            return DropdownMenuItem<DataDropDownHospitalSelected>(
-                              value: hospital,
-                              child: Text(
-                                hospital.hName,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            );
-                          }).toList(),
-                          buttonStyleData: ButtonStyleData(
-                            height: 60, // ✅ Dropdown height
-                            padding: const EdgeInsets.symmetric(horizontal: 3),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Colors.grey, width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          dropdownStyleData: DropdownStyleData(
-                            maxHeight: 300,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            offset: const Offset(0, -3),
-                          ),
-                          iconStyleData: const IconStyleData(
-                            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                          ),
-                          hint: const Text(
-                            'Select Hospital',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                            border: InputBorder.none,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              )
-
-          ],
-        ),
-      ),
-    );
-  }*/
-  /*Widget buildDropdownHospitalType() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-      child: SizedBox(
-        width: double.infinity, // Full width inside the container
-        height:60,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            DropdownButtonFormField2<String>(
-              value: _chosenValueMangeTwo,
-              isExpanded: true,
-              decoration: InputDecoration(
-                contentPadding: const EdgeInsets.symmetric(horizontal: 5),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                  borderRadius: BorderRadius.circular(10.0),
-                ),
-                filled: true,
-                fillColor: Colors.white,
-                hintText: 'All',
-                hintStyle: const TextStyle(color: Colors.grey),
-              ),
-              buttonStyleData: ButtonStyleData(
-                height: 50,
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 6), // Reduced horizontal padding
-                *//* decoration: BoxDecoration(
-                  color: Colors.blue[50],
-                  borderRadius: BorderRadius.circular(10),
-                ),*//*
-              ),
-              dropdownStyleData: DropdownStyleData(
-                maxHeight: 300,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                offset: const Offset(0, -3),
-              ),
-              iconStyleData: const IconStyleData(
-                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-              ),
-              items: <String>['Hospitals', 'Camps', 'Satellite Centres']
-                  .map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(
-                    value,
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                );
-              }).toList(),
-              onChanged: (String value) {
-                setState(() {
-                  _chosenValueMangeTwo = value ?? 'All';
-                  print('@@_chosenValueMangeTwo-- $_chosenValueMangeTwo');
-
-                  switch (_chosenValueMangeTwo) {
-                    case 'Hospitals':
-                      dropDownTwoSelcted = 6;
-                      selectionBasedHospital = true;
-                      _futureDataDropDownHospitalSelected =
-                          GetHospitalNgoForDDL(); // ✅ Future is assigned
-                      break;
-
-                    case 'Camps':
-                      dropDownTwoSelcted = 9;
-                      selectionBasedHospital = false;
-                      ngoDashboardDatas = false;
-                      break;
-
-                    case 'Satellite Centres':
-                      dropDownTwoSelcted = 8;
-                      selectionBasedHospital = false;
-                      ngoDashboardDatas = false;
-                      break;
-
-                    case 'All': // ✅ Fix for 'All' case
-                      dropDownTwoSelcted = 0;
-                      selectionBasedHospital = true;
-                      ngoDashboardDatas = true;
-                      _futureDataDropDownHospitalSelected =
-                          GetHospitalNgoForDDL(); // ✅ Future is properly assigned
-                      break;
-
-                    default:
-                      *//*  dropDownTwoSelcted = 0;
-                      selectionBasedHospital = false;
-                      ngoDashboardDatas = false;*//*
-                      break;
-                  }
-                });
-              },
-            ),
-            const SizedBox(height: 5),
-
-            // ✅ Conditional Dropdown for "Hospitals"
-            if (dropDownTwoSelcted == 6)
-              FutureBuilder<List<DataDropDownHospitalSelected>>(
-                future: _futureDataDropDownHospitalSelected,
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  }
-
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
-                  }
-
-                  List<DataDropDownHospitalSelected> list = snapshot.data ?? [];
-
-                  // Handle case when the list is null or empty
-                  if (list.isEmpty) {
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: const Text(
-                        'No data found',
-                        style: TextStyle(fontSize: 18, color: Colors.red),
-                      ),
-                    );
-                  }
-
-                  // Set the first item as default if none is selected
-                  if (_selectHospitalSelected == null ||
-                      !list.contains(_selectHospitalSelected)) {
-                    _selectHospitalSelected = list.first;
-                  }
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Select Hospital:',
-                        style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                      DropdownButtonFormField2<DataDropDownHospitalSelected>(
-                        value: _selectHospitalSelected,
-                        isExpanded: true,
-                        onChanged: (hospital) {
-                          setState(() {
-                            _selectHospitalSelected = hospital;
-                            hospitalNameFetch = hospital?.hName ?? '';
-                            reghospitalNameFetch = hospital?.hRegID ?? '';
-                          });
-                        },
-                        items: list.map((hospital) {
-                          return DropdownMenuItem<DataDropDownHospitalSelected>(
-                            value: hospital,
-                            child: Text(
-                              hospital.hName,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          );
-                        }).toList(),
-                        buttonStyleData: ButtonStyleData(
-                          height: 60,
-                          // ✅ Dropdown height Set consistent height
-
-                          padding: const EdgeInsets.symmetric(horizontal: 3),
-                          // Re
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey, width: 1),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 300,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          offset: const Offset(0, -3),
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon:
-                              Icon(Icons.arrow_drop_down, color: Colors.black),
-                        ),
-                        hint: const Text(
-                          'Select Hospital',
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(horizontal: 0),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-          ],
-        ),
-      ),
-    );
-  }*/
   Widget buildDropdownHospitalType() {
     return  Container(
       margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -10127,7 +9871,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                         SizedBox(height: 5),
                         // Mobile Number Field
                         Container(
-                          margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          margin:EdgeInsets.fromLTRB(5, 5, 5, 0),
 
                           child: SizedBox(
                             height: 50,

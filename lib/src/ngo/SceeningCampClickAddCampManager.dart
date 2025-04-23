@@ -149,10 +149,24 @@ class _SceeningCampClickAddCampManager extends State<SceeningCampClickAddCampMan
                                     ],
                                   ),
                                 ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey, // Grey border when not focused
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey, // Grey border when focused
+                                    width: 1.0,
+                                  ),
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12.0),
                                   borderSide: BorderSide(
-                                    color: Colors.grey.shade300,
+                                    color: Colors.grey,
                                     width: 1.0,
                                   ),
                                 ),
@@ -239,6 +253,20 @@ class _SceeningCampClickAddCampManager extends State<SceeningCampClickAddCampMan
                                     ],
                                   ),
                                 ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey, // Grey border when not focused
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey, // Grey border when focused
+                                    width: 1.0,
+                                  ),
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12.0),
                                   borderSide: BorderSide(
@@ -294,10 +322,24 @@ class _SceeningCampClickAddCampManager extends State<SceeningCampClickAddCampMan
                                     ],
                                   ),
                                 ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey, // Grey border when not focused
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey, // Grey border when focused
+                                    width: 1.0,
+                                  ),
+                                ),
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(12.0),
                                   borderSide: BorderSide(
-                                    color: Colors.grey.shade300,
+                                    color: Colors.grey,
                                     width: 1.0,
                                   ),
                                 ),
@@ -348,6 +390,20 @@ class _SceeningCampClickAddCampManager extends State<SceeningCampClickAddCampMan
                                         ),
                                       ),
                                     ],
+                                  ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey, // Grey border when not focused
+                                    width: 1.0,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.grey, // Grey border when focused
+                                    width: 1.0,
                                   ),
                                 ),
                                 border: OutlineInputBorder(
@@ -407,7 +463,7 @@ class _SceeningCampClickAddCampManager extends State<SceeningCampClickAddCampMan
                                 ),
                                 hintText: 'Enter your designation',
                                 hintStyle: TextStyle(
-                                  color: Colors.grey.shade500,
+                                  color: Colors.grey,
                                 ),
                               ),
                             ),
