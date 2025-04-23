@@ -557,67 +557,81 @@ class _NgoDashboard extends State<NgoDashboard> {
         print("Unknown selection");
     }
   }*/
+  void _showPopupMenuScreeningCamp() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final RenderBox dropdownRenderBox =
+      _dropdownKey.currentContext?.findRenderObject() as RenderBox;
+      final RenderBox overlayRenderBox =
+      Overlay.of(context).context.findRenderObject() as RenderBox;
+
+      if (dropdownRenderBox == null || overlayRenderBox == null) {
+        print("❌ RenderBox or OverlayRenderBox is null");
+        return;
+      }
+
+      final RelativeRect position = RelativeRect.fromRect(
+        dropdownRenderBox.localToGlobal(Offset.zero) & dropdownRenderBox.size,
+        Offset.zero & overlayRenderBox.size,
+      );
+
+      final selectedValue = await showMenu<int>(
+        context: context,
+        position: position,
+        items: [
+          PopupMenuItem<int>(value: 1, child: Text("Camp Manager")),
+          PopupMenuItem<int>(value: 2, child: Text("Screening Camp")),
+        ],
+        elevation: 8.0,
+      );
+
+      if (selectedValue != null) {
+        // Let the popup fully close before triggering logic
+        Future.delayed(Duration(milliseconds: 100), () {
+          _handleMenuSelectionScreeninCamp(selectedValue);
+        });
+      }
+    });
+  }
+
   void _handleMenuSelectionScreeninCamp(int value) async {
-    // Add a delay to wait for showMenu pop to complete
     await Future.delayed(Duration(milliseconds: 100));
 
-    switch (value) {
-      case 1:
+    setState(() {
+      _future = getDPM_ScreeningYear();
+
+      EyeBankApplication = false;
+      mangeEyDonationClick = false;
+      ngoDashboardclicks = false;
+      EyeDonationCentreRegistrationClickONAddDontaions = false;
+
+      ManageUSerNGOHospt = false;
+      CampManagerRegisterartions = false;
+      CampManagerRegisterartionsEdit = false;
+      SatelliteManagerRegisterartionsEdit = false;
+      AddScreeningCamps = false;
+      ngoSATELLITECENTREMANAGERLists = false;
+      AddSatelliteManagers = false;
+      satelliteCenterMenuListdisplay = false;
+      AddSatelliteCenterRedOptionFields = false;
+
+      if (value == 1) {
         print("@@Camp Manager");
-        _future = getDPM_ScreeningYear();
-        EyeBankApplication = false;
-        mangeEyDonationClick = false;
-        ngoDashboardclicks = false;
-        EyeDonationCentreRegistrationClickONAddDontaions = false;
-
-        ManageUSerNGOHospt = false;
         ngoCampManagerLists = true;
-        CampManagerRegisterartions = false;
-        CampManagerRegisterartionsEdit = false;
-        SatelliteManagerRegisterartionsEdit = false;
-
         ngoScreeningCampListss = false;
-        AddScreeningCamps = false;
-        ngoSATELLITECENTREMANAGERLists = false;
-        AddSatelliteManagers = false;
-        satelliteCenterMenuListdisplay = false;
-        AddSatelliteCenterRedOptionFields = false;
-        Navigator.pop(context);
-
-        break;
-
-      case 2:
+      } else if (value == 2) {
         print("@@Screening Camp");
-        _future = getDPM_ScreeningYear();
-        EyeBankApplication = false;
-        mangeEyDonationClick = false;
-        ngoDashboardclicks = false;
-        EyeDonationCentreRegistrationClickONAddDontaions = false;
-
-        ManageUSerNGOHospt = false;
         ngoCampManagerLists = false;
-        CampManagerRegisterartions = false;
-        CampManagerRegisterartionsEdit = false;
-        SatelliteManagerRegisterartionsEdit = false;
-
         ngoScreeningCampListss = true;
-        AddScreeningCamps = false;
-        ngoSATELLITECENTREMANAGERLists = false;
-        AddSatelliteManagers = false;
-        satelliteCenterMenuListdisplay = false;
-        AddSatelliteCenterRedOptionFields = false;
-        Navigator.pop(context);
-        break;
+      }
+    });
 
-      default:
-        print("Unknown selection");
-    }
+    Navigator.pop(context);
 
-    // Only pop if you're sure it's a Drawer or similar
     if (Scaffold.of(context).isDrawerOpen) {
       Navigator.pop(context);
     }
   }
+
 
 
   /*void _showPopupMenuScreeningCamp() async {
@@ -661,41 +675,6 @@ class _NgoDashboard extends State<NgoDashboard> {
       }
     });
   }*/
-  void _showPopupMenuScreeningCamp() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final RenderBox dropdownRenderBox =
-      _dropdownKey.currentContext?.findRenderObject() as RenderBox;
-      final RenderBox overlayRenderBox =
-      Overlay.of(context).context.findRenderObject() as RenderBox;
-
-      if (dropdownRenderBox == null || overlayRenderBox == null) {
-        print("❌ RenderBox or OverlayRenderBox is null");
-        return;
-      }
-
-      final RelativeRect position = RelativeRect.fromRect(
-        dropdownRenderBox.localToGlobal(Offset.zero) & dropdownRenderBox.size,
-        Offset.zero & overlayRenderBox.size,
-      );
-
-      final selectedValue = await showMenu<int>(
-        context: context,
-        position: position,
-        items: [
-          PopupMenuItem<int>(value: 1, child: Text("Camp Manager")),
-          PopupMenuItem<int>(value: 2, child: Text("Screening Camp")),
-        ],
-        elevation: 8.0,
-      );
-
-      if (selectedValue != null) {
-        // Let the popup fully close before triggering logic
-        Future.delayed(Duration(milliseconds: 100), () {
-          _handleMenuSelectionScreeninCamp(selectedValue);
-        });
-      }
-    });
-  }
 
 
   void _showPopupMenuSatelliteCenter() async {
@@ -733,12 +712,15 @@ class _NgoDashboard extends State<NgoDashboard> {
       elevation: 8.0,
     ).then((selectedValue) {
       if (selectedValue != null) {
-        _handleMenuSelectionSatelliteCamp(selectedValue);
+        Future.delayed(Duration(milliseconds: 100), () {
+          _handleMenuSelectionSatelliteCamp(selectedValue);
+
+        });
       }
     });
   }
 
-  void _handleMenuSelectionSatelliteCamp(int value) {
+  /*void _handleMenuSelectionSatelliteCamp(int value) {
     switch (value) {
       case 1:
         print("@@Satellite Manger Camp");
@@ -790,7 +772,52 @@ class _NgoDashboard extends State<NgoDashboard> {
       default:
         print("Unknown selection");
     }
+  }*/
+
+
+
+  void _handleMenuSelectionSatelliteCamp(int value) async {
+    await Future.delayed(Duration(milliseconds: 100));
+    setState(() {
+      _future = getDPM_ScreeningYear();
+      EyeBankApplication = false;
+      mangeEyDonationClick = false;
+      ngoDashboardclicks = false;
+      ManageUSerNGOHospt = false;
+      EyeDonationCentreRegistrationClickONAddDontaions = false;
+
+      CampManagerRegisterartions = false;
+      CampManagerRegisterartionsEdit = false;
+      SatelliteManagerRegisterartionsEdit = false;
+      ngoScreeningCampListss = false;
+      AddScreeningCamps = false;
+      AddSatelliteManagers = false;
+      AddSatelliteCenterRedOptionFields = false;
+
+      if (value == 1) {
+        print("@@Satellite Manager Camp");
+        ngoCampManagerLists = false;
+        ngoSATELLITECENTREMANAGERLists = true;
+        satelliteCenterMenuListdisplay = false;
+
+      } else if (value == 2) {
+        print("@@Satellite Center");
+        ngoCampManagerLists = false;
+        ngoSATELLITECENTREMANAGERLists = false;
+        satelliteCenterMenuListdisplay = true;
+      } else {
+        print("Unknown selection");
+      }
+    });
+
+    // Close the drawer if open
+    if (Scaffold.of(context).isDrawerOpen) {
+      Navigator.of(context).pop();
+    } else {
+      Navigator.of(context).pop();
+    }
   }
+
 
   Future<List<DataGethospitalForDDL>> GetHospitalForDDL(
       int districtid, int stateId, String userId) async {
@@ -1102,10 +1129,17 @@ class _NgoDashboard extends State<NgoDashboard> {
                         });
                       } else if (_chosenValue == "Screening Camp") {
                         print('@@Screening--1 $_chosenValue');
-                        _showPopupMenuScreeningCamp();
+                        Future.delayed(Duration(milliseconds: 30), () {
+                          _showPopupMenuScreeningCamp();
+
+                        });
                       } else if (_chosenValue == "Satellite Center") {
                         print('@@Sattelite--1 $_chosenValue');
-                        _showPopupMenuSatelliteCenter();
+                        Future.delayed(Duration(milliseconds: 30), () {
+                          _showPopupMenuSatelliteCenter();
+
+
+                        });
                       }
                     });
                   }),
