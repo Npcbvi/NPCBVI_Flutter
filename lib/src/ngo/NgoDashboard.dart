@@ -33,6 +33,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_Scree
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/GetSatelliteManagerById.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/CenterOfficeNameSatelliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
+import 'package:mohfw_npcbvi/src/ngo/SceeningCampClickAddCampManager.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -2300,7 +2301,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         ));
   }
 
-  void _addCampManager() {
+  /*void _addCampManager() {
     // Handle the tap event here
     print('Add Camp Manager tapped!');
     setState(() {
@@ -2321,6 +2322,12 @@ class _NgoDashboard extends State<NgoDashboard> {
       satelliteCenterMenuListdisplay = false;
       AddSatelliteCenterRedOptionFields = false;
     });
+  }*/
+  void _addCampManager() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SceeningCampClickAddCampManager()),
+    );
   }
 
   void _addScreeningCampManager() {
@@ -9265,6 +9272,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     key: _formKey1,
                     child: Column(
                       children: [
+                        SizedBox(height: 5),
                         Container(
                           margin: EdgeInsets.fromLTRB(
                               5,0,5,0), // Add margin here
@@ -9631,14 +9639,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                           // Center vertically
                           children: [
                             // Center the Location Type Label
-                            Text(
-                              'Location Type*',
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.blue.shade700, // Label color
-                              ),
-                            ),
+
                             // Add space between label and options
 
                             // Use Row to center the radio buttons horizontally
@@ -9878,9 +9879,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                         else if (locationTypeValues == 'Rural')
                           // Content to display if "Urban" is selected
 
-                          Column(
+                      /*    Column(
                             children: [
-                              Center(
+                              Container(
+margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                                 child: FutureBuilder<List<DataGetCity>>(
                                   future: _getCity(district_code_login),
                                   builder: (context, snapshot) {
@@ -9903,6 +9905,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                                         !districtList
                                             .contains(_selectedUserCity)) {
                                       _selectedUserCity = districtList.first;
+                                      print('@@_selectedUserDistrict--' + _selectedUserCity.toString());
+                                      distCodeGovtPrivate = int.parse(_selectedUserCity?.subdistrictCode.toString() ?? "0");
+                                     // selectedDistrictName = _selectedUserCity.subdistrictCode.toString();
+                                     // print('@@selectedDistrictName' + selectedDistrictName);
                                     }
 
                                     return Padding(
@@ -10046,76 +10052,80 @@ class _NgoDashboard extends State<NgoDashboard> {
                                   },
                                 ),
                               ),
+                              SizedBox(height: 5),
                               Container(
-    margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
+
                                 child: SizedBox(
                                   height: 50,
                                   width: double.infinity,
                                   child: TextFormField(
                                     controller: _Pincodecontroller,
                                     decoration: InputDecoration(
-                                      labelText: 'Pin Code',
-                                      // Normal text label
-                                      suffixText: ' *',
-                                      // Asterisk for required field
-                                      suffixStyle: TextStyle(
-                                        color: Colors.red,
-                                        // Red color for asterisk
-                                        fontWeight: FontWeight.bold,
+                                      label: RichText(
+                                        text: TextSpan(
+                                          children: [
+                                            TextSpan(
+                                              text: 'Pin Code',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.black, // Label color
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: ' *',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.red,
+                                                // Red asterisk for required field
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 15.0, horizontal: 10.0),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
                                         borderSide: BorderSide(
                                           color: Colors.grey,
-                                          // Border when not focused
-                                          width: 1.5,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.grey,
-                                          // Border when focused
-                                          width: 2.0,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      errorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.grey,
-                                          // Border when error occurs
-                                          width: 1.5,
-                                        ),
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      focusedErrorBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Colors.grey,
-                                          // Border when focused & error
+                                          // Default grey border
                                           width: 1.0,
                                         ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                          // Grey border when enabled
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(
+                                          color: Colors.grey,
+                                          // Grey border when focused
+                                          width: 1.0,
+                                        ),
                                       ),
                                     ),
                                     keyboardType: TextInputType.phone,
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
                                         return 'Please enter Pin Code number';
+                                      } else if (value.length != 10) {
+                                        return 'Please enter Pin Code number';
                                       }
                                       return null;
                                     },
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
+                              ),
 
-                        // Mobile Number Field
+                            ],
+                          ),*/
                         SizedBox(height: 5),
+                        // Mobile Number Field
                         Container(
                           margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
 
@@ -10799,7 +10809,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       _buildDetailsRow(
                           'End Date', Utils.formatDateString(offer.endDate)),
                       _buildDetailsRow('City', offer.name),
-                      TableRow(
+              /*        TableRow(
                         children: [
                           Container(
                             padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -10818,7 +10828,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                             alignment: Alignment.centerLeft,
                           ),
                         ],
-                      ),
+                      ),*/
                     ],
                   ),
                   SizedBox(height: 16.0),

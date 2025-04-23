@@ -705,7 +705,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     {'value': 'Glaucoma', 'icon': Icons.healing},
                     {'value': 'Corneal Blindness', 'icon': Icons.healing},
                     {'value': 'VR Surgery', 'icon': Icons.healing},
-                    {'value': 'Childhood Blindness', 'icon': Icons.child_care},
+                 /*   {'value': 'Childhood Blindness', 'icon': Icons.child_care},*/
                   ],
                   onChanged: (String value) {
                     setState(() {
@@ -830,7 +830,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         LowVisionRegisterSquint = false;
                         ngoEyeScreeningdataShow = false;
                         dpmEyeScreeningSchoolDataShowADDNewRecord = false;
-                      } else if (_chosenValueLOWVision ==
+                      } /*else if (_chosenValueLOWVision ==
                           "Childhood Blindness") {
                         print('@@Childhood--' + _chosenValueLOWVision);
                         if (_chosenValueLOWVision == "Childhood Blindness") {
@@ -855,7 +855,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         } else {
                           print('@@Childhood--2' + _chosenValueLOWVision);
                         }
-                      }
+                      }*/
+
                     });
                     Navigator.pop(context);
                   },
@@ -4722,7 +4723,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ),
                           buttonStyleData: ButtonStyleData(
                             height: 50, // Set consistent height
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
                               color: Colors.white, // Visible background
                               border: Border.all(color: Colors.grey, width: 1),
@@ -4816,7 +4816,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ),
                           buttonStyleData: ButtonStyleData(
                             height: 50, // Set consistent height
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(color: Colors.grey, width: 1),
@@ -5631,7 +5630,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ),
                           buttonStyleData: ButtonStyleData(
                             height: 50, // Set consistent height
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
                               color: Colors.white, // Visible background
                               border: Border.all(color: Colors.grey, width: 1),
@@ -5731,7 +5729,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ),
                           buttonStyleData: ButtonStyleData(
                             height: 50, // Set consistent height
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(color: Colors.grey, width: 1),
@@ -10497,11 +10494,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ),
                           buttonStyleData: ButtonStyleData(
                             height: 50, // ✅ Fixed height
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
                           ),
                           iconStyleData: const IconStyleData(
                             icon: Icon(Icons.arrow_drop_down,
                                 color: Colors.black),
+                            iconSize: 24,
                           ),
                           menuItemStyleData: MenuItemStyleData(
                             overlayColor:
@@ -10550,7 +10547,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                     buttonStyleData: ButtonStyleData(
                       height: 50, // ✅ Set height to 50
-                      padding: EdgeInsets.symmetric(horizontal: 15),
                     ),
                     iconStyleData: IconStyleData(
                       icon: Icon(Icons.arrow_drop_down, color: Colors.black),
@@ -10637,7 +10633,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         value: _selectBindOrgniasation,
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding: EdgeInsets.zero,
+
+                          contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 14), // ✅ text spacing
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -10664,13 +10661,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                           });
                         },
                         buttonStyleData: ButtonStyleData(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(color: Colors.grey),
-                            color: Colors.white,
-                          ),
+                          height: 20,
+
                         ),
                         dropdownStyleData: DropdownStyleData(
                           maxHeight: 300,
@@ -10685,12 +10677,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                         iconStyleData: const IconStyleData(
                           icon:
                               Icon(Icons.arrow_drop_down, color: Colors.black),
-                          iconSize: 30,
+                          iconSize: 24,
                         ),
-                        menuItemStyleData: MenuItemStyleData(
-                          overlayColor:
-                              MaterialStateProperty.all(Colors.blue[100]),
-                        ),
+
                       );
                     },
                   ),
@@ -10809,6 +10798,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 iconStyleData: const IconStyleData(
                                   icon: Icon(Icons.arrow_drop_down,
                                       color: Colors.black),
+                                  iconSize: 24,
                                 ),
 
                                 /// 👇 Add this block to control dropdown position & styling
@@ -10956,8 +10946,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               ),
                               buttonStyleData: ButtonStyleData(
                                 height: 50,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
+
                               ),
                               dropdownStyleData: DropdownStyleData(
                                 maxHeight: 300,
@@ -10972,7 +10961,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               iconStyleData: const IconStyleData(
                                 icon: Icon(Icons.arrow_drop_down,
                                     color: Colors.black),
-                                iconSize: 30,
+                                iconSize: 24,
                               ),
                               menuItemStyleData: MenuItemStyleData(
                                 overlayColor:
@@ -11271,13 +11260,9 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                     developer.log('@@snapshot' + snapshot.data.toString());
 
-                    List<DataGetDPM_ScreeningYear> list =
-                        snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
-                      return district;
-                    }).toList();
+                    List<DataGetDPM_ScreeningYear> list = snapshot.data ?? [];
 
-                    if (_selectedUser == null ||
-                        !list.contains(_selectedUser)) {
+                    if (_selectedUser == null || !list.contains(_selectedUser)) {
                       _selectedUser = list.first;
                     }
 
@@ -11285,71 +11270,59 @@ class _DPMDashboard extends State<DPMDashboard> {
                       padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          /// **Updated Dropdown with DropdownButtonFormField2**
+
                           DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
                             isExpanded: true,
-                            // Ensure dropdown expands properly
                             value: _selectedUser,
                             onChanged: (userc) {
                               setState(() {
                                 _selectedUser = userc;
-                                getYearGlucoma = userc.name;
-                                getfyid = userc.fyid;
-                                print('@@getYearGlucoma--' +
-                                    getYearGlucoma.toString());
-                                print('@@getfyidSelected here----' +
-                                    getfyid.toString());
+                                getYearGlucoma = userc?.name ?? '';
+                                getfyid = userc?.fyid ?? '';
+                                print('@@getYearGlucoma--$getYearGlucoma');
+                                print('@@getfyidSelected here----$getfyid');
                               });
                             },
-                            items: list
-                                .map(
-                                  (user) => DropdownMenuItem<
-                                      DataGetDPM_ScreeningYear>(
-                                    value: user,
-                                    child: Text(
-                                      user.name,
-                                      style: const TextStyle(fontSize: 16),
-                                      overflow: TextOverflow
-                                          .ellipsis, // Prevents text overflow
-                                    ),
-                                  ),
-                                )
-                                .toList(),
-
-                            // Custom UI for the Dropdown Button
+                            items: list.map((user) {
+                              return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                                value: user,
+                                child: Text(
+                                  user.name,
+                                  style: const TextStyle(fontSize: 16),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              );
+                            }).toList(),
                             decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 0.0),
+                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
                               enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.grey, width: 1.0),
+                                borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.grey, width: 1.0),
+                                borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                 borderRadius: BorderRadius.circular(10.0),
                               ),
                               filled: true,
                               fillColor: Colors.white,
                             ),
-
-                            /// **Dropdown Customization**
                             dropdownStyleData: DropdownStyleData(
-                              maxHeight: 300, // Adjust dropdown height
+                              maxHeight: 300,
+                              offset: const Offset(0, 10), // ✅ Dropdown will appear 10px lower
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
                                 color: Colors.white,
                               ),
                             ),
                             buttonStyleData: const ButtonStyleData(
-                              padding: EdgeInsets.symmetric(horizontal: 0),
                               height: 20,
+                              padding: EdgeInsets.only(right: 15, left: 0), // 👈 Adds space between text and icon
                             ),
                             iconStyleData: const IconStyleData(
-                              icon: Icon(Icons.arrow_drop_down,
-                                  color: Colors.black),
+                              icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                              iconSize: 24,
                             ),
                           ),
                         ],
@@ -11358,78 +11331,87 @@ class _DPMDashboard extends State<DPMDashboard> {
                   },
                 ),
               ),
+
               SizedBox(height: 5), // Space between label and dropdown
-
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
-                child: Container(
-                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Background color of the dropdown box
-                    border: Border.all(color: Colors.grey, width: 1.0),
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      focusColor: Colors.black,
-                      value: lowVisionDatas,
-                      style: TextStyle(color: Colors.white),
-                      iconEnabledColor: Colors.white,
-                      items: <String>[
-                        'NGOs',
-                        'Private Practitioner',
-                        'Private Medical College',
-                      ].map<DropdownMenuItem<String>>(
-                          (String lowVisionRegistry) {
-                        return DropdownMenuItem<String>(
-                          value: lowVisionRegistry,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 8, horizontal: 10),
-                            // Added padding
-                            child: Text(
-                              lowVisionRegistry,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 16),
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                      hint: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-                        // Padding for hint text
-                        child: Text(
-                          "Select Type",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                // ✅ Added margin
+                width: double.infinity,
+                // ✅ Takes full width safely
+                height: 50,
+                // ✅ Set height to 50
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border.all(color: Colors.grey, width: 1.0),
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButtonFormField2<String>(
+                    isExpanded: true,
+                    value: lowVisionDatas,
+                    style: const TextStyle(color: Colors.black),
+                    decoration: InputDecoration(
+                      hintText: "Select Type",
+                      hintStyle: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
-                      onChanged: (String lowVisionData) {
-                        setState(() {
-                          lowVisionDatas = lowVisionData;
-
-                          if (lowVisionDatas == "NGOs") {
-                            lowVisionDataValue = 5;
-                          } else if (lowVisionDatas == "Private Practitioner") {
-                            lowVisionDataValue = 12;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
-                          } else if (lowVisionData ==
-                              "Private Medical College") {
-                            lowVisionDataValue = 13;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
-                          } else {
-                            lowVisionDataValue = 0;
-                          }
-                        });
-                      },
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 10), // ✅ Adjusted padding
                     ),
+                    buttonStyleData: ButtonStyleData(
+                      height: 50, // ✅ Set height to 50
+                    ),
+                    iconStyleData: IconStyleData(
+                      icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                      iconSize: 24,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      maxHeight: 300,
+                      width: 300,
+
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    items: [
+                      'NGOs',
+                      'Private Practitioner',
+                      'Private Medical College',
+                    ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
+                      return DropdownMenuItem<String>(
+                        value: lowVisionRegistry,
+                        child: Text(
+                          lowVisionRegistry,
+                          overflow: TextOverflow.ellipsis,
+                          // ✅ Prevents text overflow
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: (String lowVisionData) {
+                      setState(() {
+                        lowVisionDatas = lowVisionData;
+
+                        if (lowVisionDatas == "NGOs") {
+                          lowVisionDataValue = 5;
+                        } else if (lowVisionDatas == "Private Practitioner") {
+                          lowVisionDataValue = 12;
+                          _futureDataBindOrganValuebiggerFive =
+                              GetDPM_Bindorg_New();
+                        } else if (lowVisionData ==
+                            "Private Medical College") {
+                          lowVisionDataValue = 13;
+                          _futureDataBindOrganValuebiggerFive =
+                              GetDPM_Bindorg_New();
+                        } else {
+                          lowVisionDataValue = 0;
+                        }
+                      });
+                    },
                   ),
                 ),
               ),
@@ -11509,7 +11491,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     decoration: InputDecoration(
                                       contentPadding:
                                           const EdgeInsets.symmetric(
-                                              vertical: 15.0, horizontal: 5.0),
+                                              vertical: 15.0, horizontal: 10.0),
                                       enabledBorder: OutlineInputBorder(
                                         borderSide: const BorderSide(
                                             color: Colors.grey, width: 1.0),
@@ -12300,6 +12282,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 iconStyleData: const IconStyleData(
                                   icon: Icon(Icons.arrow_drop_down,
                                       color: Colors.black),
+                                  iconSize: 24,
                                 ),
                                 menuItemStyleData: const MenuItemStyleData(
                                   height: 50,
@@ -12389,6 +12372,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       ),
                       iconStyleData: const IconStyleData(
                         icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                        iconSize: 24,
                       ),
                       menuItemStyleData: const MenuItemStyleData(
                         height: 50, // ✅ Uniform menu item height
@@ -12400,122 +12384,130 @@ class _DPMDashboard extends State<DPMDashboard> {
               ),
 
               if (lowVisionDataValue == 5)
-
-    Container(
-      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-      child: FutureBuilder<List<DataBindOrgan>>(
-        future: _futureBindOrgan,
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          }
-
-          if (!snapshot.hasData || snapshot.data == null) {
-            //  return const CircularProgressIndicator();
-          }
-
-          List<DataBindOrgan> list = snapshot.data ?? [];
-          if (_selectBindOrgniasation == null ||
-              !list.contains(_selectBindOrgniasation)) {
-            _selectBindOrgniasation =
-            list.isNotEmpty ? list.first : null;
-          }
-
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0),
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Select Organisation Type',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                      width: constraints.maxWidth,
-                      child: DropdownButtonFormField2<DataBindOrgan>(
-                        value: _selectBindOrgniasation,
-                        onChanged: (userbindOrgan) {
-                          setState(() {
-                            _selectBindOrgniasation = userbindOrgan;
-                            bindOrganisationNAme = userbindOrgan?.name ?? '';
-                            npcbNoDiabitic = userbindOrgan?.npcbNo ?? '';
-                          });
-                        },
-                        items: list.map((userbindorgansa) {
-                          return DropdownMenuItem<DataBindOrgan>(
-                            value: userbindorgansa,
-                            child: SizedBox(
-                              width: constraints.maxWidth - 60,
-                              child: Text(
-                                userbindorgansa.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                        decoration: InputDecoration(
-                          contentPadding: const EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 5.0),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.0),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                            const BorderSide(color: Colors.grey, width: 1.0),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon:
-                          Icon(Icons.arrow_drop_down, color: Colors.black),
-                        ),
-                       style: const TextStyle(color: Colors.black),
-
-                        // ✅ Customize button size here
-                        buttonStyleData: ButtonStyleData(
-                          height: 50,
-                          width: constraints.maxWidth,
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-
-                        // Optional: dropdown size and position
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 250,
-                          offset: const Offset(0, -10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          );
-        },
-      ),
-    )
-
-    else if (lowVisionDataValue == 12)
                 Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  child: FutureBuilder<List<DataBindOrgan>>(
+                    future: _futureBindOrgan,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (!snapshot.hasData || snapshot.data == null) {
+                        //  return const CircularProgressIndicator();
+                      }
+
+                      List<DataBindOrgan> list = snapshot.data ?? [];
+                      if (_selectBindOrgniasation == null ||
+                          !list.contains(_selectBindOrgniasation)) {
+                        _selectBindOrgniasation =
+                            list.isNotEmpty ? list.first : null;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Select Organisation Type',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 50,
+                                  width: constraints.maxWidth,
+                                  child:
+                                      DropdownButtonFormField2<DataBindOrgan>(
+                                    value: _selectBindOrgniasation,
+                                    onChanged: (userbindOrgan) {
+                                      setState(() {
+                                        _selectBindOrgniasation = userbindOrgan;
+                                        bindOrganisationNAme =
+                                            userbindOrgan?.name ?? '';
+                                        npcbNoDiabitic =
+                                            userbindOrgan?.npcbNo ?? '';
+                                      });
+                                    },
+                                    items: list.map((userbindorgansa) {
+                                      return DropdownMenuItem<DataBindOrgan>(
+                                        value: userbindorgansa,
+                                        child: SizedBox(
+                                          width: constraints.maxWidth - 60,
+                                          child: Text(
+                                            userbindorgansa.name,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style:
+                                                const TextStyle(fontSize: 16),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    decoration: InputDecoration(
+                                      contentPadding:
+                                          const EdgeInsets.symmetric(
+                                              vertical: 10.0, horizontal: 5.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Colors.grey, width: 1.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Colors.grey, width: 1.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                    ),
+                                    iconStyleData: const IconStyleData(
+                                      icon: Icon(Icons.arrow_drop_down,
+                                          color: Colors.black),
+                                      iconSize: 24,
+                                    ),
+                                    style: const TextStyle(color: Colors.black),
+
+                                    // ✅ Customize button size here
+                                    buttonStyleData: ButtonStyleData(
+                                      height: 50,
+                                      width: constraints.maxWidth,
+
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+
+                                    // Optional: dropdown size and position
+                                    dropdownStyleData: DropdownStyleData(
+                                      maxHeight: 300,
+                                      offset: const Offset(0, -10),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                )
+              else if (lowVisionDataValue == 12)
+                /* Container(
                   margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                     future: _futureDataBindOrganValuebiggerFive,
@@ -12585,7 +12577,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                               Align(
                                 alignment: Alignment.centerLeft,
                                 child: Text(
-                                  'Select Organisation Type',
+                                  'Select Organisation Types',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
@@ -12633,10 +12625,151 @@ class _DPMDashboard extends State<DPMDashboard> {
                                   filled: true,
                                   fillColor: Colors.white,
                                 ),
+
                                 dropdownColor: Colors.white,
                                 style: TextStyle(color: Colors.black),
                                 icon: Icon(Icons.arrow_drop_down,
                                     color: Colors.black),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                )*/
+
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                    future: _futureDataBindOrganValuebiggerFive,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        // Handle loading state
+                      }
+
+                      List<DataBindOrganValuebiggerFive> list =
+                          snapshot.data ?? [];
+
+                      // If no data, show message and empty dropdown
+                      if (list.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
+                          child: Column(
+                            children: [
+                              const Text(
+                                'No data found',
+                                style:
+                                    TextStyle(fontSize: 18, color: Colors.red),
+                              ),
+                              DropdownButtonFormField2<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: null,
+                                items: [],
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 5.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                hint: const Text('No items available'),
+                                disabledHint: const Text('No items to select'),
+                              ),
+                            ],
+                          ),
+                        );
+                      }
+
+                      // Select the first item if none is selected
+                      if (_selectBindOrgniasationBiggerFive == null ||
+                          !list.contains(_selectBindOrgniasationBiggerFive)) {
+                        _selectBindOrgniasationBiggerFive =
+                            list.isNotEmpty ? list.first : null;
+                      }
+
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Select Organisation Types',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              DropdownButtonFormField2<
+                                  DataBindOrganValuebiggerFive>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasationBiggerFive =
+                                        userbindOrgan;
+                                    bindOrganisationNAme =
+                                        userbindOrgan?.oName ?? '';
+                                    npcbNoDiabitic =
+                                        userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasationBiggerFive,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<
+                                      DataBindOrganValuebiggerFive>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.oName,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 15.0, horizontal: 8.0),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 300,
+                                  // Control height of dropdown list
+                                  width: 300,
+                                  // Set width for the dropdown
+                                  offset: const Offset(0, -10),
+                                  // Adjust the dropdown position
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                style: const TextStyle(color: Colors.black),
+                                iconStyleData: const IconStyleData(
+                                  icon: Icon(Icons.arrow_drop_down,
+                                      color: Colors.black),
+                                  iconSize: 24,
+                                ), // The dropdown icon
                               ),
                             ],
                           ),
@@ -12673,7 +12806,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 style:
                                     TextStyle(fontSize: 18, color: Colors.red),
                               ),
-                              DropdownButtonFormField<
+                              DropdownButtonFormField2<
                                   DataBindOrganValuebiggerFive>(
                                 onChanged: null,
                                 // Disabled
@@ -12715,7 +12848,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child: SingleChildScrollView(
-                          // ✅ Prevent overflow
+                          // Prevent overflow
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -12725,11 +12858,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 8),
-                              // ✅ Adds spacing before dropdown
+                              // Adds spacing before dropdown
                               SizedBox(
-                                height: 50, // ✅ Fixed height
-                                width: 400, // ✅ Fixed width
-                                child: DropdownButtonFormField<
+                                height: 50, // Fixed height
+                                width: double.infinity, // Fixed width
+                                child: DropdownButtonFormField2<
                                     DataBindOrganValuebiggerFive>(
                                   value: _selectBindOrgniasationBiggerFive,
                                   onChanged: (userbindOrgan) {
@@ -12747,42 +12880,53 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         DataBindOrganValuebiggerFive>(
                                       value: userbindorgansa,
                                       child: ConstrainedBox(
-                                        // ✅ Constrain Text width
                                         constraints: BoxConstraints(
                                             maxWidth: 200), // Adjust width
                                         child: Text(
                                           userbindorgansa.oName,
                                           softWrap: false,
-                                          // ✅ Prevents wrapping
+                                          // Prevents wrapping
                                           overflow: TextOverflow.ellipsis,
-                                          // ✅ Adds '...' if too long
+                                          // Adds '...' if too long
                                           style: TextStyle(fontSize: 16),
                                         ),
                                       ),
                                     );
                                   }).toList(),
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
+                                    contentPadding: const EdgeInsets.symmetric(
                                         vertical: 15.0, horizontal: 5.0),
-                                    // ✅ Removes blue border when focused
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                           color: Colors.grey, width: 1.0),
-                                      // Change color
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
+                                      borderSide: const BorderSide(
                                           color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
                                     fillColor: Colors.white,
                                   ),
-                                  dropdownColor: Colors.white,
-                                  style: TextStyle(color: Colors.black),
-                                  icon: Icon(Icons.arrow_drop_down,
-                                      color: Colors.black),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    // Set max height of dropdown
+                                    width: 300,
+                                    // Set width of dropdown
+                                    offset: const Offset(0, -10),
+                                    // Adjust dropdown position
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  style: const TextStyle(color: Colors.black),
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Colors.black),
+                                    iconSize: 24,
+                                  ), // Dropdown icon
                                 ),
                               ),
                             ],
@@ -12947,7 +13091,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                         lowVisionDataValue,
                       ),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return Center(child: CircularProgressIndicator());
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
@@ -12964,7 +13109,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                             ),
                           );
                         } else {
-                          List<Datalowvisonregister_diabitic> ddata = snapshot.data;
+                          List<Datalowvisonregister_diabitic> ddata =
+                              snapshot.data;
 
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -12973,7 +13119,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Display headers only when data is available
                                 Row(
                                   children: [
-                                    _buildHeaderCellSrNoDiseaseData('S.No.', context),
+                                    _buildHeaderCellSrNoDiseaseData(
+                                        'S.No.', context),
                                     _buildHeaderCell('Patient Id'),
                                     _buildHeaderCellNGOAction('Action'),
                                   ],
@@ -12981,9 +13128,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                                 // Display data rows
                                 ...ddata.map((offer) {
                                   return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
                                     children: [
-                                      _buildDataCellSrNoDiseaseData((ddata.indexOf(offer) + 1).toString()),
+                                      _buildDataCellSrNoDiseaseData(
+                                          (ddata.indexOf(offer) + 1)
+                                              .toString()),
                                       _buildDataCell(offer.pUniqueID),
                                       _buildDataCellViewBlue("View", () {
                                         showDialog(
@@ -12993,38 +13143,66 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               title: Text("Patient Details"),
                                               content: SingleChildScrollView(
                                                 child: DataTable(
-                                                  border: TableBorder.all(color: Colors.blue),
+                                                  border: TableBorder.all(
+                                                      color: Colors.blue),
                                                   columns: [
                                                     DataColumn(
                                                       label: Text(
                                                         'Field',
-                                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                     ),
                                                     DataColumn(
                                                       label: Text(
                                                         'Value',
-                                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
                                                       ),
                                                     ),
                                                   ],
                                                   rows: [
-                                                    _buildDataRow("Sr. No.", (ddata.indexOf(offer) + 1).toString()),
-                                                    _buildDataRow("Unique ID", offer.pUniqueID),
-                                                    _buildDataRow("Name", offer.name),
-                                                    _buildDataRow("Mobile", offer.mobile.toString()),
-                                                    _buildDataRow("DOB", Utils.formatDateString(offer.dob)),
-                                                    _buildDataRow("Gender", offer.gender),
-                                                    _buildDataRow("Address", offer.addressLine1),
-                                                    _buildDataRow("Operated On", Utils.formatDateString(offer.operatedOn)),
-                                                    _buildDataRow("Ngo Name", offer.ngoName.toString()),
+                                                    _buildDataRow(
+                                                        "Sr. No.",
+                                                        (ddata.indexOf(offer) +
+                                                                1)
+                                                            .toString()),
+                                                    _buildDataRow("Unique ID",
+                                                        offer.pUniqueID),
+                                                    _buildDataRow(
+                                                        "Name", offer.name),
+                                                    _buildDataRow(
+                                                        "Mobile",
+                                                        offer.mobile
+                                                            .toString()),
+                                                    _buildDataRow(
+                                                        "DOB",
+                                                        Utils.formatDateString(
+                                                            offer.dob)),
+                                                    _buildDataRow(
+                                                        "Gender", offer.gender),
+                                                    _buildDataRow("Address",
+                                                        offer.addressLine1),
+                                                    _buildDataRow(
+                                                        "Operated On",
+                                                        Utils.formatDateString(
+                                                            offer.operatedOn)),
+                                                    _buildDataRow(
+                                                        "Ngo Name",
+                                                        offer.ngoName
+                                                            .toString()),
                                                   ],
                                                 ),
                                               ),
                                               actions: [
                                                 TextButton(
                                                   onPressed: () {
-                                                    Navigator.of(context).pop(); // Close the dialog
+                                                    Navigator.of(context)
+                                                        .pop(); // Close the dialog
                                                   },
                                                   child: Text("Close"),
                                                 ),
@@ -13042,7 +13220,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                         }
                       },
                     )
-
                   ],
                 ),
             ],
