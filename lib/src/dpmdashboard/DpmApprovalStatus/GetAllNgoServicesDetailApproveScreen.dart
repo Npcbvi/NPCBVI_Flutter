@@ -5,6 +5,8 @@ import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/NGoAPPlicationApprovedFinalScreen.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 
+import '../DPMDashboard.dart';
+
 class GetAllNgoServicesDetailApproveScreen extends StatefulWidget {
   const GetAllNgoServicesDetailApproveScreen({Key key}) : super(key: key);
 
@@ -285,7 +287,15 @@ class _GetAllNgoServicesDetailApproveScreen
                                 if (response.isNotEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text("Action submitted successfully!")),
+
                                   );
+                                  Navigator.pushAndRemoveUntil(
+
+                                    context,
+                                    MaterialPageRoute(builder: (context) => DPMDashboard()),
+                                        (route) => false, // remove all previous routes
+                                  );
+                                  print("@@Callback to DPMDashboardScreen");
                                 } else {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text("Failed to process action")),

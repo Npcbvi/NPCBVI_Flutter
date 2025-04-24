@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DPMDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/districtngowork/GetAllNgoService.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/NGoAPPlicationApprovedFinalScreen.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
@@ -305,7 +306,16 @@ class _GovtPrivatelNGOrvicesApproveScreen extends State<GovtPrivatelNGOrvicesApp
       );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Action submitted successfully!")),
+
       );
+
+      Navigator.pushAndRemoveUntil(
+
+        context,
+        MaterialPageRoute(builder: (context) => DPMDashboard()),
+            (route) => false, // remove all previous routes
+      );
+      print("@@Callback to DPMDashboardScreen");
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Error: $e")),

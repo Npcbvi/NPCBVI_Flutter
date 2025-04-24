@@ -4301,7 +4301,7 @@ class ApiController {
 
 
       });
-      print("@@GetSatelliteManagerList--bodyprint--: ${body.toString()}");
+      print("@@GetSatelliteManagerList--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -8941,7 +8941,7 @@ class ApiController {
       if (data.status) {
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);  ye tha record not found
         return [];
       }
     } catch (e) {
@@ -9049,7 +9049,7 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_ViewMOU - API Response: ${response.toString()}");
+      print("@@get_DPM_ViewMOU - API Response13: ${response.toString()}");
 
       var responseData = json.decode(response.data);
       MouDetails data = MouDetails.fromJson(responseData);
@@ -9058,7 +9058,7 @@ class ApiController {
         return data.data;
 
       } else {
-        print("@@get_DPM_ViewMOU - API Response: ${response.toString()}");
+        print("@@get_DPM_ViewMOU - API Response11: ${response.toString()}");
       //  Utils.showToast(data.message, true);
         return [];
       }
@@ -9241,7 +9241,7 @@ class ApiController {
         ),
       );
 
-      print("@@get_DPM_ViewHospitalDetails - API Response: ${response
+      print("@@get_DPM_ViewHospitalDetails - API Response13: ${response
           .toString()}");
 
       var responseData = json.decode(response.data);
@@ -9250,7 +9250,7 @@ class ApiController {
       if (data.status) {
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {

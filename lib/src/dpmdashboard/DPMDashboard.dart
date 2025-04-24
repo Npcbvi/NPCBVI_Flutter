@@ -3670,9 +3670,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Center(
+                                /*return Center(
                                   child: CircularProgressIndicator(),
-                                );
+                                );*/
+                                return SizedBox.shrink(); // shows nothing, no space taken
                               } else if (snapshot.hasError) {
                                 return Utils.getEmptyView(
                                     "Error: ${snapshot.error}");
@@ -3752,7 +3753,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  void _showDetailDialogMOU(BuildContext context, DataGetDPM_MOUApprove offer) {
+ /* void _showDetailDialogMOU(BuildContext context, DataGetDPM_MOUApprove offer) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -3838,6 +3839,112 @@ class _DPMDashboard extends State<DPMDashboard> {
         );
       },
     );
+  }*/
+  void _showDetailDialogMOU(BuildContext context, DataGetDPM_MOUApprove offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'MOU Approval Details',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          content: SingleChildScrollView(
+            child: Table(
+              border: TableBorder.all(color: Colors.black, width: 1),
+              columnWidths: {
+                0: FixedColumnWidth(130.0),
+                1: FlexColumnWidth(),
+              },
+              children: [
+                _buildTableRowSt('Hospital Id:', offer.hRegID),
+                _buildTableRowSt('Hospital Name:', offer.hName),
+                _buildTableRowSt('Mobile:', offer.mobile.toString()),
+                _buildTableRowSt('Email ID:', offer.emailId),
+                _buildTableRowSt('From Date:', Utils.formatDateString(offer.fromDate)),
+                _buildTableRowSt('To Date:', Utils.formatDateString(offer.toDate)),
+                _buildTableRowSt('Status:', getStatusText(offer.vstatus.toString())),
+                _buildTableRowWithWidget(
+                  'MOU',
+                  _buildDataCellViewBlueForDownlaod("", offer.file, () {
+                    if (offer.file != null && offer.file.isNotEmpty) {
+                      downloadFile(offer.file, "downloaded_file.pdf");
+                    } else {
+                      print("No file URL found");
+                    }
+                  }),
+                ),
+                _buildTableRowWithWidget(
+                  'Action',
+                  ngodependOrganbisatioSelectValuessss == 1
+                      ? ElevatedButton(
+                    onPressed: () async {
+                      int h_Reg_ID = offer.id;
+                      String userid = userId;
+
+                      ApproveMOURenewClick response =
+                      await ApiController.get_DPM_MouRenew(h_Reg_ID, userid);
+
+                      if (response != null && response.status) {
+                        Utils.showToast("MOU Renewed Successfully", true);
+                        Navigator.of(context).pop(true);
+                      } else {
+                        Utils.showToast("Failed to Renew MOU", true);
+                      }
+                    },
+                    child: Text("Renew"),
+                  )
+                      : SizedBox(),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+  TableRow _buildTableRowSt(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Text(value ?? ''),
+        ),
+      ],
+    );
+  }
+
+  TableRow _buildTableRowWithWidget(String label, Widget widget) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: widget,
+        ),
+      ],
+    );
   }
 
   Widget _buildDataCellViewBlueForDownlaod(
@@ -3862,7 +3969,8 @@ class _DPMDashboard extends State<DPMDashboard> {
             Padding(
               padding: EdgeInsets.only(left: 0.0), // Left padding for "MOU"
               child: Text(
-                label, // "MOU"
+                label,
+                maxLines: 2,// "MOU"
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -11026,7 +11134,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                         /* return Center(child: CircularProgressIndicator());*/
+                          return SizedBox.shrink(); // shows nothing, no space taken
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
@@ -12100,8 +12209,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                             builder: (context, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
+                              /*  return Center(
+                                    child: CircularProgressIndicator());*/
+                                return SizedBox.shrink(); // shows nothing, no space taken
                               } else if (snapshot.hasError) {
                                 return Utils.getEmptyView(
                                     "Error: ${snapshot.error}");
@@ -12549,6 +12659,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       if (!snapshot.hasData || snapshot.data == null) {
                         //  return const CircularProgressIndicator();
+                        return SizedBox.shrink(); // shows nothing, no space taken
                       }
 
                       List<DataBindOrgan> list = snapshot.data ?? [];
@@ -13123,7 +13234,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                        /*  return Center(child: CircularProgressIndicator());*/
+                          return SizedBox.shrink(); // shows nothing, no space taken
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
@@ -14097,7 +14209,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                        /*  return Center(child: CircularProgressIndicator());*/
+                          return SizedBox.shrink(); // shows nothing, no space taken
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
@@ -16062,7 +16175,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
+                        /*  return Center(child: CircularProgressIndicator());*/
+                          return SizedBox.shrink(); // shows nothing, no space taken
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {

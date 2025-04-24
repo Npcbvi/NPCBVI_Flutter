@@ -33,6 +33,8 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_Scree
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/GetSatelliteManagerById.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/CenterOfficeNameSatelliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
+import 'package:mohfw_npcbvi/src/ngo/SattelliteCenterClickStaelliteManger.dart';
+import 'package:mohfw_npcbvi/src/ngo/SattelliteCenterClickStaelliteMangerEdit.dart';
 import 'package:mohfw_npcbvi/src/ngo/SceeningCampClickAddCampManager.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
@@ -799,12 +801,14 @@ class _NgoDashboard extends State<NgoDashboard> {
         ngoCampManagerLists = false;
         ngoSATELLITECENTREMANAGERLists = true;
         satelliteCenterMenuListdisplay = false;
+        Navigator.of(context).pop();
 
       } else if (value == 2) {
         print("@@Satellite Center");
         ngoCampManagerLists = false;
         ngoSATELLITECENTREMANAGERLists = false;
         satelliteCenterMenuListdisplay = true;
+        Navigator.of(context).pop();
       } else {
         print("Unknown selection");
       }
@@ -2545,7 +2549,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     // Handle the tap event here
     print('@@AddSattelliteCenterclicked--');
     setState(() {
-      ManageUSerNGOHospt = false;
+  /*    ManageUSerNGOHospt = false;
       EyeDonationCentreRegistrationClickONAddDontaions = false;
 
       ngoDashboardclicks = false;
@@ -2559,11 +2563,16 @@ class _NgoDashboard extends State<NgoDashboard> {
       AddScreeningCamps = false;
       _futureState = _getStatesDAta();
       ngoSATELLITECENTREMANAGERLists = false;
-      AddSatelliteManagers = true;
       _futureDataGethospitalForDDL =
           GetHospitalForDDL(district_code_login, state_code_login, userId);
+      AddSatelliteManagers = true;
+
       satelliteCenterMenuListdisplay = false;
-      AddSatelliteCenterRedOptionFields = false;
+      AddSatelliteCenterRedOptionFields = false;*/
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SattelliteCenterClickStaelliteManger()),
+      );
     });
   }
 
@@ -6448,7 +6457,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                         manager.address ?? '';
                     _designationControllerStatelliteMangerReg.text =
                         manager.designation ?? '';
-
+                    _futureDataGethospitalForDDL =
+                        GetHospitalForDDL(district_code_login, state_code_login, userId);
                     SatelliteManagerRegisterartionsEdit = true;
                     CampManagerRegisterartionsEdit = false;
                     ManageUSerNGOHospt = false;
@@ -6463,6 +6473,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                     AddSatelliteManagers = false;
                     satelliteCenterMenuListdisplay = false;
                     AddSatelliteCenterRedOptionFields = false;
+                   /* Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => SattelliteCenterClickStaelliteMangerEdit()),
+                    );*/
                   });
                   Navigator.pop(context);
                 } else {
@@ -6482,7 +6496,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
           SizedBox(height: 5.0), // Space between buttons
 
-          _buildButtonNewCreate("Edit", Icons.visibility, () async {
+          _buildButtonNewCreate("Block", Icons.visibility, () async {
             print('@@Edit Ka click');
             try {
               // Call the API to view camp manager details
@@ -11008,6 +11022,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                       _buildTableRowNGO('Designation', offer.designation),
                       _buildTableRowNGO('Mobile Number', offer.mobile),
                       _buildTableRowNGO('Email ID', offer.emailId),
+                      _buildTableRowNGO('District Name', offer.districtName),
                       TableRow(
                         children: [
                           Container(
@@ -11687,7 +11702,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
     }
   }
 
-  Widget EditSatelliteManager() {
+  Widget EditSatelliteManager() { //here
     return Column(
       children: [
         Visibility(
@@ -11909,7 +11924,115 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                         ),
 
                         SizedBox(height: 10.0),
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                          child: FutureBuilder<List<DataGethospitalForDDL>>(
+                            future: _futureDataGethospitalForDDL,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
 
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return Center(child: CircularProgressIndicator());
+                              }
+                              if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                return Container(
+                                  width: double.infinity,  // Full width like a TextField
+                                  padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  child: Text(
+                                    'No data found',
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                );
+                              }
+
+                              List<DataGethospitalForDDL> list =
+                              snapshot.data.toList();
+
+                              // Check if _selectedUser is null or not part of the list anymore
+                              if (_dataGethospitalForDDL == null ||
+                                  !list.contains(_dataGethospitalForDDL)) {
+                                _dataGethospitalForDDL =
+                                    list.first; // Set the first item as default
+                              }
+
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0.0, vertical: 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Select hospital*',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 55,
+                                      // Adjust height as needed
+                                      width: double.infinity,
+                                      // Ensures it takes full width
+                                      child: DropdownButtonFormField<
+                                          DataGethospitalForDDL>(
+                                        value: _dataGethospitalForDDL,
+                                        onChanged: (userc) {
+                                          setState(() {
+                                            _dataGethospitalForDDL = userc;
+                                            gethospitalName =
+                                                userc?.hName ?? '';
+                                            gethospitalNameSrNOReg =
+                                                userc?.hRegID ?? '';
+                                            print(
+                                                'getMAnagerNAme Year: $gethospitalName');
+                                            print(
+                                                'getmanagerSrNO: $gethospitalNameSrNOReg');
+                                          });
+                                        },
+                                        items: list.map((user) {
+                                          return DropdownMenuItem<
+                                              DataGethospitalForDDL>(
+                                            value: user,
+                                            child: Text(user.hName,
+                                                style: TextStyle(fontSize: 16)),
+                                          );
+                                        }).toList(),
+                                        decoration: InputDecoration(
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 15.0, horizontal: 10.0),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1.0),
+                                            borderRadius:
+                                            BorderRadius.circular(10.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                color: Colors.grey, width: 1.0),
+                                            borderRadius:
+                                            BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                        ),
+                                        dropdownColor: Colors.white,
+                                        style: TextStyle(color: Colors.black),
+                                        icon: Icon(Icons.arrow_drop_down,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
                         // Address Field
                         TextFormField(
                           controller: _addressControllerStatelliteMangerReg,
@@ -12045,7 +12168,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
     if (_formKeySatelliteMangerEditClick.currentState.validate()) {
       Utils.showProgressDialog1(context);
 
-      var response = await ApiController.UpdateSatelliteManager(
+      var response = await ApiController.UpdateSatelliteManager(/// need to check here  12171
           _userNameControllerStatelliteMangerReg.text.toString().trim(),
           gender,
           _mobileNumberControllerStatelliteMangerReg.text.toString().trim(),
