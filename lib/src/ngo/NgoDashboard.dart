@@ -2617,7 +2617,6 @@ class _NgoDashboard extends State<NgoDashboard> {
               ),
               buttonStyleData: ButtonStyleData(
                 height: 50,
-                padding: const EdgeInsets.symmetric(horizontal: 6),
 
               ),
               dropdownStyleData: DropdownStyleData(
@@ -2675,7 +2674,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                 });
               },
             ),
-
+            /*SizedBox(height: 5),
             if (dropDownTwoSelcted == 6)
               FutureBuilder<List<DataDropDownHospitalSelected>>(
                 future: _futureDataDropDownHospitalSelected,
@@ -2764,7 +2763,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                     ],
                   );
                 },
-              ),
+              ),*/
           ],
         ),
       ),
@@ -2781,218 +2780,206 @@ class _NgoDashboard extends State<NgoDashboard> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 8),
-                //working code here and use it on thuisrday
-         /*       Container(
-                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0), // Match the hospital dropdown
-                  // Add margin here
+                SizedBox(height: 5),
 
-                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                    future: _future,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-
-                      if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      }
-
-                      if (!snapshot.hasData || snapshot.data.isEmpty) {
-                        return Center(child: Text('No data available'));
-                      }
-
-                      List<DataGetDPM_ScreeningYear> list = snapshot.data;
-                      if (_selectedUser == null ||
-                          !list.contains(_selectedUser)) {
-                        _selectedUser = null; // Remove default selection
-                      }
-
-                      // Ensure default selection is set only once when data is first received
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (_selectedUser == null ||
-                            !list.contains(_selectedUser)) {
-                          setState(() {
-                            _selectedUser = list.first; // Default to first item
-                            getYearNgoHopital = _selectedUser.name;
-                            getfyidNgoHospital = _selectedUser.fyid;
-                            print('@@Initial Year: $getYearNgoHopital');
-                            print('Initial FYID: $getfyidNgoHospital');
-                          });
-                        }
-                      });
-
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 0.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              height: 55,
-                              width: double.infinity,
-                              // Full width inside the container
-                              child: DropdownButtonFormField2<
-                                  DataGetDPM_ScreeningYear>(
-                                value: _selectedUser,
-                                isExpanded: true,
-                                onChanged: (userc) {
-                                  setState(() {
-                                    _selectedUser = userc;
-                                    getYearNgoHopital = userc?.name ?? '';
-                                    getfyidNgoHospital = userc?.fyid ?? '';
-                                    print(
-                                        '@@Selected Year: $getYearNgoHopital');
-                                    print('FYID: $getfyidNgoHospital');
-                                  });
-                                },
-                                items: list
-                                    .map((user) => DropdownMenuItem<
-                                            DataGetDPM_ScreeningYear>(
-                                          value: user,
-                                          child: Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 0),
-                                            child: Text(
-                                              user.name,
-                                              style:
-                                                  const TextStyle(fontSize: 16),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ))
-                                    .toList(),
-                                dropdownStyleData: DropdownStyleData(
-                                  maxHeight: 300,
-                                  width: 300,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  offset: const Offset(0, -3),
-                                ),
-                                buttonStyleData: ButtonStyleData(
-                                  height: 50,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: Colors.grey, width: 1),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                iconStyleData: const IconStyleData(
-                                  icon: Icon(Icons.arrow_drop_down,
-                                      color: Colors.black),
-                                ),
-                                menuItemStyleData: MenuItemStyleData(
-                                  overlayColor: MaterialStateProperty.all(
-                                      Colors.blue[100]),
-                                ),
-                                decoration: const InputDecoration(
-                                  contentPadding:
-                                      EdgeInsets.symmetric(horizontal: 10),
-                                  border: InputBorder.none,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),*/
                 Container(
-                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0), // Match the hospital dropdown
-                  child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                    future: _future,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
+                  margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
 
-                      if (snapshot.hasError) {
-                        return Center(child: Text('Error: ${snapshot.error}'));
-                      }
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                            future: _future,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const Center(child: CircularProgressIndicator());
+                              }
 
-                      if (!snapshot.hasData || snapshot.data.isEmpty) {
-                        return const Center(child: Text('No data available'));
-                      }
+                              if (snapshot.hasError) {
+                                return Center(child: Text('Error: ${snapshot.error}'));
+                              }
 
-                      List<DataGetDPM_ScreeningYear> list = snapshot.data;
-                      if (_selectedUser == null || !list.contains(_selectedUser)) {
-                        _selectedUser = null;
-                      }
+                              if (!snapshot.hasData || snapshot.data.isEmpty) {
+                                return const Center(child: Text('No data available'));
+                              }
 
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        if (_selectedUser == null || !list.contains(_selectedUser)) {
-                          setState(() {
-                            _selectedUser = list.first;
-                            getYearNgoHopital = _selectedUser.name;
-                            getfyidNgoHospital = _selectedUser.fyid;
-                          });
-                        }
-                      });
+                              List<DataGetDPM_ScreeningYear> list = snapshot.data;
+                              if (_selectedUser == null || !list.contains(_selectedUser)) {
+                                _selectedUser = null;
+                              }
 
-                      return SizedBox(
-                        height: 50, // Match height
-                        child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
-                          value: _selectedUser,
-                          isExpanded: true,
-                          onChanged: (userc) {
-                            setState(() {
-                              _selectedUser = userc;
-                              getYearNgoHopital = userc?.name ?? '';
-                              getfyidNgoHospital = userc?.fyid ?? '';
-                            });
-                          },
-                          items: list.map((user) {
-                            return DropdownMenuItem<DataGetDPM_ScreeningYear>(
-                              value: user,
-                              child: Text(
-                                user.name,
-                                style: const TextStyle(fontSize: 16),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            );
-                          }).toList(),
-                          decoration: InputDecoration(
-                            contentPadding: const EdgeInsets.symmetric(horizontal: 1),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            filled: true,
-                            fillColor: Colors.white,
-                          ),
-                          buttonStyleData: ButtonStyleData(
-                            height: 50,
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                if (_selectedUser == null || !list.contains(_selectedUser)) {
+                                  setState(() {
+                                    _selectedUser = list.first;
+                                    getYearNgoHopital = _selectedUser.name;
+                                    getfyidNgoHospital = _selectedUser.fyid;
+                                  });
+                                }
+                              });
 
-                          ),
-                          dropdownStyleData: DropdownStyleData(
-                            maxHeight: 300,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            offset: const Offset(0, -3),
-                          ),
-                          iconStyleData: const IconStyleData(
-                            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                              return SizedBox(
+                                height: 50, // Match height
+                                child: DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                                  value: _selectedUser,
+                                  isExpanded: true,
+                                  onChanged: (userc) {
+                                    setState(() {
+                                      _selectedUser = userc;
+                                      getYearNgoHopital = userc?.name ?? '';
+                                      getfyidNgoHospital = userc?.fyid ?? '';
+                                    });
+                                  },
+                                  items: list.map((user) {
+                                    return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                                      value: user,
+                                      child: Text(
+                                        user.name,
+                                        style: const TextStyle(fontSize: 16),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+
+                                    contentPadding:  EdgeInsets.symmetric(horizontal: 5),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 50,
+
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    width:300,
+
+                                    offset: const Offset(0, -3),
+                                  ),
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ),
-                      );
-                    },
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child:  buildDropdownHospitalType(),
+                      ),
+                    ],
                   ),
                 ),
                 SizedBox(height: 5),
-                buildDropdownHospitalType(),
-                SizedBox(height: 5),
-                //buildDropdownHospitalTypeHospialSelect(),
+                if (dropDownTwoSelcted == 6)
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+
+                    child: FutureBuilder<List<DataDropDownHospitalSelected>>(
+                      future: _futureDataDropDownHospitalSelected,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        }
+
+                        List<DataDropDownHospitalSelected> list = snapshot.data ?? [];
+
+                        if (list.isEmpty) {
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            child: const Text(
+                              'No data found',
+                              style: TextStyle(fontSize: 18, color: Colors.red),
+                            ),
+                          );
+                        }
+
+                        if (_selectHospitalSelected == null || !list.contains(_selectHospitalSelected)) {
+                          _selectHospitalSelected = list.first;
+                        }
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Select Hospital:',
+                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            ),
+                            DropdownButtonFormField2<DataDropDownHospitalSelected>(
+                              value: _selectHospitalSelected,
+                              isExpanded: true,
+                              onChanged: (hospital) {
+                                setState(() {
+                                  _selectHospitalSelected = hospital;
+                                  hospitalNameFetch = hospital?.hName ?? '';
+                                  reghospitalNameFetch = hospital?.hRegID ?? '';
+                                });
+                              },
+                              items: list.map((hospital) {
+                                return DropdownMenuItem<DataDropDownHospitalSelected>(
+                                  value: hospital,
+                                  child: Text(
+                                    hospital.hName,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(fontSize: 16),
+                                  ),
+                                );
+                              }).toList(),
+                              buttonStyleData: ButtonStyleData(
+                                height: 50,
+                                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8), // Add this line
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  border: Border.all(color: Colors.grey, width: 1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 300,
+                                width:300,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                offset: const Offset(0, -3),
+                              ),
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                              ),
+                              hint: const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 0),
+                                child: Text(
+                                  'Select Hospital',
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                              ),
+
+                              decoration: const InputDecoration(
+                                contentPadding: EdgeInsets.symmetric(horizontal: 2),
+                                border: InputBorder.none,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 10),
@@ -3009,14 +2996,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                     },
                     style: ElevatedButton.styleFrom(
                       padding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(15), // Rounded corners
                       ),
                       elevation: 5, // Adds a shadow effect
                     ),
-                    icon: Icon(Icons.cloud_download, size: 20), // Download icon
+                    icon: Icon(Icons.cloud_download, size: 18), // Download icon
                     label: Text(
                       'Get Data',
                       style:
@@ -7224,7 +7211,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
       // Safe null-aware check for status
       if (data.status == true) {
-        Utils.showToast(data.message ?? "Success", true);
+      //  Utils.showToast(data.message ?? "Success", true);
         return data;
       } else {
      //   Utils.showToast(data.message ?? "Something went wrong", true);
@@ -7397,17 +7384,18 @@ class _NgoDashboard extends State<NgoDashboard> {
                       2: FlexColumnWidth(20),
                     },
                     children: [
-                      _buildTableRowth(
-                          'S.No', 'Equipment Name', 'Number of Equipment'),
-                      for (int i = 0;
-                          i < data.data.hospitalEquipmentList.length;
-                          i++)
-                        _buildTableRowth(
+                      _buildTableRowth('S.No', 'Equipment Name', 'Number'),
+                      ...List.generate(data.data.hospitalEquipmentList.length, (i) {
+                        print('@@HospitallinkedwithNGO ${i + 1}: ${data.data.hospitalEquipmentList[i].name}, '
+                            '${data.data.hospitalEquipmentList[i].noOfEquipment}');
+                        return _buildTableRowth(
                           (i + 1).toString(),
                           data.data.hospitalEquipmentList[i].name,
-                          data.data.hospitalEquipmentList[i].noOfEquipment
-                              .toString(),
-                        ),
+                          data.data.hospitalEquipmentList[i].noOfEquipment.toString(),
+                        );
+                      }),
+
+
                     ],
                   ),
                 ],
@@ -7468,85 +7456,69 @@ class _NgoDashboard extends State<NgoDashboard> {
               child: Column(
                 children: [
                   // Combined Horizontal Scrolling for Header and Data Rows
-                  SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Column(
-                      children: [
-                        // Header Row
-                        Row(
+                  FutureBuilder<List<DataDoctorlinkedwithHospital>>(
+                    future: ApiController.getDoctorlinkedwithHospital(hospitalId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return Utils.getEmptyView("No data found");
+                      } else {
+                        List<DataDoctorlinkedwithHospital> ddata = snapshot.data;
+                        print('@@---ddata: ${ddata.length}');
+
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildHeaderCellSrNo('S.No.', context),
-                            _buildHeaderCell('Doctor ID'),
-                            _buildHeaderCell('Doctor Name'),
-                            _buildHeaderCell('Mobile No.'),
-                            _buildHeaderCell('Email ID'),
-                            _buildHeaderCell('Action'),
-                          ],
-                        ),
-                        Divider(color: Colors.blue, height: 1.0),
-                        // Data Rows
-                        FutureBuilder<List<DataDoctorlinkedwithHospital>>(
-                          future: ApiController.getDoctorlinkedwithHospital(
-                              hospitalId),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            } else if (snapshot.hasError) {
-                              return Utils.getEmptyView(
-                                  "Error: ${snapshot.error}");
-                            } else if (!snapshot.hasData ||
-                                snapshot.data.isEmpty) {
-                              return Utils.getEmptyView("No data found");
-                            } else {
-                              List<DataDoctorlinkedwithHospital> ddata =
-                                  snapshot.data;
-                              print('@@---ddata: ' + ddata.length.toString());
-                              return Column(
-                                children: ddata.map((offer) {
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      _buildDataCellSrNo(
-                                          (ddata.indexOf(offer) + 1)
-                                              .toString()),
-                                      _buildDataCell(offer.mcIID),
-                                      _buildDataCell(offer.dName.toString()),
-                                      _buildDataCell(offer.mobile.toString()),
-                                      _buildDataCell(offer.emailId.toString()),
-                                      _buildDataCellViewBlue("View", () async {
-                                        print(
-                                            "@@Doctor Details: " + offer.mcIID);
-                                        print('@@fromshareValueGet--' +
-                                            storedValueHospitalID);
+                            // Header Row
+                            Row(
+                              children: [
+                                _buildHeaderCellSrNoDiseaseDataDoctor('S.No.', context),
+                              //  _buildHeaderCell('Doctor ID'),
+                                _buildHeaderCellDoctor('Doctor Name'),
+                                //_buildHeaderCell('Mobile No.'),
+                              //  _buildHeaderCell('Email ID'),*/
+                                _buildHeaderCellNGOActionDoctor('Action'),
+                              ],
+                            ),
 
-                                        List<DataGetDoctorDetailsById>
-                                            doctorDetails = await ApiController
-                                                .getDoctorDetailsById(
-                                                    storedValueHospitalID,
-                                                    offer.mcIID);
+                            // Data Rows
+                            ...ddata.asMap().entries.map((entry) {
+                              int index = entry.key;
+                              DataDoctorlinkedwithHospital offer = entry.value;
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  _buildDataCellSrNoDiseaseDataDoctor((index + 1).toString()),
+                                 // _buildDataCell(offer.mcIID),
+                                  _buildDataCellDoctor(offer.dName ?? ''),
+                                //  _buildDataCell(offer.mobile ?? ''),
+                                //  _buildDataCell(offer.emailId ?? ''),
+                                  _buildDataCellViewBlueDoctor("View", () async {
+                                    print("@@Doctor Details: ${offer.mcIID}");
+                                    print('@@fromshareValueGet--$storedValueHospitalID');
 
-                                        // Show doctor details dialog if data is available
-                                        if (doctorDetails.isNotEmpty) {
-                                          _showDoctorDetailsDialog(
-                                              context, doctorDetails[0]);
-                                        } else {
-                                          Utils.showToast(
-                                              "No details found for this doctor.",
-                                              true);
-                                        }
-                                      }),
-                                    ],
-                                  );
-                                }).toList(),
+                                    List<DataGetDoctorDetailsById> doctorDetails =
+                                    await ApiController.getDoctorDetailsById(
+                                        storedValueHospitalID, offer.mcIID);
+
+                                    if (doctorDetails.isNotEmpty) {
+                                      _showDoctorDetailsDialog(context, doctorDetails[0]);
+                                    } else {
+                                      Utils.showToast("No details found for this doctor.", true);
+                                    }
+                                  }),
+                                ],
                               );
-                            }
-                          },
-                        ),
-                      ],
-                    ),
+                            }).toList(),
+                          ],
+                        );
+                      }
+                    },
                   ),
+
                 ],
               ),
             ),
@@ -7564,71 +7536,59 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
+
+
   void _showDoctorDetailsDialog(
       BuildContext context, DataGetDoctorDetailsById doctor) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Container(
-            color: Colors.blue,
-            width: double.infinity,
-            // Make title container span the full width
-            padding: const EdgeInsets.only(bottom: 8.0),
-            // Optional: padding for spacing
-            child: Text(
-              'Doctor Details',
-              textAlign: TextAlign.center, // Optional: center the title text
-              style: TextStyle(
-                fontWeight: FontWeight.bold, // Optional: styling
-                color: Colors.white, // Set title text color to blue
-              ), // Optional: styling
+          title: Text(
+            'Doctor Details',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
             ),
           ),
           content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            scrollDirection: Axis.vertical,
+            child: Table(
+              border: TableBorder.all(color: Colors.black, width: 1),
+              columnWidths: {
+                0: FixedColumnWidth(120.0), // Label column width
+                1: FlexColumnWidth(), // Value column width
+              },
               children: [
-                _buildDetailRow('MCI ID', doctor.mcIID),
-                _buildDetailRow('Hospital Name', 'test eye care'),
+                _buildDetailRowN('MCI ID', doctor.mcIID),
+                _buildDetailRowN('Hospital Name', 'test eye care'),
                 // Replace with real data if available
-                _buildDetailRow('Doctor Name', doctor.dName),
-                _buildDetailRow('Gender', doctor.gender ?? 'N/A'),
+                _buildDetailRowN('Doctor Name', doctor.dName),
+                _buildDetailRowN('Gender', doctor.gender ?? 'N/A'),
                 // Replace with real data
-                _buildDetailRow('DOB', doctor.dob ?? 'N/A'),
+                _buildDetailRowN('DOB', doctor.dob ?? 'N/A'),
                 // Replace with real data
-                _buildDetailRow('Mobile Number', doctor.mobile ?? 'N/A'),
-                _buildDetailRow('Email ID', doctor.emailId ?? 'N/A'),
-                _buildDetailRow('District Name', doctor.districtName ?? 'N/A'),
+                _buildDetailRowN('Mobile Number', doctor.mobile ?? 'N/A'),
+                _buildDetailRowN('Email ID', doctor.emailId ?? 'N/A'),
+                _buildDetailRowN('District Name', doctor.districtName ?? 'N/A'),
                 // Replace with real data
-                _buildDetailRow('State Name', doctor.stateName ?? 'N/A'),
+                _buildDetailRowN('State Name', doctor.stateName ?? 'N/A'),
                 // Replace with real data
-                _buildDetailRow('Pin Code', doctor.pincode ?? 'N/A'),
+                _buildDetailRowN('Pin Code', doctor.pincode ?? 'N/A'),
                 // Replace with real data
+                // Add more fields as needed
               ],
             ),
           ),
-          actions: <Widget>[
+          actions: [
             TextButton(
-              child: Text('Next'),
-              onPressed: () async {
-                // Navigator.of(context).pop();
-                List<DataGetAllNgoService> doctorDetails =
-                    await ApiController.getAllNgoService(userId);
-
-                // Show doctor details dialog if data is available
-                if (doctorDetails.isNotEmpty) {
-                  _showNgoServiceDetailsDialog();
-                } else {
-                  Utils.showToast("No details found for this doctor.", true);
-                }
-              },
-            ),
-            TextButton(
-              child: Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
             ),
           ],
         );
@@ -8175,6 +8135,20 @@ class _NgoDashboard extends State<NgoDashboard> {
           Text(value ?? 'N/A', style: TextStyle(color: Colors.black)),
         ],
       ),
+    );
+  }
+  TableRow _buildDetailRowN(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(label, style: TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(value),
+        ),
+      ],
     );
   }
 
@@ -13229,6 +13203,182 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
 
             bottom:
                 BorderSide(width: 0.1, color: Colors.black), // Bottom border
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            text,
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              color: Colors.blue,
+              fontSize: screenWidth * 0.04, // Scales with screen width
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+
+  Widget _buildHeaderCellSrNoDiseaseDataDoctor(String text, BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.035, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellDoctor(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.28, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeaderCellNGOActionDoctor(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.2, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellSrNoDiseaseDataDoctor(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.1, // 10% of screen width for responsiveness
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align( // Aligns text to the left
+        alignment: Alignment.centerLeft,
+        child: Text(
+
+          text,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.03, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellDoctor(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.28, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+
+
+  Widget _buildDataCellViewBlueDoctor(
+      String text, VoidCallback onTap) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    return GestureDetector(
+      onTap: onTap, // Trigger the callback when the cell is clicked
+      child: Container(
+        height: 35,
+        width: screenWidth * 0.2, // 30% of screen width for adaptability
+        decoration: BoxDecoration(
+          color: Colors.white,
+          border: Border(
+            top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+            bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
           ),
         ),
         child: Align(

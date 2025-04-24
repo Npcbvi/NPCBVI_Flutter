@@ -124,14 +124,14 @@ class HospitalEquipmentList {
   // Factory constructor to create a HospitalEquipmentList instance from JSON
   HospitalEquipmentList.fromJson(Map<String, dynamic> json) {
     name = json['name'];
-    noOfEquipment = json['no_of_equipment']; // Adjusted key spelling
+    noOfEquipment = json['no_of_euipment']; // Adjusted key spelling
   }
 
   // Method to convert an instance back to JSON
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
-    data['no_of_equipment'] = this.noOfEquipment; // Adjusted key spelling
+    data['no_of_euipment'] = this.noOfEquipment; // Adjusted key spelling
     return data;
   }
 }

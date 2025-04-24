@@ -20583,6 +20583,7 @@ class _DPMDashboard extends State<DPMDashboard> {
           SizedBox(height: 5),
           _buildButton("View Detail", Icons.visibility, () {
             print('@@Click of NGO APllication View pressed');
+
 // Ngo Dashboard main line number 4991
 
             _onViewDetailButtonPressed(context, npcbNumber,

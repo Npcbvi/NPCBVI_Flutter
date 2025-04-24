@@ -3360,8 +3360,8 @@ class _HospitalDashboard extends State<HospitalDashboard> {
 
     // Reset date pickers
     _dob = "Select Date";
-    _selectedDateText = "Select Date";
-    _selectedDateTextToDate = "Select Date";
+    _selectedDateText = "Screening Date";
+    _selectedDateTextToDate = "Tentative Date";
 
     // Clear image
     _image = null;
@@ -3800,9 +3800,9 @@ class _HospitalDashboard extends State<HospitalDashboard> {
           distCodeGovtPrivate = null;
           //village_code = null;
           _dob = "Select Date";
-          _selectedDateText = "Select Date";
-          _selectedDateTextToDate = "Select Date";
-         // _image = null;
+          _selectedDateText = "Screening Date";
+          _selectedDateTextToDate = "Tentative Date";
+          _image = null;
 
           setState(() {});
         //  Utils.showToast("Form has been reset!", true);
