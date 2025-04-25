@@ -33,6 +33,7 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_Scree
 import 'package:mohfw_npcbvi/src/model/ngoSatelliteMangerRegister/GetSatelliteManagerById.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/CenterOfficeNameSatelliteCenter.dart';
 import 'package:mohfw_npcbvi/src/model/sattelliteCenter/GetSatelliteCenterList.dart';
+import 'package:mohfw_npcbvi/src/ngo/SatelliteCenterClickAddSatelliteCenter.dart';
 import 'package:mohfw_npcbvi/src/ngo/SattelliteCenterClickStaelliteManger.dart';
 import 'package:mohfw_npcbvi/src/ngo/SattelliteCenterClickStaelliteMangerEdit.dart';
 import 'package:mohfw_npcbvi/src/ngo/SceeningCampClickAddCampManager.dart';
@@ -1220,14 +1221,14 @@ class _NgoDashboard extends State<NgoDashboard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'District:',
+                              'State:',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              '${districtNames}',
+                              '${stateNames}',
                               style: TextStyle(
                                   color: Colors.red,
                                   fontWeight: FontWeight.w500),
@@ -1249,13 +1250,13 @@ class _NgoDashboard extends State<NgoDashboard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'State:',
+                          'District:',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          '${stateNames}',
+                          '${districtNames}',
                           style: TextStyle(
                               color: Colors.red, fontWeight: FontWeight.w500),
                         ),
@@ -6416,13 +6417,10 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   Widget _buildSatelliteManagerEditBlocked(int sR_No) {
     return Container(
-      height: 80, // Increased height to accommodate vertical layout
-      width: 60, // Fixed width to ensure the widget is not too wide
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
 
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         // Centering content vertically
-        crossAxisAlignment: CrossAxisAlignment.center,
         // Centering content horizontally
         children: [
           _buildButtonNewCreate("Edit", Icons.visibility, () async {
@@ -6447,7 +6445,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                   // Update controllers instead of reinitializing them
                   setState(() {
                     print('@@Edit Ka click');
-                    _userNameControllerStatelliteMangerReg.text =
+                   /* _userNameControllerStatelliteMangerReg.text =
                         manager.name ?? '';
                     _mobileNumberControllerStatelliteMangerReg.text =
                         manager.mobile ?? '';
@@ -6457,9 +6455,10 @@ class _NgoDashboard extends State<NgoDashboard> {
                         manager.address ?? '';
                     _designationControllerStatelliteMangerReg.text =
                         manager.designation ?? '';
+
                     _futureDataGethospitalForDDL =
-                        GetHospitalForDDL(district_code_login, state_code_login, userId);
-                    SatelliteManagerRegisterartionsEdit = true;
+                        GetHospitalForDDL(district_code_login, state_code_login, userId);*/
+             /*       SatelliteManagerRegisterartionsEdit = true;
                     CampManagerRegisterartionsEdit = false;
                     ManageUSerNGOHospt = false;
                     ngoDashboardclicks = false;
@@ -6472,13 +6471,25 @@ class _NgoDashboard extends State<NgoDashboard> {
                     ngoSATELLITECENTREMANAGERLists = false;
                     AddSatelliteManagers = false;
                     satelliteCenterMenuListdisplay = false;
-                    AddSatelliteCenterRedOptionFields = false;
-                   /* Navigator.push(
+                    AddSatelliteCenterRedOptionFields = false;*/
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => SattelliteCenterClickStaelliteMangerEdit( name: manager.name ?? '',
+                    //     mobile: manager.mobile ?? '',
+                    //     emailId: manager.emailId ?? '',
+                    //     address: manager.address ?? '',
+                    //     designation: manager.designation ?? '',)),
+                    // );
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SattelliteCenterClickStaelliteMangerEdit()),
-                    );*/
+                      MaterialPageRoute(
+                        builder: (context) => SattelliteCenterClickStaelliteMangerEdit(
+                          manager: manager,
+                        ),
+                      ),
+                    );
                   });
-                  Navigator.pop(context);
+                 // Navigator.pop(context);
                 } else {
                   Utils.showToast("No satellite manager details found", true);
                 }
@@ -11783,7 +11794,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                           },
                         ),
 
-                        SizedBox(height: 10.0),
+                        SizedBox(height: 5.0),
 
                         // Gender Selection
                         Text('Gender*'),
@@ -11821,7 +11832,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                             Text('Transgender'),
                           ],
                         ),
-                        SizedBox(height: 10.0),
+                        SizedBox(height: 5.0),
 
                         // Mobile Number Field
                         TextFormField(
@@ -11872,7 +11883,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                           },
                         ),
 
-                        SizedBox(height: 10.0),
+                        SizedBox(height: 5.0),
 
                         // Email ID Field
                         TextFormField(
@@ -11923,7 +11934,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                           },
                         ),
 
-                        SizedBox(height: 10.0),
+                        SizedBox(height: 5.0),
                         Container(
                           margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                           child: FutureBuilder<List<DataGethospitalForDDL>>(
@@ -11989,9 +12000,9 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                                             gethospitalNameSrNOReg =
                                                 userc?.hRegID ?? '';
                                             print(
-                                                'getMAnagerNAme Year: $gethospitalName');
+                                                '@@getMAnagerNAme Year: $gethospitalName');
                                             print(
-                                                'getmanagerSrNO: $gethospitalNameSrNOReg');
+                                                '@@getmanagerSrNO: $gethospitalNameSrNOReg');
                                           });
                                         },
                                         items: list.map((user) {
@@ -12032,7 +12043,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                             },
                           ),
                         ),
-                        SizedBox(height: 10.0),
+                        SizedBox(height: 5.0),
                         // Address Field
                         TextFormField(
                           controller: _addressControllerStatelliteMangerReg,
@@ -12079,7 +12090,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                           },
                         ),
 
-                        SizedBox(height: 10.0),
+                        SizedBox(height: 5.0),
 
                         // Designation Field
                         TextFormField(
@@ -12275,7 +12286,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                               children: [
                                 // Space between icon and text
                                 Text(
-                                  'Add Satellite Centre',
+                                  'Add Satellite Center',
                                   style: TextStyle(
                                     color: Colors.black, // Text color
                                     fontWeight: FontWeight.w500, // Text weight
@@ -12444,7 +12455,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
     // Handle the tap event here
     print('@@_addSatelliteCenterRedOtion--');
     setState(() {
-      ManageUSerNGOHospt = false;
+     /* ManageUSerNGOHospt = false;
       ngoDashboardclicks = false;
       EyeBankApplication = false;
       EyeDonationCentreRegistrationClickONAddDontaions = false;
@@ -12464,7 +12475,11 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
           GetHospitalForDDL(district_code_login, state_code_login, userId);
       satelliteCenterMenuListdisplay = false;
       _futureCenterOfficerName =
-          getSatelliteManager(state_code_login, district_code_login, entryby);
+          getSatelliteManager(state_code_login, district_code_login, entryby);*/
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SatelliteCenterClickAddSatelliteCenter(entry:entryby)),
+      );
     });
   }
 

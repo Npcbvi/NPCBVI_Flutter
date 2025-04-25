@@ -170,14 +170,14 @@ class _SattelliteCenterClickStaelliteManger extends State<SattelliteCenterClickS
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'District:',
+                                  'State:',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
                                 ),
                                 const SizedBox(height: 5),
                                 Text(
-                                  '${districtNames}',
+                                  '${stateNames}',
                                   style: TextStyle(
                                       color: Colors.red,
                                       fontWeight: FontWeight.w500),
@@ -199,13 +199,13 @@ class _SattelliteCenterClickStaelliteManger extends State<SattelliteCenterClickS
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'State:',
+                              'District:',
                               style: TextStyle(
                                   color: Colors.black, fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(height: 5),
                             Text(
-                              '${stateNames}',
+                              '${districtNames}',
                               style: TextStyle(
                                   color: Colors.red, fontWeight: FontWeight.w500),
                             ),

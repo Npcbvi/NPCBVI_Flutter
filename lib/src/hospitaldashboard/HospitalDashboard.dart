@@ -807,10 +807,12 @@ class _HospitalDashboard extends State<HospitalDashboard> {
                   'Login Type:', 'Hospital', Colors.black, Colors.red),
               _buildUserInfoGrid('Login Id:', userId?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
-              _buildUserInfoGrid('District:',
-                  districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
               _buildUserInfoGrid('State:', stateNames?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
+              _buildUserInfoGrid('District:',
+                  districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
+
+
             ],
           ),
         ),

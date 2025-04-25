@@ -1,8 +1,12 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:mohfw_npcbvi/src/apihandler/ApiConstants.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
+import 'package:mohfw_npcbvi/src/model/sattelliteCenter/CenterOfficeNameSatelliteCenter.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
@@ -11,42 +15,22 @@ import '../model/GetHospitalForDDL/GethospitalForDDL.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as developer;
+class SatelliteCenterClickAddSatelliteCenter extends StatefulWidget {
+  final String entry;
 
-import '../model/ngoSatelliteMangerRegister/GetSatelliteManagerById.dart';
-class SattelliteCenterClickStaelliteMangerEdit extends StatefulWidget {
-  /*final String name;
-  final String mobile;
-  final String emailId;
-  final String address;
-  final String designation;
-
-  const SattelliteCenterClickStaelliteMangerEdit({
-    Key key,
-     this.name,
-     this.mobile,
-     this.emailId,
-     this.address,
-     this.designation,
-  }) : super(key: key);*/
-  final DataGetSatelliteManagerById manager;
-  const SattelliteCenterClickStaelliteMangerEdit({
-    Key key,
-     this.manager,
-  }) : super(key: key);
+  const SatelliteCenterClickAddSatelliteCenter({Key key,  this.entry}) : super(key: key);
   @override
-  _SattelliteCenterClickStaelliteMangerEdit createState() => _SattelliteCenterClickStaelliteMangerEdit();
+  _SatelliteCenterClickAddSatelliteCenter createState() => _SatelliteCenterClickAddSatelliteCenter();
 }
 
-class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterClickStaelliteMangerEdit> {
-  bool SatelliteManagerRegisterartionsEdit = true;
-
+class _SatelliteCenterClickAddSatelliteCenter extends State<SatelliteCenterClickAddSatelliteCenter> {
   String gethospitalName,
       getCenterOfficerName,
       gethospitalNameSrNORegRedOption,
       gethospitalNameRegRedOption;
   String gethospitalNameSrNOReg;
   String fullnameController;
-  String _chosenValue,srNo,
+  String _chosenValue,
       districtNames,
       userId,
       stateNames,
@@ -83,15 +67,30 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
   int genderSatelliteManagerApi=1; // 1 for Male, 2 for Female, 3 for Transgender
   int genderSatelliteCenterApi;
   bool satelliteCenterMenuListdisplay = false;
-  bool AddSatelliteCenterRedOptionFields = false;
   Future<List<DataGethospitalForDDL>> _futureDataGethospitalForDDL;
   DataGethospitalForDDL _dataGethospitalForDDL;
+  bool AddSatelliteCenterRedOptionFields = true;
+  TextEditingController _userSatelliteCentreNameRegCenter =
+  TextEditingController();
+  TextEditingController _mobileNumberControllerStatelliteMangerRegCenter =
+  TextEditingController();
+  TextEditingController _emailIdControllerStatelliteMangerRegCenter =
+  TextEditingController();
+  TextEditingController _addressControllerStatelliteMangerRegCenter =
+  TextEditingController();
+  TextEditingController _designationControllerStatelliteMangerRegCenter =
+  TextEditingController();
+  TextEditingController _hospitalControllerStatelliteMangerRegCenter =
+  TextEditingController();
+  Future<List<DataCenterOfficeNameSatelliteCenter>> _futureCenterOfficerName;
+  DataCenterOfficeNameSatelliteCenter _dataCenterOfficeNameSatelliteCenter;
+  int getCenterOfficerNameSRNo;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Update Satellite Manager',
+        title: Text('Add Satellite Center',
           maxLines: 2,
           // Assuming fullnameController has .text
           style: TextStyle(color: Colors.white, fontSize: 14.0),),
@@ -100,7 +99,7 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: EditSatelliteManager(), // No condition here
+          child: AddSatelliteCenterRedOptionField(), // No condition here
         ),
       ),
     );
@@ -136,14 +135,11 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
           print('@@7' + state_code_login.toString());
           print('@@8' + district_code_login.toString());
           print('@@9' + darpan_nos.toString());
-          _userNameControllerStatelliteMangerReg.text = widget.manager.name ?? '';
-          _mobileNumberControllerStatelliteMangerReg.text = widget.manager.mobile ?? '';
-          _emailIdControllerStatelliteMangerReg.text = widget.manager.emailId ?? '';
-          _addressControllerStatelliteMangerReg.text = widget.manager.address ?? '';
-          _designationControllerStatelliteMangerReg.text = widget.manager.designation ?? '';
-          srNo=widget.manager.srNo;
+          print('@@entryby' + widget.entry.toString());
           _futureDataGethospitalForDDL =
               GetHospitalForDDL(district_code_login, state_code_login, userId);
+          _futureCenterOfficerName =
+              getSatelliteManager(state_code_login, district_code_login, widget.entry);
 
         });
       });
@@ -152,12 +148,12 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
     }
   }
 
-  Widget EditSatelliteManager() {
+  Widget AddSatelliteCenterRedOptionField() {
     return Column(
       children: [
         Visibility(
-          visible: SatelliteManagerRegisterartionsEdit,
-          // Change this to your actual condition
+          visible: AddSatelliteCenterRedOptionFields,
+          // Assuming CampManagerRegisterartions is true
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
@@ -198,7 +194,7 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'State::',
+                                  'State:',
                                   style: TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.w500),
@@ -252,7 +248,7 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Satellite Manager Registration',
+                          'Satellite Center Registration',
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.w800,
@@ -266,19 +262,27 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
 
                 // Form for Camp Manager Registration
                 Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(0.0),
                   child: Column(
                     children: [
                       // Username Field
+                      SizedBox(height: 5.0),
+
+
+
+                      // Designation Field
+
+                      // Submit and Cancel Buttons
+
                       TextFormField(
-                        controller: _userNameControllerStatelliteMangerReg,
+                        controller: _userSatelliteCentreNameRegCenter,
                         // Attach controller
                         decoration: InputDecoration(
                           label: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'User Name',
+                                  text: 'Satellite Centre Name',
                                   style: TextStyle(
                                     color:
                                     Colors.black, // Default label color
@@ -295,68 +299,32 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                               ],
                             ),
                           ),
-                          hintText: 'Enter your name',
+                          hintText: 'Enter your Satellite Center Name',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            // Rounded corners for the border
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
-                              width: 1.0, // Border width
-                            ),
+                            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
                           ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
+                          ),
+
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your name'; // Validation message if field is empty
+                            return 'Please enter your Satellite Centre Name'; // Validation message if field is empty
                           }
                           return null;
                         },
                       ),
-
                       SizedBox(height: 5.0),
 
-                      // Gender Selection
-                      Text('Gender*'),
-                      Row(
-                        children: [
-                          Radio<int>(
-                            value: 1,
-                            groupValue: genderSatelliteManagerApi,
-                            onChanged: (value) {
-                              setState(() {
-                                genderSatelliteManagerApi = value;
-                              });
-                            },
-                          ),
-                          Text('Male'),
-                          Radio<int>(
-                            value: 2,
-                            groupValue: genderSatelliteManagerApi,
-                            onChanged: (value) {
-                              setState(() {
-                                genderSatelliteManagerApi = value;
-                              });
-                            },
-                          ),
-                          Text('Female'),
-                          Radio<int>(
-                            value: 3,
-                            groupValue: genderSatelliteManagerApi,
-                            onChanged: (value) {
-                              setState(() {
-                                genderSatelliteManagerApi = value;
-                              });
-                            },
-                          ),
-                          Text('Transgender'),
-                        ],
-                      ),
-                      SizedBox(height: 5.0),
-
-                      // Mobile Number Field
                       TextFormField(
-                        controller:
-                        _mobileNumberControllerStatelliteMangerReg,
+                        controller: _mobileNumberControllerStatelliteMangerRegCenter,
+                        maxLength: 10, // Optional: limit input to 10 digits
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly, // Allow only digits
+                        ],
                         // Attach controller
                         decoration: InputDecoration(
                           label: RichText(
@@ -380,40 +348,36 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                               ],
                             ),
                           ),
-                          hintText: 'Enter your mobile number',
+                          hintText: 'Enter your Mobile No.',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            // Rounded corners for the border
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
-                              width: 1.0, // Border width
-                            ),
+                            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
                           ),
                         ),
-                        keyboardType: TextInputType.phone,
-                        // Ensures only numbers can be entered
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your mobile number'; // Validation message if field is empty
+                            return 'Please enter your mobile number';
                           } else if (value.length != 10) {
-                            return 'Please enter a valid 10-digit mobile number'; // Validation for 10-digit mobile number
+                            return 'Please enter a valid 10-digit mobile number';
                           }
                           return null;
                         },
                       ),
-
                       SizedBox(height: 5.0),
 
-                      // Email ID Field
                       TextFormField(
-                        controller: _emailIdControllerStatelliteMangerReg,
+                        controller: _emailIdControllerStatelliteMangerRegCenter,
                         // Attach controller
                         decoration: InputDecoration(
                           label: RichText(
                             text: TextSpan(
                               children: [
                                 TextSpan(
-                                  text: 'Email ID',
+                                  text: 'EmailId.',
                                   style: TextStyle(
                                     color:
                                     Colors.black, // Default label color
@@ -430,29 +394,26 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                               ],
                             ),
                           ),
-                          hintText: 'Enter your email address',
+                          hintText: 'Enter your EmailId',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            // Rounded corners for the border
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
-                              width: 1.0, // Border width
-                            ),
+                            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
                           ),
                         ),
-                        keyboardType: TextInputType.emailAddress,
-                        // Ensures keyboard is optimized for email input
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your email'; // Validation for empty field
+                            return 'Please enter your email';
                           } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
                               .hasMatch(value)) {
-                            return 'Please enter a valid email address'; // Validation for valid email format
+                            return 'Please enter a valid email address';
                           }
                           return null;
                         },
                       ),
-
                       SizedBox(height: 5.0),
                       Container(
                         margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
@@ -463,35 +424,18 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                               return Text('Error: ${snapshot.error}');
                             }
 
-                            if (snapshot.connectionState == ConnectionState.waiting) {
-                              return Center(child: CircularProgressIndicator());
-                            }
-                            if (!snapshot.hasData || snapshot.data.isEmpty) {
-                              return Container(
-                                width: double.infinity,  // Full width like a TextField
-                                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey, width: 1.0),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: Text(
-                                  'No data found',
-                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
-                              );
+                            if (!snapshot.hasData) {
+                              return CircularProgressIndicator();
                             }
 
                             List<DataGethospitalForDDL> list =
-                            snapshot.data.toList();
+                                snapshot.data ?? [];
 
-                            // Check if _selectedUser is null or not part of the list anymore
+                            // Ensure _dataGethospitalForDDL is in the list
                             if (_dataGethospitalForDDL == null ||
                                 !list.contains(_dataGethospitalForDDL)) {
                               _dataGethospitalForDDL =
-                                  list.first; // Set the first item as default
-                              gethospitalNameSrNOReg = _dataGethospitalForDDL.hRegID.toString();
-                              print('@@gethospitalNameSrNOReg' + gethospitalNameSrNOReg.toString());
-
+                              list.isNotEmpty ? list.first : null;
                             }
 
                             return Padding(
@@ -500,63 +444,57 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    'Select hospital*',
+                                  const Text(
+                                    'Hospital Name*',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  SizedBox(
-                                    height: 55,
-                                    // Adjust height as needed
+                                  Container(
+                                    height: 50, // Same height as email field
                                     width: double.infinity,
-                                    // Ensures it takes full width
-                                    child: DropdownButtonFormField<
-                                        DataGethospitalForDDL>(
-                                      value: _dataGethospitalForDDL,
-                                      onChanged: (userc) {
-                                        setState(() {
-                                          _dataGethospitalForDDL = userc;
-                                          gethospitalName =
-                                              userc?.hName ?? '';
-                                          gethospitalNameSrNOReg =
-                                              userc?.hRegID ?? '';
-                                          print(
-                                              '@@getMAnagerNAme Year: $gethospitalName');
-                                          print(
-                                              '@@getmanagerSrNO: $gethospitalNameSrNOReg');
-                                        });
-                                      },
-                                      items: list.map((user) {
-                                        return DropdownMenuItem<
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.white,
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 15.0),
+                                      // 👈 Simulating contentPadding
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton<
                                             DataGethospitalForDDL>(
-                                          value: user,
-                                          child: Text(user.hName,
-                                              style: TextStyle(fontSize: 16)),
-                                        );
-                                      }).toList(),
-                                      decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: 15.0, horizontal: 10.0),
-                                        enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.grey, width: 1.0),
-                                          borderRadius:
-                                          BorderRadius.circular(10.0),
+                                          value: _dataGethospitalForDDL,
+                                          onChanged: (userc) {
+                                            setState(() {
+                                              _dataGethospitalForDDL = userc;
+                                              gethospitalNameRegRedOption =
+                                                  userc?.hName ?? '';
+                                              gethospitalNameSrNORegRedOption =
+                                                  userc?.hRegID ?? '';
+                                              print(
+                                                  'getMAnagerNAme Year: $gethospitalName');
+                                              print(
+                                                  '@@gethospitalNameSrNORegRedOption: $gethospitalNameSrNORegRedOption');
+                                            });
+                                          },
+                                          items: list.map((user) {
+                                            return DropdownMenuItem<
+                                                DataGethospitalForDDL>(
+                                              value: user,
+                                              child: Text(user.hName,
+                                                  style:
+                                                  TextStyle(fontSize: 16)),
+                                            );
+                                          }).toList(),
+                                          icon: Icon(Icons.arrow_drop_down,
+                                              color: Colors.black),
+                                          isExpanded:
+                                          true, // Ensures dropdown takes full width
                                         ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.grey, width: 1.0),
-                                          borderRadius:
-                                          BorderRadius.circular(10.0),
-                                        ),
-                                        filled: true,
-                                        fillColor: Colors.white,
                                       ),
-                                      dropdownColor: Colors.white,
-                                      style: TextStyle(color: Colors.black),
-                                      icon: Icon(Icons.arrow_drop_down,
-                                          color: Colors.black),
                                     ),
                                   ),
                                 ],
@@ -566,9 +504,115 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                         ),
                       ),
                       SizedBox(height: 5.0),
-                      // Address Field
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: FutureBuilder<
+                            List<DataCenterOfficeNameSatelliteCenter>>(
+                          future: _futureCenterOfficerName,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+
+                            if (!snapshot.hasData) {
+                              return CircularProgressIndicator();
+                            }
+
+                            List<DataCenterOfficeNameSatelliteCenter> list =
+                                snapshot.data;
+                            print('@@DataCenterOfficeNameSatelliteCenter' +
+                                list.toString());
+                            // Check if list is empty and handle accordingly
+                            if (list.isEmpty) {
+                              return Text('No managers available.');
+                            }
+
+                            // Check if _dataCenterOfficeNameSatelliteCenter is null or not part of the list anymore
+                            if (_dataCenterOfficeNameSatelliteCenter == null ||
+                                !list.contains(
+                                    _dataCenterOfficeNameSatelliteCenter)) {
+                              _dataCenterOfficeNameSatelliteCenter =
+                                  list.first; // Set the first item as default
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 0.0, vertical: 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Centre Officer Name*',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  DropdownButtonFormField<
+                                      DataCenterOfficeNameSatelliteCenter>(
+                                    value: _dataCenterOfficeNameSatelliteCenter,
+                                    onChanged: (userc) {
+                                      setState(() {
+                                        print('@@DataCenterOfficeNameSatelliteCenter' +
+                                            _dataCenterOfficeNameSatelliteCenter
+                                                .toString());
+                                        print(
+                                            '@@DataCenterOfficeNameSatelliteCenteruserc' +
+                                                userc.srNo.toString());
+
+                                        _dataCenterOfficeNameSatelliteCenter =
+                                            userc;
+                                        getCenterOfficerName =
+                                            userc?.name ?? '';
+                                        getCenterOfficerNameSRNo =
+                                            userc?.srNo ?? '';
+
+                                        print(
+                                            '@@getCenterOfficerName Year: $getCenterOfficerName');
+                                        print('@@getCenterOfficerNameSRNo:' +
+                                            getCenterOfficerNameSRNo
+                                                .toString());
+                                      });
+                                    },
+                                    items: list.map((user) {
+                                      return DropdownMenuItem<
+                                          DataCenterOfficeNameSatelliteCenter>(
+                                        value: user,
+                                        child: Text(user.name,
+                                            style: TextStyle(fontSize: 16)),
+                                      );
+                                    }).toList(),
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 15.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey, width: 1.0),
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey, width: 1.0),
+                                        borderRadius:
+                                        BorderRadius.circular(10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
+                                    ),
+                                    dropdownColor: Colors.white,
+                                    style: TextStyle(color: Colors.black),
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 5.0),
                       TextFormField(
-                        controller: _addressControllerStatelliteMangerReg,
+                        controller: _addressControllerStatelliteMangerRegCenter,
                         // Attach controller
                         decoration: InputDecoration(
                           label: RichText(
@@ -592,92 +636,45 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                               ],
                             ),
                           ),
-                          hintText: 'Enter your address',
+                          hintText: 'Enter your Address',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            // Rounded corners for the border
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
-                              width: 1.0, // Border width
-                            ),
+                            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
                           ),
-                        ),
-                        maxLines: 3,
-                        // Allows for multi-line input
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your address'; // Validation for empty field
-                          }
-                          return null;
-                        },
-                      ),
-
-                      SizedBox(height: 5.0),
-
-                      // Designation Field
-                      TextFormField(
-                        controller: _designationControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Designation', // Label text
-                                  style: TextStyle(
-                                    color:
-                                    Colors.black, // Default label color
-                                  ),
-                                ),
-                                TextSpan(
-                                  text: ' *',
-                                  // Asterisk to indicate the field is required
-                                  style: TextStyle(
-                                    color: Colors
-                                        .red, // Red color for the asterisk
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          hintText: 'Enter your designation',
-                          border: OutlineInputBorder(
+                          focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
-                            // Rounded corners for the border
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
-                              width: 1.0, // Border width
-                            ),
+                            borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
                           ),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your designation'; // Validation for empty field
+                            return 'Please enter your address';
                           }
                           return null;
                         },
                       ),
-
                       SizedBox(height: 10.0),
-
-                      // Submit and Cancel Buttons
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ElevatedButton(
+                          ElevatedButton.icon(
                             onPressed: () {
 
-                                // Process the form data
-                                _SatelliteManagerRegistrationEdit();
+                                print(
+                                    "@@satelliteCenterRegistationRed--Pending work here--");
+                                _satelliteCentersRegistrationRedOption();
                             },
-                            child: Text('Submit'),
+                            icon: Icon(Icons.check, size: 20),
+                            // ✅ Add Check Icon
+                            label: Text('Submit'),
                           ),
-                          ElevatedButton(
+                          ElevatedButton.icon(
                             onPressed: () {
-                              // Reset form fields
-                              _resetForm();
+                              _resetFormSatelliteManager();
                             },
-                            child: Text('Reset'),
+                            icon: Icon(Icons.refresh, size: 20),
+                            // 🔄 Add Reset Icon
+                            label: Text('Reset'),
                           ),
                         ],
                       ),
@@ -796,41 +793,134 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
       return null;
     }
   }
-  Future<void> _SatelliteManagerRegistrationEdit() async {
-    print('@@Editclick of _SatelliteManagerRegistrationEdit List--');
-      Utils.showProgressDialog1(context);
+  Future<List<DataCenterOfficeNameSatelliteCenter>> getSatelliteManager(
+      int stateId, int districtid, String entryBy) async {
+    print("@@getSatelliteManager--check for officeerName" + "1");
+    Response response1;
 
-      var response = await ApiController.UpdateSatelliteManager(
-          _userNameControllerStatelliteMangerReg.text.toString().trim(),
-          genderSatelliteManagerApi.toString(),
-          _mobileNumberControllerStatelliteMangerReg.text.toString().trim(),
-          _emailIdControllerStatelliteMangerReg.text.toString().trim(),
-          _addressControllerStatelliteMangerReg.text.toString().trim(),
-          _designationControllerStatelliteMangerReg.text.toString().trim(),
-          district_code_login,
-          state_code_login,
-          userId,
-          int.parse(entryby),
-          darpan_nos,
-          gethospitalNameSrNOReg.toString(),
-          ngoNames,
-          stateNames,
-          districtNames,
-          srNo);
-
-
-      Utils.hideProgressDialog1(context);
-
-      // Check if the response is null before accessing properties
-      if (response.status) {
-        Utils.showToast(response.message.toString(), true);
-        print("@@Result message----Class: " + response.message);
-
-      }else{
-        Utils.showToast(response.message.toString(), true);
-        print("@@Result message----Class: " + response.message);
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
     }
 
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetSatelliteManager;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "stateId": stateId,
+        "districtId": districtid,
+        "entryBy": entryBy,
+      });
+      print("@@getSatelliteManager--bodyprint--yy: ${url+body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getSatelliteManager--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      CenterOfficeNameSatelliteCenter data =
+      CenterOfficeNameSatelliteCenter.fromJson(responseData);
+
+      if (data.status) {
+        Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+  Future<void> _satelliteCentersRegistrationRedOption() async {
+    print("@@satelliteCenterRegistationRed--Pending work here--11");
+
+    // Start validation
+    if (_userSatelliteCentreNameRegCenter.text.trim().isEmpty) {
+      Utils.showToast("Please enter Satellite Centre Name", true);
+      return;
+    }
+
+    if (gethospitalNameSrNORegRedOption == null || gethospitalNameSrNORegRedOption.isEmpty) {
+      Utils.showToast("Please select a Hospital Name", true);
+      return;
+    }
+
+
+
+    if (_mobileNumberControllerStatelliteMangerRegCenter.text.trim().isEmpty) {
+      Utils.showToast("Please enter Mobile Number", true);
+      return;
+    }
+
+    if (!RegExp(r'^[6-9]\d{9}$').hasMatch(_mobileNumberControllerStatelliteMangerRegCenter.text.trim())) {
+      Utils.showToast("Please enter a valid 10-digit mobile number", true);
+      return;
+    }
+
+    if (_addressControllerStatelliteMangerRegCenter.text.trim().isEmpty) {
+      Utils.showToast("Please enter Address", true);
+      return;
+    }
+
+    if (_emailIdControllerStatelliteMangerRegCenter.text.trim().isEmpty) {
+      Utils.showToast("Please enter Email ID", true);
+      return;
+    }
+
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_emailIdControllerStatelliteMangerRegCenter.text.trim())) {
+      Utils.showToast("Please enter a valid Email ID", true);
+      return;
+    }
+
+    // All validation passed — proceed with API
+    Utils.showProgressDialog1(context);
+    print("@@satelliteCenterRegistationRed--Calling API--");
+
+    var response = await ApiController.satelliteCenterRegistation(
+      _userSatelliteCentreNameRegCenter.text.trim(),
+      gethospitalNameSrNORegRedOption,
+      getCenterOfficerNameSRNo,
+      _mobileNumberControllerStatelliteMangerRegCenter.text.trim(),
+      _addressControllerStatelliteMangerRegCenter.text.trim(),
+      _emailIdControllerStatelliteMangerRegCenter.text.trim(),
+      district_code_login,
+      state_code_login,
+      userId,
+      int.parse(entryby),
+      darpan_nos,
+    );
+
+    Utils.hideProgressDialog1(context);
+
+    if (response.status) {
+      Utils.showToast(response.message.toString(), true);
+      print("@@Success message: " + response.message);
+    } else {
+      Utils.showToast(response.message.toString(), true);
+    }
   }
 
 }
