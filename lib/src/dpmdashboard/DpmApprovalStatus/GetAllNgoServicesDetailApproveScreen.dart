@@ -54,6 +54,7 @@ class _GetAllNgoServicesDetailApproveScreen
           district_code_login = user.district_code;
           fetchNpcbNo();
           getDarpanNo();
+          print('@@8' + district_code_login.toString());
           print('@@2' + user.name);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
@@ -61,7 +62,7 @@ class _GetAllNgoServicesDetailApproveScreen
           print('@@6' + user.districtName);
           print('@@7' + state_code_login.toString());
           print('@@8' + district_code_login.toString());
-
+          print("@@Darpan Number: $darpan_nos");
         });
       });
     } catch (e) {

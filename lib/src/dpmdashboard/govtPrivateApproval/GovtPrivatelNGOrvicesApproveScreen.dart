@@ -169,71 +169,69 @@ class _GovtPrivatelNGOrvicesApproveScreen extends State<GovtPrivatelNGOrvicesApp
   Widget _buildActionSection() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Action Label
-          const Text(
-            "Action:",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-
-          // Dropdown for Action Selection
-          DropdownButtonFormField<String>(
-            value: selectedAction,
-            hint: const Text("--Select--"),
-            items: actions.map((String action) {
-              return DropdownMenuItem<String>(
-                value: action,
-                child: Text(action),
-              );
-            }).toList(),
-            onChanged: (String newValue) {
-              setState(() {
-                selectedAction = newValue;
-                reasonController.clear(); // Clear reason when action changes
-              });
-            },
-          ),
-
-          // Show Reason Section if "Hold" or "Rejected" is selected
-          if (selectedAction == "Hold" || selectedAction == "Rejected") ...[
-            const SizedBox(height: 10),
+      child: SingleChildScrollView( // ✅ Add this
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             const Text(
-              "Reason:",
+              "Action:",
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 5),
-            // Predefined reasons for "Hold" or "Rejected"
-            Column(
-              children: [
-                _buildReasonOption("Certificate for at least 15 Bed IPD facility is not uploaded"),
-                _buildReasonOption("Invalid registration documents"),
-                _buildReasonOption("NGO does not meet eligibility criteria"),
-                _buildReasonOption("Other (Specify Below)"),
-              ],
+            DropdownButtonFormField<String>(
+              value: selectedAction,
+              hint: const Text("--Select--"),
+              items: actions.map((String action) {
+                return DropdownMenuItem<String>(
+                  value: action,
+                  child: Text(action),
+                );
+              }).toList(),
+              onChanged: (String newValue) {
+                setState(() {
+                  selectedAction = newValue;
+                  reasonController.clear();
+                  reasonController.clear();
+                });
+              },
             ),
-
-            // TextField for Custom Reason (Only shown if "Other" is selected)
-            TextField(
-              controller: reasonController,
-              decoration: const InputDecoration(
-                hintText: "Enter reason",
-                border: OutlineInputBorder(),
+            if (selectedAction == "Hold" || selectedAction == "Rejected") ...[
+              const SizedBox(height: 10),
+              const Text(
+                "Reason:",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
+              const SizedBox(height: 5),
+              Column(
+                children: [
+                  _buildReasonOption("Certificate for at least 15 Bed IPD facility is not uploaded"),
+                  _buildReasonOption("Invalid registration documents"),
+                  _buildReasonOption("NGO does not meet eligibility criteria"),
+                  _buildReasonOption("Other (Specify Below)"),
+                  if (reasonController.text == "Other (Specify Below)")
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: TextField(
+                        controller: reasonController,
+                        decoration: const InputDecoration(
+                          hintText: "Enter reason",
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ],
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _submitAction,
+              child: const Text("Submit Actions"),
             ),
           ],
-
-          // Submit Button
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: _submitAction,
-            child: const Text("Submit Actions"),
-          ),
-        ],
+        ),
       ),
     );
   }
+
 
 // Helper Widget to Display Reason Options
   Widget _buildReasonOption(String reason) {
@@ -241,6 +239,7 @@ class _GovtPrivatelNGOrvicesApproveScreen extends State<GovtPrivatelNGOrvicesApp
       onTap: () {
         setState(() {
           reasonController.text = reason;
+
         });
       },
       child: Container(

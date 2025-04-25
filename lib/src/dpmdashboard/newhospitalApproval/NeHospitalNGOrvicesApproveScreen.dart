@@ -188,17 +188,22 @@ class _NeHospitalNGOrvicesApproveScreen extends State<NeHospitalNGOrvicesApprove
                 _buildReasonOption("Invalid registration documents"),
                 _buildReasonOption("NGO does not meet eligibility criteria"),
                 _buildReasonOption("Other (Specify Below)"),
+               if (reasonController.text == "Other (Specify Below)")
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: TextField(
+                      controller: reasonController,
+                      decoration: const InputDecoration(
+                        hintText: "Enter reason",
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
               ],
             ),
 
             // TextField for Custom Reason (Only shown if "Other" is selected)
-            TextField(
-              controller: reasonController,
-              decoration: const InputDecoration(
-                hintText: "Enter reason",
-                border: OutlineInputBorder(),
-              ),
-            ),
+
           ],
 
           // Submit Button
@@ -220,6 +225,7 @@ class _NeHospitalNGOrvicesApproveScreen extends State<NeHospitalNGOrvicesApprove
           reasonController.text = reason;
         });
       },
+
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 10),
         margin: const EdgeInsets.symmetric(vertical: 5),

@@ -14,14 +14,14 @@ class ViewClickHospitalDetails {
   ViewClickHospitalDetails.fromJson(Map<String, dynamic> json)
       : message = json['message'],
         status = json['status'],
-        data = DataViewClickHospitalDetails.fromJson(json['data']),
+        data = json['data'] != null ? DataViewClickHospitalDetails.fromJson(json['data']) : null,
         list = json['list'];
 
   Map<String, dynamic> toJson() {
     return {
       'message': message,
       'status': status,
-      'data': data.toJson(),
+      'data': data != null ? data.toJson() : null,
       'list': list,
     };
   }

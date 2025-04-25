@@ -6580,7 +6580,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                 );
               } else {
                 Utils.showToast(
-                    "No hospital details found or an error occurred", true);
+                    "Data not found", true);
+
               }
             } catch (e) {
               print('Error fetching hospital details: $e');
@@ -6762,12 +6763,12 @@ class _NgoDashboard extends State<NgoDashboard> {
                 );
               } else {
                 Utils.showToast(
-                    "No hospital details found or an error occurred", true);
+                    "Data not found", true);
               }
             } catch (e) {
               print('Error fetching hospital details: $e');
               Utils.showToast(
-                  "Failed to fetch hospital details. Please try again later.",
+                  "Data not found.",
                   true);
             }
           }),
@@ -6812,7 +6813,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         children: [
           SizedBox(height: 5),
           // _buildButton('View', () async {
-          _buildButtonNew("'Edit',", Icons.visibility, () async {
+          _buildButtonNew("Edit", Icons.visibility, () async {
             print('View pressed');
           }),
           SizedBox(height: 5),
@@ -7247,7 +7248,7 @@ class _NgoDashboard extends State<NgoDashboard> {
       }
     } catch (e) {
       print("@@GetHospitalList - Exception: $e");
-     // Utils.showToast("Something went wrong: ${e.toString()}", true);
+    //  Utils.showToast("Something went wrong: ${e.toString()}", true);
     //  return ViewClickHospitalDetails(message: "Error occurred", status: false);
     }
   }

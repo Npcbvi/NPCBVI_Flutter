@@ -2797,6 +2797,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                                         (ddata.indexOf(offer) + 1).toString()),
                                     _buildDataCell(offer.darpanNo),
                                     _buildDataCellViewBlue("View", () {
+
+                                      SharedPrefs.storeSharedValues(AppConstant.darpan_no,
+                                          offer.darpanNo.toString());
                                       SharedPrefs.storeSharedValues(
                                           AppConstant.npcbNo,
                                           offer.npcbNo

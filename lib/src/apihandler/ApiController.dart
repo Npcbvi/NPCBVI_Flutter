@@ -1218,9 +1218,11 @@ class ApiController {
 
         print("@@Result_getDPM_Dashboard----" + getDPMDashboardData.message);
         if (getDPMDashboardData.status) {
-          Utils.showToast(getDPMDashboardData.message, true);
+
+        //  Utils.showToast(getDPMDashboardData.message, true);
+
         } else {
-          Utils.showToast(getDPMDashboardData.message, true);
+       //   Utils.showToast(getDPMDashboardData.message, true);
         }
         return getDPMDashboardData;
       } catch (e) {
