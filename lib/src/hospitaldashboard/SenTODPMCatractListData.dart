@@ -97,7 +97,7 @@ String Gender;
                     Row(
                       children: [
                         _buildHeaderCellSrNoDiseaseData('S.No.',context),
-                        _buildHeaderCell('Patient ID'),
+                        _buildHeaderCellPatientView('Patient ID'),
                         _buildHeaderCellDashboardsAction('Action'),
                       ],
                     ),
@@ -126,7 +126,8 @@ String Gender;
                               return Row(
                                 children: [
                                   _buildDataCellCellSrNo((data.indexOf(entry) + 1).toString()),
-                                  _buildDataCell(entry.pUniqueID),
+
+                                  _buildDataCellPatientView(entry.pUniqueID),
                                   _buildDataCellViewBlueDashboard("View", () {
                                     _showDetailsDialogSentTODPM(context,entry);
                                   }),
@@ -152,17 +153,17 @@ String Gender;
       child: Container(
         color: Colors.white70,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           child: Row(
             children: [
 
               _buildUserInfoGrid(
                   'Login Type:', 'Hospital', Colors.black, Colors.red),
-              _buildUserInfoGrid('Login Id:', userId?.toString() ?? 'N/A',
+              _buildUserInfoGrid('Login Id', userId?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
-              _buildUserInfoGrid('State:', stateNames?.toString() ?? 'N/A',
+              _buildUserInfoGrid('State', stateNames?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
-              _buildUserInfoGrid('District:',
+              _buildUserInfoGrid('District',
                   districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
 
             ],
@@ -350,6 +351,35 @@ String Gender;
       ),
     );
   }
+  Widget _buildHeaderCellPatientView(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.6, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
 
   Widget _buildHeaderCellDashboardsAction(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -405,7 +435,6 @@ String Gender;
       ),
     );
   }
-
   Widget _buildDataCell(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -434,7 +463,33 @@ String Gender;
     );
   }
 
+  Widget _buildDataCellPatientView(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
 
+    return Container(
+      height: 35,
+      width: screenWidth * 0.6, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black),   // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildDataCellCellSrNo(String text) {
     double screenWidth = MediaQuery.of(context).size.width;

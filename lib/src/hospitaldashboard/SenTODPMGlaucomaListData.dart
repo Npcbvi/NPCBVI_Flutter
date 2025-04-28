@@ -87,60 +87,59 @@ String Gender;
               ),
             ),
             // Data Table
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Header Row
-                  Row(
+            FutureBuilder<List<SendTODPMCataractData>>(
+              future: ApiController.getGovtPvtOther_Glaucoma(district_code_login, state_code_login, userId),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Utils.getEmptyView("Error: ${snapshot.error}");
+                } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                  return const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "No data found",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  );
+                } else {
+                  List<SendTODPMCataractData> data = snapshot.data;
+
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildHeaderCellSrNo('S.No.',context),
-                      _buildHeaderCell('Patient ID'),
-                      _buildHeaderCellDashboardsAction('Action'),
+                      // ✅ Header row only when data exists
+                      Row(
+                        children: [
+                          _buildHeaderCellSrNo('S.No.', context),
+                          _buildHeaderCell('Patient ID'),
+                          _buildHeaderCellDashboardsAction('Action'),
+                        ],
+                      ),
+                      const SizedBox(height: 8), // some space after header
+
+                      // ✅ Then your list of data
+                      ...data.map((entry) {
+                        return Row(
+                          children: [
+                            _buildDataCellCellSrNo((data.indexOf(entry) + 1).toString()),
+                            _buildDataCell(entry.pUniqueID),
+                            _buildDataCellViewBlueDashboard("View", () {
+                              _showDetailsDialogSentTODPM(context, entry);
+                            }),
+                          ],
+                        );
+                      }).toList(),
                     ],
-                  ),
-                  Divider(color: Colors.blue, height: 1.0),
-                  // Data Rows
-                  FutureBuilder<List<SendTODPMCataractData>>(
-                   future: ApiController.getGovtPvtOther_Glaucoma(district_code_login, state_code_login, userId),
-                  //  future: ApiController.getGovtPvtOther_Glaucoma(454, 24, "H202044985799"),
-
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Utils.getEmptyView("Error: ${snapshot.error}");
-                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                        return Padding(
-                          padding: const EdgeInsets.all(8.0),
-
-                          child: Text(
-                            "No data found",
-                            style: TextStyle(color: Colors.blue, fontSize: 18.0, fontWeight: FontWeight.bold),
-                          ),
-                        );
-                      } else {
-                        List<SendTODPMCataractData> data = snapshot.data;
-                        return Column(
-                          children: data.map((entry) {
-                            return Row(
-                              children: [
-                                _buildDataCellCellSrNo((data.indexOf(entry) + 1).toString()),
-                                _buildDataCell(entry.pUniqueID),
-                                _buildDataCellViewBlueDashboard("View", () {
-                                  _showDetailsDialogSentTODPM(context,entry);
-                                }),
-                              ],
-                            );
-                          }).toList(),
-                        );
-                      }
-                    },
-                  ),
-                ],
-              ),
+                  );
+                }
+              },
             ),
+
           ],
         ),
       ),
@@ -298,7 +297,7 @@ String Gender;
 
     return Container(
       height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      width: screenWidth * 0.6, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -382,7 +381,7 @@ String Gender;
 
     return Container(
       height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      width: screenWidth * 0.6, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -467,17 +466,17 @@ String Gender;
       child: Container(
         color: Colors.white70,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           child: Row(
             children: [
 
               _buildUserInfoGrid(
                   'Login Type:', 'Hospital', Colors.black, Colors.red),
-              _buildUserInfoGrid('Login Id:', userId?.toString() ?? 'N/A',
+              _buildUserInfoGrid('Login Id', userId?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
-              _buildUserInfoGrid('State:', stateNames?.toString() ?? 'N/A',
+              _buildUserInfoGrid('State', stateNames?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
-              _buildUserInfoGrid('District:',
+              _buildUserInfoGrid('District',
                   districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
 
             ],

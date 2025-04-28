@@ -298,7 +298,7 @@ String Gender;
 
     return Container(
       height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      width: screenWidth * 0.6, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -382,7 +382,7 @@ String Gender;
 
     return Container(
       height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
+      width: screenWidth * 0.6, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -467,17 +467,17 @@ String Gender;
       child: Container(
         color: Colors.white70,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           child: Row(
             children: [
 
               _buildUserInfoGrid(
                   'Login Type:', 'Hospital', Colors.black, Colors.red),
-              _buildUserInfoGrid('Login Id:', userId?.toString() ?? 'N/A',
+              _buildUserInfoGrid('Login Id', userId?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
-              _buildUserInfoGrid('District:',
+              _buildUserInfoGrid('District',
                   districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
-              _buildUserInfoGrid('State:', stateNames?.toString() ?? 'N/A',
+              _buildUserInfoGrid('State', stateNames?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
             ],
           ),

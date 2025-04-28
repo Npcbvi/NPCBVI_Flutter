@@ -800,16 +800,17 @@ class _HospitalDashboard extends State<HospitalDashboard> {
       child: Container(
         color: Colors.white70,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
+
           child: Row(
             children: [
               _buildUserInfoGrid(
                   'Login Type:', 'Hospital', Colors.black, Colors.red),
-              _buildUserInfoGrid('Login Id:', userId?.toString() ?? 'N/A',
+              _buildUserInfoGrid('Login Id', userId?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
-              _buildUserInfoGrid('State:', stateNames?.toString() ?? 'N/A',
+              _buildUserInfoGrid('State', stateNames?.toString() ?? 'N/A',
                   Colors.black, Colors.red),
-              _buildUserInfoGrid('District:',
+              _buildUserInfoGrid('District',
                   districtNames?.toString() ?? 'N/A', Colors.black, Colors.red),
 
 

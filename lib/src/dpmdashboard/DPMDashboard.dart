@@ -5698,7 +5698,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         print('@@getfyid__1' + getfyid);
                       }*/
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0.0, 0),
                         child:
                             DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
                           hint: const Text(
@@ -5740,6 +5740,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ),
                           buttonStyleData: ButtonStyleData(
                             height: 50, // Set consistent height
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0), // ADD THIS
+
                             decoration: BoxDecoration(
                               color: Colors.white, // Visible background
                               border: Border.all(color: Colors.grey, width: 1),
@@ -5798,7 +5800,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
 
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0.0, 0),
+
                         child:
                             DropdownButtonFormField2<DataGetDPM_ScreeningMonth>(
                           hint: const Text(
@@ -5839,6 +5842,8 @@ class _DPMDashboard extends State<DPMDashboard> {
                           ),
                           buttonStyleData: ButtonStyleData(
                             height: 50, // Set consistent height
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 0), // ADD THIS
+
                             decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(color: Colors.grey, width: 1),
@@ -11643,7 +11648,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
 
                       if (!snapshot.hasData || snapshot.data == null) {
-                        return const CircularProgressIndicator();
+                //        return const CircularProgressIndicator();
+                        return Container(
+                          height: 50, // Same height as email field
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        );
                       }
 
                       List<DataBindOrgan> list = snapshot.data ?? [];
@@ -13647,7 +13665,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
 
                       if (!snapshot.hasData || snapshot.data == null) {
-                        return const CircularProgressIndicator();
+                       // return const CircularProgressIndicator();
+                        return Container(
+                          height: 50, // Same height as email field
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        );
                       }
 
                       List<DataBindOrgan> list = snapshot.data ?? [];
@@ -13759,7 +13790,21 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Show CircularProgressIndicator only while loading (waiting for data)
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                      //  return const CircularProgressIndicator();
+                        return Container(
+                          height: 50, // Same height as email field
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        );
+
                       }
 
                       // List from the snapshot
@@ -13900,7 +13945,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                      //  return const CircularProgressIndicator();
+                        return Container(
+                          height: 50, // Same height as email field
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        );
+
                       }
 
                       // Ensure list is not null
@@ -15638,7 +15697,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
 
                       if (!snapshot.hasData || snapshot.data == null) {
-                        return const CircularProgressIndicator();
+                     //   return const CircularProgressIndicator();
+                        return Container(
+                          height: 50, // Same height as email field
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        );
+
                       }
 
                       List<DataBindOrgan> list = snapshot.data ?? [];
@@ -15753,7 +15826,21 @@ class _DPMDashboard extends State<DPMDashboard> {
 
                       // Show CircularProgressIndicator only while loading (waiting for data)
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                      //  return const CircularProgressIndicator();
+                        return Container(
+                          height: 50, // Same height as email field
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        );
+
                       }
 
                       // List from the snapshot
@@ -15889,7 +15976,21 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                       // return const CircularProgressIndicator();
+                        return Container(
+                          height: 50, // Same height as email field
+                          width: double.infinity,
+                          padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        );
+
                       }
 
                       List<DataBindOrganValuebiggerFive> list =
@@ -20005,10 +20106,10 @@ class _DPMDashboard extends State<DPMDashboard> {
           PopupMenuItem<int>(
               value: 3,
               child: Text("CHC/Govt.Sub-Dist. Hospital Application(s)")),
-          PopupMenuItem<int>(
+         /* PopupMenuItem<int>(
               value: 4, child: Text("Private Practitioners Application(s)")),
           PopupMenuItem<int>(
-              value: 5, child: Text("Private Medical College Application(s)")),
+              value: 5, child: Text("Private Medical College Application(s)")),*/
         ],
         elevation: 8.0,
       );
@@ -20480,12 +20581,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                           value: value,
                           child: Row(
                             children: [
-                              Icon(
-                                Icons.apartment,
-                                // You can use a specific icon for each type
-                                color: Colors.blue,
-                              ),
+
                               SizedBox(width: 10),
+
                               Expanded(
                                 child: Text(
                                   value,
@@ -20547,91 +20645,63 @@ class _DPMDashboard extends State<DPMDashboard> {
                 child: Column(
                   children: [
                     // Horizontal Scroll for Headers and Data
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Header Row
-                          Row(
+                    FutureBuilder<List<GovtPrivateHospitalData>>(
+                      future: ApiController.get_DPM_Applications_GovtPrivate_applications(
+                          "", userId, 0, district_code_login, state_code_login, dropDownvalueOrgnbaistaionTypeApplications),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return const Center(child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Utils.getEmptyView("Error: ${snapshot.error}");
+                        } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                          return Center(
+                            child: Text(
+                              "No data found",
+                              style: TextStyle(
+                                color: Colors.blue,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          );
+                        } else {
+                          List<GovtPrivateHospitalData> ddata = snapshot.data;
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              _buildHeaderCellSrNo('S.No.'),
-                              _buildHeaderCell('NPCB No'),
-                              //  _buildHeaderCell('Ngo Name'),
-                              //_buildHeaderCell('Hospital ID'),
-                              //_buildHeaderCell('Hospital Name'),
-                              //Comment for first sprint
-                              _buildHeaderCell('Action'),
+                              // ✅ Header Row first
+                              Row(
+                                children: [
+                                  _buildHeaderCellSrNo('S.No.'),
+                                  _buildHeaderCell('Npcb No'),
+                                  _buildHeaderCell('Action'),
+                                ],
+                              ),
+
+                              const SizedBox(height: 8), // spacing between header and list
+
+                              // ✅ Then your list
+                              ...ddata.map((offer) {
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                    _buildDataCell(offer.npcbNo),
+                                    _buildDataCellViewBlue("View", () {
+                                      _showDetailGovtDistrictHospitalApplicationsViewclickDetail(
+                                          context, offer);
+                                    }),
+                                  ],
+                                );
+                              }).toList(),
                             ],
-                          ),
-                          Divider(color: Colors.blue, height: 1.0),
-
-                          // Data Rows
-
-                          FutureBuilder<List<GovtPrivateHospitalData>>(
-                            future: ApiController
-                                .get_DPM_Applications_GovtPrivate_applications(
-                                    "",
-                                    userId,
-                                    0,
-                                    district_code_login,
-                                    state_code_login,
-                                    dropDownvalueOrgnbaistaionTypeApplications),
-                            //  future: ApiController.get_DPM_Applications_GovtPrivate_applications("", userId, 0, 24, 438, 10),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return Center(
-                                    child: CircularProgressIndicator());
-                              } else if (snapshot.hasError) {
-                                return Utils.getEmptyView(
-                                    "Error: ${snapshot.error}");
-                              } else if (!snapshot.hasData ||
-                                  snapshot.data == null ||
-                                  snapshot.data.isEmpty) {
-                                //  return Utils.getEmptyView("No data found");
-                                return Center(
-                                  child: Text(
-                                    "No data found",
-                                    style: TextStyle(
-                                      color: Colors.blue,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                );
-                              } else {
-                                List<GovtPrivateHospitalData> ddata =
-                                    snapshot.data;
-                                return Column(
-                                  children: ddata.map((offer) {
-                                    return Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        _buildDataCellSrNo(
-                                            (ddata.indexOf(offer) + 1)
-                                                .toString()),
-                                        _buildDataCell(offer.npcbNo),
-                                        //   _buildDataCell(offer.oName),
-                                        // _buildDataCell(offer.nodalOfficerName),
-                                        //_buildDataCell(offer.emailId),
-                                        //Comment for first sprint
-                                        _buildDataCellViewBlue("View", () {
-                                          _showDetailGovtDistrictHospitalApplicationsViewclickDetail(
-                                              context, offer);
-                                        }),
-                                      ],
-                                    );
-                                  }).toList(),
-                                );
-                              }
-                            },
-                          ),
-                        ],
-                      ),
+                          );
+                        }
+                      },
                     ),
+
                   ],
                 ),
               ),
