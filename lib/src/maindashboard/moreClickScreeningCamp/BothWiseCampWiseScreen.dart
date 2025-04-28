@@ -141,7 +141,7 @@ class _BothWiseCampWiseScreen
                                     child: Table(
                                       border: TableBorder.all(color: Colors.black),
                                       children: [
-                                        _buildTableRow("Organization", "Detail", isHeader: true),
+                                        _buildTableRow("Organisation", "Detail", isHeader: true),
 
                                         _buildTableRow("NGO Name", entry.ngoName ?? "-"),
                                         _buildTableRow("Cam Name", entry.campname.toString() ?? "-"),

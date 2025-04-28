@@ -147,7 +147,7 @@ class _BothWiseSatelliteWiseScreen
                                     child: Table(
                                       border: TableBorder.all(color: Colors.black),
                                       children: [
-                                        _buildTableRow("Organization", "Detail", isHeader: true),
+                                        _buildTableRow("Organisation", "Detail", isHeader: true),
 
                                         _buildTableRow("Satellite Centre Name", entry.ngoName ?? "-"),
                                         _buildTableRow("Hospital Name", entry.hospitalname.toString() ?? "-"),

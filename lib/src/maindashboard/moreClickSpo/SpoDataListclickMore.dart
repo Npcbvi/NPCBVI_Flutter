@@ -77,7 +77,7 @@ class _SpoDataListclickMore extends State<SpoDataListclickMore> {
                             Row(
                               children: [
                                 _buildHeaderCellSrNo('S.No.'),
-                                _buildHeaderCell('SPO Name'),
+                                _buildHeaderCell('Spo Name'),
                               //  _buildHeaderCellTOTalNGO('Total DPMs'),
                                 _buildHeaderCellDashboardsAction('Action'),
                               ],

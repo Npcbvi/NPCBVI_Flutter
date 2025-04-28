@@ -132,7 +132,7 @@ class _BothStateDistrictwiseHospital
                                     child: Table(
                                       border: TableBorder.all(color: Colors.black),
                                       children: [
-                                        _buildTableRow("Organization", "Detail", isHeader: true),
+                                        _buildTableRow("Organisation", "Detail", isHeader: true),
                                         _buildTableRow("Organisation Name", entry.ngoName ?? "N/A"),
                                         _buildTableRow("Nodal Officer Name", entry.nodalOfficerName ?? "N/A"),
                                         _buildTableRow("Organisation Type", entry.type ?? "N/A"),

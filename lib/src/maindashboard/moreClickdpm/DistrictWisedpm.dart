@@ -145,7 +145,7 @@ class _DistrictWisedpm
                 1: FlexColumnWidth(),
               },
               children: [
-                _buildTableRow("DPM Name", offer.name),
+                _buildTableRow("Dpm Name", offer.name),
                 _buildTableRow("Address", offer.officeAddress),
                 _buildTableRow("Mobile", offer.mobile.toString()),
                 _buildTableRow("Email", offer.emailId.toString()),

@@ -274,145 +274,156 @@ class _SatelliteCenterClickAddSatelliteCenter extends State<SatelliteCenterClick
 
                       // Submit and Cancel Buttons
 
-                      TextFormField(
-                        controller: _userSatelliteCentreNameRegCenter,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Satellite Centre Name',
-                                  style: TextStyle(
-                                    color:
-                                    Colors.black, // Default label color
+                      Container(
+                        height: 50, // Same height as email field
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller: _userSatelliteCentreNameRegCenter,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Satellite Centre Name',
+                                    style: TextStyle(
+                                      color:
+                                      Colors.black, // Default label color
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: ' *',
-                                  // Asterisk indicating the field is required
-                                  style: TextStyle(
-                                    color: Colors
-                                        .red, // Color of the '*' to indicate it's mandatory
+                                  TextSpan(
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
+                                    style: TextStyle(
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                          hintText: 'Enter your Satellite Center Name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
-                          ),
+                            hintText: 'Enter your Satellite Center Name',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
+                            ),
 
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your Satellite Centre Name'; // Validation message if field is empty
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your Satellite Centre Name'; // Validation message if field is empty
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 5.0),
 
-                      TextFormField(
-                        controller: _mobileNumberControllerStatelliteMangerRegCenter,
-                        maxLength: 10, // Optional: limit input to 10 digits
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly, // Allow only digits
-                        ],
-                        // Attach controller
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Mobile No.',
-                                  style: TextStyle(
-                                    color:
-                                    Colors.black, // Default label color
+                      Container(
+                        height: 50, // Same height as email field
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller: _mobileNumberControllerStatelliteMangerRegCenter,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly, // Allow only digits
+                          ],
+                          // Attach controller
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Mobile No.',
+                                    style: TextStyle(
+                                      color:
+                                      Colors.black, // Default label color
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: ' *',
-                                  // Asterisk indicating the field is required
-                                  style: TextStyle(
-                                    color: Colors
-                                        .red, // Color of the '*' to indicate it's mandatory
+                                  TextSpan(
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
+                                    style: TextStyle(
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter your Mobile No.',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
                             ),
                           ),
-                          hintText: 'Enter your Mobile No.',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
-                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number';
+                            } else if (value.length != 10) {
+                              return 'Please enter a valid 10-digit mobile number';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your mobile number';
-                          } else if (value.length != 10) {
-                            return 'Please enter a valid 10-digit mobile number';
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 5.0),
 
-                      TextFormField(
-                        controller: _emailIdControllerStatelliteMangerRegCenter,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'EmailId.',
-                                  style: TextStyle(
-                                    color:
-                                    Colors.black, // Default label color
+                      Container(
+                        height: 50, // Same height as email field
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller: _emailIdControllerStatelliteMangerRegCenter,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'EmailId.',
+                                    style: TextStyle(
+                                      color:
+                                      Colors.black, // Default label color
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: ' *',
-                                  // Asterisk indicating the field is required
-                                  style: TextStyle(
-                                    color: Colors
-                                        .red, // Color of the '*' to indicate it's mandatory
+                                  TextSpan(
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
+                                    style: TextStyle(
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter your EmailId',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
                             ),
                           ),
-                          hintText: 'Enter your EmailId',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
-                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email address';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                              .hasMatch(value)) {
-                            return 'Please enter a valid email address';
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 5.0),
                       Container(
@@ -424,8 +435,22 @@ class _SatelliteCenterClickAddSatelliteCenter extends State<SatelliteCenterClick
                               return Text('Error: ${snapshot.error}');
                             }
 
-                            if (!snapshot.hasData) {
-                              return CircularProgressIndicator();
+                            if (!snapshot.hasData || snapshot.data.isEmpty) {
+
+                              return Container(
+                                height: 50, // Same height as email field
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text(
+                                  'No data found',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                              );
+
                             }
 
                             List<DataGethospitalForDDL> list =
@@ -518,13 +543,28 @@ class _SatelliteCenterClickAddSatelliteCenter extends State<SatelliteCenterClick
                               return CircularProgressIndicator();
                             }
 
+
+
                             List<DataCenterOfficeNameSatelliteCenter> list =
                                 snapshot.data;
                             print('@@DataCenterOfficeNameSatelliteCenter' +
                                 list.toString());
                             // Check if list is empty and handle accordingly
                             if (list.isEmpty) {
-                              return Text('No managers available.');
+                              return Container(
+                                height: 50, // Same height as email field
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text(
+                                  'No managers available',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                              );
+
                             }
 
                             // Check if _dataCenterOfficeNameSatelliteCenter is null or not part of the list anymore
@@ -611,47 +651,51 @@ class _SatelliteCenterClickAddSatelliteCenter extends State<SatelliteCenterClick
                         ),
                       ),
                       SizedBox(height: 5.0),
-                      TextFormField(
-                        controller: _addressControllerStatelliteMangerRegCenter,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Address',
-                                  style: TextStyle(
-                                    color:
-                                    Colors.black, // Default label color
+                      Container(
+                        height: 50, // Same height as email field
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller: _addressControllerStatelliteMangerRegCenter,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Address',
+                                    style: TextStyle(
+                                      color:
+                                      Colors.black, // Default label color
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: ' *',
-                                  // Asterisk indicating the field is required
-                                  style: TextStyle(
-                                    color: Colors
-                                        .red, // Color of the '*' to indicate it's mandatory
+                                  TextSpan(
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
+                                    style: TextStyle(
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter your Address',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
                             ),
                           ),
-                          hintText: 'Enter your Address',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300, width: 1.0),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade400, width: 1.5),
-                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your address';
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your address';
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(height: 10.0),
                       Row(
