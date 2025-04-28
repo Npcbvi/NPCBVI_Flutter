@@ -4696,6 +4696,36 @@ class _NgoDashboard extends State<NgoDashboard> {
     );
   }
 
+  Widget _buildHeaderCellMCIIDTwoLines(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.44, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.white), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+
+
   Widget _buildHeaderCellAction(String text) {
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -4804,6 +4834,33 @@ class _NgoDashboard extends State<NgoDashboard> {
     return Container(
       height: 35,
       width: screenWidth * 0.5, // 30% of screen width for adaptability
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+
+          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
+        ),
+      ),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Text(
+          text,
+          maxLines: 2,
+          style: TextStyle(
+            fontWeight: FontWeight.normal,
+            fontSize: screenWidth * 0.04, // Scales with screen width
+          ),
+        ),
+      ),
+    );
+  }
+  Widget _buildDataCellMICIDTwoLines(String text) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Container(
+      height: 35,
+      width: screenWidth * 0.44, // 30% of screen width for adaptability
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
@@ -7856,7 +7913,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                       Row(
                         children: [
                           _buildHeaderCellSrNo('S.No.', context),
-                          _buildHeaderCell('MCI ID'),
+                          _buildHeaderCellMCIIDTwoLines('MCI ID'),
                           _buildHeaderCellAction('Action'),
                         ],
                       ),
@@ -7867,7 +7924,8 @@ class _NgoDashboard extends State<NgoDashboard> {
                             children: [
                               _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.mcIID),
+                              _buildDataCellMICIDTwoLines(offer.mcIID),
+
                               _buildDataCellViewBlue("View", () {
                                 print(
                                     '@@Add NGO_MAnageDoctorDialog View Clicked for ${offer.dName}');
@@ -7937,11 +7995,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                         children: [
                           // Condition for Edit/Delete based on status
                           if (doctor.status == 'Approved') ...[
-                            _buildMAnageEDITDELETE(doctor.hRegID),
+                          //  _buildMAnageEDITDELETE(doctor.hRegID),
                           ] else if (doctor.status == 'Pending') ...[
-                            _buildMAnageEDITDELETE(doctor.hRegID),
+                           // _buildMAnageEDITDELETE(doctor.hRegID),
                           ] else ...[
-                            _buildMAnageEDITDELETE(doctor.hRegID),
+                          //  _buildMAnageEDITDELETE(doctor.hRegID),
                           ],
                         ],
                       ),
@@ -8101,11 +8159,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                       Row(
                         children: [
                           _buildHeaderCellSrNo('S.No.', context),
-                          _buildHeaderCell('Id'),
-                          _buildHeaderCell('From Date'),
+                          _buildHeaderCellMCIIDTwoLines('Id'),
+                        /*  _buildHeaderCell('From Date'),
                           _buildHeaderCell('To Date'),
                           _buildHeaderCell('Status'),
-                          _buildHeaderCell('MOU'),
+                          _buildHeaderCell('MOU'),*/
                           _buildHeaderCell('Action'),
                         ],
                       ),
@@ -8116,20 +8174,26 @@ class _NgoDashboard extends State<NgoDashboard> {
                             children: [
                               _buildDataCellSrNo(
                                   (ddata.indexOf(offer) + 1).toString()),
-                              _buildDataCell(offer.hRegID),
-                              _buildDataCell(
+                              _buildDataCellMICIDTwoLines(offer.hRegID),
+                            /*  _buildDataCell(
                                   Utils.formatDateString(offer.fromDate)),
                               _buildDataCell(
                                   Utils.formatDateString(offer.toDate)),
                               _buildDataCell(offer.name),
                               _buildDataCell(offer.file),
                               if (offer.vstatus == '3')
-                                _buildDataCell('Download'),
-                              _buildDataCellViewBlue("RENEW", () async {
+                                _buildDataCell('Download'),*/
+                              _buildDataCellViewBlue("View", () async {
                                 print("@@Doctor Details: ");
-
+                                _showDetailuploadedMOUDatas(context,offer);
                                 // Show doctor details dialog if data is available
                               }),
+
+                            /*  _buildDataCellViewBlue("RENEW", () async {
+                                print("@@Doctor Details: ");
+// Pending Work
+                                // Show doctor details dialog if data is available
+                              }),*/
                             ],
                           );
                         }).toList(),
@@ -8150,7 +8214,54 @@ class _NgoDashboard extends State<NgoDashboard> {
       },
     );
   }
-
+  void _showDetailuploadedMOUDatas(
+      BuildContext context, DataUploadMOUNGO offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Uploaded MOU',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Table(
+              border: TableBorder.all(color: Colors.black, width: 0.5),
+              columnWidths: {
+                0: FixedColumnWidth(120.0), // Label column width
+                1: FlexColumnWidth(), // Value column width
+              },
+              children: [
+                _buildTableRow('Id', offer.hRegID),
+                _buildTableRow('From Date:', Utils.formatDateString(offer.fromDate)),
+                _buildTableRow('To Date:',  Utils.formatDateString(offer.toDate)),
+                _buildTableRow('Status', offer.name),
+                _buildTableRow('MOU:', offer.file),
+               // if (offer.vstatus == '3')
+                  //_buildDataCell('Download'),
+                // Add more fields as needed
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
   Widget _buildDetailRow(String label, String value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4.0),

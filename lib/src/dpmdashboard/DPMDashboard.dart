@@ -4579,58 +4579,54 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }*/
 
-  void _showDetailDialogEyeScreening(
-      BuildContext context, DataGetEyeScreening offer) {
+  void _showDetailDialogEyeScreening(BuildContext context, DataGetEyeScreening offer) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        double screenWidth =
-            MediaQuery.of(context).size.width; // ✅ Get screen width
+        double screenWidth = MediaQuery.of(context).size.width; // Get screen width
+        double screenHeight = MediaQuery.of(context).size.height; // Get screen height
+        double dialogHeight = screenHeight * 0.5; // Set dialog height to 50% of screen height
+
         return AlertDialog(
           title: Text(
             'Eye Screening Details',
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue),
           ),
-          content: SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 0.5),
-                // ✅ Black border
-                borderRadius:
-                    BorderRadius.circular(8), // Optional: Rounded corners
-              ),
-              child: DataTable(
-                border: TableBorder.all(color: Colors.black, width: 0.5),
-                // ✅ Black table borders
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'Organisation',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+          content: Container(
+            width: screenWidth * 0.98, // Set dialog width to 90% of screen width
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black, width: 0.5),
+              borderRadius: BorderRadius.circular(8), // Rounded corners
+            ),
+            child: DataTable(
+              border: TableBorder.all(color: Colors.black, width: 0.5),
+              columns: <DataColumn>[
+                DataColumn(
+                  label: Text(
+                    'Organisation',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  DataColumn(
-                    label: Text(
-                      'Detail',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                ),
+                DataColumn(
+                  label: Text(
+                    'Detail',
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                ],
-                rows: <DataRow>[
-                  _buildDataRow('Year Name:', offer.yearname),
-                  _buildDataRow('Month Name:', offer.monthname),
-                  _buildDataRow('School Name:', offer.schoolName),
-                  _buildDataRow('Address:', offer.schoolAddress),
-                  _buildDataRow(
-                      'Trained Teacher:', offer.trainedTeacher.toString()),
-                  _buildDataRow(
-                      'Child Screened:', offer.childScreen.toString()),
-                  _buildDataRow(
-                      'Child Detected:', offer.childDetect.toString()),
-                  _buildDataRow('Free Glasses:', offer.freeglass.toString()),
-                ],
-              ),
+                ),
+              ],
+              rows: <DataRow>[
+                _buildDataRow('Year Name:', offer.yearname),
+                _buildDataRow('Month Name:', offer.monthname),
+                _buildDataRow('School Name:', offer.schoolName),
+                _buildDataRow('Address:', offer.schoolAddress ?? "NA"),
+                _buildDataRow(
+                    'Trained Teacher:', offer.trainedTeacher.toString()),
+                _buildDataRow(
+                    'Child Screened:', offer.childScreen.toString()),
+                _buildDataRow(
+                    'Child Detected:', offer.childDetect.toString()),
+                _buildDataRow('Free Glasses:', offer.freeglass.toString()),
+              ],
             ),
           ),
           actions: [
@@ -4649,13 +4645,18 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-// ✅ Helper function to create a table row
+// Helper function to create a table row
   DataRow _buildDataRow(String label, String value) {
     return DataRow(cells: [
-      DataCell(Text(label, style: TextStyle(fontWeight: FontWeight.w500))),
-      DataCell(Text(value ?? 'N/A')),
+      DataCell(
+        Text(label, style: TextStyle(fontWeight: FontWeight.w500)),
+      ),
+      DataCell(
+        Text(value ?? 'N/A'),
+      ),
     ]);
   }
+
 
   Widget _buildTableRowss(String label, String value) {
     return Row(
