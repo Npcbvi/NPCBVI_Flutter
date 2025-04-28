@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
@@ -270,53 +271,72 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                   child: Column(
                     children: [
                       // Username Field
-                      TextFormField(
-                        controller: _userNameControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'User Name',
-                                  style: TextStyle(
-                                    color:
-                                    Colors.black, // Default label color
+                      Container(
+                        height: 50, // Same height as email field
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller: _userNameControllerStatelliteMangerReg,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'User Name',
+                                    style: TextStyle(
+                                      color:
+                                      Colors.black, // Default label color
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: ' *',
-                                  // Asterisk indicating the field is required
-                                  style: TextStyle(
-                                    color: Colors
-                                        .red, // Color of the '*' to indicate it's mandatory
+                                  TextSpan(
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
+                                    style: TextStyle(
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter your name',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners for the border
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Border color
+                                width: 1.0, // Border width
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          hintText: 'Enter your name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            // Rounded corners for the border
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
-                              width: 1.0, // Border width
-                            ),
-                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your name'; // Validation message if field is empty
+                            }
+                            return null;
+                          },
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your name'; // Validation message if field is empty
-                          }
-                          return null;
-                        },
                       ),
 
                       SizedBox(height: 5.0),
 
                       // Gender Selection
-                      Text('Gender*'),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        // 👈 Left align
+                        child: Text(
+                          'Gender',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+
                       Row(
                         children: [
                           Radio<int>(
@@ -354,107 +374,124 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                       SizedBox(height: 5.0),
 
                       // Mobile Number Field
-                      TextFormField(
-                        controller:
-                        _mobileNumberControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Mobile No.',
-                                  style: TextStyle(
-                                    color:
-                                    Colors.black, // Default label color
+                      Container(
+                        height: 50, // Same height as email field
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller:
+                          _mobileNumberControllerStatelliteMangerReg,
+                          enabled: false, // ✅ Completely non-editable and greyed out
+                          // Attach controller
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Mobile No.',
+                                    style: TextStyle(
+                                      color:
+                                      Colors.black, // Default label color
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: ' *',
-                                  // Asterisk indicating the field is required
-                                  style: TextStyle(
-                                    color: Colors
-                                        .red, // Color of the '*' to indicate it's mandatory
+                                  TextSpan(
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
+                                    style: TextStyle(
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter your mobile number',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners for the border
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Border color
+                                width: 1.0, // Border width
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          hintText: 'Enter your mobile number',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            // Rounded corners for the border
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
-                              width: 1.0, // Border width
-                            ),
-                          ),
+                          keyboardType: TextInputType.phone,
+                          // Ensures only numbers can be entered
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your mobile number'; // Validation message if field is empty
+                            } else if (value.length != 10) {
+                              return 'Please enter a valid 10-digit mobile number'; // Validation for 10-digit mobile number
+                            }
+                            return null;
+                          },
                         ),
-                        keyboardType: TextInputType.phone,
-                        // Ensures only numbers can be entered
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your mobile number'; // Validation message if field is empty
-                          } else if (value.length != 10) {
-                            return 'Please enter a valid 10-digit mobile number'; // Validation for 10-digit mobile number
-                          }
-                          return null;
-                        },
                       ),
 
                       SizedBox(height: 5.0),
 
                       // Email ID Field
-                      TextFormField(
-                        controller: _emailIdControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Email ID',
-                                  style: TextStyle(
-                                    color:
-                                    Colors.black, // Default label color
+                      Container(
+                        height: 50, // Same height as email field
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller: _emailIdControllerStatelliteMangerReg,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Email ID',
+                                    style: TextStyle(
+                                      color:
+                                      Colors.black, // Default label color
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: ' *',
-                                  // Asterisk indicating the field is required
-                                  style: TextStyle(
-                                    color: Colors
-                                        .red, // Color of the '*' to indicate it's mandatory
+                                  TextSpan(
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
+                                    style: TextStyle(
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter your email address',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners for the border
+                              borderSide: BorderSide(
+                                color: Colors.grey.shade300, // Border color
+                                width: 1.0, // Border width
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          hintText: 'Enter your email address',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            // Rounded corners for the border
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
-                              width: 1.0, // Border width
-                            ),
-                          ),
+                          keyboardType: TextInputType.emailAddress,
+                          // Ensures keyboard is optimized for email input
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email'; // Validation for empty field
+                            } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
+                                .hasMatch(value)) {
+                              return 'Please enter a valid email address'; // Validation for valid email format
+                            }
+                            return null;
+                          },
                         ),
-                        keyboardType: TextInputType.emailAddress,
-                        // Ensures keyboard is optimized for email input
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email'; // Validation for empty field
-                          } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+')
-                              .hasMatch(value)) {
-                            return 'Please enter a valid email address'; // Validation for valid email format
-                          }
-                          return null;
-                        },
                       ),
 
                       SizedBox(height: 5.0),
-                      Container(
+                    /*  Container(
                         margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                         child: FutureBuilder<List<DataGethospitalForDDL>>(
                           future: _futureDataGethospitalForDDL,
@@ -507,7 +544,7 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                                         fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
-                                    height: 55,
+                                    height: 50,
                                     // Adjust height as needed
                                     width: double.infinity,
                                     // Ensures it takes full width
@@ -564,52 +601,165 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                             );
                           },
                         ),
+                      ),*/
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: FutureBuilder<List<DataGethospitalForDDL>>(
+                          future: _futureDataGethospitalForDDL,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            if (!snapshot.hasData || snapshot.data.isEmpty) {
+                              return Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: Text(
+                                  'No data found',
+                                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                ),
+                              );
+                            }
+
+                            List<DataGethospitalForDDL> list = snapshot.data.toList();
+
+                            if (_dataGethospitalForDDL == null || !list.contains(_dataGethospitalForDDL)) {
+                              _dataGethospitalForDDL = list.first;
+                              gethospitalNameSrNOReg = _dataGethospitalForDDL.hRegID.toString();
+                              print('@@gethospitalNameSrNOReg' + gethospitalNameSrNOReg.toString());
+                            }
+
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 0.0, vertical: 0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Select hospital*',
+                                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                                  ),
+                                  DropdownButtonFormField2<DataGethospitalForDDL>(
+                                    value: _dataGethospitalForDDL,
+                                    onChanged: (userc) {
+                                      setState(() {
+                                        _dataGethospitalForDDL = userc;
+                                        gethospitalName = userc?.hName ?? '';
+                                        gethospitalNameSrNOReg = userc?.hRegID ?? '';
+                                        print('@@getMAnagerNAme Year: $gethospitalName');
+                                        print('@@getmanagerSrNO: $gethospitalNameSrNOReg');
+                                      });
+                                    },
+                                    items: list.map((user) {
+                                      return DropdownMenuItem<DataGethospitalForDDL>(
+                                        value: user,
+                                        child: Text(user.hName, style: TextStyle(fontSize: 16)),
+                                      );
+                                    }).toList(),
+                                    style: TextStyle(color: Colors.black),
+                                    iconStyleData: const IconStyleData(
+                                      icon: Icon(Icons.arrow_drop_down,
+                                          color: Colors.black),
+                                    ),
+
+                                    dropdownStyleData: DropdownStyleData(
+                                      maxHeight: 300,
+                                      // Remove the fixed width
+                                      width: 300, // This ensures it takes full width
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      offset: const Offset(0, -3),
+                                    ),
+                                    buttonStyleData: ButtonStyleData(
+                                      height: 50, // Same outer height as TextFormField
+                                      width: double.infinity, // This ensures it takes full width
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey, // Remove border color
+                                          width: 0, // No border width
+                                        ),
+                                        borderRadius: BorderRadius.circular(12), // Match same 12 radius
+                                      ),
+
+                                    ),
+                                    decoration: InputDecoration(
+                                      // Remove the borders entirely to avoid shrinking
+                                      border: InputBorder.none,
+                                      contentPadding: EdgeInsets.zero, // Prevent padding issue
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        ),
                       ),
+
+
+
                       SizedBox(height: 5.0),
                       // Address Field
-                      TextFormField(
-                        controller: _addressControllerStatelliteMangerReg,
-                        // Attach controller
-                        decoration: InputDecoration(
-                          label: RichText(
-                            text: TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Address',
-                                  style: TextStyle(
-                                    color:
-                                    Colors.black, // Default label color
+                      Container(
+                        height: 50, // Same height as email field
+                        width: double.infinity,
+                        child: TextFormField(
+                          controller: _addressControllerStatelliteMangerReg,
+                          // Attach controller
+                          decoration: InputDecoration(
+                            label: RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Address',
+                                    style: TextStyle(
+                                      color:
+                                      Colors.black, // Default label color
+                                    ),
                                   ),
-                                ),
-                                TextSpan(
-                                  text: ' *',
-                                  // Asterisk indicating the field is required
-                                  style: TextStyle(
-                                    color: Colors
-                                        .red, // Color of the '*' to indicate it's mandatory
+                                  TextSpan(
+                                    text: ' *',
+                                    // Asterisk indicating the field is required
+                                    style: TextStyle(
+                                      color: Colors
+                                          .red, // Color of the '*' to indicate it's mandatory
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                            ),
+                            hintText: 'Enter your address',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              // Rounded corners for the border
+                              borderSide: BorderSide(
+                                color: Colors.grey, // Border color
+                                width: 1.0, // Border width
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide(color: Colors.grey, width: 1),
                             ),
                           ),
-                          hintText: 'Enter your address',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            // Rounded corners for the border
-                            borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
-                              width: 1.0, // Border width
-                            ),
-                          ),
+                          maxLines: 1,
+                          // Allows for multi-line input
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your address'; // Validation for empty field
+                            }
+                            return null;
+                          },
                         ),
-                        maxLines: 3,
-                        // Allows for multi-line input
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your address'; // Validation for empty field
-                          }
-                          return null;
-                        },
                       ),
 
                       SizedBox(height: 5.0),
@@ -645,9 +795,13 @@ class _SattelliteCenterClickStaelliteMangerEdit extends State<SattelliteCenterCl
                             borderRadius: BorderRadius.circular(12),
                             // Rounded corners for the border
                             borderSide: BorderSide(
-                              color: Colors.grey.shade300, // Border color
+                              color: Colors.grey, // Border color
                               width: 1.0, // Border width
                             ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey, width: 1),
                           ),
                         ),
                         validator: (value) {

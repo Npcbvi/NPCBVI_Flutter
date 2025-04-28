@@ -6577,6 +6577,111 @@ class _NgoDashboard extends State<NgoDashboard> {
       ),
     );
   }
+  Widget _buildSatelliteCenterManagerrEditBlocked(int sR_No) {
+    return Container(
+      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+
+      child: Column(
+        // Centering content vertically
+        // Centering content horizontally
+        children: [
+          _buildButtonNewCreate("Edit", Icons.visibility, () async {
+            print('@@Edit Ka click');
+            try {
+              // Call the API to view camp manager details
+              GetSatelliteManagerById getSatelliteManagerByIds =
+              await ApiController.getSatelliteManagerById(
+                sR_No,
+                entryby, // Assuming `entryby` is correct
+              );
+
+              if (getSatelliteManagerByIds != null &&
+                  getSatelliteManagerByIds.status) {
+                print(getSatelliteManagerByIds.message); // Success message
+
+                if (getSatelliteManagerByIds.data != null) {
+                  final manager = getSatelliteManagerByIds.data.first;
+
+                  print('@@Manager Name: ${manager.name}');
+
+                  // Update controllers instead of reinitializing them
+                  setState(() {
+                    print('@@Edit Ka click');
+                    /* _userNameControllerStatelliteMangerReg.text =
+                        manager.name ?? '';
+                    _mobileNumberControllerStatelliteMangerReg.text =
+                        manager.mobile ?? '';
+                    _emailIdControllerStatelliteMangerReg.text =
+                        manager.emailId ?? '';
+                    _addressControllerStatelliteMangerReg.text =
+                        manager.address ?? '';
+                    _designationControllerStatelliteMangerReg.text =
+                        manager.designation ?? '';
+
+                    _futureDataGethospitalForDDL =
+                        GetHospitalForDDL(district_code_login, state_code_login, userId);*/
+                    /*       SatelliteManagerRegisterartionsEdit = true;
+                    CampManagerRegisterartionsEdit = false;
+                    ManageUSerNGOHospt = false;
+                    ngoDashboardclicks = false;
+                    EyeDonationCentreRegistrationClickONAddDontaions = false;
+                    EyeBankApplication = false;
+                    ngoCampManagerLists = false;
+                    CampManagerRegisterartions = false;
+                    ngoScreeningCampListss = false;
+                    AddScreeningCamps = false;
+                    ngoSATELLITECENTREMANAGERLists = false;
+                    AddSatelliteManagers = false;
+                    satelliteCenterMenuListdisplay = false;
+                    AddSatelliteCenterRedOptionFields = false;*/
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(builder: (context) => SattelliteCenterClickStaelliteMangerEdit( name: manager.name ?? '',
+                    //     mobile: manager.mobile ?? '',
+                    //     emailId: manager.emailId ?? '',
+                    //     address: manager.address ?? '',
+                    //     designation: manager.designation ?? '',)),
+                    // );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SattelliteCenterClickStaelliteMangerEdit(
+                          manager: manager,
+                        ),
+                      ),
+                    );
+                  });
+                  // Navigator.pop(context);
+                } else {
+                  Utils.showToast("No satellite manager details found", true);
+                }
+              } else {
+                Utils.showToast(
+                    "Error: ${getSatelliteManagerByIds.message}", true);
+              }
+            } catch (e) {
+              print('Error fetching satellite manager details: $e');
+              Utils.showToast(
+                  "Failed to fetch satellite manager details. Please try again later.",
+                  true);
+            }
+          }),
+
+          SizedBox(height: 5.0), // Space between buttons
+
+          _buildButtonNewCreate("Block", Icons.visibility, () async {
+            print('@@Edit Ka click');
+            try {
+              // Call the API to view camp manager details
+
+            } catch (e) {
+              print('Error fetching satellite manager details: $e');
+            }
+          }),
+        ],
+      ),
+    );
+  }
 
   Widget _buildViewManageDoctorUploadMOUUI(String hospitalId) {
     return Container(
@@ -12531,8 +12636,8 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: _buildSatelliteManagerEditBlocked(
-                                int.parse(offer.srNo)),
+                            child: _buildSatelliteCenterManagerrEditBlocked(
+                                int.parse(offer.srNo)), // need to change APi after Demo
                           ),
                         ],
                       ),
