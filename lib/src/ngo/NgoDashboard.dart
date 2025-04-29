@@ -37,6 +37,7 @@ import 'package:mohfw_npcbvi/src/ngo/SatelliteCenterClickAddSatelliteCenter.dart
 import 'package:mohfw_npcbvi/src/ngo/SattelliteCenterClickStaelliteManger.dart';
 import 'package:mohfw_npcbvi/src/ngo/SattelliteCenterClickStaelliteMangerEdit.dart';
 import 'package:mohfw_npcbvi/src/ngo/SceeningCampClickAddCampManager.dart';
+import 'package:mohfw_npcbvi/src/ngo/ScreeningCampClickAddScreeningCamp.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
@@ -122,7 +123,7 @@ class _NgoDashboard extends State<NgoDashboard> {
 
   bool ngoScreeningCampListss = false;
   bool AddScreeningCamps = false;
-  String _selectedDateText = 'Start Date *'; // Initially set to "From Date"
+  String _selectedDateText = 'Start Date*'; // Initially set to "From Date"
 
   String _selectedDateTextToDate = 'End Date*';
   String getMAnagerNAme;
@@ -2525,7 +2526,7 @@ class _NgoDashboard extends State<NgoDashboard> {
     // Handle the tap event here
     print('@@AddScreening camp clicked--');
     setState(() {
-      ManageUSerNGOHospt = false;
+   /*   ManageUSerNGOHospt = false;
       ngoDashboardclicks = false;
       EyeDonationCentreRegistrationClickONAddDontaions = false;
 
@@ -2542,7 +2543,11 @@ class _NgoDashboard extends State<NgoDashboard> {
       ngoSATELLITECENTREMANAGERLists = false;
       AddSatelliteManagers = false;
       satelliteCenterMenuListdisplay = false;
-      AddSatelliteCenterRedOptionFields = false;
+      AddSatelliteCenterRedOptionFields = false;*/
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ScreeningCampClickAddScreeningCamp()),
+      );
     });
   }
 
@@ -9361,6 +9366,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                     .spaceBetween, // Space between date pickers
                                 children: [
                                   Flexible(
+                                    flex: 2,
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: GestureDetector(
@@ -9373,7 +9379,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                               await showDatePicker(
                                             context: context,
                                             initialDate: DateTime.now(),
-                                            firstDate: DateTime(2000),
+                                            firstDate: DateTime(1800),
                                             lastDate: DateTime(2101),
                                           );
 
@@ -9406,7 +9412,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                                 : _selectedDateText,
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontWeight: FontWeight.w800,
+
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                           ),
@@ -9414,9 +9420,11 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       ),
                                     ),
                                   ),
-                                  SizedBox(width: 10),
+
+                                  SizedBox(width: 20),
                                   // Adds space between both date fields
                                   Flexible(
+                                      flex: 2,
                                     child: Align(
                                       alignment: Alignment.centerRight,
                                       child: GestureDetector(
@@ -9429,7 +9437,7 @@ class _NgoDashboard extends State<NgoDashboard> {
                                               await showDatePicker(
                                             context: context,
                                             initialDate: DateTime.now(),
-                                            firstDate: DateTime(2000),
+                                            firstDate: DateTime(1800),
                                             lastDate: DateTime(2101),
                                           );
 
@@ -9463,7 +9471,6 @@ class _NgoDashboard extends State<NgoDashboard> {
                                                 : _selectedDateTextToDate,
                                             style: TextStyle(
                                               color: Colors.black,
-                                              fontWeight: FontWeight.w800,
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                           ),

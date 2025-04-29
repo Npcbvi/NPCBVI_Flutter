@@ -40,7 +40,7 @@ class _CampAddPatient extends State<CampAddPatient> {
   Future<List<DataGetVillage>> _villageFuture;
   int registerationtypeRadioValueinAPi = 1; // Default gender
   bool _showCityDropdown = true;
-  String registerationtypeRadio = ' Screening Camp'; // Default gender
+  String registerationtypeRadio = 'Screening Camp'; // Default gender
   TextEditingController _voterIDNumber = TextEditingController();
   TextEditingController _drivingLicenseNumber = TextEditingController();
   TextEditingController _passport = TextEditingController();
@@ -429,6 +429,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                       Expanded(
                         flex: 3,
                         child: _radioButtonColumn(
+
                           options: [
                             'Screening Camp',
                             'Satellite Centre',
@@ -475,7 +476,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 5),
+              //  camp ka code hai ye hide
+                /*  SizedBox(height: 5),
                   Container(
                     margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
                     width: double.infinity,
@@ -541,11 +543,11 @@ class _CampAddPatient extends State<CampAddPatient> {
 
 
                                         setState(() {
-                                        /*  _selectedUserDistrict = null;
+                                        *//*  _selectedUserDistrict = null;
                                           _selectedUserCity = null;
                                           _selectedUserVillage = null;
                                           isVisibleDitrictGovt = false;
-                                          _isCityInitialized = false;*/
+                                          _isCityInitialized = false;*//*
                                         });
 
                                       });
@@ -580,7 +582,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                         );
                       },
                     ),
-                  ),
+                  ),*/
                   SizedBox(height: 5),
                   Container(
 
