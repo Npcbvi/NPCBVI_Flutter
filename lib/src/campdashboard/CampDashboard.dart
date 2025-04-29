@@ -252,9 +252,10 @@ class _CampDashboard extends State<CampDashboard> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              SizedBox(width: 20),
                               Expanded(child: _buildInfoColumn("Login Type", "Camp Manager")),
                               SizedBox(width: 20),
-                              Expanded(child: _buildInfoColumn("District", districtNames)),
+                              Expanded(child: _buildInfoColumn("State", stateNames)),
                               SizedBox(width: 20),
                               Expanded(child: _buildInfoColumn("", "")), // Placeholder
                             ],
@@ -272,7 +273,8 @@ class _CampDashboard extends State<CampDashboard> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Expanded(child: _buildInfoColumn("State", stateNames)),
+                              SizedBox(width: 20),
+                              Expanded(child: _buildInfoColumn("District", districtNames)),
                               SizedBox(width: 20),
                               Expanded(child: _buildInfoColumn("Login Id", userId)),
                               SizedBox(width: 20),

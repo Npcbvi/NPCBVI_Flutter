@@ -93,14 +93,13 @@ String Gender;
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Header Row
-                  Row(
+                 /* Row(
                     children: [
                       _buildHeaderCellSrNo('S.No.',context),
                       _buildHeaderCell('Patient ID'),
                       _buildHeaderCellDashboardsAction('Action'),
                     ],
                   ),
-                  Divider(color: Colors.blue, height: 1.0),
                   // Data Rows
                   FutureBuilder<List<SendTODPMCataractData>>(
                    future: ApiController.getGovtPvtOther_CornealBlindness(district_code_login, state_code_login, userId),
@@ -137,7 +136,60 @@ String Gender;
                         );
                       }
                     },
+                  ),*/
+                  FutureBuilder<List<SendTODPMCataractData>>(
+                    future: ApiController.getGovtPvtOther_CornealBlindness(
+                        district_code_login, state_code_login, userId),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Utils.getEmptyView("Error: ${snapshot.error}");
+                      } else if (!snapshot.hasData || snapshot.data.isEmpty) {
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "No data found",
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        );
+                      } else {
+                        List<SendTODPMCataractData> data = snapshot.data;
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            /// ✅ Show header only when data is available
+                            Row(
+                              children: [
+                                _buildHeaderCellSrNo('S.No.', context),
+                                _buildHeaderCell('Patient ID'),
+                                _buildHeaderCellDashboardsAction('Action'),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+
+                            /// ✅ Now show the data rows
+                            ...data.map((entry) {
+                              return Row(
+                                children: [
+                                  _buildDataCellCellSrNo((data.indexOf(entry) + 1).toString()),
+                                  _buildDataCell(entry.pUniqueID),
+                                  _buildDataCellViewBlueDashboard("View", () {
+                                    _showDetailsDialogSentTODPM(context, entry);
+                                  }),
+                                ],
+                              );
+                            }).toList(),
+                          ],
+                        );
+                      }
+                    },
                   ),
+
                 ],
               ),
             ),

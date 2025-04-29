@@ -420,6 +420,7 @@ class _SpoDashboard extends State<SpoDashboard> {
       return dashboardStateModel.data;
     } else {
       Utils.showToast(AppConstant.noInternet, true);
+
       return null;
     }
   }
@@ -2352,7 +2353,7 @@ class _SpoDashboard extends State<SpoDashboard> {
 
             print('@@response_loginScreen ---' + response.toString());
             if (response != null && response.status) {
-              Utils.showToast(response.message, true);
+             // Utils.showToast(response.message, true);
               Navigator.of(context).pop(); // Close the dialog
               Navigator.push(
                 context,

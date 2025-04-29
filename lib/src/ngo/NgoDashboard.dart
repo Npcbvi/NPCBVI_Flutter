@@ -9315,8 +9315,9 @@ class _NgoDashboard extends State<NgoDashboard> {
                                       12), // Rounded corners
                                 ),
                                 labelStyle: TextStyle(
-                                  color: Colors.blue
-                                      .shade700, // Label color when the field is focused
+
+                                  color: Colors.black
+                                       // Label color when the field is focused
                                 ),
                                 hintStyle: TextStyle(
                                   color: Colors.grey, // Hint text color

@@ -36,7 +36,10 @@ class CampAddPatient extends StatefulWidget {
 }
 
 class _CampAddPatient extends State<CampAddPatient> {
-
+  bool _isVillageInitialized = false;
+  Future<List<DataGetVillage>> _villageFuture;
+  int registerationtypeRadioValueinAPi = 1; // Default gender
+  bool _showCityDropdown = true;
   String registerationtypeRadio = ' Screening Camp'; // Default gender
   TextEditingController _voterIDNumber = TextEditingController();
   TextEditingController _drivingLicenseNumber = TextEditingController();
@@ -76,7 +79,6 @@ class _CampAddPatient extends State<CampAddPatient> {
   String getYearNgoHopital, getfyidNgoHospital, _chosenValueMangeTwo;
   bool hospitalDashboardDatas = false;
   bool hospitalAddPatientData = false;
-  int registerationtypeRadioValueinAPi = 3; // Default gender
   File _selectedImage;
   String _errorMessage,
       VoterIDtype,
@@ -101,6 +103,8 @@ class _CampAddPatient extends State<CampAddPatient> {
   String _dob = 'Date of birth';
   Future<List<Data>> _futureState;
   Data _selectedUserState;
+  Future<List<Data>> _futureCamp;
+  Data _selectedUserCamp;
   DataDsiricst _selectedUserDistrict;
   Future<List<DataGetVillage>> _futureVillage;
   DataGetVillage _selectedUserVillage;
@@ -108,6 +112,7 @@ class _CampAddPatient extends State<CampAddPatient> {
   DataGetCity _selectedUserCity;
   bool isVisibleDitrictGovt = false;
   bool _isCityInitialized = false;
+  bool showCoordinates = false;
 
   Future<List<GetLanguageForDDLsDatas>> _futureStateGetLanguageForDDLsData;
   GetLanguageForDDLsDatas GetLanguageForDDLsDatasa;
@@ -141,7 +146,7 @@ class _CampAddPatient extends State<CampAddPatient> {
   TextEditingController _latitudeController = TextEditingController();
   TextEditingController _longitudeController = TextEditingController();
   int patientCount = 0;
-  String selectedStateName,selectedDistrictName,selectedCityName,selectedVillageName;
+  String selectedStateName,selectedDistrictName,selectedCityName,selectedVillageName,selectedCamp;
   // Function to get current position
 
   LatLng updatedLatLng;
@@ -416,7 +421,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 5.0),
+                  SizedBox(height: 2.0),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -439,7 +444,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 registerationtypeRadio = value;
                                 print('@@1 ' + registerationtypeRadio.toString());
 
-                                registerationtypeRadioValueinAPi = 3;
+                                registerationtypeRadioValueinAPi = 1;
                               });
                             }
                           },
@@ -469,6 +474,112 @@ class _CampAddPatient extends State<CampAddPatient> {
                         ),
                       ),
                     ],
+                  ),
+                  SizedBox(height: 5),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                    width: double.infinity,
+                    child: FutureBuilder<List<Data>>(
+                      future: _futureCamp, // Fetching States
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+
+                        List<Data> campList = snapshot.data ?? [];
+
+                        // ✅ Insert hint item at the top
+                        if (campList.isNotEmpty && campList.first.stateName != 'Select State') {
+                          campList.insert(0, Data(stateName: 'Select State', stateCode: -1, code: ''));
+                        }
+
+                        // ✅ Ensure a default selection
+                        if (_selectedUserCamp == null || !campList.contains(_selectedUserCamp)) {
+                          _selectedUserCamp = campList.first;
+                          selectedCamp = _selectedUserCamp.stateName.toString();
+                          print('@@selectedCamp' + selectedCamp.toString());
+                        }
+
+                        return Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select Camp:',
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                height: 45, // Set the desired height for dropdown
+                                child: DropdownButtonFormField2<Data>(
+                                  isExpanded: true,
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  onChanged: (user) async {
+                                    // ✅ Prevent action if "Select State" is chosen
+                                    if (user != null && user.stateName != 'Select State') {
+                                      setState(() {
+                                        _selectedUserCamp = user;
+                                        selectedCamp = user.stateName;
+                                        //stateCodeGovtPrivate = int.parse(user.stateCode.toString());
+                                        //CodeGovtPrivate = user.code;
+                                        print('@@selectedCamp' + selectedCamp.toString());
+
+
+                                        setState(() {
+                                        /*  _selectedUserDistrict = null;
+                                          _selectedUserCity = null;
+                                          _selectedUserVillage = null;
+                                          isVisibleDitrictGovt = false;
+                                          _isCityInitialized = false;*/
+                                        });
+
+                                      });
+
+
+
+                                    }
+                                  },
+                                  value: _selectedUserCamp,
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 20, // Increase dropdown button height
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  items: campList.map<DropdownMenuItem<Data>>((Data user) {
+                                    return DropdownMenuItem<Data>(
+                                      value: user,
+                                      child: Text(
+                                        user.stateName,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                    );
+                                  }).toList(),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   SizedBox(height: 5),
                   Container(
@@ -504,13 +615,22 @@ class _CampAddPatient extends State<CampAddPatient> {
                               child: DropdownButtonFormField2<String>(
                                 isExpanded: true,
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
                                     borderSide: BorderSide(color: Colors.grey, width: 1.0),
                                   ),
                                   filled: true,
-                                  fillColor: Colors.white, // Background color
+                                  fillColor: Colors.white,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                  ),
+
                                 ),
                                 value: VoterIDtype,
                                 style: TextStyle(color: Colors.black),
@@ -531,9 +651,10 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   );
                                 }).toList(),
                                 hint: Text(
-                                  "Select Type",
+                                  "Select ID Type",
+
                                   style: TextStyle(
-                                    color: Colors.black,
+                                    color: Colors.grey,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -646,6 +767,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                             ),
                           if (showNotAvailble)
 
+
                             SizedBox(height: 10.0),
 
                           Container( margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0), // left, top, right, bottom
@@ -669,6 +791,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                           _radioButtonRow(
                             options: ['Self', 'Dependent'],
                             groupValue: dependencyTypeRadio,
+
                             onChanged: (value) {
                               setState(() {
                                 dependencyTypeRadio = value;
@@ -747,7 +870,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                                         } else if (relationtypeValue == "Spouse") {
                                           relationNameController.text = "Spouse's Name";
                                         } else {
-                                          relationNameController.clear();
+                                          relationNameController.text = "";
+
                                         }
                                       });
                                     },
@@ -857,7 +981,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                           Container(
                             margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
                             child: SizedBox(
-                              height: 40, // Adjust height as needed
+                              height: 45, // Adjust height as needed
                               child: TextFormField(
                                 controller: _firstNamePatientDetail,
                                 decoration: InputDecoration(
@@ -875,10 +999,19 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   ),
                                   hintText: 'Enter First Name',
                                   hintStyle: TextStyle(color: Colors.black),
-                                  // Set hint text color
-                                  border: OutlineInputBorder(
+                                  // Border when the field is not focused
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey), // Grey border
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
+
+                                  // Border when the field is focused
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey, width: 2), // Grey border when focused
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  // Set hint text color
+
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -895,7 +1028,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                             margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
 
                             child: SizedBox(
-                              height: 40, // Adjust height as needed
+                              height: 45, // Adjust height as needed
                               child: TextFormField(
                                 controller: _lastNamePatientDetail,
                                 decoration: InputDecoration(
@@ -914,7 +1047,14 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   hintText: 'Enter Last Name *',
                                   hintStyle: TextStyle(color: Colors.black),
                                   // Regular hint text
-                                  border: OutlineInputBorder(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey), // Grey border
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+
+                                  // Border when the field is focused
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey, width: 1), // Grey border when focused
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
@@ -936,33 +1076,86 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   // Date Picker Container with fixed height and width
+                                  /*SizedBox(
+                                  width: 150, // Set same width for both widgets
+                                  height: 40, // Adjust height as needed
+                                  child: GestureDetector(
+                                    onTap: () async {
+                                      DateTime pickedDate =
+                                          await showDatePicker(
+                                        context: context,
+                                        initialDate: DateTime.now(),
+                                        firstDate: DateTime(2000),
+                                        lastDate: DateTime(2101),
+                                      );
+
+                                      if (pickedDate != null) {
+                                        String formattedDateForDisplay =
+                                            "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // For UI display
+
+                                        String formattedDateForAPI =
+                                            DateFormat('yyyy-MM-dd').format(
+                                                pickedDate); // For API request
+
+                                        setState(() {
+                                          _dob =
+                                              formattedDateForAPI; // Use this for the API
+                                          print("@@_dob (API format): $_dob");
+                                          print(
+                                              "@@_dob (display format): $formattedDateForDisplay");
+                                          // Calculate age and update age field
+                                          int age = _calculateAge(pickedDate);
+                                          _ageController.text = age.toString();
+                                        });
+                                      }
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                        border: Border.all(
+                                          color: Colors.grey,
+                                          width: 1.0,
+                                        ),
+                                      ),
+                                      alignment: Alignment.centerLeft,  // Left side, vertically centered
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(left: 6.0), // Adjust padding as needed
+                                        child: Text(
+                                          _dob.isEmpty ? "Date of birth" : _dob,
+
+                                          style: TextStyle(
+                                            color: (_dob.isEmpty || _dob == "Date of birth") ? Colors.grey : Colors.black,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+
+
+                                    ),
+                                  ),
+                                ),*/
+
                                   SizedBox(
                                     width: 150, // Set same width for both widgets
-                                    height: 40, // Adjust height as needed
+                                    height: 45, // Adjust height as needed
                                     child: GestureDetector(
                                       onTap: () async {
-                                        DateTime pickedDate =
-                                        await showDatePicker(
+                                        DateTime pickedDate = await showDatePicker(
                                           context: context,
                                           initialDate: DateTime.now(),
-                                          firstDate: DateTime(2000),
+                                          firstDate: DateTime(1700),
                                           lastDate: DateTime(2101),
                                         );
 
                                         if (pickedDate != null) {
-                                          String formattedDateForDisplay =
-                                              "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // For UI display
-
-                                          String formattedDateForAPI =
-                                          DateFormat('yyyy-MM-dd').format(
-                                              pickedDate); // For API request
+                                          String formattedDateForDisplay = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // For UI display
+                                          String formattedDateForAPI = DateFormat('yyyy-MM-dd').format(pickedDate); // For API request
 
                                           setState(() {
-                                            _dob =
-                                                formattedDateForAPI; // Use this for the API
+                                            _dob = formattedDateForAPI; // Use this for the API
                                             print("@@_dob (API format): $_dob");
-                                            print(
-                                                "@@_dob (display format): $formattedDateForDisplay");
+                                            print("@@_dob (display format): $formattedDateForDisplay");
                                             // Calculate age and update age field
                                             int age = _calculateAge(pickedDate);
                                             _ageController.text = age.toString();
@@ -971,25 +1164,32 @@ class _CampAddPatient extends State<CampAddPatient> {
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                          BorderRadius.circular(8.0),
+                                          borderRadius: BorderRadius.circular(8.0),
                                           border: Border.all(
                                             color: Colors.grey,
                                             width: 1.0,
                                           ),
                                         ),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          _dob.isEmpty ? "Select Date" : _dob,
-                                          style: TextStyle(
-                                            color: Colors.grey,
-                                            fontWeight: FontWeight.w800,
+                                        alignment: Alignment.centerLeft, // Align text to the left
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 6.0), // Adjust padding as needed
+                                          child: Text(
+                                            _dob.isEmpty ? "Select date" : _dob,
+                                            style: TextStyle(
+                                              color: (_dob.isEmpty || _dob == "Select date") ? Colors.grey : Colors.black,
+                                            ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ),
                                   ),
+
+
+
+
+
+
                                   SizedBox(width: 5.0),
                                   // Spacing between the widgets
                                   // Age Input Field with same width and height
@@ -998,10 +1198,11 @@ class _CampAddPatient extends State<CampAddPatient> {
 
                                     child: SizedBox(
                                       width: 150, // Same width as Date Picker
-                                      height: 40,
+                                      height: 45,
                                       child: TextFormField(
                                         controller: _ageController,
-
+                                        readOnly: true,   // 🔒 Prevents editing
+                                        enabled: false,   // 🔒 Grays out and disables the field (still visible)
                                         decoration: InputDecoration(
                                           label: RichText(
                                             text: TextSpan(
@@ -1035,6 +1236,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                               ),
                             ),
                           ),
+
+
                           SizedBox(height: 5.0),
                           Container(
                             width: double.infinity, // Ensures the container takes full width
@@ -1116,7 +1319,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 hint: Text(
                                   "Relation Type",
                                   style: TextStyle(
-                                      color: Colors.black,
+                                      color: Colors.grey,
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500),
                                 ),
@@ -1127,6 +1330,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   'Sister',
                                   'Daughter',
                                   'Spouse',
+                                  'Self',
                                 ].map<DropdownMenuItem<String>>((String type) {
                                   return DropdownMenuItem<String>(
                                     value: type,
@@ -1218,6 +1422,18 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   : null,
                             ),
                           ),
+                        if (relationtypeValue == "Self")
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
+
+                            child: _textInputField(
+                              controller: relationFatherController,
+                              labelText: "Self Name",
+                              validator: (value) => value == null || value.isEmpty
+                                  ? 'Please enter Self'
+                                  : null,
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -1228,7 +1444,7 @@ class _CampAddPatient extends State<CampAddPatient> {
 
                     child: SizedBox(
                       width: double.infinity, // Same width as Date Picker
-                      height: 40,
+                      height: 45, // Adjust height as needed
                       child: TextFormField(
                         controller: _mobileNumberDetailsRelationtype,
                         keyboardType: TextInputType.phone, // Use number pad for phone input
@@ -1248,7 +1464,14 @@ class _CampAddPatient extends State<CampAddPatient> {
                           hintText: 'Enter Mobile No *',
                           hintStyle: TextStyle(color: Colors.black),
 // Regular hint text
-                          border: OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey), // Grey border
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+
+                          // Border when the field is focused
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey, width: 1), // Grey border when focused
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
@@ -1267,121 +1490,97 @@ class _CampAddPatient extends State<CampAddPatient> {
                   Container(
                     color: Colors.white,
                     margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Flexible(
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  // Handle the tap event here
-                                  print('@@Add New Record clicked');
+                          Container(
+                            child: Expanded(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    print('@@From Date clicked');
+                                    DateTime pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1700),
+                                      lastDate: DateTime(2101),
+                                    );
 
-                                  // Open the calendar on tap
-                                  DateTime pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    // Default date to show
-                                    firstDate: DateTime(2000),
-                                    // The earliest allowed date
-                                    lastDate:
-                                    DateTime(2101), // The latest allowed date
-                                  );
+                                    if (pickedDate != null) {
+                                      String formattedDate = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                      setState(() {
+                                        _selectedDateText = formattedDate;
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.4, // 50% of screen width
+                                    height: 40, // Set the fixed height
+                                    padding: EdgeInsets.all(10.0),
 
-                                  if (pickedDate != null) {
-                                    // Handle the selected date (e.g., display or save it)
-                                    String formattedDate =
-                                        "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                    decoration: BoxDecoration(
 
-                                    // Update the state with the selected date
-                                    setState(() {
-                                      _selectedDateText = formattedDate;
-                                    });
-                                  }
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  // Padding inside the box
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    // Background color of the box
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    // Rounded corners
-                                    border: Border.all(
-                                      color: Colors.grey, // Border color
-                                      width: 1.0, // Border width
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(color: Colors.grey, width: 1.0),
+
                                     ),
-                                  ),
-                                  child: Text(
-                                    _selectedDateText,
-                                    // Display the selected date or "From Date"
-                                    style: TextStyle(
-                                      color: Colors.grey, // Text color
-                                      fontWeight: FontWeight.w500, // Text weight
+
+                                    child: Text(
+                                      _selectedDateText.isEmpty ? 'Screening Date' : _selectedDateText,
+                                      style: TextStyle(
+                                        color: _selectedDateText.isEmpty ? Colors.grey : Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    overflow: TextOverflow
-                                        .ellipsis, // Handle text overflow
                                   ),
                                 ),
                               ),
                             ),
                           ),
-                          Flexible(
-                            child: Align(
-                              alignment: Alignment.centerRight,
-                              child: GestureDetector(
-                                onTap: () async {
-                                  // Handle the tap event here
-                                  print('@@Add New Record clicked');
+                          SizedBox(width: 30), // Space between the two fields
+                          Container(
+                            child: Expanded(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    print('@@To Date clicked');
+                                    DateTime pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1700),
+                                      lastDate: DateTime(2101),
+                                    );
 
-                                  // Open the calendar on tap
-                                  DateTime pickedDate = await showDatePicker(
-                                    context: context,
-                                    initialDate: DateTime.now(),
-                                    // Default date to show
-                                    firstDate: DateTime(2000),
-                                    // The earliest allowed date
-                                    lastDate:
-                                    DateTime(2101), // The latest allowed date
-                                  );
-
-                                  if (pickedDate != null) {
-                                    // Handle the selected date (e.g., display or save it)
-                                    String formattedDate =
-                                        "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
-
-                                    // Update the state with the selected date
-                                    setState(() {
-                                      _selectedDateTextToDate = formattedDate;
-                                    });
-                                  }
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.all(10.0),
-                                  // Padding inside the box
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    // Background color of the box
-                                    borderRadius: BorderRadius.circular(8.0),
-                                    // Rounded corners
-                                    border: Border.all(
-                                      color: Colors.grey, // Border color
-                                      width: 1.0, // Border width
+                                    if (pickedDate != null) {
+                                      String formattedDate = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                      setState(() {
+                                        _selectedDateTextToDate = formattedDate;
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.4, // 50% of screen width
+                                    height: 40, // Set the fixed height
+                                    padding: EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(color: Colors.grey, width: 1.0),
                                     ),
-                                  ),
-                                  child: Text(
-                                    _selectedDateTextToDate,
-                                    // Display the selected date or "From Date"
-                                    style: TextStyle(
-                                      color: Colors.grey, // Text color
-                                      fontWeight: FontWeight.w500, // Text weight
+                                    child: Text(
+                                      _selectedDateTextToDate.isEmpty ? 'Tentative Date' : _selectedDateTextToDate,
+                                      style: TextStyle(
+                                        color: _selectedDateTextToDate.isEmpty ? Colors.grey : Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                    overflow: TextOverflow
-                                        .ellipsis, // Handle text overflow
                                   ),
                                 ),
                               ),
@@ -1391,6 +1590,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ),
                     ),
                   ),
+
+
                   SizedBox(height: 5.0),
                   Column(
                     children: [
@@ -1510,11 +1711,16 @@ class _CampAddPatient extends State<CampAddPatient> {
 
                         List<Data> stateList = snapshot.data ?? [];
 
-                        if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
-                          _selectedUserState = stateList.isNotEmpty ? stateList.first : null;
-                          selectedStateName = _selectedUserState.stateName.toString(); // <-- Save the state name here
-                          print('@@selectedStateName'+selectedStateName.toString());
+                        // ✅ Insert hint item at the top
+                        if (stateList.isNotEmpty && stateList.first.stateName != 'Select State') {
+                          stateList.insert(0, Data(stateName: 'Select State', stateCode: -1, code: ''));
+                        }
 
+                        // ✅ Ensure a default selection
+                        if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
+                          _selectedUserState = stateList.first;
+                          selectedStateName = _selectedUserState.stateName.toString();
+                          print('@@selectedStateName' + selectedStateName.toString());
                         }
 
                         return Container(
@@ -1543,22 +1749,31 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     fillColor: Colors.white,
                                   ),
                                   onChanged: (user) async {
-                                    if (user != null) {
+                                    // ✅ Prevent action if "Select State" is chosen
+                                    if (user != null && user.stateName != 'Select State') {
                                       setState(() {
                                         _selectedUserState = user;
-                                        selectedStateName = user.stateName; // <-- Save the state name here
+                                        selectedStateName = user.stateName;
                                         stateCodeGovtPrivate = int.parse(user.stateCode.toString());
                                         CodeGovtPrivate = user.code;
-                                        print('@@selectedStateName'+selectedStateName.toString());
+                                        print('@@selectedStateName' + selectedStateName.toString());
 
+                                        /* // RESET dependent data
+                                      _selectedUserDistrict = null;
+                                      _selectedUserCity = null;
+                                      _selectedUserVillage = null;
 
-                                        // RESET dependent data
-                                        _selectedUserDistrict = null;
-                                        _selectedUserCity = null;
-                                        _selectedUserVillage = null;
+                                      isVisibleDitrictGovt = false;
+                                      _isCityInitialized = false;*/
+                                        // Ensure that the dependent dropdowns are reset
+                                        setState(() {
+                                          _selectedUserDistrict = null;
+                                          _selectedUserCity = null;
+                                          _selectedUserVillage = null;
+                                          isVisibleDitrictGovt = false;
+                                          _isCityInitialized = false;
+                                        });
 
-                                        isVisibleDitrictGovt = false;
-                                        _isCityInitialized = false;
                                       });
 
                                       var connectivityResult = await Connectivity().checkConnectivity();
@@ -1604,6 +1819,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                     ),
                   ),
 
+
                   SizedBox(height: 5),
 
                   Visibility(
@@ -1626,13 +1842,17 @@ class _CampAddPatient extends State<CampAddPatient> {
 
                               List<DataDsiricst> districtList = snapshot.data ?? [];
 
+                              // ✅ Insert hint at top
+                              if (districtList.isNotEmpty && districtList.first.districtName != 'Select District') {
+                                districtList.insert(0, DataDsiricst(districtName: 'Select District', districtCode: -1));
+                              }
 
                               if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
-                                _selectedUserDistrict = districtList.isNotEmpty ? districtList.first : 0;
+                                _selectedUserDistrict = districtList.first;
                                 print('@@_selectedUserDistrict--' + _selectedUserDistrict.toString());
                                 distCodeGovtPrivate = int.parse(_selectedUserDistrict?.districtCode.toString() ?? "0");
-                                selectedDistrictName= _selectedUserDistrict.districtName.toString();
-                                print(' @@selectedStateName'+selectedDistrictName);
+                                selectedDistrictName = _selectedUserDistrict.districtName.toString();
+                                print('@@selectedDistrictName' + selectedDistrictName);
                               }
 
                               return Column(
@@ -1642,44 +1862,47 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     'Select District:',
                                     style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                   ),
-
                                   SizedBox(
                                     height: 45,  // Set your desired height
                                     child: DropdownButtonFormField<DataDsiricst>(
-
                                       decoration: InputDecoration(
                                         contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                        filled: true,
+                                        fillColor: Colors.white,
                                         border: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderSide: BorderSide(color: Colors.grey), // 👈 grey border
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide(color: Colors.grey), // 👈 grey border
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(color: Colors.grey),
+                                          borderSide: BorderSide(color: Colors.grey), // 👈 grey border
+
                                         ),
-                                        filled: true,
-                                        fillColor: Colors.white,
-
+                                        errorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide(color: Colors.grey), // 👈 still grey
+                                        ),
+                                        focusedErrorBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide(color: Colors.grey), // 👈 grey even on error
+                                        ),
                                       ),
-
                                       onChanged: (district) {
-                                        setState(() {
-                                          /* _selectedUserDistrict = district;
-                                        print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
-                                        distCodeGovtPrivate = int.parse(district?.districtCode.toString() ?? "0");
-                                        print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
-                                         selectedDistrictName= district.districtName.toString();
-                                        print('@@selectedDistrictName--1' + selectedDistrictName.toString());
-*/
-                                          _selectedUserDistrict = district;
-                                          print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
-                                          distCodeGovtPrivate = int.parse(district?.districtCode.toString() ?? "0");
-                                          print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
-                                          _selectedUserCity = null;
-                                          _isCityInitialized = false; // Reset when district changes
-                                        });
+                                        if (district != null && district.districtName != 'Select District') {
+                                          setState(() {
+                                            _selectedUserDistrict = district;
+                                            print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
+                                            distCodeGovtPrivate = int.parse(district.districtCode.toString());
+                                            print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
+                                            _selectedUserCity = null;
+                                            _isCityInitialized = false; // Reset when district changes
+                                          });
+                                        }
                                       },
-
                                       value: _selectedUserDistrict,
                                       items: districtList.map((district) {
                                         return DropdownMenuItem<DataDsiricst>(
@@ -1689,81 +1912,78 @@ class _CampAddPatient extends State<CampAddPatient> {
                                       }).toList(),
                                     ),
                                   ),
-
                                 ],
                               );
                             },
                           ),
                         ),
+
+
                         SizedBox(height: 5),
 
                         // City Dropdown (Visible only after District selection)
                         Visibility(
-                          visible: _selectedUserDistrict != null,  // City dropdown visible if a district is selected
+                          visible: _showCityDropdown && _selectedUserDistrict != null,
                           child: Container(
                             margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                             width: double.infinity,
                             child: FutureBuilder<List<DataGetCity>>(
-                              future: _getCity(distCodeGovtPrivate),
-                              // future: distCodeGovtPrivate > 0 ? _getCity(distCodeGovtPrivate) : Future.value([]), // Prevent API call with invalid ID
+                              //   future: _getCity(distCodeGovtPrivate),
+                              future: distCodeGovtPrivate != -1 ? _getCity(distCodeGovtPrivate) : Future.value([]),
                               builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                }
-
-                                if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Center(child: CircularProgressIndicator());
-                                }
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                                  return Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      'No cities found',
+                                      style: TextStyle(fontSize: 14, color: Colors.black54),
+                                    ),
+                                  );
 
+                                }
                                 List<DataGetCity> cityList = snapshot.data ?? [];
-                                developer.log('@@snapshot' + snapshot.data.toString());
-                                /* if (cityList.isNotEmpty) {
-                                if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
-                                  //  _selectedUserCity = cityList.first;
-                                  _selectedUserCity = cityList.isNotEmpty ? cityList.first : 0;
 
-
-                                  print('@@_selectedUserCity--' + _selectedUserCity.toString());
-                                  distCodeGovtPrivateCity = int.parse(_selectedUserCity?.subdistrictCode.toString() ?? "0");
-                                  selectedCityName= _selectedUserCity.name.toString();
-                                  print('@@selectedCityName--' + selectedCityName.toString());
+                                // ✅ Add "Select City/Town" hint item if not already there
+                                if (cityList.isNotEmpty && cityList.first.name != 'Select City/Town') {
+                                  cityList.insert(0, DataGetCity(name: 'Select City/Town', subdistrictCode: -1));
                                 }
-                              } else {
-                                _selectedUserCity = null;
-                              }*/
-                                if (cityList.isNotEmpty) {
-                                  if (!_isCityInitialized) {
-                                    if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
-                                      //  _selectedUserCity = cityList.first;
-                                      //   _selectedUserCity = cityList.isNotEmpty ? cityList.first : 0;
-                                      _selectedUserCity = cityList.firstWhere(
-                                            (item) => item.subdistrictCode == distCodeGovtPrivateCity,
-                                        orElse: () => cityList.first,
-                                      );
 
-                                      print('@@_selectedUserCity--' + _selectedUserCity.toString());
-                                      distCodeGovtPrivateCity = int.parse(_selectedUserCity?.subdistrictCode.toString() ?? "0");
-                                      selectedCityName= _selectedUserCity.name.toString();
-                                      print('@@selectedCityName--' + selectedCityName.toString());
-                                      _isCityInitialized = true; // ✅ Set this here
-                                    }
+                                if (!_isCityInitialized) {
+                                  if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
+                                    _selectedUserCity = cityList.firstWhere(
+                                          (item) => item.subdistrictCode == distCodeGovtPrivateCity,
+                                      orElse: () => cityList.first,
+                                    );
+
+                                    distCodeGovtPrivateCity = int.tryParse(_selectedUserCity?.subdistrictCode.toString() ?? "0") ?? 0;
+                                    selectedCityName = _selectedUserCity?.name ?? '';
+                                    _isCityInitialized = true;
+
+                                    print('@@_selectedUserCity-- $selectedCityName');
                                   }
-                                } else {
-                                  _selectedUserCity = null;
-                                  _isCityInitialized = false;
                                 }
+
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Select City/Town',
+                                      'Select City/ Town',
                                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
-                                      height: 45, // Set the desired height for dropdown
+                                      height: 45,
                                       child: DropdownButtonFormField<DataGetCity>(
-                                        focusColor: Colors.white,  // Prevents blue background when selected
-
+                                        focusColor: Colors.white,
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                                           border: OutlineInputBorder(
@@ -1778,19 +1998,32 @@ class _CampAddPatient extends State<CampAddPatient> {
                                           fillColor: Colors.white,
                                         ),
                                         onChanged: (city) {
-                                          setState(() {
-                                            _selectedUserCity = city;
-                                            distCodeGovtPrivateCity = city?.subdistrictCode ?? 0;
-                                            print('@@distCodeGovtPrivateCity'+distCodeGovtPrivateCity.toString());
-                                            selectedCityName= city.name.toString();
-                                            print('@@selectedCityName--' + selectedCityName.toString());
-                                          });
+
+                                          if (city != null && city.subdistrictCode != -1) {
+                                            setState(() {
+                                              _selectedUserCity = city;
+                                              distCodeGovtPrivateCity = city.subdistrictCode;
+                                              selectedCityName = city.name;
+                                              _selectedUserVillage = null; // Reset previous village
+                                              print('@@selectedCityName--1 $distCodeGovtPrivate');
+                                              print('@@selectedCityName--2 $stateCodeGovtPrivate');
+                                              print('@@selectedCityName--3 $distCodeGovtPrivateCity');
+                                              // RESET village values
+                                              _selectedUserVillage = null;
+                                              selectedVillageName = '';
+                                              _isVillageInitialized = false;
+
+                                              _villageFuture = _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity);
+                                              // 👉 HIDE the city dropdown after selection
+                                              //  _showCityDropdown = false;
+                                            });
+                                          }
                                         },
                                         value: _selectedUserCity,
                                         items: cityList.map((city) {
                                           return DropdownMenuItem<DataGetCity>(
                                             value: city,
-                                            child: Text(city.name.trim().toString()),
+                                            child: Text(city.name.trim()),
                                           );
                                         }).toList(),
                                       ),
@@ -1801,37 +2034,44 @@ class _CampAddPatient extends State<CampAddPatient> {
                             ),
                           ),
                         ),
+
                         SizedBox(height: 5),
 
                         // Village Dropdown (Visible only after City selection)
                         Visibility(
-                          visible: _selectedUserCity != null,  // Village dropdown visible if a city is selected
+                          visible: _selectedUserCity != null, // Village dropdown visible if a city is selected
                           child: Container(
                             width: double.infinity,
                             margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                             child: FutureBuilder<List<DataGetVillage>>(
-                              //    future: _getVillage(district_code_login, state_code_login, distCodeGovtPrivateCity),
-                              future: _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
 
+                              //future: _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
+                              //      future: _villageFuture ??= _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
+                              future: (distCodeGovtPrivate != -1 && distCodeGovtPrivateCity != -1)
+                                  ? _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity)
+                                  : Future.value([]),
                               builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                }
-
                                 if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return Center(child: CircularProgressIndicator());
-                                }
+                                  //   return Center(child: CircularProgressIndicator());
+                                } else if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                                  return Container(
+                                    width: double.infinity,
+                                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.grey),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: Text(
+                                      'No Villages found',
+                                      style: TextStyle(fontSize: 14, color: Colors.black54),
+                                    ),
+                                  );
 
-                                List<DataGetVillage> villageList = snapshot.data ?? [];
-                                if (villageList.isNotEmpty) {
-                                  if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
-                                    _selectedUserVillage = villageList.first; // Set the first element if invalid
-                                    selectedVillageName= _selectedUserVillage.name.toString();
-                                    print('@@selectedVillageName--' + selectedVillageName.toString());
-                                  }
-                                } else {
-                                  _selectedUserVillage = null;
                                 }
+                                List<DataGetVillage> villageList = snapshot.data ?? [];
 
                                 if (villageList.isEmpty) {
                                   return SizedBox(
@@ -1840,7 +2080,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                                       decoration: BoxDecoration(
                                         border: Border.all(color: Colors.grey, width: 1),
                                         borderRadius: BorderRadius.circular(8),
-                                        color: Colors.white, // Light grey background
+                                        color: Colors.white,
                                       ),
                                       child: Center(
                                         child: Text(
@@ -1856,15 +2096,28 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   );
                                 }
 
+                                // ✅ Insert default 'Select Village' option at the top if not already there
+                                if (villageList.first.name != 'Select Village') {
+                                  villageList.insert(0, DataGetVillage(name: 'Select Village', villageCode: -1));
+                                }
+
+                                // ✅ Set default selection to 'Select Village'
+                                if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
+                                  _selectedUserVillage = villageList.first;
+                                  selectedVillageName = _selectedUserVillage.name.toString();
+                                  print('@@selectedVillageName--' + selectedVillageName.toString());
+                                }
+
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
+
                                       'Select Village:',
                                       style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
-                                      height:45,
+                                      height: 45,
                                       child: DropdownButtonFormField<DataGetVillage>(
                                         decoration: InputDecoration(
                                           contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -1878,14 +2131,13 @@ class _CampAddPatient extends State<CampAddPatient> {
                                           ),
                                           filled: true,
                                           fillColor: Colors.white,
-
                                         ),
                                         onChanged: (village) {
                                           if (village != null) {
                                             setState(() {
                                               _selectedUserVillage = village;
                                               village_code = int.parse(village.villageCode ?? "0");
-                                              selectedVillageName= village.name.toString();
+                                              selectedVillageName = village.name.toString();
                                               print('@@selectedVillageName--' + selectedVillageName.toString());
                                             });
                                           }
@@ -1905,6 +2157,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                             ),
                           ),
                         ),
+
                       ],
                     ),
                   ),
@@ -1944,11 +2197,19 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
+                                // Customizing focus and enabled borders
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderSide: BorderSide(color: Colors.grey), // Set border color to grey or any color you want
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderSide: BorderSide(color: Colors.grey), // Border color when not focused
+                                ),
                               ),
                             ),
                           ),
                         ),
-
 
                         // Spacer to add some space between TextField and IconButton
                         SizedBox(width: 10),
@@ -1963,11 +2224,13 @@ class _CampAddPatient extends State<CampAddPatient> {
                             ),
                             child: IconButton(
                               icon: Icon(Icons.my_location, color: Colors.blue),
-                              //   onPressed: _getCurrentLocation, // Function to fetch current location
                               onPressed: () {
                                 if (selectedDistrictName != null && selectedDistrictName.isNotEmpty &&
                                     selectedCityName != null && selectedCityName.isNotEmpty) {
-                                  openMapDialog(context, selectedStateName, selectedDistrictName, selectedCityName);
+                                  openMapDialog(context, selectedStateName, selectedDistrictName, selectedCityName,selectedVillageName);
+                                  setState(() {
+                                    showCoordinates = true; // Show the coordinates section
+                                  });
                                 } else {
                                   // Show error or toast/snackbar
                                   ScaffoldMessenger.of(context).showSnackBar(
@@ -1978,7 +2241,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   );
                                 }
                               },
-
                             ),
                           ),
                         ),
@@ -1987,35 +2249,40 @@ class _CampAddPatient extends State<CampAddPatient> {
                   ),
 
 
+
                   SizedBox(height: 5.0),
                   // Latitude and Longitude fields
-                  SizedBox(
-                    height: 45,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: _textInputField(
-                              controller: _latitudeController,
-                              labelText: 'Latitude',
-                              readOnly: true, // Prevent manual input
-                              prefixIcon: Icon(Icons.my_location, color: Colors.blue), // Icon for Latitude
+                  Visibility(
+                    visible: showCoordinates,
+                    child: SizedBox(
+                      height: 45,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: _textInputField(
+                                controller: _latitudeController,
+                                labelText: 'Latitude',
+                                readOnly: true,
+                                prefixIcon: Icon(Icons.my_location, color: Colors.blue),
+                              ),
                             ),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: _textInputField(
-                              controller: _longitudeController,
-                              labelText: 'Longitude',
-                              readOnly: true, // Prevent manual input
-                              prefixIcon: Icon(Icons.location_searching, color: Colors.green), // Icon for Longitude
+                            SizedBox(width: 10),
+                            Expanded(
+                              child: _textInputField(
+                                controller: _longitudeController,
+                                labelText: 'Longitude',
+                                readOnly: true,
+                                prefixIcon: Icon(Icons.location_searching, color: Colors.green),
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
                   ),
+
 
                   /* Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
@@ -2082,7 +2349,14 @@ class _CampAddPatient extends State<CampAddPatient> {
                           hintText: 'Pin Code',
                           hintStyle: TextStyle(color: Colors.black),
 // Regular hint text
-                          border: OutlineInputBorder(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey), // Grey border
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+
+                          // Border when the field is focused
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey, width: 1), // Grey border when focused
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
@@ -2163,6 +2437,11 @@ class _CampAddPatient extends State<CampAddPatient> {
                       },
                     ),
                   ),
+
+
+
+
+
                   SizedBox(height: 5.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -2181,7 +2460,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                               Utils.showToast("No internet. Data saved locally.", true);
                             } else {
                               print("Internet available. Uploading data to API.");
-                            //  await ApipatientRegistration(); // Submit to API
+                         //     await ApipatientRegistration(); // Submit to API
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -2203,7 +2482,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                         height: 40,
                         child: ElevatedButton(
                           onPressed: () {
-                        //    resetForm();
+                            resetForm();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
@@ -2223,7 +2502,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ),
                     ],
                   )
-
 
 
                 ],
@@ -2549,7 +2827,7 @@ class _CampAddPatient extends State<CampAddPatient> {
       return null;
     }
   }
-  void openMapDialog(BuildContext context, String state, String district, String city) async {
+  void openMapDialog(BuildContext context, String state, String district, String city, String village) async {
     String fullAddress = '$city, $district, $state';
 
     try {
@@ -2558,6 +2836,23 @@ class _CampAddPatient extends State<CampAddPatient> {
       if (locations.isNotEmpty) {
         LatLng initialLatLng = LatLng(locations[0].latitude, locations[0].longitude);
         updatedLatLng = initialLatLng;
+
+        // Fetch address & pincode initially
+        List<Placemark> placemarks = await placemarkFromCoordinates(
+          initialLatLng.latitude,
+          initialLatLng.longitude,
+        );
+
+        if (placemarks.isNotEmpty) {
+          Placemark place = placemarks[0];
+          updatedAddress = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
+          updatedPincode = place.postalCode ?? '';
+
+          _AddressHouse.text = updatedAddress;
+          _PinCode.text = updatedPincode;
+          _latitudeController.text = initialLatLng.latitude.toString();
+          _longitudeController.text = initialLatLng.longitude.toString();
+        }
 
         showDialog(
           context: context,
@@ -2599,14 +2894,12 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 : {},
                             onTap: (LatLng tappedLatLng) async {
                               updatedLatLng = tappedLatLng;
-                              print('Latitude: ${tappedLatLng.latitude}');
-                              print('Longitude: ${tappedLatLng.longitude}');
                               _latitudeController.text = tappedLatLng.latitude.toString();
                               _longitudeController.text = tappedLatLng.longitude.toString();
+
                               List<Placemark> placemarks = await placemarkFromCoordinates(
                                 tappedLatLng.latitude,
                                 tappedLatLng.longitude,
-
                               );
 
                               if (placemarks.isNotEmpty) {
@@ -2614,17 +2907,13 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 setState(() {
                                   updatedAddress = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
                                   updatedPincode = place.postalCode ?? '';
-
                                 });
 
-                                //  print('Tapped Address: $updatedAddress');
                                 _AddressHouse.text = updatedAddress;
-                                //  print('Pincode: $updatedPincode');
                                 _PinCode.text = updatedPincode;
                               }
 
-                              // Refresh map marker
-                              setState(() {}); // Rebuild dialog to show updated marker
+                              setState(() {}); // Refresh UI to update marker
                             },
                           ),
                         ),
@@ -2655,4 +2944,58 @@ class _CampAddPatient extends State<CampAddPatient> {
     }
   }
 
+  void resetForm() {
+    // Clear text fields
+    _firstNamePatientDetail.clear();
+    _lastNamePatientDetail.clear();
+    _AgePatientDetail.clear();
+    _mobileNumberDetailsRelationtype.clear();
+    _AddressHouse.clear();
+    _ageController.clear();
+    _latitudeController.clear();
+    _longitudeController.clear();
+    //  _Apartment.clear();
+    //  _AreaNearLandMark.clear();
+
+    _selectedUserState = null;
+    _selectedUserDistrict = null;
+    _selectedUserCity = null;
+    _selectedUserVillage = null;
+    // ✅ Reset the name variables too
+    selectedStateName = "";
+    selectedDistrictName = "";
+    selectedCityName = "";
+    selectedVillageName = "";
+    _PinCode.clear();
+    _voterIDNumber.clear();
+    //  _reportingPlaceController.clear();
+    relationFatherController.clear();
+
+    // Reset dropdowns and radio buttons
+    // registerationtypeRadioValueinAPi = null;
+
+    VoterIDtype = null;
+    // dependencyTypeRadio = null;
+    //relationtypeValue = null;
+    // gender = null;
+    // relationtypeValueMobile = null;
+    // getDissesID = null;
+    stateLKanguage = null;
+    distCodeGovtPrivate = null;
+    village_code = null;
+
+    // Reset date pickers
+    _dob = "Select Date";
+    _selectedDateText = "Screening Date";
+    _selectedDateTextToDate = "Tentative Date";
+
+    // Clear image
+    _image = null;
+
+    // Trigger UI update
+    setState(() {});
+
+    // Optional: Show a toast message
+    //Utils.showToast("Form has been reset!", true);
+  }
 }
