@@ -2493,28 +2493,7 @@ class _NgoDashboard extends State<NgoDashboard> {
         ));
   }
 
-  /*void _addCampManager() {
-    // Handle the tap event here
-    print('Add Camp Manager tapped!');
-    setState(() {
-      ManageUSerNGOHospt = false;
-      ngoDashboardclicks = false;
-      EyeDonationCentreRegistrationClickONAddDontaions = false;
 
-      EyeBankApplication = false;
-      ngoCampManagerLists = false;
-      CampManagerRegisterartions = true;
-      CampManagerRegisterartionsEdit = false;
-      SatelliteManagerRegisterartionsEdit = false;
-
-      ngoScreeningCampListss = false;
-      AddScreeningCamps = false;
-      ngoSATELLITECENTREMANAGERLists = false;
-      AddSatelliteManagers = false;
-      satelliteCenterMenuListdisplay = false;
-      AddSatelliteCenterRedOptionFields = false;
-    });
-  }*/
   void _addCampManager() {
     Navigator.push(
       context,
@@ -2523,27 +2502,9 @@ class _NgoDashboard extends State<NgoDashboard> {
   }
 
   void _addScreeningCampManager() {
-    // Handle the tap event here
     print('@@AddScreening camp clicked--');
     setState(() {
-   /*   ManageUSerNGOHospt = false;
-      ngoDashboardclicks = false;
-      EyeDonationCentreRegistrationClickONAddDontaions = false;
 
-      EyeBankApplication = false;
-      ngoCampManagerLists = false;
-      CampManagerRegisterartions = false;
-      SatelliteManagerRegisterartionsEdit = false;
-
-      CampManagerRegisterartionsEdit = false;
-      ngoScreeningCampListss = false;
-      AddScreeningCamps = true;
-      _manger = getCampManager(district_code_login, entryby);
-      _futureState = _getStatesDAta();
-      ngoSATELLITECENTREMANAGERLists = false;
-      AddSatelliteManagers = false;
-      satelliteCenterMenuListdisplay = false;
-      AddSatelliteCenterRedOptionFields = false;*/
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => ScreeningCampClickAddScreeningCamp()),

@@ -46,11 +46,7 @@ class _ScreeningCampClickAddScreeningCamp
   bool isVisibleDitrictGovt = false;
 
   DataScreeningCampManager _mangerUser;
-  final TextEditingController _userNameController = TextEditingController();
-  final TextEditingController _mobileNumberController = TextEditingController();
-  final TextEditingController _emailIdController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _designationController = TextEditingController();
+
   bool CampManagerRegisterartions = true; // This should be based on your logic
   String gender = 'Male'; // Default gender
   int status, district_code_login, state_code_login;
@@ -1273,9 +1269,9 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
-                                  color: Colors.grey.shade300,
+                                  color: Colors.grey,
                                   // Border color when not focused
-                                  width: 1.5,
+                                  width: 1,
                                 ),
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -1712,7 +1708,7 @@ margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
           CenterOfficeNameSatelliteCenter.fromJson(responseData);
 
       if (data.status) {
-        Utils.showToast(data.message, true);
+        //Utils.showToast(data.message, true);
         // Return the list of data
         return data.data;
       } else {
