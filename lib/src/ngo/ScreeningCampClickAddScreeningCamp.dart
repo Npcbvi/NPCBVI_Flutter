@@ -749,7 +749,8 @@ class _ScreeningCampClickAddScreeningCamp
                                           child: DropdownButtonFormField2<Data>(
                                             isExpanded: true,
                                             decoration: InputDecoration(
-                                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
+
                                               enabledBorder: OutlineInputBorder(
                                                 borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                                 borderRadius: BorderRadius.circular(10.0),
@@ -771,13 +772,7 @@ class _ScreeningCampClickAddScreeningCamp
                                                   CodeGovtPrivate = user.code;
                                                   print('@@selectedStateName' + selectedStateName.toString());
 
-                                                  /* // RESET dependent data
-                                      _selectedUserDistrict = null;
-                                      _selectedUserCity = null;
-                                      _selectedUserVillage = null;
 
-                                      isVisibleDitrictGovt = false;
-                                      _isCityInitialized = false;*/
                                                   // Ensure that the dependent dropdowns are reset
                                                   setState(() {
                                                     _selectedUserDistrict = null;
@@ -805,6 +800,16 @@ class _ScreeningCampClickAddScreeningCamp
                                               }
                                             },
                                             value: _selectedUserState,
+
+                                            dropdownStyleData: DropdownStyleData(
+                                              maxHeight: 300,
+                                              width: 300,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              offset: const Offset(0, -3),
+                                            ),
                                             buttonStyleData: ButtonStyleData(
                                               height: 20, // Increase dropdown button height
                                               decoration: BoxDecoration(
@@ -823,7 +828,9 @@ class _ScreeningCampClickAddScreeningCamp
                                                 ),
                                               );
                                             }).toList(),
+
                                           ),
+
                                         ),
                                       ],
                                     ),
@@ -1096,7 +1103,7 @@ class _ScreeningCampClickAddScreeningCamp
                                           child: DropdownButtonFormField2<Data>(
                                             isExpanded: true,
                                             decoration: InputDecoration(
-                                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
                                               enabledBorder: OutlineInputBorder(
                                                 borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                                 borderRadius: BorderRadius.circular(10.0),
@@ -1152,6 +1159,15 @@ class _ScreeningCampClickAddScreeningCamp
                                               }
                                             },
                                             value: _selectedUserState,
+                                            dropdownStyleData: DropdownStyleData(
+                                              maxHeight: 300,
+                                              width: 300,
+                                              decoration: BoxDecoration(
+                                                color: Colors.white,
+                                                borderRadius: BorderRadius.circular(10),
+                                              ),
+                                              offset: const Offset(0, -3),
+                                            ),
                                             buttonStyleData: ButtonStyleData(
                                               height: 20, // Increase dropdown button height
                                               decoration: BoxDecoration(
@@ -1224,7 +1240,7 @@ class _ScreeningCampClickAddScreeningCamp
                                             ),
                                             SizedBox(
                                               height: 45,  // Set your desired height
-                                              child: DropdownButtonFormField<DataDsiricst>(
+                                              child: DropdownButtonFormField2<DataDsiricst>(
                                                 decoration: InputDecoration(
                                                   contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                                                   filled: true,
@@ -1270,6 +1286,19 @@ class _ScreeningCampClickAddScreeningCamp
                                                     child: Text(district.districtName),
                                                   );
                                                 }).toList(),
+                                                dropdownStyleData: DropdownStyleData(
+                                                  maxHeight: 300,
+                                                  width: 300,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius: BorderRadius.circular(10),
+                                                  ),
+                                                  offset: const Offset(0, -3),
+                                                ),
+                                                buttonStyleData: ButtonStyleData(
+                                                  height: 50, // Set consistent height
+
+                                                ),
                                               ),
                                             ),
                                           ],
@@ -1478,7 +1507,7 @@ class _ScreeningCampClickAddScreeningCamp
                                               ),
                                               SizedBox(
                                                 height: 45,
-                                                child: DropdownButtonFormField<DataGetVillage>(
+                                                child: DropdownButtonFormField2<DataGetVillage>(
                                                   decoration: InputDecoration(
                                                     contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                                                     border: OutlineInputBorder(
@@ -1509,8 +1538,25 @@ class _ScreeningCampClickAddScreeningCamp
                                                       child: Text(village.name),
                                                     );
                                                   }).toList(),
+                                                  dropdownStyleData: DropdownStyleData(
+                                                    maxHeight: 300,
+                                                    width: 300,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius: BorderRadius.circular(10),
+                                                    ),
+                                                    offset: const Offset(0, -3),
+                                                  ),
+                                                  buttonStyleData: ButtonStyleData(
+                                                    height: 50, // Set consistent height
+                                                 // ADD THIS
+
+
+                                                  ),
                                                 ),
+
                                               ),
+
                                             ],
                                           );
                                         },
