@@ -735,6 +735,7 @@ class _SpoDashboard extends State<SpoDashboard> {
                       if (_chosenEyeBank == "Eye Bank Collection") {
                         print('@@NGO--1' + _chosenEyeBank);
                         dashboardviewReplace = false;
+                        SPOLcikONDPMMEnus=false;
                         eyeBankApprovals=false;
                         dashboardviewReplace = false;
                         RegisteredEyesurgeon = false;
@@ -2824,34 +2825,45 @@ class _SpoDashboard extends State<SpoDashboard> {
           visible: SPOLcikONDPMMEnus,
           child: Column(
             children: [
+              Container(
+                width: double.infinity,
+                // Full width
+                color: Colors.blue,
+                // Background color
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                // Padding for spacing
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  // Space between text and button
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: Center(
+                        child: Text(
+                          'District Programme Manager Details',
+                          // Added spacing between words
+                          maxLines: 2,
+                          textAlign: TextAlign.left, // Align text to the left
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               // Horizontal Scrolling for both Header and Data Rows
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Column(
                   children: [
                     // Top Info Bar
-                    Container(
-                      color: Colors.white70,
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(width: 10),
-                          Container(
-                            margin:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            width: 250.0,
-                            child: const Text(
-                              'District Programme Manager Details',
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                        ],
-                      ),
-                    ),
+
 
                     // Data Table Header
                     Row(

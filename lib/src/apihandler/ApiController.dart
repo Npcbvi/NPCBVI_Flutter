@@ -4879,7 +4879,7 @@ class ApiController {
 
         print("@@getSpoDashobardData----" + getSpoDashobardData.message);
         if (getSpoDashobardData.status) {
-          Utils.showToast(getSpoDashobardData.message, true);
+        //  Utils.showToast(getSpoDashobardData.message, true);
         } else {
           Utils.showToast(getSpoDashobardData.message, true);
         }
@@ -5915,7 +5915,7 @@ class ApiController {
         // Return the list of data
         return data.data;
       } else {
-        Utils.showToast(data.message, true);
+      //  Utils.showToast(data.message, true);
         return [];
       }
     } catch (e) {
