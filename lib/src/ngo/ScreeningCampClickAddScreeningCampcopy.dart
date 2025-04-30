@@ -679,148 +679,196 @@ class _ScreeningCampClickAddScreeningCamp
                       SizedBox(height: 5),
 
                       // Gender Selection
-
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        // Center vertically
                         children: [
+                          // Center the Location Type Label
+
+                          // Add space between label and options
+
+                          // Use Row to center the radio buttons horizontally
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
+                            // Center radio buttons horizontally
                             children: [
-                              Radio<String>(
-                                value: 'Urban',
-                                groupValue: locationTypeValues,
-                                onChanged: (value) {
-                                  setState(() {
-                                    locationTypeValues = value;
-                                  });
-                                },
+                              // Urban Radio Button
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 5.0),
+                                decoration: BoxDecoration(
+                                  color: locationTypeValues == 'Urban'
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  // Highlight selected option
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  // Rounded corners
+                                  border: Border.all(
+                                    color: locationTypeValues == 'Urban'
+                                        ? Colors.grey
+                                        : Colors.grey,
+                                    // Border color changes when selected
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Radio<String>(
+                                      value: 'Urban',
+                                      groupValue: locationTypeValues,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          locationTypeValues = value;
+                                          valuetype = 0;
+                                        });
+                                      },
+                                      activeColor: Colors
+                                          .blue, // Active radio button color
+                                    ),
+                                    Text(
+                                      'Urban',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: locationTypeValues == 'Urban'
+                                            ? Colors.black
+                                            : Colors.black,
+                                        // Text color based on selection
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Text('Urban'),
-                              Radio<String>(
-                                value: 'Rural',
-                                groupValue: locationTypeValues,
-                                onChanged: (value) {
-                                  setState(() {
-                                    locationTypeValues = value;
-                                  });
-                                },
+                              SizedBox(width: 5), // Space between options
+                              // Rural Radio Button
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                decoration: BoxDecoration(
+                                  color: locationTypeValues == 'Rural'
+                                      ? Colors.white
+                                      : Colors.transparent,
+                                  // Highlight selected option
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  // Rounded corners
+                                  border: Border.all(
+                                    color: locationTypeValues == 'Rural'
+                                        ? Colors.blue
+                                        : Colors.grey,
+                                    // Border color changes when selected
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Radio<String>(
+                                      value: 'Rural',
+                                      groupValue: locationTypeValues,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          locationTypeValues = value;
+                                          valuetype = 1;
+                                        });
+                                      },
+                                      activeColor: Colors
+                                          .blue, // Active radio button color
+                                    ),
+                                    Text(
+                                      'Rural',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: locationTypeValues == 'Rural'
+                                            ? Colors.blue
+                                            : Colors.black,
+                                        // Text color based on selection
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Text('Rural'),
                             ],
                           ),
-                          if (locationTypeValues == 'Urban') ...[
-                            Container(
-                              margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
-                              width: double.infinity,
-                              child: FutureBuilder<List<Data>>(
-                                future: _futureState, // Fetching States
+                        ],
+                      ),
+
+                      SizedBox(height: 5.0),
+                      // Show additional content based on the selected value
+                      if (locationTypeValues == 'Urban')
+                        // Content to display if "Urban" is selected
+                        Container(
+                          margin: EdgeInsets.fromLTRB(
+                              5, 0, 5, 0), // Add margin here
+                          child: Column(
+                            children: [
+                              FutureBuilder<List<DataGetCity>>(
+                                future: _getCity(district_code_login),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     return Text('Error: ${snapshot.error}');
                                   }
-
                                   if (!snapshot.hasData) {
-                                    return Center(child: CircularProgressIndicator());
+                                    return const CircularProgressIndicator();
                                   }
 
-                                  List<Data> stateList = snapshot.data ?? [];
+                                  List<DataGetCity> districtList =
+                                      snapshot.data;
 
-                                  // ✅ Insert hint item at the top
-                                  if (stateList.isNotEmpty && stateList.first.stateName != 'Select State') {
-                                    stateList.insert(0, Data(stateName: 'Select State', stateCode: -1, code: ''));
+                                  if (_selectedUserCity == null ||
+                                      !districtList
+                                          .contains(_selectedUserCity)) {
+                                    _selectedUserCity = districtList.first;
                                   }
 
-                                  // ✅ Ensure a default selection
-                                  if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
-                                    _selectedUserState = stateList.first;
-                                    selectedStateName = _selectedUserState.stateName.toString();
-                                    print('@@selectedStateName' + selectedStateName.toString());
-                                  }
-
-                                  return Container(
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.fromLTRB(0, 0, 0, 0),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: <Widget>[
-                                        const Text(
-                                          'State (Camp)',
-                                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                                        ),
+                                        // Ensuring equal width and height for Dropdown and TextField
                                         SizedBox(
-                                          height: 45, // Set the desired height for dropdown
-                                          child: DropdownButtonFormField2<Data>(
-                                            isExpanded: true,
+                                          width: double.infinity,
+                                          height: 50, // Set a fixed height
+                                          child: DropdownButtonFormField<
+                                              DataGetCity>(
                                             decoration: InputDecoration(
-                                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                                              contentPadding:
+                                                  EdgeInsets.symmetric(
+                                                      vertical: 15.0,
+                                                      horizontal: 10.0),
                                               enabledBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey,
+                                                    width: 1.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                               ),
                                               focusedBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                                                borderRadius: BorderRadius.circular(10.0),
+                                                borderSide: BorderSide(
+                                                    color: Colors.grey,
+                                                    width: 1.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                               ),
                                               filled: true,
                                               fillColor: Colors.white,
                                             ),
-                                            onChanged: (user) async {
-                                              // ✅ Prevent action if "Select State" is chosen
-                                              if (user != null && user.stateName != 'Select State') {
+                                            onChanged: (districtUser) =>
                                                 setState(() {
-                                                  _selectedUserState = user;
-                                                  selectedStateName = user.stateName;
-                                                  stateCodeGovtPrivate = int.parse(user.stateCode.toString());
-                                                  CodeGovtPrivate = user.code;
-                                                  print('@@selectedStateName' + selectedStateName.toString());
-
-                                                  /* // RESET dependent data
-                                      _selectedUserDistrict = null;
-                                      _selectedUserCity = null;
-                                      _selectedUserVillage = null;
-
-                                      isVisibleDitrictGovt = false;
-                                      _isCityInitialized = false;*/
-                                                  // Ensure that the dependent dropdowns are reset
-                                                  setState(() {
-                                                    _selectedUserDistrict = null;
-                                                    _selectedUserCity = null;
-                                                    _selectedUserVillage = null;
-                                                    isVisibleDitrictGovt = false;
-                                                    _isCityInitialized = false;
-                                                  });
-
-                                                });
-
-                                                var connectivityResult = await Connectivity().checkConnectivity();
-                                                bool isConnected = connectivityResult != ConnectivityResult.none;
-
-                                                if (isConnected) {
-                                                  setState(() {
-                                                    isVisibleDitrictGovt = true; // Show District dropdown
-                                                  });
-                                                  await _getDistrictData(stateCodeGovtPrivate);
-                                                } else {
-                                                  setState(() {
-                                                    isVisibleDitrictGovt = false; // Hide District dropdown if no internet
-                                                  });
-                                                }
-                                              }
-                                            },
-                                            value: _selectedUserState,
-                                            buttonStyleData: ButtonStyleData(
-                                              height: 20, // Increase dropdown button height
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(10.0),
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            items: stateList.map<DropdownMenuItem<Data>>((Data user) {
-                                              return DropdownMenuItem<Data>(
-                                                value: user,
-                                                child: Text(
-                                                  user.stateName,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style: const TextStyle(fontSize: 14),
-                                                ),
+                                              _selectedUserCity = districtUser;
+                                              distCodeGovtPrivate = int.parse(
+                                                  districtUser.subdistrictCode
+                                                      .toString());
+                                              print(
+                                                  'Selected District: ${districtUser.subdistrictCode}');
+                                            }),
+                                            value: _selectedUserCity,
+                                            items: districtList
+                                                .map((DataGetCity district) {
+                                              return DropdownMenuItem<
+                                                  DataGetCity>(
+                                                value: district,
+                                                child: Text(district.name),
                                               );
                                             }).toList(),
                                           ),
@@ -830,699 +878,513 @@ class _ScreeningCampClickAddScreeningCamp
                                   );
                                 },
                               ),
+                              SizedBox(height: 5),
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 0),
+                                // Add margin here
+
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  // Same width as Dropdown
+                                  height: 50,
+                                  // Same height as Dropdown
+                                  child: TextFormField(
+                                    controller: _Pincodecontroller,
+                                    decoration: InputDecoration(
+                                      labelText: 'Pin Code*',
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey.shade300,
+                                            width: 1.0),
+                                      ),
+                                    ),
+                                    keyboardType: TextInputType.phone,
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter PinCode number';
+                                      }
+                                      return null;
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      else if (locationTypeValues == 'Rural')
+                        // Content to display if "Urban" is selected
+                        Container(
+                          margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                          width: double.infinity,
+                          child: FutureBuilder<List<Data>>(
+                            future: _futureState, // Fetching States
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('Error: ${snapshot.error}');
+                              }
+
+                              if (!snapshot.hasData) {
+                                return Center(child: CircularProgressIndicator());
+                              }
+
+                              List<Data> stateList = snapshot.data ?? [];
+
+                              // ✅ Insert hint item at the top
+                              if (stateList.isNotEmpty && stateList.first.stateName != 'Select State') {
+                                stateList.insert(0, Data(stateName: 'Select State', stateCode: -1, code: ''));
+                              }
+
+                              // ✅ Ensure a default selection
+                              if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
+                                _selectedUserState = stateList.first;
+                                selectedStateName = _selectedUserState.stateName.toString();
+                                print('@@selectedStateName' + selectedStateName.toString());
+                              }
+
+                              return Container(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    const Text(
+                                      'State (Camp)',
+                                      style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 45, // Set the desired height for dropdown
+                                      child: DropdownButtonFormField2<Data>(
+                                        isExpanded: true,
+                                        decoration: InputDecoration(
+                                          contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                                          enabledBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                            borderRadius: BorderRadius.circular(10.0),
+                                          ),
+                                          filled: true,
+                                          fillColor: Colors.white,
+                                        ),
+                                        onChanged: (user) async {
+                                          // ✅ Prevent action if "Select State" is chosen
+                                          if (user != null && user.stateName != 'Select State') {
+                                            setState(() {
+                                              _selectedUserState = user;
+                                              selectedStateName = user.stateName;
+                                              stateCodeGovtPrivate = int.parse(user.stateCode.toString());
+                                              CodeGovtPrivate = user.code;
+                                              print('@@selectedStateName' + selectedStateName.toString());
+
+                                              /* // RESET dependent data
+                                      _selectedUserDistrict = null;
+                                      _selectedUserCity = null;
+                                      _selectedUserVillage = null;
+
+                                      isVisibleDitrictGovt = false;
+                                      _isCityInitialized = false;*/
+                                              // Ensure that the dependent dropdowns are reset
+                                              setState(() {
+                                                _selectedUserDistrict = null;
+                                                _selectedUserCity = null;
+                                                _selectedUserVillage = null;
+                                                isVisibleDitrictGovt = false;
+                                                _isCityInitialized = false;
+                                              });
+
+                                            });
+
+                                            var connectivityResult = await Connectivity().checkConnectivity();
+                                            bool isConnected = connectivityResult != ConnectivityResult.none;
+
+                                            if (isConnected) {
+                                              setState(() {
+                                                isVisibleDitrictGovt = true; // Show District dropdown
+                                              });
+                                              await _getDistrictData(stateCodeGovtPrivate);
+                                            } else {
+                                              setState(() {
+                                                isVisibleDitrictGovt = false; // Hide District dropdown if no internet
+                                              });
+                                            }
+                                          }
+                                        },
+                                        value: _selectedUserState,
+                                        buttonStyleData: ButtonStyleData(
+                                          height: 20, // Increase dropdown button height
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10.0),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                                          return DropdownMenuItem<Data>(
+                                            value: user,
+                                            child: Text(
+                                              user.stateName,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              style: const TextStyle(fontSize: 14),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+
+
+                      SizedBox(height: 5),
+
+                      Visibility(
+                        visible: isVisibleDitrictGovt,  // Control the visibility of the district dropdown
+                        child: Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                              child: FutureBuilder<List<DataDsiricst>>(
+                                future: _getDistrictData(stateCodeGovtPrivate),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  }
+
+                                  if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                                    return Center(child: CircularProgressIndicator());
+                                  }
+
+                                  List<DataDsiricst> districtList = snapshot.data ?? [];
+
+                                  // ✅ Insert hint at top
+                                  if (districtList.isNotEmpty && districtList.first.districtName != 'Select District') {
+                                    districtList.insert(0, DataDsiricst(districtName: 'Select District', districtCode: -1));
+                                  }
+
+                                  if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                                    _selectedUserDistrict = districtList.first;
+                                    print('@@_selectedUserDistrict--' + _selectedUserDistrict.toString());
+                                    distCodeGovtPrivate = int.parse(_selectedUserDistrict?.districtCode.toString() ?? "0");
+                                    selectedDistrictName = _selectedUserDistrict.districtName.toString();
+                                    print('@@selectedDistrictName' + selectedDistrictName);
+                                  }
+
+                                  return Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'District (Camp)',
+                                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 45,  // Set your desired height
+                                        child: DropdownButtonFormField<DataDsiricst>(
+                                          decoration: InputDecoration(
+                                            contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                            filled: true,
+                                            fillColor: Colors.white,
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: BorderSide(color: Colors.grey), // 👈 grey border
+                                            ),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: BorderSide(color: Colors.grey), // 👈 grey border
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: BorderSide(color: Colors.grey), // 👈 grey border
+
+                                            ),
+                                            errorBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: BorderSide(color: Colors.grey), // 👈 still grey
+                                            ),
+                                            focusedErrorBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(10),
+                                              borderSide: BorderSide(color: Colors.grey), // 👈 grey even on error
+                                            ),
+                                          ),
+                                          onChanged: (district) {
+                                            if (district != null && district.districtName != 'Select District') {
+                                              setState(() {
+                                                _selectedUserDistrict = district;
+                                                print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
+                                                distCodeGovtPrivate = int.parse(district.districtCode.toString());
+                                                print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
+                                                _selectedUserCity = null;
+                                                _isCityInitialized = false; // Reset when district changes
+                                              });
+                                            }
+                                          },
+                                          value: _selectedUserDistrict,
+                                          items: districtList.map((district) {
+                                            return DropdownMenuItem<DataDsiricst>(
+                                              value: district,
+                                              child: Text(district.districtName),
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
                             ),
 
 
                             SizedBox(height: 5),
 
+                            // City Dropdown (Visible only after District selection)
                             Visibility(
-                              visible: isVisibleDitrictGovt,  // Control the visibility of the district dropdown
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                    child: FutureBuilder<List<DataDsiricst>>(
-                                      future: _getDistrictData(stateCodeGovtPrivate),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasError) {
-                                          return Text('Error: ${snapshot.error}');
-                                        }
+                              visible: _showCityDropdown && _selectedUserDistrict != null,
+                              child: Container(
+                                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                width: double.infinity,
+                                child: FutureBuilder<List<DataGetCity>>(
+                                  //   future: _getCity(distCodeGovtPrivate),
+                                  future: distCodeGovtPrivate != -1 ? _getCity(distCodeGovtPrivate) : Future.value([]),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      return Center(child: CircularProgressIndicator());
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                                      return Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(color: Colors.grey),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          'No cities found',
+                                          style: TextStyle(fontSize: 14, color: Colors.black54),
+                                        ),
+                                      );
 
-                                        if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                                          return Center(child: CircularProgressIndicator());
-                                        }
+                                    }
+                                    List<DataGetCity> cityList = snapshot.data ?? [];
 
-                                        List<DataDsiricst> districtList = snapshot.data ?? [];
+                                    // ✅ Add "Select City/Town" hint item if not already there
+                                    if (cityList.isNotEmpty && cityList.first.name != 'Select City/Town') {
+                                      cityList.insert(0, DataGetCity(name: 'Select City/Town', subdistrictCode: -1));
+                                    }
 
-                                        // ✅ Insert hint at top
-                                        if (districtList.isNotEmpty && districtList.first.districtName != 'Select District') {
-                                          districtList.insert(0, DataDsiricst(districtName: 'Select District', districtCode: -1));
-                                        }
-
-                                        if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
-                                          _selectedUserDistrict = districtList.first;
-                                          print('@@_selectedUserDistrict--' + _selectedUserDistrict.toString());
-                                          distCodeGovtPrivate = int.parse(_selectedUserDistrict?.districtCode.toString() ?? "0");
-                                          selectedDistrictName = _selectedUserDistrict.districtName.toString();
-                                          print('@@selectedDistrictName' + selectedDistrictName);
-                                        }
-
-                                        return Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'District (Camp)',
-                                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 45,  // Set your desired height
-                                              child: DropdownButtonFormField<DataDsiricst>(
-                                                decoration: InputDecoration(
-                                                  contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                                  filled: true,
-                                                  fillColor: Colors.white,
-                                                  border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 grey border
-                                                  ),
-                                                  enabledBorder: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 grey border
-                                                  ),
-                                                  focusedBorder: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 grey border
-
-                                                  ),
-                                                  errorBorder: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 still grey
-                                                  ),
-                                                  focusedErrorBorder: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 grey even on error
-                                                  ),
-                                                ),
-                                                onChanged: (district) {
-                                                  if (district != null && district.districtName != 'Select District') {
-                                                    setState(() {
-                                                      _selectedUserDistrict = district;
-                                                      print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
-                                                      distCodeGovtPrivate = int.parse(district.districtCode.toString());
-                                                      print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
-                                                      _selectedUserCity = null;
-                                                      _isCityInitialized = false; // Reset when district changes
-                                                    });
-                                                  }
-                                                },
-                                                value: _selectedUserDistrict,
-                                                items: districtList.map((district) {
-                                                  return DropdownMenuItem<DataDsiricst>(
-                                                    value: district,
-                                                    child: Text(district.districtName),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                          ],
+                                    if (!_isCityInitialized) {
+                                      if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
+                                        _selectedUserCity = cityList.firstWhere(
+                                              (item) => item.subdistrictCode == distCodeGovtPrivateCity,
+                                          orElse: () => cityList.first,
                                         );
-                                      },
-                                    ),
-                                  ),
 
+                                        distCodeGovtPrivateCity = int.tryParse(_selectedUserCity?.subdistrictCode.toString() ?? "0") ?? 0;
+                                        selectedCityName = _selectedUserCity?.name ?? '';
+                                        _isCityInitialized = true;
 
-                                  SizedBox(height: 5),
+                                        print('@@_selectedUserCity-- $selectedCityName');
+                                      }
+                                    }
 
-                                  // City Dropdown (Visible only after District selection)
-                                  Visibility(
-                                    visible: _showCityDropdown && _selectedUserDistrict != null,
-                                    child: Container(
-                                      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                      width: double.infinity,
-                                      child: FutureBuilder<List<DataGetCity>>(
-                                        //   future: _getCity(distCodeGovtPrivate),
-                                        future: distCodeGovtPrivate != -1 ? _getCity(distCodeGovtPrivate) : Future.value([]),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                            return Center(child: CircularProgressIndicator());
-                                          } else if (snapshot.hasError) {
-                                            return Text('Error: ${snapshot.error}');
-                                          } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                                            return Container(
-                                              width: double.infinity,
-                                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                border: Border.all(color: Colors.grey),
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Select City/ Town',
+                                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          height: 45,
+                                          child: DropdownButtonFormField<DataGetCity>(
+                                            focusColor: Colors.white,
+                                            decoration: InputDecoration(
+                                              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                              border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.circular(10),
+                                                borderSide: BorderSide(color: Colors.grey),
                                               ),
-                                              child: Text(
-                                                'No cities found',
-                                                style: TextStyle(fontSize: 14, color: Colors.black54),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: BorderSide(color: Colors.grey),
                                               ),
-                                            );
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                            ),
+                                            onChanged: (city) {
 
-                                          }
-                                          List<DataGetCity> cityList = snapshot.data ?? [];
+                                              if (city != null && city.subdistrictCode != -1) {
+                                                setState(() {
+                                                  _selectedUserCity = city;
+                                                  distCodeGovtPrivateCity = city.subdistrictCode;
+                                                  selectedCityName = city.name;
+                                                  _selectedUserVillage = null; // Reset previous village
+                                                  print('@@selectedCityName--1 $distCodeGovtPrivate');
+                                                  print('@@selectedCityName--2 $stateCodeGovtPrivate');
+                                                  print('@@selectedCityName--3 $distCodeGovtPrivateCity');
+                                                  // RESET village values
+                                                  _selectedUserVillage = null;
+                                                  selectedVillageName = '';
+                                                  _isVillageInitialized = false;
 
-                                          // ✅ Add "Select City/Town" hint item if not already there
-                                          if (cityList.isNotEmpty && cityList.first.name != 'Select City/Town') {
-                                            cityList.insert(0, DataGetCity(name: 'Select City/Town', subdistrictCode: -1));
-                                          }
-
-                                          if (!_isCityInitialized) {
-                                            if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
-                                              _selectedUserCity = cityList.firstWhere(
-                                                    (item) => item.subdistrictCode == distCodeGovtPrivateCity,
-                                                orElse: () => cityList.first,
+                                                  _villageFuture = _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity);
+                                                  // 👉 HIDE the city dropdown after selection
+                                                  //  _showCityDropdown = false;
+                                                });
+                                              }
+                                            },
+                                            value: _selectedUserCity,
+                                            items: cityList.map((city) {
+                                              return DropdownMenuItem<DataGetCity>(
+                                                value: city,
+                                                child: Text(city.name.trim()),
                                               );
-
-                                              distCodeGovtPrivateCity = int.tryParse(_selectedUserCity?.subdistrictCode.toString() ?? "0") ?? 0;
-                                              selectedCityName = _selectedUserCity?.name ?? '';
-                                              _isCityInitialized = true;
-
-                                              print('@@_selectedUserCity-- $selectedCityName');
-                                            }
-                                          }
-
-                                          return Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Select City/ Town',
-                                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                              ),
-                                              SizedBox(
-                                                height: 45,
-                                                child: DropdownButtonFormField<DataGetCity>(
-                                                  focusColor: Colors.white,
-                                                  decoration: InputDecoration(
-                                                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                                    border: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      borderSide: BorderSide(color: Colors.grey),
-                                                    ),
-                                                    focusedBorder: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      borderSide: BorderSide(color: Colors.grey),
-                                                    ),
-                                                    filled: true,
-                                                    fillColor: Colors.white,
-                                                  ),
-                                                  onChanged: (city) {
-
-                                                    if (city != null && city.subdistrictCode != -1) {
-                                                      setState(() {
-                                                        _selectedUserCity = city;
-                                                        distCodeGovtPrivateCity = city.subdistrictCode;
-                                                        selectedCityName = city.name;
-                                                        _selectedUserVillage = null; // Reset previous village
-                                                        print('@@selectedCityName--1 $distCodeGovtPrivate');
-                                                        print('@@selectedCityName--2 $stateCodeGovtPrivate');
-                                                        print('@@selectedCityName--3 $distCodeGovtPrivateCity');
-                                                        // RESET village values
-                                                        _selectedUserVillage = null;
-                                                        selectedVillageName = '';
-                                                        _isVillageInitialized = false;
-
-                                                        _villageFuture = _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity);
-                                                        // 👉 HIDE the city dropdown after selection
-                                                        //  _showCityDropdown = false;
-                                                      });
-                                                    }
-                                                  },
-                                                  value: _selectedUserCity,
-                                                  items: cityList.map((city) {
-                                                    return DropdownMenuItem<DataGetCity>(
-                                                      value: city,
-                                                      child: Text(city.name.trim()),
-                                                    );
-                                                  }).toList(),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-
-
-
-                                ],
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
                               ),
                             ),
+
+                            SizedBox(height: 5),
+
+                            // Village Dropdown (Visible only after City selection)
+                            Visibility(
+                              visible: _selectedUserCity != null, // Village dropdown visible if a city is selected
+                              child: Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                child: FutureBuilder<List<DataGetVillage>>(
+
+                                  //future: _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
+                                  //      future: _villageFuture ??= _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
+                                  future: (distCodeGovtPrivate != -1 && distCodeGovtPrivateCity != -1)
+                                      ? _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity)
+                                      : Future.value([]),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState == ConnectionState.waiting) {
+                                      //   return Center(child: CircularProgressIndicator());
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                                      return Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          border: Border.all(color: Colors.grey),
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                        child: Text(
+                                          'No Villages found',
+                                          style: TextStyle(fontSize: 14, color: Colors.black54),
+                                        ),
+                                      );
+
+                                    }
+                                    List<DataGetVillage> villageList = snapshot.data ?? [];
+
+                                    if (villageList.isEmpty) {
+                                      return SizedBox(
+                                        height: 45,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.grey, width: 1),
+                                            borderRadius: BorderRadius.circular(8),
+                                            color: Colors.white,
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              'No data found',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.blue,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }
+
+                                    // ✅ Insert default 'Select Village' option at the top if not already there
+                                    if (villageList.first.name != 'Select Village') {
+                                      villageList.insert(0, DataGetVillage(name: 'Select Village', villageCode: -1));
+                                    }
+
+                                    // ✅ Set default selection to 'Select Village'
+                                    if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
+                                      _selectedUserVillage = villageList.first;
+                                      selectedVillageName = _selectedUserVillage.name.toString();
+                                      print('@@selectedVillageName--' + selectedVillageName.toString());
+                                    }
+
+                                    return Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+
+                                          'Select Village:',
+                                          style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          height: 45,
+                                          child: DropdownButtonFormField<DataGetVillage>(
+                                            decoration: InputDecoration(
+                                              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.circular(10),
+                                                borderSide: BorderSide(color: Colors.grey),
+                                              ),
+                                              filled: true,
+                                              fillColor: Colors.white,
+                                            ),
+                                            onChanged: (village) {
+                                              if (village != null) {
+                                                setState(() {
+                                                  _selectedUserVillage = village;
+                                                  village_code = int.parse(village.villageCode ?? "0");
+                                                  selectedVillageName = village.name.toString();
+                                                  print('@@selectedVillageName--' + selectedVillageName.toString());
+                                                });
+                                              }
+                                            },
+                                            value: _selectedUserVillage,
+                                            items: villageList.map((village) {
+                                              return DropdownMenuItem<DataGetVillage>(
+                                                value: village,
+                                                child: Text(village.name),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+
                           ],
-                          if (locationTypeValues == 'Rural') ...[
-                            Container(
-                              margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
-                              width: double.infinity,
-                              child: FutureBuilder<List<Data>>(
-                                future: _futureState, // Fetching States
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  }
-
-                                  if (!snapshot.hasData) {
-                                    return Center(child: CircularProgressIndicator());
-                                  }
-
-                                  List<Data> stateList = snapshot.data ?? [];
-
-                                  // ✅ Insert hint item at the top
-                                  if (stateList.isNotEmpty && stateList.first.stateName != 'Select State') {
-                                    stateList.insert(0, Data(stateName: 'Select State', stateCode: -1, code: ''));
-                                  }
-
-                                  // ✅ Ensure a default selection
-                                  if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
-                                    _selectedUserState = stateList.first;
-                                    selectedStateName = _selectedUserState.stateName.toString();
-                                    print('@@selectedStateName' + selectedStateName.toString());
-                                  }
-
-                                  return Container(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        const Text(
-                                          'State (Camp)',
-                                          style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                          height: 45, // Set the desired height for dropdown
-                                          child: DropdownButtonFormField2<Data>(
-                                            isExpanded: true,
-                                            decoration: InputDecoration(
-                                              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
-                                              enabledBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                                                borderRadius: BorderRadius.circular(10.0),
-                                              ),
-                                              focusedBorder: OutlineInputBorder(
-                                                borderSide: const BorderSide(color: Colors.grey, width: 1.0),
-                                                borderRadius: BorderRadius.circular(10.0),
-                                              ),
-                                              filled: true,
-                                              fillColor: Colors.white,
-                                            ),
-                                            onChanged: (user) async {
-                                              // ✅ Prevent action if "Select State" is chosen
-                                              if (user != null && user.stateName != 'Select State') {
-                                                setState(() {
-                                                  _selectedUserState = user;
-                                                  selectedStateName = user.stateName;
-                                                  stateCodeGovtPrivate = int.parse(user.stateCode.toString());
-                                                  CodeGovtPrivate = user.code;
-                                                  print('@@selectedStateName' + selectedStateName.toString());
-
-                                                  /* // RESET dependent data
-                                      _selectedUserDistrict = null;
-                                      _selectedUserCity = null;
-                                      _selectedUserVillage = null;
-
-                                      isVisibleDitrictGovt = false;
-                                      _isCityInitialized = false;*/
-                                                  // Ensure that the dependent dropdowns are reset
-                                                  setState(() {
-                                                    _selectedUserDistrict = null;
-                                                    _selectedUserCity = null;
-                                                    _selectedUserVillage = null;
-                                                    isVisibleDitrictGovt = false;
-                                                    _isCityInitialized = false;
-                                                  });
-
-                                                });
-
-                                                var connectivityResult = await Connectivity().checkConnectivity();
-                                                bool isConnected = connectivityResult != ConnectivityResult.none;
-
-                                                if (isConnected) {
-                                                  setState(() {
-                                                    isVisibleDitrictGovt = true; // Show District dropdown
-                                                  });
-                                                  await _getDistrictData(stateCodeGovtPrivate);
-                                                } else {
-                                                  setState(() {
-                                                    isVisibleDitrictGovt = false; // Hide District dropdown if no internet
-                                                  });
-                                                }
-                                              }
-                                            },
-                                            value: _selectedUserState,
-                                            buttonStyleData: ButtonStyleData(
-                                              height: 20, // Increase dropdown button height
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.circular(10.0),
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            items: stateList.map<DropdownMenuItem<Data>>((Data user) {
-                                              return DropdownMenuItem<Data>(
-                                                value: user,
-                                                child: Text(
-                                                  user.stateName,
-                                                  overflow: TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  style: const TextStyle(fontSize: 14),
-                                                ),
-                                              );
-                                            }).toList(),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
+                        ),
+                      ),
+    SizedBox(height: 5),
 
 
-                            SizedBox(height: 5),
-
-                            Visibility(
-                              visible: isVisibleDitrictGovt,  // Control the visibility of the district dropdown
-                              child: Column(
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                    child: FutureBuilder<List<DataDsiricst>>(
-                                      future: _getDistrictData(stateCodeGovtPrivate),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.hasError) {
-                                          return Text('Error: ${snapshot.error}');
-                                        }
-
-                                        if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                                          return Center(child: CircularProgressIndicator());
-                                        }
-
-                                        List<DataDsiricst> districtList = snapshot.data ?? [];
-
-                                        // ✅ Insert hint at top
-                                        if (districtList.isNotEmpty && districtList.first.districtName != 'Select District') {
-                                          districtList.insert(0, DataDsiricst(districtName: 'Select District', districtCode: -1));
-                                        }
-
-                                        if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
-                                          _selectedUserDistrict = districtList.first;
-                                          print('@@_selectedUserDistrict--' + _selectedUserDistrict.toString());
-                                          distCodeGovtPrivate = int.parse(_selectedUserDistrict?.districtCode.toString() ?? "0");
-                                          selectedDistrictName = _selectedUserDistrict.districtName.toString();
-                                          print('@@selectedDistrictName' + selectedDistrictName);
-                                        }
-
-                                        return Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'District (Camp)',
-                                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                            ),
-                                            SizedBox(
-                                              height: 45,  // Set your desired height
-                                              child: DropdownButtonFormField<DataDsiricst>(
-                                                decoration: InputDecoration(
-                                                  contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                                  filled: true,
-                                                  fillColor: Colors.white,
-                                                  border: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 grey border
-                                                  ),
-                                                  enabledBorder: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 grey border
-                                                  ),
-                                                  focusedBorder: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 grey border
-
-                                                  ),
-                                                  errorBorder: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 still grey
-                                                  ),
-                                                  focusedErrorBorder: OutlineInputBorder(
-                                                    borderRadius: BorderRadius.circular(10),
-                                                    borderSide: BorderSide(color: Colors.grey), // 👈 grey even on error
-                                                  ),
-                                                ),
-                                                onChanged: (district) {
-                                                  if (district != null && district.districtName != 'Select District') {
-                                                    setState(() {
-                                                      _selectedUserDistrict = district;
-                                                      print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
-                                                      distCodeGovtPrivate = int.parse(district.districtCode.toString());
-                                                      print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
-                                                      _selectedUserCity = null;
-                                                      _isCityInitialized = false; // Reset when district changes
-                                                    });
-                                                  }
-                                                },
-                                                value: _selectedUserDistrict,
-                                                items: districtList.map((district) {
-                                                  return DropdownMenuItem<DataDsiricst>(
-                                                    value: district,
-                                                    child: Text(district.districtName),
-                                                  );
-                                                }).toList(),
-                                              ),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    ),
-                                  ),
-
-
-                                  SizedBox(height: 5),
-
-                                  // City Dropdown (Visible only after District selection)
-                                  Visibility(
-                                    visible: _showCityDropdown && _selectedUserDistrict != null,
-                                    child: Container(
-                                      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                      width: double.infinity,
-                                      child: FutureBuilder<List<DataGetCity>>(
-                                        //   future: _getCity(distCodeGovtPrivate),
-                                        future: distCodeGovtPrivate != -1 ? _getCity(distCodeGovtPrivate) : Future.value([]),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                            return Center(child: CircularProgressIndicator());
-                                          } else if (snapshot.hasError) {
-                                            return Text('Error: ${snapshot.error}');
-                                          } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                                            return Container(
-                                              width: double.infinity,
-                                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                border: Border.all(color: Colors.grey),
-                                                borderRadius: BorderRadius.circular(10),
-                                              ),
-                                              child: Text(
-                                                'No cities found',
-                                                style: TextStyle(fontSize: 14, color: Colors.black54),
-                                              ),
-                                            );
-
-                                          }
-                                          List<DataGetCity> cityList = snapshot.data ?? [];
-
-                                          // ✅ Add "Select City/Town" hint item if not already there
-                                          if (cityList.isNotEmpty && cityList.first.name != 'Select City/Town') {
-                                            cityList.insert(0, DataGetCity(name: 'Select City/Town', subdistrictCode: -1));
-                                          }
-
-                                          if (!_isCityInitialized) {
-                                            if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
-                                              _selectedUserCity = cityList.firstWhere(
-                                                    (item) => item.subdistrictCode == distCodeGovtPrivateCity,
-                                                orElse: () => cityList.first,
-                                              );
-
-                                              distCodeGovtPrivateCity = int.tryParse(_selectedUserCity?.subdistrictCode.toString() ?? "0") ?? 0;
-                                              selectedCityName = _selectedUserCity?.name ?? '';
-                                              _isCityInitialized = true;
-
-                                              print('@@_selectedUserCity-- $selectedCityName');
-                                            }
-                                          }
-
-                                          return Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                'Select City/ Town',
-                                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                              ),
-                                              SizedBox(
-                                                height: 45,
-                                                child: DropdownButtonFormField<DataGetCity>(
-                                                  focusColor: Colors.white,
-                                                  decoration: InputDecoration(
-                                                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                                    border: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      borderSide: BorderSide(color: Colors.grey),
-                                                    ),
-                                                    focusedBorder: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      borderSide: BorderSide(color: Colors.grey),
-                                                    ),
-                                                    filled: true,
-                                                    fillColor: Colors.white,
-                                                  ),
-                                                  onChanged: (city) {
-
-                                                    if (city != null && city.subdistrictCode != -1) {
-                                                      setState(() {
-                                                        _selectedUserCity = city;
-                                                        distCodeGovtPrivateCity = city.subdistrictCode;
-                                                        selectedCityName = city.name;
-                                                        _selectedUserVillage = null; // Reset previous village
-                                                        print('@@selectedCityName--1 $distCodeGovtPrivate');
-                                                        print('@@selectedCityName--2 $stateCodeGovtPrivate');
-                                                        print('@@selectedCityName--3 $distCodeGovtPrivateCity');
-                                                        // RESET village values
-                                                        _selectedUserVillage = null;
-                                                        selectedVillageName = '';
-                                                        _isVillageInitialized = false;
-
-                                                        _villageFuture = _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity);
-                                                        // 👉 HIDE the city dropdown after selection
-                                                        //  _showCityDropdown = false;
-                                                      });
-                                                    }
-                                                  },
-                                                  value: _selectedUserCity,
-                                                  items: cityList.map((city) {
-                                                    return DropdownMenuItem<DataGetCity>(
-                                                      value: city,
-                                                      child: Text(city.name.trim()),
-                                                    );
-                                                  }).toList(),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 5),
-
-                                  // Village Dropdown (Visible only after City selection)
-                                  Visibility(
-                                    visible: _selectedUserCity != null, // Village dropdown visible if a city is selected
-                                    child: Container(
-                                      width: double.infinity,
-                                      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                                      child: FutureBuilder<List<DataGetVillage>>(
-
-                                        //future: _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
-                                        //      future: _villageFuture ??= _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
-                                        future: (distCodeGovtPrivate != -1 && distCodeGovtPrivateCity != -1)
-                                            ? _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity)
-                                            : Future.value([]),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState == ConnectionState.waiting) {
-                                            //   return Center(child: CircularProgressIndicator());
-                                          } else if (snapshot.hasError) {
-                                            return Text('Error: ${snapshot.error}');
-                                          } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                                            return Container(
-                                              width: double.infinity,
-                                              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                              decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                border: Border.all(color: Colors.grey),
-                                                borderRadius: BorderRadius.circular(10),
-                                              ),
-                                              child: Text(
-                                                'No Villages found',
-                                                style: TextStyle(fontSize: 14, color: Colors.black54),
-                                              ),
-                                            );
-
-                                          }
-                                          List<DataGetVillage> villageList = snapshot.data ?? [];
-
-                                          if (villageList.isEmpty) {
-                                            return SizedBox(
-                                              height: 45,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(color: Colors.grey, width: 1),
-                                                  borderRadius: BorderRadius.circular(8),
-                                                  color: Colors.white,
-                                                ),
-                                                child: Center(
-                                                  child: Text(
-                                                    'No data found',
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      color: Colors.blue,
-                                                      fontWeight: FontWeight.bold,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            );
-                                          }
-
-                                          // ✅ Insert default 'Select Village' option at the top if not already there
-                                          if (villageList.first.name != 'Select Village') {
-                                            villageList.insert(0, DataGetVillage(name: 'Select Village', villageCode: -1));
-                                          }
-
-                                          // ✅ Set default selection to 'Select Village'
-                                          if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
-                                            _selectedUserVillage = villageList.first;
-                                            selectedVillageName = _selectedUserVillage.name.toString();
-                                            print('@@selectedVillageName--' + selectedVillageName.toString());
-                                          }
-
-                                          return Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-
-                                                'Select Village:',
-                                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                                              ),
-                                              SizedBox(
-                                                height: 45,
-                                                child: DropdownButtonFormField<DataGetVillage>(
-                                                  decoration: InputDecoration(
-                                                    contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                                                    border: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      borderSide: BorderSide(color: Colors.grey),
-                                                    ),
-                                                    focusedBorder: OutlineInputBorder(
-                                                      borderRadius: BorderRadius.circular(10),
-                                                      borderSide: BorderSide(color: Colors.grey),
-                                                    ),
-                                                    filled: true,
-                                                    fillColor: Colors.white,
-                                                  ),
-                                                  onChanged: (village) {
-                                                    if (village != null) {
-                                                      setState(() {
-                                                        _selectedUserVillage = village;
-                                                        village_code = int.parse(village.villageCode ?? "0");
-                                                        selectedVillageName = village.name.toString();
-                                                        print('@@selectedVillageName--' + selectedVillageName.toString());
-                                                      });
-                                                    }
-                                                  },
-                                                  value: _selectedUserVillage,
-                                                  items: villageList.map((village) {
-                                                    return DropdownMenuItem<DataGetVillage>(
-                                                      value: village,
-                                                      child: Text(village.name),
-                                                    );
-                                                  }).toList(),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-
-                                ],
-                              ),
-                            ),
-                            SizedBox(height: 5),
-               /*             Container(
+                        /*    Container(
                               margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
 
                               child: SizedBox(
@@ -1590,85 +1452,6 @@ class _ScreeningCampClickAddScreeningCamp
                                 ),
                               ),
                             ),*/
-                          ],
-                        ],
-                      ),
-
-
-
-
-
-
-                      SizedBox(height: 5),
-
-                      Container(
-                              margin:EdgeInsets.fromLTRB(5, 0, 5, 0),
-
-                              child: SizedBox(
-                                height: 50,
-                                width: double.infinity,
-                                child: TextFormField(
-                                  controller: _Pincodecontroller,
-                                  decoration: InputDecoration(
-                                    label: RichText(
-                                      text: TextSpan(
-                                        children: [
-                                          TextSpan(
-                                            text: 'Pin Code',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black, // Label color
-                                            ),
-                                          ),
-                                          TextSpan(
-                                            text: ' *',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.red,
-                                              // Red asterisk for required field
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        // Default grey border
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        // Grey border when enabled
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                      borderSide: BorderSide(
-                                        color: Colors.grey,
-                                        // Grey border when focused
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  ),
-                                  keyboardType: TextInputType.phone,
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter Pin Code number';
-                                    } else if (value.length != 10) {
-                                      return 'Please enter Pin Code number';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                            ),
 
                         SizedBox(height: 5),
                       // Mobile Number Field
@@ -1829,7 +1612,7 @@ class _ScreeningCampClickAddScreeningCamp
                       SizedBox(height: 5.0),
 
 // Inside your build method:
-                     /* Container(
+                      Container(
                         margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                         child: FutureBuilder<List<Data>>(
                           future: _futureState,
@@ -2052,7 +1835,7 @@ class _ScreeningCampClickAddScreeningCamp
                             },
                           ),
                         ),
-                      ),*/
+                      ),
 
                       // Designation Field
 
@@ -2406,10 +2189,10 @@ class _ScreeningCampClickAddScreeningCamp
       _mobileController.text.trim(),
       _addresssController.text.trim(),
       valuetype,
-      stateCodeGovtPrivate,
-      distCodeGovtPrivateCity,
+      0,
+      0,
       "0",
-      distCodeGovtPrivateCity,
+      0,
       0,
       0,
       0,
