@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
@@ -16,6 +17,7 @@ import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
 import '../model/bindorg/BindOrganValuebiggerFive.dart';
+import 'DPMDashboard.dart';
 
 class DPMPatientPatientDisceaseInnerDataDisplay extends StatefulWidget {
   @override
@@ -27,7 +29,8 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
 
   TextEditingController fullnameController_ = new TextEditingController();
   String fullnameController;
-  String _chosenValue, districtNames, userId, stateNames;
+  String  districtNames, userId, stateNames;
+  String _chosenValuechnagesONSelection="Cataract";
   final GlobalKey _dropdownKey = GlobalKey();
   String _chosenValueLOWVision, _chosenEyeBank, _chosenValueLgoutOption;
   Future<List<DataGetDPM_ScreeningYear>> _future;
@@ -35,7 +38,9 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
   bool reportviewCatracts = false;
   String getYearNgoHopital, getfyidNgoHospital;
   String _selectedDateText = 'From Date'; // Initially set to "From Date"
-
+  double sharedFontSize = 14.0;
+  Color sharedFontColor = Colors.black;
+  FontWeight sharedFontWeight = FontWeight.normal;
   String _selectedDateTextToDate = 'To Date';
   String  oganisationTypeGovtPrivateDRopDown;
   int dropDownvalueOrgnbaistaionType = 0;
@@ -68,6 +73,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
     reportviewCatracts = true;
   }
   Future<List<DataBindOrgan>> GetDPM_Bindorg() async {
+
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
       final response = await http.post(
@@ -81,6 +87,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
           "district_code": district_code_login,
         }),
       );
+      print('@@bindOrgan: ' + "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_Bindorg"+district_code_login.toString());
 
       if (response.statusCode == 200) {
         Map<String, dynamic> json = jsonDecode(response.body);
@@ -190,7 +197,8 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       resizeToAvoidBottomInset: false,
       appBar: new AppBar(
           backgroundColor: Colors.blue,
-          title: new Text('welcome ' +'${fullnameController}',
+          title: new Text('Welcome ' + '${fullnameController}',
+              maxLines: 2,
               style: new TextStyle(
                 color: Colors.white,
               )),
@@ -204,116 +212,57 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
-              child: Container(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Shown Captcha value to user
-                      Container(
-                          child: Text(
-                        'Dashboard',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                        width: 170.0,
-                        key: _dropdownKey,
-                        child: new Theme(
-                          data: Theme.of(context).copyWith(
-                            canvasColor: Colors.blue.shade200,
-                          ),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton<String>(
-                              focusColor: Colors.white,
-                              value: _chosenValueLOWVision,
-                              style: TextStyle(color: Colors.white),
-                              iconEnabledColor: Colors.white,
-                              items: <String>[
-                                'Cataract',
-                                'Diabetic',
-                                'Glaucoma',
-                                'Corneal Blindness',
-                                'VR Surgery',
-                                'Childhood Blindness',
-                              ].map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(
-                                    value,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(color: Colors.white),
-                                  ),
-                                );
-                              }).toList(),
-                              hint: Text(
-                                "Report",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              onChanged: (String value) {
-                                setState(() {
-                                  _chosenValueLOWVision = value;
-                                  //  print('@@spinnerChooseValue--' + _chosenValue);
-                                  if (_chosenValueLOWVision == "Cataract") {
-                                    print('@@NGO--1' + _chosenValueLOWVision);
-
-                                  } else if (_chosenValueLOWVision ==
-                                      "Diabetic") {
-
-                                  } else if (_chosenValueLOWVision ==
-                                      "Glaucoma") {
-
-                                  } else if (_chosenValueLOWVision ==
-                                      "Corneal Blindness") {
-                                  }
-                                  else if (_chosenValueLOWVision ==
-                                      "VR Surgery") {
-
-                                    print('@@Childhood--' +
-                                        _chosenValueLOWVision);
-                                  } else if (_chosenValueLOWVision ==
-                                      "Childhood Blindness") {
-
-                                    print('@@Childhood--' +
-                                        _chosenValueLOWVision);
-                                    if (_chosenValueLOWVision ==
-                                        "Childhood Blindness") {
-                                      print('@@Childhood--1' +
-                                          _chosenValueLOWVision);
-                                    } else {
-                                      print('@@Childhood--2' +
-                                          _chosenValueLOWVision);
-                                    }
-                                  }
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                  /*    Container(
-                          child: Text(
-                        'PNJA Catract',
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.w800),
-                      )),*/
-                      //widgets that follow the Material Design guidelines display a ripple animation when tapped.
+             SizedBox(height: 5),
+             Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  margin: EdgeInsets.all(8.0), // 👈 Add outer margin
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey), // Grey border
+                    borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                  ),
+                  alignment: Alignment.centerLeft, // 👈 Align child to center-left
+                  child: _buildDropdownItem(
+                    value: _chosenValuechnagesONSelection,
+                    hint: 'Low Vision Register',
+                    hintIcon: Icon(Icons.update, color: Colors.black),
+                    items: [
+                      {'value': 'Cataract', 'icon': Icons.local_hospital},
+                      // Add an icon here
+                      {'value': 'Diabetic', 'icon': Icons.healing},
+                      {'value': 'Glaucoma', 'icon': Icons.healing},
+                      {'value': 'Corneal Blindness', 'icon': Icons.healing},
+                      {'value': 'VR Surgery', 'icon': Icons.healing},
+                      /*   {'value': 'Childhood Blindness', 'icon': Icons.child_care},*/
                     ],
+                    onChanged: (String value) {
+
+                      setState(() {
+                        _chosenValuechnagesONSelection = value;
+                        //  print('@@spinnerChooseValue--' + _chosenValue);
+                        if (_chosenValuechnagesONSelection == "Cataract") {
+
+                          print('@@NGO--1' + _chosenValuechnagesONSelection);
+                        } else if (_chosenValuechnagesONSelection == "Diabetic") {
+
+                        } else if (_chosenValuechnagesONSelection == "Glaucoma") {
+
+                        } else if (_chosenValuechnagesONSelection == "Corneal Blindness") {
+
+                        } else if (_chosenValuechnagesONSelection == "VR Surgery") {
+                          print('@@Childhood--' + _chosenValuechnagesONSelection);
+
+                        }
+                      });
+                    },
                   ),
                 ),
-              ),
+
+
+              ],
             ),
+
             Container(
               margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
               child: Container(
@@ -324,52 +273,112 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       // Shown Captcha value to user
-                      Container(
-                          child: Text(
-                        'User Type :',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          child: Text(
-                        'DPM',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            // Login Type and District in a Row
+                            Container(
+                              margin: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                              // Margin for spacing
+                              child: Row(
+                                children: [
+                                  Container(
+                                    margin: EdgeInsets.only(right: 20),
+                                    // Space between Login Type and District
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'User Type ',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        Text(
+                                          'DPM',
+                                          style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+
+                                      ],
+                                    ),
+                                  ),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'State:',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        '${stateNames}',
+                                        style: TextStyle(
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            // Space between Row and State Column
+                            const SizedBox(width: 20),
+
+                            // State in a Column with margin
+                            Container(
+                              margin: EdgeInsets.only(right: 10),
+                              // Right margin for spacing
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'District:',
+                                    style: TextStyle(
+                                        color: Colors.black, fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    '${districtNames}',
+                                    style: TextStyle(
+                                        color: Colors.red, fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+
+                            // State in a Column with margin
+                            Container(
+                              margin: EdgeInsets.only(right: 10),
+                              // Right margin for spacing
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'User Name:',
+                                    style: TextStyle(
+                                        color: Colors.black, fontWeight: FontWeight.w500),
+                                  ),
+                                  const SizedBox(height: 5),
+                                  Text(
+                                    '${fullnameController}',
+                                    style: TextStyle(
+                                        color: Colors.red, fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
 
-                      Container(
-                          child: Text(
-                        'Login Id:',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Flexible(
-                        child: Container(
-                            child: Text(
-                          '${userId}',
-                          style: TextStyle(
-                              color: Colors.red, fontWeight: FontWeight.w800),
-                        )),
-                      ),
-                      Flexible(
-                        child: Container(
-                            margin: EdgeInsets.fromLTRB(30, 0, 5, 0),
-                            child: Text(
-                              'Back',
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.w800),
-                            )),
-                      )
 
                       //widgets that follow the Material Design guidelines display a ripple animation when tapped.
                     ],
@@ -377,149 +386,83 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                 ),
               ),
             ),
+
             Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Container(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      // Shown Captcha value to user
-                      Container(
-                          child: Text(
-                        'District:',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
+              width: double.infinity,
+              // Full width
+              color: Colors.blue,
+              // Background color
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              // Padding for spacing
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // Space between text and button
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Text(
+                      '${_chosenValuechnagesONSelection} Data for Approval',
+                      // Added spacing between words
+                      maxLines: 2,
+                      textAlign: TextAlign.left, // Align text to the left
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
                       ),
-                      Container(
-                          child: Text(
-                        '${districtNames}',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-
-                      Container(
-                          child: Text(
-                        'State :',
-                        style: TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Container(
-                          child: Text(
-                        '${stateNames}',
-                        style: TextStyle(
-                            color: Colors.red, fontWeight: FontWeight.w800),
-                      )),
-                      const SizedBox(
-                        width: 10,
-                      ),
-
-                      //widgets that follow the Material Design guidelines display a ripple animation when tapped.
-                    ],
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
-                ),
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        print('Back button clicked');
+                        setState(() {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DPMDashboard(),
+                            ),
+                          );
+                        });
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.white, // ✅ White background
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: Colors
+                                  .grey), // ✅ Light border for visibility
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Dashboard',
+                                style: TextStyle(
+                                  color: Colors.black, // ✅ Black text
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
-        Container(
-          color: Colors.blue.shade700, // Slightly darker blue for better contrast
-          padding: const EdgeInsets.symmetric(vertical: 15), // Add vertical padding
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // First Button with Icon and Text
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    print('Cataract Data for approval');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.blueAccent, // Button background color
-                      borderRadius: BorderRadius.circular(8), // Rounded corners
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2), // Subtle shadow
-                          offset: Offset(0, 3),
-                          blurRadius: 5,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.file_copy, color: Colors.white), // Icon
-                        SizedBox(width: 8), // Spacing between icon and text
-                        Text(
-                          '${_chosenValueLOWVision} Data Report',
-                          maxLines: 3,
-                          style: TextStyle(
-
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(width: 10), // Space between buttons
-              // Second Button with Icon and Text
-              Expanded(
-                child: GestureDetector(
-                  onTap: () {
-                    print('Back button clicked');
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.redAccent, // Different color for distinction
-                      borderRadius: BorderRadius.circular(8), // Rounded corners
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.2), // Subtle shadow
-                          offset: Offset(0, 3),
-                          blurRadius: 5,
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.arrow_back, color: Colors.white), // Icon
-                        SizedBox(width: 8), // Spacing between icon and text
-                        Text(
-                          'Back',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
 
 
-        // Horizontal Scrolling Header Row
+            // Horizontal Scrolling Header Row
             SizedBox(width: 8.0),
             reportviewCatract(),
           ],
@@ -535,367 +478,283 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
           visible: reportviewCatracts,
           child: Column(
             children: [
+              SizedBox(height: 5.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  // Dropdown with FutureBuilder
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5.0), // Add outer margin
+                      height: 50, // Same height
+                      child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                        future: _future,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
 
-              Center(
-                child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
-                  future: _future,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text('Error: ${snapshot.error}');
-                    }
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
 
-                    if (snapshot.data == null) {
-                      return const CircularProgressIndicator();
-                    }
+                          List<DataGetDPM_ScreeningYear> list = snapshot.data?.toList() ?? [];
 
-                    developer.log('@@snapshot' + snapshot.data.toString());
-                    print('@@snapshot___5: ');
-                    List list =
-                    snapshot.data.map<DataGetDPM_ScreeningYear>((district) {
-                      return district;
-                    }).toList();
-                    if (_selectedUser == null ||
-                        list.contains(_selectedUser) == false) {
-                      _selectedUser = list.first;
-                    }
-                    return Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const Text(
-                            'Select year:',
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 10),
-                          // Added space between label and dropdown
-                          DropdownButtonFormField<DataGetDPM_ScreeningYear>(
-                            onChanged: (userc) => setState(() {
-                              _selectedUser = userc;
-                              getYearCatract = userc.name;
-                              getfyid = userc.fyid;
-                              print('@@getYear--' + getYearCatract.toString());
-                              print('@@getfyidSelected here----' +
-                                  getfyid.toString());
-                              ;
-                            }),
-                            value: _selectedUser,
-                            items: [
-                              ...snapshot.data.map(
-                                    (user) => DropdownMenuItem(
-                                  value: user,
-                                  child: Text(
-                                    '${user.name}',
-                                    style: TextStyle(
-                                        fontSize:
-                                        16), // Text style inside dropdown
-                                  ),
-                                ),
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (list.isNotEmpty && (_selectedUser == null || !list.contains(_selectedUser))) {
+                              setState(() {
+                                _selectedUser = list.first;
+                                getYearNgoHopital = _selectedUser.name;
+                                getfyidNgoHospital = _selectedUser.fyid;
+                              });
+                            }
+                          });
+
+                          if (list.isEmpty) {
+                            return Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(5),
                               ),
-                            ],
+                              child: Text(
+                                'No data found',
+                                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }
+
+                          return DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                            value: _selectedUser,
+                            onChanged: (userc) {
+                              setState(() {
+                                _selectedUser = userc;
+                                getYearNgoHopital = userc?.name ?? '';
+                                getfyidNgoHospital = userc?.fyid ?? '';
+                              });
+                            },
+                            items: list.map((user) {
+                              return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                                value: user,
+                                child: Text(user.name, style: TextStyle(fontSize: 14)),
+                              );
+                            }).toList(),
                             decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  vertical: 15.0, horizontal: 10.0),
+                              contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 10),
                               enabledBorder: OutlineInputBorder(
-                                borderSide:
-                                BorderSide(color: Colors.blue, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(5.0),
                               ),
                               focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: Colors.blueAccent, width: 2.0),
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(5.0),
                               ),
                               filled: true,
-                              fillColor: Colors.blue[
-                              50], // Background color of the dropdown box
+                              fillColor: Colors.white,
                             ),
-                            dropdownColor: Colors.blue[50],
-                            // Background color of the dropdown menu
-                            style: TextStyle(color: Colors.black),
-                            // Style of the selected item
-                            icon: Icon(Icons.arrow_drop_down,
-                                color: Colors.blue), // Dropdown icon style
-                          ),
-                        ],
+                            buttonStyleData: ButtonStyleData(
+                              height: 60, // Match height
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 300,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            iconStyleData: IconStyleData(
+                              icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                              iconSize: 20,
+                            ),
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Colors.grey,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: new DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      focusColor: Colors.white,
-                      value: lowVisionDatas,
-                      //elevation: 5,
-                      style: TextStyle(color: Colors.white),
-                      iconEnabledColor: Colors.white,
-                      items: <String>[
-                        'NGOs',
-                        'Private Practitioner',
-                        'Private Medical College',
-                      ].map<DropdownMenuItem<String>>(
-                              (String lowVisionRegistry) {
+                    ),
+                  ),
+
+                  // Second Dropdown
+                  Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0), // Add margin
+                      height: 50, // Set height to 50
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(color: Colors.grey, width: 1.0),
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButtonFormField2<String>(
+                          isExpanded: true,
+                          value: lowVisionDatas,
+                          style: const TextStyle(color: Colors.black),
+                          decoration: InputDecoration(
+                            hintText: "Select Type",
+                            hintStyle: TextStyle(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5), // Adjusted padding
+                          ),
+                          buttonStyleData: ButtonStyleData(
+                            height: 50, // Set height to 50
+                          ),
+                          iconStyleData: IconStyleData(
+                            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                          ),
+                          dropdownStyleData: DropdownStyleData(
+                            maxHeight: 300,
+                            width: 300,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          items: [
+                            'NGOs',
+                            'Private Practitioner',
+                            'Private Medical College',
+                          ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
                             return DropdownMenuItem<String>(
                               value: lowVisionRegistry,
                               child: Text(
                                 lowVisionRegistry,
-                                style: TextStyle(color: Colors.black),
+                                overflow: TextOverflow.ellipsis, // Prevents text overflow
+                                style: const TextStyle(color: Colors.black),
                               ),
                             );
                           }).toList(),
-                      hint: Text(
-                        "Select Type",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
+                          onChanged: (String lowVisionData) {
+                            setState(() {
+                              lowVisionDatas = lowVisionData ?? '';
+                              switch (lowVisionDatas) {
+                                case "NGOs":
+                                  lowVisionDataValue = 5;
+                                  _futureBindOrgan =
+                                      GetDPM_Bindorg();
+                                  break;
+                                case "Private Practitioner":
+                                  lowVisionDataValue = 12;
+                                  _futureDataBindOrganValuebiggerFive = GetDPM_Bindorg_New();
+                                  break;
+                                case "Private Medical College":
+                                  lowVisionDataValue = 13;
+                                  _futureDataBindOrganValuebiggerFive = GetDPM_Bindorg_New();
+                                  break;
+                                default:
+                                  lowVisionDataValue = 0;
+                              }
+                            });
+                          },
+                        ),
                       ),
-                      onChanged: (String lowVisionData) {
-                        setState(() {
-                          lowVisionDatas = lowVisionData;
-
-                          if (lowVisionDatas == "NGOs") {
-                            lowVisionDataValue = 5;
-
-                            _futureBindOrgan =
-                                GetDPM_Bindorg();
-                          } else if (lowVisionDatas == "Private Practitioner") {
-                            lowVisionDataValue = 12;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
-                          } else if (lowVisionData ==
-                              "Private Medical College") {
-                            lowVisionDataValue = 13;
-                            _futureDataBindOrganValuebiggerFive =
-                                GetDPM_Bindorg_New();
-                          } else {
-                            lowVisionDataValue = 0;
-                          }
-                        });
-                      },
                     ),
                   ),
-                ),
+
+                ],
               ),
+              SizedBox(height: 5.0),
               if (lowVisionDataValue == 5)
-                Center(
+                Container(
+                  margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                   child: FutureBuilder<List<DataBindOrgan>>(
                     future: _futureBindOrgan,
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
+                        return Text('Error: ${snapshot.error}',
+                            style: TextStyle(color: Colors.red));
                       }
 
-                      if (!snapshot.hasData || snapshot.data == null) {
-                        return const CircularProgressIndicator();
+                      if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                        return Container(
+                          alignment: Alignment.center,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            border: Border.all(color: Colors.grey, width: 1.0),
+                            borderRadius: BorderRadius.circular(5.0),
+                          ),
+                          child: const Text(
+                            'No data available',
+                            style: TextStyle(color: Colors.red, fontSize: 16),
+                          ),
+                        );
                       }
 
-                      List<DataBindOrgan> list = snapshot.data;
-                      developer.log('@@snapshot___5: $list');
-                      print('@@snapshot___5: $lowVisionDataValue');
 
+                      List<DataBindOrgan> list = snapshot.data ?? [];
+
+                      // ✅ Set default selected item
                       if (_selectBindOrgniasation == null ||
                           !list.contains(_selectBindOrgniasation)) {
                         _selectBindOrgniasation =
                         list.isNotEmpty ? list.first : null;
                       }
 
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              const Text(
-                                'Select:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 10),
-                              DropdownButtonFormField<DataBindOrgan>(
-                                onChanged: (userbindOrgan) {
-                                  setState(() {
-                                    _selectBindOrgniasation = userbindOrgan;
-                                    bindOrganisationNAme =
-                                        userbindOrgan?.name ?? '';
-                                    npcbNoCatract = userbindOrgan?.npcbNo ?? '';
-                                  });
-                                },
-                                value: _selectBindOrgniasation,
-                                items: list.map((userbindorgansa) {
-                                  return DropdownMenuItem<DataBindOrgan>(
-                                    value: userbindorgansa,
-                                    child: Text(
-                                      userbindorgansa.name,
+                      return DropdownButtonFormField2<DataBindOrgan>(
+                        isExpanded: true,
+                        value: _selectBindOrgniasation,
+                        decoration: InputDecoration(
+                          isDense: true,
 
-                                      maxLines: 2,
-                                      // Set max lines to 2
-                                      overflow: TextOverflow.ellipsis,
-                                      // Handle overflow
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  );
-                                }).toList(),
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blueAccent, width: 2.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.blue[50],
-                                ),
-                                dropdownColor: Colors.blue[50],
-                                style: TextStyle(color: Colors.black),
-                                icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
-                              ),
-                            ],
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 14), // ✅ text spacing
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
                           ),
+                        ),
+                        hint: const Text(
+                          'Select Organization',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                        items: list.map((item) {
+                          return DropdownMenuItem<DataBindOrgan>(
+                            value: item,
+                            child: Text(
+                              item.name,
+                              style: const TextStyle(fontSize: 16),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (userbindOrgan) {
+                          setState(() {
+                            _selectBindOrgniasation = userbindOrgan;
+                            bindOrganisationNAme = userbindOrgan?.name ?? '';
+                            npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                          });
+                        },
+                        buttonStyleData: ButtonStyleData(
+                          height: 20,
+                        ),
+                        dropdownStyleData: DropdownStyleData(
+                          maxHeight: 300,
+                          width: 300,
+                          offset: const Offset(0, -3),
+                          // ✅ Adjust dropdown position here
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                        ),
+                        iconStyleData: const IconStyleData(
+                          icon:
+                          Icon(Icons.arrow_drop_down, color: Colors.black),
+                          iconSize: 24,
                         ),
                       );
                     },
                   ),
                 )
-              else if (lowVisionDataValue == 12)
-                Center(
-                  child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
-                    future: _futureDataBindOrganValuebiggerFive,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
-
-                      // Show CircularProgressIndicator only while loading (waiting for data)
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
-                      }
-
-                      // List from the snapshot
-                      List<DataBindOrganValuebiggerFive> list = snapshot.data;
-
-                      // If the list is empty or null, show an empty dropdown with a message
-                      if (list == null || list.isEmpty) {
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: Column(
-                            children: [
-                              const Text(
-                                'No data found',
-                                style:
-                                TextStyle(fontSize: 18, color: Colors.red),
-                              ),
-                              SizedBox(height: 10),
-                              DropdownButtonFormField<
-                                  DataBindOrganValuebiggerFive>(
-                                onChanged: null,
-                                // Disable dropdown when no data
-                                items: [],
-                                // Empty list as no items are available
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.blue[50],
-                                ),
-                                hint: const Text('No items available'),
-                                disabledHint: const Text('No items to select'),
-                              ),
-                            ],
-                          ),
-                        );
-                      }
-
-                      // If an item is not selected, select the first one by default
-                      if (_selectBindOrgniasationBiggerFive == null ||
-                          !list.contains(_selectBindOrgniasationBiggerFive)) {
-                        _selectBindOrgniasationBiggerFive =
-                        list.isNotEmpty ? list.first : null;
-                      }
-
-                      // Render dropdown with data if available
-                      return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              const Text(
-                                'Select:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 10),
-                              DropdownButtonFormField<
-                                  DataBindOrganValuebiggerFive>(
-                                onChanged: (userbindOrgan) {
-                                  setState(() {
-                                    _selectBindOrgniasationBiggerFive =
-                                        userbindOrgan;
-                                    bindOrganisationNAme =
-                                        userbindOrgan?.oName ?? '';
-                                    npcbNoCatract = userbindOrgan?.npcbNo ?? '';
-                                  });
-                                },
-                                value: _selectBindOrgniasationBiggerFive,
-                                items: list.map((userbindorgansa) {
-                                  return DropdownMenuItem<
-                                      DataBindOrganValuebiggerFive>(
-                                    value: userbindorgansa,
-                                    child: Text(
-                                      userbindorgansa.oName,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 16),
-                                    ),
-                                  );
-                                }).toList(),
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(
-                                      vertical: 15.0, horizontal: 10.0),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Colors.blue, width: 2.0),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  filled: true,
-                                  fillColor: Colors.blue[50],
-                                ),
-                                dropdownColor: Colors.blue[50],
-                                style: TextStyle(color: Colors.black),
-                                icon: Icon(Icons.arrow_drop_down,
-                                    color: Colors.blue),
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                )
-              else if (lowVisionDataValue == 13)
-                  Center(
+              else
+                if (lowVisionDataValue == 12)
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                     child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                       future: _futureDataBindOrganValuebiggerFive,
                       builder: (context, snapshot) {
@@ -903,18 +762,19 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                           return Text('Error: ${snapshot.error}');
                         }
 
-                        // Only show CircularProgressIndicator if the connection is still waiting
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          //   return const CircularProgressIndicator();
                         }
 
-                        // Once data is available, check the list
-                        List<DataBindOrganValuebiggerFive> list = snapshot.data;
+                        List<DataBindOrganValuebiggerFive> list =
+                            snapshot.data ?? [];
+                        debugPrint('@@snapshot___5: $list');
+                        debugPrint('@@snapshot___5: $lowVisionDataValue');
 
-                        // If no data is found, show an empty dropdown with a message
-                        if (list == null || list.isEmpty) {
+                        if (list.isEmpty) {
                           return Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                             child: Column(
                               children: [
                                 const Text(
@@ -922,53 +782,49 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                                   style:
                                   TextStyle(fontSize: 18, color: Colors.red),
                                 ),
-                                SizedBox(height: 10),
-                                DropdownButtonFormField<
-                                    DataBindOrganValuebiggerFive>(
-                                  onChanged: null,
-                                  // Disable dropdown if there's no data
-                                  items: [],
-                                  // Provide an empty list
-                                  decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
-                                      borderRadius: BorderRadius.circular(10.0),
+                                SizedBox(
+                                  height: 50, // ✅ Fixed height
+                                  width: double.infinity, // ✅ Fixed width
+                                  child: DropdownButtonFormField2<
+                                      DataBindOrganValuebiggerFive>(
+                                    onChanged: null,
+                                    items: [],
+                                    decoration: InputDecoration(
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10.0, horizontal: 10.0),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: Colors.grey, width: 1.0),
+                                        borderRadius: BorderRadius.circular(
+                                            10.0),
+                                      ),
+                                      filled: true,
+                                      fillColor: Colors.white,
                                     ),
-                                    filled: true,
-                                    fillColor: Colors.blue[50],
+                                    hint: const Text('No items available'),
+                                    disabledHint:
+                                    const Text('No items to select'),
                                   ),
-                                  hint: const Text('No items available'),
-                                  disabledHint: Text('No items to select'),
                                 ),
                               ],
                             ),
                           );
                         }
 
-                        // Select first item if not already selected
                         if (_selectBindOrgniasationBiggerFive == null ||
                             !list.contains(_selectBindOrgniasationBiggerFive)) {
                           _selectBindOrgniasationBiggerFive =
                           list.isNotEmpty ? list.first : null;
                         }
 
-                        // Render the dropdown with available data
                         return Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                const Text(
-                                  'Select:',
-                                  style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(height: 10),
-                                DropdownButtonFormField<
+                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(
+                                height: 50, // ✅ Fixed height
+                                width: double.infinity, // ✅ Fixed width
+                                child: DropdownButtonFormField2<
                                     DataBindOrganValuebiggerFive>(
                                   onChanged: (userbindOrgan) {
                                     setState(() {
@@ -976,7 +832,8 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                                           userbindOrgan;
                                       bindOrganisationNAme =
                                           userbindOrgan?.oName ?? '';
-                                      npcbNoCatract = userbindOrgan?.npcbNo ?? '';
+                                      npcbNoCatract =
+                                          userbindOrgan?.npcbNo ?? '';
                                     });
                                   },
                                   value: _selectBindOrgniasationBiggerFive,
@@ -988,35 +845,63 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                                         userbindorgansa.oName,
                                         maxLines: 2,
                                         overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(fontSize: 16),
+                                        style: const TextStyle(fontSize: 16),
                                       ),
                                     );
                                   }).toList(),
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    enabledBorder: OutlineInputBorder(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 10.0),
+                                    focusedBorder: OutlineInputBorder(
                                       borderSide: BorderSide(
-                                          color: Colors.blue, width: 2.0),
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
-                                    fillColor: Colors.blue[50],
+                                    fillColor: Colors.white,
                                   ),
-                                  dropdownColor: Colors.blue[50],
-                                  style: TextStyle(color: Colors.black),
-                                  icon: Icon(Icons.arrow_drop_down,
-                                      color: Colors.blue),
+                                  style: const TextStyle(color: Colors.black),
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Colors.black),
+                                    iconSize: 24,
+                                  ),
+
+                                  /// 👇 Add this block to control dropdown position & styling
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    width: 300,
+                                    offset: const Offset(0, 5),
+                                    // ⬇️ Moves dropdown 5px down
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black12,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         );
                       },
                     ),
                   )
-                else if (lowVisionDataValue == 0)
-                    Center(
+                else
+                  if (lowVisionDataValue == 13)
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                       child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
                         future: _futureDataBindOrganValuebiggerFive,
                         builder: (context, snapshot) {
@@ -1024,118 +909,148 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                             return Text('Error: ${snapshot.error}');
                           }
 
-                          // Show CircularProgressIndicator only while loading (waiting for data)
-                          if (snapshot.connectionState == ConnectionState.waiting) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return const CircularProgressIndicator();
                           }
 
-                          // List from the snapshot
-                          List<DataBindOrganValuebiggerFive> list = snapshot.data;
+                          List<DataBindOrganValuebiggerFive> list =
+                              snapshot.data ?? [];
 
-                          // If the list is empty or null, show an empty dropdown with a message
-                          if (list == null || list.isEmpty) {
-                            return Padding(
-                              padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    'No data found',
-                                    style:
-                                    TextStyle(fontSize: 18, color: Colors.red),
-                                  ),
-                                  SizedBox(height: 10),
-                                  DropdownButtonFormField<
-                                      DataBindOrganValuebiggerFive>(
-                                    onChanged: null,
-                                    // Disable dropdown when no data
-                                    items: [],
-                                    // Empty list as no items are available
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 15.0, horizontal: 10.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.blue, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.blue[50],
+                          if (list.isEmpty) {
+                            return Column(
+                              children: [
+                                const Text(
+                                  'No data found',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.red),
+                                ),
+                                DropdownButtonFormField2<
+                                    DataBindOrganValuebiggerFive>(
+                                  onChanged: null,
+                                  items: [],
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    hint: const Text('No items available'),
-                                    disabledHint: const Text('No items to select'),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
                                   ),
-                                ],
-                              ),
+                                  hint: const Text('No items available'),
+                                  disabledHint: const Text(
+                                      'No items to select'),
+                                ),
+                              ],
                             );
                           }
 
-                          // If an item is not selected, select the first one by default
-                          if (_selectBindOrgniasationBiggerFive == null ||
-                              !list.contains(_selectBindOrgniasationBiggerFive)) {
-                            _selectBindOrgniasationBiggerFive =
-                            list.isNotEmpty ? list.first : null;
-                          }
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (_selectBindOrgniasationBiggerFive == null ||
+                                !list.contains(
+                                    _selectBindOrgniasationBiggerFive)) {
+                              setState(() {
+                                _selectBindOrgniasationBiggerFive = list.first;
+                              });
+                            }
+                          });
 
-                          // Render dropdown with data if available
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
-                            child: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  const Text(
-                                    'Select:',
-                                    style: TextStyle(
-                                        fontSize: 16, fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 10),
-                                  DropdownButtonFormField<
-                                      DataBindOrganValuebiggerFive>(
-                                    onChanged: (userbindOrgan) {
-                                      setState(() {
-                                        _selectBindOrgniasationBiggerFive =
-                                            userbindOrgan;
-                                        bindOrganisationNAme =
-                                            userbindOrgan?.oName ?? '';
-                                        npcbNoCatract = userbindOrgan?.npcbNo ?? '';
-                                      });
-                                    },
-                                    value: _selectBindOrgniasationBiggerFive,
-                                    items: list.map((userbindorgansa) {
-                                      return DropdownMenuItem<
-                                          DataBindOrganValuebiggerFive>(
-                                        value: userbindorgansa,
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Select Organisation Type',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 8),
+                              SizedBox(
+                                height: 50,
+                                width: 400,
+                                child: DropdownButtonFormField2<
+                                    DataBindOrganValuebiggerFive>(
+                                  isExpanded: true,
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive =
+                                          userbindOrgan;
+                                      bindOrganisationNAme =
+                                          userbindOrgan?.oName ?? '';
+                                      npcbNoCatract =
+                                          userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<
+                                        DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: ConstrainedBox(
+                                        constraints:
+                                        const BoxConstraints(maxWidth: 200),
                                         child: Text(
                                           userbindorgansa.oName,
-                                          maxLines: 2,
+                                          softWrap: false,
                                           overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(fontSize: 16),
+                                          style: const TextStyle(fontSize: 16),
                                         ),
-                                      );
-                                    }).toList(),
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 15.0, horizontal: 10.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.blue, width: 2.0),
-                                        borderRadius: BorderRadius.circular(10.0),
                                       ),
-                                      filled: true,
-                                      fillColor: Colors.blue[50],
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 5),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    dropdownColor: Colors.blue[50],
-                                    style: TextStyle(color: Colors.black),
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: Colors.blue),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
                                   ),
-                                ],
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 50,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    width: 300,
+                                    offset: const Offset(0, -3),
+                                    // 👈 Adjust dropdown position
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down,
+                                        color: Colors.black),
+                                    iconSize: 24,
+                                  ),
+                                  menuItemStyleData: MenuItemStyleData(
+                                    overlayColor:
+                                    MaterialStateProperty.all(Colors.blue[100]),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           );
                         },
                       ),
                     ),
+
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1157,30 +1072,12 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
               if (lowvisionCataractDataDispla)
                 Column(
                   children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          _buildHeaderCellSrNo('S.No.'),
-                          _buildHeaderCell('Patient Id'),
-                          _buildHeaderCell('Name of Person'),
-                          _buildHeaderCell('Mobile No.'),
-                          _buildHeaderCell('DOB'),
-                          _buildHeaderCell('Gender'),
-                          _buildHeaderCell('Organisation Date'),
-                          _buildHeaderCell('Operated type'),
-                          _buildHeaderCell('NGO'),
-                          _buildHeaderCell('Action'),
-                        ],
-                      ),
-                    ),
-                    Divider(color: Colors.blue, height: 1.0),
                     FutureBuilder<List<Datalowvisionregister_cataract>>(
                       future: ApiController.getDPM_Cataract(
                         district_code_login,
                         state_code_login,
                         npcbNoCatract,
-                        getYearCatract,
+                        getYearNgoHopital,
                         lowVisionDataValue,
                       ),
                       builder: (context, snapshot) {
@@ -1190,51 +1087,81 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                         } else if (snapshot.hasError) {
                           return Utils.getEmptyView("Error: ${snapshot.error}");
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
-                          List<Datalowvisionregister_cataract> ddata =
-                              snapshot.data;
+                          // Show "No data found" when there's no data
+                          return Container(
+                            margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                            child: Center(
+                              child: Text(
+                                "No data found",
+                                style: TextStyle(
+                                  color: Colors.blue,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        }  else {
+                          List<Datalowvisionregister_cataract> ddata = snapshot.data;
 
-                          print('@@---ddata: ' + lowVisionDataValue.toString());
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: Column(
-                              children: ddata.map((offer) {
-                                return Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Header only when data exists
+                                Row(
                                   children: [
-                                    _buildDataCellSrNo(
-                                        (ddata.indexOf(offer) + 1).toString()),
-                                    _buildDataCell(offer.pUniqueID),
-                                    _buildDataCell(offer.name),
-                                    _buildDataCell(offer.mobile.toString()),
-                                    _buildDataCell(
-                                        Utils.formatDateString(offer.dob)),
-                                    _buildDataCell((offer.gender)),
-                                    _buildDataCell((offer.addressLine1)),
-                                    _buildDataCell(Utils.formatDateString(
-                                        offer.operatedOn)),
-                                    _buildDataCell(offer.ngoName.toString()),
-                                    _buildDataCellViewBlue("View", () {
-                                      print("@@500 Internal Server Error--DashboardWebsiteISsue hai --");
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => DPMPatientDiesesParticularView(offer.id.toString()),
-
-
-                                        ),
-                                      );
-                                    }),
+                                    _buildHeaderCellSrNo('S.No.'),
+                                    _buildHeaderCell('Patient Id'),
+                                    _buildHeaderCell('Name of Person'),
+                                    _buildHeaderCell('Mobile No.'),
+                                    _buildHeaderCell('DOB'),
+                                    _buildHeaderCell('Gender'),
+                                    _buildHeaderCell('Organisation Date'),
+                                    _buildHeaderCell('Operated type'),
+                                    _buildHeaderCell('NGO'),
+                                    _buildHeaderCell('Action'),
                                   ],
-                                );
-                              }).toList(),
+                                ),
+                                const SizedBox(height: 5),
+                                Column(
+                                  children: ddata.map((offer) {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        _buildDataCellSrNo((ddata.indexOf(offer) + 1).toString()),
+                                        _buildDataCell(offer.pUniqueID),
+                                        _buildDataCell(offer.name),
+                                        _buildDataCell(offer.mobile.toString()),
+                                        _buildDataCell(Utils.formatDateString(offer.dob)),
+                                        _buildDataCell(offer.gender),
+                                        _buildDataCell(offer.addressLine1),
+                                        _buildDataCell(Utils.formatDateString(offer.operatedOn)),
+                                        _buildDataCell(offer.ngoName.toString()),
+                                        _buildDataCellViewBlue("View", () {
+
+                                          _showReportDataDisplay( context, offer);
+
+                                       /*   Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) => DPMPatientDiesesParticularView(offer.id.toString()),
+                                            ),
+                                          );*/
+                                        }),
+                                      ],
+                                    );
+                                  }).toList(),
+                                ),
+                              ],
                             ),
                           );
                         }
                       },
                     ),
+
                   ],
                 ),
             ],
@@ -1243,6 +1170,82 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       ],
     );
   }
+
+  void _showReportDataDisplay(BuildContext context,
+      Datalowvisionregister_cataract offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'NGO List for Approval',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Colors.blue,
+            ),
+          ),
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Table(
+              border: TableBorder.all(color: Colors.black, width: 0.5),
+              columnWidths: {
+                0: FixedColumnWidth(120.0), // Label column width
+                1: FlexColumnWidth(), // Value column width
+              },
+              children: [
+                _buildTableRow('Patient Id:',offer.pUniqueID),
+                _buildTableRow('Name of Person:', offer.name),
+                _buildTableRow('Mobile No:', offer.mobile.toString()),
+                _buildTableRow('DOB:', Utils.formatDateString(offer.dob)),
+                _buildTableRow('Gender:', offer.gender),
+                _buildTableRow('Address:', offer.addressLine1),
+                _buildTableRow('Operation Date:', offer.operatedOn),
+                _buildTableRow('Operated Eye:', offer.eyetype.toString()),
+                _buildTableRow('NGO:', offer.ngoName),
+
+
+                TableRow(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Actions',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ), // Placeholder for the "key"
+                    ),
+                    // Apply a SingleChildScrollView with horizontal scroll direction
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      alignment: Alignment.centerLeft,
+                    /*  child: _buildNGOAPPlicationViewDetailsAttachments(
+                          offer.npcbNo, offer.darpanNo),*/
+                    ),
+                  ],
+                ),
+                // Add more fields as needed
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget _buildHeaderCellSrNo(String text) {
     return Container(
       height: 40,
@@ -1356,6 +1359,129 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
           ),
         ),
       ),
+    );
+  }
+  Widget _buildDropdownItem({
+    GlobalKey key,
+    String value,
+    String hint,
+    List<Map<String, dynamic>> items,
+    Function(String) onChanged,
+    Icon hintIcon,
+  }) {
+    return ListTile(
+      contentPadding: EdgeInsets.symmetric(vertical: 0),
+      title: DropdownButtonHideUnderline(
+        child: DropdownButtonFormField2<String>(
+          key: key,
+          value: value,
+          isExpanded: true, // Ensure dropdown takes up full width
+          style: TextStyle(color: Colors.black, fontSize: sharedFontSize),
+          dropdownStyleData: DropdownStyleData(
+            offset: Offset(0, 8), // Controls the dropdown's position
+          ),
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            contentPadding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 15.0), // Adjust vertical padding
+          ),
+          items: items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
+            return DropdownMenuItem<String>(
+              value: item['value'],
+              child: Align(
+                alignment: Alignment.centerLeft, // Ensure text aligns left
+                child: Row(
+                  children: [
+                    Icon(item['icon'], color: Colors.black, size: sharedFontSize),
+                    SizedBox(width: 8.0),
+                    Text(
+                      item['value'],
+                      style: TextStyle(
+                        color: Colors.black, // Text color black
+                        fontSize: sharedFontSize,
+                        fontWeight: sharedFontWeight,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+          hint: hintIcon != null
+              ? Row(
+            children: [
+              hintIcon,
+              SizedBox(width: 8.0),
+              Text(
+                hint,
+                style: TextStyle(
+                  color: Colors.black, // Text color black for hint
+                  fontSize: sharedFontSize,
+                  fontWeight: sharedFontWeight,
+                ),
+              ),
+            ],
+          )
+              : Text(
+            hint,
+            style: TextStyle(
+              color: Colors.black, // Text color black for hint
+              fontSize: sharedFontSize,
+            ),
+          ),
+          onChanged: onChanged,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuItem({
+    IconData icon,
+    String title,
+    Function() onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: EdgeInsets.only(left: 12.0, top: 30.0, right: 10.0),
+        // Apply left, top, and right margin
+        padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
+        // Custom padding
+        child: Row(
+          children: [
+            Icon(icon, color: sharedFontColor, size: sharedFontSize),
+            SizedBox(width: 8.0),
+            Text(
+              title,
+              style: TextStyle(
+                color: sharedFontColor,
+                fontSize: sharedFontSize,
+                fontWeight: sharedFontWeight,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  TableRow _buildTableRow(String label, String value) {
+    return TableRow(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            value ?? 'N/A',
+          ),
+        ),
+      ],
     );
   }
 }

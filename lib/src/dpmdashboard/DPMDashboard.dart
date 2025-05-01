@@ -6648,7 +6648,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _buildDataCellViewBlueDiseaseDataAction(
                                           "View", () {
                                         print(
-                                            '@@Edit clicked for item: ${offer
+                                            '@@Patient ke view Pe click: ${offer
                                                 .diseaseName}');
                                         showDiseasePatintPendingClickFlow(
                                             offer.diseaseId);
@@ -6907,17 +6907,17 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _buildDataCellViewBlueDiseaseDataAction(
                                           "View", () {
                                         print(
-                                            "@@Different TypeShowData--here===");
+                                            "@@Patient Pe Click TypeShowData--here===");
                                         Utils.showToast(
-                                            "Next Sprint Report", true);
+                                            "Line number 6912", true);
 
-                                        /* Navigator.push(
+                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 DPMPatientPatientDisceaseInnerDataDisplay(),
                                           ),
-                                        );*/
+                                        );
                                       }),
                                     ],
                                   );
@@ -20525,104 +20525,6 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-/*
-  Widget _buildMenuItem({
-    IconData icon,
-    String title,
-    Function() onTap,
-  }) {
-    double size =
-        14.0; // You can set a consistent size for both the icon and text
-
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0.0),
-      // Reduce the vertical padding
-      title: Row(
-        children: [
-          Icon(icon, color: Colors.black, size: size),
-          // Set icon size
-          SizedBox(
-            width: 8.0,
-            height: 4.0,
-          ),
-          // Add space between the icon and the text
-          Text(
-            title,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: size,
-              fontWeight:
-                  FontWeight.normal, // Explicitly set fontWeight to normal
-            ),
-          )
-        ],
-      ),
-      onTap: onTap,
-    );
-  }
-
-  Widget _buildDropdownItem({
-    String value,
-    String hint,
-    List<Map<String, dynamic>>
-        items, // List of maps to hold both item text and icon data
-    Function(String) onChanged,
-    Icon hintIcon, // Make hintIcon nullable
-  }) {
-    double size = 14.0; // Consistent size for both text and icon
-
-    return ListTile(
-      contentPadding: EdgeInsets.symmetric(vertical: 0), // Remove extra padding
-      title: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: value,
-          style: TextStyle(color: Colors.black),
-          dropdownColor: Colors.white,
-          items:
-              items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
-            return DropdownMenuItem<String>(
-              value: item['value'],
-              child: Row(
-                children: [
-                  Icon(
-                    item['icon'], // Icon from the map
-                    color: Colors.black,
-                    size: size, // Set icon size
-                  ),
-                  SizedBox(width: 8.0), // Add space between the icon and text
-                  Text(
-                    item['value'],
-                    style: TextStyle(
-                        color: Colors.black, fontSize: size), // Set text size
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
-          hint: hintIcon != null
-              ? Row(
-                  children: [
-                    hintIcon, // Only add the icon if it's not null
-                    SizedBox(
-                        width: 8.0), // Add space between the icon and hint text
-                    Text(
-                      hint,
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500),
-                    ),
-                  ],
-                )
-              : Text(
-                  hint,
-                  style: TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.w500),
-                ),
-          onChanged: onChanged,
-        ),
-      ),
-    );
-  }
-*/
 
   void _showPopupMenuNGOsPrivateGovtApplications() async {
     // Wait for the widget tree to be fully built
