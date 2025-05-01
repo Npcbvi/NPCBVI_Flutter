@@ -2840,7 +2840,7 @@ class ApiController {
         "mode": mode,
         "diseaseid": diseaseid // for approved
       });
-      print("@@GetDPM_Patients_Approved_View--bodyprint--: ${body.toString()}");
+      print("@@GetDPM_Patients_Approved_View--bodyprint--: ${url+body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(

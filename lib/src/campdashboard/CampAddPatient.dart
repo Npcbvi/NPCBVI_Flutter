@@ -17,6 +17,8 @@ import 'package:intl/intl.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
+import 'package:mohfw_npcbvi/src/model/camp/CampListDataonDashboard.dart';
+import 'package:mohfw_npcbvi/src/model/camp/HospitalListForDasboard.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 import '../database/DatabaseHelper.dart';
@@ -103,8 +105,11 @@ class _CampAddPatient extends State<CampAddPatient> {
   String _dob = 'Date of birth';
   Future<List<Data>> _futureState;
   Data _selectedUserState;
-  Future<List<Data>> _futureCamp;
-  Data _selectedUserCamp;
+
+  Future<List<CampListDataonDashboardData>> _futureCamp;
+  CampListDataonDashboardData _selectedUserCamp;
+  Future<List<HospitalListForDasboardData>> _futureHospital;
+  HospitalListForDasboardData _selectedUserHospital;
   DataDsiricst _selectedUserDistrict;
   Future<List<DataGetVillage>> _futureVillage;
   DataGetVillage _selectedUserVillage;
@@ -146,7 +151,7 @@ class _CampAddPatient extends State<CampAddPatient> {
   TextEditingController _latitudeController = TextEditingController();
   TextEditingController _longitudeController = TextEditingController();
   int patientCount = 0;
-  String selectedStateName,selectedDistrictName,selectedCityName,selectedVillageName,selectedCamp;
+  String selectedStateName,selectedDistrictName,selectedCityName,selectedVillageName,selectedCamp,selectedHospital;
   // Function to get current position
 
   LatLng updatedLatLng;
@@ -312,9 +317,14 @@ class _CampAddPatient extends State<CampAddPatient> {
     }
   }
 
-  void getUserData() {
+  void getUserData() async {
     try {
-      SharedPrefs.getUser().then((user) {
+
+      SharedPrefs.getUser().then((user) async{
+        entryby = await SharedPrefs.getStoreSharedValue(AppConstant.entryBy)
+        as String;
+        loggedInNgoId = await SharedPrefs.getStoreSharedValue(AppConstant.ngoid)
+        as String;
         setState(() {
           fullnameController = user.name;
           districtNames = user.districtName;
@@ -324,9 +334,11 @@ class _CampAddPatient extends State<CampAddPatient> {
           role_id = user.roleId;
           state_code_login = user.state_code;
           district_code_login = user.district_code;
-          // getloggedInNgoId();
+           getloggedInNgoId();
+          getentryby();
           print('@@2' + user.name);
           print('@@3' + user.stateName);
+
           print('@@4' + user.roleId);
           print('@@5' + user.userId);
           print('@@6' + user.districtName);
@@ -336,6 +348,16 @@ class _CampAddPatient extends State<CampAddPatient> {
           String reportingPlace =
               fullnameController; // Replace with actual value
           _reportingPlaceController.text = reportingPlace;
+          _futureCamp = getCampListDropdown(
+            stateId: state_code_login, // your state value
+            districtId: district_code_login, // your district value
+            entryBy: entryby.toString(), // logged in user ID
+          );
+          _futureHospital = getHospitalinCampForDDL(
+            stateId: state_code_login, // your state value
+            districtId: district_code_login, // your district value
+            ngoId: loggedInNgoId.toString(), // logged in user ID
+          );
         });
       });
     } catch (e) {
@@ -477,11 +499,11 @@ class _CampAddPatient extends State<CampAddPatient> {
                     ],
                   ),
               //  camp ka code hai ye hide
-                /*  SizedBox(height: 5),
+                  SizedBox(height: 5),
                   Container(
                     margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
                     width: double.infinity,
-                    child: FutureBuilder<List<Data>>(
+                    child: FutureBuilder<List<CampListDataonDashboardData>>(
                       future: _futureCamp, // Fetching States
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
@@ -492,17 +514,23 @@ class _CampAddPatient extends State<CampAddPatient> {
                           return Center(child: CircularProgressIndicator());
                         }
 
-                        List<Data> campList = snapshot.data ?? [];
-
+                        List<CampListDataonDashboardData> campList = snapshot.data ?? [];
+// ✅ Show 'No data found' if list is empty
+                        if (campList.isEmpty) {
+                          return const Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          );
+                        }
                         // ✅ Insert hint item at the top
-                        if (campList.isNotEmpty && campList.first.stateName != 'Select State') {
-                          campList.insert(0, Data(stateName: 'Select State', stateCode: -1, code: ''));
+                        if (campList.isNotEmpty && campList.first.campNo != 'Select Camp') {
+                          campList.insert(0, CampListDataonDashboardData(campNo: 'Select Camp', srNo: '-1'));
                         }
 
                         // ✅ Ensure a default selection
                         if (_selectedUserCamp == null || !campList.contains(_selectedUserCamp)) {
                           _selectedUserCamp = campList.first;
-                          selectedCamp = _selectedUserCamp.stateName.toString();
+                          selectedCamp = _selectedUserCamp.campNo.toString();
                           print('@@selectedCamp' + selectedCamp.toString());
                         }
 
@@ -516,10 +544,10 @@ class _CampAddPatient extends State<CampAddPatient> {
                               ),
                               SizedBox(
                                 height: 45, // Set the desired height for dropdown
-                                child: DropdownButtonFormField2<Data>(
+                                child: DropdownButtonFormField2<CampListDataonDashboardData>(
                                   isExpanded: true,
                                   decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
@@ -533,21 +561,15 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   ),
                                   onChanged: (user) async {
                                     // ✅ Prevent action if "Select State" is chosen
-                                    if (user != null && user.stateName != 'Select State') {
+                                    if (user != null && user.campNo != 'Select Camp') {
                                       setState(() {
                                         _selectedUserCamp = user;
-                                        selectedCamp = user.stateName;
+                                        selectedCamp = user.campNo;
                                         //stateCodeGovtPrivate = int.parse(user.stateCode.toString());
                                         //CodeGovtPrivate = user.code;
                                         print('@@selectedCamp' + selectedCamp.toString());
-
-
                                         setState(() {
-                                        *//*  _selectedUserDistrict = null;
-                                          _selectedUserCity = null;
-                                          _selectedUserVillage = null;
-                                          isVisibleDitrictGovt = false;
-                                          _isCityInitialized = false;*//*
+
                                         });
 
                                       });
@@ -557,6 +579,15 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     }
                                   },
                                   value: _selectedUserCamp,
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    width: 300,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    offset: const Offset(0, -3),
+                                  ),
                                   buttonStyleData: ButtonStyleData(
                                     height: 20, // Increase dropdown button height
                                     decoration: BoxDecoration(
@@ -564,11 +595,11 @@ class _CampAddPatient extends State<CampAddPatient> {
                                       color: Colors.white,
                                     ),
                                   ),
-                                  items: campList.map<DropdownMenuItem<Data>>((Data user) {
-                                    return DropdownMenuItem<Data>(
+                                  items: campList.map<DropdownMenuItem<CampListDataonDashboardData>>((CampListDataonDashboardData user) {
+                                    return DropdownMenuItem<CampListDataonDashboardData>(
                                       value: user,
                                       child: Text(
-                                        user.stateName,
+                                        user.campNo,
                                         overflow: TextOverflow.ellipsis,
                                         maxLines: 1,
                                         style: const TextStyle(fontSize: 14),
@@ -582,7 +613,126 @@ class _CampAddPatient extends State<CampAddPatient> {
                         );
                       },
                     ),
-                  ),*/
+                  ),
+                  SizedBox(height: 5),
+                 // Hospital ka code hai ye hide
+                  Container(
+                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                    width: double.infinity,
+                    child: FutureBuilder<List<HospitalListForDasboardData>>(
+                      future: _futureHospital, // Fetching States
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+
+                        List<HospitalListForDasboardData> hospitalList = snapshot.data ?? [];
+// ✅ Show 'No data found' if list is empty
+                        if (hospitalList.isEmpty) {
+                          return const Text(
+                            'No data found',
+                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                          );
+                        }
+                        // ✅ Insert hint item at the top
+                        if (hospitalList.isNotEmpty && hospitalList.first.hName != 'Select Hospital') {
+                          hospitalList.insert(0, HospitalListForDasboardData(hName: 'Select Hospital', hRegID: '-1'));
+                        }
+
+                        // ✅ Ensure a default selection
+                        if (_selectedUserHospital == null || !hospitalList.contains(_selectedUserHospital)) {
+                          _selectedUserHospital = hospitalList.first;
+                          selectedHospital = _selectedUserHospital.hName.toString();
+                          print('@@selectedHospital' + selectedHospital.toString());
+                        }
+
+                        return Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Text(
+                                'Select Hospital:',
+                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                height: 45, // Set the desired height for dropdown
+                                child: DropdownButtonFormField2<HospitalListForDasboardData>(
+                                  isExpanded: true,
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  onChanged: (user) async {
+                                    // ✅ Prevent action if "Select State" is chosen
+                                    if (user != null && user.hName != 'Select Hospital') {
+                                      setState(() {
+                                        _selectedUserHospital = user;
+                                        selectedHospital= user.hName;
+                                        //stateCodeGovtPrivate = int.parse(user.stateCode.toString());
+                                        //CodeGovtPrivate = user.code;
+                                        print('@@selectedHospital' + selectedHospital.toString());
+
+
+                                        setState(() {
+
+                                        });
+
+                                      });
+
+
+
+                                    }
+                                  },
+                                  value: _selectedUserHospital,
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    width: 300,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    offset: const Offset(0, -3),
+                                  ),
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 20, // Increase dropdown button height
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  items: hospitalList.map<DropdownMenuItem<HospitalListForDasboardData>>((HospitalListForDasboardData user) {
+                                    return DropdownMenuItem<HospitalListForDasboardData>(
+                                      value: user,
+                                      child: Text(
+                                        user.hName,
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                    );
+                                  }).toList(),
+
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                   SizedBox(height: 5),
                   Container(
 
@@ -2404,7 +2554,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                               ),
                               SizedBox(
                                 height: 45,
-                                child: DropdownButtonFormField<GetLanguageForDDLsDatas>(
+                                child: DropdownButtonFormField2<GetLanguageForDDLsDatas>(
                                   decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
@@ -2423,6 +2573,15 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     stateLKanguage = int.parse(user?.id.toString() ?? "0");
                                   }),
                                   value: GetLanguageForDDLsDatasa,
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    width: 300,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    offset: const Offset(0, -3),
+                                  ),
                                   items: stateList.map<DropdownMenuItem<GetLanguageForDDLsDatas>>(
                                         (GetLanguageForDDLsDatas user) {
                                       return DropdownMenuItem<GetLanguageForDDLsDatas>(
@@ -2999,5 +3158,112 @@ class _CampAddPatient extends State<CampAddPatient> {
 
     // Optional: Show a toast message
     //Utils.showToast("Form has been reset!", true);
+  }
+  Future<List<CampListDataonDashboardData>> getCampListDropdown({
+     int stateId,
+     int districtId,
+     String entryBy,
+  }) async {
+
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    final url = Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Camp/api/GetCampForDDL');
+
+    final Map<String, dynamic> requestBody = {
+      "stateId": stateId,
+      "districtId": districtId,
+      "entryBy": entryBy,
+    };
+
+    // ✅ Print URL and request body
+    print('@@CampForDDL URL: $url');
+    print('@@CampForDDL Body: ${jsonEncode(requestBody)}');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> json = jsonDecode(response.body);
+      final campList = (json['data'] as List)
+          .map((e) => CampListDataonDashboardData.fromJson(e))
+          .toList();
+      return campList;
+    } else {
+      Utils.showToast("Failed to load camp list", true);
+      return [];
+    }
+  }
+
+  Future<List<HospitalListForDasboardData>> getHospitalinCampForDDL({
+    int stateId,
+    int districtId,
+    String ngoId,
+  }) async {
+
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    final url = Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Camp/api/GetHospitalinCampForDDL');
+
+    final Map<String, dynamic> requestBody = {
+      "stateId": stateId,
+      "districtId": districtId,
+      "ngoId": ngoId,
+    };
+
+    // ✅ Print URL and request body
+    print('@@HospitalinCampForDDL URL: $url');
+    print('@@HospitalinCampForDDL Body: ${jsonEncode(requestBody)}');
+
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(requestBody),
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> json = jsonDecode(response.body);
+      final campList = (json['data'] as List)
+          .map((e) => HospitalListForDasboardData.fromJson(e))
+          .toList();
+      return campList;
+    } else {
+      Utils.showToast("Failed to load camp list", true);
+      return [];
+    }
+  }
+
+  Future<void> getentryby() async {
+    // Use await to get the actual value from SharedPrefs
+    entryby =
+    await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
+
+    if (entryby != null) {
+      print("entryby Number: $entryby");
+    } else {
+      print("No entryby found in shared preferences.");
+    }
+  }
+  Future<void> getloggedInNgoId() async {
+    // Use await to get the actual value from SharedPrefs
+    loggedInNgoId =
+    await SharedPrefs.getStoreSharedValue(AppConstant.loggedInNgoId)
+    as String;
+
+    if (loggedInNgoId != null) {
+      print("loggedInNgoId Number: $loggedInNgoId");
+    } else {
+      print("No loggedInNgoId found in shared preferences.");
+    }
   }
 }

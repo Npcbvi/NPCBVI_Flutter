@@ -6471,7 +6471,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             .height;
 
         return AlertDialog(
-          title: Text('Disease Data'),
+          title: Text('Disease-wise Records (Approved)'),
           content: Container(
             width: screenWidth * 1.0, // 90% of screen width
             height: screenHeight * 1.0, // 70% of screen height
@@ -6590,7 +6590,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             .height;
 
         return AlertDialog(
-          title: Text('Disease Data'),
+          title: Text('Disease-wise Records(Pending)'),
           content: Container(
             width: screenWidth * 1.0, // 90% of screen width
             height: screenHeight * 1.0, // 70% of screen height
@@ -6695,7 +6695,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             .height;
 
         return AlertDialog(
-          title: Text('Disease Data'),
+          title: Text('NGO-wise Records (Approved)'),
           content: Container(
             width: screenWidth * 1.0, // 90% of screen width
             height: screenHeight * 1.0, // 70% of screen height
@@ -6833,7 +6833,7 @@ class _DPMDashboard extends State<DPMDashboard> {
             .height;
 
         return AlertDialog(
-          title: Text('Disease Data'),
+          title: Text('NGO-wise Records (Pending)'),
           content: Container(
             width: screenWidth * 0.9, // 90% of screen width
             height: screenHeight * 0.7, // 70% of screen height
@@ -6903,13 +6903,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _buildDataCellDiseaseDataSettingUp(
                                           offer.ngoname),
                                       _buildDataCellDiseaseTotal(
-                                          offer.approved.toString()),
+                                          offer.pending.toString()),
                                       _buildDataCellViewBlueDiseaseDataAction(
                                           "View", () {
                                         print(
                                             "@@Patient Pe Click TypeShowData--here===");
-                                        Utils.showToast(
-                                            "Line number 6912", true);
+                                        /*Utils.showToast(
+                                            "Line number 6912", true);*/
 
                                          Navigator.push(
                                           context,
