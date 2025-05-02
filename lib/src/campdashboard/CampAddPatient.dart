@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
@@ -19,7 +20,10 @@ import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/DashboardDistrictModel.dart';
 import 'package:mohfw_npcbvi/src/model/camp/CampListDataonDashboard.dart';
 import 'package:mohfw_npcbvi/src/model/camp/HospitalListForDasboard.dart';
+import 'package:mohfw_npcbvi/src/model/camp/totalPatient/TotalPatientCamp.dart';
+import 'package:mohfw_npcbvi/src/model/spoModel/PatientRegistrations.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../database/DatabaseHelper.dart';
 import '../model/DashboardStateModel.dart';
@@ -40,7 +44,7 @@ class CampAddPatient extends StatefulWidget {
 class _CampAddPatient extends State<CampAddPatient> {
   bool _isVillageInitialized = false;
   Future<List<DataGetVillage>> _villageFuture;
-  int registerationtypeRadioValueinAPi = 1; // Default gender
+  int registerationtypeRadioValueinAPi = 2; // Default gender
   bool _showCityDropdown = true;
   String registerationtypeRadio = 'Screening Camp'; // Default gender
   TextEditingController _voterIDNumber = TextEditingController();
@@ -151,7 +155,7 @@ class _CampAddPatient extends State<CampAddPatient> {
   TextEditingController _latitudeController = TextEditingController();
   TextEditingController _longitudeController = TextEditingController();
   int patientCount = 0;
-  String selectedStateName,selectedDistrictName,selectedCityName,selectedVillageName,selectedCamp,selectedHospital;
+  String selectedStateName,selectedDistrictName,selectedCityName,selectedVillageName,selectedCamp,selectedCampsr_no,selectedHospital,selectedHospitalh_Reg_ID;
   // Function to get current position
 
   LatLng updatedLatLng;
@@ -309,10 +313,13 @@ class _CampAddPatient extends State<CampAddPatient> {
 
 
   Future<void> getPatientCount() async {
-    DataPatientCountDetail data = await ApiController.fetchPatientCount();
+  /*  print('@@fetchPatientCountCamp' + role_id);
+    print('@@fetchPatientCountCamp' + userId);
+    print('@@fetchPatientCountCamp' + entryby);*/
+    TotalPatientCampData data = await ApiController.fetchPatientCountCamp(state_code_login,district_code_login,int.parse(entryby),int.parse(role_id),userId);
     if (data != null) {
       setState(() {
-        patientCount = data.patientCount ?? 0;
+        patientCount = data.totalCount ?? 0;
       });
     }
   }
@@ -336,9 +343,10 @@ class _CampAddPatient extends State<CampAddPatient> {
           district_code_login = user.district_code;
            getloggedInNgoId();
           getentryby();
+          print('@@entryby' + entryby);
+          print('@@role_id' + role_id);
           print('@@2' + user.name);
           print('@@3' + user.stateName);
-
           print('@@4' + user.roleId);
           print('@@5' + user.userId);
           print('@@6' + user.districtName);
@@ -358,6 +366,7 @@ class _CampAddPatient extends State<CampAddPatient> {
             districtId: district_code_login, // your district value
             ngoId: loggedInNgoId.toString(), // logged in user ID
           );
+          getPatientCount(); // Call API
         });
       });
     } catch (e) {
@@ -375,9 +384,10 @@ class _CampAddPatient extends State<CampAddPatient> {
         //uploadLocalData(); // ✅ Upload when online
       }
     });
-    getPatientCount(); // Call API
-    checkInternetConnection();
     getUserData();
+
+    checkInternetConnection();
+
     _getLocation();
     _future = getDPM_ScreeningYear();
 
@@ -414,6 +424,58 @@ class _CampAddPatient extends State<CampAddPatient> {
             children: [
               Column(
                 children: [
+                  //Hide this now some purpose
+                /*  Center(
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(maxWidth: 800), // Adjust width as needed
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 5),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(width: 30),
+                                        Expanded(child: _buildInfoColumn("Login Type", "Camp Manager")),
+                                        SizedBox(width: 30),
+                                        Expanded(child: _buildInfoColumn("State", stateNames)),
+                                        // Placeholder
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 5),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(width: 30),
+                                        Expanded(child: _buildInfoColumn("District", districtNames)),
+                                        SizedBox(width: 30),
+                                        Expanded(child: _buildInfoColumn("Login Id", userId)),
+
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),*/
                   SizedBox(height: 5.0),
                   Container(
 
@@ -467,7 +529,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 registerationtypeRadio = value;
                                 print('@@1 ' + registerationtypeRadio.toString());
 
-                                registerationtypeRadioValueinAPi = 1;
+                                registerationtypeRadioValueinAPi = 2;
                               });
                             }
                           },
@@ -532,6 +594,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                           _selectedUserCamp = campList.first;
                           selectedCamp = _selectedUserCamp.campNo.toString();
                           print('@@selectedCamp' + selectedCamp.toString());
+                          selectedCampsr_no=_selectedUserCamp.srNo.toString();
+                          print('@@selectedCamp' + selectedCampsr_no.toString());
                         }
 
                         return Container(
@@ -568,6 +632,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                                         //stateCodeGovtPrivate = int.parse(user.stateCode.toString());
                                         //CodeGovtPrivate = user.code;
                                         print('@@selectedCamp' + selectedCamp.toString());
+                                        selectedCampsr_no=_selectedUserCamp.srNo.toString();
+                                        print('@@selectedCamp' + selectedCampsr_no.toString());
                                         setState(() {
 
                                         });
@@ -647,7 +713,10 @@ class _CampAddPatient extends State<CampAddPatient> {
                         if (_selectedUserHospital == null || !hospitalList.contains(_selectedUserHospital)) {
                           _selectedUserHospital = hospitalList.first;
                           selectedHospital = _selectedUserHospital.hName.toString();
+                          selectedHospitalh_Reg_ID = _selectedUserHospital.hRegID.toString();
                           print('@@selectedHospital' + selectedHospital.toString());
+                          print('@@selectedHospital' + selectedHospitalh_Reg_ID.toString());
+
                         }
 
                         return Container(
@@ -684,7 +753,9 @@ class _CampAddPatient extends State<CampAddPatient> {
                                         //stateCodeGovtPrivate = int.parse(user.stateCode.toString());
                                         //CodeGovtPrivate = user.code;
                                         print('@@selectedHospital' + selectedHospital.toString());
-
+                                        selectedHospitalh_Reg_ID = _selectedUserHospital.hRegID.toString();
+                                        print('@@selectedHospital' + selectedHospital.toString());
+                                        print('@@selectedHospital' + selectedHospitalh_Reg_ID.toString());
 
                                         setState(() {
 
@@ -2621,7 +2692,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                               Utils.showToast("No internet. Data saved locally.", true);
                             } else {
                               print("Internet available. Uploading data to API.");
-                         //     await ApipatientRegistration(); // Submit to API
+                             await ApipatientRegistration(); // Submit to API
                             }
                           },
                           style: ElevatedButton.styleFrom(
@@ -3265,5 +3336,401 @@ class _CampAddPatient extends State<CampAddPatient> {
     } else {
       print("No loggedInNgoId found in shared preferences.");
     }
+  }
+  Widget _buildInfoColumn(String title, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        SizedBox(height: 5),
+        Text(
+          value,
+          maxLines: 1,
+          style: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+  Future<void> ApipatientRegistration() async {
+    FormData formData;
+    print("### Starting patient registration ###");
+
+    // Validation checks for inputs
+    if (_firstNamePatientDetail.text.isEmpty) {
+      print("Error: First name is empty");
+      Utils.showToast("Please enter first name", false);
+      return;
+    }
+
+    if (_lastNamePatientDetail.text.isEmpty) {
+      print("Error: Last name is empty");
+      Utils.showToast("Please enter last name", false);
+      return;
+    }
+
+    if (_dob.isEmpty || _dob == "Select Date") {
+      print("Error: Date of birth is not selected");
+      Utils.showToast("Please select a date of birth", false);
+      return;
+    }
+
+    if (_ageController.text.isEmpty) {
+      print("Error: Age is empty");
+      Utils.showToast("Please enter age", false);
+      return;
+    }
+
+    if (_mobileNumberDetailsRelationtype.text.isEmpty) {
+      print("Error: Mobile number is empty");
+      Utils.showToast("Please enter mobile number", false);
+      return;
+    } else if (_mobileNumberDetailsRelationtype.text.length != 10) {
+      print("Error: Mobile number must be 10 digits");
+      Utils.showToast("Please enter a valid 10-digit mobile number", false);
+      return;
+    }
+
+    if (_AddressHouse.text.isEmpty) {
+      print("Error: House address is empty");
+      Utils.showToast("Please enter house address", false);
+      return;
+    }
+
+    if (_PinCode.text.isEmpty) {
+      print("Error: Pin code is empty");
+      Utils.showToast("Please enter pin code", false);
+      return;
+    }
+
+    Utils.showProgressDialog1(context);
+
+    try {
+      MultipartFile multipartFile;
+      if (_image != null) {
+        final tempDir = await getTemporaryDirectory();
+        final targetPath = '${tempDir.path}/compressed_image.jpg';
+
+        File compressedImage = await FlutterImageCompress.compressAndGetFile(
+          _image.path,
+          targetPath,
+          quality: 80,
+        );
+
+        if (compressedImage != null) {
+          print("###Compressed image available, preparing multipart file...");
+          multipartFile = await MultipartFile.fromFile(
+            compressedImage.path,
+            filename: "patient_image_${DateTime.now().millisecondsSinceEpoch}.jpg",
+          );
+        }else{
+          print("###Compressed image is null, sending empty patientImage field...");
+
+          // You can send empty string if the API expects the field
+          formData.fields.add(MapEntry("patientImage", ""));
+        }
+      }
+
+      // Prepare form data
+      formData = FormData.fromMap({
+        "registrationType": registerationtypeRadioValueinAPi,
+        "idType": VoterIDtype.toString(),
+        "idName": _voterIDNumber.text.trim().isEmpty ? "0" : _voterIDNumber.text,
+        "dependencyType": dependencyTypeRadio.toString(),
+        "relationType": relationtypeValue.toString(),
+        //    "relationName": relationFatherController.text,// error here
+        "relationName":"f",
+        "firstName": _firstNamePatientDetail.text,
+        "lastName": _lastNamePatientDetail.text,
+        "dob": _dob,
+        "age": _ageController.text,
+        "gender": gender.toString(),
+        "mobileRelationType": relationtypeValueMobile.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text,
+        "screeningDate": _selectedDateText,
+        "tentativeSurgeryDate": _selectedDateTextToDate,
+        "disease": getDissesID.toString(),
+        "reportingPlace": _reportingPlaceController.text,
+        "state": state_code_login,
+        "district": district_code_login,
+        "city": distCodeGovtPrivate,
+        "village": village_code,
+        "address": _AddressHouse.text,
+        "apartment": "0",
+        "nearLandMark": "0",
+        "pincode": _PinCode.text,
+        "communicationLanguage": stateLKanguage,
+        "loggedInUserStateId": state_code_login,
+        "loggedInUserDistrictId": district_code_login,
+       // "entryBy": entryby, as per chanda said new case after discuss
+        "entryBy": selectedCampsr_no,
+        "loggedInNgoId": loggedInNgoId,
+        "programeId": "002",
+        "loggedInUserRole": int.parse(role_id),
+        "userId": selectedHospitalh_Reg_ID,// as per chanda said new case after discuss
+
+      });
+
+      // Conditionally add the image or an empty string
+      if (multipartFile != null) {
+        formData.files.add(MapEntry("patientImage", multipartFile));
+      } else {
+        formData.fields.add(MapEntry("patientImage", ""));
+      }
+
+      print(
+          "Form data prepared successfully. Payload: ${formData.fields.toString()}");
+      print("Form data prepared successfully. Fields:");
+      for (int i = 0; i < formData.fields.length; i++) {
+        var field = formData.fields[i];
+        print("Index $i: Key = ${field.key}, Value = ${field.value}");
+      }
+
+      final dio = Dio();
+      final url = "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
+      print("url: ${url}");
+      dio.options.headers = {
+        'Content-Type': 'multipart/form-data',
+      };
+
+      final response = await dio.post(url, data: formData);
+      print("API response received: ${response.toString()}");
+
+      print("API response received: ${response.statusCode}");
+
+      Utils.hideProgressDialog1(context);
+
+      if (response.statusCode == 200) {
+        final result = PatientRegistrations.fromJson(response.data);
+        if (result.status) {
+          Utils.showToast(result.message, true);
+
+          // Clear form
+          _firstNamePatientDetail.clear();
+          _lastNamePatientDetail.clear();
+          _AgePatientDetail.clear();
+          _mobileNumberDetailsRelationtype.clear();
+          _AddressHouse.clear();
+          _ageController.clear();
+          _latitudeController.clear();
+          _longitudeController.clear();
+          _selectedUserState = null;
+          _selectedUserDistrict = null;
+          _selectedUserCity = null;
+          _selectedUserVillage = null;
+          selectedStateName = "";
+          selectedDistrictName = "";
+          selectedCityName = "";
+          selectedVillageName = "";
+          _PinCode.clear();
+          _voterIDNumber.clear();
+          // relationFatherController.clear();
+          // registerationtypeRadioValueinAPi = null;
+          VoterIDtype = null;
+          //    dependencyTypeRadio = null;
+          // relationtypeValue = null;
+          // gender = null;
+          relationtypeValueMobile = null;
+          // getDissesID = null;
+          stateLKanguage = null;
+          distCodeGovtPrivate = null;
+          //village_code = null;
+          _dob = "Select Date";
+          _selectedDateText = "Screening Date";
+          _selectedDateTextToDate = "Tentative Date";
+          _image = null;
+
+          setState(() {});
+          //  Utils.showToast("Form has been reset!", true);
+        } else {
+          Utils.showToast("Registration failed: ${result.message}", false);
+        }
+      } else {
+        Utils.showToast(
+          "Failed to register. Status code: ${response.statusCode}",
+          false,
+        );
+      }
+    } catch (e) {
+      Utils.hideProgressDialog1(context);
+      print("Error: $e");
+
+      if (e is DioError && e.response != null) {
+        print("DioError Response: ${e.response?.data}");
+        Utils.showToast("Error: ${e.response?.data}", false);
+      } else {
+        Utils.showToast("Unexpected error occurred", false);
+      }
+    }
+  }
+
+
+  Future<void> ApipatientRegistrations(
+      {Map<String, dynamic> patientData}) async {
+    print("### Starting patient registration ###");
+
+    try {
+      // Show progress dialog only for real-time submission
+      if (patientData == null) Utils.showProgressDialog1(context);
+
+      // Determine the data source
+      final isOfflineData = patientData != null;
+
+      // Validation checks (only for real-time submissions)
+      if (!isOfflineData) {
+        if (_firstNamePatientDetail.text.isEmpty) {
+          Utils.showToast("Please enter first name", false);
+          return;
+        }
+        /* if (_image == null) {
+          Utils.showToast("Please select an image", false);
+          return;
+        }*/
+        if (_lastNamePatientDetail.text.isEmpty) {
+          Utils.showToast("Please enter last name", false);
+          return;
+        }
+        if (_dob.isEmpty || _dob == "Select Date") {
+          Utils.showToast("Please select a date of birth", false);
+          return;
+        }
+        if (_AgePatientDetail.text.isEmpty) {
+          Utils.showToast("Please enter age", false);
+          return;
+        }
+        if (_mobileNumberDetailsRelationtype.text.isEmpty ||
+            _mobileNumberDetailsRelationtype.text.length != 10) {
+          Utils.showToast("Please enter a valid 10-digit mobile number", false);
+          return;
+        }
+        if (_AddressHouse.text.isEmpty) {
+          Utils.showToast("Please enter house address", false);
+          return;
+        }
+        /*  if (_Apartment.text.isEmpty) {
+          Utils.showToast("Please enter apartment", false);
+          return;
+        }*/
+        /*   if (_AreaNearLandMark.text.isEmpty) {
+          Utils.showToast("Please enter area/landmark", false);
+          return;
+        }*/
+        if (_PinCode.text.isEmpty) {
+          Utils.showToast("Please enter pin code", false);
+          return;
+        }
+      }
+
+      // Handle Image
+      MultipartFile multipartFile;
+      if (isOfflineData && patientData['imagePath'] != null) {
+        multipartFile = await MultipartFile.fromFile(patientData['imagePath']);
+      } else if (_image != null) {
+        final tempDir = await getTemporaryDirectory();
+        final targetPath = '${tempDir.path}/compressed_image.jpg';
+        File compressedImage = await FlutterImageCompress.compressAndGetFile(
+          _image.path,
+          targetPath,
+          quality: 30,
+        ) ??
+            _image;
+
+        multipartFile = await MultipartFile.fromFile(compressedImage.path);
+      }
+
+      // Prepare form data
+      FormData formData = FormData.fromMap({
+        "registrationType": registerationtypeRadioValueinAPi,
+        "patientImage": multipartFile,
+        // "idType": VoterIDtype.toString(),
+        "idName": _voterIDNumber.text.toString().trim().isEmpty ? "0" : _voterIDNumber.text.toString(),
+
+        "idName": _voterIDNumber.text,
+        "dependencyType": dependencyTypeRadio.toString(),
+        "relationType": relationtypeValue.toString(),
+        "relationName": relationFatherController.text,
+        "firstName": _firstNamePatientDetail.text,
+        "lastName": _lastNamePatientDetail.text,
+        "dob": _dob,
+        "age": _AgePatientDetail.text,
+        "gender": gender.toString(),
+        "mobileRelationType": relationtypeValueMobile.toString(),
+        "mobileNo": _mobileNumberDetailsRelationtype.text,
+        "screeningDate": _selectedDateText,
+        "tentativeSurgeryDate": _selectedDateTextToDate,
+        "disease": getDissesID.toString(),
+        "reportingPlace": _reportingPlaceController.text,
+        "state": state_code_login,
+        "district": 0,
+        "city": 0,
+        "village": 0,
+        "address": _AddressHouse.text,
+        "apartment": "0",
+        "nearLandMark":"0",
+        "pincode": _PinCode.text,
+        "communicationLanguage": stateLKanguage,
+        "loggedInUserStateId": state_code_login ?? "",
+        "loggedInUserDistrictId": district_code_login ?? "",
+        "entryBy": entryby,
+        "loggedInNgoId": "10126",
+        "programeId": "002",
+        "loggedInUserRole": int.tryParse(role_id) ?? 0,
+        "userId": userId ?? "",
+      });
+
+      // Debug: Print form data line by line
+      print("### Form Data to be Submitted ###");
+      formData.fields.forEach((field) {
+        print("${field.key}: ${field.value}");
+      });
+
+      // API call
+      final dio = Dio();
+      final url =
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
+      final response = await dio.post(url, data: formData);
+
+      if (response.statusCode == 200) {
+        final result = PatientRegistrations.fromJson(response.data);
+        if (result.status) {
+          Utils.showToast(result.message, true);
+
+          if (isOfflineData) {
+            await dbHelper.deleteLocalPatient(patientData['id']);
+            print("🗑️ Local data deleted after upload.");
+          }
+        } else {
+          Utils.showToast("Registration failed: ${result.message}", false);
+        }
+      } else {
+        Utils.showToast(
+            "Failed to register. Status code: ${response.statusCode}", false);
+      }
+    } catch (e) {
+      print("❌ Error: $e");
+      Utils.showToast("Unexpected error occurred", false);
+    } finally {
+      if (patientData == null) Utils.hideProgressDialog1(context);
+    }
+  }
+
+  void logFormData(Map<String, dynamic> formData) {
+    print("Logging Form Data:");
+    formData.forEach((key, value) {
+      if (key == "patientImage" && value is String && value.length > 100000) {
+        // For large fields like images, log only the first 100 characters
+        print("$key: ${value.substring(0, 100000)}... [truncated]");
+      } else {
+        print("$key: $value");
+      }
+    });
   }
 }

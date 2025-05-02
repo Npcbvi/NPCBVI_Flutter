@@ -232,5 +232,6 @@ class ApiConstants {
   static String getCampDashboardData = 'Camp/api/GetCampDashboardData';
 
   static String viewCampForDashboard = 'Camp/api/ViewCampForDashboard';
+  static String GetTodayPatientRegistredCamp = 'Camp/api/GetTodayPatientRegistred';
 
 }

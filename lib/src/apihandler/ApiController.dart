@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickSatelliteCenters/BothWiseSatelliteWise.dart';
 import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/BothWiseCampWise.dart';
 import 'package:mohfw_npcbvi/src/model/camp/ViewDashboardclick.dart';
+import 'package:mohfw_npcbvi/src/model/camp/totalPatient/TotalPatientCamp.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewClick.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/EquipemntDetails.dart';
@@ -9657,6 +9658,46 @@ class ApiController {
     }
     return null; // Return null if API fails
   }
+
+  static Future<TotalPatientCampData> fetchPatientCountCamp(int stateId,int districtId,
+      int entryBy,int userRoleType,String userId) async {
+    final String apiUrl =
+        ApiConstants.baseUrl + ApiConstants.GetTodayPatientRegistredCamp;
+
+    final Map<String, dynamic> requestBody = {
+      "stateId": stateId,
+      "districtId": districtId,
+      "entryBy": entryBy,
+      "userRoleType": userRoleType,
+      "userId": userId
+    };
+
+    try {
+      print("@@fetchPatientCountCamp: $apiUrl");
+      print("@@fetchPatientCountCamp Body: ${jsonEncode(requestBody)}");
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestBody),
+      );
+      print("@@fetchPatientCountCamp Body: ${response.toString()}");
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data["status"] == true && data["data"] != null) {
+          return TotalPatientCampData.fromJson(data["data"][0]);
+        }
+      } else {
+        print("Error: API request failed with status code ${response.statusCode}");
+      }
+    } catch (e) {
+      print("Error: $e");
+    }
+
+    return null;
+  }
+
 
   static Future<List<CampDashboardData>>
   getCampDashboardData(int userRoleType, int districtid, int stateid, String userId,

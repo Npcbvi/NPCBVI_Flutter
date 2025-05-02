@@ -239,56 +239,58 @@ class _CampDashboard extends State<CampDashboard> {
       body:SingleChildScrollView(
         child: Column(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 5),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: 800), // Adjust width as needed
+                child: SingleChildScrollView(
+                  child: Column(
                     children: [
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(width: 20),
-                              Expanded(child: _buildInfoColumn("Login Type", "Camp Manager")),
-                              SizedBox(width: 20),
-                              Expanded(child: _buildInfoColumn("State", stateNames)),
-                              SizedBox(width: 20),
-                              Expanded(child: _buildInfoColumn("", "")), // Placeholder
-                            ],
+                      SizedBox(height: 5),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(width: 30),
+                                  Expanded(child: _buildInfoColumn("Login Type", "Camp Manager")),
+                                  SizedBox(width: 30),
+                                  Expanded(child: _buildInfoColumn("State", stateNames)),
+                                 // Placeholder
+                                ],
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(width: 30),
+                                  Expanded(child: _buildInfoColumn("District", districtNames)),
+                                  SizedBox(width: 30),
+                                  Expanded(child: _buildInfoColumn("Login Id", userId)),
+
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(width: 20),
-                              Expanded(child: _buildInfoColumn("District", districtNames)),
-                              SizedBox(width: 20),
-                              Expanded(child: _buildInfoColumn("Login Id", userId)),
-                              SizedBox(width: 20),
-                              Expanded(child: _buildInfoColumn("", "")),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-
-                ],
+                ),
               ),
             ),
+
             ngoDashboardclick(),
           ],
         ),
@@ -309,7 +311,7 @@ class _CampDashboard extends State<CampDashboard> {
         ),
         SizedBox(height: 5),
         Text(
-          value,
+          value ?? '',
           maxLines: 1,
           style: TextStyle(
             color: Colors.red,
