@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/campdashboard/UpdatePatientCamp.dart';
 import 'package:mohfw_npcbvi/src/campdashboard/ViewDashboardClickScreen.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/model/camp/CampDashboard.dart';
@@ -222,6 +223,12 @@ class _CampDashboard extends State<CampDashboard> {
                         );
                         //_showPopupMenu();
                       } else if (_chosenValue == "Update Patient") {
+                        print('@@UpdatePatientCamp---UpdatePatientCamp Patient--1 $_chosenValue');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => UpdatePatientCamp()),
+                        );
 
                       } else if (_chosenValue == "Screening Entry") {
                       }
