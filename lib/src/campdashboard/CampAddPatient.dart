@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -36,7 +35,6 @@ import '../model/spoModel/GetLanguageForDDLs.dart';
 import '../utils/AppConstants.dart';
 
 class CampAddPatient extends StatefulWidget {
-
   @override
   _CampAddPatient createState() => _CampAddPatient();
 }
@@ -59,8 +57,9 @@ class _CampAddPatient extends State<CampAddPatient> {
   TextEditingController _AgePatientDetail = TextEditingController();
   TextEditingController _ageController = TextEditingController();
   TextEditingController _mobileNumberDetailsRelationtype =
-  TextEditingController();
+      TextEditingController();
   TextEditingController _AddressHouse = TextEditingController();
+
   // TextEditingController _Apartment = TextEditingController();
   // TextEditingController _AreaNearLandMark = TextEditingController();
   TextEditingController _PinCode = TextEditingController();
@@ -74,10 +73,7 @@ class _CampAddPatient extends State<CampAddPatient> {
       role_id;
   int status, district_code_login, state_code_login;
 
-
-
   String lowVisionDatas;
-
 
   Future<List<DataGetDPM_ScreeningYear>> _future;
   DataGetDPM_ScreeningYear _selectedUser;
@@ -104,8 +100,9 @@ class _CampAddPatient extends State<CampAddPatient> {
       showNotAvailble = false;
   bool showSelf = false, Dependent = false;
   File _image;
-  String _selectedDateText = 'Screening Date *'; // Initially set to "From Date"
-  String _selectedDateTextToDate = 'Tentative Surgery Date *';
+  String _selectedDateText = 'Screening Date'; // Initially set to "From Date"
+  String _selectedDateTextToDate = 'Tentative Date';
+
   String _dob = 'Date of birth';
   Future<List<Data>> _futureState;
   Data _selectedUserState;
@@ -132,11 +129,16 @@ class _CampAddPatient extends State<CampAddPatient> {
       stateCodeDPM,
       stateCodeGovtPrivate,
       distCodeDPM,
-      distCodeGovtPrivate,distCodeGovtPrivateCity,
+      distCodeGovtPrivate,
+      distCodeGovtPrivateCity,
       stateLKanguage,
       getDissesID,
       village_code = 0;
-  String CodeSPO, codeDPM, CodeGovtPrivate, distNameDPM, distNameDPMs_distictValues;
+  String CodeSPO,
+      codeDPM,
+      CodeGovtPrivate,
+      distNameDPM,
+      distNameDPMs_distictValues;
   String currentFinancialYear;
 
   TextEditingController relationNameController = TextEditingController();
@@ -155,20 +157,31 @@ class _CampAddPatient extends State<CampAddPatient> {
   TextEditingController _latitudeController = TextEditingController();
   TextEditingController _longitudeController = TextEditingController();
   int patientCount = 0;
-  String selectedStateName,selectedDistrictName,selectedCityName,selectedVillageName,selectedCamp,selectedCampsr_no,selectedHospital,selectedHospitalh_Reg_ID;
+  String selectedStateName,
+      selectedDistrictName,
+      selectedCityName,
+      selectedVillageName,
+      selectedCamp,
+      selectedCampsr_no,
+      selectedHospital,
+      selectedHospitalh_Reg_ID;
+
   // Function to get current position
 
   LatLng updatedLatLng;
   String updatedAddress = '';
   String updatedPincode = '';
+
   // Function to get current position
   Future<void> _getCurrentLocation() async {
     try {
       Position position = await _determinePosition();
-      print("Latitude: ${position.latitude}, Longitude: ${position.longitude}"); // Print coordinates
+      print(
+          "Latitude: ${position.latitude}, Longitude: ${position.longitude}"); // Print coordinates
 
       setState(() {
-        _locationMessage = "Lat: ${position.latitude}, Lng: ${position.longitude}";
+        _locationMessage =
+            "Lat: ${position.latitude}, Lng: ${position.longitude}";
 
         // Store Latitude & Longitude in Text Controllers
         _latitudeController.text = position.latitude.toString();
@@ -177,7 +190,7 @@ class _CampAddPatient extends State<CampAddPatient> {
 
       // Get address from coordinates
       List<Placemark> placemarks =
-      await placemarkFromCoordinates(position.latitude, position.longitude);
+          await placemarkFromCoordinates(position.latitude, position.longitude);
 
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
@@ -190,7 +203,6 @@ class _CampAddPatient extends State<CampAddPatient> {
         print("Address: $fullAddress"); // Print address in console
       }
     } catch (e) {
-
       setState(() {
         _locationMessage = "Error: $e";
         _address = "Failed to get address";
@@ -200,6 +212,7 @@ class _CampAddPatient extends State<CampAddPatient> {
       print("Error getting location: $e"); // Print error in console
     }
   }
+
   String getCurrentFinancialYear() {
     DateTime now = DateTime.now();
     int currentYear = now.year;
@@ -211,12 +224,11 @@ class _CampAddPatient extends State<CampAddPatient> {
       financialYear = '$currentYear-${nextYear.toString().substring(2)}';
     } else {
       financialYear =
-      '${currentYear - 1}-${currentYear.toString().substring(2)}';
+          '${currentYear - 1}-${currentYear.toString().substring(2)}';
     }
 
     return financialYear;
   }
-
 
   // Function to determine position
   Future<Position> _determinePosition() async {
@@ -244,6 +256,7 @@ class _CampAddPatient extends State<CampAddPatient> {
     return await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
   }
+
   Future<void> checkInternetConnection() async {
     var connectivityResult = await Connectivity().checkConnectivity();
     isConnected = connectivityResult != ConnectivityResult.none;
@@ -311,12 +324,16 @@ class _CampAddPatient extends State<CampAddPatient> {
     }
   }
 
-
   Future<void> getPatientCount() async {
-  /*  print('@@fetchPatientCountCamp' + role_id);
+    /*  print('@@fetchPatientCountCamp' + role_id);
     print('@@fetchPatientCountCamp' + userId);
     print('@@fetchPatientCountCamp' + entryby);*/
-    TotalPatientCampData data = await ApiController.fetchPatientCountCamp(state_code_login,district_code_login,int.parse(entryby),int.parse(role_id),userId);
+    TotalPatientCampData data = await ApiController.fetchPatientCountCamp(
+        state_code_login,
+        district_code_login,
+        int.parse(entryby),
+        int.parse(role_id),
+        userId);
     if (data != null) {
       setState(() {
         patientCount = data.totalCount ?? 0;
@@ -326,12 +343,11 @@ class _CampAddPatient extends State<CampAddPatient> {
 
   void getUserData() async {
     try {
-
-      SharedPrefs.getUser().then((user) async{
+      SharedPrefs.getUser().then((user) async {
         entryby = await SharedPrefs.getStoreSharedValue(AppConstant.entryBy)
-        as String;
-        loggedInNgoId = await SharedPrefs.getStoreSharedValue(AppConstant.ngoid)
-        as String;
+            as String;
+        loggedInNgoId =
+            await SharedPrefs.getStoreSharedValue(AppConstant.ngoid) as String;
         setState(() {
           fullnameController = user.name;
           districtNames = user.districtName;
@@ -341,7 +357,7 @@ class _CampAddPatient extends State<CampAddPatient> {
           role_id = user.roleId;
           state_code_login = user.state_code;
           district_code_login = user.district_code;
-           getloggedInNgoId();
+          getloggedInNgoId();
           getentryby();
           print('@@entryby' + entryby);
           print('@@role_id' + role_id);
@@ -398,34 +414,34 @@ class _CampAddPatient extends State<CampAddPatient> {
     _futureStateGetLanguageForDDLsData = getLanguageForDDL();
     _futureGetDiseaseForDDLDatas = getDiseaseForDDL();
     hospitalDashboardDatas = true;
-
   }
+
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset: false,
-      appBar: new AppBar(
-        backgroundColor: Colors.blue,
-        title: new Text('Add Patient',
-            maxLines:2,
-            style: new TextStyle(
-              color: Colors.white,
-            )),
-        centerTitle: true,
-        /* leading: IconButton(
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
+        appBar: new AppBar(
+          backgroundColor: Colors.blue,
+          title: new Text('Add Patient',
+              maxLines: 2,
+              style: new TextStyle(
+                color: Colors.white,
+              )),
+          centerTitle: true,
+          /* leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
             onPressed: () {
               Utils.hideKeyboard(context);
               Navigator.of(context).pop(context);
             }),*/
-      ),
-        body:SingleChildScrollView(
+        ),
+        body: SingleChildScrollView(
           child: Column(
             children: [
               Column(
                 children: [
                   //Hide this now some purpose
-                /*  Center(
+                  /*  Center(
                     child: ConstrainedBox(
                       constraints: BoxConstraints(maxWidth: 800), // Adjust width as needed
                       child: SingleChildScrollView(
@@ -478,28 +494,33 @@ class _CampAddPatient extends State<CampAddPatient> {
                   ),*/
                   SizedBox(height: 5.0),
                   Container(
-
-                    width: double.infinity, // Ensures the container takes full width
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Adds spacing
-                    color: Colors.blue, // Background color
+                    width: double.infinity,
+                    // Ensures the container takes full width
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    // Adds spacing
+                    color: Colors.blue,
+                    // Background color
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // Align left & right
                       children: [
                         Text(
                           'Patient Registration',
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white, // Ensure text is visible on blue background
+                            color: Colors
+                                .white, // Ensure text is visible on blue background
                           ),
                         ),
                         Text(
                           "Today Registered Patient(s): $patientCount",
-                          maxLines:2,
+                          maxLines: 2,
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white, // Change to white to be visible on blue
+                            color: Colors
+                                .white, // Change to white to be visible on blue
                           ),
                         ),
                       ],
@@ -513,7 +534,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                       Expanded(
                         flex: 3,
                         child: _radioButtonColumn(
-
                           options: [
                             'Screening Camp',
                             'Satellite Centre',
@@ -527,7 +547,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                               // Allow only if enabled
                               setState(() {
                                 registerationtypeRadio = value;
-                                print('@@1 ' + registerationtypeRadio.toString());
+                                print(
+                                    '@@1 ' + registerationtypeRadio.toString());
 
                                 registerationtypeRadioValueinAPi = 2;
                               });
@@ -536,7 +557,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                         ),
                       ),
 
-                      SizedBox(width: 10), // Add spacing between the two sections
+                      SizedBox(width: 10),
+                      // Add spacing between the two sections
                       // Right section: Image picker and preview
                       Expanded(
                         flex: 2, // Weight for the image picker section
@@ -560,7 +582,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ),
                     ],
                   ),
-              //  camp ka code hai ye hide
+                  //  camp ka code hai ye hide
                   SizedBox(height: 5),
                   Container(
                     margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
@@ -576,26 +598,34 @@ class _CampAddPatient extends State<CampAddPatient> {
                           return Center(child: CircularProgressIndicator());
                         }
 
-                        List<CampListDataonDashboardData> campList = snapshot.data ?? [];
+                        List<CampListDataonDashboardData> campList =
+                            snapshot.data ?? [];
 // ✅ Show 'No data found' if list is empty
                         if (campList.isEmpty) {
                           return const Text(
                             'No data found',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
                           );
                         }
                         // ✅ Insert hint item at the top
-                        if (campList.isNotEmpty && campList.first.campNo != 'Select Camp') {
-                          campList.insert(0, CampListDataonDashboardData(campNo: 'Select Camp', srNo: '-1'));
+                        if (campList.isNotEmpty &&
+                            campList.first.campNo != 'Select Camp') {
+                          campList.insert(
+                              0,
+                              CampListDataonDashboardData(
+                                  campNo: 'Select Camp', srNo: '-1'));
                         }
 
                         // ✅ Ensure a default selection
-                        if (_selectedUserCamp == null || !campList.contains(_selectedUserCamp)) {
+                        if (_selectedUserCamp == null ||
+                            !campList.contains(_selectedUserCamp)) {
                           _selectedUserCamp = campList.first;
                           selectedCamp = _selectedUserCamp.campNo.toString();
                           print('@@selectedCamp' + selectedCamp.toString());
-                          selectedCampsr_no=_selectedUserCamp.srNo.toString();
-                          print('@@selectedCamp' + selectedCampsr_no.toString());
+                          selectedCampsr_no = _selectedUserCamp.srNo.toString();
+                          print(
+                              '@@selectedCamp' + selectedCampsr_no.toString());
                         }
 
                         return Container(
@@ -604,20 +634,26 @@ class _CampAddPatient extends State<CampAddPatient> {
                             children: <Widget>[
                               const Text(
                                 'Select Camp:',
-                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 13, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
-                                height: 45, // Set the desired height for dropdown
-                                child: DropdownButtonFormField2<CampListDataonDashboardData>(
+                                height: 45,
+                                // Set the desired height for dropdown
+                                child: DropdownButtonFormField2<
+                                    CampListDataonDashboardData>(
                                   isExpanded: true,
                                   decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 5.0),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -625,23 +661,21 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   ),
                                   onChanged: (user) async {
                                     // ✅ Prevent action if "Select State" is chosen
-                                    if (user != null && user.campNo != 'Select Camp') {
+                                    if (user != null &&
+                                        user.campNo != 'Select Camp') {
                                       setState(() {
                                         _selectedUserCamp = user;
                                         selectedCamp = user.campNo;
                                         //stateCodeGovtPrivate = int.parse(user.stateCode.toString());
                                         //CodeGovtPrivate = user.code;
-                                        print('@@selectedCamp' + selectedCamp.toString());
-                                        selectedCampsr_no=_selectedUserCamp.srNo.toString();
-                                        print('@@selectedCamp' + selectedCampsr_no.toString());
-                                        setState(() {
-
-                                        });
-
+                                        print('@@selectedCamp' +
+                                            selectedCamp.toString());
+                                        selectedCampsr_no =
+                                            _selectedUserCamp.srNo.toString();
+                                        print('@@selectedCamp' +
+                                            selectedCampsr_no.toString());
+                                        setState(() {});
                                       });
-
-
-
                                     }
                                   },
                                   value: _selectedUserCamp,
@@ -655,14 +689,19 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     offset: const Offset(0, -3),
                                   ),
                                   buttonStyleData: ButtonStyleData(
-                                    height: 20, // Increase dropdown button height
+                                    height: 20,
+                                    // Increase dropdown button height
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10.0),
                                       color: Colors.white,
                                     ),
                                   ),
-                                  items: campList.map<DropdownMenuItem<CampListDataonDashboardData>>((CampListDataonDashboardData user) {
-                                    return DropdownMenuItem<CampListDataonDashboardData>(
+                                  items: campList.map<
+                                          DropdownMenuItem<
+                                              CampListDataonDashboardData>>(
+                                      (CampListDataonDashboardData user) {
+                                    return DropdownMenuItem<
+                                        CampListDataonDashboardData>(
                                       value: user,
                                       child: Text(
                                         user.campNo,
@@ -681,7 +720,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                     ),
                   ),
                   SizedBox(height: 5),
-                 // Hospital ka code hai ye hide
+                  // Hospital ka code hai ye hide
                   Container(
                     margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
                     width: double.infinity,
@@ -696,27 +735,37 @@ class _CampAddPatient extends State<CampAddPatient> {
                           return Center(child: CircularProgressIndicator());
                         }
 
-                        List<HospitalListForDasboardData> hospitalList = snapshot.data ?? [];
+                        List<HospitalListForDasboardData> hospitalList =
+                            snapshot.data ?? [];
 // ✅ Show 'No data found' if list is empty
                         if (hospitalList.isEmpty) {
                           return const Text(
                             'No data found',
-                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
                           );
                         }
                         // ✅ Insert hint item at the top
-                        if (hospitalList.isNotEmpty && hospitalList.first.hName != 'Select Hospital') {
-                          hospitalList.insert(0, HospitalListForDasboardData(hName: 'Select Hospital', hRegID: '-1'));
+                        if (hospitalList.isNotEmpty &&
+                            hospitalList.first.hName != 'Select Hospital') {
+                          hospitalList.insert(
+                              0,
+                              HospitalListForDasboardData(
+                                  hName: 'Select Hospital', hRegID: '-1'));
                         }
 
                         // ✅ Ensure a default selection
-                        if (_selectedUserHospital == null || !hospitalList.contains(_selectedUserHospital)) {
+                        if (_selectedUserHospital == null ||
+                            !hospitalList.contains(_selectedUserHospital)) {
                           _selectedUserHospital = hospitalList.first;
-                          selectedHospital = _selectedUserHospital.hName.toString();
-                          selectedHospitalh_Reg_ID = _selectedUserHospital.hRegID.toString();
-                          print('@@selectedHospital' + selectedHospital.toString());
-                          print('@@selectedHospital' + selectedHospitalh_Reg_ID.toString());
-
+                          selectedHospital =
+                              _selectedUserHospital.hName.toString();
+                          selectedHospitalh_Reg_ID =
+                              _selectedUserHospital.hRegID.toString();
+                          print('@@selectedHospital' +
+                              selectedHospital.toString());
+                          print('@@selectedHospital' +
+                              selectedHospitalh_Reg_ID.toString());
                         }
 
                         return Container(
@@ -725,20 +774,26 @@ class _CampAddPatient extends State<CampAddPatient> {
                             children: <Widget>[
                               const Text(
                                 'Select Hospital:',
-                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 13, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
-                                height: 45, // Set the desired height for dropdown
-                                child: DropdownButtonFormField2<HospitalListForDasboardData>(
+                                height: 45,
+                                // Set the desired height for dropdown
+                                child: DropdownButtonFormField2<
+                                    HospitalListForDasboardData>(
                                   isExpanded: true,
                                   decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 5.0),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 5.0),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -746,25 +801,26 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   ),
                                   onChanged: (user) async {
                                     // ✅ Prevent action if "Select State" is chosen
-                                    if (user != null && user.hName != 'Select Hospital') {
+                                    if (user != null &&
+                                        user.hName != 'Select Hospital') {
                                       setState(() {
                                         _selectedUserHospital = user;
-                                        selectedHospital= user.hName;
+                                        selectedHospital = user.hName;
                                         //stateCodeGovtPrivate = int.parse(user.stateCode.toString());
                                         //CodeGovtPrivate = user.code;
-                                        print('@@selectedHospital' + selectedHospital.toString());
-                                        selectedHospitalh_Reg_ID = _selectedUserHospital.hRegID.toString();
-                                        print('@@selectedHospital' + selectedHospital.toString());
-                                        print('@@selectedHospital' + selectedHospitalh_Reg_ID.toString());
+                                        print('@@selectedHospital' +
+                                            selectedHospital.toString());
+                                        selectedHospitalh_Reg_ID =
+                                            _selectedUserHospital.hRegID
+                                                .toString();
+                                        print('@@selectedHospital' +
+                                            selectedHospital.toString());
+                                        print('@@selectedHospital' +
+                                            selectedHospitalh_Reg_ID
+                                                .toString());
 
-                                        setState(() {
-
-                                        });
-
+                                        setState(() {});
                                       });
-
-
-
                                     }
                                   },
                                   value: _selectedUserHospital,
@@ -778,14 +834,19 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     offset: const Offset(0, -3),
                                   ),
                                   buttonStyleData: ButtonStyleData(
-                                    height: 20, // Increase dropdown button height
+                                    height: 20,
+                                    // Increase dropdown button height
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10.0),
                                       color: Colors.white,
                                     ),
                                   ),
-                                  items: hospitalList.map<DropdownMenuItem<HospitalListForDasboardData>>((HospitalListForDasboardData user) {
-                                    return DropdownMenuItem<HospitalListForDasboardData>(
+                                  items: hospitalList.map<
+                                          DropdownMenuItem<
+                                              HospitalListForDasboardData>>(
+                                      (HospitalListForDasboardData user) {
+                                    return DropdownMenuItem<
+                                        HospitalListForDasboardData>(
                                       value: user,
                                       child: Text(
                                         user.hName,
@@ -795,7 +856,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                                       ),
                                     );
                                   }).toList(),
-
                                 ),
                               ),
                             ],
@@ -806,19 +866,23 @@ class _CampAddPatient extends State<CampAddPatient> {
                   ),
                   SizedBox(height: 5),
                   Container(
-
-                    width: double.infinity, // Ensures the container takes full width
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Adds spacing
-                    color: Colors.blue, // Background color
+                    width: double.infinity,
+                    // Ensures the container takes full width
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    // Adds spacing
+                    color: Colors.blue,
+                    // Background color
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // Align left & right
                       children: [
                         Text(
                           'Personal Details',
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white, // Ensure text is visible on blue background
+                            color: Colors
+                                .white, // Ensure text is visible on blue background
                           ),
                         ),
                       ],
@@ -830,7 +894,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                       key: _formKeyhopsitalPersonalDetal,
                       child: Column(
                         children: [
-
                           Padding(
                             padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                             child: SizedBox(
@@ -838,22 +901,25 @@ class _CampAddPatient extends State<CampAddPatient> {
                               child: DropdownButtonFormField2<String>(
                                 isExpanded: true,
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 5),
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
                                   ),
                                   filled: true,
                                   fillColor: Colors.white,
                                   enabledBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
                                   ),
                                   focusedBorder: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(10.0),
-                                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1.0),
                                   ),
-
                                 ),
                                 value: VoterIDtype,
                                 style: TextStyle(color: Colors.black),
@@ -875,7 +941,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 }).toList(),
                                 hint: Text(
                                   "Select ID Type",
-
                                   style: TextStyle(
                                     color: Colors.grey,
                                     fontSize: 14,
@@ -885,12 +950,16 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 onChanged: (String newValue) {
                                   setState(() {
                                     VoterIDtype = newValue;
-                                    showVoterIDField = VoterIDtype == "Voter ID";
-                                    showDrivingLicenseField = VoterIDtype == "Driving License";
+                                    showVoterIDField =
+                                        VoterIDtype == "Voter ID";
+                                    showDrivingLicenseField =
+                                        VoterIDtype == "Driving License";
                                     showPassport = VoterIDtype == "Passport";
-                                    showRationCard = VoterIDtype == "Ration Card";
+                                    showRationCard =
+                                        VoterIDtype == "Ration Card";
                                     showPanCard = VoterIDtype == "Pan Card";
-                                    showNotAvailble = VoterIDtype == "Not Available";
+                                    showNotAvailble =
+                                        VoterIDtype == "Not Available";
                                   });
                                 },
                                 dropdownStyleData: DropdownStyleData(
@@ -911,16 +980,16 @@ class _CampAddPatient extends State<CampAddPatient> {
                             SizedBox(
                               height: 45,
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
-
+                                padding:
+                                    const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                 child: _textInputField(
                                   controller: _voterIDNumber,
                                   keyboardType: TextInputType.number,
                                   labelText: "Voter ID No.",
                                   validator: (value) =>
-                                  value == null || value.isEmpty
-                                      ? 'Please enter Voter ID No.'
-                                      : null,
+                                      value == null || value.isEmpty
+                                          ? 'Please enter Voter ID No.'
+                                          : null,
                                 ),
                               ),
                             ),
@@ -928,15 +997,16 @@ class _CampAddPatient extends State<CampAddPatient> {
                             SizedBox(
                               height: 45,
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                 child: _textInputField(
                                   controller: _voterIDNumber,
                                   labelText: "Driving License No.",
                                   keyboardType: TextInputType.number,
                                   validator: (value) =>
-                                  value == null || value.isEmpty
-                                      ? 'Please enter Driving License No.'
-                                      : null,
+                                      value == null || value.isEmpty
+                                          ? 'Please enter Driving License No.'
+                                          : null,
                                 ),
                               ),
                             ),
@@ -944,15 +1014,16 @@ class _CampAddPatient extends State<CampAddPatient> {
                             SizedBox(
                               height: 45,
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                 child: _textInputField(
                                   controller: _voterIDNumber,
                                   keyboardType: TextInputType.number,
                                   labelText: "Passport No.",
                                   validator: (value) =>
-                                  value == null || value.isEmpty
-                                      ? 'Please enter Passport No.'
-                                      : null,
+                                      value == null || value.isEmpty
+                                          ? 'Please enter Passport No.'
+                                          : null,
                                 ),
                               ),
                             ),
@@ -960,15 +1031,16 @@ class _CampAddPatient extends State<CampAddPatient> {
                             SizedBox(
                               height: 45,
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                 child: _textInputField(
                                   controller: _voterIDNumber,
                                   keyboardType: TextInputType.number,
                                   labelText: "Ration Card No.",
                                   validator: (value) =>
-                                  value == null || value.isEmpty
-                                      ? 'Please enter Ration Card No.'
-                                      : null,
+                                      value == null || value.isEmpty
+                                          ? 'Please enter Ration Card No.'
+                                          : null,
                                 ),
                               ),
                             ),
@@ -976,36 +1048,42 @@ class _CampAddPatient extends State<CampAddPatient> {
                             SizedBox(
                               height: 45,
                               child: Padding(
-                                padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                padding:
+                                    const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                 child: _textInputField(
                                   controller: _voterIDNumber,
                                   keyboardType: TextInputType.number,
                                   labelText: "Pan Card No.",
                                   validator: (value) =>
-                                  value == null || value.isEmpty
-                                      ? 'Please enter Pan Card No.'
-                                      : null,
+                                      value == null || value.isEmpty
+                                          ? 'Please enter Pan Card No.'
+                                          : null,
                                 ),
                               ),
                             ),
-                          if (showNotAvailble)
+                          if (showNotAvailble) SizedBox(height: 10.0),
 
-
-                            SizedBox(height: 10.0),
-
-                          Container( margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0), // left, top, right, bottom
-                            width: double.infinity, // Ensures the container takes full width
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 15), // Adds spacing
-                            color: Colors.white, // Background color
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                            // left, top, right, bottom
+                            width: double.infinity,
+                            // Ensures the container takes full width
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 15),
+                            // Adds spacing
+                            color: Colors.white,
+                            // Background color
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // Align left & right
                               children: [
                                 Text(
                                   'Dependency Type',
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black, // Ensure text is visible on blue background
+                                    color: Colors
+                                        .black, // Ensure text is visible on blue background
                                   ),
                                 ),
                               ],
@@ -1014,7 +1092,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                           _radioButtonRow(
                             options: ['Self', 'Dependent'],
                             groupValue: dependencyTypeRadio,
-
                             onChanged: (value) {
                               setState(() {
                                 dependencyTypeRadio = value;
@@ -1025,7 +1102,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 if (showSelf) {
                                   relationFatherController.text = "string";
                                   relationtypeValue =
-                                  null; // Reset value for dropdown
+                                      null; // Reset value for dropdown
                                   relationFatherController.text = 'xr';
                                   // Set to '0' or a special indicator for "Self"
                                   // relationNameController.clear();
@@ -1037,17 +1114,22 @@ class _CampAddPatient extends State<CampAddPatient> {
                             Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                   child: DropdownButtonFormField2<String>(
                                     isExpanded: true,
                                     decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                                      contentPadding: EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 5),
                                       border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(10.0),
-                                        borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        borderSide: BorderSide(
+                                            color: Colors.grey, width: 1.0),
                                       ),
                                       filled: true,
-                                      fillColor: Colors.white, // Background color of the dropdown
+                                      fillColor: Colors
+                                          .white, // Background color of the dropdown
                                     ),
                                     value: relationtypeValue,
                                     style: TextStyle(color: Colors.black),
@@ -1058,7 +1140,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                                       'Sister',
                                       'Daughter',
                                       'Spouse',
-                                    ].map<DropdownMenuItem<String>>((String type) {
+                                    ].map<DropdownMenuItem<String>>(
+                                        (String type) {
                                       return DropdownMenuItem<String>(
                                         value: type,
                                         child: Text(
@@ -1081,34 +1164,47 @@ class _CampAddPatient extends State<CampAddPatient> {
 
                                         // Set the relation name dynamically
                                         if (relationtypeValue == "Father") {
-                                          relationNameController.text = "Father's Name";
-                                        } else if (relationtypeValue == "Mother") {
-                                          relationNameController.text = "Mother's Name";
-                                        } else if (relationtypeValue == "Brother") {
-                                          relationNameController.text = "Brother's Name";
-                                        } else if (relationtypeValue == "Sister") {
-                                          relationNameController.text = "Sister's Name";
-                                        } else if (relationtypeValue == "Daughter") {
-                                          relationNameController.text = "Daughter's Name";
-                                        } else if (relationtypeValue == "Spouse") {
-                                          relationNameController.text = "Spouse's Name";
+                                          relationNameController.text =
+                                              "Father's Name";
+                                        } else if (relationtypeValue ==
+                                            "Mother") {
+                                          relationNameController.text =
+                                              "Mother's Name";
+                                        } else if (relationtypeValue ==
+                                            "Brother") {
+                                          relationNameController.text =
+                                              "Brother's Name";
+                                        } else if (relationtypeValue ==
+                                            "Sister") {
+                                          relationNameController.text =
+                                              "Sister's Name";
+                                        } else if (relationtypeValue ==
+                                            "Daughter") {
+                                          relationNameController.text =
+                                              "Daughter's Name";
+                                        } else if (relationtypeValue ==
+                                            "Spouse") {
+                                          relationNameController.text =
+                                              "Spouse's Name";
                                         } else {
                                           relationNameController.text = "";
-
                                         }
                                       });
                                     },
                                     buttonStyleData: ButtonStyleData(
-                                      height: 25, // Increase dropdown button height
+                                      height: 25,
+                                      // Increase dropdown button height
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
                                         // Removed border here
                                         color: Colors.white,
                                       ),
                                     ),
                                     dropdownStyleData: DropdownStyleData(
                                       decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10.0),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
                                         color: Colors.white,
                                       ),
                                     ),
@@ -1122,87 +1218,94 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 // Display input field based on selected relation
                                 if (relationtypeValue == "Father")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Father's Name",
                                       validator: (value) =>
-                                      value == null || value.isEmpty
-                                          ? 'Please enter Father\'s name'
-                                          : null,
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Father\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Mother")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Mother's Name",
                                       validator: (value) =>
-                                      value == null || value.isEmpty
-                                          ? 'Please enter Mother\'s name'
-                                          : null,
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Mother\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Brother")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Brother's Name",
                                       validator: (value) =>
-                                      value == null || value.isEmpty
-                                          ? 'Please enter Brother\'s name'
-                                          : null,
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Brother\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Sister")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Sister's Name",
                                       validator: (value) =>
-                                      value == null || value.isEmpty
-                                          ? 'Please enter Sister\'s name'
-                                          : null,
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Sister\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Daughter")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Daughter's Name",
                                       validator: (value) =>
-                                      value == null || value.isEmpty
-                                          ? 'Please enter Daughter\'s name'
-                                          : null,
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Daughter\'s name'
+                                              : null,
                                     ),
                                   ),
                                 if (relationtypeValue == "Spouse")
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                                     child: _textInputField(
                                       controller: relationFatherController,
                                       labelText: "Spouse's Name",
                                       validator: (value) =>
-                                      value == null || value.isEmpty
-                                          ? 'Please enter Spouse\'s name'
-                                          : null,
+                                          value == null || value.isEmpty
+                                              ? 'Please enter Spouse\'s name'
+                                              : null,
                                     ),
                                   ),
                               ],
                             ),
 
                           if (showSelf)
-                          // Hide the relation type section if "Self" is selected
+                            // Hide the relation type section if "Self" is selected
                             SizedBox.shrink(),
                           // This will render nothing when "Self" is selected
 
                           SizedBox(height: 5.0),
                           Container(
-                            margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+                            margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                            // left, top, right, bottom
                             child: SizedBox(
                               height: 45, // Adjust height as needed
                               child: TextFormField(
@@ -1211,11 +1314,13 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   label: RichText(
                                     text: TextSpan(
                                       text: 'First Name',
-                                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 16),
                                       children: [
                                         TextSpan(
                                           text: ' *', // Red Asterisk
-                                          style: TextStyle(color: Colors.red, fontSize: 16),
+                                          style: TextStyle(
+                                              color: Colors.red, fontSize: 16),
                                         ),
                                       ],
                                     ),
@@ -1224,17 +1329,19 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   hintStyle: TextStyle(color: Colors.black),
                                   // Border when the field is not focused
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey), // Grey border
+                                    borderSide: BorderSide(color: Colors.grey),
+                                    // Grey border
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
 
                                   // Border when the field is focused
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey, width: 2), // Grey border when focused
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 2),
+                                    // Grey border when focused
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                   // Set hint text color
-
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -1248,7 +1355,8 @@ class _CampAddPatient extends State<CampAddPatient> {
 
                           SizedBox(height: 5.0),
                           Container(
-                            margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+                            margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                            // left, top, right, bottom
 
                             child: SizedBox(
                               height: 45, // Adjust height as needed
@@ -1258,11 +1366,13 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   label: RichText(
                                     text: TextSpan(
                                       text: 'Last Name ',
-                                      style: TextStyle(color: Colors.grey, fontSize: 16),
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 16),
                                       children: [
                                         TextSpan(
                                           text: ' *', // Red Asterisk
-                                          style: TextStyle(color: Colors.red, fontSize: 16),
+                                          style: TextStyle(
+                                              color: Colors.red, fontSize: 16),
                                         ),
                                       ],
                                     ),
@@ -1271,13 +1381,16 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   hintStyle: TextStyle(color: Colors.black),
                                   // Regular hint text
                                   enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey), // Grey border
+                                    borderSide: BorderSide(color: Colors.grey),
+                                    // Grey border
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
 
                                   // Border when the field is focused
                                   focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(color: Colors.grey, width: 1), // Grey border when focused
+                                    borderSide: BorderSide(
+                                        color: Colors.grey, width: 1),
+                                    // Grey border when focused
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
@@ -1296,7 +1409,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                             child: Padding(
                               padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   // Date Picker Container with fixed height and width
                                   /*SizedBox(
@@ -1360,11 +1474,14 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 ),*/
 
                                   SizedBox(
-                                    width: 150, // Set same width for both widgets
-                                    height: 45, // Adjust height as needed
+                                    width: 150,
+                                    // Set same width for both widgets
+                                    height: 45,
+                                    // Adjust height as needed
                                     child: GestureDetector(
                                       onTap: () async {
-                                        DateTime pickedDate = await showDatePicker(
+                                        DateTime pickedDate =
+                                            await showDatePicker(
                                           context: context,
                                           initialDate: DateTime.now(),
                                           firstDate: DateTime(1700),
@@ -1372,78 +1489,122 @@ class _CampAddPatient extends State<CampAddPatient> {
                                         );
 
                                         if (pickedDate != null) {
-                                          String formattedDateForDisplay = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // For UI display
-                                          String formattedDateForAPI = DateFormat('yyyy-MM-dd').format(pickedDate); // For API request
+                                          String formattedDateForDisplay =
+                                              "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}"; // For UI display
+                                          String formattedDateForAPI =
+                                              DateFormat('yyyy-MM-dd').format(
+                                                  pickedDate); // For API request
 
                                           setState(() {
-                                            _dob = formattedDateForAPI; // Use this for the API
+                                            _dob =
+                                                formattedDateForAPI; // Use this for the API
                                             print("@@_dob (API format): $_dob");
-                                            print("@@_dob (display format): $formattedDateForDisplay");
+                                            print(
+                                                "@@_dob (display format): $formattedDateForDisplay");
                                             // Calculate age and update age field
                                             int age = _calculateAge(pickedDate);
-                                            _ageController.text = age.toString();
+                                            _ageController.text =
+                                                age.toString();
                                           });
                                         }
                                       },
-                                      child: Container(
+                                   /*   child: Container(
                                         decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(8.0),
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
                                           border: Border.all(
                                             color: Colors.grey,
                                             width: 1.0,
                                           ),
                                         ),
-                                        alignment: Alignment.centerLeft, // Align text to the left
+                                        alignment: Alignment.centerLeft,
+                                        // Align text to the left
                                         child: Padding(
-                                          padding: const EdgeInsets.only(left: 6.0), // Adjust padding as needed
+                                          padding:
+                                              const EdgeInsets.only(left: 6.0),
+                                          // Adjust padding as needed
                                           child: Text(
                                             _dob.isEmpty ? "Select date" : _dob,
                                             style: TextStyle(
-                                              color: (_dob.isEmpty || _dob == "Select date") ? Colors.grey : Colors.black,
+                                              color: (_dob.isEmpty ||
+                                                      _dob == "Select date")
+                                                  ? Colors.grey
+                                                  : Colors.black,
                                             ),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
+                                      ),*/
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width * 0.4,
+                                        height: 40,
+                                        padding: EdgeInsets.all(10.0),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(8.0),
+                                          border: Border.all(color: Colors.grey, width: 1.0),
+                                        ),
+                                        child: Builder(
+                                          builder: (context) {
+                                            String displayTextDate = _dob.isEmpty
+                                                ? 'Date of birth'
+                                                : _dob;
+                                            return Text(
+                                              displayTextDate,
+                                              style: TextStyle(
+                                                color: displayTextDate == 'Date of birth' ? Colors.grey : Colors.black,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            );
+                                          },
+                                        ),
                                       ),
+
                                     ),
                                   ),
-
-
-
-
-
 
                                   SizedBox(width: 5.0),
                                   // Spacing between the widgets
                                   // Age Input Field with same width and height
                                   Container(
-                                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+                                    margin:
+                                        EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                                    // left, top, right, bottom
 
                                     child: SizedBox(
                                       width: 150, // Same width as Date Picker
                                       height: 45,
                                       child: TextFormField(
                                         controller: _ageController,
-                                        readOnly: true,   // 🔒 Prevents editing
-                                        enabled: false,   // 🔒 Grays out and disables the field (still visible)
+                                        readOnly: true,
+                                        // 🔒 Prevents editing
+                                        enabled: false,
+                                        // 🔒 Grays out and disables the field (still visible)
                                         decoration: InputDecoration(
                                           label: RichText(
                                             text: TextSpan(
                                               text: 'Age ',
-                                              style: TextStyle(color: Colors.grey, fontSize: 16),
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 16),
                                               children: [
                                                 TextSpan(
                                                   text: ' *', // Red Asterisk
-                                                  style: TextStyle(color: Colors.red, fontSize: 16),
+                                                  style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 16),
                                                 ),
                                               ],
                                             ),
                                           ),
                                           hintText: 'Enter Age *',
-                                          hintStyle: TextStyle(color: Colors.black),
+                                          hintStyle:
+                                              TextStyle(color: Colors.black),
 // Regular hint text
                                           border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(8.0),
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
                                           ),
                                         ),
                                         validator: (value) {
@@ -1460,21 +1621,26 @@ class _CampAddPatient extends State<CampAddPatient> {
                             ),
                           ),
 
-
                           SizedBox(height: 5.0),
                           Container(
-                            width: double.infinity, // Ensures the container takes full width
-                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Adds spacing
-                            color: Colors.white, // Background color
+                            width: double.infinity,
+                            // Ensures the container takes full width
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 10),
+                            // Adds spacing
+                            color: Colors.white,
+                            // Background color
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              // Align left & right
                               children: [
                                 Text(
                                   'Gender',
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.black, // Ensure text is visible on blue background
+                                    color: Colors
+                                        .black, // Ensure text is visible on blue background
                                   ),
                                 ),
                               ],
@@ -1496,19 +1662,23 @@ class _CampAddPatient extends State<CampAddPatient> {
                   SizedBox(height: 5.0),
 
                   Container(
-
-                    width: double.infinity, // Ensures the container takes full width
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Adds spacing
-                    color: Colors.blue, // Background color
+                    width: double.infinity,
+                    // Ensures the container takes full width
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    // Adds spacing
+                    color: Colors.blue,
+                    // Background color
                     child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Align left & right
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      // Align left & right
                       children: [
                         Text(
                           'Mobile Number Details',
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white, // Ensure text is visible on blue background
+                            color: Colors
+                                .white, // Ensure text is visible on blue background
                           ),
                         ),
                       ],
@@ -1517,7 +1687,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                   SizedBox(height: 5),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 5, 0.0, 0),
-
                     child: Column(
                       children: [
                         Padding(
@@ -1525,18 +1694,21 @@ class _CampAddPatient extends State<CampAddPatient> {
                           child: Container(
                             decoration: BoxDecoration(
                               color: Colors.white,
-                              border: Border.all(color: Colors.grey, width: 1.0),
+                              border:
+                                  Border.all(color: Colors.grey, width: 1.0),
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             child: SizedBox(
                               height: 45,
-
                               child: DropdownButtonFormField2<String>(
                                 isExpanded: true,
                                 value: relationtypeValueMobile,
                                 decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 10.0), // Content padding
-                                  border: InputBorder.none, // Remove the default border (already set by the container)
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: 0.0, vertical: 10.0),
+                                  // Content padding
+                                  border: InputBorder
+                                      .none, // Remove the default border (already set by the container)
                                 ),
                                 style: TextStyle(color: Colors.black),
                                 hint: Text(
@@ -1576,85 +1748,85 @@ class _CampAddPatient extends State<CampAddPatient> {
                         if (relationtypeValue == "Father")
                           Padding(
                             padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-
                             child: _textInputField(
                               controller: relationFatherController,
                               labelText: "Father's Name",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Father\'s name'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Father\'s name'
+                                      : null,
                             ),
                           ),
                         if (relationtypeValue == "Mother")
                           Padding(
                             padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-
                             child: _textInputField(
                               controller: relationFatherController,
                               labelText: "Mother's Name",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Mother\'s name'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Mother\'s name'
+                                      : null,
                             ),
                           ),
                         if (relationtypeValue == "Brother")
                           Padding(
                             padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-
                             child: _textInputField(
                               controller: relationFatherController,
                               labelText: "Brother's Name",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Brother\'s name'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Brother\'s name'
+                                      : null,
                             ),
                           ),
                         if (relationtypeValue == "Sister")
                           Padding(
                             padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-
                             child: _textInputField(
                               controller: relationFatherController,
                               labelText: "Sister's Name",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Sister\'s name'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Sister\'s name'
+                                      : null,
                             ),
                           ),
                         if (relationtypeValue == "Daughter")
                           Padding(
                             padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-
                             child: _textInputField(
                               controller: relationFatherController,
                               labelText: "Daughter's Name",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Daughter\'s name'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Daughter\'s name'
+                                      : null,
                             ),
                           ),
                         if (relationtypeValue == "Spouse")
                           Padding(
                             padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-
                             child: _textInputField(
                               controller: relationFatherController,
                               labelText: "Spouse's Name",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Spouse\'s name'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Spouse\'s name'
+                                      : null,
                             ),
                           ),
                         if (relationtypeValue == "Self")
                           Padding(
                             padding: const EdgeInsets.fromLTRB(5, 10, 5.0, 0),
-
                             child: _textInputField(
                               controller: relationFatherController,
                               labelText: "Self Name",
-                              validator: (value) => value == null || value.isEmpty
-                                  ? 'Please enter Self'
-                                  : null,
+                              validator: (value) =>
+                                  value == null || value.isEmpty
+                                      ? 'Please enter Self'
+                                      : null,
                             ),
                           ),
                       ],
@@ -1663,23 +1835,27 @@ class _CampAddPatient extends State<CampAddPatient> {
                   SizedBox(height: 5),
 
                   Container(
-                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                    // left, top, right, bottom
 
                     child: SizedBox(
                       width: double.infinity, // Same width as Date Picker
                       height: 45, // Adjust height as needed
                       child: TextFormField(
                         controller: _mobileNumberDetailsRelationtype,
-                        keyboardType: TextInputType.phone, // Use number pad for phone input
+                        keyboardType: TextInputType.phone,
+                        // Use number pad for phone input
                         decoration: InputDecoration(
                           label: RichText(
                             text: TextSpan(
                               text: 'Mobile No ',
-                              style: TextStyle(color: Colors.grey, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
                               children: [
                                 TextSpan(
                                   text: ' *', // Red Asterisk
-                                  style: TextStyle(color: Colors.red, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 16),
                                 ),
                               ],
                             ),
@@ -1688,13 +1864,16 @@ class _CampAddPatient extends State<CampAddPatient> {
                           hintStyle: TextStyle(color: Colors.black),
 // Regular hint text
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey), // Grey border
+                            borderSide: BorderSide(color: Colors.grey),
+                            // Grey border
                             borderRadius: BorderRadius.circular(8.0),
                           ),
 
                           // Border when the field is focused
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey, width: 1), // Grey border when focused
+                            borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 1), // Grey border when focused
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
@@ -1707,7 +1886,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ),
                     ),
                   ),
-
 
                   SizedBox(height: 5),
                   Container(
@@ -1733,13 +1911,14 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     );
 
                                     if (pickedDate != null) {
-                                      String formattedDate = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                      String formattedDate =
+                                          "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
                                       setState(() {
                                         _selectedDateText = formattedDate;
                                       });
                                     }
                                   },
-                                  child: Container(
+                                  /* child: Container(
                                     width: MediaQuery.of(context).size.width * 0.4, // 50% of screen width
                                     height: 40, // Set the fixed height
                                     padding: EdgeInsets.all(10.0),
@@ -1753,12 +1932,43 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     ),
 
                                     child: Text(
-                                      _selectedDateText.isEmpty ? 'Screening Date' : _selectedDateText,
+                                      _selectedDateText.isEmpty ? 'Screening Date *' : _selectedDateText,
                                       style: TextStyle(
                                         color: _selectedDateText.isEmpty ? Colors.grey : Colors.black,
                                         fontWeight: FontWeight.w500,
                                       ),
                                       overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),*/
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    height: 40,
+                                    padding: EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(
+                                          color: Colors.grey, width: 1.0),
+                                    ),
+                                    child: Builder(
+                                      builder: (context) {
+                                        String displayTexts =
+                                            _selectedDateText.isEmpty
+                                                ? 'Screening Date'
+                                                : _selectedDateText;
+                                        return Text(
+                                          displayTexts,
+                                          style: TextStyle(
+                                            color:
+                                                displayTexts == 'Screening Date'
+                                                    ? Colors.grey
+                                                    : Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        );
+                                      },
                                     ),
                                   ),
                                 ),
@@ -1781,13 +1991,14 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     );
 
                                     if (pickedDate != null) {
-                                      String formattedDate = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                      String formattedDate =
+                                          "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
                                       setState(() {
                                         _selectedDateTextToDate = formattedDate;
                                       });
                                     }
                                   },
-                                  child: Container(
+                                  /*    child: Container(
                                     width: MediaQuery.of(context).size.width * 0.4, // 50% of screen width
                                     height: 40, // Set the fixed height
                                     padding: EdgeInsets.all(10.0),
@@ -1804,6 +2015,37 @@ class _CampAddPatient extends State<CampAddPatient> {
                                       ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
+                                  ),*/
+                                  child: Container(
+                                    width:
+                                        MediaQuery.of(context).size.width * 0.4,
+                                    height: 40,
+                                    padding: EdgeInsets.all(10.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(
+                                          color: Colors.grey, width: 1.0),
+                                    ),
+                                    child: Builder(
+                                      builder: (context) {
+                                        String displayText =
+                                            _selectedDateTextToDate.isEmpty
+                                                ? 'Tentative Date'
+                                                : _selectedDateTextToDate;
+                                        return Text(
+                                          displayText,
+                                          style: TextStyle(
+                                            color:
+                                                displayText == 'Tentative Date'
+                                                    ? Colors.grey
+                                                    : Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        );
+                                      },
+                                    ),
                                   ),
                                 ),
                               ),
@@ -1813,7 +2055,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ),
                     ),
                   ),
-
 
                   SizedBox(height: 5.0),
                   Column(
@@ -1831,23 +2072,28 @@ class _CampAddPatient extends State<CampAddPatient> {
                           // Logging for debugging
                           developer.log('@@snapshot: ${snapshot.data}');
 
-                          List<GetDiseaseForDDLData> districtList = snapshot.data;
+                          List<GetDiseaseForDDLData> districtList =
+                              snapshot.data;
 
                           // Ensure selected district is in the list, otherwise select the first one
                           if (_futureGetDiseaseForDDLDatass == null ||
-                              !districtList.contains(_futureGetDiseaseForDDLDatass)) {
+                              !districtList
+                                  .contains(_futureGetDiseaseForDDLDatass)) {
                             _futureGetDiseaseForDDLDatass = districtList.first;
                           }
 
                           return Padding(
                             padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,  // Align children to the start
-                              crossAxisAlignment: CrossAxisAlignment.start,  // Align items to the left
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              // Align children to the start
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              // Align items to the left
                               children: <Widget>[
                                 Text(
                                   'Select Diseases',
-                                  textAlign: TextAlign.left,  // Align text to the left
+                                  textAlign: TextAlign.left,
+                                  // Align text to the left
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
@@ -1856,33 +2102,42 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 ),
                                 DropdownButtonFormField2<GetDiseaseForDDLData>(
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 5.0),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 10.0, horizontal: 5.0),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
                                     fillColor: Colors.white,
                                   ),
                                   onChanged: (districtUser) => setState(() {
-                                    _futureGetDiseaseForDDLDatass = districtUser;
-                                    getDissesID = int.parse(districtUser.id.toString());
+                                    _futureGetDiseaseForDDLDatass =
+                                        districtUser;
+                                    getDissesID =
+                                        int.parse(districtUser.id.toString());
                                     // Update state or further actions here
-                                    print('Selected District: ${districtUser.name}');
+                                    print(
+                                        'Selected District: ${districtUser.name}');
                                   }),
                                   value: _futureGetDiseaseForDDLDatass,
-                                  items: districtList.map((GetDiseaseForDDLData district) {
-                                    return DropdownMenuItem<GetDiseaseForDDLData>(
+                                  items: districtList
+                                      .map((GetDiseaseForDDLData district) {
+                                    return DropdownMenuItem<
+                                        GetDiseaseForDDLData>(
                                       value: district,
                                       child: Text(district.name),
                                     );
                                   }).toList(),
                                   buttonStyleData: ButtonStyleData(
-                                    height: 25, // Increase dropdown button height
+                                    height:
+                                        25, // Increase dropdown button height
                                   ),
                                   dropdownStyleData: DropdownStyleData(
                                     decoration: BoxDecoration(
@@ -1906,7 +2161,7 @@ class _CampAddPatient extends State<CampAddPatient> {
                         children: [
                           Padding(
                             padding:
-                            const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
+                                const EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 5.0),
                             child: _textInputField(
                               controller: _reportingPlaceController,
                               labelText: 'Reporting Place *',
@@ -1935,15 +2190,24 @@ class _CampAddPatient extends State<CampAddPatient> {
                         List<Data> stateList = snapshot.data ?? [];
 
                         // ✅ Insert hint item at the top
-                        if (stateList.isNotEmpty && stateList.first.stateName != 'Select State') {
-                          stateList.insert(0, Data(stateName: 'Select State', stateCode: -1, code: ''));
+                        if (stateList.isNotEmpty &&
+                            stateList.first.stateName != 'Select State') {
+                          stateList.insert(
+                              0,
+                              Data(
+                                  stateName: 'Select State',
+                                  stateCode: -1,
+                                  code: ''));
                         }
 
                         // ✅ Ensure a default selection
-                        if (_selectedUserState == null || !stateList.contains(_selectedUserState)) {
+                        if (_selectedUserState == null ||
+                            !stateList.contains(_selectedUserState)) {
                           _selectedUserState = stateList.first;
-                          selectedStateName = _selectedUserState.stateName.toString();
-                          print('@@selectedStateName' + selectedStateName.toString());
+                          selectedStateName =
+                              _selectedUserState.stateName.toString();
+                          print('@@selectedStateName' +
+                              selectedStateName.toString());
                         }
 
                         return Container(
@@ -1952,20 +2216,25 @@ class _CampAddPatient extends State<CampAddPatient> {
                             children: <Widget>[
                               const Text(
                                 'Select State:',
-                                style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 13, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
-                                height: 45, // Set the desired height for dropdown
+                                height: 45,
+                                // Set the desired height for dropdown
                                 child: DropdownButtonFormField2<Data>(
                                   isExpanded: true,
                                   decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 0.0),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 0.0),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: const BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -1973,13 +2242,16 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   ),
                                   onChanged: (user) async {
                                     // ✅ Prevent action if "Select State" is chosen
-                                    if (user != null && user.stateName != 'Select State') {
+                                    if (user != null &&
+                                        user.stateName != 'Select State') {
                                       setState(() {
                                         _selectedUserState = user;
                                         selectedStateName = user.stateName;
-                                        stateCodeGovtPrivate = int.parse(user.stateCode.toString());
+                                        stateCodeGovtPrivate = int.parse(
+                                            user.stateCode.toString());
                                         CodeGovtPrivate = user.code;
-                                        print('@@selectedStateName' + selectedStateName.toString());
+                                        print('@@selectedStateName' +
+                                            selectedStateName.toString());
 
                                         /* // RESET dependent data
                                       _selectedUserDistrict = null;
@@ -1996,33 +2268,40 @@ class _CampAddPatient extends State<CampAddPatient> {
                                           isVisibleDitrictGovt = false;
                                           _isCityInitialized = false;
                                         });
-
                                       });
 
-                                      var connectivityResult = await Connectivity().checkConnectivity();
-                                      bool isConnected = connectivityResult != ConnectivityResult.none;
+                                      var connectivityResult =
+                                          await Connectivity()
+                                              .checkConnectivity();
+                                      bool isConnected = connectivityResult !=
+                                          ConnectivityResult.none;
 
                                       if (isConnected) {
                                         setState(() {
-                                          isVisibleDitrictGovt = true; // Show District dropdown
+                                          isVisibleDitrictGovt =
+                                              true; // Show District dropdown
                                         });
-                                        await _getDistrictData(stateCodeGovtPrivate);
+                                        await _getDistrictData(
+                                            stateCodeGovtPrivate);
                                       } else {
                                         setState(() {
-                                          isVisibleDitrictGovt = false; // Hide District dropdown if no internet
+                                          isVisibleDitrictGovt =
+                                              false; // Hide District dropdown if no internet
                                         });
                                       }
                                     }
                                   },
                                   value: _selectedUserState,
                                   buttonStyleData: ButtonStyleData(
-                                    height: 20, // Increase dropdown button height
+                                    height: 20,
+                                    // Increase dropdown button height
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(10.0),
                                       color: Colors.white,
                                     ),
                                   ),
-                                  items: stateList.map<DropdownMenuItem<Data>>((Data user) {
+                                  items: stateList
+                                      .map<DropdownMenuItem<Data>>((Data user) {
                                     return DropdownMenuItem<Data>(
                                       value: user,
                                       child: Text(
@@ -2042,11 +2321,11 @@ class _CampAddPatient extends State<CampAddPatient> {
                     ),
                   ),
 
-
                   SizedBox(height: 5),
 
                   Visibility(
-                    visible: isVisibleDitrictGovt,  // Control the visibility of the district dropdown
+                    visible: isVisibleDitrictGovt,
+                    // Control the visibility of the district dropdown
                     child: Column(
                       children: [
                         Container(
@@ -2059,23 +2338,42 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 return Text('Error: ${snapshot.error}');
                               }
 
-                              if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                                return Center(child: CircularProgressIndicator());
+                              if (!snapshot.hasData ||
+                                  snapshot.data == null ||
+                                  snapshot.data.isEmpty) {
+                                return Center(
+                                    child: CircularProgressIndicator());
                               }
 
-                              List<DataDsiricst> districtList = snapshot.data ?? [];
+                              List<DataDsiricst> districtList =
+                                  snapshot.data ?? [];
 
                               // ✅ Insert hint at top
-                              if (districtList.isNotEmpty && districtList.first.districtName != 'Select District') {
-                                districtList.insert(0, DataDsiricst(districtName: 'Select District', districtCode: -1));
+                              if (districtList.isNotEmpty &&
+                                  districtList.first.districtName !=
+                                      'Select District') {
+                                districtList.insert(
+                                    0,
+                                    DataDsiricst(
+                                        districtName: 'Select District',
+                                        districtCode: -1));
                               }
 
-                              if (_selectedUserDistrict == null || !districtList.contains(_selectedUserDistrict)) {
+                              if (_selectedUserDistrict == null ||
+                                  !districtList
+                                      .contains(_selectedUserDistrict)) {
                                 _selectedUserDistrict = districtList.first;
-                                print('@@_selectedUserDistrict--' + _selectedUserDistrict.toString());
-                                distCodeGovtPrivate = int.parse(_selectedUserDistrict?.districtCode.toString() ?? "0");
-                                selectedDistrictName = _selectedUserDistrict.districtName.toString();
-                                print('@@selectedDistrictName' + selectedDistrictName);
+                                print('@@_selectedUserDistrict--' +
+                                    _selectedUserDistrict.toString());
+                                distCodeGovtPrivate = int.parse(
+                                    _selectedUserDistrict?.districtCode
+                                            .toString() ??
+                                        "0");
+                                selectedDistrictName = _selectedUserDistrict
+                                    .districtName
+                                    .toString();
+                                print('@@selectedDistrictName' +
+                                    selectedDistrictName);
                               }
 
                               return Column(
@@ -2083,46 +2381,72 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 children: [
                                   Text(
                                     'Select District:',
-                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   SizedBox(
-                                    height: 45,  // Set your desired height
-                                    child: DropdownButtonFormField<DataDsiricst>(
+                                    height: 45, // Set your desired height
+                                    child:
+                                        DropdownButtonFormField<DataDsiricst>(
                                       decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                        contentPadding: EdgeInsets.symmetric(
+                                            vertical: 15, horizontal: 10),
                                         filled: true,
                                         fillColor: Colors.white,
                                         border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(color: Colors.grey), // 👈 grey border
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              color: Colors
+                                                  .grey), // 👈 grey border
                                         ),
                                         enabledBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(color: Colors.grey), // 👈 grey border
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              color: Colors
+                                                  .grey), // 👈 grey border
                                         ),
                                         focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(color: Colors.grey), // 👈 grey border
-
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              color: Colors
+                                                  .grey), // 👈 grey border
                                         ),
                                         errorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(color: Colors.grey), // 👈 still grey
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              color:
+                                                  Colors.grey), // 👈 still grey
                                         ),
                                         focusedErrorBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                          borderSide: BorderSide(color: Colors.grey), // 👈 grey even on error
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                              color: Colors
+                                                  .grey), // 👈 grey even on error
                                         ),
                                       ),
                                       onChanged: (district) {
-                                        if (district != null && district.districtName != 'Select District') {
+                                        if (district != null &&
+                                            district.districtName !=
+                                                'Select District') {
                                           setState(() {
                                             _selectedUserDistrict = district;
-                                            print('@@distCodeGovtPrivate--1' + _selectedUserDistrict.toString());
-                                            distCodeGovtPrivate = int.parse(district.districtCode.toString());
-                                            print('@@distCodeGovtPrivate--2' + distCodeGovtPrivate.toString());
+                                            print('@@distCodeGovtPrivate--1' +
+                                                _selectedUserDistrict
+                                                    .toString());
+                                            distCodeGovtPrivate = int.parse(
+                                                district.districtCode
+                                                    .toString());
+                                            print('@@distCodeGovtPrivate--2' +
+                                                distCodeGovtPrivate.toString());
                                             _selectedUserCity = null;
-                                            _isCityInitialized = false; // Reset when district changes
+                                            _isCityInitialized =
+                                                false; // Reset when district changes
                                           });
                                         }
                                       },
@@ -2141,27 +2465,34 @@ class _CampAddPatient extends State<CampAddPatient> {
                           ),
                         ),
 
-
                         SizedBox(height: 5),
 
                         // City Dropdown (Visible only after District selection)
                         Visibility(
-                          visible: _showCityDropdown && _selectedUserDistrict != null,
+                          visible: _showCityDropdown &&
+                              _selectedUserDistrict != null,
                           child: Container(
                             margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                             width: double.infinity,
                             child: FutureBuilder<List<DataGetCity>>(
                               //   future: _getCity(distCodeGovtPrivate),
-                              future: distCodeGovtPrivate != -1 ? _getCity(distCodeGovtPrivate) : Future.value([]),
+                              future: distCodeGovtPrivate != -1
+                                  ? _getCity(distCodeGovtPrivate)
+                                  : Future.value([]),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return Center(child: CircularProgressIndicator());
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
                                 } else if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
-                                } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data == null ||
+                                    snapshot.data.isEmpty) {
                                   return Container(
                                     width: double.infinity,
-                                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       border: Border.all(color: Colors.grey),
@@ -2169,30 +2500,45 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     ),
                                     child: Text(
                                       'No cities found',
-                                      style: TextStyle(fontSize: 14, color: Colors.black54),
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.black54),
                                     ),
                                   );
-
                                 }
-                                List<DataGetCity> cityList = snapshot.data ?? [];
+                                List<DataGetCity> cityList =
+                                    snapshot.data ?? [];
 
                                 // ✅ Add "Select City/Town" hint item if not already there
-                                if (cityList.isNotEmpty && cityList.first.name != 'Select City/Town') {
-                                  cityList.insert(0, DataGetCity(name: 'Select City/Town', subdistrictCode: -1));
+                                if (cityList.isNotEmpty &&
+                                    cityList.first.name != 'Select City/Town') {
+                                  cityList.insert(
+                                      0,
+                                      DataGetCity(
+                                          name: 'Select City/Town',
+                                          subdistrictCode: -1));
                                 }
 
                                 if (!_isCityInitialized) {
-                                  if (_selectedUserCity == null || !cityList.contains(_selectedUserCity)) {
+                                  if (_selectedUserCity == null ||
+                                      !cityList.contains(_selectedUserCity)) {
                                     _selectedUserCity = cityList.firstWhere(
-                                          (item) => item.subdistrictCode == distCodeGovtPrivateCity,
+                                      (item) =>
+                                          item.subdistrictCode ==
+                                          distCodeGovtPrivateCity,
                                       orElse: () => cityList.first,
                                     );
 
-                                    distCodeGovtPrivateCity = int.tryParse(_selectedUserCity?.subdistrictCode.toString() ?? "0") ?? 0;
-                                    selectedCityName = _selectedUserCity?.name ?? '';
+                                    distCodeGovtPrivateCity = int.tryParse(
+                                            _selectedUserCity?.subdistrictCode
+                                                    .toString() ??
+                                                "0") ??
+                                        0;
+                                    selectedCityName =
+                                        _selectedUserCity?.name ?? '';
                                     _isCityInitialized = true;
 
-                                    print('@@_selectedUserCity-- $selectedCityName');
+                                    print(
+                                        '@@_selectedUserCity-- $selectedCityName');
                                   }
                                 }
 
@@ -2201,42 +2547,58 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   children: [
                                     Text(
                                       'Select City/ Town',
-                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
                                       height: 45,
-                                      child: DropdownButtonFormField<DataGetCity>(
+                                      child:
+                                          DropdownButtonFormField<DataGetCity>(
                                         focusColor: Colors.white,
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 15, horizontal: 10),
                                           border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                            borderSide: BorderSide(color: Colors.grey),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                            borderSide: BorderSide(color: Colors.grey),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
                                           ),
                                           filled: true,
                                           fillColor: Colors.white,
                                         ),
                                         onChanged: (city) {
-
-                                          if (city != null && city.subdistrictCode != -1) {
+                                          if (city != null &&
+                                              city.subdistrictCode != -1) {
                                             setState(() {
                                               _selectedUserCity = city;
-                                              distCodeGovtPrivateCity = city.subdistrictCode;
+                                              distCodeGovtPrivateCity =
+                                                  city.subdistrictCode;
                                               selectedCityName = city.name;
-                                              _selectedUserVillage = null; // Reset previous village
-                                              print('@@selectedCityName--1 $distCodeGovtPrivate');
-                                              print('@@selectedCityName--2 $stateCodeGovtPrivate');
-                                              print('@@selectedCityName--3 $distCodeGovtPrivateCity');
+                                              _selectedUserVillage =
+                                                  null; // Reset previous village
+                                              print(
+                                                  '@@selectedCityName--1 $distCodeGovtPrivate');
+                                              print(
+                                                  '@@selectedCityName--2 $stateCodeGovtPrivate');
+                                              print(
+                                                  '@@selectedCityName--3 $distCodeGovtPrivateCity');
                                               // RESET village values
                                               _selectedUserVillage = null;
                                               selectedVillageName = '';
                                               _isVillageInitialized = false;
 
-                                              _villageFuture = _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity);
+                                              _villageFuture = _getVillage(
+                                                  distCodeGovtPrivate,
+                                                  stateCodeGovtPrivate,
+                                                  distCodeGovtPrivateCity);
                                               // 👉 HIDE the city dropdown after selection
                                               //  _showCityDropdown = false;
                                             });
@@ -2262,26 +2624,34 @@ class _CampAddPatient extends State<CampAddPatient> {
 
                         // Village Dropdown (Visible only after City selection)
                         Visibility(
-                          visible: _selectedUserCity != null, // Village dropdown visible if a city is selected
+                          visible: _selectedUserCity != null,
+                          // Village dropdown visible if a city is selected
                           child: Container(
                             width: double.infinity,
                             margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
                             child: FutureBuilder<List<DataGetVillage>>(
-
                               //future: _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
                               //      future: _villageFuture ??= _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity),
-                              future: (distCodeGovtPrivate != -1 && distCodeGovtPrivateCity != -1)
-                                  ? _getVillage(distCodeGovtPrivate, stateCodeGovtPrivate, distCodeGovtPrivateCity)
+                              future: (distCodeGovtPrivate != -1 &&
+                                      distCodeGovtPrivateCity != -1)
+                                  ? _getVillage(
+                                      distCodeGovtPrivate,
+                                      stateCodeGovtPrivate,
+                                      distCodeGovtPrivateCity)
                                   : Future.value([]),
                               builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
                                   //   return Center(child: CircularProgressIndicator());
                                 } else if (snapshot.hasError) {
                                   return Text('Error: ${snapshot.error}');
-                                } else if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data == null ||
+                                    snapshot.data.isEmpty) {
                                   return Container(
                                     width: double.infinity,
-                                    padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 15, horizontal: 10),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       border: Border.all(color: Colors.grey),
@@ -2289,19 +2659,21 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     ),
                                     child: Text(
                                       'No Villages found',
-                                      style: TextStyle(fontSize: 14, color: Colors.black54),
+                                      style: TextStyle(
+                                          fontSize: 14, color: Colors.black54),
                                     ),
                                   );
-
                                 }
-                                List<DataGetVillage> villageList = snapshot.data ?? [];
+                                List<DataGetVillage> villageList =
+                                    snapshot.data ?? [];
 
                                 if (villageList.isEmpty) {
                                   return SizedBox(
                                     height: 45,
                                     child: Container(
                                       decoration: BoxDecoration(
-                                        border: Border.all(color: Colors.grey, width: 1),
+                                        border: Border.all(
+                                            color: Colors.grey, width: 1),
                                         borderRadius: BorderRadius.circular(8),
                                         color: Colors.white,
                                       ),
@@ -2320,37 +2692,53 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 }
 
                                 // ✅ Insert default 'Select Village' option at the top if not already there
-                                if (villageList.first.name != 'Select Village') {
-                                  villageList.insert(0, DataGetVillage(name: 'Select Village', villageCode: -1));
+                                if (villageList.first.name !=
+                                    'Select Village') {
+                                  villageList.insert(
+                                      0,
+                                      DataGetVillage(
+                                          name: 'Select Village',
+                                          villageCode: -1));
                                 }
 
                                 // ✅ Set default selection to 'Select Village'
-                                if (_selectedUserVillage == null || !villageList.contains(_selectedUserVillage)) {
+                                if (_selectedUserVillage == null ||
+                                    !villageList
+                                        .contains(_selectedUserVillage)) {
                                   _selectedUserVillage = villageList.first;
-                                  selectedVillageName = _selectedUserVillage.name.toString();
-                                  print('@@selectedVillageName--' + selectedVillageName.toString());
+                                  selectedVillageName =
+                                      _selectedUserVillage.name.toString();
+                                  print('@@selectedVillageName--' +
+                                      selectedVillageName.toString());
                                 }
 
                                 return Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-
                                       'Select Village:',
-                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox(
                                       height: 45,
-                                      child: DropdownButtonFormField<DataGetVillage>(
+                                      child: DropdownButtonFormField<
+                                          DataGetVillage>(
                                         decoration: InputDecoration(
-                                          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                                          contentPadding: EdgeInsets.symmetric(
+                                              vertical: 15, horizontal: 10),
                                           border: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                            borderSide: BorderSide(color: Colors.grey),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
                                           ),
                                           focusedBorder: OutlineInputBorder(
-                                            borderRadius: BorderRadius.circular(10),
-                                            borderSide: BorderSide(color: Colors.grey),
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            borderSide:
+                                                BorderSide(color: Colors.grey),
                                           ),
                                           filled: true,
                                           fillColor: Colors.white,
@@ -2359,15 +2747,20 @@ class _CampAddPatient extends State<CampAddPatient> {
                                           if (village != null) {
                                             setState(() {
                                               _selectedUserVillage = village;
-                                              village_code = int.parse(village.villageCode ?? "0");
-                                              selectedVillageName = village.name.toString();
-                                              print('@@selectedVillageName--' + selectedVillageName.toString());
+                                              village_code = int.parse(
+                                                  village.villageCode ?? "0");
+                                              selectedVillageName =
+                                                  village.name.toString();
+                                              print('@@selectedVillageName--' +
+                                                  selectedVillageName
+                                                      .toString());
                                             });
                                           }
                                         },
                                         value: _selectedUserVillage,
                                         items: villageList.map((village) {
-                                          return DropdownMenuItem<DataGetVillage>(
+                                          return DropdownMenuItem<
+                                              DataGetVillage>(
                                             value: village,
                                             child: Text(village.name),
                                           );
@@ -2380,17 +2773,17 @@ class _CampAddPatient extends State<CampAddPatient> {
                             ),
                           ),
                         ),
-
                       ],
                     ),
                   ),
 
-
                   SizedBox(height: 5.0),
                   Container(
-                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                    // left, top, right, bottom
                     child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center, // Align the items vertically centered
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      // Align the items vertically centered
                       children: [
                         // Address/House/Flat Number TextField
                         Expanded(
@@ -2399,18 +2792,23 @@ class _CampAddPatient extends State<CampAddPatient> {
                             height: 45,
                             child: TextField(
                               controller: _AddressHouse,
-                              maxLines: 1, // Force single line
-                              textAlignVertical: TextAlignVertical.center, // Center text vertically
+                              maxLines: 1,
+                              // Force single line
+                              textAlignVertical: TextAlignVertical.center,
+                              // Center text vertically
                               decoration: InputDecoration(
-                                contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
                                 label: RichText(
                                   text: TextSpan(
                                     text: 'Address/ House/ Flat Number',
-                                    style: TextStyle(color: Colors.grey, fontSize: 16),
+                                    style: TextStyle(
+                                        color: Colors.grey, fontSize: 16),
                                     children: [
                                       TextSpan(
                                         text: ' *',
-                                        style: TextStyle(color: Colors.red, fontSize: 16),
+                                        style: TextStyle(
+                                            color: Colors.red, fontSize: 16),
                                       ),
                                     ],
                                   ),
@@ -2423,11 +2821,15 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 // Customizing focus and enabled borders
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  borderSide: BorderSide(color: Colors.grey), // Set border color to grey or any color you want
+                                  borderSide: BorderSide(
+                                      color: Colors
+                                          .grey), // Set border color to grey or any color you want
                                 ),
                                 enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(8.0),
-                                  borderSide: BorderSide(color: Colors.grey), // Border color when not focused
+                                  borderSide: BorderSide(
+                                      color: Colors
+                                          .grey), // Border color when not focused
                                 ),
                               ),
                             ),
@@ -2442,23 +2844,34 @@ class _CampAddPatient extends State<CampAddPatient> {
                           height: 45,
                           child: Container(
                             decoration: BoxDecoration(
-                              border: Border.all(color: Colors.grey), // Border color
-                              borderRadius: BorderRadius.circular(10), // Border radius
+                              border: Border.all(color: Colors.grey),
+                              // Border color
+                              borderRadius:
+                                  BorderRadius.circular(10), // Border radius
                             ),
                             child: IconButton(
                               icon: Icon(Icons.my_location, color: Colors.blue),
                               onPressed: () {
-                                if (selectedDistrictName != null && selectedDistrictName.isNotEmpty &&
-                                    selectedCityName != null && selectedCityName.isNotEmpty) {
-                                  openMapDialog(context, selectedStateName, selectedDistrictName, selectedCityName,selectedVillageName);
+                                if (selectedDistrictName != null &&
+                                    selectedDistrictName.isNotEmpty &&
+                                    selectedCityName != null &&
+                                    selectedCityName.isNotEmpty) {
+                                  openMapDialog(
+                                      context,
+                                      selectedStateName,
+                                      selectedDistrictName,
+                                      selectedCityName,
+                                      selectedVillageName);
                                   setState(() {
-                                    showCoordinates = true; // Show the coordinates section
+                                    showCoordinates =
+                                        true; // Show the coordinates section
                                   });
                                 } else {
                                   // Show error or toast/snackbar
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text("Please select State, District, and City first."),
+                                      content: Text(
+                                          "Please select State, District, and City first."),
                                       backgroundColor: Colors.red,
                                     ),
                                   );
@@ -2470,8 +2883,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ],
                     ),
                   ),
-
-
 
                   SizedBox(height: 5.0),
                   // Latitude and Longitude fields
@@ -2488,7 +2899,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 controller: _latitudeController,
                                 labelText: 'Latitude',
                                 readOnly: true,
-                                prefixIcon: Icon(Icons.my_location, color: Colors.blue),
+                                prefixIcon:
+                                    Icon(Icons.my_location, color: Colors.blue),
                               ),
                             ),
                             SizedBox(width: 10),
@@ -2497,7 +2909,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                                 controller: _longitudeController,
                                 labelText: 'Longitude',
                                 readOnly: true,
-                                prefixIcon: Icon(Icons.location_searching, color: Colors.green),
+                                prefixIcon: Icon(Icons.location_searching,
+                                    color: Colors.green),
                               ),
                             ),
                           ],
@@ -2505,7 +2918,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ),
                     ),
                   ),
-
 
                   /* Padding(
                   padding: const EdgeInsets.fromLTRB(10.0, 5.0, 10.0, 5.0),
@@ -2551,7 +2963,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                 ),*/
                   SizedBox(height: 5.0),
                   Container(
-                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0), // left, top, right, bottom
+                    margin: EdgeInsets.fromLTRB(5.0, 0.0, 5.0, 0.0),
+                    // left, top, right, bottom
                     child: SizedBox(
                       height: 45,
                       child: TextField(
@@ -2560,11 +2973,13 @@ class _CampAddPatient extends State<CampAddPatient> {
                           label: RichText(
                             text: TextSpan(
                               text: 'Pin Code',
-                              style: TextStyle(color: Colors.grey, fontSize: 16),
+                              style:
+                                  TextStyle(color: Colors.grey, fontSize: 16),
                               children: [
                                 TextSpan(
                                   text: ' *', // Red Asterisk
-                                  style: TextStyle(color: Colors.red, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.red, fontSize: 16),
                                 ),
                               ],
                             ),
@@ -2573,13 +2988,16 @@ class _CampAddPatient extends State<CampAddPatient> {
                           hintStyle: TextStyle(color: Colors.black),
 // Regular hint text
                           enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey), // Grey border
+                            borderSide: BorderSide(color: Colors.grey),
+                            // Grey border
                             borderRadius: BorderRadius.circular(8.0),
                           ),
 
                           // Border when the field is focused
                           focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey, width: 1), // Grey border when focused
+                            borderSide: BorderSide(
+                                color: Colors.grey,
+                                width: 1), // Grey border when focused
                             borderRadius: BorderRadius.circular(8.0),
                           ),
                         ),
@@ -2599,41 +3017,51 @@ class _CampAddPatient extends State<CampAddPatient> {
                         }
 
                         if (!snapshot.hasData) {
-                          return const Center(child: CircularProgressIndicator());
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
 
                         // Logging data for debugging
                         developer.log('@@snapshot: ${snapshot.data}');
 
-                        List<GetLanguageForDDLsDatas> stateList = snapshot.data ?? [];
+                        List<GetLanguageForDDLsDatas> stateList =
+                            snapshot.data ?? [];
 
                         // Ensure selected language is in the list, otherwise select the first
-                        if (GetLanguageForDDLsDatasa == null || !stateList.contains(GetLanguageForDDLsDatasa)) {
-                          GetLanguageForDDLsDatasa = stateList.isNotEmpty ? stateList.first : null;
-                          stateLKanguage = int.parse(GetLanguageForDDLsDatasa?.id.toString() ?? "0");
-
+                        if (GetLanguageForDDLsDatasa == null ||
+                            !stateList.contains(GetLanguageForDDLsDatasa)) {
+                          GetLanguageForDDLsDatasa =
+                              stateList.isNotEmpty ? stateList.first : null;
+                          stateLKanguage = int.parse(
+                              GetLanguageForDDLsDatasa?.id.toString() ?? "0");
                         }
 
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5.0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,  // Aligning text to the left
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            // Aligning text to the left
                             children: [
                               Text(
                                 'Communication Language *',
-                                style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                style: TextStyle(
+                                    fontSize: 14, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(
                                 height: 45,
-                                child: DropdownButtonFormField2<GetLanguageForDDLsDatas>(
+                                child: DropdownButtonFormField2<
+                                    GetLanguageForDDLsDatas>(
                                   decoration: InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    contentPadding: EdgeInsets.symmetric(
+                                        vertical: 15.0, horizontal: 10.0),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderSide: BorderSide(
+                                          color: Colors.grey, width: 1.0),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
                                     filled: true,
@@ -2641,7 +3069,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                                   ),
                                   onChanged: (user) => setState(() {
                                     GetLanguageForDDLsDatasa = user;
-                                    stateLKanguage = int.parse(user?.id.toString() ?? "0");
+                                    stateLKanguage =
+                                        int.parse(user?.id.toString() ?? "0");
                                   }),
                                   value: GetLanguageForDDLsDatasa,
                                   dropdownStyleData: DropdownStyleData(
@@ -2653,9 +3082,12 @@ class _CampAddPatient extends State<CampAddPatient> {
                                     ),
                                     offset: const Offset(0, -3),
                                   ),
-                                  items: stateList.map<DropdownMenuItem<GetLanguageForDDLsDatas>>(
-                                        (GetLanguageForDDLsDatas user) {
-                                      return DropdownMenuItem<GetLanguageForDDLsDatas>(
+                                  items: stateList.map<
+                                      DropdownMenuItem<
+                                          GetLanguageForDDLsDatas>>(
+                                    (GetLanguageForDDLsDatas user) {
+                                      return DropdownMenuItem<
+                                          GetLanguageForDDLsDatas>(
                                         value: user,
                                         child: Text(user.name),
                                       );
@@ -2670,10 +3102,6 @@ class _CampAddPatient extends State<CampAddPatient> {
                     ),
                   ),
 
-
-
-
-
                   SizedBox(height: 5.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -2684,27 +3112,36 @@ class _CampAddPatient extends State<CampAddPatient> {
                           onPressed: () async {
                             print("@@-----click SubmitAdd Patient--");
 
-                            var connectivityResult = await Connectivity().checkConnectivity();
+                            var connectivityResult =
+                                await Connectivity().checkConnectivity();
 
                             if (connectivityResult == ConnectivityResult.none) {
-                              print("No internet connection. Saving data locally.");
-                              await dbHelper.savePatientData(); // ✅ Save to SQLite
-                              Utils.showToast("No internet. Data saved locally.", true);
+                              print(
+                                  "No internet connection. Saving data locally.");
+                              await dbHelper
+                                  .savePatientData(); // ✅ Save to SQLite
+                              Utils.showToast(
+                                  "No internet. Data saved locally.", true);
                             } else {
-                              print("Internet available. Uploading data to API.");
-                             await ApipatientRegistration(); // Submit to API
+                              print(
+                                  "Internet available. Uploading data to API.");
+                              await ApipatientRegistration(); // Submit to API
                             }
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10), // Set the radius for rounded corners
+                              borderRadius: BorderRadius.circular(
+                                  10), // Set the radius for rounded corners
                             ),
                           ),
                           child: Row(
-                            mainAxisSize: MainAxisSize.min, // Ensures button wraps around content
+                            mainAxisSize: MainAxisSize.min,
+                            // Ensures button wraps around content
                             children: [
-                              Icon(Icons.send, color: Colors.white), // Change icon as needed
-                              SizedBox(width: 8), // Space between icon and text
+                              Icon(Icons.send, color: Colors.white),
+                              // Change icon as needed
+                              SizedBox(width: 8),
+                              // Space between icon and text
                               Text('Submit'),
                             ],
                           ),
@@ -2718,15 +3155,20 @@ class _CampAddPatient extends State<CampAddPatient> {
                           },
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10), // Set the radius for rounded corners
+                              borderRadius: BorderRadius.circular(
+                                  10), // Set the radius for rounded corners
                             ),
-                            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 12.0, horizontal: 20.0),
                           ),
                           child: Row(
-                            mainAxisSize: MainAxisSize.min, // Ensures button wraps around content
+                            mainAxisSize: MainAxisSize.min,
+                            // Ensures button wraps around content
                             children: [
-                              Icon(Icons.refresh, color: Colors.white), // Reset icon
-                              SizedBox(width: 8), // Space between icon and text
+                              Icon(Icons.refresh, color: Colors.white),
+                              // Reset icon
+                              SizedBox(width: 8),
+                              // Space between icon and text
                               Text('Reset'),
                             ],
                           ),
@@ -2734,15 +3176,13 @@ class _CampAddPatient extends State<CampAddPatient> {
                       ),
                     ],
                   )
-
-
                 ],
               ),
             ],
           ),
-        )
-    );
+        ));
   }
+
   Widget _radioButtonColumn({
     List<String> options,
     String groupValue,
@@ -2751,40 +3191,43 @@ class _CampAddPatient extends State<CampAddPatient> {
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min, // Ensures the column only takes required height
+      mainAxisSize: MainAxisSize.min,
+      // Ensures the column only takes required height
       children: options
           .map((option) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 0.0), // Reduce from 4.0 to 2.0
-        child: Row(
-          children: [
-            Radio<String>(
-              value: option,
-              groupValue: groupValue,
-              onChanged: onChanged,
-            ),
-            Expanded(
-              child: Text(
-                option,
-                style: TextStyle(
-                  fontSize: 13.0,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
+                padding: const EdgeInsets.symmetric(vertical: 0.0),
+                // Reduce from 4.0 to 2.0
+                child: Row(
+                  children: [
+                    Radio<String>(
+                      value: option,
+                      groupValue: groupValue,
+                      onChanged: onChanged,
+                    ),
+                    Expanded(
+                      child: Text(
+                        option,
+                        style: TextStyle(
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      ))
+              ))
           .toList(),
     );
   }
+
   Widget _textInputField({
     TextEditingController controller,
     String labelText,
     TextInputType keyboardType = TextInputType.text,
     String Function(String) validator,
     int maxLength,
-    double width,  // Width parameter
+    double width, // Width parameter
     double height, // Height parameter
     Widget prefixIcon, // Prefix icon support
     bool readOnly = false, // Read-only support
@@ -2794,11 +3237,14 @@ class _CampAddPatient extends State<CampAddPatient> {
       height: height ?? 50, // Default height
       child: TextFormField(
         controller: controller,
-        readOnly: readOnly, // Prevent manual input if true
+        readOnly: readOnly,
+        // Prevent manual input if true
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10), // Adjust padding
+          contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+          // Adjust padding
           labelText: labelText,
-          prefixIcon: prefixIcon, // Assign prefix icon
+          prefixIcon: prefixIcon,
+          // Assign prefix icon
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
             borderSide: BorderSide(
@@ -2833,6 +3279,7 @@ class _CampAddPatient extends State<CampAddPatient> {
       ),
     );
   }
+
   Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -2840,7 +3287,7 @@ class _CampAddPatient extends State<CampAddPatient> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/State'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final DashboardStateModel dashboardStateModel =
-      DashboardStateModel.fromJson(json);
+          DashboardStateModel.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -2895,7 +3342,9 @@ class _CampAddPatient extends State<CampAddPatient> {
           options: new Options(
               contentType: "application/json",
               responseType: ResponseType.plain));
-      print('@@district_code_login'+"https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetCity".toString()+body.toString());
+      print('@@district_code_login' +
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetCity".toString() +
+          body.toString());
 
       print("@@Response--Api=====" + response1.toString());
       dashboardDistrictModel = GetCity.fromJson(json.decode(response1.data));
@@ -2959,7 +3408,7 @@ class _CampAddPatient extends State<CampAddPatient> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetLanguageForDDL'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetLanguageForDDLs dashboardStateModel =
-      GetLanguageForDDLs.fromJson(json);
+          GetLanguageForDDLs.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -2975,7 +3424,7 @@ class _CampAddPatient extends State<CampAddPatient> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/GetDiseaseForDDL'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDiseaseForDDL dashboardStateModel =
-      GetDiseaseForDDL.fromJson(json);
+          GetDiseaseForDDL.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -2983,6 +3432,7 @@ class _CampAddPatient extends State<CampAddPatient> {
       return null;
     }
   }
+
   Widget _radioButtonRow({
     List<String> options,
     String groupValue,
@@ -2993,22 +3443,22 @@ class _CampAddPatient extends State<CampAddPatient> {
       child: Row(
         children: options
             .map((option) => Row(
-          children: [
-            Radio<String>(
-              value: option,
-              groupValue: groupValue,
-              onChanged: onChanged,
-            ),
-            Text(option),
-            SizedBox(width: 10),
-          ],
-        ))
+                  children: [
+                    Radio<String>(
+                      value: option,
+                      groupValue: groupValue,
+                      onChanged: onChanged,
+                    ),
+                    Text(option),
+                    SizedBox(width: 10),
+                  ],
+                ))
             .toList(),
       ),
     );
   }
 
- /* Future<void> uploadLocalData() async {
+  /* Future<void> uploadLocalData() async {
     final localDataList =
     await dbHelper.getAllLocalPatients(); // ✅ Fetch data from SQLite
 
@@ -3036,14 +3486,17 @@ class _CampAddPatient extends State<CampAddPatient> {
 
     return age;
   }
+
   void _getLocation() async {
     try {
       Position position = await _determinePosition();
-      print('@@Latitude: ${position.latitude}, Longitude: ${position.longitude},');
+      print(
+          '@@Latitude: ${position.latitude}, Longitude: ${position.longitude},');
     } catch (e) {
       print('Error: $e');
     }
   }
+
   Future<List<DataGetDPM_ScreeningYear>> getDPM_ScreeningYear() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -3051,7 +3504,7 @@ class _CampAddPatient extends State<CampAddPatient> {
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-      GetDPM_ScreeningYear.fromJson(json);
+          GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -3059,14 +3512,17 @@ class _CampAddPatient extends State<CampAddPatient> {
       return null;
     }
   }
-  void openMapDialog(BuildContext context, String state, String district, String city, String village) async {
+
+  void openMapDialog(BuildContext context, String state, String district,
+      String city, String village) async {
     String fullAddress = '$city, $district, $state';
 
     try {
       List<Location> locations = await locationFromAddress(fullAddress);
 
       if (locations.isNotEmpty) {
-        LatLng initialLatLng = LatLng(locations[0].latitude, locations[0].longitude);
+        LatLng initialLatLng =
+            LatLng(locations[0].latitude, locations[0].longitude);
         updatedLatLng = initialLatLng;
 
         // Fetch address & pincode initially
@@ -3077,7 +3533,8 @@ class _CampAddPatient extends State<CampAddPatient> {
 
         if (placemarks.isNotEmpty) {
           Placemark place = placemarks[0];
-          updatedAddress = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
+          updatedAddress =
+              "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
           updatedPincode = place.postalCode ?? '';
 
           _AddressHouse.text = updatedAddress;
@@ -3091,7 +3548,8 @@ class _CampAddPatient extends State<CampAddPatient> {
           builder: (context) {
             return StatefulBuilder(builder: (context, setState) {
               return Dialog(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
                 child: Container(
                   width: 300,
                   height: 500,
@@ -3118,18 +3576,21 @@ class _CampAddPatient extends State<CampAddPatient> {
                             onMapCreated: (controller) {},
                             markers: updatedLatLng != null
                                 ? {
-                              Marker(
-                                markerId: MarkerId('selected_location'),
-                                position: updatedLatLng,
-                              ),
-                            }
+                                    Marker(
+                                      markerId: MarkerId('selected_location'),
+                                      position: updatedLatLng,
+                                    ),
+                                  }
                                 : {},
                             onTap: (LatLng tappedLatLng) async {
                               updatedLatLng = tappedLatLng;
-                              _latitudeController.text = tappedLatLng.latitude.toString();
-                              _longitudeController.text = tappedLatLng.longitude.toString();
+                              _latitudeController.text =
+                                  tappedLatLng.latitude.toString();
+                              _longitudeController.text =
+                                  tappedLatLng.longitude.toString();
 
-                              List<Placemark> placemarks = await placemarkFromCoordinates(
+                              List<Placemark> placemarks =
+                                  await placemarkFromCoordinates(
                                 tappedLatLng.latitude,
                                 tappedLatLng.longitude,
                               );
@@ -3137,7 +3598,8 @@ class _CampAddPatient extends State<CampAddPatient> {
                               if (placemarks.isNotEmpty) {
                                 Placemark place = placemarks[0];
                                 setState(() {
-                                  updatedAddress = "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
+                                  updatedAddress =
+                                      "${place.street}, ${place.subLocality}, ${place.locality}, ${place.administrativeArea}";
                                   updatedPincode = place.postalCode ?? '';
                                 });
 
@@ -3230,19 +3692,20 @@ class _CampAddPatient extends State<CampAddPatient> {
     // Optional: Show a toast message
     //Utils.showToast("Form has been reset!", true);
   }
-  Future<List<CampListDataonDashboardData>> getCampListDropdown({
-     int stateId,
-     int districtId,
-     String entryBy,
-  }) async {
 
+  Future<List<CampListDataonDashboardData>> getCampListDropdown({
+    int stateId,
+    int districtId,
+    String entryBy,
+  }) async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (!isNetworkAvailable) {
       Utils.showToast(AppConstant.noInternet, true);
       return [];
     }
 
-    final url = Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Camp/api/GetCampForDDL');
+    final url = Uri.parse(
+        'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Camp/api/GetCampForDDL');
 
     final Map<String, dynamic> requestBody = {
       "stateId": stateId,
@@ -3277,14 +3740,14 @@ class _CampAddPatient extends State<CampAddPatient> {
     int districtId,
     String ngoId,
   }) async {
-
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (!isNetworkAvailable) {
       Utils.showToast(AppConstant.noInternet, true);
       return [];
     }
 
-    final url = Uri.parse('https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Camp/api/GetHospitalinCampForDDL');
+    final url = Uri.parse(
+        'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Camp/api/GetHospitalinCampForDDL');
 
     final Map<String, dynamic> requestBody = {
       "stateId": stateId,
@@ -3317,7 +3780,7 @@ class _CampAddPatient extends State<CampAddPatient> {
   Future<void> getentryby() async {
     // Use await to get the actual value from SharedPrefs
     entryby =
-    await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
+        await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
 
     if (entryby != null) {
       print("entryby Number: $entryby");
@@ -3325,11 +3788,12 @@ class _CampAddPatient extends State<CampAddPatient> {
       print("No entryby found in shared preferences.");
     }
   }
+
   Future<void> getloggedInNgoId() async {
     // Use await to get the actual value from SharedPrefs
     loggedInNgoId =
-    await SharedPrefs.getStoreSharedValue(AppConstant.loggedInNgoId)
-    as String;
+        await SharedPrefs.getStoreSharedValue(AppConstant.loggedInNgoId)
+            as String;
 
     if (loggedInNgoId != null) {
       print("loggedInNgoId Number: $loggedInNgoId");
@@ -3337,6 +3801,7 @@ class _CampAddPatient extends State<CampAddPatient> {
       print("No loggedInNgoId found in shared preferences.");
     }
   }
+
   Widget _buildInfoColumn(String title, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -3360,6 +3825,7 @@ class _CampAddPatient extends State<CampAddPatient> {
       ],
     );
   }
+
   Future<void> ApipatientRegistration() async {
     FormData formData;
     print("### Starting patient registration ###");
@@ -3429,10 +3895,12 @@ class _CampAddPatient extends State<CampAddPatient> {
           print("###Compressed image available, preparing multipart file...");
           multipartFile = await MultipartFile.fromFile(
             compressedImage.path,
-            filename: "patient_image_${DateTime.now().millisecondsSinceEpoch}.jpg",
+            filename:
+                "patient_image_${DateTime.now().millisecondsSinceEpoch}.jpg",
           );
-        }else{
-          print("###Compressed image is null, sending empty patientImage field...");
+        } else {
+          print(
+              "###Compressed image is null, sending empty patientImage field...");
 
           // You can send empty string if the API expects the field
           formData.fields.add(MapEntry("patientImage", ""));
@@ -3443,11 +3911,12 @@ class _CampAddPatient extends State<CampAddPatient> {
       formData = FormData.fromMap({
         "registrationType": registerationtypeRadioValueinAPi,
         "idType": VoterIDtype.toString(),
-        "idName": _voterIDNumber.text.trim().isEmpty ? "0" : _voterIDNumber.text,
+        "idName":
+            _voterIDNumber.text.trim().isEmpty ? "0" : _voterIDNumber.text,
         "dependencyType": dependencyTypeRadio.toString(),
         "relationType": relationtypeValue.toString(),
         //    "relationName": relationFatherController.text,// error here
-        "relationName":"f",
+        "relationName": "f",
         "firstName": _firstNamePatientDetail.text,
         "lastName": _lastNamePatientDetail.text,
         "dob": _dob,
@@ -3470,13 +3939,13 @@ class _CampAddPatient extends State<CampAddPatient> {
         "communicationLanguage": stateLKanguage,
         "loggedInUserStateId": state_code_login,
         "loggedInUserDistrictId": district_code_login,
-       // "entryBy": entryby, as per chanda said new case after discuss
+        // "entryBy": entryby, as per chanda said new case after discuss
         "entryBy": selectedCampsr_no,
         "loggedInNgoId": loggedInNgoId,
         "programeId": "002",
         "loggedInUserRole": int.parse(role_id),
-        "userId": selectedHospitalh_Reg_ID,// as per chanda said new case after discuss
-
+        "userId": selectedHospitalh_Reg_ID,
+        // as per chanda said new case after discuss
       });
 
       // Conditionally add the image or an empty string
@@ -3495,7 +3964,8 @@ class _CampAddPatient extends State<CampAddPatient> {
       }
 
       final dio = Dio();
-      final url = "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
+      final url =
+          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/PatientRegistration";
       print("url: ${url}");
       dio.options.headers = {
         'Content-Type': 'multipart/form-data',
@@ -3572,7 +4042,6 @@ class _CampAddPatient extends State<CampAddPatient> {
     }
   }
 
-
   Future<void> ApipatientRegistrations(
       {Map<String, dynamic> patientData}) async {
     print("### Starting patient registration ###");
@@ -3637,10 +4106,10 @@ class _CampAddPatient extends State<CampAddPatient> {
         final tempDir = await getTemporaryDirectory();
         final targetPath = '${tempDir.path}/compressed_image.jpg';
         File compressedImage = await FlutterImageCompress.compressAndGetFile(
-          _image.path,
-          targetPath,
-          quality: 30,
-        ) ??
+              _image.path,
+              targetPath,
+              quality: 30,
+            ) ??
             _image;
 
         multipartFile = await MultipartFile.fromFile(compressedImage.path);
@@ -3651,7 +4120,9 @@ class _CampAddPatient extends State<CampAddPatient> {
         "registrationType": registerationtypeRadioValueinAPi,
         "patientImage": multipartFile,
         // "idType": VoterIDtype.toString(),
-        "idName": _voterIDNumber.text.toString().trim().isEmpty ? "0" : _voterIDNumber.text.toString(),
+        "idName": _voterIDNumber.text.toString().trim().isEmpty
+            ? "0"
+            : _voterIDNumber.text.toString(),
 
         "idName": _voterIDNumber.text,
         "dependencyType": dependencyTypeRadio.toString(),
@@ -3674,7 +4145,7 @@ class _CampAddPatient extends State<CampAddPatient> {
         "village": 0,
         "address": _AddressHouse.text,
         "apartment": "0",
-        "nearLandMark":"0",
+        "nearLandMark": "0",
         "pincode": _PinCode.text,
         "communicationLanguage": stateLKanguage,
         "loggedInUserStateId": state_code_login ?? "",

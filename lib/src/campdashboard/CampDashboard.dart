@@ -489,11 +489,17 @@ class _CampDashboard extends State<CampDashboard> {
       padding: EdgeInsets.symmetric(horizontal: 0), // Padding for better styling
 
       child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
+        child: DropdownButton2<String>(
           key: key,
           value: value,
           style: TextStyle(color: Colors.black, fontSize: textSize), // Smaller text
-          dropdownColor: Colors.white,
+          dropdownStyleData: DropdownStyleData(
+            maxHeight: 300,
+            width: 300,
+            decoration: BoxDecoration(
+              color: Colors.white,
+            ),
+          ),
           isExpanded: true, // Ensure text fits within the box
           items: items.map<DropdownMenuItem<String>>((Map<String, dynamic> item) {
             return DropdownMenuItem<String>(
@@ -511,14 +517,15 @@ SizedBox(width:8),
             );
           }).toList(),
           hint: hintIcon != null
+
               ? Row(
             children: [
               hintIcon, // Only add if not null
               SizedBox(width: 8.0), // Space
-              Text(hint, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: textSize)),
+              Text(hint, style: TextStyle(color: Colors.black,  fontSize: textSize)),
             ],
           )
-              : Text(hint, style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500, fontSize: textSize)),
+              : Text(hint, style: TextStyle(color: Colors.black, fontSize: textSize)),
           onChanged: onChanged,
         ),
       ),
