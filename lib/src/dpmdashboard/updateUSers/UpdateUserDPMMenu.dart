@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/updateUSers/GetDataUpdatedUSers.dart';
+import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
+
+import '../../database/SharedPrefs.dart';
 
 class UpdateUserDPMMenu extends StatefulWidget {
   @override
@@ -7,7 +11,13 @@ class UpdateUserDPMMenu extends StatefulWidget {
 
 class _UpdateUserDetailsScreenState extends State<UpdateUserDPMMenu> {
   TextEditingController userIdController = TextEditingController();
-
+String entryby,_chosenValue,
+    districtNames,
+    userId,
+    stateNames,
+    fullnameController;
+  int status, district_code_login, state_code_login;
+  String role_id;
   void updateUser() {
     String userId = userIdController.text.trim();
     if (userId.isEmpty) {
@@ -15,20 +25,34 @@ class _UpdateUserDetailsScreenState extends State<UpdateUserDPMMenu> {
         SnackBar(content: Text("Please enter a User ID")),
       );
       return;
+    }else{
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GetDataUpdatedUSers(),
+        ),
+      );
     }
 
     // TODO: Implement update user API call
     print("Updating user with ID: $userId");
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("User details updated successfully!")),
-    );
-  }
 
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // To generate number on loading of page
+    print('@@calling everytime');
+    getUserData();
+
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Update User Details")),
+      appBar: AppBar(title: Text("Update Users")),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center, // Center vertically
@@ -67,14 +91,14 @@ class _UpdateUserDetailsScreenState extends State<UpdateUserDPMMenu> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'District:',
+                            'State',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.w500),
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            'Your District', // Use actual districtNames variable here
+                            '${stateNames}', // Use actual districtNames variable here
                             style: TextStyle(
                                 color: Colors.red,
                                 fontWeight: FontWeight.w500),
@@ -95,13 +119,13 @@ class _UpdateUserDetailsScreenState extends State<UpdateUserDPMMenu> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'State:',
+                        'District',
                         style: TextStyle(
                             color: Colors.black, fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        'Your State', // Use actual stateNames variable here
+                        '${districtNames}', // Use actual stateNames variable here
                         style: TextStyle(
                             color: Colors.red, fontWeight: FontWeight.w500),
                       ),
@@ -119,26 +143,63 @@ class _UpdateUserDetailsScreenState extends State<UpdateUserDPMMenu> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "User ID",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 8),
-                    TextField(
-                      controller: userIdController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: "Enter User ID",
+
+                    SizedBox(height: 5),
+                    SizedBox(
+                      height: 50, // Adjust height as needed
+                      child: TextField(
+                        controller: userIdController,
+                        decoration: InputDecoration(
+                          label: RichText(
+                            text: TextSpan(
+                              text: 'Enter User ID',
+                              style: TextStyle(color: Colors.black, fontSize: 16),
+                              children: [
+                                TextSpan(
+                                  text: ' *', // Asterisk for required field
+                                  style: TextStyle(color: Colors.red, fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                          hintText: 'Enter User ID',
+                          // Border styles for enabled and focused states
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey), // Grey border
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.grey, width: 1), // Blue border when focused
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
                       ),
                     ),
+
                     SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: updateUser,
-                      style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.symmetric(vertical: 14),
-                        textStyle: TextStyle(fontSize: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                      child: SizedBox(
+                        height: 40, // Same height
+                        child: ElevatedButton(
+                          onPressed: () {
+                            print('Get button clicked');
+
+                              updateUser();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 20.0),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min, // Ensures button wraps around content
+                            children: [
+                              Icon(Icons.search, color: Colors.white), // Change icon as needed
+                              SizedBox(width: 8), // Space between icon and text
+                              Text('Get Data'),
+                            ],
+                          ),
+                        ),
                       ),
-                      child: Text("Get Data"),
                     ),
                   ],
                 ),
@@ -148,5 +209,46 @@ class _UpdateUserDetailsScreenState extends State<UpdateUserDPMMenu> {
         ),
       ),
     );
+  }
+  void getUserData() {
+    try {
+      SharedPrefs.getUser().then((user) {
+        setState(() {
+          fullnameController = user.name;
+          districtNames = user.districtName;
+          stateNames = user.stateName;
+          userId = user.userId;
+          status = user.status;
+          role_id = user.roleId;
+          state_code_login = user.state_code;
+          district_code_login = user.district_code;
+          getentryby();
+          // getloggedInNgoId();
+          print('@@2' + user.name);
+          print('@@3' + user.stateName);
+          print('@@4' + user.roleId);
+          print('@@5' + user.userId);
+          print('@@6' + user.districtName);
+          print('@@7' + state_code_login.toString());
+          print('@@8' + district_code_login.toString());
+          // Assuming you fetch the value from login or a previous screen
+
+        });
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> getentryby() async {
+    // Use await to get the actual value from SharedPrefs
+    entryby =
+    await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
+
+    if (entryby != null) {
+      print("entryby Number: $entryby");
+    } else {
+      print("No entryby found in shared preferences.");
+    }
   }
 }

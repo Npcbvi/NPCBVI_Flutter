@@ -5,9 +5,12 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/DPMDashboard.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMPatientDiesesParticularView.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
+
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
+import 'package:mohfw_npcbvi/src/model/bindorg/BindOrganValuebiggerFive.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMCataractPatientView.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmReportScreen/ReportScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
@@ -17,15 +20,16 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
 
-import '../model/bindorg/BindOrganValuebiggerFive.dart';
-import 'DPMDashboard.dart';
 
-class DPMPatientPatientDisceaseInnerDataDisplay extends StatefulWidget {
+
+
+
+class GlaucomaReportScreen extends StatefulWidget {
   @override
-  _DPMPatientPatientDisceaseInnerDataDisplay createState() => _DPMPatientPatientDisceaseInnerDataDisplay();
+  _GlaucomaReportScreen createState() => _GlaucomaReportScreen();
 }
 
-class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatientDisceaseInnerDataDisplay> {
+class _GlaucomaReportScreen extends State<GlaucomaReportScreen> {
   DateTime _selectedDate;
 
   TextEditingController fullnameController_ = new TextEditingController();
@@ -58,7 +62,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       gerYearCongenitalPtosis,gerYearTraumaChildren,gerYearSquint ;
   String getfyid;
   String
-      npcbNoCatract;
+  npcbNoCatract;
   DataBindOrganValuebiggerFive _selectBindOrgniasationBiggerFive;
   bool lowvisionCataractDataDispla = false;
   Future<List<DataBindOrganValuebiggerFive>>
@@ -182,7 +186,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
           'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_ScreeningYear'));
       Map<String, dynamic> json = jsonDecode(response.body);
       final GetDPM_ScreeningYear dashboardStateModel =
-          GetDPM_ScreeningYear.fromJson(json);
+      GetDPM_ScreeningYear.fromJson(json);
 
       return dashboardStateModel.data;
     } else {
@@ -214,8 +218,8 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       body: SingleChildScrollView(
         child: Column(
           children: [
-             SizedBox(height: 5),
-             Column(
+            SizedBox(height: 5),
+            Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
@@ -1096,7 +1100,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                 Column(
                   children: [
                     FutureBuilder<List<Datalowvisionregister_cataract>>(
-                      future: ApiController.getDPM_Cataract(
+                      future: ApiController.getDPM_Glaucomas(
                         district_code_login,
                         state_code_login,
                         npcbNoCatract,
@@ -1139,7 +1143,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
 
                                     _buildHeaderCellSrNoDiseaseData('S.No.', context),
                                     _buildHeaderCell('Patient Id'),
-                                   // _buildHeaderCell('Name of Person'),
+                                    // _buildHeaderCell('Name of Person'),
                                     _buildHeaderCellNGOActionSmallShow('Action'),
                                   ],
                                 ),
@@ -1153,12 +1157,12 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                                         _buildDataCellSrNoDiseaseData(
                                             (ddata.indexOf(offer) + 1).toString()),
                                         _buildDataCell(offer.pUniqueID),
-                                       // _buildDataCell(offer.name),
+                                        // _buildDataCell(offer.name),
                                         _buildDataCellViewBlue("View", () {
 
                                           _showReportDataDisplay( context, offer);
 
-                                       /*   Navigator.push(
+                                          /*   Navigator.push(
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) => DPMPatientDiesesParticularView(offer.id.toString()),
@@ -1235,7 +1239,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 8.0),
                       alignment: Alignment.centerLeft,
-                    /*  child: _buildNGOAPPlicationViewDetailsAttachments(
+                      /*  child: _buildNGOAPPlicationViewDetailsAttachments(
                           offer.npcbNo, offer.darpanNo),*/
                     ),
                   ],

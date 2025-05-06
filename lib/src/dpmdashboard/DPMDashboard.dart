@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/GlaucomaReportScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/SquintReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/updateUSers/UpdateUserDPMMenu.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
@@ -89,7 +91,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       lowVisionDataValue = 0;
   int ngodependOrganbisatioSelectValuessss = 0;
   bool dashboardviewReplace = false;
-  String currentFinancialYear;
+  String currentFinancialYear,entryby;
   String _chosenValue,
       districtNames,
       userId,
@@ -278,7 +280,17 @@ class _DPMDashboard extends State<DPMDashboard> {
     // _futureAddSchoolEyeScreening = fetchScreeningYearData();  // API call happens once here
     // _futureMonthAddSchoolEyeScreening = fetchScreeningMonthData();
   }
+  Future<void> getentryby() async {
+    // Use await to get the actual value from SharedPrefs
+    entryby =
+    await SharedPrefs.getStoreSharedValue(AppConstant.entryBy) as String;
 
+    if (entryby != null) {
+      print("entryby Number: $entryby");
+    } else {
+      print("No entryby found in shared preferences.");
+    }
+  }
   void getUserData() {
     try {
       SharedPrefs.getUser().then((user) {
@@ -291,7 +303,8 @@ class _DPMDashboard extends State<DPMDashboard> {
           role_id = user.roleId;
           state_code_login = user.state_code;
           district_code_login = user.district_code;
-          // getnpcbNo();
+          getentryby();
+          // getloggedInNgoId();
           print('@@2' + user.name);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
@@ -299,12 +312,15 @@ class _DPMDashboard extends State<DPMDashboard> {
           print('@@6' + user.districtName);
           print('@@7' + state_code_login.toString());
           print('@@8' + district_code_login.toString());
+          // Assuming you fetch the value from login or a previous screen
+
         });
       });
     } catch (e) {
       print(e);
     }
   }
+
 
   String getCurrentFinancialYear() {
     DateTime now = DateTime.now();
@@ -527,9 +543,9 @@ class _DPMDashboard extends State<DPMDashboard> {
                     Navigator.pop(context);
                   },
                 ),
-                /*   _buildMenuItem(
+                   _buildMenuItem(
                   icon: Icons.update,
-                  title: 'Update User',
+                  title: 'Update Users',
                   onTap: () {
                   // cmment due to abhi api ni bbnaa hai demo ke liye tyari hai
                     Navigator.pop(context); // Close the current menu first
@@ -541,7 +557,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                       ),
                     );
                   },
-                ),*/
+                ),
                 _buildDropdownItem(
                   value: _chosenValue,
                   hint: 'Approve Application',
@@ -6907,17 +6923,35 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _buildDataCellViewBlueDiseaseDataAction(
                                           "View", () {
                                         print(
-                                            "@@Patient Pe Click TypeShowData--here===");
-                                        /*Utils.showToast(
-                                            "Line number 6912", true);*/
-
-                                         Navigator.push(
+                                            "@@Patient Pe Click TypeShowData--here==="+diseaseid.toString());
+                                      if(diseaseid==1){
+                                        Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 DPMPatientPatientDisceaseInnerDataDisplay(),
                                           ),
                                         );
+                                      }else if(diseaseid==2){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                GlaucomaReportScreen(),
+                                          ),
+                                        );
+                                      }
+                                      else if(diseaseid==3){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SquintReportScreen(),
+                                          ),
+                                        );
+                                      }
+
+
                                       }),
                                     ],
                                   );

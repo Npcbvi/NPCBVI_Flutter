@@ -43,7 +43,10 @@ class ApiConstants {
   static String GetSchoolEyeScreening_Registration = 'DpmDashboard/api/SchoolEyeScreening_Registration';
   static String GetDPM_Glaucoma = 'DpmDashboard/api/GetDPM_Glaucoma';
   static String GetDPM_Cataract = 'DpmDashboard/api/GetDPM_Cataract';
+
   static String GetDPM_Daiabetic = 'DpmDashboard/api/GetDPM_Daiabetic';
+
+  static String GetDPM_Glaucomas = 'DpmDashboard/api/GetDPM_Glaucoma';
   static String GetDPM_CornealBlindness = 'DpmDashboard/api/GetDPM_CornealBlindness';
 
   static String GetDPM_VRSurgery = 'DpmDashboard/api/GetDPM_VRSurgery';
