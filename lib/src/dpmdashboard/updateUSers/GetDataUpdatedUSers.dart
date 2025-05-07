@@ -204,7 +204,7 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
                   ),
                   SizedBox(height: 5),
                   SizedBox(height: 5),
-                  Container(
+             /*     Container(
                     margin:
                     EdgeInsets.fromLTRB(5, 0, 5, 0), // Add margin here
 
@@ -270,9 +270,9 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
                         },
                       ),
                     ),
-                  ),
+                  ),*/
                   SizedBox(height: 5),
-                  Container(
+               /*   Container(
                     margin:
                     EdgeInsets.fromLTRB(5, 0, 5, 0), // Add margin here
 
@@ -338,7 +338,7 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
                         },
                       ),
                     ),
-                  ),
+                  ),*/
                   SizedBox(
                     height: 50, // Adjust height as needed
                     child: TextField(
@@ -494,7 +494,7 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
                     ),
                   ),
                   SizedBox(height: 5),
-                  Container(
+         /*         Container(
                     margin:
                     EdgeInsets.fromLTRB(5, 0, 5, 0), // Add margin here
 
@@ -560,9 +560,9 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
                         },
                       ),
                     ),
-                  ),
+                  ),*/
                   SizedBox(height: 5),
-                  Container(
+             /*     Container(
                     margin:
                     EdgeInsets.fromLTRB(5, 0, 5, 0), // Add margin here
 
@@ -628,7 +628,7 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
                         },
                       ),
                     ),
-                  ),
+                  ),*/
                 ],
               ),
             ),
