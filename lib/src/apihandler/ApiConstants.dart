@@ -47,6 +47,11 @@ class ApiConstants {
   static String GetDPM_Daiabetic = 'DpmDashboard/api/GetDPM_Daiabetic';
 
   static String GetDPM_Glaucomas = 'DpmDashboard/api/GetDPM_Glaucoma';
+
+  static String getDPM_Squint = 'DpmDashboard/api/GetDPM_Squint';
+  static String GetDPM_CongenitalPtosis_new = 'DpmDashboard/api/GetDPM_CongenitalPtosis';
+
+  static String GetDPM_RetinoblasmaData = 'DpmDashboard/api/GetDPM_RetinoblasmaData';
   static String GetDPM_CornealBlindness = 'DpmDashboard/api/GetDPM_CornealBlindness';
 
   static String GetDPM_VRSurgery = 'DpmDashboard/api/GetDPM_VRSurgery';

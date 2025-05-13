@@ -1214,7 +1214,11 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                 _buildTableRow('Gender:', offer.gender),
                 _buildTableRow('Address:', offer.addressLine1),
                 _buildTableRow('Operation Date:', offer.operatedOn),
-                _buildTableRow('Operated Eye:', offer.eyetype.toString()),
+            //    _buildTableRow('Operated Eye:', offer.eyetype.toString()),
+                _buildTableRow(
+                  'Operated Eye:',
+                  offer.eyetype == 1 ? 'LEFT' : 'RIGHT',
+                ),
                 _buildTableRow('NGO:', offer.ngoName),
 
 

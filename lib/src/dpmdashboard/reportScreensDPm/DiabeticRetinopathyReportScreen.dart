@@ -24,12 +24,12 @@ import 'dart:developer' as developer;
 
 
 
-class GlaucomaReportScreen extends StatefulWidget {
+class DiabeticRetinopathyReportScreen extends StatefulWidget {
   @override
-  _GlaucomaReportScreen createState() => _GlaucomaReportScreen();
+  _DiabeticRetinopathyReportScreen createState() => _DiabeticRetinopathyReportScreen();
 }
 
-class _GlaucomaReportScreen extends State<GlaucomaReportScreen> {
+class _DiabeticRetinopathyReportScreen extends State<DiabeticRetinopathyReportScreen> {
   DateTime _selectedDate;
 
   TextEditingController fullnameController_ = new TextEditingController();
@@ -1100,7 +1100,7 @@ class _GlaucomaReportScreen extends State<GlaucomaReportScreen> {
                 Column(
                   children: [
                     FutureBuilder<List<Datalowvisionregister_cataract>>(
-                      future: ApiController.getDPM_Glaucomas(
+                      future: ApiController.getDPM_RetinoblasmaData(
                         district_code_login,
                         state_code_login,
                         npcbNoCatract,
@@ -1217,8 +1217,8 @@ class _GlaucomaReportScreen extends State<GlaucomaReportScreen> {
                 _buildTableRow('DOB:', Utils.formatDateString(offer.dob)),
                 _buildTableRow('Gender:', offer.gender),
                 _buildTableRow('Address:', offer.addressLine1),
-                _buildTableRow('Operation Date:', offer.operatedOn),
-               // _buildTableRow('Operated Eye:', offer.eyetype.toString()),
+                _buildTableRow('Operation Date:', Utils.formatDateString(offer.operatedOn)),
+                //   _buildTableRow('Operated Eye:', offer.eyetype.toString()),
                 _buildTableRow(
                   'Operated Eye:',
                   offer.eyetype == 1 ? 'LEFT' : 'RIGHT',

@@ -1100,7 +1100,7 @@ class _SquintReportScreen extends State<SquintReportScreen> {
                 Column(
                   children: [
                     FutureBuilder<List<Datalowvisionregister_cataract>>(
-                      future: ApiController.getDPM_Glaucomas(
+                      future: ApiController.getDPM_Squint(
                         district_code_login,
                         state_code_login,
                         npcbNoCatract,
@@ -1217,8 +1217,12 @@ class _SquintReportScreen extends State<SquintReportScreen> {
                 _buildTableRow('DOB:', Utils.formatDateString(offer.dob)),
                 _buildTableRow('Gender:', offer.gender),
                 _buildTableRow('Address:', offer.addressLine1),
-                _buildTableRow('Operation Date:', offer.operatedOn),
-                _buildTableRow('Operated Eye:', offer.eyetype.toString()),
+                _buildTableRow('Operation Date:', Utils.formatDateString(offer.operatedOn)),
+             //   _buildTableRow('Operated Eye:', offer.eyetype.toString()),
+                _buildTableRow(
+                  'Operated Eye:',
+                  offer.eyetype == 1 ? 'LEFT' : 'RIGHT',
+                ),
                 _buildTableRow('NGO:', offer.ngoName),
 
 

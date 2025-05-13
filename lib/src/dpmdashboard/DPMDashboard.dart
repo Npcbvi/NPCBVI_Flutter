@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/CongenitalPtosisReportScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/DiabeticRetinopathyReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/GlaucomaReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/SquintReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/updateUSers/UpdateUserDPMMenu.dart';
@@ -6947,6 +6949,24 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           MaterialPageRoute(
                                             builder: (context) =>
                                                 SquintReportScreen(),
+                                          ),
+                                        );
+                                      }
+                                      else if(diseaseid==4){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CongenitalPtosisReportScreen(),
+                                          ),
+                                        );
+                                      }
+                                      else if(diseaseid==5){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                DiabeticRetinopathyReportScreen(),
                                           ),
                                         );
                                       }
