@@ -24,12 +24,12 @@ import 'dart:developer' as developer;
 
 
 
-class DiabeticRetinopathyReportScreen extends StatefulWidget {
+class CornealBlindnessReportScreen extends StatefulWidget {
   @override
-  _DiabeticRetinopathyReportScreen createState() => _DiabeticRetinopathyReportScreen();
+  _CornealBlindnessReportScreen createState() => _CornealBlindnessReportScreen();
 }
 
-class _DiabeticRetinopathyReportScreen extends State<DiabeticRetinopathyReportScreen> {
+class _CornealBlindnessReportScreen extends State<CornealBlindnessReportScreen> {
   DateTime _selectedDate;
 
   TextEditingController fullnameController_ = new TextEditingController();
@@ -1100,7 +1100,7 @@ class _DiabeticRetinopathyReportScreen extends State<DiabeticRetinopathyReportSc
                 Column(
                   children: [
                     FutureBuilder<List<Datalowvisionregister_cataract>>(
-                      future: ApiController.getDPM_Daiabetic_new(
+                      future: ApiController.getDPM_CornealBlindness_new(
                         district_code_login,
                         state_code_login,
                         npcbNoCatract,

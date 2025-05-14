@@ -2,8 +2,12 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/CongenitalPtosisReportScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/CornealBlindnessReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/DiabeticRetinopathyReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/GlaucomaReportScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/IntraocularTraumainChildrenReportScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/RetinoblastomaReportScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/RetinopathyofPrematurityReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/SquintReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/updateUSers/UpdateUserDPMMenu.dart';
 import 'package:path_provider/path_provider.dart';
@@ -6970,8 +6974,42 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           ),
                                         );
                                       }
-
-
+                                      else if(diseaseid==6){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CornealBlindnessReportScreen(),
+                                          ),
+                                        );
+                                      }
+                                      else if(diseaseid==7){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RetinopathyofPrematurityReportScreen(),
+                                          ),
+                                        );
+                                      }
+                                      else if(diseaseid==8){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                RetinoblastomaReportScreen(),
+                                          ),
+                                        );
+                                      }
+                                      else if(diseaseid==9){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                IntraocularTraumainChildrenReportScreen(),
+                                          ),
+                                        );
+                                      }
                                       }),
                                     ],
                                   );

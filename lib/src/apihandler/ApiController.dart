@@ -2679,6 +2679,286 @@ class ApiController {
     }
   }
 
+  static Future<List<Datalowvisionregister_cataract>> getDPM_Daiabetic_new(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@getDPM_RetinoblasmaData" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@getDPM_RetinoblasmaData--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_RetinopathyofPrematurity;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationtypeValue
+      });
+      print("@@getDPM_Cataract--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_Cataract--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      lowvisionregister_cataract data =
+      lowvisionregister_cataract.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //  Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+  static Future<List<Datalowvisionregister_cataract>> getDPM_CornealBlindness_new(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@getDPM_CornealBlindness" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@getDPM_CornealBlindness--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_CornealBlindness_new;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationtypeValue
+      });
+      print("@@getDPM_Cataract--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_Cataract--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      lowvisionregister_cataract data =
+      lowvisionregister_cataract.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //  Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+  static Future<List<Datalowvisionregister_cataract>> getDPM_RetinopathyofPrematurity(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@getDPM_RetinoblasmaData" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@getDPM_RetinoblasmaData--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_RetinopathyofPrematurity;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationtypeValue
+      });
+      print("@@getDPM_Cataract--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_Cataract--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      lowvisionregister_cataract data =
+      lowvisionregister_cataract.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //  Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<List<Datalowvisionregister_cataract>> getDPM_TraumainChildrenData(
+      int district_code,
+      int state_code,
+      String npcbno,
+      String financialYear,
+      int organisationtypeValue) async {
+    print("@@GetDPM_TraumainChildrenData" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@GetDPM_TraumainChildrenData--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_TraumainChildrenData;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "district_code": district_code,
+        "state_code": state_code,
+        "npcbno": npcbno,
+        "financialYear": financialYear,
+        "organisationType": organisationtypeValue
+      });
+      print("@@getDPM_Cataract--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_Cataract--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      lowvisionregister_cataract data =
+      lowvisionregister_cataract.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //  Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+
+
+
+
 
   static Future<List<Datalowvisonregister_diabitic>> getDPM_Daiabetic(
       int district_code,

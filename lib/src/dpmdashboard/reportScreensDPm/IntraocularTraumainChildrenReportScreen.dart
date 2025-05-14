@@ -24,12 +24,12 @@ import 'dart:developer' as developer;
 
 
 
-class DiabeticRetinopathyReportScreen extends StatefulWidget {
+class IntraocularTraumainChildrenReportScreen extends StatefulWidget {
   @override
-  _DiabeticRetinopathyReportScreen createState() => _DiabeticRetinopathyReportScreen();
+  _IntraocularTraumainChildrenReportScreen createState() => _IntraocularTraumainChildrenReportScreen();
 }
 
-class _DiabeticRetinopathyReportScreen extends State<DiabeticRetinopathyReportScreen> {
+class _IntraocularTraumainChildrenReportScreen extends State<IntraocularTraumainChildrenReportScreen> {
   DateTime _selectedDate;
 
   TextEditingController fullnameController_ = new TextEditingController();
@@ -1100,7 +1100,7 @@ class _DiabeticRetinopathyReportScreen extends State<DiabeticRetinopathyReportSc
                 Column(
                   children: [
                     FutureBuilder<List<Datalowvisionregister_cataract>>(
-                      future: ApiController.getDPM_Daiabetic_new(
+                      future: ApiController.getDPM_TraumainChildrenData(
                         district_code_login,
                         state_code_login,
                         npcbNoCatract,
@@ -1116,7 +1116,7 @@ class _DiabeticRetinopathyReportScreen extends State<DiabeticRetinopathyReportSc
                         } else if (!snapshot.hasData || snapshot.data.isEmpty) {
                           // Show "No data found" when there's no data
                           return Container(
-                            margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
+                            margin: EdgeInsets.fromLTRB( 0, 20, 0, 10),
                             child: Center(
                               child: Text(
                                 "No data found",

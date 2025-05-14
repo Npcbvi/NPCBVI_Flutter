@@ -54,13 +54,17 @@ class ApiConstants {
   static String GetDPM_RetinoblasmaData = 'DpmDashboard/api/GetDPM_RetinoblasmaData';
   static String GetDPM_CornealBlindness = 'DpmDashboard/api/GetDPM_CornealBlindness';
 
+  static String GetDPM_RetinopathyofPrematurity = 'DpmDashboard/api/GetDPM_RetinopathyofPrematurity';
+  static String getDPM_Daiabetic_new = 'DpmDashboard/api/GetDPM_Daiabetic';
+
+  static String GetDPM_TraumainChildrenData = 'DpmDashboard/api/GetDPM_TraumainChildrenData';
+
   static String GetDPM_VRSurgery = 'DpmDashboard/api/GetDPM_VRSurgery';
 
   static String GetDPM_CongenitalPtosis = 'DpmDashboard/api/GetDPM_CongenitalPtosis';
   static String GetDPM_TraumaChildren = 'DpmDashboard/api/GetDPM_TraumaChildren';
   static String GetDPM_Squintapproval = 'DpmDashboard/api/GetDPM_Squintapproval';
-  //Childhood blindness pending work now
-
+  static String GetDPM_CornealBlindness_new = 'DpmDashboard/api/GetDPM_CornealBlindness';
   static String GetDPM_Patients_Approved_View = 'DpmDashboard/api/GetDPM_Patients_Approved_View';
 
   static String GetData_by_allngo_amount_totalCount = 'DpmDashboard/api/GetData_by_allngo_amount_totalCount';
