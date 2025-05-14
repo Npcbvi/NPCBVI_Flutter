@@ -9,6 +9,7 @@ import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/IntraocularTrauma
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/RetinoblastomaReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/RetinopathyofPrematurityReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/SquintReportScreen.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/ApprovedClickDataPatientDiseaseInnerDataDisplay.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/updateUSers/UpdateUserDPMMenu.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
@@ -6565,7 +6566,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                                       _buildDataCellViewBlueDiseaseDataAction(
                                           "View", () {
                                         print(
-                                            '@@Edit clicked for item: ${offer
+                                            '@@Edit clicked for item-6568: ${offer
                                                 .diseaseId}');
                                         showDiseaseApprovedPatintViewClick(
                                             offer.diseaseId);
@@ -6801,15 +6802,20 @@ class _DPMDashboard extends State<DPMDashboard> {
                                               "View", () {
                                             print("@@npcbNo: " + offer.npcbNo);
                                             Utils.showToast(
-                                                "Next Sprint Report", true);
+                                                "Next Sprint Report---6804", true);
 
-                                            /*    Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DPMReportScreen(),
-                                              ),
-                                            );*/
+
+                                            if(diseaseid==1){
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ApprovedClickDataPatientDiseaseInnerDataDisplay(),
+                                                ),
+                                              );
+                                            }else if(diseaseid==2){
+
+                                            }
                                           }),
                                         ],
                                       );
