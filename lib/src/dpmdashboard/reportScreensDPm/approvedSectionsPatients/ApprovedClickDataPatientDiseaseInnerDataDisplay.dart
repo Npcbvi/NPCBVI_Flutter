@@ -787,7 +787,7 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                           value: lowVisionDatas,
                           style: const TextStyle(color: Colors.black),
                           decoration: InputDecoration(
-                            hintText: "Select Type",
+                            hintText: "All Type Organisations",
                             hintStyle: TextStyle(
                               color: Colors.black,
                               fontSize: 14,
@@ -810,10 +810,13 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          items: [
-                            'NGOs',
-                            'Private Practitioner',
-                            'Private Medical College',
+                          items: ["All Type Organisations",//0
+                            'NGO District',//5
+                            'District Hospital/Government Medical College',//10
+                            'CHC/Sub-Dist. Hospital',//11
+                            "Private Practitioner",//12
+                            "Private Institute",//13
+                            "Other",//14
                           ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
                             return DropdownMenuItem<String>(
                               value: lowVisionRegistry,

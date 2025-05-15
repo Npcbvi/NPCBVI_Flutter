@@ -85,6 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
         SharedPrefs.storeSharedValues(AppConstant.distritcCode,
             response.result.data.district_code.toString());
+        SharedPrefs.storeSharedValues(AppConstant.email_id,
+            response.result.data.emailId.toString());
         SharedPrefs.storeSharedValues(
             AppConstant.state_code, response.result.data.state_code.toString());
         // Assuming `response.result.list` is a List<DataList>
@@ -105,6 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 data.status.toString());
             SharedPrefs.storeSharedValues(AppConstant.ngoName,
                 data.ngoName.toString());
+
+
             if (data.ngoid != null && data.ngoid.toString().isNotEmpty) {
               SharedPrefs.storeSharedValues(AppConstant.ngoid, data.ngoid.toString());
             }

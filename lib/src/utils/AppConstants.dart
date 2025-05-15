@@ -16,6 +16,8 @@ class AppConstant {
   static final String status = "status";
   static final String hospitalId = "hospitalId";
   static final String ngoName = "ngoName";
+  static final String email_id = "email_id";
+
   static final String ngoid = "ngoid";
 
   static final String loggedInNgoId = "loggedInNgoId";

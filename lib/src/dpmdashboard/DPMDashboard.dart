@@ -273,6 +273,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   Future<List<DataGetDPM_NGOAPProved_pending>> _futureData;
   double sharedFontSize = 14.0;
   Color sharedFontColor = Colors.black;
+
   FontWeight sharedFontWeight = FontWeight.normal;
 
   @override
@@ -568,7 +569,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 _buildDropdownItem(
                   value: _chosenValue,
                   hint: 'Approve Application',
-                  hintIcon: Icon(Icons.update, color: Colors.black),
+                  hintIcon: Icon(Icons.update, color: Colors.black, size: 20.0,),
                   // Add an icon to the hint
                   items: [
                     {'value': 'NGO Application', 'icon': Icons.person},
@@ -721,7 +722,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 _buildDropdownItem(
                   value: _chosenValueLOWVision,
                   hint: 'Low Vision Register',
-                  hintIcon: Icon(Icons.local_hospital, color: Colors.black),
+                  hintIcon: Icon(Icons.local_hospital, color: Colors.black, size: 20.0,),
                   // Add an icon to the hint
                   items: [
                     {'value': 'Cataract', 'icon': Icons.local_hospital},
@@ -913,7 +914,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                 _buildDropdownItem(
                   value: _chosenEyeBank,
                   hint: 'Eye Bank',
-                  hintIcon: Icon(Icons.remove_red_eye),
+                  hintIcon: Icon(Icons.remove_red_eye, size: 20.0),
                   // Add an icon to the hint
                   items: [
                     {'value': 'Eye Bank Collection', 'icon': Icons.collections},
@@ -20535,6 +20536,7 @@ class _DPMDashboard extends State<DPMDashboard> {
         child: Row(
           children: [
             Icon(icon, color: sharedFontColor, size: sharedFontSize),
+
             SizedBox(width: 8.0),
             Text(
               title,
