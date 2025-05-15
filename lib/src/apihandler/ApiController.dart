@@ -139,6 +139,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../model/camp/CampDashboard.dart';
 import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
+import '../model/dpmRegistration/updateUsers/GetDPM_Edit_UpdateUserDetail.dart';
 import '../model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
 import '../model/guidlines/GuilinessPage.dart';
 import '../model/mainDashbaordMorClick/moreClickCamp/BothWiseCamp.dart';
@@ -10394,6 +10395,73 @@ class ApiController {
       return [];
     }
   }
+  static Future<List<DataGetDPM_Edit_UpdateUserDetail>> getDPM_Edit_UpdateUserDetails(
+      int h_Reg_ID,
+      String userid,
+      int statecode,
+      int districtcode,
+      String roleid) async {
+    print("@@getDPM_Edit_UpdateUserDetails" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@getDPM_Edit_UpdateUserDetails--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
 
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Edit_UpdateUserDetails;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "h_Reg_ID": 0,
+        "userid": userid,
+        "statecode": 0,
+        "districtcode": 0,
+        "roleid": ""
+      });
+      print("@@getDPM_Cataract--bodyprint--: ${url + body.toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_Cataract--Api Response: ${response.toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      GetDPM_Edit_UpdateUserDetail data =
+      GetDPM_Edit_UpdateUserDetail.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      //  Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

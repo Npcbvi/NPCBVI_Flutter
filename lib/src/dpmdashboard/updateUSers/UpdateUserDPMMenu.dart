@@ -3,6 +3,7 @@ import 'package:mohfw_npcbvi/src/dpmdashboard/updateUSers/GetDataUpdatedUSers.da
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 
 import '../../database/SharedPrefs.dart';
+import '../../model/dpmRegistration/updateUsers/GetDPM_Edit_UpdateUserDetail.dart';
 
 class UpdateUserDPMMenu extends StatefulWidget {
   @override
@@ -10,6 +11,7 @@ class UpdateUserDPMMenu extends StatefulWidget {
 }
 
 class _UpdateUserDetailsScreenState extends State<UpdateUserDPMMenu> {
+  Future<List<DataGetDPM_Edit_UpdateUserDetail>> dataGetDPM_Edit_UpdateUserDetail;
   TextEditingController userIdController = TextEditingController();
 String entryby,_chosenValue,
     districtNames,

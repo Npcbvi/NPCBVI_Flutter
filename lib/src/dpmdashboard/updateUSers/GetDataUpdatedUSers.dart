@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
+import '../../apihandler/ApiController.dart';
 import '../../database/SharedPrefs.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+
+import '../../model/dpmRegistration/updateUsers/GetDPM_Edit_UpdateUserDetail.dart';
 
 class GetDataUpdatedUSers extends StatefulWidget {
   @override
@@ -12,6 +15,7 @@ class GetDataUpdatedUSers extends StatefulWidget {
 }
 
 class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
+  Future<List<DataGetDPM_Edit_UpdateUserDetail>> dataGetDPM_Edit_UpdateUserDetail;
   TextEditingController userIdController = TextEditingController();
   TextEditingController stateController = TextEditingController();
   TextEditingController districtcontroller = TextEditingController();
@@ -628,11 +632,11 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
   void getUserData() {
     try {
       SharedPrefs.getUser().then((user) {
-        setState(() {
+        setState(() async {
           emaiId=user.emailId;
-          EmailIdControlller.text=user.emailId;
+       //   EmailIdControlller.text=user.emailId;
           fullnameController = user.name;
-          usernameController.text = user.name;
+
           districtNames = user.districtName;
           districtcontroller.text = user.districtName;
           stateNames = user.stateName;
@@ -652,6 +656,29 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
           print('@@6' + user.districtName);
           print('@@7' + state_code_login.toString());
           print('@@8' + district_code_login.toString());
+          // ✅ Now call the API and use the returned data
+          List<DataGetDPM_Edit_UpdateUserDetail> result =
+              await ApiController.getDPM_Edit_UpdateUserDetails(
+            0,
+            user.userId,
+            0,
+            0,
+            "",
+          );
+
+          if (result.isNotEmpty) {
+            final item = result.first;
+
+            setState(() {
+              mobileNumberControlller.text=item.mobile.toString()??'';
+              EmailIdControlller.text = item.emailId ?? '';
+              usernameController.text = item.name??'';
+            });
+
+            print('@@Fetched status from API: ${item.status}');
+          } else {
+            print('@@No user detail data returned');
+          }
           // ✅ API Call with required params
           fetchAndSetApplicationStatus();
           // Assuming you have userId available here
