@@ -7,6 +7,7 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMDashboard.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMPatientDiesesParticularView.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/ViewClickCataractdataApprovedbyDPM.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrganValuebiggerFive.dart';
@@ -43,8 +44,8 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
   Color sharedFontColor = Colors.black;
   FontWeight sharedFontWeight = FontWeight.normal;
   String _selectedDateTextToDate = 'To Date';
-  String  oganisationTypeGovtPrivateDRopDown;
-  int dropDownvalueOrgnbaistaionType = 0;
+  String  oganisationTypeGovtPrivateDRopDown,statusTypeValue;
+  int dropDownvalueOrgnbaistaionType = 0,statusTypeValueShow;
   Future<List<DataBindOrgan>> _futureBindOrgan;
   int status, district_code_login, state_code_login,lowVisionDataValue = 0;
   String role_id,bindOrganisationNAme,npcbNo,lowVisionDatas,lowVisionDatasStatusType;
@@ -71,6 +72,11 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
     // To generate number on loading of page
     getUserData();
     _future = getDPM_ScreeningYear();
+    oganisationTypeGovtPrivateDRopDown = 'NGO District';
+    statusTypeValue='Approved';// Set default selected item
+    statusTypeValueShow=5;
+    dropDownvalueOrgnbaistaionType = 5;                   // Set related type value
+    _futureBindOrgan = GetDPM_Bindorg();                  // Load corresponding data
     reportviewCatracts = true;
   }
   Future<List<DataBindOrgan>> GetDPM_Bindorg() async {
@@ -140,41 +146,44 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
   Future<List<DataBindOrganValuebiggerFive>> GetDPM_Bindorg_New() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
+      final String url =
+          'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_Bindorg_New';
+
+      final Map<String, dynamic> params = {
+        "district_code": district_code_login,
+        "organisationType": dropDownvalueOrgnbaistaionType,
+      };
+
+      print('@@API URL: $url');
+      print('@@API Params: ${jsonEncode(params)}');
+
       final response = await http.post(
-        Uri.parse(
-            'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_Bindorg_New'),
+        Uri.parse(url),
         headers: {
           'Content-Type': 'application/json',
           // Add other headers if needed
         },
-        body: jsonEncode({
-          "district_code": district_code_login,
-          "organisationType": lowVisionDataValue,
-        }),
+        body: jsonEncode(params),
       );
-      print("@@GetDPM_Bindorg_New--bodyprint--:" +
-          "https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/DpmDashboard/api/GetDPM_Bindorg_New" +
-          lowVisionDataValue.toString());
+
       if (response.statusCode == 200) {
         Map<String, dynamic> json = jsonDecode(response.body);
         final BindOrganValuebiggerFive bindOrganValuebiggerFive =
         BindOrganValuebiggerFive.fromJson(json);
         if (bindOrganValuebiggerFive.status) {
-          print('@@bindOrganValuebiggerFive: ' +
-              bindOrganValuebiggerFive.message);
+          print('@@Response Success: ${bindOrganValuebiggerFive.message}');
         }
         return bindOrganValuebiggerFive.data;
       } else {
-        // Handle the error if response status is not 200
         print('Request failed with status: ${response.statusCode}');
         return null;
       }
     } else {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
-
     }
   }
+
   Future<List<DataGetDPM_ScreeningYear>> getDPM_ScreeningYear() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
@@ -286,7 +295,7 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                               child: Row(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(right: 20),
+                                    margin: EdgeInsets.only(right: 5),
                                     // Space between Login Type and District
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -331,11 +340,11 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                             ),
 
                             // Space between Row and State Column
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 10),
 
                             // State in a Column with margin
                             Container(
-                              margin: EdgeInsets.only(right: 10),
+                              margin: EdgeInsets.only(right: 5),
                               // Right margin for spacing
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -354,7 +363,7 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 10),
 
                             // State in a Column with margin
                             Container(
@@ -371,6 +380,7 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                                   const SizedBox(height: 5),
                                   Text(
                                     '${fullnameController}',
+                                    maxLines: 2,
                                     style: TextStyle(
                                         color: Colors.red, fontWeight: FontWeight.w500),
                                   ),
@@ -474,6 +484,7 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
   }
 
   Widget reportviewCatract() {
+
     return Column(
       children: [
         Visibility(
@@ -767,560 +778,787 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                 ],
               ),
               SizedBox(height: 5.0),
-              Row(
-                children: [
-                  // Dropdown with FutureBuilder
 
-                  // Second Dropdown
-                    Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0), // Add margin
-                      height: 50, // Set height to 50
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButtonFormField2<String>(
-                          isExpanded: true,
-                          value: lowVisionDatas,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                            hintText: "All Type Organisations",
-                            hintStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5), // Adjusted padding
-                          ),
-                          buttonStyleData: ButtonStyleData(
-                            height: 50, // Set height to 50
-                          ),
-                          iconStyleData: IconStyleData(
-                            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                          ),
-                          dropdownStyleData: DropdownStyleData(
-                            maxHeight: 300,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          items: ["All Type Organisations",//0
-                            'NGO District',//5
-                            'District Hospital/Government Medical College',//10
-                            'CHC/Sub-Dist. Hospital',//11
-                            "Private Practitioner",//12
-                            "Private Institute",//13
-                            "Other",//14
-                          ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
-                            return DropdownMenuItem<String>(
-                              value: lowVisionRegistry,
-                              child: Text(
-                                lowVisionRegistry,
-                                overflow: TextOverflow.ellipsis, // Prevents text overflow
-                                style: const TextStyle(color: Colors.black),
+
+
+              Padding(
+                padding: EdgeInsets.all(0.0),
+
+                child: Container(
+                  child: Expanded(
+                      child: Container(
+                        margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Organisation Type', style: TextStyle(fontWeight: FontWeight.bold)),
+                            DropdownButtonFormField2<String>(
+                              value: oganisationTypeGovtPrivateDRopDown,
+                              isExpanded: true,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.grey, width: 1),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                filled: true,
+                                fillColor: Colors.white,
                               ),
-                            );
-                          }).toList(),
-                          onChanged: (String lowVisionData) {
-                            setState(() {
-                              lowVisionDatas = lowVisionData ?? '';
-                              switch (lowVisionDatas) {
-                                case "NGOs":
-                                  lowVisionDataValue = 5;
-                                  _futureBindOrgan =
-                                      GetDPM_Bindorg();
-                                  break;
-                                case "Private Practitioner":
-                                  lowVisionDataValue = 12;
-                                  _futureDataBindOrganValuebiggerFive = GetDPM_Bindorg_New();
-                                  break;
-                                case "Private Medical College":
-                                  lowVisionDataValue = 13;
-                                  _futureDataBindOrganValuebiggerFive = GetDPM_Bindorg_New();
-                                  break;
-                                default:
-                                  lowVisionDataValue = 0;
-                              }
-                            });
-                          },
+
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 300,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              buttonStyleData: ButtonStyleData(
+                                height: 20,
+                                width: double.infinity,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              iconStyleData: IconStyleData(
+                                icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                iconSize: 24,
+                              ),
+                              items: [
+                                'NGO District',
+                                'District Hospital/government Medical College',
+                                'CHC/Sub-Dist. Hospital',
+                                'Private Practitioner',
+                                'Private Institute',
+                                'Other',
+                              ].map((String value) {
+                                return DropdownMenuItem<String>(
+                                  value: value,
+                                  child: Text(
+                                    value,
+                                    style: TextStyle(color: Colors.black),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (String newValue) {
+                                setState(() {
+                                  oganisationTypeGovtPrivateDRopDown = newValue;
+                                  switch (oganisationTypeGovtPrivateDRopDown) {
+                                    case "NGO District":
+                                      dropDownvalueOrgnbaistaionType = 5;
+                                      _futureBindOrgan = GetDPM_Bindorg();
+                                      break;
+                                    case "District Hospital/government Medical College":
+                                      dropDownvalueOrgnbaistaionType = 10;
+                                      _futureDataBindOrganValuebiggerFive =
+                                          GetDPM_Bindorg_New();
+                                      break;
+                                    case "CHC/Sub-Dist. Hospital":
+                                      dropDownvalueOrgnbaistaionType = 11;
+                                      _futureDataBindOrganValuebiggerFive =
+                                          GetDPM_Bindorg_New();
+                                      break;
+                                    case "Private Practitioner":
+                                      dropDownvalueOrgnbaistaionType = 12;
+                                      _futureDataBindOrganValuebiggerFive =
+                                          GetDPM_Bindorg_New();break;
+                                    case "Private Institute":
+                                      dropDownvalueOrgnbaistaionType = 13;
+                                      _futureDataBindOrganValuebiggerFive =
+                                          GetDPM_Bindorg_New();
+                                      break;
+                                    case "Other":
+                                      dropDownvalueOrgnbaistaionType = 14;
+                                      _futureDataBindOrganValuebiggerFive =
+                                          GetDPM_Bindorg_New();
+                                      break;
+                                    default:
+                                      dropDownvalueOrgnbaistaionType = 0;
+
+                                  }
+                                });
+                              },
+                            ),
+                          ],
                         ),
                       ),
-                    ),
-                  ),// comment for reason now
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0), // Add margin
-                      height: 50, // Set height to 50
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey, width: 1.0),
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButtonFormField2<String>(
-                          isExpanded: true,
-                          value: lowVisionDatasStatusType,
-                          style: const TextStyle(color: Colors.black),
-                          decoration: InputDecoration(
-                            hintText: "Select Type",
-                            hintStyle: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5), // Adjusted padding
-                          ),
-                          buttonStyleData: ButtonStyleData(
-                            height: 50, // Set height to 50
-                          ),
-                          iconStyleData: IconStyleData(
-                            icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-                          ),
-                          dropdownStyleData: DropdownStyleData(
-                            maxHeight: 300,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          items: [
-                            'Approved',
-                            'Pending',
-                            'Rejected',
-                          ].map<DropdownMenuItem<String>>((String lowVisionRegistry) {
-                            return DropdownMenuItem<String>(
-                              value: lowVisionRegistry,
-                              child: Text(
-                                lowVisionRegistry,
-                                overflow: TextOverflow.ellipsis, // Prevents text overflow
-                                style: const TextStyle(color: Colors.black),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (String lowVisionDatastatusTypes) {
-                            setState(() {
-                              lowVisionDatasStatusType = lowVisionDatastatusTypes ?? '';
-                              switch (lowVisionDatas) {
-                                case "Approved":
-
-                                  break;
-                                case "Pending":
-
-                                  break;
-                                case "Rejected":
-                                  break;
-                                default:
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                    ),
                   ),
-                ],
+                ),
               ),
-              SizedBox(height: 5.0),
-              if (lowVisionDataValue == 5)
-                Container(
-                  margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                  child: FutureBuilder<List<DataBindOrgan>>(
-                    future: _futureBindOrgan,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}',
-                            style: TextStyle(color: Colors.red));
-                      }
+              if(dropDownvalueOrgnbaistaionType==5)
 
-                      if (!snapshot.hasData || snapshot.data == null || snapshot.data.isEmpty) {
-                        return Container(
-                          alignment: Alignment.center,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(color: Colors.grey, width: 1.0),
-                            borderRadius: BorderRadius.circular(5.0),
-                          ),
-                          child: const Text(
-                            'No data available',
-                            style: TextStyle(color: Colors.red, fontSize: 16),
-                          ),
-                        );
-                      }
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  /// First Dropdown
 
-
-                      List<DataBindOrgan> list = snapshot.data ?? [];
-
-                      // ✅ Set default selected item
-                      if (_selectBindOrgniasation == null ||
-                          !list.contains(_selectBindOrgniasation)) {
-                        _selectBindOrgniasation =
-                        list.isNotEmpty ? list.first : null;
-                        npcbNoCatract = _selectBindOrgniasation.npcbNo ?? '';
-                      }
-
-                      return DropdownButtonFormField2<DataBindOrgan>(
-                        isExpanded: true,
-                        value: _selectBindOrgniasation,
-                        decoration: InputDecoration(
-                          isDense: true,
-
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 14), // ✅ text spacing
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        hint: const Text(
-                          'Select Organization',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
-                        ),
-                        items: list.map((item) {
-                          return DropdownMenuItem<DataBindOrgan>(
-                            value: item,
-                            child: Text(
-                              item.name,
-                              style: const TextStyle(fontSize: 16),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          );
-                        }).toList(),
-                        onChanged: (userbindOrgan) {
-                          setState(() {
-                            _selectBindOrgniasation = userbindOrgan;
-                            bindOrganisationNAme = userbindOrgan?.name ?? '';
-                            npcbNoCatract = userbindOrgan?.npcbNo ?? '';
-                          });
-                        },
-                        buttonStyleData: ButtonStyleData(
-                          height: 20,
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 300,
-                          width: 300,
-                          offset: const Offset(0, -3),
-                          // ✅ Adjust dropdown position here
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon:
-                          Icon(Icons.arrow_drop_down, color: Colors.black),
-                          iconSize: 24,
-                        ),
-                      );
-                    },
-                  ),
-                )
-              else
-                if (lowVisionDataValue == 12)
-                  Container(
-                    margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-                    child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
-                      future: _futureDataBindOrganValuebiggerFive,
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        }
-
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          //   return const CircularProgressIndicator();
-                        }
-
-                        List<DataBindOrganValuebiggerFive> list =
-                            snapshot.data ?? [];
-                        debugPrint('@@snapshot___5: $list');
-                        debugPrint('@@snapshot___5: $lowVisionDataValue');
-
-                        if (list.isEmpty) {
-                          return Padding(
-                            padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
-                            child: Column(
-                              children: [
-                                const Text(
-                                  'No data found',
-                                  style:
-                                  TextStyle(fontSize: 18, color: Colors.red),
-                                ),
-                                SizedBox(
-                                  height: 50, // ✅ Fixed height
-                                  width: double.infinity, // ✅ Fixed width
-                                  child: DropdownButtonFormField2<
-                                      DataBindOrganValuebiggerFive>(
-                                    onChanged: null,
-                                    items: [],
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(
-                                          vertical: 10.0, horizontal: 10.0),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                            color: Colors.grey, width: 1.0),
-                                        borderRadius: BorderRadius.circular(
-                                            10.0),
-                                      ),
-                                      filled: true,
-                                      fillColor: Colors.white,
-                                    ),
-                                    hint: const Text('No items available'),
-                                    disabledHint:
-                                    const Text('No items to select'),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }
-
-                        if (_selectBindOrgniasationBiggerFive == null ||
-                            !list.contains(_selectBindOrgniasationBiggerFive)) {
-                          _selectBindOrgniasationBiggerFive =
-                          list.isNotEmpty ? list.first : null;
-                        }
-
-                        return Padding(
-                          padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
-                          child: Column(
-                            children: <Widget>[
-                              SizedBox(
-                                height: 50, // ✅ Fixed height
-                                width: double.infinity, // ✅ Fixed width
-                                child: DropdownButtonFormField2<
-                                    DataBindOrganValuebiggerFive>(
-                                  onChanged: (userbindOrgan) {
-                                    setState(() {
-                                      _selectBindOrgniasationBiggerFive =
-                                          userbindOrgan;
-                                      bindOrganisationNAme =
-                                          userbindOrgan?.oName ?? '';
-                                      npcbNoCatract =
-                                          userbindOrgan?.npcbNo ?? '';
-                                    });
-                                  },
-                                  value: _selectBindOrgniasationBiggerFive,
-                                  items: list.map((userbindorgansa) {
-                                    return DropdownMenuItem<
-                                        DataBindOrganValuebiggerFive>(
-                                      value: userbindorgansa,
-                                      child: Text(
-                                        userbindorgansa.oName,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(fontSize: 16),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 10.0, horizontal: 10.0),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                  ),
-                                  style: const TextStyle(color: Colors.black),
-                                  iconStyleData: const IconStyleData(
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: Colors.black),
-                                    iconSize: 24,
-                                  ),
-
-                                  /// 👇 Add this block to control dropdown position & styling
-                                  dropdownStyleData: DropdownStyleData(
-                                    maxHeight: 300,
-                                    width: 300,
-                                    offset: const Offset(0, 5),
-                                    // ⬇️ Moves dropdown 5px down
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black12,
-                                          blurRadius: 4,
-                                          offset: Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  )
-                else
-                  if (lowVisionDataValue == 13)
-                    Container(
+                  /// Second Dropdown
+                  Flexible(
+                    flex: 1,
+                    child: Container(
                       margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                      child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
-                        future: _futureDataBindOrganValuebiggerFive,
+                      child: FutureBuilder<List<DataBindOrgan>>(
+                        future: _futureBindOrgan,
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             return Text('Error: ${snapshot.error}');
                           }
 
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
+                          if (!snapshot.hasData || snapshot.data == null) {
+                            return const Center(child: CircularProgressIndicator());
                           }
 
-                          List<DataBindOrganValuebiggerFive> list =
-                              snapshot.data ?? [];
+                          List<DataBindOrgan> list = snapshot.data;
 
-                          if (list.isEmpty) {
-                            return Column(
-                              children: [
-                                const Text(
-                                  'No data found',
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.red),
-                                ),
-                                DropdownButtonFormField2<
-                                    DataBindOrganValuebiggerFive>(
-                                  onChanged: null,
-                                  items: [],
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 15.0, horizontal: 10.0),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.white,
-                                  ),
-                                  hint: const Text('No items available'),
-                                  disabledHint: const Text(
-                                      'No items to select'),
-                                ),
-                              ],
-                            );
+                          if (_selectBindOrgniasation == null || !list.contains(_selectBindOrgniasation)) {
+                            _selectBindOrgniasation = list.isNotEmpty ? list.first : null;
+                            npcbNo = _selectBindOrgniasation?.npcbNo ?? '';
+
                           }
-
-                          WidgetsBinding.instance.addPostFrameCallback((_) {
-                            if (_selectBindOrgniasationBiggerFive == null ||
-                                !list.contains(
-                                    _selectBindOrgniasationBiggerFive)) {
-                              setState(() {
-                                _selectBindOrgniasationBiggerFive = list.first;
-                              });
-                            }
-                          });
 
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                'Select Organisation Type',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 8),
-                              SizedBox(
-                                height: 50,
-                                width: 400,
-                                child: DropdownButtonFormField2<
-                                    DataBindOrganValuebiggerFive>(
-                                  isExpanded: true,
-                                  value: _selectBindOrgniasationBiggerFive,
-                                  onChanged: (userbindOrgan) {
-                                    setState(() {
-                                      _selectBindOrgniasationBiggerFive =
-                                          userbindOrgan;
-                                      bindOrganisationNAme =
-                                          userbindOrgan?.oName ?? '';
-                                      npcbNoCatract =
-                                          userbindOrgan?.npcbNo ?? '';
-                                    });
-                                  },
-                                  items: list.map((userbindorgansa) {
-                                    return DropdownMenuItem<
-                                        DataBindOrganValuebiggerFive>(
-                                      value: userbindorgansa,
-                                      child: ConstrainedBox(
-                                        constraints:
-                                        const BoxConstraints(maxWidth: 200),
-                                        child: Text(
-                                          userbindorgansa.oName,
-                                          softWrap: false,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(fontSize: 16),
-                                        ),
-                                      ),
-                                    );
-                                  }).toList(),
-                                  decoration: InputDecoration(
-                                    contentPadding: const EdgeInsets.symmetric(
-                                        vertical: 15, horizontal: 5),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
+                              Text('Organisation Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              DropdownButtonFormField2<DataBindOrgan>(
+                                onChanged: (userbindOrgan) {
+                                  setState(() {
+                                    _selectBindOrgniasation = userbindOrgan;
+                                    bindOrganisationNAme = userbindOrgan?.name ?? '';
+                                    npcbNo = userbindOrgan?.npcbNo ?? '';
+                                  });
+                                },
+                                value: _selectBindOrgniasation,
+                                items: list.map((userbindorgansa) {
+                                  return DropdownMenuItem<DataBindOrgan>(
+                                    value: userbindorgansa,
+                                    child: Text(
+                                      userbindorgansa.name,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 16),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.grey, width: 1.0),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    filled: true,
-                                    fillColor: Colors.white,
+                                  );
+                                }).toList(),
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  buttonStyleData: ButtonStyleData(
-                                    height: 50,
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
                                   ),
-                                  dropdownStyleData: DropdownStyleData(
-                                    maxHeight: 300,
-                                    width: 300,
-                                    offset: const Offset(0, -3),
-                                    // 👈 Adjust dropdown position
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                  iconStyleData: const IconStyleData(
-                                    icon: Icon(Icons.arrow_drop_down,
-                                        color: Colors.black),
-                                    iconSize: 24,
-                                  ),
-                                  menuItemStyleData: MenuItemStyleData(
-                                    overlayColor:
-                                    MaterialStateProperty.all(Colors.blue[100]),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                dropdownStyleData: DropdownStyleData(
+                                  maxHeight: 300,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
                                 ),
+                                buttonStyleData: ButtonStyleData(
+                                  height: 20,
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                                iconStyleData: IconStyleData(
+                                  icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                  iconSize: 24,
+                                ),
+                                style: TextStyle(color: Colors.black),
                               ),
                             ],
                           );
                         },
                       ),
                     ),
+                  ),
+                ],
+              ),
+              if(dropDownvalueOrgnbaistaionType==10)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// First Dropdown
 
+                    /// Second Dropdown
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                          future: _futureDataBindOrganValuebiggerFive,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+
+                            List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                            if (_selectBindOrgniasationBiggerFive == null || !list.contains(_selectBindOrgniasationBiggerFive)) {
+                              _selectBindOrgniasationBiggerFive = list.isNotEmpty ? list.first : null;
+                              npcbNo = _selectBindOrgniasationBiggerFive?.npcbNo ?? '';
+                            }
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Organisation Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                                SizedBox(height: 8),
+                                DropdownButtonFormField2<DataBindOrganValuebiggerFive>(
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive = userbindOrgan;
+                                      bindOrganisationNAme = userbindOrgan?.oName ?? '';
+                                      npcbNo = userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: Text(
+                                        userbindorgansa.oName,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 20,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  iconStyleData: IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                    iconSize: 24,
+                                  ),
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+
+              else if(dropDownvalueOrgnbaistaionType==11)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// First Dropdown
+
+                    /// Second Dropdown
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                          future: _futureDataBindOrganValuebiggerFive,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+
+                            List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                            if (_selectBindOrgniasationBiggerFive == null || !list.contains(_selectBindOrgniasationBiggerFive)) {
+                              _selectBindOrgniasationBiggerFive = list.isNotEmpty ? list.first : null;
+                              npcbNo = _selectBindOrgniasationBiggerFive?.npcbNo ?? '';
+
+                            }
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Organisation Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                                SizedBox(height: 8),
+                                DropdownButtonFormField2<DataBindOrganValuebiggerFive>(
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive = userbindOrgan;
+                                      bindOrganisationNAme = userbindOrgan?.oName ?? '';
+                                      npcbNo = userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: Text(
+                                        userbindorgansa.oName,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 20,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  iconStyleData: IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                    iconSize: 24,
+                                  ),
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              else if(dropDownvalueOrgnbaistaionType==12)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// First Dropdown
+
+                    /// Second Dropdown
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                          future: _futureDataBindOrganValuebiggerFive,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+
+                            List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                            if (_selectBindOrgniasationBiggerFive == null || !list.contains(_selectBindOrgniasationBiggerFive)) {
+                              _selectBindOrgniasationBiggerFive = list.isNotEmpty ? list.first : null;
+                              npcbNo = _selectBindOrgniasationBiggerFive?.npcbNo ?? '';
+
+                            }
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Organisation Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                                SizedBox(height: 8),
+                                DropdownButtonFormField2<DataBindOrganValuebiggerFive>(
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive = userbindOrgan;
+                                      bindOrganisationNAme = userbindOrgan?.oName ?? '';
+                                      npcbNo = userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: Text(
+                                        userbindorgansa.oName,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 20,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  iconStyleData: IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                    iconSize: 24,
+                                  ),
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              else if(dropDownvalueOrgnbaistaionType==13)
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// First Dropdown
+
+                        /// Second Dropdown
+                        Flexible(
+                          flex: 1,
+                          child: Container(
+                            margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                            child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                              future: _futureDataBindOrganValuebiggerFive,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('Error: ${snapshot.error}');
+                                }
+
+                                if (!snapshot.hasData || snapshot.data == null) {
+                                  return const Center(child: CircularProgressIndicator());
+                                }
+
+                                List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                                if (_selectBindOrgniasationBiggerFive == null || !list.contains(_selectBindOrgniasationBiggerFive)) {
+                                  _selectBindOrgniasationBiggerFive = list.isNotEmpty ? list.first : null;
+                                  npcbNo = _selectBindOrgniasationBiggerFive?.npcbNo ?? '';
+
+                                }
+
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('Organisation Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                                    SizedBox(height: 8),
+                                    DropdownButtonFormField2<DataBindOrganValuebiggerFive>(
+                                      onChanged: (userbindOrgan) {
+                                        setState(() {
+                                          _selectBindOrgniasationBiggerFive = userbindOrgan;
+                                          bindOrganisationNAme = userbindOrgan?.oName ?? '';
+                                          npcbNo = userbindOrgan?.npcbNo ?? '';
+                                        });
+                                      },
+                                      value: _selectBindOrgniasationBiggerFive,
+                                      items: list.map((userbindorgansa) {
+                                        return DropdownMenuItem<DataBindOrganValuebiggerFive>(
+                                          value: userbindorgansa,
+                                          child: Text(
+                                            userbindorgansa.oName,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(fontSize: 16),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      decoration: InputDecoration(
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                          borderRadius: BorderRadius.circular(10.0),
+                                        ),
+                                        filled: true,
+                                        fillColor: Colors.white,
+                                      ),
+                                      dropdownStyleData: DropdownStyleData(
+                                        maxHeight: 300,
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      buttonStyleData: ButtonStyleData(
+                                        height: 20,
+                                        width: double.infinity,
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                      iconStyleData: IconStyleData(
+                                        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                        iconSize: 24,
+                                      ),
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+
+                  else if(dropDownvalueOrgnbaistaionType==14)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    /// First Dropdown
+
+                    /// Second Dropdown
+                    Flexible(
+                      flex: 1,
+                      child: Container(
+                        margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        child: FutureBuilder<List<DataBindOrganValuebiggerFive>>(
+                          future: _futureDataBindOrganValuebiggerFive,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            }
+
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return const Center(child: CircularProgressIndicator());
+                            }
+
+                            List<DataBindOrganValuebiggerFive> list = snapshot.data;
+
+                            if (_selectBindOrgniasationBiggerFive == null || !list.contains(_selectBindOrgniasationBiggerFive)) {
+                              _selectBindOrgniasationBiggerFive = list.isNotEmpty ? list.first : null;
+                              npcbNo = _selectBindOrgniasationBiggerFive?.npcbNo ?? '';
+
+                            }
+
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Organisation Name', style: TextStyle(fontWeight: FontWeight.bold)),
+                                SizedBox(height: 8),
+                                DropdownButtonFormField2<DataBindOrganValuebiggerFive>(
+                                  onChanged: (userbindOrgan) {
+                                    setState(() {
+                                      _selectBindOrgniasationBiggerFive = userbindOrgan;
+                                      bindOrganisationNAme = userbindOrgan?.oName ?? '';
+                                      npcbNo = userbindOrgan?.npcbNo ?? '';
+                                    });
+                                  },
+                                  value: _selectBindOrgniasationBiggerFive,
+                                  items: list.map((userbindorgansa) {
+                                    return DropdownMenuItem<DataBindOrganValuebiggerFive>(
+                                      value: userbindorgansa,
+                                      child: Text(
+                                        userbindorgansa.oName,
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 300,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 20,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  iconStyleData: IconStyleData(
+                                    icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                                    iconSize: 24,
+                                  ),
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              Padding(
+                padding: EdgeInsets.all(0.0),
+
+                child: Container(
+                  child: Expanded(
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Status', style: TextStyle(fontWeight: FontWeight.bold)),
+                          DropdownButtonFormField2<String>(
+                            value: statusTypeValue,
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                              isDense: true,
+                              contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 5),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 300,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            buttonStyleData: ButtonStyleData(
+                              height: 20,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            iconStyleData: IconStyleData(
+                              icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                              iconSize: 24,
+                            ),
+                            items: [
+                              'Approved',//5
+                              'Pending',//4
+                              'Rejected',//6
+
+                            ].map((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(
+                                  value,
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (String newValue) {
+                              setState(() {
+                                statusTypeValue = newValue;
+                                switch (statusTypeValue) {
+                                  case "Approved":
+                                    statusTypeValueShow = 5;
+                                    break;
+                                  case "Pending":
+                                    statusTypeValueShow = 4;
+                                    break;
+                                  case "Rejected":
+                                    statusTypeValueShow = 6;
+                                    break;
+                                  default:
+                                    statusTypeValueShow = 0;
+                                }
+                              });
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1330,26 +1568,21 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                     child: ElevatedButton(
                       onPressed: () {
                         print('@@lowvisionCataractDataDispla-- click------');
-                        if (_selectedUser == null) {
+                        if (dropDownvalueOrgnbaistaionType == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Please select a Screening Year')),
                           );
                           return;
                         }
 
-                        if (lowVisionDatas == null || lowVisionDatas.isEmpty) {
+                        if (dropDownvalueOrgnbaistaionType == null) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Please select a Type')),
                           );
                           return;
                         }
 
-                        if (lowVisionDataValue == null && _selectBindOrgniasation == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text('Please select an Organization')),
-                          );
-                          return;
-                        }
+
                         setState(() {
                           lowvisionCataractDataDispla = true;
                         });
@@ -1362,14 +1595,9 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
               if (lowvisionCataractDataDispla)
                 Column(
                   children: [
-                    FutureBuilder<List<Datalowvisionregister_cataract>>(
-                      future: ApiController.getDPM_Cataract(
-                        district_code_login,
-                        state_code_login,
-                        npcbNoCatract,
-                        getYearNgoHopital,
-                        lowVisionDataValue,
-                      ),
+                    FutureBuilder<List<DataReportScreen>>(
+                      future: ApiController.GetData_by_allngo_amount_totalCount(int.parse(getfyidNgoHospital),"","",state_code_login,district_code_login, dropDownvalueOrgnbaistaionType.toString(),bindOrganisationNAme, statusTypeValueShow.toString(),getYearNgoHopital,npcbNo),
+
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -1393,7 +1621,7 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                             ),
                           );
                         }  else {
-                          List<Datalowvisionregister_cataract> ddata = snapshot.data;
+                          List<DataReportScreen> ddata = snapshot.data;
 
                           return SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
@@ -1419,7 +1647,7 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
 
                                         _buildDataCellSrNoDiseaseData(
                                             (ddata.indexOf(offer) + 1).toString()),
-                                        _buildDataCell(offer.pUniqueID),
+                                        _buildDataCell(offer.ngoname),
                                         // _buildDataCell(offer.name),
                                         _buildDataCellViewBlue("View", () {
 
@@ -1453,13 +1681,13 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
   }
 
   void _showReportDataDisplay(BuildContext context,
-      Datalowvisionregister_cataract offer) {
+      DataReportScreen offer) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(
-            'NGO List for Approval',
+            'Cataract patients data',
             style: TextStyle(
               fontWeight: FontWeight.bold,
               color: Colors.blue,
@@ -1474,21 +1702,9 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                 1: FlexColumnWidth(), // Value column width
               },
               children: [
-                _buildTableRow('Patient Id:',offer.pUniqueID),
-                _buildTableRow('Name of Person:', offer.name),
-                _buildTableRow('Mobile No:', offer.mobile.toString()),
-                _buildTableRow('DOB:', Utils.formatDateString(offer.dob)),
-                _buildTableRow('Gender:', offer.gender),
-                _buildTableRow('Address:', offer.addressLine1),
-                _buildTableRow('Operation Date:', offer.operatedOn),
-                //    _buildTableRow('Operated Eye:', offer.eyetype.toString()),
-                _buildTableRow(
-                  'Operated Eye:',
-                  offer.eyetype == 1 ? 'LEFT' : 'RIGHT',
-                ),
-                _buildTableRow('NGO:', offer.ngoName),
-
-
+                _buildTableRow('Organisation Name:',offer.ngoname),
+                _buildTableRow('No of Patient:', offer.totalpatient.toString()),
+                _buildTableRow('Total Amount @ 2000:', offer.amount.toString()),
                 TableRow(
                   children: [
                     Container(
@@ -1503,11 +1719,36 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                       ), // Placeholder for the "key"
                     ),
                     // Apply a SingleChildScrollView with horizontal scroll direction
+                    // Second column: Action + View buttons
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 8.0),
                       alignment: Alignment.centerLeft,
-                      /*  child: _buildNGOAPPlicationViewDetailsAttachments(
-                          offer.npcbNo, offer.darpanNo),*/
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+
+                            child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ViewClickCataractdataApprovedbyDPM(
+                                          ngoName: offer.ngoname ?? '',
+                                          orgNAme: dropDownvalueOrgnbaistaionType?.toString() ?? '',
+                                        ),
+                                  ),
+                                );
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              ),
+                              child: Text('View'),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),

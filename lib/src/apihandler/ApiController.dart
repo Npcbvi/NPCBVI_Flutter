@@ -5,6 +5,7 @@ import 'package:mohfw_npcbvi/src/maindashboard/moreClickScreeningCamp/BothWiseCa
 import 'package:mohfw_npcbvi/src/model/camp/ViewDashboardclick.dart';
 import 'package:mohfw_npcbvi/src/model/camp/totalPatient/TotalPatientCamp.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/viewClickReportData/CataractDataReport.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewClick.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/EquipemntDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
@@ -140,6 +141,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../model/camp/CampDashboard.dart';
 import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
 import '../model/dpmRegistration/updateUsers/GetDPM_Edit_UpdateUserDetail.dart';
+import '../model/dpmRegistration/updateUsers/UpdateUserApi.dart';
 import '../model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
 import '../model/guidlines/GuilinessPage.dart';
 import '../model/mainDashbaordMorClick/moreClickCamp/BothWiseCamp.dart';
@@ -10430,7 +10432,7 @@ class ApiController {
         "districtcode": 0,
         "roleid": ""
       });
-      print("@@getDPM_Cataract--bodyprint--: ${url + body.toString()}");
+      print("@@getDPM_Edit_UpdateUserDetails--bodyprint--: ${url + body.toString()}");
       // Create Dio instance and make the request
       Dio dio = Dio();
       Response response = await dio.post(
@@ -10443,7 +10445,7 @@ class ApiController {
         ),
       );
 
-      print("@@getDPM_Cataract--Api Response: ${response.toString()}");
+      print("@@getDPM_Edit_UpdateUserDetails--Api Response: ${response.toString()}");
 
       // Parse the response
       var responseData = json.decode(response.data);
@@ -10460,6 +10462,139 @@ class ApiController {
       }
     } catch (e) {
       //  Utils.showToast(e.toString(), true);
+      return [];
+    }
+  }
+
+  static Future<UpdateUserApi> updateUserDetails({
+     String userid,
+    String roleid,
+     String username,
+     String orgname,
+     String mobileno,
+     String emailid,
+     String address,
+     int statecode,
+    int districtcode,
+     String isDpmDistrictUpdate,
+  }) async {
+    try {
+      var url = ApiConstants.baseUrl +  ApiConstants.updateusers;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "userid": userid,
+        "roleid": int.tryParse(roleid) ?? 0,
+        "username": username,
+        "orgname": orgname,
+        "mobileno": int.tryParse(mobileno) ?? 0,
+        "emailid": emailid,
+        "address": address,
+        "statecode": statecode,
+        "districtcode": districtcode,
+        "isDpmDistrictUpdate": isDpmDistrictUpdate,
+      });
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.json,
+        ),
+      );
+
+      print('@@updateUserDetails Response: ${response.data}');
+      return UpdateUserApi.fromJson(response.data);
+    } catch (e) {
+      print('Error in updateUserDetails: $e');
+      return UpdateUserApi(
+        status: false,
+        message: 'Something went wrong',
+        data: null,
+        list: null,
+      );
+    }
+  }
+  static Future<List<CataractDataReportData>> getDPM_CataractReport(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getDPM_CataractReport" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDPM_CataractReport;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@getDPM_CataractReport--bodyprint--: ${body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getDPM_CataractReport--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      CataractDataReport data = CataractDataReport.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
       return [];
     }
   }

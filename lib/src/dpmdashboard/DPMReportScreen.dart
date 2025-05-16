@@ -899,7 +899,7 @@ class _DPMReportScreen extends State<DPMReportScreen> {
                           ],
                         ),
                       ),
-                      Divider(color: Colors.blue, height: 1.0),
+                //      Divider(color: Colors.blue, height: 1.0),
                       FutureBuilder<List<DataReportScreen>>(
                         future: ApiController.GetData_by_allngo_amount_totalCount(int.parse(getfyidNgoHospital),_selectedDateText,_selectedDateTextToDate,state_code_login,district_code_login, dropDownvalueOrgnbaistaionType.toString(),bindOrganisationNAme,lowVisionDataValue.toString(),getYearNgoHopital,npcbNo),
                         builder: (context, snapshot) {

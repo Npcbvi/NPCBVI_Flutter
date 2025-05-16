@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/updateUsers/UpdateUserApi.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 import '../../apihandler/ApiController.dart';
 import '../../database/SharedPrefs.dart';
@@ -30,7 +32,7 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
   TextEditingController addressController = TextEditingController();
   TextEditingController loginStatucController = TextEditingController();
   String
-      selectedUserType; // <-- define this here, nullable for no initial selection
+      selectedUserType,isDpmDistrictUpdate; // <-- define this here, nullable for no initial selection
   List<Map<String, String>> userTypeList = [];
   List<String> userTypes = []; // your list of user types to populate dropdown
   String entryby,
@@ -620,6 +622,38 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
                       // Get Data Button (takes 1 part)
                     ],
                   ),
+                  SizedBox(height: 5),
+                  SizedBox(
+                    height: 50,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(130, 50),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        elevation: 4,
+                        shadowColor: Colors.black,
+                      ),
+                      onPressed: () {
+
+                        _submitForm();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.chevron_right, color: Colors.white),
+                          SizedBox(width: 8),
+                          Text(
+                            'Submit',
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -788,6 +822,7 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
 
           orgNameController.text = data['org_name'];
           applicationSattucController.text = data['applicationStatus'];
+          addressController.text=data['address'];
           return data['applicationStatus'] ?? '';
         } else {
           print('API returned no data or failed status.');
@@ -848,7 +883,83 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
       print('Error while fetching user type: $e');
     }
   }
+  Future<void> _submitForm() async {
+String username=usernameController.text.toString().trim();
+String mobileNumber=mobileNumberControlller.text.toString().trim();
+String emaiId=EmailIdControlller.text.toString().trim();
+String adddress=addressController.text.toString().trim();
+String orgaNAme=orgNameController.text.toString().trim();
+print('@@'+district_code_login.toString().trim());
+print('@@'+role_id.toString().trim());
 
+if (district_code_login == 0 && role_id == '3') {
+  isDpmDistrictUpdate = "Y";
+  print('@@' + isDpmDistrictUpdate.toString().trim());
+} else {
+  isDpmDistrictUpdate = "N";
+  print('@@' + isDpmDistrictUpdate.toString().trim());
+}
+// Basic validations
+    if (username.isEmpty) {
+      Utils.showToast('Please enter username', true);
+      return;
+    }
+
+    if (mobileNumber.isEmpty) {
+      Utils.showToast('Please enter mobile number', true);
+      return;
+    }
+
+    // Simple email regex check
+    if (emaiId.isEmpty || !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(emaiId)) {
+      Utils.showToast('Please enter a valid email', true);
+      return;
+    }
+
+    if (adddress.isEmpty) {
+      Utils.showToast('Please enter address', true);
+      return;
+    }
+
+    if (orgaNAme.isEmpty) {
+      Utils.showToast('Please enter organization name', true);
+      return;
+    }
+
+    // If all validations passed, proceed
+    print('All validations passed. Submitting form...');
+    // You can call your API or submit logic here.
+    try {
+      Utils.showProgressDialog(context);
+
+      UpdateUserApi response = await ApiController.updateUserDetails(
+        userid: userIdController.text.trim(),
+        roleid: role_id.toString().trim(),
+        username: username,
+        orgname: orgaNAme,
+        mobileno: mobileNumber,
+        emailid: emaiId,
+        address: adddress,
+        statecode: state_code_login,
+        districtcode: district_code_login,
+        isDpmDistrictUpdate: isDpmDistrictUpdate,
+      );
+
+      Navigator.pop(context); // close loader
+
+      if (response.status) {
+        Utils.showToast("User updated successfully", false);
+      } else {
+        Utils.showToast(response.message ?? "Failed to update user", true);
+      }
+    } catch (e) {
+      Navigator.pop(context);
+      Utils.showToast("Error: ${e.toString()}", true);
+    }
+
+
+
+  }
   @override
   void dispose() {
     applicationSattucController.dispose();

@@ -247,4 +247,7 @@ class ApiConstants {
   static String GetTodayPatientRegistredCamp = 'Camp/api/GetTodayPatientRegistred';
 
   static String GetDPM_Edit_UpdateUserDetails = 'DpmDashboard/api/GetDPM_Edit_UpdateUserDetails';
+  static String updateusers = 'DpmDashboard/api/updateusers';
+  static String GetDPM_CataractReport = 'DpmDashboard/api/GetDPM_CataractReport';
+
 }

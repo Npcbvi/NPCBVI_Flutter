@@ -692,11 +692,11 @@ class _DiseaseCataractReportScreenState
                         borderRadius: BorderRadius.circular(10),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.blue, width: 1),
+                        borderSide: BorderSide(color: Colors.grey, width: 1),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       filled: true,
-                      fillColor: Colors.blue[50],
+                      fillColor: Colors.white,
                     ),
                     hint: Text(
                       "Select Type",
