@@ -6802,8 +6802,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           _buildDataCellViewBlueDiseaseDataAction(
                                               "View", () {
                                             print("@@npcbNo: " + offer.npcbNo);
-                                            Utils.showToast(
-                                                "Next Sprint Report---6804", true);
 
 
                                             if(diseaseid==1){

@@ -931,7 +931,6 @@ if (district_code_login == 0 && role_id == '3') {
     // You can call your API or submit logic here.
     try {
       Utils.showProgressDialog(context);
-
       UpdateUserApi response = await ApiController.updateUserDetails(
         userid: userIdController.text.trim(),
         roleid: role_id.toString().trim(),

@@ -220,6 +220,45 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                 Utils.hideKeyboard(context);
                 Navigator.of(context).pop(context);
               })),
+     /* drawer: Drawer(
+        child: Container(
+          width: 100.0, // Set the width of the drawer
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white70, Colors.white70],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: Container(
+            margin: EdgeInsets.all(8.0),
+            // Reduce the margin to decrease space// Set the margin here
+            child: ListView(
+              children: [
+                _buildMenuItem(
+                  icon: Icons.dashboard,
+                  title: 'Dashboard',
+                  onTap: () {
+                    setState(() {
+
+                    });
+                    Navigator.pop(context);
+                  },
+                ),
+
+
+
+
+
+
+
+
+
+              ],
+            ),
+          ),
+        ),
+      ),*/
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -1737,6 +1776,7 @@ class _ApprovedClickDataPatientDiseaseInnerDataDisplay extends State<ApprovedCli
                                         ViewClickCataractdataApprovedbyDPM(
                                           ngoName: offer.ngoname ?? '',
                                           orgNAme: dropDownvalueOrgnbaistaionType?.toString() ?? '',
+                                            npcbNo:offer.npcbNo ?? ''
                                         ),
                                   ),
                                 );

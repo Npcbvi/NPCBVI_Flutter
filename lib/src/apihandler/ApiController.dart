@@ -10498,6 +10498,7 @@ class ApiController {
         "districtcode": districtcode,
         "isDpmDistrictUpdate": isDpmDistrictUpdate,
       });
+      print('@@updateUserDetails Response: ${url+body.toString()}');
 
       Dio dio = Dio();
       Response response = await dio.post(
@@ -10509,7 +10510,6 @@ class ApiController {
           responseType: ResponseType.json,
         ),
       );
-
       print('@@updateUserDetails Response: ${response.data}');
       return UpdateUserApi.fromJson(response.data);
     } catch (e) {

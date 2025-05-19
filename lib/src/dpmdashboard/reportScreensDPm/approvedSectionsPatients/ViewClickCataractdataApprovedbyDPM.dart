@@ -7,6 +7,7 @@ import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMDashboard.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/DPMPatientDiesesParticularView.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/ApprovedClickDataPatientDiseaseInnerDataDisplay.dart';
 import 'package:mohfw_npcbvi/src/model/LoginModel.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrgan.dart';
 import 'package:mohfw_npcbvi/src/model/bindorg/BindOrganValuebiggerFive.dart';
@@ -25,8 +26,9 @@ import '../../../model/dpmRegistration/viewClickReportData/CataractDataReport.da
 class ViewClickCataractdataApprovedbyDPM extends StatefulWidget {
   final String ngoName;
   final String orgNAme;
+  final String npcbNo;
 
-  ViewClickCataractdataApprovedbyDPM({ this.ngoName,this.orgNAme});
+  ViewClickCataractdataApprovedbyDPM({ this.ngoName,this.orgNAme,this.npcbNo});
   @override
   _ViewClickCataractdataApprovedbyDPM createState() => _ViewClickCataractdataApprovedbyDPM();
 }
@@ -35,7 +37,7 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
   DateTime _selectedDate;
 
   TextEditingController fullnameController_ = new TextEditingController();
-  String fullnameController,orgNames;
+  String fullnameController,orgNames,npcbNogetfromprviousScreen;
   String  districtNames, userId, stateNames;
   String _chosenValuechnagesONSelection="Cataract";
   final GlobalKey _dropdownKey = GlobalKey();
@@ -79,9 +81,10 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
     oganisationTypeGovtPrivateDRopDown = 'NGO District';  // Set default selected item
     dropDownvalueOrgnbaistaionType = 5;
     orgNames = widget.orgNAme ?? "";// Set related type value
+    npcbNogetfromprviousScreen=widget.npcbNo??"";
     print('@@115' + widget.orgNAme.toString());
     print('@@11' + orgNames.toString());
-
+    print('@@11' + npcbNogetfromprviousScreen.toString());
     _futureBindOrgan = GetDPM_Bindorg();                  // Load corresponding data
   }
   Future<List<DataBindOrgan>> GetDPM_Bindorg() async {
@@ -135,7 +138,7 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
           role_id = user.roleId;
           state_code_login = user.state_code;
           district_code_login = user.district_code;
-       //   orgNames=widget.orgNAme.toString();
+          //   orgNames=widget.orgNAme.toString();
           print('@@2' + user.name);
           print('@@3' + user.stateName);
           print('@@4' + user.roleId);
@@ -229,6 +232,214 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 5.0),
+            Row(
+              children: [
+                // Dropdown with FutureBuilder
+                Container(
+                  width: 150, // ✅ Now this will work
+                  child: Expanded(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5.0), // Add outer margin
+                      height: 50, // Same height
+                      child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
+                        future: _future,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+
+                          List<DataGetDPM_ScreeningYear> list = snapshot.data?.toList() ?? [];
+
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (list.isNotEmpty && (_selectedUser == null || !list.contains(_selectedUser))) {
+                              setState(() {
+                                _selectedUser = list.first;
+                                getYearNgoHopital = _selectedUser.name;
+                                getfyidNgoHospital = _selectedUser.fyid;
+                              });
+                            }
+                          });
+
+                          if (list.isEmpty) {
+                            return Container(
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                border: Border.all(color: Colors.grey, width: 1),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Text(
+                                'No data found',
+                                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                              ),
+                            );
+                          }
+
+                          return DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
+                            value: _selectedUser,
+                            onChanged: (userc) {
+                              setState(() {
+                                _selectedUser = userc;
+                                getYearNgoHopital = userc?.name ?? '';
+                                getfyidNgoHospital = userc?.fyid ?? '';
+                              });
+                            },
+                            items: list.map((user) {
+                              return DropdownMenuItem<DataGetDPM_ScreeningYear>(
+                                value: user,
+                                child: Text(user.name, style: TextStyle(fontSize: 14)),
+                              );
+                            }).toList(),
+                            decoration: InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(vertical: 18, horizontal: 10),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey, width: 1.0),
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                              filled: true,
+                              fillColor: Colors.white,
+                            ),
+                            buttonStyleData: ButtonStyleData(
+                              height: 60, // Match height
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                              ),
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 300,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                            ),
+                            iconStyleData: IconStyleData(
+                              icon: Icon(Icons.arrow_drop_down, color: Colors.black),
+                              iconSize: 20,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+
+
+                Expanded(
+                  child: Container(
+                    color: Colors.white,
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(5, 0, 5.0, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            child: Expanded(
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    print('@@From Date clicked');
+                                    DateTime pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1700),
+                                      lastDate: DateTime(2101),
+                                    );
+
+                                    if (pickedDate != null) {
+                                      String formattedDate = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                      setState(() {
+                                        _selectedDateText = formattedDate;
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.34, // 50% of screen width
+                                    height: 50, // Set the fixed height
+                                    padding: EdgeInsets.all(12.0),
+
+                                    decoration: BoxDecoration(
+
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(color: Colors.grey, width: 1.0),
+
+                                    ),
+
+                                    child: Text(
+                                      _selectedDateText.isEmpty ? 'Screening Date' : _selectedDateText,
+                                      style: TextStyle(
+                                        color: _selectedDateText.isEmpty ? Colors.grey : Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 5), // Space between the two fields
+                          Container(
+                            child: Expanded(
+                              child: Align(
+                                alignment: Alignment.centerRight,
+                                child: GestureDetector(
+                                  onTap: () async {
+                                    print('@@To Date clicked');
+                                    DateTime pickedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(1700),
+                                      lastDate: DateTime(2101),
+                                    );
+
+                                    if (pickedDate != null) {
+                                      String formattedDate = "${pickedDate.day}-${pickedDate.month}-${pickedDate.year}";
+                                      setState(() {
+                                        _selectedDateTextToDate = formattedDate;
+                                      });
+                                    }
+                                  },
+                                  child: Container(
+                                    width: MediaQuery.of(context).size.width * 0.34, // 50% of screen width
+                                    height: 50, // Set the fixed height
+                                    padding: EdgeInsets.all(12.0),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      border: Border.all(color: Colors.grey, width: 1.0),
+                                    ),
+                                    child: Text(
+                                      _selectedDateTextToDate.isEmpty ? 'Tentative Date' : _selectedDateTextToDate,
+                                      style: TextStyle(
+                                        color: _selectedDateTextToDate.isEmpty ? Colors.grey : Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
             SizedBox(height: 5),
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -478,7 +689,7 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DPMDashboard(),
+                              builder: (context) => ApprovedClickDataPatientDiseaseInnerDataDisplay(),
                             ),
                           );
                         });
@@ -497,7 +708,7 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
                           children: [
                             Expanded(
                               child: Text(
-                                'Dashboard',
+                                'Back',
                                 style: TextStyle(
                                   color: Colors.black, // ✅ Black text
                                   fontWeight: FontWeight.bold,
@@ -520,91 +731,62 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
 
             // Horizontal Scrolling Header Row
             SizedBox(width: 8.0),
-            reportviewCatract(),
+            reportviewCataract(),
           ],
         ),
       ),
     );
   }
-  Widget reportviewCatract() {
-    return Column(
-      children: [
-        FutureBuilder<List<CataractDataReportData>>(
-          future: _loadCataractReport(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Utils.getEmptyView("Error: ${snapshot.error}");
-            } else if (!snapshot.hasData || snapshot.data.isEmpty) {
-              return Container(
-                margin: EdgeInsets.fromLTRB(0, 20, 0, 10),
-                child: Center(
-                  child: Text(
-                    "No data found",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
 
-              );
-            } else {
-              List<CataractDataReportData> ddata = snapshot.data;
+  // ─────────────────── 2.  CATARACT-REPORT LISTVIEW ────────────────────
+  Widget reportviewCataract() {
+    return FutureBuilder<List<CataractDataReportData>>(
+      future: _loadCataractReport(),
+      builder: (context, snap) {
+        if (snap.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snap.hasError) {
+          return Center(child: Text('Error: ${snap.error}'));
+        }
+        final data = snap.data ?? [];
+        if (data.isEmpty) {
+          return const Center(child: Text('No data found'));
+        }
 
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Header
-                    Row(
-                      children: [
-                        _buildHeaderCellSrNoDiseaseData('S.No.', context),
-                        _buildHeaderCell('Patient Id'),
-                        _buildHeaderCellNGOActionSmallShow('Action'),
-                      ],
-                    ),
-                    // Data Rows
-                    Column(
-                      children: ddata.map((offer) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildDataCellSrNoDiseaseData(
-                                (ddata.indexOf(offer) + 1).toString()),
-                            _buildDataCell(offer.ngoName ?? "N/A"),
-                            _buildDataCellViewBlue("View", () {
-                              _showReportDataDisplay(context, offer);
-
-                            }),
-                          ],
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
-              );
-            }
+        return ListView.builder(
+          shrinkWrap: true,                               // ← take only needed space
+          physics: const NeverScrollableScrollPhysics(),  // ← disable its own scroll
+          itemCount: data.length,
+          itemBuilder: (ctx, i) {
+            final d = data[i];
+            return ListTile(
+              leading: Text('${i + 1}'),
+              title: Text(d.pUniqueID ?? '—'),
+              trailing: TextButton(
+                onPressed: () {  _showDetails(context,d);  },
+                child: const Text('View', style: TextStyle(color: Colors.blue)),
+              ),
+            );
           },
-        ),
-      ],
+        );
+      },
     );
   }
+
   Future<List<CataractDataReportData>> _loadCataractReport() async {
     try {
-      // Ensure these variables are not null
-      final String fyId = getfyidNgoHospital ?? "0";
-      final String stateCode = state_code_login ?? "";
-      final String districtCode = district_code_login ?? "";
-      final String orgId = "5"; // Hardcoded, you can replace if needed
+
+
+      final String fyId        = (getfyidNgoHospital ?? "0").toString();
+      final String stateCode   = state_code_login.toString();
+      final String districtCode= district_code_login.toString();
+
+      final String orgId = orgNames; // Hardcoded, you can replace if needed
       final String orgName = bindOrganisationNAme ?? "";
-      final String orgType = dropDownvalueOrgnbaistaionType?.toString() ?? "";
-      final String year = getYearNgoHopital ?? "";
-      final String npcb = npcbNo ?? "";
+      final String orgType     = dropDownvalueOrgnbaistaionType.toString();
+      final String year        = (getYearNgoHopital ?? "0").toString();
+      final String npcb        = (npcbNogetfromprviousScreen ?? "").toString();
 
       return await ApiController.getDPM_CataractReport(
         int.parse(fyId),
@@ -625,88 +807,7 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
   }
 
 
-  void _showReportDataDisplay(BuildContext context,
-      CataractDataReportData offer) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(
-            'Cataract data approved by DPM',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.blue,
-            ),
-          ),
-          content: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Table(
-              border: TableBorder.all(color: Colors.black, width: 0.5),
-              columnWidths: {
-                0: FixedColumnWidth(120.0), // Label column width
-                1: FlexColumnWidth(), // Value column width
-              },
-              children: [
-                _buildTableRow('Organisation Name:',offer.ngoName),
-             /*   _buildTableRow('No of Patient:', offer.totalpatient.toString()),
-                _buildTableRow('Total Amount @ 2000:', offer.amount.toString()),*/
-                TableRow(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      alignment: Alignment.centerLeft,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Actions',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ), // Placeholder for the "key"
-                    ),
-                    // Apply a SingleChildScrollView with horizontal scroll direction
-                    // Second column: Action + View buttons
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 8.0),
-                      alignment: Alignment.centerLeft,
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
 
-                            child: ElevatedButton(
-                              onPressed: () {
-                                // Your action logic here
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                              ),
-                              child: Text('View'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                // Add more fields as needed
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'Close',
-                style: TextStyle(color: Colors.red),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
 
 
@@ -834,119 +935,9 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
       ],
     );
   }
-  Widget _buildHeaderCellSrNoEyeScreen(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.035, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellEyeScreen(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellSrNoGovtPrivate(String text) {
-    return Container(
-      height: 35,
-      width: 70, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellSrNo(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildHeaderCell(String text) {
     double screenWidth = MediaQuery
@@ -983,113 +974,9 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
     );
   }
 
-  Widget _buildHeaderCellNGOAction(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellActionGovtPrivate(String text) {
-    return Container(
-      height: 35,
-      width: 90, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellGovtPrivateNgo(String text) {
-    return Container(
-      height: 35,
-      width: 130, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellEyeScreen(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildDataCell(String text) {
     double screenWidth = MediaQuery
@@ -1156,39 +1043,6 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
     );
   }
 
-  Widget _buildDataCellViewBlueSmasllShow(String text, VoidCallback onTap) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 35,
-        width: screenWidth * 0.18, // 30% of screen width for adaptability
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-            bottom:
-            BorderSide(width: 0.1, color: Colors.black), // Bottom border
-          ),
-        ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              color: Colors.blue,
-              fontSize: screenWidth * 0.04, // Scales with screen width
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildHeaderCellNGOActionSmallShow(String text) {
     double screenWidth = MediaQuery
@@ -1221,101 +1075,8 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
     );
   }
 
-  Widget _buildDataCellViewBlueEyeScreen(String text, VoidCallback onTap) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 35,
-        width: screenWidth * 0.3, // 30% of screen width for adaptability
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(width: 0.1, color: Colors.black), // Top border
 
-            bottom:
-            BorderSide(width: 0.1, color: Colors.black), // Bottom border
-          ),
-        ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              color: Colors.blue,
-              fontSize: screenWidth * 0.04, // Scales with screen width
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildDataCellSrNoEyScreen(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        // Aligns text to the left
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.03, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellSrNo(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        // Aligns text to the left
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.03, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   //related disease Data view
   Widget _buildHeaderCellSrNoDiseaseData(String text, BuildContext context) {
@@ -1348,98 +1109,8 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
     );
   }
 
-  Widget _buildHeaderCellDiseaseData(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
 
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellSrNoDiseaseDataTotal(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.035, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellDiseaseDataAction(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildDataCellSrNoDiseaseData(String text) {
     double screenWidth = MediaQuery
@@ -1472,162 +1143,107 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
     );
   }
 
-  Widget _buildDataCellDiseaseData(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellDiseaseDataSettingUp(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellDiseaseDataSettingUp(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 3,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellDiseaseTotal(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.035, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellViewBlueDiseaseDataAction(String text,
-      VoidCallback onTap) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 35,
-        width: screenWidth * 0.3, // 30% of screen width for adaptability
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-            bottom:
-            BorderSide(width: 0.1, color: Colors.black), // Bottom border
-          ),
-        ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
+  void _showDetails(BuildContext context,
+      CataractDataReportData offer) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Cataract data approved by DPM',
             style: TextStyle(
-              fontWeight: FontWeight.normal,
+              fontWeight: FontWeight.bold,
               color: Colors.blue,
-              fontSize: screenWidth * 0.04, // Scales with screen width
             ),
           ),
-        ),
-      ),
+          content: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Table(
+              border: TableBorder.all(color: Colors.black, width: 0.5),
+              columnWidths: {
+                0: FixedColumnWidth(120.0), // Label column width
+                1: FlexColumnWidth(), // Value column width
+              },
+              children: [
+                _buildTableRow('Patient Id	:',offer.pUniqueID),
+                _buildTableRow('Name of Person:', offer.name.toString()),
+                _buildTableRow('Mobile No:', offer.mobile.toString()),
+                _buildTableRow('DOB:', Utils.formatDateString(offer.dob.toString())),
+
+                _buildTableRow('Gender:', mapGender(offer.gender)),
+                _buildTableRow('Address:', offer.addressLine1.toString()),
+                _buildTableRow('Operation Date:', Utils.formatDateString(offer.operatedOn.toString())),
+
+                _buildTableRow(' Entry Date:', Utils.formatDateString(offer.entryDate.toString())),
+                _buildTableRow("Operated Eye", offer.eyetype == "1" ? "Left" : "Right"),
+                _buildTableRow("NGO", offer.ngoName),
+
+                TableRow(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Actions',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ), // Placeholder for the "key"
+                    ),
+                    // Apply a SingleChildScrollView with horizontal scroll direction
+                    // Second column: Action + View buttons
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 8.0),
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+
+                            child: ElevatedButton(
+                              onPressed: () {
+
+                              },
+                              style: ElevatedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              ),
+                              child: Text('View'),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                // Add more fields as needed
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text(
+                'Close',
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
+
+  String mapGender(dynamic value) {
+    // Convert to int first if it’s a String that looks like a number
+    int code;
+    if (value is int)      code = value;
+    else if (value is String) code = int.tryParse(value);
+
+    if (code == null) return '—';
+    return code == -1 ? 'Male' : 'Female';
+  }
+
 }
