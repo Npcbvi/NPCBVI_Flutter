@@ -142,6 +142,7 @@ import '../model/camp/CampDashboard.dart';
 import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
 import '../model/dpmRegistration/updateUsers/GetDPM_Edit_UpdateUserDetail.dart';
 import '../model/dpmRegistration/updateUsers/UpdateUserApi.dart';
+import '../model/dpmRegistration/viewClickReportData/ViewClickCatractPdfType.dart';
 import '../model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
 import '../model/guidlines/GuilinessPage.dart';
 import '../model/mainDashbaordMorClick/moreClickCamp/BothWiseCamp.dart';
@@ -10598,5 +10599,63 @@ class ApiController {
       return [];
     }
   }
+  static Future<List<ViewClickCatractPdfTypeData>> getCataractPdfType(
+      String mode, String p_DeseaseId, String userID, String p_vStatus, int orgType) async {
+
+    print("@@getCataractPdfType start");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_CataractPatientView;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "mode": mode,
+        "p_DeseaseId": p_DeseaseId,
+        "p_UserID": userID,
+        "p_vStatus": p_vStatus,
+        "orgType": orgType
+      });
+
+      print("@@getCataractPdfType--request body: $body");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getCataractPdfType--response: ${response.data}");
+
+      var responseData = json.decode(response.data);
+      ViewClickCatractPdfType result = ViewClickCatractPdfType.fromJson(responseData);
+
+      if (result.status == true) {
+        return result.data ?? [];
+      } else {
+        Utils.showToast(result.message ?? "Failed to load data", true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast("Error: ${e.toString()}", true);
+      return [];
+    }
+  }
+
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

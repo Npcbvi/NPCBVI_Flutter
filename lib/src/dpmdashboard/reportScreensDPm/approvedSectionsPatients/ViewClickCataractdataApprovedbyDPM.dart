@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
-
+import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:mohfw_npcbvi/src/apihandler/ApiController.dart';
 import 'package:mohfw_npcbvi/src/database/SharedPrefs.dart';
@@ -15,12 +17,14 @@ import 'package:mohfw_npcbvi/src/model/dpmRegistration/GetDPMCataractPatientView
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmReportScreen/ReportScreen.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/eyescreening/GetDPM_ScreeningYear.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/lowvision/lowvisionregister_cataract.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/viewClickReportData/ViewClickCatractPdfType.dart';
 import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 import 'package:http/http.dart' as http;
 import 'dart:developer' as developer;
-
+import 'package:flutter/material.dart';
 import '../../../model/dpmRegistration/viewClickReportData/CataractDataReport.dart';
+import 'CataractPdfViewClick.dart';
 
 
 class ViewClickCataractdataApprovedbyDPM extends StatefulWidget {
@@ -1204,6 +1208,18 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
                             child: ElevatedButton(
                               onPressed: () {
 
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        CataractPdfViewClick(
+                                            id: offer.id.toString() ?? '',
+                                            orgNAme:orgNames
+                                        ),
+                                  ),
+                                );
+
+
                               },
                               style: ElevatedButton.styleFrom(
                                 padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -1245,5 +1261,8 @@ class _ViewClickCataractdataApprovedbyDPM extends State<ViewClickCataractdataApp
     if (code == null) return '—';
     return code == -1 ? 'Male' : 'Female';
   }
+
+
+
 
 }
