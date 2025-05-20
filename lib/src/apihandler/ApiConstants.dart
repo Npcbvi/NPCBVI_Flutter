@@ -250,4 +250,10 @@ class ApiConstants {
   static String updateusers = 'DpmDashboard/api/updateusers';
   static String GetDPM_CataractReport = 'DpmDashboard/api/GetDPM_CataractReport';
 
+  static String GetData_amount_totalCountGlaucomaPatients = 'DpmDashboard/api/GetData_amount_totalCountGlaucomaPatients';
+
+  static String GetDPM_GlaucomaReport = 'DpmDashboard/api/GetDPM_GlaucomaReport';
+
+  static String GetDPM_GlaucomaReportView = 'DpmDashboard/api/GetDPM_GlaucomaReportView';
+
 }

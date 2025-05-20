@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/RetinoblastomaRep
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/RetinopathyofPrematurityReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/SquintReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/ApprovedClickDataPatientDiseaseInnerDataDisplay.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/glaucoma/GlaucomaApproveClickPatientDiseaseInnnerDisplayData.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/updateUSers/UpdateUserDPMMenu.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
@@ -6805,6 +6806,7 @@ class _DPMDashboard extends State<DPMDashboard> {
 
 
                                             if(diseaseid==1){
+                                              print("@@diseaseid: " + diseaseid.toString());
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -6813,7 +6815,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                 ),
                                               );
                                             }else if(diseaseid==2){
+                                              print("@@diseaseid:here " + diseaseid.toString());
 
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      GlaucomaApproveClickPatientDiseaseInnnerDisplayData(),
+                                                ),
+                                              );
                                             }
                                           }),
                                         ],
