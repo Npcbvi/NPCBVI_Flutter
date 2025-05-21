@@ -6,6 +6,7 @@ import 'package:mohfw_npcbvi/src/model/camp/ViewDashboardclick.dart';
 import 'package:mohfw_npcbvi/src/model/camp/totalPatient/TotalPatientCamp.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/dpmApplicationPart/Dpm_application_ngoApplications.dart';
 import 'package:mohfw_npcbvi/src/model/dpmRegistration/viewClickReportData/CataractDataReport.dart';
+import 'package:mohfw_npcbvi/src/model/dpmRegistration/viewClickReportData/squint/SquintDataReport.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewClick.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/EquipemntDetails.dart';
 import 'package:mohfw_npcbvi/src/model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
@@ -145,6 +146,7 @@ import '../model/dpmRegistration/updateUsers/UpdateUserApi.dart';
 import '../model/dpmRegistration/viewClickReportData/ViewClickCatractPdfType.dart';
 import '../model/dpmRegistration/viewClickReportData/galucoma/GlaucomPDfFile.dart';
 import '../model/dpmRegistration/viewClickReportData/galucoma/galucomaDataReporty.dart';
+import '../model/dpmRegistration/viewClickReportData/squint/SquintPdfFile.dart';
 import '../model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
 import '../model/guidlines/GuilinessPage.dart';
 import '../model/mainDashbaordMorClick/moreClickCamp/BothWiseCamp.dart';
@@ -10856,6 +10858,220 @@ class ApiController {
 
       var responseData = json.decode(response.data);
       GlaucomPDfFile result = GlaucomPDfFile.fromJson(responseData);
+
+      if (result.status == true) {
+        return result.data ?? [];
+      } else {
+        Utils.showToast(result.message ?? "Failed to load data", true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast("Error: ${e.toString()}", true);
+      return [];
+    }
+  }
+
+
+  static Future<List<DataReportScreen>> getData_amount_totalCountSquintPatients(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getData_amount_totalCountSquintPatients" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetData_amount_totalCountSquintPatients;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@getData_amount_totalCountSquintPatients--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getData_amount_totalCountGlaucomaPatients--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ReportScreen data = ReportScreen.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+  static Future<List<SquintDataReportData>> getDPM_SquintReport(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getDPM_SquintReport" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDPM_SquintReport;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@getDPM_SquintReport--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getDPM_SquintReport--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      SquintDataReport data = SquintDataReport.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+  static Future<List<SquintPdfFileData>> getDPM_SquintReportView(
+      String mode, String p_DeseaseId, String userID, String p_vStatus, int orgType) async {
+
+    print("@@getDPM_SquintReportView start");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_SquintReportView;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "mode": mode,
+        "p_DeseaseId": p_DeseaseId,
+        "p_UserID": userID,
+        "p_vStatus": p_vStatus,
+        "orgType": orgType
+      });
+
+      print("@@getDPM_SquintReportView--request body: $body");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_GlaucomaReportView--response: ${response.data}");
+
+      var responseData = json.decode(response.data);
+      SquintPdfFile result = SquintPdfFile.fromJson(responseData);
 
       if (result.status == true) {
         return result.data ?? [];

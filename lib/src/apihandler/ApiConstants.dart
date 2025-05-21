@@ -256,4 +256,9 @@ class ApiConstants {
 
   static String GetDPM_GlaucomaReportView = 'DpmDashboard/api/GetDPM_GlaucomaReportView';
 
+  static String GetData_amount_totalCountSquintPatients = 'DpmDashboard/api/GetData_amount_totalCountSquintPatients';
+
+  static String GetDPM_SquintReport = 'DpmDashboard/api/GetDPM_SquintReport';
+  static String GetDPM_SquintReportView = 'DpmDashboard/api/GetDPM_SquintReportView';
+
 }
