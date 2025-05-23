@@ -266,4 +266,9 @@ class ApiConstants {
 
   static String GetDPM_CongenitalReportView = 'DpmDashboard/api/GetDPM_CongenitalReportView';
 
+  static String GetData_amount_totalCountDiabeticPatients = 'DpmDashboard/api/GetData_amount_totalCountDiabeticPatients';
+
+  static String GetDPM_DiabeticlReport = 'DpmDashboard/api/GetDPM_DiabeticlReport';
+  static String GetDPM_DiabeticReportView = 'DpmDashboard/api/GetDPM_DiabeticReportView';
+
 }
