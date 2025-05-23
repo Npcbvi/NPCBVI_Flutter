@@ -1767,7 +1767,6 @@ class _ApprovedClickSquint extends State<ApprovedClickSquint> {
                         children: [
                           Container(
                             margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
-
                             child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
