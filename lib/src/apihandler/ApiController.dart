@@ -148,6 +148,8 @@ import '../model/dpmRegistration/updateUsers/UpdateUserApi.dart';
 import '../model/dpmRegistration/viewClickReportData/DiabeticRetinpathy/DiabeticRetinopathyDataReport.dart';
 import '../model/dpmRegistration/viewClickReportData/ViewClickCatractPdfType.dart';
 import '../model/dpmRegistration/viewClickReportData/congentalPtosis/CongentialPdfFile.dart';
+import '../model/dpmRegistration/viewClickReportData/cornealBlindnessReport/CornealBlindnessDataReport.dart';
+import '../model/dpmRegistration/viewClickReportData/cornealBlindnessReport/CornealBlindnessPdfFile.dart';
 import '../model/dpmRegistration/viewClickReportData/galucoma/GlaucomPDfFile.dart';
 import '../model/dpmRegistration/viewClickReportData/galucoma/galucomaDataReporty.dart';
 import '../model/dpmRegistration/viewClickReportData/squint/SquintPdfFile.dart';
@@ -11503,6 +11505,220 @@ class ApiController {
 
       var responseData = json.decode(response.data);
       DiabeticRatinopathyPdfFile result = DiabeticRatinopathyPdfFile.fromJson(responseData);
+
+      if (result.status == true) {
+        return result.data ?? [];
+      } else {
+        Utils.showToast(result.message ?? "Failed to load data", true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast("Error: ${e.toString()}", true);
+      return [];
+    }
+  }
+
+
+  static Future<List<DataReportScreen>> getData_amount_totalCountCornealBlindnessPatients(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getData_amount_totalCountCornealBlindnessPatients" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetData_amount_totalCountCornealBlindnessPatients;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@getData_amount_totalCountCornealBlindnessPatients--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getData_amount_totalCountCornealBlindnessPatients--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ReportScreen data = ReportScreen.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+  static Future<List<CornealBlindnessDataReportData>> GetDPM_CornealBlindnessReport(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@GetDPM_CornealBlindnessReport" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDPM_CornealBlindnessReport;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@GetDPM_CornealBlindnessReport--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetDPM_CornealBlindnessReport--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      CornealBlindnessDataReport data = CornealBlindnessDataReport.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+  static Future<List<CornealBlindnessPdfFileData>> getDPM_CornealBlindnessReportView(
+      String mode, String p_DeseaseId, String userID, String p_vStatus, int orgType) async {
+
+    print("@@getDPM_CornealBlindnessReportView start");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_CornealBlindnessReportView;
+
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "mode": mode,
+        "p_DeseaseId": p_DeseaseId,
+        "p_UserID": userID,
+        "p_vStatus": p_vStatus,
+        "orgType": orgType
+      });
+
+      print("@@getDPM_CornealBlindnessReportView--request body: $body");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_CornealBlindnessReportView--response: ${response.data}");
+
+      var responseData = json.decode(response.data);
+      CornealBlindnessPdfFile result = CornealBlindnessPdfFile.fromJson(responseData);
 
       if (result.status == true) {
         return result.data ?? [];

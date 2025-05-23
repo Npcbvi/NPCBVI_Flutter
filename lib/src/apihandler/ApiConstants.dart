@@ -271,4 +271,10 @@ class ApiConstants {
   static String GetDPM_DiabeticlReport = 'DpmDashboard/api/GetDPM_DiabeticlReport';
   static String GetDPM_DiabeticReportView = 'DpmDashboard/api/GetDPM_DiabeticReportView';
 
+
+  static String GetData_amount_totalCountCornealBlindnessPatients = 'DpmDashboard/api/GetData_amount_totalCountCornealBlindnessPatients';
+
+  static String GetDPM_CornealBlindnessReport = 'DpmDashboard/api/GetDPM_CornealBlindnessReport';
+  static String GetDPM_CornealBlindnessReportView = 'DpmDashboard/api/GetDPM_CornealBlindnessReportView';
+
 }
