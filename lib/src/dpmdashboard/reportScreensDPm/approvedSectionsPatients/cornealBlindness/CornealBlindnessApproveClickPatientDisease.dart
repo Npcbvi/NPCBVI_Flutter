@@ -738,8 +738,6 @@ class _CornealBlindnessApproveClickPatientDisease extends State<CornealBlindness
               ),
             ),
 
-
-
             // Horizontal Scrolling Header Row
             SizedBox(width: 8.0),
             reportviewCataract(),
