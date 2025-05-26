@@ -10,6 +10,7 @@ import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/RetinoblastomaRep
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/RetinopathyofPrematurityReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/SquintReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/ApprovedClickDataPatientDiseaseInnerDataDisplay.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/IntraocularTrauminChildren/ApproveclickIntraocularTrauminChildren.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/Retinoblastoma/ApproveClickRetinoblastoma.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/RetinopathyofPrematurity/ApproveclickRetinopathyPrematurity.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/approvedSectionsPatients/congenitalPtosis/ApprovedClickCongentialPtosis.dart';
@@ -6895,6 +6896,17 @@ class _DPMDashboard extends State<DPMDashboard> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       ApproveClickRetinoblastoma(),
+                                                ),
+                                              );
+                                            }
+                                            else if(diseaseid==9){
+                                              print("@@diseaseid:here " + diseaseid.toString());
+
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ApproveclickIntraocularTrauminChildren(),
                                                 ),
                                               );
                                             }

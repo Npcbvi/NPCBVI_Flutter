@@ -148,6 +148,8 @@ import '../model/dpmRegistration/updateUsers/UpdateUserApi.dart';
 import '../model/dpmRegistration/viewClickReportData/DiabeticRetinpathy/DiabeticRetinopathyDataReport.dart';
 import '../model/dpmRegistration/viewClickReportData/RetinopathyofPermaturity/RetinopathyofPermaturityDataReport.dart';
 import '../model/dpmRegistration/viewClickReportData/RetinopathyofPermaturity/RetinopathyofPermaturityPdf.dart';
+import '../model/dpmRegistration/viewClickReportData/TraumainChildren/TauminchildrenPdfFiles.dart';
+import '../model/dpmRegistration/viewClickReportData/TraumainChildren/TrauminchildrenDataReport.dart';
 import '../model/dpmRegistration/viewClickReportData/ViewClickCatractPdfType.dart';
 import '../model/dpmRegistration/viewClickReportData/congentalPtosis/CongentialPdfFile.dart';
 import '../model/dpmRegistration/viewClickReportData/cornealBlindnessReport/CornealBlindnessDataReport.dart';
@@ -12025,7 +12027,6 @@ class ApiController {
       return [];
     }
   }
-
   static Future<List<RetinoBlastmaDataReportData>> getDPM_RetinoblastomaReport(
       int year, String _selectedDateText, String _selectedDateTextToDate,
       int stateId, int districtId, String orgtype, String bindOrganisationNAme,
@@ -12102,8 +12103,6 @@ class ApiController {
       return [];
     }
   }
-
-
   static Future<List<RetinoBlastamPdfFilesData>> getDPM_RetinoblastomaReportView(
       String mode, String p_DeseaseId, String userID, String p_vStatus, int orgType) async {
 
@@ -12163,6 +12162,218 @@ class ApiController {
     }
   }
 
+  static Future<List<DataReportScreen>> getData_amount_totalCountTraumaPatients(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getData_amount_totalCountTraumaPatients" + "1");
+    Response response1;
 
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetData_amount_totalCountTraumaPatients;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@getData_amount_totalCountTraumaPatients--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getData_amount_totalCountTraumaPatients--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ReportScreen data = ReportScreen.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+
+  static Future<List<TrauminchildrenDataReportData>> getDPM_TraumaReport(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getDPM_TraumaReport" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDPM_TraumaReport;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@getDPM_TraumaReport--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getDPM_TraumaReport--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      TrauminchildrenDataReport data = TrauminchildrenDataReport.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+  static Future<List<TauminchildrenPdfFilesData>> getDPM_TraumaReportView(
+      String mode, String p_DeseaseId, String userID, String p_vStatus, int orgType) async {
+
+    print("@@getDPM_TraumaReportView start");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_TraumaReportView;
+
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "mode": mode,
+        "p_DeseaseId": p_DeseaseId,
+        "p_UserID": userID,
+        "p_vStatus": p_vStatus,
+        "orgType": orgType
+      });
+
+      print("@@getDPM_TraumaReportView--request body: $body");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_TraumaReportView--response: ${response.data}");
+
+      var responseData = json.decode(response.data);
+      TauminchildrenPdfFiles result = TauminchildrenPdfFiles.fromJson(responseData);
+
+      if (result.status == true) {
+        return result.data ?? [];
+      } else {
+        Utils.showToast(result.message ?? "Failed to load data", true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast("Error: ${e.toString()}", true);
+      return [];
+    }
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/
