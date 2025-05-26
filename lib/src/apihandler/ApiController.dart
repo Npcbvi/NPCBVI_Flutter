@@ -146,12 +146,16 @@ import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
 import '../model/dpmRegistration/updateUsers/GetDPM_Edit_UpdateUserDetail.dart';
 import '../model/dpmRegistration/updateUsers/UpdateUserApi.dart';
 import '../model/dpmRegistration/viewClickReportData/DiabeticRetinpathy/DiabeticRetinopathyDataReport.dart';
+import '../model/dpmRegistration/viewClickReportData/RetinopathyofPermaturity/RetinopathyofPermaturityDataReport.dart';
+import '../model/dpmRegistration/viewClickReportData/RetinopathyofPermaturity/RetinopathyofPermaturityPdf.dart';
 import '../model/dpmRegistration/viewClickReportData/ViewClickCatractPdfType.dart';
 import '../model/dpmRegistration/viewClickReportData/congentalPtosis/CongentialPdfFile.dart';
 import '../model/dpmRegistration/viewClickReportData/cornealBlindnessReport/CornealBlindnessDataReport.dart';
 import '../model/dpmRegistration/viewClickReportData/cornealBlindnessReport/CornealBlindnessPdfFile.dart';
 import '../model/dpmRegistration/viewClickReportData/galucoma/GlaucomPDfFile.dart';
 import '../model/dpmRegistration/viewClickReportData/galucoma/galucomaDataReporty.dart';
+import '../model/dpmRegistration/viewClickReportData/retinoblastma/RetinoBlastamPdfFiles.dart';
+import '../model/dpmRegistration/viewClickReportData/retinoblastma/RetinoBlastmaDataReport.dart';
 import '../model/dpmRegistration/viewClickReportData/squint/SquintPdfFile.dart';
 import '../model/dpm_approval_status/NgoAppliations/DoctorlinkHospitals.dart';
 import '../model/guidlines/GuilinessPage.dart';
@@ -11731,6 +11735,434 @@ class ApiController {
       return [];
     }
   }
+  static Future<List<DataReportScreen>> getData_amount_totalCountRetinopathyPermaturityPatients(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getData_amount_totalCountRetinopathyPermaturityPatients" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetData_amount_totalCountRetinopathyPermaturityPatients;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@GetData_amount_totalCountRetinopathyPermaturityPatients--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@GetData_amount_totalCountRetinopathyPermaturityPatients--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ReportScreen data = ReportScreen.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+  static Future<List<RetinopathyofPermaturityDataReportData>> getDPM_RetinopathyPermaturityReport(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getDPM_RetinopathyPermaturityReport" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDPM_RetinopathyPermaturityReport;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@getDPM_RetinopathyPermaturityReport--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getDPM_RetinopathyPermaturityReport--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      RetinopathyofPermaturityDataReport data = RetinopathyofPermaturityDataReport.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+  static Future<List<RetinopathyofPermaturityPdfData>> getDPM_RetinopathyPermaturityReportView(
+      String mode, String p_DeseaseId, String userID, String p_vStatus, int orgType) async {
+
+    print("@@getDPM_RetinopathyPermaturityReportView start");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_RetinopathyPermaturityReportView;
+
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "mode": mode,
+        "p_DeseaseId": p_DeseaseId,
+        "p_UserID": userID,
+        "p_vStatus": p_vStatus,
+        "orgType": orgType
+      });
+
+      print("@@getDPM_RetinopathyPermaturityReportView--request body: $body");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_RetinopathyPermaturityReportView--response: ${response.data}");
+
+      var responseData = json.decode(response.data);
+      RetinopathyofPermaturityPdf result = RetinopathyofPermaturityPdf.fromJson(responseData);
+
+      if (result.status == true) {
+        return result.data ?? [];
+      } else {
+        Utils.showToast(result.message ?? "Failed to load data", true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast("Error: ${e.toString()}", true);
+      return [];
+    }
+  }
+
+
+  static Future<List<DataReportScreen>> getData_amount_totalCountRetinoblastomaPatients(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getData_amount_totalCountRetinoblastomaPatients" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetData_amount_totalCountRetinoblastomaPatients;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@getData_amount_totalCountRetinoblastomaPatients--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getData_amount_totalCountRetinoblastomaPatients--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      ReportScreen data = ReportScreen.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+  static Future<List<RetinoBlastmaDataReportData>> getDPM_RetinoblastomaReport(
+      int year, String _selectedDateText, String _selectedDateTextToDate,
+      int stateId, int districtId, String orgtype, String bindOrganisationNAme,
+      String status, String financialYear, String npcbno) async {
+    print("@@getDPM_RetinoblastomaReport" + "1");
+    Response response1;
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      // Define the URL and headers
+      var url = ApiConstants.baseUrl +
+          ApiConstants.GetDPM_RetinoblastomaReport;
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      // Define the request body
+      var body = json.encode({
+        "mode": "string",
+        "year": year,
+        "fromdate": _selectedDateText,
+        "todate": _selectedDateTextToDate,
+        "stateid": stateId,
+        "districtid": districtId,
+        "olddistrictid": 0,
+        "orgtype": orgtype,
+        "ngo": bindOrganisationNAme,
+        "status": status,
+        "financialYear": financialYear,
+        "npcbno": npcbno
+      });
+      print(
+          "@@getDPM_RetinoblastomaReport--bodyprint--: ${url+body
+              .toString()}");
+      // Create Dio instance and make the request
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print(
+          "@@getDPM_RetinoblastomaReport--Api Response: ${response
+              .toString()}");
+
+      // Parse the response
+      var responseData = json.decode(response.data);
+      RetinoBlastmaDataReport data = RetinoBlastmaDataReport.fromJson(responseData);
+
+      if (data.status) {
+        //  Utils.showToast(data.message, true);
+        // Return the list of data
+        return data.data;
+      } else {
+        // Utils.showToast(data.message, true);
+        return [];
+      }
+    } catch (e) {
+      // Utils.showToast(e.toString(), true);
+
+      return [];
+    }
+  }
+
+
+  static Future<List<RetinoBlastamPdfFilesData>> getDPM_RetinoblastomaReportView(
+      String mode, String p_DeseaseId, String userID, String p_vStatus, int orgType) async {
+
+    print("@@getDPM_RetinoblastomaReportView start");
+
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    try {
+      var url = ApiConstants.baseUrl + ApiConstants.GetDPM_RetinoblastomaReportView;
+
+      Map<String, String> headers = {
+        "Content-Type": "application/json",
+        "apikey": "Key123",
+        "apipassword": "PWD123",
+      };
+
+      var body = json.encode({
+        "mode": mode,
+        "p_DeseaseId": p_DeseaseId,
+        "p_UserID": userID,
+        "p_vStatus": p_vStatus,
+        "orgType": orgType
+      });
+
+      print("@@getDPM_RetinoblastomaReportView--request body: $body");
+
+      Dio dio = Dio();
+      Response response = await dio.post(
+        url,
+        data: body,
+        options: Options(
+          headers: headers,
+          contentType: "application/json",
+          responseType: ResponseType.plain,
+        ),
+      );
+
+      print("@@getDPM_RetinoblastomaReportView--response: ${response.data}");
+
+      var responseData = json.decode(response.data);
+      RetinoBlastamPdfFiles result = RetinoBlastamPdfFiles.fromJson(responseData);
+
+      if (result.status == true) {
+        return result.data ?? [];
+      } else {
+        Utils.showToast(result.message ?? "Failed to load data", true);
+        return [];
+      }
+    } catch (e) {
+      Utils.showToast("Error: ${e.toString()}", true);
+      return [];
+    }
+  }
+
 
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/

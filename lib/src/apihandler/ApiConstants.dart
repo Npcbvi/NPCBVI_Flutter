@@ -277,4 +277,14 @@ class ApiConstants {
   static String GetDPM_CornealBlindnessReport = 'DpmDashboard/api/GetDPM_CornealBlindnessReport';
   static String GetDPM_CornealBlindnessReportView = 'DpmDashboard/api/GetDPM_CornealBlindnessReportView';
 
+  static String GetData_amount_totalCountRetinopathyPermaturityPatients = 'DpmDashboard/api/GetData_amount_totalCountRetinopathyPermaturityPatients';
+
+  static String GetDPM_RetinopathyPermaturityReport = 'DpmDashboard/api/GetDPM_RetinopathyPermaturityReport';
+  static String GetDPM_RetinopathyPermaturityReportView = 'DpmDashboard/api/GetDPM_RetinopathyPermaturityReportView';
+
+
+  static String GetData_amount_totalCountRetinoblastomaPatients = 'DpmDashboard/api/GetData_amount_totalCountRetinoblastomaPatients';
+
+  static String GetDPM_RetinoblastomaReport = 'DpmDashboard/api/GetDPM_RetinoblastomaReport';
+  static String GetDPM_RetinoblastomaReportView = 'DpmDashboard/api/GetDPM_RetinoblastomaReportView';
 }
