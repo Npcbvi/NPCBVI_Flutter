@@ -290,7 +290,7 @@ class _SquintReportScreen extends State<SquintReportScreen> {
                               child: Row(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(right: 20),
+                                    margin: EdgeInsets.only(right: 10),
                                     // Space between Login Type and District
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -335,7 +335,7 @@ class _SquintReportScreen extends State<SquintReportScreen> {
                             ),
 
                             // Space between Row and State Column
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 10),
 
                             // State in a Column with margin
                             Container(
@@ -358,7 +358,7 @@ class _SquintReportScreen extends State<SquintReportScreen> {
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 10),
 
                             // State in a Column with margin
                             Container(

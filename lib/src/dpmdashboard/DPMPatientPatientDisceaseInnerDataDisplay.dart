@@ -286,7 +286,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                               child: Row(
                                 children: [
                                   Container(
-                                    margin: EdgeInsets.only(right: 20),
+                                    margin: EdgeInsets.only(right: 10),
                                     // Space between Login Type and District
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -331,7 +331,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                             ),
 
                             // Space between Row and State Column
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 10),
 
                             // State in a Column with margin
                             Container(
@@ -354,7 +354,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 20),
+                            const SizedBox(width: 10),
 
                             // State in a Column with margin
                             Container(
