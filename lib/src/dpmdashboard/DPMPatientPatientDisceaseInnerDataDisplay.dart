@@ -27,7 +27,8 @@ class DPMPatientPatientDisceaseInnerDataDisplay extends StatefulWidget {
 
 class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatientDisceaseInnerDataDisplay> {
   DateTime _selectedDate;
-
+  List<bool> _selectedRows = [];
+  bool _selectAll = false; // Track header checkbox separately
   TextEditingController fullnameController_ = new TextEditingController();
   String fullnameController;
   String  districtNames, userId, stateNames;
@@ -63,7 +64,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
   bool lowvisionCataractDataDispla = false;
   Future<List<DataBindOrganValuebiggerFive>>
   _futureDataBindOrganValuebiggerFive;
-
+  Future<List<Datalowvisionregister_cataract>> _cataractDataFuture;
   @override
   void initState() {
     // TODO: implement initState
@@ -467,6 +468,138 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
             // Horizontal Scrolling Header Row
             SizedBox(width: 8.0),
             reportviewCatract(),
+         /*   SizedBox(height: 5.0),
+            Container(
+              width: double.infinity,
+              // Full width
+              color: Colors.blue,
+              // Background color
+              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+              // Padding for spacing
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // Space between text and button
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        print('Approve button clicked');
+                        setState(() {
+
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(4),
+                      margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        decoration: BoxDecoration(
+                          color: Colors.white, // ✅ White background
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: Colors
+                                  .grey), // ✅ Light border for visibility
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Approve',
+                                style: TextStyle(
+                                  color: Colors.black, // ✅ Black text
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        print('Hold button clicked');
+                        setState(() {
+
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(4),
+                        margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        decoration: BoxDecoration(
+                          color: Colors.white, // ✅ White background
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: Colors
+                                  .grey), // ✅ Light border for visibility
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Hold',
+                                style: TextStyle(
+                                  color: Colors.black, // ✅ Black text
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: GestureDetector(
+                      onTap: () {
+                        print('Rejected button clicked');
+                        setState(() {
+
+                        });
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(4),
+                        margin: EdgeInsets.fromLTRB(5, 0, 5, 0),
+                        decoration: BoxDecoration(
+                          color: Colors.white, // ✅ White background
+                          borderRadius: BorderRadius.circular(5),
+                          border: Border.all(
+                              color: Colors
+                                  .grey), // ✅ Light border for visibility
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Reject',
+                                style: TextStyle(
+                                  color: Colors.black, // ✅ Black text
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),*/
           ],
         ),
       ),
@@ -1085,6 +1218,13 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                         }
                         setState(() {
                           lowvisionCataractDataDispla = true;
+                          _cataractDataFuture = ApiController.getDPM_Cataract(
+                            district_code_login,
+                            state_code_login,
+                            npcbNoCatract,
+                            getYearNgoHopital,
+                            lowVisionDataValue,
+                          );
                         });
                       },
                       child: Text('Submit'),
@@ -1096,13 +1236,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                 Column(
                   children: [
                     FutureBuilder<List<Datalowvisionregister_cataract>>(
-                      future: ApiController.getDPM_Cataract(
-                        district_code_login,
-                        state_code_login,
-                        npcbNoCatract,
-                        getYearNgoHopital,
-                        lowVisionDataValue,
-                      ),
+                      future: _cataractDataFuture,
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -1125,54 +1259,190 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
                               ),
                             ),
                           );
-                        }  else {
+                        } /* else {
                           List<Datalowvisionregister_cataract> ddata = snapshot.data;
+                          // ✅ Initialize _selectedRows if not already done or if length has changed
+                          if (_selectedRows.length != ddata.length) {
+                            _selectedRows = List.generate(ddata.length, (_) => false);
+                          }
+                          return Container(
+                            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  // Header only when data exists
+                                  Row(
+                                    children: [
 
-                          return SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // Header only when data exists
-                                Row(
-                                  children: [
-
-                                    _buildHeaderCellSrNoDiseaseData('S.No.', context),
-                                    _buildHeaderCell('Patient Id'),
-                                   // _buildHeaderCell('Name of Person'),
-                                    _buildHeaderCellNGOActionSmallShow('Action'),
-                                  ],
-                                ),
-                                Column(
-                                  children: ddata.map((offer) {
-                                    return Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
+                                      _buildHeaderCellSrNoDiseaseData('S.No.', context),
+                                      _buildHeaderCell('Patient Id'),
+                                     // _buildHeaderCell('Name of Person'),
+                                      // Header checkbox with label
 
 
-                                        _buildDataCellSrNoDiseaseData(
-                                            (ddata.indexOf(offer) + 1).toString()),
-                                        _buildDataCell(offer.pUniqueID),
-                                       // _buildDataCell(offer.name),
-                                        _buildDataCellViewBlue("View", () {
-
-                                          _showReportDataDisplay( context, offer);
-
-                                       /*   Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => DPMPatientDiesesParticularView(offer.id.toString()),
+                                  _buildHeaderCellNGOActionSmallShow('Action'),
+                                      Container(
+                                        width: 120, // Adjust as needed
+                                        child: Row(
+                                          children: [
+                                            Checkbox(
+                                              value: _selectAll,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _selectAll = value ?? false;
+                                                  _selectedRows = List.filled(ddata.length, _selectAll);
+                                                });
+                                              },
                                             ),
-                                          );*/
-                                        }),
-                                      ],
-                                    );
-                                  }).toList(),
-                                ),
-                              ],
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  // ✅ Add one clean divider here
+                                  Column(
+
+                                    children: ddata.asMap().entries.map((entry) {
+                                      int index = entry.key;
+                                      var offer = entry.value;
+                                      return Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          // Row checkbox
+
+                                          _buildDataCellSrNoDiseaseData(
+                                              (ddata.indexOf(offer) + 1).toString()),
+                                          _buildDataCell(offer.pUniqueID),
+                                         // _buildDataCell(offer.name),
+
+
+                                          _buildDataCellViewBlue("View", () {
+
+                                            _showReportDataDisplay( context, offer);
+
+
+                                          }),
+                                          Checkbox(
+                                            value: _selectedRows[index],
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _selectedRows[index] = value ?? false;
+
+                                                // ✅ Do NOT update _selectAll here
+                                              });
+                                            },
+                                          ),
+                                        ],
+                                      );
+                                    }).toList(),
+                                  ),
+                                ],
+                              ),
                             ),
                           );
+                        }*/
+                        else {
+                          List<Datalowvisionregister_cataract> ddata = snapshot.data;
+
+                          if (_selectedRows.length != ddata.length) {
+                            _selectedRows = List.generate(ddata.length, (_) => false);
+                          }
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // ✅ Show buttons only if data is not empty
+                              if (ddata.isNotEmpty) ...[
+                                SizedBox(height: 5.0),
+                                Container(
+                                  width: double.infinity,
+                                  color: Colors.blue,
+                                  padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      _buildActionButton('Approve', () {
+                                        print('Approve button clicked');
+                                        setState(() {});
+                                      }),
+                                      _buildActionButton('Hold', () {
+                                        print('Hold button clicked');
+                                        setState(() {});
+                                      }),
+                                      _buildActionButton('Reject', () {
+                                        print('Reject button clicked');
+                                        setState(() {});
+                                      }),
+                                    ],
+                                  ),
+                                ),
+                              ],
+
+                              // Your existing SingleChildScrollView table
+                              Container(
+                                 margin: EdgeInsets.fromLTRB(10,0,10,0),
+                                child: SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          _buildHeaderCellSrNoDiseaseData('S.No.', context),
+                                          _buildHeaderCell('Patient Id'),
+                                          _buildHeaderCellNGOActionSmallShow('Action'),
+                                          Container(
+                                            width: 120,
+                                            child: Row(
+                                              children: [
+                                                Checkbox(
+                                                  value: _selectAll,
+                                                  onChanged: (value) {
+                                                    setState(() {
+                                                      _selectAll = value ?? false;
+                                                      _selectedRows = List.filled(ddata.length, _selectAll);
+                                                    });
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Column(
+                                        children: ddata.asMap().entries.map((entry) {
+                                          int index = entry.key;
+                                          var offer = entry.value;
+                                          return Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              _buildDataCellSrNoDiseaseData((index + 1).toString()),
+                                              _buildDataCell(offer.pUniqueID),
+                                              _buildDataCellViewBlue("View", () {
+                                                _showReportDataDisplay(context, offer);
+                                              }),
+                                              Checkbox(
+                                                value: _selectedRows[index],
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    _selectedRows[index] = value ?? false;
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                        }).toList(),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
                         }
+
                       },
                     ),
 
@@ -1539,113 +1809,9 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
     );
   }
 
-  Widget _buildHeaderCellNGOAction(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellActionGovtPrivate(String text) {
-    return Container(
-      height: 35,
-      width: 90, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildHeaderCellGovtPrivateNgo(String text) {
-    return Container(
-      height: 35,
-      width: 130, // Fixed width to ensure horizontal scrolling
-      decoration: BoxDecoration(
-        color: Colors.white, // Background color for header cells
-        border: Border.all(
-          width: 0.1,
-        ),
-      ),
-      //   padding: const EdgeInsets.fromLTRB(8.0,8,8,8),
-      child: Center(
-        child: Text(
-          text,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellEyeScreen(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildDataCell(String text) {
     double screenWidth = MediaQuery
@@ -1659,7 +1825,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+       //   top: BorderSide(width: 0.1, color: Colors.black), // Top border
 
           bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
@@ -1687,45 +1853,11 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       onTap: onTap, // Trigger the callback when the cell is clicked
       child: Container(
         height: 35,
-        width: screenWidth * 0.3, // 30% of screen width for adaptability
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-            bottom:
-            BorderSide(width: 0.1, color: Colors.black), // Bottom border
-          ),
-        ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              color: Colors.blue,
-              fontSize: screenWidth * 0.04, // Scales with screen width
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellViewBlueSmasllShow(String text, VoidCallback onTap) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 35,
         width: screenWidth * 0.18, // 30% of screen width for adaptability
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border(
-            top: BorderSide(width: 0.1, color: Colors.black), // Top border
+        //    top: BorderSide(width: 0.1, color: Colors.black), // Top border
 
             bottom:
             BorderSide(width: 0.1, color: Colors.black), // Bottom border
@@ -1745,6 +1877,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       ),
     );
   }
+
 
   Widget _buildHeaderCellNGOActionSmallShow(String text) {
     double screenWidth = MediaQuery
@@ -1777,101 +1910,8 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
     );
   }
 
-  Widget _buildDataCellViewBlueEyeScreen(String text, VoidCallback onTap) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-    return GestureDetector(
-      onTap: onTap, // Trigger the callback when the cell is clicked
-      child: Container(
-        height: 35,
-        width: screenWidth * 0.3, // 30% of screen width for adaptability
-        decoration: BoxDecoration(
-          color: Colors.white,
-          border: Border(
-            top: BorderSide(width: 0.1, color: Colors.black), // Top border
 
-            bottom:
-            BorderSide(width: 0.1, color: Colors.black), // Bottom border
-          ),
-        ),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              color: Colors.blue,
-              fontSize: screenWidth * 0.04, // Scales with screen width
-            ),
-          ),
-        ),
-      ),
-    );
-  }
 
-  Widget _buildDataCellSrNoEyScreen(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        // Aligns text to the left
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.03, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildDataCellSrNo(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        // Aligns text to the left
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.03, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   //related disease Data view
   Widget _buildHeaderCellSrNoDiseaseData(String text, BuildContext context) {
@@ -1904,98 +1944,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
     );
   }
 
-  Widget _buildHeaderCellDiseaseData(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellSrNoDiseaseDataTotal(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.1, // 10% of screen width for responsiveness
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.035, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellDiseaseDataAction(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildDataCellSrNoDiseaseData(String text) {
     double screenWidth = MediaQuery
@@ -2009,7 +1958,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       decoration: BoxDecoration(
         color: Colors.white,
         border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
+       //   top: BorderSide(width: 0.1, color: Colors.black), // Top border
 
           bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
         ),
@@ -2028,68 +1977,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
     );
   }
 
-  Widget _buildDataCellDiseaseData(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
 
-    return Container(
-      height: 35,
-      width: screenWidth * 0.5, // 30% of screen width for adaptability
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.black), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          style: TextStyle(
-            fontWeight: FontWeight.normal,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeaderCellDiseaseDataSettingUp(String text) {
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
-
-    return Container(
-      height: 35,
-      width: screenWidth * 0.3,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(
-          top: BorderSide(width: 0.1, color: Colors.white), // Top border
-
-          bottom: BorderSide(width: 0.1, color: Colors.black), // Bottom border
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          maxLines: 2,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: screenWidth * 0.04, // Scales with screen width
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _buildDataCellDiseaseDataSettingUp(String text) {
     double screenWidth = MediaQuery
@@ -2186,4 +2074,39 @@ class _DPMPatientPatientDisceaseInnerDataDisplay extends State<DPMPatientPatient
       ),
     );
   }
+  Widget _buildActionButton(String label, VoidCallback onTap) {
+    return Expanded(
+      flex: 1,
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          padding: EdgeInsets.all(4),
+          margin: EdgeInsets.symmetric(horizontal: 5),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
+            border: Border.all(color: Colors.grey),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Text(
+                  label,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.center,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
 }
