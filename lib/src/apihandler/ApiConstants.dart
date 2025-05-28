@@ -290,5 +290,6 @@ class ApiConstants {
   static String GetData_amount_totalCountTraumaPatients = 'DpmDashboard/api/GetData_amount_totalCountTraumaPatients';
   static String GetDPM_TraumaReport = 'DpmDashboard/api/GetDPM_TraumaReport';
   static String GetDPM_TraumaReportView = 'DpmDashboard/api/GetDPM_TraumaReportView';
+  static String GetDPM_CataractApprove = 'DpmDashboard/api/GetDPM_CataractApprove';
 
 }

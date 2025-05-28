@@ -141,6 +141,7 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../dpmdashboard/reportScreensDPm/patientPendingViewApproveholdReject/CataractApprovalField.dart';
 import '../model/camp/CampDashboard.dart';
 import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
 import '../model/dpmRegistration/updateUsers/GetDPM_Edit_UpdateUserDetail.dart';
@@ -182,13 +183,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.UserLogin;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "username": user.loginId,
           "password": user.password,
@@ -224,8 +223,6 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-    //Way to send url with methodname
   }
 
   static Future<ChangePassword> changePAssword(
@@ -236,13 +233,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.ChangePassword;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "userid": getChangeAPsswordFields.userid,
           "oldPassword": getChangeAPsswordFields.oldPassword,
@@ -280,8 +275,6 @@ class ApiController {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
-
-    //Way to send url with methodname
   }
 
   static Future<ChangePassword> ngochangePAssword(
@@ -292,13 +285,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.ChangePassword;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "userid": getChangeAPsswordFields.userid,
           "oldPassword": getChangeAPsswordFields.oldPassword,
@@ -348,13 +339,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.ChangePassword;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "userid": getChangeAPsswordFields.userid,
           "oldPassword": getChangeAPsswordFields.oldPassword,
@@ -404,13 +393,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "state_code": spoDataFields.state,
           "name": spoDataFields.Name,
@@ -465,13 +452,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "state_code": spoDataFields.state,
           "name": spoDataFields.Name,
@@ -524,13 +509,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.DpmRegistration;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "state_code": dpmDataFields.stateDPM,
           "district_code": dpmDataFields.distCodeDPM,
@@ -590,13 +573,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.DpmRegistration;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "state_code": dpmDataFields.stateDPM,
           "district_code": dpmDataFields.distCodeDPM,
@@ -656,13 +637,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "state_code": spoDataFields.state,
           "name": spoDataFields.Name,
@@ -716,13 +695,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.spoRegistration;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "state_code": ngodDataFields.ngoDarpanNumber,
           "name": ngodDataFields.ngoPANNumber,
@@ -806,13 +783,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.SendOTPForForgotPassword;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "mobileorEmail": forgotPasswordData.RadioOptionSelectMobileEmail,
           "userId": forgotPasswordData.userID,
@@ -881,13 +856,11 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.UserForgotPassword;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
           "apikey": "Key123",
           "apipassword": "PWD123",
         };
-        //Way to send params
         var body = json.encode({
           "userId": forgotPasswordDatasOTPData.user_id,
           "role_id": forgotPasswordDatasOTPData.role_id,
@@ -1205,12 +1178,10 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.GetDPM_Dashboard;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
         };
-        //Way to send params
-        //Way to send params
+
         var body = json.encode({
           "districtid": districtidDPM,
           "stateid": stateidDPM,
@@ -5422,12 +5393,10 @@ class ApiController {
     if (isNetworkAvailable) {
       try {
         var url = ApiConstants.baseUrl + ApiConstants.GetSPO_Dashboard;
-        //Way to send headers
         Map<String, String> headers = {
           "Content-Type": "application/json",
         };
-        //Way to send params
-        //Way to send params
+
         var body = json.encode({
           "districtid": districtidDPM,
           "stateid": stateidDPM,
@@ -12373,6 +12342,37 @@ class ApiController {
     } catch (e) {
       Utils.showToast("Error: ${e.toString()}", true);
       return [];
+    }
+  }
+
+  Future<void> approveCataractList({
+     List<CataractApprovalField> fieldList,
+     int type,
+  }) async {
+    var url = ApiConstants.baseUrl + ApiConstants.GetDPM_CataractApprove;
+
+    final data = {
+      "type": type,
+      "fieldNames": fieldList.map((e) => e.toJson()).toList(),
+    };
+
+    try {
+      Dio dio = Dio();
+      final response = await dio.post(url, data: data);
+
+      if (response.statusCode == 200 && response.data["status"] == true) {
+        print("🔗 URL: $url");
+        print("📤 Request Payload: ${jsonEncode(data)}");
+        print("✅ Approval successful");
+        Utils.showToast("Approval successful", true);
+      } else {
+        print("❌ Approval failed: ${response.data}");
+      }
+    } catch (e) {
+      // 🔍 Print full URL and payload for debugging
+      print("🔗 URL: $url");
+      print("📤 Request Payload: ${jsonEncode(data)}");
+      print("❗ Error occurred: $e");
     }
   }
 }
