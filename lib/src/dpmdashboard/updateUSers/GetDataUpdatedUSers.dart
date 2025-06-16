@@ -947,7 +947,7 @@ if (district_code_login == 0 && role_id == '3') {
       Navigator.pop(context); // close loader
 
       if (response.status) {
-        Utils.showToast("User updated successfully", false);
+        Utils.showToast(response.message, false);
       } else {
         Utils.showToast(response.message ?? "Failed to update user", true);
       }

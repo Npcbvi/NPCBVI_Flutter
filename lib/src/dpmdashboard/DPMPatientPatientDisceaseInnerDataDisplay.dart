@@ -1408,13 +1408,15 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                             final item = snapshot.data[i];
                                             selectedList.add(
                                               CataractApprovalField(
-                                                catid: item.id,
+                                                catid: item.id.toString(),
                                               //  catid: 112724,
 
                                                 // or item.catid depending on your model
                                                 p_userid: userId,
                                                 // use actual logged-in user ID
                                                 district_code: district_code_login,
+                                                statusid:lowVisionDataValue,
+                                                statusname: "Approve",
                                               ),
                                             );
                                           }
@@ -1446,11 +1448,13 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                               final item = snapshot.data[i];
                                               selectedList.add(
                                                 CataractApprovalField(
-                                                  catid: item.id,
+                                                  catid: item.id.toString(),
                                                   // or item.catid depending on your model
                                                   p_userid: userId,
                                                   // use actual logged-in user ID
                                                   district_code: district_code_login,
+                                                  statusid:lowVisionDataValue,
+                                                  statusname: "Hold",
                                                 ),
                                               );
                                             }
@@ -1483,11 +1487,14 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                               final item = snapshot.data[i];
                                               selectedList.add(
                                                 CataractApprovalField(
-                                                  catid: item.id,
+                                                  catid: item.id.toString(),
                                                   // or item.catid depending on your model
                                                   p_userid: userId,
                                                   // use actual logged-in user ID
                                                   district_code: district_code_login,
+                                                    statusid:lowVisionDataValue,
+                                                    statusname: "Reject",
+
                                                 ),
                                               );
                                             }

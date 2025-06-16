@@ -10477,7 +10477,8 @@ class ApiController {
         "roleid": int.tryParse(roleid) ?? 0,
         "username": username,
         "orgname": orgname,
-        "mobileno": int.tryParse(mobileno) ?? 0,
+      //  "mobileno": int.tryParse(mobileno) ?? 0,
+        "mobileno": (mobileno) ?? "0",
         "emailid": emailid,
         "address": address,
         "statecode": statecode,
@@ -12361,10 +12362,11 @@ class ApiController {
       final response = await dio.post(url, data: data);
 
       if (response.statusCode == 200 && response.data["status"] == true) {
+        String message = response.data["message"];
         print("🔗 URL: $url");
         print("📤 Request Payload: ${jsonEncode(data)}");
         print("✅ Approval successful");
-        Utils.showToast(response.statusMessage+"Approval successful", true);// jsut for try
+        Utils.showToast(message, true);// jsut for try
       } else {
         print("❌ Approval failed: ${response.data}");
       }
