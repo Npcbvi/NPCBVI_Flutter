@@ -29,7 +29,7 @@ class DPMPatientPatientDisceaseInnerDataDisplay extends StatefulWidget {
 
 class _DPMPatientPatientDisceaseInnerDataDisplay
     extends State<DPMPatientPatientDisceaseInnerDataDisplay> {
-  int typeSendApprove=1,typeSendHold=2,typeSendReject=3;
+  int typeSendApprove=5,typeSendHold=7,typeSendReject=6;
   DateTime _selectedDate;
   List<bool> _selectedRows = [];
   bool _selectAll = false; // Track header checkbox separately
@@ -1287,90 +1287,6 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                             ),
                           );
                         }
-                        /* else {
-                          List<Datalowvisionregister_cataract> ddata = snapshot.data;
-                          // ✅ Initialize _selectedRows if not already done or if length has changed
-                          if (_selectedRows.length != ddata.length) {
-                            _selectedRows = List.generate(ddata.length, (_) => false);
-                          }
-                          return Container(
-                            margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  // Header only when data exists
-                                  Row(
-                                    children: [
-
-                                      _buildHeaderCellSrNoDiseaseData('S.No.', context),
-                                      _buildHeaderCell('Patient Id'),
-                                     // _buildHeaderCell('Name of Person'),
-                                      // Header checkbox with label
-
-
-                                  _buildHeaderCellNGOActionSmallShow('Action'),
-                                      Container(
-                                        width: 120, // Adjust as needed
-                                        child: Row(
-                                          children: [
-                                            Checkbox(
-                                              value: _selectAll,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  _selectAll = value ?? false;
-                                                  _selectedRows = List.filled(ddata.length, _selectAll);
-                                                });
-                                              },
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  // ✅ Add one clean divider here
-                                  Column(
-
-                                    children: ddata.asMap().entries.map((entry) {
-                                      int index = entry.key;
-                                      var offer = entry.value;
-                                      return Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          // Row checkbox
-
-                                          _buildDataCellSrNoDiseaseData(
-                                              (ddata.indexOf(offer) + 1).toString()),
-                                          _buildDataCell(offer.pUniqueID),
-                                         // _buildDataCell(offer.name),
-
-
-                                          _buildDataCellViewBlue("View", () {
-
-                                            _showReportDataDisplay( context, offer);
-
-
-                                          }),
-                                          Checkbox(
-                                            value: _selectedRows[index],
-                                            onChanged: (value) {
-                                              setState(() {
-                                                _selectedRows[index] = value ?? false;
-
-                                                // ✅ Do NOT update _selectAll here
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    }).toList(),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }*/
                         else {
                           List<Datalowvisionregister_cataract> ddata =
                               snapshot.data;
@@ -1415,7 +1331,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                                 p_userid: userId,
                                                 // use actual logged-in user ID
                                                 district_code: district_code_login,
-                                                statusid:lowVisionDataValue,
+                                                statusid:typeSendApprove,
                                                 statusname: "Approve",
                                               ),
                                             );
@@ -1429,7 +1345,23 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                             type: typeSendApprove,
                                           );
 
-                                          setState(() {}); // Refresh if needed
+                                          // Clear selections
+                                          _selectedRows = [];
+
+                                          // 🔄 Refresh data
+                                          setState(() {
+                                            _cataractDataFuture = ApiController.getDPM_Cataract(
+                                              district_code_login,
+                                              state_code_login,
+                                              npcbNoCatract,
+                                              getYearNgoHopital,
+                                              lowVisionDataValue,
+                                            );
+                                          });
+
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text("Records updated successfully")),
+                                          );
                                         } else {
                                           print("⚠️ No items selected");
                                         }
@@ -1437,7 +1369,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                       _buildActionButton('Hold', () {
                                         print('Hold button clicked');
                                         setState(() async {
-                                          print('Approve button clicked');
+                                          print('Hold button clicked');
                                           List<CataractApprovalField>
                                           selectedList = [];
 
@@ -1453,7 +1385,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                                   p_userid: userId,
                                                   // use actual logged-in user ID
                                                   district_code: district_code_login,
-                                                  statusid:lowVisionDataValue,
+                                                  statusid:typeSendHold,
                                                   statusname: "Hold",
                                                 ),
                                               );
@@ -1466,8 +1398,22 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                               fieldList: selectedList,
                                               type: typeSendHold,
                                             );
+                                            _selectedRows = [];
 
-                                            setState(() {}); // Refresh if needed
+                                            // 🔄 Refresh data
+                                            setState(() {
+                                              _cataractDataFuture = ApiController.getDPM_Cataract(
+                                                district_code_login,
+                                                state_code_login,
+                                                npcbNoCatract,
+                                                getYearNgoHopital,
+                                                lowVisionDataValue,
+                                              );
+                                            });
+
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text("Records updated successfully")),
+                                            );
                                           } else {
                                             print("⚠️ No items selected");
                                           }
@@ -1476,7 +1422,7 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                       _buildActionButton('Reject', () {
                                         print('Reject button clicked');
                                         setState(() async {
-                                          print('Approve button clicked');
+                                          print('Reject button clicked');
                                           List<CataractApprovalField>
                                           selectedList = [];
 
@@ -1492,9 +1438,8 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                                   p_userid: userId,
                                                   // use actual logged-in user ID
                                                   district_code: district_code_login,
-                                                    statusid:lowVisionDataValue,
+                                                    statusid:typeSendReject,
                                                     statusname: "Reject",
-
                                                 ),
                                               );
                                             }
@@ -1507,7 +1452,22 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                               type: typeSendReject,
                                             );
 
-                                            setState(() {}); // Refresh if needed
+                                            _selectedRows = [];
+
+                                            // 🔄 Refresh data
+                                            setState(() {
+                                              _cataractDataFuture = ApiController.getDPM_Cataract(
+                                                district_code_login,
+                                                state_code_login,
+                                                npcbNoCatract,
+                                                getYearNgoHopital,
+                                                lowVisionDataValue,
+                                              );
+                                            });
+
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text("Records updated successfully")),
+                                            );
                                           } else {
                                             print("⚠️ No items selected");
                                           }

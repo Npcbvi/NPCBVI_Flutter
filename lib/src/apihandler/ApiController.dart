@@ -12356,6 +12356,8 @@ class ApiController {
       "type": type,
       "fieldNames": fieldList.map((e) => e.toJson()).toList(),
     };
+    print("@@URL: $url");
+    print("@@ Request Payload: ${jsonEncode(data)}");
 
     try {
       Dio dio = Dio();
