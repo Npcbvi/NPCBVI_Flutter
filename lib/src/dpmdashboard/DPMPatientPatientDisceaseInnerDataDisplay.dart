@@ -1364,6 +1364,9 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                           );
                                         } else {
                                           print("⚠️ No items selected");
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            SnackBar(content: Text("Select at least one record for approval.")),
+                                          );
                                         }
                                       }),
                                       _buildActionButton('Hold', () {
@@ -1416,6 +1419,9 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                             );
                                           } else {
                                             print("⚠️ No items selected");
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                              SnackBar(content: Text("Changes can be made by NGO after hold the patient's record(s) ! Would you like to continue?")),
+                                            );
                                           }
                                         });
                                       }),
@@ -1470,6 +1476,10 @@ class _DPMPatientPatientDisceaseInnerDataDisplay
                                             );
                                           } else {
                                             print("⚠️ No items selected");
+
+                                            ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text("No changes can be made after reject of the record(s) ! Would you like to continue?")),
+                                          );
                                           }
                                         });
                                       }),
