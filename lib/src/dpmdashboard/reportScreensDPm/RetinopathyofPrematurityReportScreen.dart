@@ -221,7 +221,7 @@ class _RetinopathyofPrematurityReportScreen extends State<RetinopathyofPrematuri
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 5),
+           /* SizedBox(height: 5),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -243,7 +243,7 @@ class _RetinopathyofPrematurityReportScreen extends State<RetinopathyofPrematuri
                       {'value': 'Glaucoma', 'icon': Icons.healing},
                       {'value': 'Corneal Blindness', 'icon': Icons.healing},
                       {'value': 'VR Surgery', 'icon': Icons.healing},
-                      /*   {'value': 'Childhood Blindness', 'icon': Icons.child_care},*/
+                      *//*   {'value': 'Childhood Blindness', 'icon': Icons.child_care},*//*
                     ],
                     onChanged: (String value) {
 
@@ -270,7 +270,7 @@ class _RetinopathyofPrematurityReportScreen extends State<RetinopathyofPrematuri
 
 
               ],
-            ),
+            ),*/
 
             Container(
               margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -409,7 +409,7 @@ class _RetinopathyofPrematurityReportScreen extends State<RetinopathyofPrematuri
                   Expanded(
                     flex: 2,
                     child: Text(
-                      '${_chosenValuechnagesONSelection} Data for Approval',
+                      'Retinopathy of Prematurity Data for approval',
                       // Added spacing between words
                       maxLines: 2,
                       textAlign: TextAlign.left, // Align text to the left

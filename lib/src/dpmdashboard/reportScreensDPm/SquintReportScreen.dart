@@ -224,7 +224,7 @@ class _SquintReportScreen extends State<SquintReportScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(height: 5),
+           /* SizedBox(height: 5),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -246,7 +246,7 @@ class _SquintReportScreen extends State<SquintReportScreen> {
                       {'value': 'Glaucoma', 'icon': Icons.healing},
                       {'value': 'Corneal Blindness', 'icon': Icons.healing},
                       {'value': 'VR Surgery', 'icon': Icons.healing},
-                      /*   {'value': 'Childhood Blindness', 'icon': Icons.child_care},*/
+                      *//*   {'value': 'Childhood Blindness', 'icon': Icons.child_care},*//*
                     ],
                     onChanged: (String value) {
 
@@ -273,7 +273,7 @@ class _SquintReportScreen extends State<SquintReportScreen> {
 
 
               ],
-            ),
+            ),*/
 
             Container(
               margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -413,7 +413,7 @@ class _SquintReportScreen extends State<SquintReportScreen> {
                   Expanded(
                     flex: 2,
                     child: Text(
-                      '${_chosenValuechnagesONSelection} Data for Approval',
+                      'Squint Data for approval',
                       // Added spacing between words
                       maxLines: 2,
                       textAlign: TextAlign.left, // Align text to the left
