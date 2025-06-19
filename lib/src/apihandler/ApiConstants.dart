@@ -294,4 +294,5 @@ class ApiConstants {
   static String GetDPM_GlaucomaApprove = 'DpmDashboard/api/GetDPM_GlaucomaApprove';
 
   static String GetDPM_SquintApprove = 'DpmDashboard/api/GetDPM_SquintApprove';
+  static String GetDPM_CongenitalPtosisApprove = 'DpmDashboard/api/GetDPM_CongenitalPtosisApprove';
 }
