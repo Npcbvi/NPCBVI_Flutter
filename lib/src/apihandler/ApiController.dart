@@ -12413,5 +12413,39 @@ class ApiController {
       print("❗ Error occurred: $e");
     }
   }
+
+  Future<void> approveSquintList({
+    List<CataractApprovalField> fieldList,
+    int type,
+  }) async {
+    var url = ApiConstants.baseUrl + ApiConstants.GetDPM_SquintApprove;
+
+    final data = {
+      "type": type,
+      "fieldNames": fieldList.map((e) => e.toJson()).toList(),
+    };
+    print("@@URL: $url");
+    print("@@ Request Payload: ${jsonEncode(data)}");
+
+    try {
+      Dio dio = Dio();
+      final response = await dio.post(url, data: data);
+
+      if (response.statusCode == 200 && response.data["status"] == true) {
+        String message = response.data["message"];
+        print("🔗 URL: $url");
+        print("📤 Request Payload: ${jsonEncode(data)}");
+        print("✅ Approval successful");
+        Utils.showToast(message, true);// jsut for try
+      } else {
+        print("❌ Approval failed: ${response.data}");
+      }
+    } catch (e) {
+      // 🔍 Print full URL and payload for debugging
+      print("🔗 URL: $url");
+      print("📤 Request Payload: ${jsonEncode(data)}");
+      print("❗ Error occurred: $e");
+    }
+  }
 }
 //https://www.geeksforgeeks.org/flutter-fetching-list-of-data-from-api-through-dio/
