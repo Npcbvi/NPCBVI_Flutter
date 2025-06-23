@@ -78,6 +78,7 @@ import '../model/dpm_approval_status/ApproveMOURenewClickStatus/ApproveMOURenewC
 import '../model/dpm_approval_status/NgoAppliations/Get_DPM_NGOApplicationDetails.dart';
 import 'DPMReportScreenDisease/DiseaseCatracReportScreen.dart';
 import 'EyeScroolEditClick/EyeScreeningForm.dart';
+import 'EyeScroolEditClick/eyScreeningClick/NGOListEyeScreeningShowDataScreen.dart';
 import 'govtPrivateApproval/GovtPrivateDetailEqipment.dart';
 import 'newhospitalApproval/NewHospitalNGOAPPlicationDeatils.dart';
 
@@ -431,9 +432,11 @@ class _DPMDashboard extends State<DPMDashboard> {
         backgroundColor: Colors.blue,
         title: new Text('Welcome ' + '${fullnameController}',
             maxLines: 2,
-            style: new TextStyle(
-              color: Colors.white,
-            )),
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),),
+
         centerTitle: true,
         /* leading: IconButton(
             icon: Icon(Icons.arrow_back_ios),
@@ -899,7 +902,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   title: 'Eye Screening',
                   onTap: () {
                     setState(() {
-                      dpmEyeScreeningSchoolDataShow = false;
+                   /*   dpmEyeScreeningSchoolDataShow = false;
                       dashboardviewReplace = false;
                       NGOApplicationApplicationsViews = false;
                       GovtDistrictHospitalApplicationsViews = false;
@@ -914,9 +917,13 @@ class _DPMDashboard extends State<DPMDashboard> {
                       LowVisionRegisterGlaucoma = false;
                       LowVisionRegisterDiabitic = false;
                       LowVisionRegisterCornealBlindness = false;
-                      LowVisionRegisterVRSurgery = false;
+                      LowVisionRegisterVRSurgery = false;*/
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) =>  NGOListEyeScreeningShowDataScreen()),
+                      );
                     });
-                    Navigator.pop(context);
+                  //  Navigator.pop(context);
                   },
                 ),
                 _buildDropdownItem(
@@ -2745,9 +2752,9 @@ class _DPMDashboard extends State<DPMDashboard> {
             NGOlistnewHospitalDropdownData(),
             NGOlistgovtPvtotherHospitalDropdownData(),
             NGOlistApproveRevenuMOUDataShow(),
-            ngolistEyeScreeningShowData(),
+         //   ngolistEyeScreeningShowData(),
             DPMEyeScreenSchooRegisterData(),
-            DPMEyeScreenSchooRegisterADDNewRecord(),
+       //     DPMEyeScreenSchooRegisterADDNewRecord(),
             LowVisionRegisterCatract(),
             LowVisionRegisterDataShowDiabitic(),
             LowVisionRegisterDataShowGlaucoma(),
@@ -4165,180 +4172,8 @@ class _DPMDashboard extends State<DPMDashboard> {
     );
   }
 
-  /* Widget ngolistEyeScreeningShowData() {
-    return Column(
-      children: [
-        Visibility(
-          visible: ngoEyeScreeningdataShow,
-          child: Column(
-            children: [
-              Container(
-                color: Colors.blue,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            onTap: () {
-                              // Handle the tap event here
-                              print('@@Add New Record clicked');
-
-                              // Update state and perform actions
-                              setState(() {
-                                // Update the future values to fetch data
-                                _future = getDPM_ScreeningYear();
-                                _futureMonth = getDPM_ScreeningMonth();
-
-                                // Update boolean flags to control UI visibility
-                                ngoEyeScreeningdataShow = true;
-                                dpmEyeScreeningSchoolDataShowADDNewRecord =
-                                false;
-                              });
-                            },
-                            child: Text(
-                              'School Eye Screening',
-                              style: TextStyle(
-                                color: Colors.white, // Text color
-                                fontWeight: FontWeight.w800, // Text weight
-                              ),
-                              overflow:
-                              TextOverflow.ellipsis, // Handle text overflow
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      Flexible(
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              // Handle the tap event here
-                              print('@@Add New Record clicked');
-
-                              // Update state and perform actions
-                              setState(() {
-                                // Update the future values to fetch data
-                                _future = getDPM_ScreeningYear();
-                                _futureMonth = getDPM_ScreeningMonth();
-
-                                // Update boolean flags to control UI visibility
-                                ngoEyeScreeningdataShow = false;
-                                dpmEyeScreeningSchoolDataShowADDNewRecord =
-                                    true;
-                              });
-                            },
-                            child: Text(
-                              'Add New Record',
-                              style: TextStyle(
-                                color: Colors.white, // Text color
-                                fontWeight: FontWeight.w800, // Text weight
-                              ),
-                              overflow:
-                                  TextOverflow.ellipsis, // Handle text overflow
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              // Single horizontal scrolling view containing both header and data
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Column(
-                  children: [
-                    // Horizontal Scrolling Header Row
-                    Row(
-                      children: [
-                        _buildHeaderCellSrNo('S.No.'),
-                        _buildHeaderCell('Year'),
-                        _buildHeaderCell('Month'),
-                        _buildHeaderCell('School name'),
-                        _buildHeaderCell('Teacher Trained'),
-                        _buildHeaderCell('Children screened'),
-                        _buildHeaderCell(
-                            'Children detected with Refractive Errors'),
-                        _buildHeaderCell(
-                            'Free Glasses Provided by Organization'),
-                        _buildHeaderCell('Action'),
-                      ],
-                    ),
-                    Divider(color: Colors.blue, height: 1.0),
-                    // Data Rows
-
-                    FutureBuilder<List<DataGetEyeScreening>>(
-                      future: ApiController.GetDPM_EyeScreening(
-                          district_code_login, state_code_login, userId),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Utils.getEmptyView("Error: ${snapshot.error}");
-                        } else if (!snapshot.hasData || snapshot.data == null) {
-                          return Utils.getEmptyView("No data found");
-                        } else {
-                          List<DataGetEyeScreening> ddata = snapshot.data;
-                          print('@@---ddata' + ddata.length.toString());
-                          return Column(
-                            children: ddata.map((offer) {
-                              return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  _buildDataCellSrNo(
-                                      (ddata.indexOf(offer) + 1).toString()),
-                                  _buildDataCell(offer.yearname),
-                                  _buildDataCell(offer.monthname),
-                                  _buildDataCell(offer.schoolName),
-                                  //  _buildDataCell(offer.schoolAddress),
-                                  _buildDataCell(
-                                      offer.trainedTeacher.toString()),
-                                  _buildDataCell(offer.childScreen.toString()),
-                                  _buildDataCell(offer.childDetect.toString()),
-                                  _buildDataCell(offer.freeglass.toString()),
-                                  _buildDataCellViewBlue("Edit", () {
-                                    // Handle the edit action here
-                                    print(
-                                        '@@Edit clicked for item: ${offer.schoolid}');
-                                    SharedPrefs.storeSharedValues(
-                                        AppConstant.schoolid,
-                                        offer.schoolid.toString());
-                                    setState(() {
-                                      _future = getDPM_ScreeningYear();
-                                      _futureMonth = getDPM_ScreeningMonth();
-                                      _futureEyeScreeningEdit =
-                                          ApiController.getDPM_EyeScreeningEdit(
-                                              district_code_login,
-                                              state_code_login,
-                                              userId);
-                                      ngoEyeScreeningdataShow = false;
-                                      dpmEyeScreeningSchoolDataShow = true;
-                                    });
-                                  }),
-                                ],
-                              );
-                            }).toList(),
-                          );
-                        }
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }*/
-  Widget ngolistEyeScreeningShowData() {
+  //yha pe show Schhol eye and Add new Record
+ /* Widget ngolistEyeScreeningShowData() {
     return Column(
       children: [
         Visibility(
@@ -4560,7 +4395,7 @@ class _DPMDashboard extends State<DPMDashboard> {
         ),
       ],
     );
-  }
+  }*/
 
   /* void _showDetailDialogEyeScreening(
       BuildContext context, DataGetEyeScreening offer) {
@@ -4839,6 +4674,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     ),
                   ),
                 ),
+                SizedBox(height: 5),
                 Center(
                   child: FutureBuilder<List<DataGetDPM_ScreeningYear>>(
                     future: _future,
@@ -4865,9 +4701,18 @@ class _DPMDashboard extends State<DPMDashboard> {
                           !list.contains(_selectedUser)) {
                         _selectedUser = null; // Remove default selection
                       }
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_selectedUser == null || !list.contains(_selectedUser)) {
+                          setState(() {
+                            _selectedUser = list.first;
+                            getfyid = _selectedUser.fyid;
+
+                          });
+                        }
+                      });
 
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child:
                         DropdownButtonFormField2<DataGetDPM_ScreeningYear>(
                           hint: const Text(
@@ -4902,7 +4747,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                           }).toList(),
                           dropdownStyleData: DropdownStyleData(
                             maxHeight: 300,
-                            width: 300,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -4935,6 +4779,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                     },
                   ),
                 ),
+                SizedBox(height: 5),
                 Center(
                   child: FutureBuilder<List<DataGetDPM_ScreeningMonth>>(
                     future: _futureMonth,
@@ -4961,9 +4806,16 @@ class _DPMDashboard extends State<DPMDashboard> {
                           !list.contains(_selectedUserMonth)) {
                         _selectedUserMonth = null; // Remove default selection
                       }
-
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        if (_selectedUserMonth == null || !list.contains(_selectedUserMonth)) {
+                          setState(() {
+                            _selectedUserMonth = list.first;
+                            month_id = _selectedUserMonth.monthId?.toString() ?? '';
+                          });
+                        }
+                      });
                       return Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 10, 20.0, 0),
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0.0, 0),
                         child:
                         DropdownButtonFormField2<DataGetDPM_ScreeningMonth>(
                           hint: const Text(
@@ -4995,7 +4847,6 @@ class _DPMDashboard extends State<DPMDashboard> {
                           }).toList(),
                           dropdownStyleData: DropdownStyleData(
                             maxHeight: 300,
-                            width: 300,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
@@ -5028,8 +4879,10 @@ class _DPMDashboard extends State<DPMDashboard> {
                     },
                   ),
                 ),
+
                 EyeScreeningForm(
                   futureData: _futureEyeScreeningEdit,
+
                   controllerNameofSchool: _controllerNameofSchool,
                   controllerAddressofSchool: _controllerAddressofSchool,
                   controllerNameofPrincipal: _controllerNameofPrincipal,
@@ -5713,7 +5566,7 @@ class _DPMDashboard extends State<DPMDashboard> {
     });
   }
 
-  Widget DPMEyeScreenSchooRegisterADDNewRecord() {
+  /*Widget DPMEyeScreenSchooRegisterADDNewRecord() {
     return Column(
       children: [
         Visibility(
@@ -5774,12 +5627,12 @@ class _DPMDashboard extends State<DPMDashboard> {
                       }
                       // ✅ Insert hint at top
 
-                      /* if (_selectedUser == null || !list.contains(_selectedUser)) {
+                      *//* if (_selectedUser == null || !list.contains(_selectedUser)) {
                         _selectedUser = list.first;
                         print('@@_selectedUserDistrict--' + _selectedUser.toString());
                         getfyid = int.parse(_selectedUser.fyid.toString() ?? "0");
                         print('@@getfyid__1' + getfyid);
-                      }*/
+                      }*//*
                       return Padding(
                         padding: const EdgeInsets.fromLTRB(0, 5, 0.0, 0),
                         child:
@@ -6370,7 +6223,7 @@ class _DPMDashboard extends State<DPMDashboard> {
         ),
       ],
     );
-  }
+  }*/
 
   Widget _buildTextField(String label, TextEditingController controller) {
     return Padding(

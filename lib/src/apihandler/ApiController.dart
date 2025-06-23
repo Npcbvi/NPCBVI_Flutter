@@ -141,6 +141,9 @@ import 'package:mohfw_npcbvi/src/utils/AppConstants.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../dpmdashboard/EyeScroolEditClick/eyScreeningClick/AddNewRecordclickScreen.dart';
+import '../dpmdashboard/EyeScroolEditClick/eyScreeningClick/NGOListEyeScreeningShowDataScreen.dart';
+import '../dpmdashboard/EyeScroolEditClick/eyScreeningClick/SchoolEyeScreeningEditScreen.dart';
 import '../dpmdashboard/reportScreensDPm/patientPendingViewApproveholdReject/CataractApprovalField.dart';
 import '../model/camp/CampDashboard.dart';
 import '../model/dpmRegistration/dpmApplicationPart/GovtPrivateHospital.dart';
@@ -2256,6 +2259,159 @@ class ApiController {
     }
   }
 
+
+  // rep[aet this due to issue i can remove uppaer wala
+  static Future<SchoolEyeScreening_Registration>
+  getSchoolEyeScreening_Registrations(GetSchoolEyeScreening_RegistrationsNew
+  _getSchoolEyeScreening_Registrations) async {
+    print("@@getSchoolEyeScreening_Registration" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@getSchoolEyeScreening_Registration--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      try {
+        // Define the URL and headers
+        var url = ApiConstants.baseUrl +
+            ApiConstants.GetSchoolEyeScreening_Registration;
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+
+        // Define the request body
+        var body = json.encode({
+          "schoolid": _getSchoolEyeScreening_Registrations.schoolid,
+          "district_code": _getSchoolEyeScreening_Registrations.district_code,
+          "state_code": _getSchoolEyeScreening_Registrations.state_code,
+          "status": _getSchoolEyeScreening_Registrations.status,
+          "principal": _getSchoolEyeScreening_Registrations.principal,
+          "monthid": _getSchoolEyeScreening_Registrations.monthid,
+          "yearid": _getSchoolEyeScreening_Registrations.yearid,
+          "entry_by": _getSchoolEyeScreening_Registrations.entry_by,
+          "trained_teacher":
+          _getSchoolEyeScreening_Registrations.trained_teacher,
+          "child_screen": _getSchoolEyeScreening_Registrations.child_screen,
+          "child_detect": _getSchoolEyeScreening_Registrations.child_detect,
+          "freeglass": _getSchoolEyeScreening_Registrations.freeglass,
+          "school_name": _getSchoolEyeScreening_Registrations.school_name,
+          "school_address": _getSchoolEyeScreening_Registrations.school_address,
+
+          // for approved
+        });
+        print(
+            "@@getSchoolEyeScreening_Registration--bodyprint--: ${url +
+                body.toString()}");
+        // Create Dio instance and make the request
+        Dio dio = Dio();
+        Response response = await dio.post(
+          url,
+          data: body,
+          options: Options(
+            headers: headers,
+            contentType: "application/json",
+            responseType: ResponseType.plain,
+          ),
+        );
+
+        print(
+            "@@GetDPM_EyeScreeningEdit--Api Response: ${response.toString()}");
+
+        // Parse the response
+        var responseData = json.decode(response.data);
+        SchoolEyeScreening_Registration data =
+        SchoolEyeScreening_Registration.fromJson(responseData);
+
+        if (data.status) {
+          //Utils.showToast(data.message, true);
+        } else {
+          // Utils.showToast(data.message, true);
+        }
+        return data;
+      } catch (e) {
+        //  Utils.showToast(e.toString(), true);
+      }
+    }
+  }
+// add new records
+  static Future<SchoolEyeScreening_Registration>
+  getSchoolEyeScreening_RegistrationsAddNewReord(GetSchoolEyeScreening_RegistrationsNewAddReord
+  _getSchoolEyeScreening_Registrations) async {
+    print("@@getSchoolEyeScreening_Registration" + "1");
+    Response response1;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String schoolidSaved = prefs.getString(AppConstant.schoolid) ?? "";
+    print("@@getSchoolEyeScreening_Registration--: $schoolidSaved");
+    // Check network availability
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (isNetworkAvailable) {
+      try {
+        // Define the URL and headers
+        var url = ApiConstants.baseUrl +
+            ApiConstants.GetSchoolEyeScreening_Registration;
+        Map<String, String> headers = {
+          "Content-Type": "application/json",
+          "apikey": "Key123",
+          "apipassword": "PWD123",
+        };
+
+        // Define the request body
+        var body = json.encode({
+          "schoolid": _getSchoolEyeScreening_Registrations.schoolid,
+          "district_code": _getSchoolEyeScreening_Registrations.district_code,
+          "state_code": _getSchoolEyeScreening_Registrations.state_code,
+          "status": _getSchoolEyeScreening_Registrations.status,
+          "principal": _getSchoolEyeScreening_Registrations.principal,
+          "monthid": _getSchoolEyeScreening_Registrations.monthid,
+          "yearid": _getSchoolEyeScreening_Registrations.yearid,
+          "entry_by": _getSchoolEyeScreening_Registrations.entry_by,
+          "trained_teacher":
+          _getSchoolEyeScreening_Registrations.trained_teacher,
+          "child_screen": _getSchoolEyeScreening_Registrations.child_screen,
+          "child_detect": _getSchoolEyeScreening_Registrations.child_detect,
+          "freeglass": _getSchoolEyeScreening_Registrations.freeglass,
+          "school_name": _getSchoolEyeScreening_Registrations.school_name,
+          "school_address": _getSchoolEyeScreening_Registrations.school_address,
+
+          // for approved
+        });
+        print(
+            "@@getSchoolEyeScreening_Registration--bodyprint--: ${url +
+                body.toString()}");
+        // Create Dio instance and make the request
+        Dio dio = Dio();
+        Response response = await dio.post(
+          url,
+          data: body,
+          options: Options(
+            headers: headers,
+            contentType: "application/json",
+            responseType: ResponseType.plain,
+          ),
+        );
+
+        print(
+            "@@GetDPM_EyeScreeningEdit--Api Response: ${response.toString()}");
+
+        // Parse the response
+        var responseData = json.decode(response.data);
+        SchoolEyeScreening_Registration data =
+        SchoolEyeScreening_Registration.fromJson(responseData);
+
+        if (data.status) {
+          //Utils.showToast(data.message, true);
+        } else {
+          // Utils.showToast(data.message, true);
+        }
+        return data;
+      } catch (e) {
+        //  Utils.showToast(e.toString(), true);
+      }
+    }
+  }
   static Future<List<Datalowvisionregister_Glaucoma>> getDPM_Glaucoma(
       int district_code,
       int state_code,

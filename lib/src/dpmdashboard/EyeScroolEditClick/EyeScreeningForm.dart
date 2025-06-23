@@ -47,7 +47,15 @@ class EyeScreeningForm extends StatelessWidget {
             itemCount: data.length,
             itemBuilder: (context, index) {
               var item = data[index];
+// Set controller values from item
+              controllerNameofSchool.text = item.schoolName ?? '';
+              controllerAddressofSchool.text = item.schoolAddress ?? '';
 
+              controllerNameofPrincipal.text = item.principal ?? '';
+              controllerTeacherTrained.text=item.trainedTeacher.toString()??'';
+              controllerNumberofchildrenscreening.text=  item.childScreen.toString()??'';
+              controllerChildrendetectedwithRefractive.text=item.childDetect.toString()??'';
+              controllerNumberoffreeGlasses.text=item.freeglass.toString()??'';
               return Column(
                 children: [
                   _buildTextField(controllerNameofSchool, "Enter School Name", item.schoolName),
