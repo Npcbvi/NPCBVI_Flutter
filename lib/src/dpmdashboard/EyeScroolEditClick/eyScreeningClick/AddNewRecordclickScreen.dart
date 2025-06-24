@@ -251,7 +251,7 @@ class _AddNewRecordclickScreen
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('School Eye Screening New Record',
+        title: const Text('School Eye Screening Add New Record',
         maxLines: 2,
           style: TextStyle(
             fontSize: 14,

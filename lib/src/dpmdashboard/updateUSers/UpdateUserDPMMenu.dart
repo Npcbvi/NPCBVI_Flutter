@@ -54,7 +54,15 @@ String entryby,_chosenValue,
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Update Users")),
+      appBar: AppBar(title: Text("Update Users",
+        maxLines: 2,
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.white,
+        ),),
+
+        backgroundColor: Colors.blue,
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center, // Center vertically

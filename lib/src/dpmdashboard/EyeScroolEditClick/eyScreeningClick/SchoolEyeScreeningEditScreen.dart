@@ -257,7 +257,13 @@ class _NGOListEyeScreeningShowDataScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('School Eye Screening Update'),
+        title: const Text('School Eye Screening Update',
+          maxLines: 2,
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.white,
+          ),),
+
         backgroundColor: Colors.blue,
       ),
       body: SingleChildScrollView(

@@ -73,7 +73,15 @@ class _GetDataUpdatedUSers extends State<GetDataUpdatedUSers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Update User Details")),
+      appBar: AppBar(title: Text("Update User Details",
+        maxLines: 2,
+        style: TextStyle(
+          fontSize: 14,
+          color: Colors.white,
+        ),),
+
+        backgroundColor: Colors.blue,
+      ),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center, // Center vertically

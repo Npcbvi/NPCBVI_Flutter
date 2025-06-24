@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:mohfw_npcbvi/src/dpmdashboard/eyeBankAllrelatedScreensDPm/UpcomingScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/CongenitalPtosisReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/CornealBlindnessReportScreen.dart';
 import 'package:mohfw_npcbvi/src/dpmdashboard/reportScreensDPm/DiabeticRetinopathyReportScreen.dart';
@@ -431,7 +432,7 @@ class _DPMDashboard extends State<DPMDashboard> {
       appBar: new AppBar(
         backgroundColor: Colors.blue,
         title: new Text('Welcome ' + '${fullnameController}',
-            maxLines: 2,
+          maxLines: 2,
           style: TextStyle(
             fontSize: 14,
             color: Colors.white,
@@ -562,11 +563,11 @@ class _DPMDashboard extends State<DPMDashboard> {
                     Navigator.pop(context);
                   },
                 ),
-                   _buildMenuItem(
+                _buildMenuItem(
                   icon: Icons.update,
                   title: 'Update Users',
                   onTap: () {
-                  // cmment due to abhi api ni bbnaa hai demo ke liye tyari hai
+                    // cmment due to abhi api ni bbnaa hai demo ke liye tyari hai
                     Navigator.pop(context); // Close the current menu first
 
                     Navigator.push(
@@ -902,7 +903,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                   title: 'Eye Screening',
                   onTap: () {
                     setState(() {
-                   /*   dpmEyeScreeningSchoolDataShow = false;
+                      /*   dpmEyeScreeningSchoolDataShow = false;
                       dashboardviewReplace = false;
                       NGOApplicationApplicationsViews = false;
                       GovtDistrictHospitalApplicationsViews = false;
@@ -923,7 +924,7 @@ class _DPMDashboard extends State<DPMDashboard> {
                         MaterialPageRoute(builder: (context) =>  NGOListEyeScreeningShowDataScreen()),
                       );
                     });
-                  //  Navigator.pop(context);
+                    //  Navigator.pop(context);
                   },
                 ),
                 _buildDropdownItem(
@@ -949,14 +950,26 @@ class _DPMDashboard extends State<DPMDashboard> {
                       //  print('@@spinnerChooseValue--' + _chosenValue);
                       if (_chosenEyeBank == "Eye Bank Collection") {
                         print('@@NGO--1' + _chosenEyeBank);
-                        Utils.showToast("Next Sprint ", true);
+                      //  Utils.showToast("Next Sprint ", true);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UpcomingScreen()),
+                        );
                       } else if (_chosenEyeBank == "Eye Donation") {
-                        Utils.showToast("Next Sprint ", true);
+                      //  Utils.showToast("Next Sprint ", true);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UpcomingScreen()),
+                        );
                       } else if (_chosenEyeBank ==
                           "Eyeball Collection Via Eye Bank") {
-                        dashboardviewReplace = false;
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => UpcomingScreen()),
+                        );
+                     /*   dashboardviewReplace = false;
                         NGOApplicationApplicationsViews = false;
-                        GovtDistrictHospitalApplicationsViews = false;
+                        GovtDistrictHospitalApplicationsViews = false;*/
                       }
                     });
                   },
@@ -2752,9 +2765,9 @@ class _DPMDashboard extends State<DPMDashboard> {
             NGOlistnewHospitalDropdownData(),
             NGOlistgovtPvtotherHospitalDropdownData(),
             NGOlistApproveRevenuMOUDataShow(),
-         //   ngolistEyeScreeningShowData(),
+            //   ngolistEyeScreeningShowData(),
             DPMEyeScreenSchooRegisterData(),
-       //     DPMEyeScreenSchooRegisterADDNewRecord(),
+            //     DPMEyeScreenSchooRegisterADDNewRecord(),
             LowVisionRegisterCatract(),
             LowVisionRegisterDataShowDiabitic(),
             LowVisionRegisterDataShowGlaucoma(),
@@ -4173,7 +4186,7 @@ class _DPMDashboard extends State<DPMDashboard> {
   }
 
   //yha pe show Schhol eye and Add new Record
- /* Widget ngolistEyeScreeningShowData() {
+  /* Widget ngolistEyeScreeningShowData() {
     return Column(
       children: [
         Visibility(
@@ -6731,15 +6744,15 @@ class _DPMDashboard extends State<DPMDashboard> {
                                             }
 
                                             else if(diseaseid==7){
-                                            print("@@diseaseid:here " + diseaseid.toString());
+                                              print("@@diseaseid:here " + diseaseid.toString());
 
-                                            Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                            builder: (context) =>
-                                                ApproveclickRetinopathyPrematurity(),
-                                            ),
-                                            );
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ApproveclickRetinopathyPrematurity(),
+                                                ),
+                                              );
                                             }
                                             else if(diseaseid==8){
                                               print("@@diseaseid:here " + diseaseid.toString());
@@ -6883,86 +6896,86 @@ class _DPMDashboard extends State<DPMDashboard> {
                                           "View", () {
                                         print(
                                             "@@Patient Pe Click TypeShowData--here==="+diseaseid.toString());
-                                      if(diseaseid==1){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                DPMPatientPatientDisceaseInnerDataDisplay(),
-                                          ),
-                                        );
-                                      }else if(diseaseid==2){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                GlaucomaReportScreen(),
-                                          ),
-                                        );
-                                      }
-                                      else if(diseaseid==3){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SquintReportScreen(),
-                                          ),
-                                        );
-                                      }
-                                      else if(diseaseid==4){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CongenitalPtosisReportScreen(),
-                                          ),
-                                        );
-                                      }
-                                      else if(diseaseid==5){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                DiabeticRetinopathyReportScreen(),
-                                          ),
-                                        );
-                                      }
-                                      else if(diseaseid==6){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CornealBlindnessReportScreen(),
-                                          ),
-                                        );
-                                      }
-                                      else if(diseaseid==7){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                RetinopathyofPrematurityReportScreen(),
-                                          ),
-                                        );
-                                      }
-                                      else if(diseaseid==8){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                RetinoblastomaReportScreen(),
-                                          ),
-                                        );
-                                      }
-                                      else if(diseaseid==9){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                IntraocularTraumainChildrenReportScreen(),
-                                          ),
-                                        );
-                                      }
+                                        if(diseaseid==1){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DPMPatientPatientDisceaseInnerDataDisplay(),
+                                            ),
+                                          );
+                                        }else if(diseaseid==2){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  GlaucomaReportScreen(),
+                                            ),
+                                          );
+                                        }
+                                        else if(diseaseid==3){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SquintReportScreen(),
+                                            ),
+                                          );
+                                        }
+                                        else if(diseaseid==4){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CongenitalPtosisReportScreen(),
+                                            ),
+                                          );
+                                        }
+                                        else if(diseaseid==5){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DiabeticRetinopathyReportScreen(),
+                                            ),
+                                          );
+                                        }
+                                        else if(diseaseid==6){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CornealBlindnessReportScreen(),
+                                            ),
+                                          );
+                                        }
+                                        else if(diseaseid==7){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RetinopathyofPrematurityReportScreen(),
+                                            ),
+                                          );
+                                        }
+                                        else if(diseaseid==8){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  RetinoblastomaReportScreen(),
+                                            ),
+                                          );
+                                        }
+                                        else if(diseaseid==9){
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  IntraocularTraumainChildrenReportScreen(),
+                                            ),
+                                          );
+                                        }
                                       }),
                                     ],
                                   );
