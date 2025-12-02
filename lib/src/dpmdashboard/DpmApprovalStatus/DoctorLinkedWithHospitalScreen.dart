@@ -9,7 +9,7 @@ import 'package:mohfw_npcbvi/src/utils/Utils.dart';
 
 class DoctorLinkedWithHospitalScreen extends StatefulWidget {
   final String darpanNo;
-  final String userId;
+  final String userId; 
   final String hName; // Add hospital name
   final String hRegID; // Add hospital name
 

@@ -1051,9 +1051,10 @@ class _MainDashboard extends State<MainDashboard> {
                                 radius: 15,
                                 backgroundColor: Colors.white,
                                 child: ClipRRect(
+                                  
                                   borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
-                                    'images/spo.png',
+                                    'images/spo.jpg',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1133,7 +1134,7 @@ class _MainDashboard extends State<MainDashboard> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: Image.asset(
-                                    'images/eyebank.png',
+                                    'images/purpleeyes.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -1211,7 +1212,85 @@ class _MainDashboard extends State<MainDashboard> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(0),
                                   child: Image.asset(
-                                    'images/donationcenters.png',
+                                    'images/redeyesdonation.png',
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DonationCentersMoreClick(),
+                            ),
+                          );
+                        },
+                        child: Stack(
+                          children: <Widget>[
+                            Container(
+                              margin:
+                              const EdgeInsets.symmetric(horizontal: 16.0),
+                              // Add left and right margin
+                              child: SizedBox(
+                                width: double.infinity,
+                                // Full width inside the margin
+                                height: 100,
+                                // Set your desired height
+                                child: Card(
+                                  color: Colors.white,
+                                  elevation: 5,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10, vertical: 8),
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: Text(
+                                            'Eye Screening Centres(s)',
+                                            style: TextStyle(
+                                              color: donationcentres,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          totalEd != null ? '$totalEd   ' : 'pending here',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // 🟢 Animated Positioned Image (Moves Up on Tap)
+                            AnimatedPositioned(
+                              duration: Duration(milliseconds: 300),
+                              top: 0,
+                              left: 25,
+                              child: CircleAvatar(
+                                radius: 15,
+                                backgroundColor: Colors.white,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(0),
+                                  child: Image.asset(
+                                    'images/redeyesdonation.png',
                                     fit: BoxFit.cover,
                                   ),
                                 ),

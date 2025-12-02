@@ -90,6 +90,9 @@ flutter:
     - images/eyebank.png
     - images/donationcenters.png
     - images/spo.png
+    - images/redeyesdonation.png
+    - images/purpleeyes.png
+    - images/spo.jpg
   fonts:
     - family: PT_Sans
       fonts:
