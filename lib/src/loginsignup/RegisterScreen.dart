@@ -160,7 +160,7 @@ class _RegisterScreen extends State<RegisterScreen> {
     });
   }
 
-  Future<List<Data>> _getStatesDAta() async {
+  /*Future<List<Data>> _getStatesDAta() async {
     bool isNetworkAvailable = await Utils.isNetworkAvailable();
     if (isNetworkAvailable) {
       final response = await http.get(Uri.parse(
@@ -174,7 +174,38 @@ class _RegisterScreen extends State<RegisterScreen> {
       Utils.showToast(AppConstant.noInternet, true);
       return null;
     }
+  }*/
+  Future<List<Data>> _getStatesDAta() async {
+    bool isNetworkAvailable = await Utils.isNetworkAvailable();
+    if (!isNetworkAvailable) {
+      Utils.showToast(AppConstant.noInternet, true);
+      return [];
+    }
+
+    final response = await http.get(Uri.parse(
+      'https://npcbvi.mohfw.gov.in/NPCBMobAppTest/api/Registration/api/State',
+    ));
+
+    print("Raw Response: ${response.body}");
+
+    // If API returns plain text "no data found"
+    if (response.body.trim().toLowerCase() == "no data found") {
+      print("API returned no data");
+      return [];   /// 👈 return empty list
+    }
+
+    try {
+      Map<String, dynamic> json = jsonDecode(response.body);
+      final DashboardStateModel dashboardStateModel =
+      DashboardStateModel.fromJson(json);
+
+      return dashboardStateModel.data ?? [];
+    } catch (e) {
+      print("JSON Decode Error: $e");
+      return [];  /// 👈 fail-safe: no crash
+    }
   }
+
 
   Future<List<DataDsiricst>> _getDistrictData(int stateCode) async {
     DashboardDistrictModel dashboardDistrictModel = DashboardDistrictModel();
@@ -762,9 +793,31 @@ class _RegisterScreen extends State<RegisterScreen> {
                           return Text('Error: ${snapshot.error}');
                         }
 
-                        if (!snapshot.hasData || snapshot.data == null) {
+                       /* if (!snapshot.hasData || snapshot.data == null) {
                           return Center(child: CircularProgressIndicator()); // ✅ Proper loading indicator
+                        }*/
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
                         }
+
+                        if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Container(
+                            width: 350,
+                            height: 50,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.grey),
+                              color: Colors.white,
+                            ),
+                            child: Text(
+                              "No Data Found",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          );
+                        }
+
 
                         // Logging for debugging
                         developer.log('@@snapshot: ${snapshot.data}');
@@ -3359,10 +3412,31 @@ class _RegisterScreen extends State<RegisterScreen> {
                           return Text('Error: ${snapshot.error}');
                         }
 
-                        if (!snapshot.hasData) {
-                      //    return const CircularProgressIndicator();
+
+                      /*  if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Text("No Data Found");
+                        }*/
+                        if (snapshot.connectionState == ConnectionState.waiting) {
+                          return Center(child: CircularProgressIndicator());
                         }
 
+                        if (!snapshot.hasData || snapshot.data.isEmpty) {
+                          return Container(
+                            width: 350,
+                            height: 50,
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.symmetric(horizontal: 12),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.grey),
+                              color: Colors.white,
+                            ),
+                            child: Text(
+                              "No Data Found",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                          );
+                        }
                         List<Data> stateList = snapshot.data ?? [];
 
                         // Ensure selected state is valid
